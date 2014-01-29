@@ -19,7 +19,7 @@ $bed-layout:smart;
 		background-color: transparent !important;
 
 		&.flat{
-			@include bed-sprite("flat");
+			@include bed-sprite("flat"); 
 		}
 
 		&.head-front{

@@ -23,10 +23,8 @@ fengshui.views.View3D = function(domElement){
 
 	this._controls = null;
 
-	this._groups = [];
-
 	this._light = null;
-	this._lightFaces = [];
+	this._shadableGroup = null;
 };
 goog.inherits(fengshui.views.View3D, goog.events.EventTarget);
 
@@ -47,7 +45,7 @@ fengshui.views.View3D.prototype.init = function(){
 
 	//
 	var loader = new THREE.ObjectLoader();
-	loader.load( fengshui.Config['basePath'] + "json/scene-css.json", goog.bind(this.onLoad, this) );
+	loader.load( fengshui.Config['basePath'] + "json/scene-grouped.json", goog.bind(this.onLoad, this) );
 
 	this._controls = new THREE.TrackballControls( this._camera );
 	this._controls.rotateSpeed = 1.0;
@@ -70,21 +68,42 @@ fengshui.views.View3D.prototype.init = function(){
 
 
 fengshui.views.View3D.prototype.createCSS3DObject = function ( mesh ) {
-  var groupName = mesh.userData['group'];
-
-  var shadable = mesh.userData['shadable'];
-
-  var classes = (groupName ? groupName + ' ' : '') + mesh.name;
-  if(shadable !== false) {
-  	classes += ' shadable';
+  // find groups
+  var groups = [];
+  var g = mesh;
+  while( g ) {
+  	g = (!g.parent || g.parent instanceof THREE.Scene) ? null : g.parent;
+  	if(g) {
+  		groups.push(g);
+  	}
   }
 
-  var dom = goog.dom.createDom('div', classes);
+  // detect shadable on its group
+  var shadable = (mesh.userData['shadable'] !== false || mesh.userData['shadable'] === true);
+
+  if(groups.length > 0) {
+		var globalGroup = groups[groups.length - 1];
+	  shadable = (globalGroup.userData['shadable'] !== false || globalGroup.userData['shadable'] === true);
+  }
+
+  // parse class names by group
+  var classes = [mesh.name];
+
+  goog.array.forEach(groups, function(group) {
+  	classes.push( group.name );
+  });
+
+  classes.reverse();
+
+  if(shadable) classes.push('shadable');
+
+  // create dom
+  var dom = goog.dom.createDom('div', classes.join(' '));
 
   goog.style.setStyle(dom, {
   	'width': mesh.geometry.width + 'px',
   	'height': mesh.geometry.height + 'px',
-  	'background-color': '#'+mesh.material.color.getHexString()
+  	'background-color': '#' + mesh.material.color.getHexString()
   });
 
   var object = new THREE.CSS3DObject( dom );
@@ -93,10 +112,8 @@ fengshui.views.View3D.prototype.createCSS3DObject = function ( mesh ) {
 
   this._scene.add( object );
 
-  if(groupName) {
-    var group = this.addToGroup(object, groupName);
-    group.position.y += 2;
-    this._scene.add( group );
+  if(groups.length > 0) {
+    groups[0].add( object );
   }
 
   return object;
@@ -106,13 +123,13 @@ fengshui.views.View3D.prototype.createCSS3DObject = function ( mesh ) {
 fengshui.views.View3D.prototype.createCSS3DSprite = function( sprite ) {
   var spriteName = sprite.name;
 
-  var classes = 'sprite ' + (spriteName || '');
-  var dom = goog.dom.createDom('div', classes);
+  var dom = goog.dom.createDom('div', 'sprite');
+  goog.dom.classes.add(dom, spriteName);
 
   dom.setAttribute('data-name', spriteName);
 
   goog.style.setStyle(dom, {
-  	'background-color': '#'+sprite.material.color.getHexString()
+  	'background-color': '#' + sprite.material.color.getHexString()
   });
 
   var object = new THREE.CSS3DSprite( dom );
@@ -123,21 +140,48 @@ fengshui.views.View3D.prototype.createCSS3DSprite = function( sprite ) {
   this._eventHandler.listen(dom, 'click', this.onClickSprite, false, this);
 
   return object;
-}
+};
 
-fengshui.views.View3D.prototype.addToGroup = function(css3dObject, groupName) {
-  var group = this._scene.getObjectByName(groupName);
 
-  if(!group) {
-    group = new THREE.Object3D();
-    group.name = groupName;
+fengshui.views.View3D.prototype.createObject3D = function( object3d ) {
+  var object = object3d;
 
-    this._groups.push(group);
+  return object;
+};
+
+
+fengshui.views.View3D.prototype.create3DElementGroup = function( object ) {
+	var group = object;
+
+	// create child's group if there is
+	var children = group['children'];
+
+	goog.array.forEach(children, function(child) {
+		if(child.children.length > 0) {
+			this.create3DElementGroup( child );
+		}else {
+			this.create3DElement( child );
+		}
+	}, this);
+
+	return group;
+};
+
+
+fengshui.views.View3D.prototype.create3DElement = function( child ) {
+	var object;
+
+	if(child instanceof THREE.Mesh) {
+    object = this.createCSS3DObject( child );
+  }
+  else if(child instanceof THREE.Sprite) {
+    object = this.createCSS3DSprite( child );
+  }
+  else if(child instanceof THREE.Object3D) {
+    object = this.createObject3D( child );
   }
 
-  group.add(css3dObject);
-
-  return group;
+  return object;
 };
 
 
@@ -150,30 +194,26 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 	
 	this._scene = result;
 
-
-	var children = this._scene.children.concat();
+	var children = this._scene.children;
 
 	goog.array.forEach(children, function(child) {
 
-		if(child instanceof THREE.Mesh) {
-	    this.createCSS3DObject( child );
-	  }else if(child instanceof THREE.Sprite) {
-	    this.createCSS3DSprite( child );
-	  }
+		if(child.children.length > 0) {
+			// if has children, create group
+			this.create3DElementGroup( child );
+		}
+		else {
+			// if not, create child individually
+			this.create3DElement( child );
+		}
 
 	}, this);
 
 	this.render();
 
 
-	var shadableDoms = goog.dom.query('.shadable', this.domElement);
-
-	goog.array.forEach(shadableDoms, function(dom) {
-
-	  var face = new Photon.Face( dom, .5, .5, true );
-	  this._lightFaces.push( face );
-
-	}, this);
+	var shadableDoms = goog.dom.query('.shadable', this._renderer.domElement);
+	this._shadableGroup = new Photon.FaceGroup( this._renderer.domElement, shadableDoms, .5, .5, true );
 
 	//
 	goog.fx.anim.registerAnimation(this);
@@ -192,13 +232,10 @@ fengshui.views.View3D.prototype.onAnimationFrame = function(now){
 
   var time = now * 0.0004;
 
-  goog.array.forEach(this._groups, function(group) {
-  	group.rotation.y = time * 0.7;
-  }, this);
+  var bed = this._scene.getObjectByName('bed');
+  bed.rotation.y = time * 0.7;
 
-  goog.array.forEach(this._lightFaces, function(face) {
-  	face.render(this._light, true);
-  }, this);
+  this._shadableGroup.render(this._light, true, true);
 
   this._controls.update();
   
