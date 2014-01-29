@@ -1,0 +1,45 @@
+// --- Image Sprites ---
+$bed-sprite-dimensions: true;
+$bed-layout:smart;
+
+@import "textures/bed/*.png";
+@include all-bed-sprites;
+
+@import "global";
+
+.view3dContainer{
+	.sprite{
+	  width: 20px;
+	  height: 20px;
+	  cursor: pointer;
+	}
+
+
+	.bed{
+		background-color: transparent !important;
+
+		&.flat{
+			@include bed-sprite("flat");
+		}
+
+		&.head-front{
+			@include bed-sprite("head-front");
+		}
+
+		&.head-back{
+			@include bed-sprite("head-back");
+		}
+
+		&.head-top{
+			@include bed-sprite("head-top");
+		}
+
+		&.side-left, &.side-right{
+			@include bed-sprite("foot-side");
+		}
+
+		&.foot-front, &.foot-back{
+			@include bed-sprite("foot-front");
+		}
+	}
+}
