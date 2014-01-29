@@ -52,7 +52,15 @@ Menubar.Add = function ( editor ) {
 		var heightSegments = 1;
 
 		var geometry = new THREE.PlaneGeometry( width, height, widthSegments, heightSegments );
-		var material = new THREE.MeshPhongMaterial();
+		//var material = new THREE.MeshPhongMaterial();
+
+		/* -- edited by joe -- */
+		var material = new THREE.MeshBasicMaterial({
+			side: THREE.DoubleSide,
+			transparent: true
+		});
+		/* -- end of edit -- */
+
 		var mesh = new THREE.Mesh( geometry, material );
 		mesh.name = 'Plane ' + ( ++ meshCount );
 

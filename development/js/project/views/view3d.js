@@ -45,7 +45,7 @@ fengshui.views.View3D.prototype.init = function(){
 
 	//
 	var loader = new THREE.ObjectLoader();
-	loader.load( fengshui.Config['basePath'] + "json/scene-grouped.json", goog.bind(this.onLoad, this) );
+	loader.load( fengshui.Config['basePath'] + "json/scene-with-image.json", goog.bind(this.onLoad, this) );
 
 	this._controls = new THREE.TrackballControls( this._camera );
 	this._controls.rotateSpeed = 1.0;
@@ -235,11 +235,11 @@ fengshui.views.View3D.prototype.onAnimationFrame = function(now){
   var bed = this._scene.getObjectByName('bed');
   bed.rotation.y = time * 0.7;
 
-  this._shadableGroup.render(this._light, true, true);
-
   this._controls.update();
   
   this.render();
+
+  this._shadableGroup.render(this._light, true, true);
 
   fengshui.stats.update();
 };

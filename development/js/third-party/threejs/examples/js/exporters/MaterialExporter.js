@@ -33,6 +33,10 @@ THREE.MaterialExporter.prototype = {
 			output.transparent = material.transparent;
 			output.wireframe = material.wireframe;
 
+			/* -- edited by joe --*/
+			output.editorImage = material.map ? material.map.image.src : undefined;
+			/* -- end of edit --*/
+
 		} else if ( material instanceof THREE.MeshLambertMaterial ) {
 
 			output.type = 'MeshLambertMaterial';
@@ -45,6 +49,10 @@ THREE.MaterialExporter.prototype = {
 			output.opacity = material.opacity;
 			output.transparent = material.transparent;
 			output.wireframe = material.wireframe;
+
+			/* -- edited by joe --*/
+			output.editorImage = material.map ? material.map.image.src : undefined;
+			/* -- end of edit --*/
 
 		} else if ( material instanceof THREE.MeshPhongMaterial ) {
 
@@ -60,6 +68,10 @@ THREE.MaterialExporter.prototype = {
 			output.opacity = material.opacity;
 			output.transparent = material.transparent;
 			output.wireframe = material.wireframe;
+
+			/* -- edited by joe --*/
+			output.editorImage = material.map ? material.map.image.src : undefined;
+			/* -- end of edit --*/
 
 		} else if ( material instanceof THREE.MeshNormalMaterial ) {
 
