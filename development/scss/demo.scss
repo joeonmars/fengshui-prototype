@@ -5,6 +5,12 @@ $bed-layout:smart;
 @import "textures/bed/*.png";
 @include all-bed-sprites;
 
+$benzai-sprite-dimensions: true;
+$benzai-layout:smart;
+
+@import "textures/benzai/*.png";
+@include all-benzai-sprites;
+
 @import "global";
 
 .view3dContainer{
@@ -40,6 +46,18 @@ $bed-layout:smart;
 
 		&.foot-front, &.foot-back{
 			@include bed-sprite("foot-front");
+		}
+	}
+
+	.benzai{
+		background-color: transparent !important;
+
+		&.root1, &.root2{
+			@include benzai-sprite("root"); 
+		}
+
+		&.leaf1, &.leaf2{
+			@include benzai-sprite("leaf");
 		}
 	}
 }

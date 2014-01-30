@@ -45,7 +45,7 @@ fengshui.views.View3D.prototype.init = function(){
 
 	//
 	var loader = new THREE.ObjectLoader();
-	loader.load( fengshui.Config['basePath'] + "json/scene-with-image.json", goog.bind(this.onLoad, this) );
+	loader.load( fengshui.Config['basePath'] + "json/scene-with-benzai.json", goog.bind(this.onLoad, this) );
 
 	this._controls = new THREE.TrackballControls( this._camera );
 	this._controls.rotateSpeed = 1.0;
@@ -254,5 +254,5 @@ fengshui.views.View3D.prototype.onResize = function(e){
 
 	this._controls.handleResize();
 
-	this._render();
+	this.render();
 };
