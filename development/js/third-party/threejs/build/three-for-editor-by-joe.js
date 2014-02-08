@@ -11632,6 +11632,7 @@ THREE.MaterialLoader.prototype = {
 			
 			var texture = THREE.ImageUtils.loadTexture( json.editorImage );
 			material.map = texture;
+			material.color = new THREE.Color('#ffffff');
 
 		}
 		/* -- end of edit -- */

@@ -22,16 +22,16 @@ fengshui.views.View3D = function(domElement){
 	this._renderer = null;
 
 	this._controls = null;
-
-	this._light = null;
-	this._shadableGroup = null;
 };
 goog.inherits(fengshui.views.View3D, goog.events.EventTarget);
 
 
 fengshui.views.View3D.prototype.init = function(){
 
-	this._renderer = new THREE.CSS3DRenderer();
+	this._renderer = new THREE.WebGLRenderer({
+		antialias: true
+	});
+	this._renderer.setClearColor(0xffffff, 1);
 	this._renderer.setSize( window.innerWidth, window.innerHeight );
 
 	goog.dom.appendChild( this.domElement, this._renderer.domElement );
@@ -41,11 +41,10 @@ fengshui.views.View3D.prototype.init = function(){
 	this._camera.position.y = 100;
 	this._camera.position.z = 350;
 
-	this._light = new Photon.Light(x = 45, y = -180, z = 100);
-
 	//
 	var loader = new THREE.ObjectLoader();
-	loader.load( fengshui.Config['basePath'] + "json/scene-with-benzai.json", goog.bind(this.onLoad, this) );
+	loader.load( fengshui.Config['basePath'] + "json/scene-bed-bake.json", goog.bind(this.onLoad, this) );
+	//loader.load( fengshui.Config['basePath'] + "json/scene-with-benzai.json", goog.bind(this.onLoad, this) );
 
 	this._controls = new THREE.TrackballControls( this._camera );
 	this._controls.rotateSpeed = 1.0;
@@ -67,124 +66,6 @@ fengshui.views.View3D.prototype.init = function(){
 };
 
 
-fengshui.views.View3D.prototype.createCSS3DObject = function ( mesh ) {
-  // find groups
-  var groups = [];
-  var g = mesh;
-  while( g ) {
-  	g = (!g.parent || g.parent instanceof THREE.Scene) ? null : g.parent;
-  	if(g) {
-  		groups.push(g);
-  	}
-  }
-
-  // detect shadable on its group
-  var shadable = (mesh.userData['shadable'] !== false || mesh.userData['shadable'] === true);
-
-  if(groups.length > 0) {
-		var globalGroup = groups[groups.length - 1];
-	  shadable = (globalGroup.userData['shadable'] !== false || globalGroup.userData['shadable'] === true);
-  }
-
-  // parse class names by group
-  var classes = [mesh.name];
-
-  goog.array.forEach(groups, function(group) {
-  	classes.push( group.name );
-  });
-
-  classes.reverse();
-
-  if(shadable) classes.push('shadable');
-
-  // create dom
-  var dom = goog.dom.createDom('div', classes.join(' '));
-
-  goog.style.setStyle(dom, {
-  	'width': mesh.geometry.width + 'px',
-  	'height': mesh.geometry.height + 'px',
-  	'background-color': '#' + mesh.material.color.getHexString()
-  });
-
-  var object = new THREE.CSS3DObject( dom );
-  object.position = mesh.position;
-  object.rotation = mesh.rotation;
-
-  this._scene.add( object );
-
-  if(groups.length > 0) {
-    groups[0].add( object );
-  }
-
-  return object;
-};
-
-
-fengshui.views.View3D.prototype.createCSS3DSprite = function( sprite ) {
-  var spriteName = sprite.name;
-
-  var dom = goog.dom.createDom('div', 'sprite');
-  goog.dom.classes.add(dom, spriteName);
-
-  dom.setAttribute('data-name', spriteName);
-
-  goog.style.setStyle(dom, {
-  	'background-color': '#' + sprite.material.color.getHexString()
-  });
-
-  var object = new THREE.CSS3DSprite( dom );
-  object.position = sprite.position;
-
-  this._scene.add( object );
-
-  this._eventHandler.listen(dom, 'click', this.onClickSprite, false, this);
-
-  return object;
-};
-
-
-fengshui.views.View3D.prototype.createObject3D = function( object3d ) {
-  var object = object3d;
-
-  return object;
-};
-
-
-fengshui.views.View3D.prototype.create3DElementGroup = function( object ) {
-	var group = object;
-
-	// create child's group if there is
-	var children = group['children'];
-
-	goog.array.forEach(children, function(child) {
-		if(child.children.length > 0) {
-			this.create3DElementGroup( child );
-		}else {
-			this.create3DElement( child );
-		}
-	}, this);
-
-	return group;
-};
-
-
-fengshui.views.View3D.prototype.create3DElement = function( child ) {
-	var object;
-
-	if(child instanceof THREE.Mesh) {
-    object = this.createCSS3DObject( child );
-  }
-  else if(child instanceof THREE.Sprite) {
-    object = this.createCSS3DSprite( child );
-  }
-  else if(child instanceof THREE.Object3D) {
-    object = this.createObject3D( child );
-  }
-
-  return object;
-};
-
-
 fengshui.views.View3D.prototype.render = function() {
 	this._renderer.render(this._scene, this._camera);
 };
@@ -193,27 +74,19 @@ fengshui.views.View3D.prototype.render = function() {
 fengshui.views.View3D.prototype.onLoad = function(result) {
 	
 	this._scene = result;
+	console.log(result);
 
-	var children = this._scene.children;
-
-	goog.array.forEach(children, function(child) {
-
-		if(child.children.length > 0) {
-			// if has children, create group
-			this.create3DElementGroup( child );
-		}
-		else {
-			// if not, create child individually
-			this.create3DElement( child );
-		}
-
-	}, this);
+	var bed = this._scene.getObjectByName('bed');
+	var material = new THREE.MeshBasicMaterial({
+    map: THREE.ImageUtils.loadTexture('model/bed_bake.png'),
+    transparent: true,
+    side: THREE.DoubleSide
+    //depthWrite: false
+  });
+  material.alphaTest = 0.5;
+  bed.material = material;console.log(bed.material)
 
 	this.render();
-
-
-	var shadableDoms = goog.dom.query('.shadable', this._renderer.domElement);
-	this._shadableGroup = new Photon.FaceGroup( this._renderer.domElement, shadableDoms, .5, .5, true );
 
 	//
 	goog.fx.anim.registerAnimation(this);
@@ -237,11 +110,9 @@ fengshui.views.View3D.prototype.onAnimationFrame = function(now){
 
   this._controls.update();
   
-  this.render();
-
-  this._shadableGroup.render(this._light, true, true);
-
   fengshui.stats.update();
+
+  this.render();
 };
 
 

@@ -34,6 +34,7 @@ THREE.MaterialExporter.prototype = {
 			output.wireframe = material.wireframe;
 
 			/* -- edited by joe --*/
+			//output.color = material.map ? 0 : output.color;
 			output.editorImage = material.map ? material.map.image.src : undefined;
 			/* -- end of edit --*/
 
@@ -51,6 +52,7 @@ THREE.MaterialExporter.prototype = {
 			output.wireframe = material.wireframe;
 
 			/* -- edited by joe --*/
+			output.color = material.map ? 0 : output.color;
 			output.editorImage = material.map ? material.map.image.src : undefined;
 			/* -- end of edit --*/
 
@@ -70,6 +72,7 @@ THREE.MaterialExporter.prototype = {
 			output.wireframe = material.wireframe;
 
 			/* -- edited by joe --*/
+			output.color = material.map ? 0 : output.color;
 			output.editorImage = material.map ? material.map.image.src : undefined;
 			/* -- end of edit --*/
 
