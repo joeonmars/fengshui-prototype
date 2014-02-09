@@ -14,50 +14,6 @@ $benzai-layout:smart;
 @import "global";
 
 .view3dContainer{
-	.sprite{
-	  width: 20px;
-	  height: 20px;
-	  cursor: pointer;
-	}
-
-
-	.bed{
-		background-color: transparent !important;
-
-		&.flat{
-			@include bed-sprite("flat"); 
-		}
-
-		&.head-front{
-			@include bed-sprite("head-front");
-		}
-
-		&.head-back{
-			@include bed-sprite("head-back");
-		}
-
-		&.head-top{
-			@include bed-sprite("head-top");
-		}
-
-		&.side-left, &.side-right{
-			@include bed-sprite("foot-side");
-		}
-
-		&.foot-front, &.foot-back{
-			@include bed-sprite("foot-front");
-		}
-	}
-
-	.benzai{
-		background-color: transparent !important;
-
-		&.root1, &.root2{
-			@include benzai-sprite("root"); 
-		}
-
-		&.leaf1, &.leaf2{
-			@include benzai-sprite("leaf");
-		}
-	}
+	width: 100%;
+	height: 100%;
 }
