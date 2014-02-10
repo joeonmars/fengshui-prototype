@@ -6,6 +6,7 @@ goog.require('goog.style');
 goog.require('soy');
 goog.require('fengshui.templates');
 goog.require('fengshui.controllers.NavigationController');
+goog.require('fengshui.controllers.PathfindingController');
 goog.require('fengshui.views.View3D');
 
 fengshui.Config = {};
@@ -29,7 +30,8 @@ fengshui.demo.main = function( config ) {
 };
 
 fengshui.demo.main.controllers = {
-	navigationController: fengshui.controllers.NavigationController.getInstance()
+	navigationController: fengshui.controllers.NavigationController.getInstance(),
+	pathfindingController: fengshui.controllers.PathfindingController.getInstance()
 };
 
 goog.exportProperty(window, 'fengshui', fengshui);

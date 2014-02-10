@@ -17,3 +17,25 @@ $benzai-layout:smart;
 	width: 100%;
 	height: 100%;
 }
+
+#debug-pathfinding{
+	position: fixed;
+	top: 0;
+	right: 0;
+
+	button{
+		&.display{
+			&.on{
+				&:after{
+					content: "Hide Pathfinding"
+				}
+			}
+
+			&.off{
+				&:after{
+					content: "Show Pathfinding"
+				}
+			}
+		}
+	}
+}

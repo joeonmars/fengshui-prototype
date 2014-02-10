@@ -22,12 +22,13 @@ fengshui.views.View3D = function(domElement){
 
 	this._scene = null;
 	this._renderer = null;
-
 	this._axisHelper = null;
 
 	this._cameraController = null;
 
 	this._controls = null;
+
+	this._collidables = [];
 };
 goog.inherits(fengshui.views.View3D, goog.events.EventTarget);
 
@@ -73,7 +74,7 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 	this._scene.add( this._axisHelper );
 
 	// create default camera
-	var camera = new THREE.PerspectiveCamera( 45, this._viewSize.aspectRatio(), 10, 1000 );
+	var camera = new THREE.PerspectiveCamera( 45, this._viewSize.aspectRatio(), 10, 10000 );
 	camera.position.x = 0;
 	camera.position.y = 100;
 	camera.position.z = 350;
@@ -119,10 +120,19 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
   material.alphaTest = 0.5;
   bed.material = material;
 
+  var wall = this._scene.getObjectByName('wall');
+  this._collidables.push(bed, wall);
+
 	this.render();
 
 	//
 	goog.fx.anim.registerAnimation(this);
+
+	// test path finding
+	var pathfinder = fengshui.controllers.PathfindingController.getInstance();
+	pathfinder.findPath( new THREE.Vector3(150,150,150), new THREE.Vector3(-100, -100, -100), this._collidables, this._scene );
+
+	pathfinder.addDebugView(this.domElement);
 
 	// tween the camera
 	//this._cameraController.animateTo( shadowCamera.position.clone(), bed.position.clone() );

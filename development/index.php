@@ -53,6 +53,7 @@
 		<script src="js/third-party/greensock/plugins/ScrollToPlugin.min.js"></script>
 		<script src="js/third-party/greensock/plugins/ThrowPropsPlugin.min.js"></script>
 		<script src="js/third-party/greensock/utils/Draggable.min.js"></script>
+		<script src="js/third-party/pathfinding-browser.min.js"></script>
 
 		<!-- project js -->
 		<script src="<?php echo $PATH_TO_JS ?>"></script>
