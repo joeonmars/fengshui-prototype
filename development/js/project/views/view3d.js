@@ -134,12 +134,12 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 
 	// test path finding
 	var pathfinder = fengshui.controllers.PathfindingController.getInstance();
-	pathfinder.findPath( new THREE.Vector3(150,0,150), new THREE.Vector3(-100, 0, -40), this._collidables, this._scene );
+	pathfinder.findPath( new THREE.Vector3(150,0,150), new THREE.Vector3(-100, 0, -50), this._collidables, this._scene );
 
 	pathfinder.addDebugView(this.domElement);
 
 	// tween the camera
-	//this._cameraController.animateTo( shadowCamera.position.clone(), bed.position.clone() );
+	this._cameraController.animateTo( shadowCamera.position.clone(), bed.position.clone(), 30 );
 };
 
 

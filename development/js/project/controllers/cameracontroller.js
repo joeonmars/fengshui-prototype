@@ -62,7 +62,26 @@ fengshui.controllers.CameraController.prototype.setCamera = function( name ){
 };
 
 
-fengshui.controllers.CameraController.prototype.animateTo = function( position, lookAt, duration, ease ){
+fengshui.controllers.CameraController.prototype.animatePositionTo = function( position, duration, ease ){
+
+  var position = this._activeCamera.position;
+  var duration = goog.isNumber(duration) ? duration : 1;
+  var ease = ease || Quad.easeOut;
+
+  TweenMax.to(position, duration, {
+    x: position.x,
+    y: position.y,
+    z: position.z,
+    ease: ease,
+    onStart: this.onTransitionStart,
+    onStartScope: this,
+    onComplete: this.onTransitionComplete,
+    onCompleteScope: this
+  });
+};
+
+
+fengshui.controllers.CameraController.prototype.animateFocusTo = function( lookAt, duration, ease ){
 
   var target = this._controls.target;
   var position = this._activeCamera.position;
@@ -74,18 +93,58 @@ fengshui.controllers.CameraController.prototype.animateTo = function( position, 
     y: lookAt.y,
     z: lookAt.z,
     ease: ease,
+    onStart: this.onTransitionStart,
+    onStartScope: this,
+    onComplete: this.onTransitionComplete,
+    onCompleteScope: this,
     onUpdate: function() {
       this._activeCamera.lookAt( target );
     },
     onUpdateScope: this
   });
+};
 
-  TweenMax.to(position, duration, {
-    x: position.x,
-    y: position.y,
-    z: position.z,
-    ease: ease
+
+fengshui.controllers.CameraController.prototype.animateFovTo = function( fov, duration, ease ){
+
+  var duration = goog.isNumber(duration) ? duration : 1;
+  var ease = ease || Quad.easeOut;
+
+  TweenMax.to(this._activeCamera, duration, {
+    fov: fov,
+    ease: ease,
+    onStart: this.onTransitionStart,
+    onStartScope: this,
+    onComplete: this.onTransitionComplete,
+    onCompleteScope: this,
+    onUpdate: function() {
+      this._activeCamera.updateProjectionMatrix();
+    },
+    onUpdateScope: this
   });
+};
+
+
+fengshui.controllers.CameraController.prototype.animateTo = function( position, lookAt, fov, duration, ease ){
+
+  var duration = goog.isNumber(duration) ? duration : 1;
+  var ease = ease || Quad.easeOut;
+
+  if(position) this.animatePositionTo(position, duration, ease);
+  if(lookAt) this.animateFocusTo(lookAt, duration, ease);
+  if(fov) this.animateFovTo(fov, duration, ease);
+};
+
+
+fengshui.controllers.CameraController.prototype.onTransitionStart = function(){
+
+  this._controls.enabled = false;
+};
+
+
+fengshui.controllers.CameraController.prototype.onTransitionComplete = function(){
+
+  this._controls.enabled = true;
 };
 
 

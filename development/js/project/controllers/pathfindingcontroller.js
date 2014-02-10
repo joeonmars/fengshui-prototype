@@ -113,7 +113,12 @@ fengshui.controllers.PathfindingController.prototype.findPath = function( start,
 
 	// find path
 	var grid = new PF.Grid(numCols, numRows, matrix);
-	var finder = new PF.AStarFinder();
+	var finder = new PF.AStarFinder({
+		allowDiagonal: true,
+		heuristic: function(dx, dz) {
+			return Math.sqrt(Math.pow((start.x - dx), 2) + Math.pow((start.z - dz), 2));
+		}
+	});
 	var path = finder.findPath(startCell[0], startCell[1], endCell[0], endCell[1], grid);
 
 	// draw debug view
