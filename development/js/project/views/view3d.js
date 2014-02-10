@@ -109,6 +109,13 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 
 	this._cameraController = new fengshui.controllers.CameraController( cameras, this._scene, this._controls );
 
+	// add collidables
+	this._scene.traverse(goog.bind(function(child) {
+		if(child.userData['collidable'] === true) {
+			this._collidables.push(child);
+		}
+	}, this));
+
 	//
 	var bed = this._scene.getObjectByName('bed');
 	var material = new THREE.MeshBasicMaterial({
@@ -120,9 +127,6 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
   material.alphaTest = 0.5;
   bed.material = material;
 
-  var wall = this._scene.getObjectByName('wall');
-  this._collidables.push(bed, wall);
-
 	this.render();
 
 	//
@@ -130,7 +134,7 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 
 	// test path finding
 	var pathfinder = fengshui.controllers.PathfindingController.getInstance();
-	pathfinder.findPath( new THREE.Vector3(150,150,150), new THREE.Vector3(-100, -100, -100), this._collidables, this._scene );
+	pathfinder.findPath( new THREE.Vector3(150,0,150), new THREE.Vector3(-100, 0, -40), this._collidables, this._scene );
 
 	pathfinder.addDebugView(this.domElement);
 
