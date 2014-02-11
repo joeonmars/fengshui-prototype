@@ -24,6 +24,8 @@ fengshui.views.View3D = function(domElement){
 	this._renderer = null;
 	this._axisHelper = null;
 
+	this._splineGroupObject = null;
+
 	this._cameraController = null;
 
 	this._controls = null;
@@ -42,17 +44,40 @@ fengshui.views.View3D.prototype.init = function(){
 	this._renderer.setSize( this._viewSize.width, this._viewSize.height );
 
 	goog.dom.appendChild( this.domElement, this._renderer.domElement );
+	goog.dom.appendChild( this.domElement, fengshui.views.View3D.STATS.domElement );
 
 	// loader
 	var loader = new THREE.ObjectLoader();
 	loader.load( fengshui.Config['basePath'] + "json/scene-bed-bake.json", goog.bind(this.onLoad, this) );
-	//loader.load( fengshui.Config['basePath'] + "json/scene-with-benzai.json", goog.bind(this.onLoad, this) );
 };
 
 
 fengshui.views.View3D.prototype.render = function() {
 	var camera = this._controls.object;//this._cameraController.getCamera('shadow');
 	this._renderer.render(this._scene, camera);
+};
+
+
+fengshui.views.View3D.prototype.createSpline = function(coordinates, color) {
+	var numPoints = 50;
+
+  var spline = new THREE.SplineCurve3(coordinates);
+
+  var material = new THREE.LineBasicMaterial({
+      color: color || '#000000'
+  });
+
+  var geometry = new THREE.Geometry();
+  var splinePoints = spline.getPoints(numPoints);
+
+  goog.array.forEach(splinePoints, function(splinePoint) {
+  	geometry.vertices.push(splinePoint);
+  });
+
+  var line = new THREE.Line(geometry, material);
+  this._splineGroupObject.add(line);
+
+  return spline;
 };
 
 
@@ -68,6 +93,11 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 	
 	this._scene = result;
 	console.log(result);
+
+	// add spline group object
+	this._splineGroupObject = new THREE.Object3D();
+	this._splineGroupObject.name = 'spline-group';
+	this._scene.add( this._splineGroupObject );
 
 	// create axis helper
 	this._axisHelper = new THREE.AxisHelper( 1000 );
@@ -134,12 +164,20 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 
 	// test path finding
 	var pathfinder = fengshui.controllers.PathfindingController.getInstance();
-	pathfinder.findPath( new THREE.Vector3(150,0,150), new THREE.Vector3(-100, 0, -50), this._collidables, this._scene );
 
-	pathfinder.addDebugView(this.domElement);
+	var start = new THREE.Vector3(150, 0, 150);
+	var end = new THREE.Vector3(-100, 0, -50);
+	var coordinates = pathfinder.findPath( start, end, this._collidables, this._scene );
+
+	var spline = this.createSpline(coordinates, 0xff00f0);
 
 	// tween the camera
-	this._cameraController.animateTo( shadowCamera.position.clone(), bed.position.clone(), 30 );
+	this._cameraController.followSpline(spline);
+	//this._cameraController.animatePositionTo(new THREE.Vector3(0, 100, 600), 4);
+	//this._cameraController.animateFocusTo(new THREE.Vector3(0, 40, 0), 4);
+	//this._cameraController.animateFovTo(10, 4);
+	//this._cameraController.animateFocusTo(end, 1, Linear.easeNone);
+	//this._cameraController.animateTo( shadowCamera.position.clone(), bed.position.clone(), 30 );
 };
 
 
@@ -152,7 +190,7 @@ fengshui.views.View3D.prototype.onAnimationFrame = function(now){
 
   this._controls.update();
 
-  fengshui.stats.update();
+  fengshui.views.View3D.STATS.update();
 
   this.render();
 };
@@ -170,3 +208,6 @@ fengshui.views.View3D.prototype.onResize = function(e){
 
 	this.render();
 };
+
+
+fengshui.views.View3D.STATS = new Stats();

@@ -19,9 +19,12 @@ fengshui.demo.main = function( config ) {
 	//fengshui.controllers.NavigationController.Implementation = fengshui.controllers.NavigationController.HASH;
 	fengshui.demo.main.controllers.navigationController.init();
 
-	// create stats
-	fengshui.stats = new Stats();
-	goog.dom.appendChild(document.body, fengshui.stats.domElement);
+	var mainFrag = soy.renderAsFragment(fengshui.templates.Main, {
+		debug: true
+	});
+	goog.dom.appendChild(document.body, mainFrag);
+
+	fengshui.demo.main.controllers.pathfindingController.init();
 
 	// create view 3d
 	var view3dContainer = goog.dom.getElementByClass('view3dContainer');

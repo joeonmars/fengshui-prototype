@@ -119,6 +119,7 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
 }
 html.touch *, body.touch * {
   outline: none;
@@ -172,14 +173,37 @@ a {
   height: 100%;
 }
 
-#debug-pathfinding {
+#debugger {
   position: fixed;
   top: 0;
   right: 0;
+  min-width: 200px;
 }
-#debug-pathfinding button.display.on:after {
-  content: "Hide Pathfinding";
+#debugger > .header {
+  position: relative;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.8);
 }
-#debug-pathfinding button.display.off:after {
-  content: "Show Pathfinding";
+#debugger > .header > h4, #debugger > .header > .display {
+  font-size: 13px;
+  padding: 5px;
+}
+#debugger > .header > .display {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+#debugger .debugView > .header {
+  position: relative;
+  color: #fff;
+  background-color: rgba(40, 40, 40, 0.8);
+}
+#debugger .debugView > .header > h5, #debugger .debugView > .header > .display {
+  font-size: 13px;
+  padding: 5px;
+}
+#debugger .debugView > .header > .display {
+  position: absolute;
+  top: 0;
+  right: 0;
 }

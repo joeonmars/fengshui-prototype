@@ -11,11 +11,70 @@
 
 
 /**
+ * Main
+ * @param debug if has debugger
+ */
+{template .Main}
+<div id="main">
+	{if $debug != false}
+		{call .Debugger}{/call}
+	{/if}
+</div>
+{/template}
+
+
+/**
+ * Debugger
+ */
+{template .Debugger}
+<div id="debugger">
+	<div class="header">
+		<h4>Debugger</h4>
+		<div class="button display fa fa-eye"></div>
+	</div>
+	<ul>
+	</ul>
+</div>
+{/template}
+
+
+/**
+ * Debug View
+ * @param id the debug view Id
+ * @param title The debug view title
+ * @param body the body content
+ */
+{template .DebugView}
+<li class="debugView" id="{$id}">
+	<div class="header">
+		<h5>{$title}</h5>
+		<div class="button display fa fa-eye"></div>
+	</div>
+	<div class="body">{$body}</div>
+</li>
+{/template}
+
+
+/**
+ * Camera Debug View
+ */
+{template .CameraDebugView}
+<li id="debug-camera">
+	<input readonly>
+	<button type="button" class="output"></button>
+</li>
+{/template}
+
+
+/**
  * Pathfinding Debug View
  */
-{template .PathfindingView}
-<div id="debug-pathfinding">
-	<div class="canvasContainer"></div>
-	<button type="button" class="display off"></button>
-</div>
+{template .PathfindingDebugView}
+	{call .DebugView}
+		{param id}debug-pathfinding{/param}
+		{param title}Pathfinding{/param}
+		{param body}
+			<div class="canvasContainer"></div>
+		{/param}
+	{/call}
 {/template}

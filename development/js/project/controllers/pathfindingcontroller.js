@@ -13,15 +13,15 @@ fengshui.controllers.PathfindingController = function(){
 
   goog.base(this);
 
-  this._debugView = new fengshui.views.debug.Pathfinding();
+  this._debugView = null;
 };
 goog.inherits(fengshui.controllers.PathfindingController, goog.events.EventTarget);
 goog.addSingletonGetter(fengshui.controllers.PathfindingController);
 
 
-fengshui.controllers.PathfindingController.prototype.addDebugView = function(parent) {
+fengshui.controllers.PathfindingController.prototype.init = function() {
 
-	goog.dom.appendChild(parent, this._debugView.domElement);
+	this._debugView = new fengshui.views.debug.Pathfinding();
 };
 
 
@@ -121,6 +121,18 @@ fengshui.controllers.PathfindingController.prototype.findPath = function( start,
 	});
 	var path = finder.findPath(startCell[0], startCell[1], endCell[0], endCell[1], grid);
 
+	// convert path coordinates from grid to 3d world
+	var smoothPath = PF.Util.smoothenPath(grid, path);
+	var coordinates = goog.array.map(smoothPath, function(coordinate) {
+		var x = coordinate[0] * cellSize + cellSize/2 + gridMinX;
+		var y = 0;
+		var z = coordinate[1] * cellSize + cellSize/2 + gridMinZ;
+		return new THREE.Vector3(x, y, z);
+	});
+
 	// draw debug view
 	this._debugView.update(matrix, gridWidth, gridHeight, numCols, numRows, cellSize, path);
+
+	//
+	return coordinates;
 };

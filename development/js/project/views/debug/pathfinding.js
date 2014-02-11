@@ -1,28 +1,16 @@
 goog.provide('fengshui.views.debug.Pathfinding');
 
-goog.require('soy');
-goog.require('goog.dom');
-goog.require('goog.dom.query');
-goog.require('goog.events.EventTarget');
-goog.require('goog.events.EventHandler');
-goog.require('goog.events');
+goog.require('fengshui.views.debug.DebugView');
 
 
 /**
  * @constructor
  */
 fengshui.views.debug.Pathfinding = function(){
-  goog.base(this);
+  goog.base(this, fengshui.templates.PathfindingDebugView);
 
-	var frag = soy.renderAsFragment(fengshui.templates.PathfindingView);
-	goog.dom.appendChild(document.body, frag);
-
-	this.domElement = goog.dom.getElement('debug-pathfinding');
 	this._canvasContainerDom = goog.dom.getElementByClass('canvasContainer', this.domElement);
-	this._displayButton = goog.dom.query('button.display', this.domElement)[0];
-
-  goog.dom.removeNode( this.domElement );
-
+	
   this._debugScale = 1;
 
   this._colors = {};
@@ -35,13 +23,8 @@ fengshui.views.debug.Pathfinding = function(){
   	end: '#33CCFF',
   	path: 'rgba(255, 255, 0, 0.6)'
   });
-
-  this._eventHandler = new goog.events.EventHandler(this);
-  this._eventHandler.listen(this._displayButton, 'click', this.onClick, false, this);
-
-  this.show();
 };
-goog.inherits(fengshui.views.debug.Pathfinding, goog.events.EventTarget);
+goog.inherits(fengshui.views.debug.Pathfinding, fengshui.views.debug.DebugView);
 
 
 fengshui.views.debug.Pathfinding.prototype.setColors = function(colors) {
@@ -103,34 +86,4 @@ fengshui.views.debug.Pathfinding.prototype.update = function(matrix, gridWidth, 
 
 	goog.dom.removeChildren( this._canvasContainerDom );
 	goog.dom.appendChild(this._canvasContainerDom, canvas);
-};
-
-
-fengshui.views.debug.Pathfinding.prototype.show = function() {
-	
-	goog.dom.classes.addRemove(this._displayButton, 'off', 'on');
-	goog.style.showElement(this._canvasContainerDom, true);
-};
-
-
-fengshui.views.debug.Pathfinding.prototype.hide = function() {
-
-	goog.dom.classes.addRemove(this._displayButton, 'on', 'off');
-	goog.style.showElement(this._canvasContainerDom, false);
-};
-
-
-fengshui.views.debug.Pathfinding.prototype.onClick = function(e) {
-	switch(e.currentTarget) {
-		case this._displayButton:
-		if(goog.dom.classes.has(this._displayButton, 'on')) {
-			this.hide();
-		}else {
-			this.show();
-		}
-		break;
-
-		default:
-		break;
-	}
 };

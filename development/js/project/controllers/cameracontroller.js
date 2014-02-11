@@ -20,7 +20,7 @@ fengshui.controllers.CameraController = function(cameras, scene, controls){
   	this.addCamera(name, camera);
   }, this);
 
-  this.setCamera('default');
+  this._activeCamera = this.setCamera('default');
 };
 goog.inherits(fengshui.controllers.CameraController, goog.events.EventTarget);
 
@@ -59,16 +59,17 @@ fengshui.controllers.CameraController.prototype.getCamera = function( name ){
 fengshui.controllers.CameraController.prototype.setCamera = function( name ){
 
   this._activeCamera = this._cameras[name];
+  return this._activeCamera;
 };
 
 
 fengshui.controllers.CameraController.prototype.animatePositionTo = function( position, duration, ease ){
 
-  var position = this._activeCamera.position;
+  var currentPosition = this._activeCamera.position;
   var duration = goog.isNumber(duration) ? duration : 1;
   var ease = ease || Quad.easeOut;
 
-  TweenMax.to(position, duration, {
+  TweenMax.to(currentPosition, duration, {
     x: position.x,
     y: position.y,
     z: position.z,
@@ -109,7 +110,7 @@ fengshui.controllers.CameraController.prototype.animateFovTo = function( fov, du
 
   var duration = goog.isNumber(duration) ? duration : 1;
   var ease = ease || Quad.easeOut;
-
+  
   TweenMax.to(this._activeCamera, duration, {
     fov: fov,
     ease: ease,
@@ -133,6 +134,38 @@ fengshui.controllers.CameraController.prototype.animateTo = function( position, 
   if(position) this.animatePositionTo(position, duration, ease);
   if(lookAt) this.animateFocusTo(lookAt, duration, ease);
   if(fov) this.animateFovTo(fov, duration, ease);
+};
+
+
+fengshui.controllers.CameraController.prototype.followSpline = function(spline){
+
+  var prop = {
+    t: 0,
+    spline: spline
+  };
+
+  var tweener = TweenMax.to(prop, 5, {
+    t: 1,
+    ease: Linear.easeNone,
+    onUpdate: this.onSplineStep,
+    onUpdateParams: [prop],
+    onUpdateScope: this
+  });
+
+  return tweener;
+};
+
+
+fengshui.controllers.CameraController.prototype.onSplineStep = function(prop){
+
+  var t = prop.t;
+  var spline = prop.spline;
+
+  var splinePosition = spline.getPointAt( t );
+
+  this._activeCamera.position.x = splinePosition.x;
+  //this._activeCamera.position.y = splinePosition.y;
+  this._activeCamera.position.z = splinePosition.z;
 };
 
 

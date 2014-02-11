@@ -18,24 +18,49 @@ $benzai-layout:smart;
 	height: 100%;
 }
 
-#debug-pathfinding{
+#debugger{
 	position: fixed;
 	top: 0;
 	right: 0;
+	min-width: 200px;
 
-	button{
-		&.display{
-			&.on{
-				&:after{
-					content: "Hide Pathfinding"
-				}
+	>.header{
+		position: relative;
+		color: #fff;
+		background-color: rgba(0, 0, 0, .8);
+
+		>h4, >.display{
+			font-size: 13px;
+			padding: 5px;
+		}
+
+		>.display{
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
+	}
+
+	.debugView{
+		>.header{
+			position: relative;
+			color: #fff;
+			background-color: rgba(40, 40, 40, .8);
+
+			>h5, >.display{
+				font-size: 13px;
+				padding: 5px;
 			}
 
-			&.off{
-				&:after{
-					content: "Show Pathfinding"
-				}
+			>.display{
+				position: absolute;
+				top: 0;
+				right: 0;
 			}
 		}
 	}
+}
+
+#debug-pathfinding{
+
 }
