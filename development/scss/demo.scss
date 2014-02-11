@@ -12,55 +12,14 @@ $benzai-layout:smart;
 @include all-benzai-sprites;
 
 @import "global";
+@import "debug";
 
-.view3dContainer{
+#main{
 	width: 100%;
 	height: 100%;
 }
 
-#debugger{
-	position: fixed;
-	top: 0;
-	right: 0;
-	min-width: 200px;
-
-	>.header{
-		position: relative;
-		color: #fff;
-		background-color: rgba(0, 0, 0, .8);
-
-		>h4, >.display{
-			font-size: 13px;
-			padding: 5px;
-		}
-
-		>.display{
-			position: absolute;
-			top: 0;
-			right: 0;
-		}
-	}
-
-	.debugView{
-		>.header{
-			position: relative;
-			color: #fff;
-			background-color: rgba(40, 40, 40, .8);
-
-			>h5, >.display{
-				font-size: 13px;
-				padding: 5px;
-			}
-
-			>.display{
-				position: absolute;
-				top: 0;
-				right: 0;
-			}
-		}
-	}
-}
-
-#debug-pathfinding{
-
+.view3dContainer{
+	width: 100%;
+	height: 100%;
 }

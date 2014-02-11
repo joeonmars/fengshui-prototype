@@ -1,26 +1,4 @@
-{namespace fengshui.templates autoescape="false"}
-
-/**
- * Say Hello
- */
-{template .helloWorld}
-<div>
-	Hello World!
-</div>
-{/template}
-
-
-/**
- * Main
- * @param debug if has debugger
- */
-{template .Main}
-<div id="main">
-	{if $debug != false}
-		{call .Debugger}{/call}
-	{/if}
-</div>
-{/template}
+{namespace fengshui.templates.debug autoescape="false"}
 
 
 /**
@@ -59,10 +37,32 @@
  * Camera Debug View
  */
 {template .CameraDebugView}
-<li id="debug-camera">
-	<input readonly>
-	<button type="button" class="output"></button>
-</li>
+	{call .DebugView}
+		{param id}debug-camera{/param}
+		{param title}Camera{/param}
+		{param body}
+			<div class="viewPanel">
+				<select></select>
+				<ul>
+					<li data-prop="fov"></li>
+					<li data-prop="position-x"></li>
+					<li data-prop="position-y"></li>
+					<li data-prop="position-z"></li>
+					<li data-prop="rotation-x"></li>
+					<li data-prop="rotation-y"></li>
+					<li data-prop="rotation-z"></li>
+					<li data-prop="target-x"></li>
+					<li data-prop="target-y"></li>
+					<li data-prop="target-z"></li>
+				</ul>
+			</div>
+			<div class="controlPanel">
+				<textarea rows="10"></textarea>
+				<button type="button" class="button input"></button>
+				<button type="button" class="button output"></button>
+			</div>
+		{/param}
+	{/call}
 {/template}
 
 

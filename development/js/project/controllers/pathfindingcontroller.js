@@ -13,16 +13,9 @@ fengshui.controllers.PathfindingController = function(){
 
   goog.base(this);
 
-  this._debugView = null;
 };
 goog.inherits(fengshui.controllers.PathfindingController, goog.events.EventTarget);
 goog.addSingletonGetter(fengshui.controllers.PathfindingController);
-
-
-fengshui.controllers.PathfindingController.prototype.init = function() {
-
-	this._debugView = new fengshui.views.debug.Pathfinding();
-};
 
 
 fengshui.controllers.PathfindingController.prototype.findPath = function( start, end, collidables, scene, minCellsInRowOrCol ) {
@@ -131,7 +124,8 @@ fengshui.controllers.PathfindingController.prototype.findPath = function( start,
 	});
 
 	// draw debug view
-	this._debugView.update(matrix, gridWidth, gridHeight, numCols, numRows, cellSize, path);
+	var view = fengshui.views.debugger.pathfindingView;
+	view.update(matrix, gridWidth, gridHeight, numCols, numRows, cellSize, path);
 
 	//
 	return coordinates;

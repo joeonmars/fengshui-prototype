@@ -3,18 +3,17 @@
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
-// --- Global vars ---
-$min_width: 768px;
-$min_height: 640px;
-$font_system: Arial, Helvetica, sans-serif;
-
 // --- imports ---
 @import "compass/reset";
 @import "compass/css3";
 @import "compass/css3/user-interface";
 @import "compass/css3/text-shadow";
 @import "compass/css3/transition";
+@import "font";
 
+// --- Global vars ---
+$min_width: 768px;
+$min_height: 640px;
 
 html, body{
   position: absolute;

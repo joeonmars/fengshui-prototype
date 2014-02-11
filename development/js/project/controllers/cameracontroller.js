@@ -1,28 +1,41 @@
 goog.provide('fengshui.controllers.CameraController');
 
 goog.require('goog.events.EventTarget');
+goog.require('goog.events.EventHandler');
 goog.require('goog.events');
 goog.require('goog.object');
+goog.require('fengshui.events');
 
 
 /**
  * @constructor
  */
-fengshui.controllers.CameraController = function(cameras, scene, controls){
+fengshui.controllers.CameraController = function(){
   goog.base(this);
 
-  this._scene = scene;
-  this._controls = controls;
+  this._scene = null;
+  this._controls = null;
   this._cameras = {};
   this._cameraHelpers = {};
 
+  this._activeCamera = null
+
+  this._eventHandler = new goog.events.EventHandler(this);
+};
+goog.inherits(fengshui.controllers.CameraController, goog.events.EventTarget);
+
+
+fengshui.controllers.CameraController.prototype.init = function( cameras, scene, controls ){
+
+  this._scene = scene;
+  this._controls = controls;
+
   goog.object.forEach(cameras, function(camera, name) {
-  	this.addCamera(name, camera);
+    this.addCamera(name, camera);
   }, this);
 
   this._activeCamera = this.setCamera('default');
 };
-goog.inherits(fengshui.controllers.CameraController, goog.events.EventTarget);
 
 
 fengshui.controllers.CameraController.prototype.addCamera = function( name, camera ){
@@ -35,6 +48,12 @@ fengshui.controllers.CameraController.prototype.addCamera = function( name, came
 	var cameraHelper = new THREE.CameraHelper( camera );
 	goog.object.add(this._cameraHelpers, name, cameraHelper);
   this._scene.add(cameraHelper);
+
+  this.dispatchEvent({
+    type: fengshui.events.EventType.ADD,
+    name: name,
+    camera: camera
+  });
 };
 
 
@@ -47,6 +66,18 @@ fengshui.controllers.CameraController.prototype.removeCamera = function( name ){
 	var cameraHelper = this._cameraHelpers[name];
 	this._scene.remove( cameraHelper );
 	goog.object.remove(this._cameraHelpers, name);
+
+  this.dispatchEvent({
+    type: fengshui.events.EventType.REMOVE,
+    name: name,
+    camera: camera
+  });
+};
+
+
+fengshui.controllers.CameraController.prototype.getCameras = function(){
+
+  return this._cameras;
 };
 
 

@@ -6,7 +6,6 @@ goog.require('goog.dom.query');
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events');
-goog.require('fengshui.views.debug.Debugger');
 
 
 /**
@@ -14,8 +13,6 @@ goog.require('fengshui.views.debug.Debugger');
  */
 fengshui.views.debug.DebugView = function(template){
   goog.base(this);
-
-  fengshui.views.debug.DebugView.DEBUGGER.init();
 
   this.parentDom = goog.dom.query('#debugger > ul')[0];
 
@@ -29,8 +26,12 @@ fengshui.views.debug.DebugView = function(template){
 	this._bodyDom = goog.dom.getElementByClass('body', this.domElement);
 	this._displayButton = goog.dom.query('.button.display', this.domElement)[0];
 
+	var view3dController = fengshui.controllers.View3DController.getInstance();
+
   this._eventHandler = new goog.events.EventHandler(this);
 	this._eventHandler.listen(this._displayButton, 'click', this.onClick, false, this);
+	this._eventHandler.listen(view3dController, fengshui.events.EventType.SHOW, this.onView3DShow, false, this);
+	this._eventHandler.listen(view3dController, fengshui.events.EventType.HIDE, this.onView3DHide, false, this);
 };
 goog.inherits(fengshui.views.debug.DebugView, goog.events.EventTarget);
 
@@ -49,6 +50,16 @@ fengshui.views.debug.DebugView.prototype.hide = function() {
 };
 
 
+fengshui.views.debug.DebugView.prototype.onView3DShow = function(e) {
+
+};
+
+
+fengshui.views.debug.DebugView.prototype.onView3DHide = function(e) {
+
+};
+
+
 fengshui.views.debug.DebugView.prototype.onClick = function(e) {
 	switch(e.currentTarget) {
 		case this._displayButton:
@@ -63,6 +74,3 @@ fengshui.views.debug.DebugView.prototype.onClick = function(e) {
 		break;
 	}
 };
-
-
-fengshui.views.debug.DebugView.DEBUGGER = fengshui.views.debug.Debugger.getInstance();

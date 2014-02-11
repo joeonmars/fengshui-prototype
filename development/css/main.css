@@ -58,6 +58,12 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   display: block;
 }
 
+@font-face {
+  font-family: "tahomaregular";
+  src: url('../font/tahoma/tahoma-webfont.eot');
+  src: url('../font/tahoma/tahoma-webfont.eot?#iefix') format('eot'), url('../font/tahoma/tahoma-webfont.ttf') format('truetype'), url('../font/tahoma/tahoma-webfont.woff') format('woff'), url('../font/tahoma/tahoma-webfont.svg') format('svg');
+}
+
 html, body {
   position: absolute;
   width: 100%;

@@ -8,12 +8,10 @@
 
 		<link rel="shortcut icon" href="img/misc/favicon.ico">
 		<link rel="stylesheet" href="css/demo.css">
-		<link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
 	</head>
 
 	<body>
-		<div class="view3dContainer"></div>
-
 		<!-- third-party -->
 		<script src="js/third-party/greensock/TweenMax.min.js"></script>
     	<script src="js/third-party/stats.min.js"></script>
@@ -27,7 +25,8 @@
 		<!-- execute the main js-->
 		<script>
 			var config = {
-				basePath: 'http://local.fengshui.com/'
+				basePath: 'http://local.fengshui.com/',
+				debug: true
 			};
 
 			fengshui.main( config );

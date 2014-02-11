@@ -1,0 +1,182 @@
+$debug_border_style:  2px outset #d6d3ce;
+
+.debugPanel{
+	background-color: #d6d3ce;
+	border: $debug_border_style;
+	@include box-sizing(border-box);
+};
+
+.debugHeader{
+	position: relative;
+	color: #fff;
+	border-left: $debug_border_style;
+	border-top: $debug_border_style;
+	border-right: $debug_border_style;
+	@include box-sizing(border-box);
+	@include background( linear-gradient(top left, #07246b, #a5cbf7) );
+}
+
+#debugger{
+	position: fixed;
+	top: 0;
+	right: 0;
+	min-width: 300px;
+	font-family: $font_tahoma;
+
+	>.header{
+		@extend .debugHeader;
+
+		>h4{
+			font-size: 12px;
+			padding: 4px;
+		}
+
+		>.display{
+			position: absolute;
+			top: 0;
+			right: 0;
+			font-size: 14px;
+			padding: 2px 4px;
+		}
+	}
+
+	.debugView{
+		>.header{
+			@extend .debugHeader;
+
+			>h5{
+				font-size: 12px;
+				padding: 4px;
+			}
+
+			>.display{
+				position: absolute;
+				top: 0;
+				right: 0;
+				font-size: 14px;
+				padding: 2px 4px;
+			}
+		}
+
+		textarea{
+			display: block;
+			width: 100%;
+			margin: 0;
+			resize: none;
+			@include box-sizing(border-box);
+		}
+	}
+}
+
+#debug-pathfinding{
+	.canvasContainer{
+
+	}
+}
+
+#debug-camera{
+	.viewPanel{
+		@extend .debugPanel;
+
+		>select{
+			width: 100%;
+		}
+
+		>ul{
+			width: 100%;
+
+			>li{
+				margin: 8px;
+				font-size: 12px;
+
+				&:before{
+					display: inline-block;
+					width: 80px;
+				}
+
+				&[data-prop="fov"] {
+					&:before{
+						content: "fov: ";
+					}
+				}
+
+				&[data-prop="position-x"] {
+					&:before{
+						content: "position.x: ";
+					}
+				}
+
+				&[data-prop="position-y"] {
+					&:before{
+						content: "position.y: ";
+					}
+				}
+
+				&[data-prop="position-z"] {
+					&:before{
+						content: "position.z: ";
+					}
+				}
+
+				&[data-prop="rotation-x"] {
+					&:before{
+						content: "rotation.x: ";
+					}
+				}
+
+				&[data-prop="rotation-y"] {
+					&:before{
+						content: "rotation.y: ";
+					}
+				}
+
+				&[data-prop="rotation-z"] {
+					&:before{
+						content: "rotation.z: ";
+					}
+				}
+
+				&[data-prop="target-x"] {
+					&:before{
+						content: "target.x: ";
+					}
+				}
+
+				&[data-prop="target-y"] {
+					&:before{
+						content: "target.y: ";
+					}
+				}
+
+				&[data-prop="target-z"] {
+					&:before{
+						content: "target.z: ";
+					}
+				}
+			}
+		}
+	}
+	.controlPanel{
+		@extend .debugPanel;
+
+		>textarea{
+
+		}
+
+		>button{
+			display: inline-block;
+
+			&.input{
+				&:after{
+					content: "Input";
+				}
+			}
+
+			&.output{
+				&:after{
+					content: "Output";
+				}
+			}
+		}
+	}
+}

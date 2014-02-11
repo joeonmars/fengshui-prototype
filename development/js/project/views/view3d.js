@@ -6,6 +6,7 @@ goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events');
 goog.require('fengshui.controllers.CameraController');
+goog.require('fengshui.controllers.View3DController');
 
 
 /**
@@ -14,8 +15,12 @@ goog.require('fengshui.controllers.CameraController');
 fengshui.views.View3D = function(domElement){
   goog.base(this);
 
+  this.setParentEventTarget( fengshui.controllers.View3DController.getInstance() );
+
   this.domElement = domElement;
 	
+	this.cameraController = new fengshui.controllers.CameraController();
+
 	this._viewSize = goog.style.getSize(this.domElement);
 
   this._eventHandler = new goog.events.EventHandler(this);
@@ -25,8 +30,6 @@ fengshui.views.View3D = function(domElement){
 	this._axisHelper = null;
 
 	this._splineGroupObject = null;
-
-	this._cameraController = null;
 
 	this._controls = null;
 
@@ -52,8 +55,25 @@ fengshui.views.View3D.prototype.init = function(){
 };
 
 
+fengshui.views.View3D.prototype.show = function(){
+
+	this.dispatchEvent({
+    type: fengshui.events.EventType.SHOW
+  });
+};
+
+
+fengshui.views.View3D.prototype.hide = function(){
+
+
+	this.dispatchEvent({
+    type: fengshui.events.EventType.HIDE
+  });
+};
+
+
 fengshui.views.View3D.prototype.render = function() {
-	var camera = this._controls.object;//this._cameraController.getCamera('shadow');
+	var camera = this._controls.object;//this.cameraController.getCamera('shadow');
 	this._renderer.render(this._scene, camera);
 };
 
@@ -110,7 +130,7 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 	camera.position.z = 350;
 
 	// controls
-	this._controls = new THREE.TrackballControls( camera );
+	this._controls = new THREE.TrackballControls( camera, this._renderer.domElement );
 	this._controls.rotateSpeed = 1.0;
 	this._controls.zoomSpeed = 1.2;
 	this._controls.panSpeed = 0.8;
@@ -137,7 +157,7 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 		'shadow': shadowCamera
 	};
 
-	this._cameraController = new fengshui.controllers.CameraController( cameras, this._scene, this._controls );
+	this.cameraController.init( cameras, this._scene, this._controls );
 
 	// add collidables
 	this._scene.traverse(goog.bind(function(child) {
@@ -172,12 +192,12 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 	var spline = this.createSpline(coordinates, 0xff00f0);
 
 	// tween the camera
-	this._cameraController.followSpline(spline);
-	//this._cameraController.animatePositionTo(new THREE.Vector3(0, 100, 600), 4);
-	//this._cameraController.animateFocusTo(new THREE.Vector3(0, 40, 0), 4);
-	//this._cameraController.animateFovTo(10, 4);
-	//this._cameraController.animateFocusTo(end, 1, Linear.easeNone);
-	//this._cameraController.animateTo( shadowCamera.position.clone(), bed.position.clone(), 30 );
+	this.cameraController.followSpline(spline);
+	//this.cameraController.animatePositionTo(new THREE.Vector3(0, 100, 600), 4);
+	//this.cameraController.animateFocusTo(new THREE.Vector3(0, 40, 0), 4);
+	//this.cameraController.animateFovTo(10, 4);
+	//this.cameraController.animateFocusTo(end, 1, Linear.easeNone);
+	//this.cameraController.animateTo( shadowCamera.position.clone(), bed.position.clone(), 30 );
 };
 
 
@@ -200,7 +220,7 @@ fengshui.views.View3D.prototype.onResize = function(e){
 
 	this._viewSize = goog.style.getSize(this.domElement);
 
-	this._cameraController.onResize( this._viewSize.aspectRatio() );
+	this.cameraController.onResize( this._viewSize.aspectRatio() );
 
 	this._renderer.setSize( this._viewSize.width, this._viewSize.height );
 

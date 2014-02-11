@@ -114,6 +114,12 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   display: block;
 }
 
+@font-face {
+  font-family: "tahomaregular";
+  src: url('../font/tahoma/tahoma-webfont.eot');
+  src: url('../font/tahoma/tahoma-webfont.eot?#iefix') format('eot'), url('../font/tahoma/tahoma-webfont.ttf') format('truetype'), url('../font/tahoma/tahoma-webfont.woff') format('woff'), url('../font/tahoma/tahoma-webfont.svg') format('svg');
+}
+
 html, body {
   position: absolute;
   width: 100%;
@@ -168,42 +174,129 @@ a {
   display: block;
 }
 
-.view3dContainer {
-  width: 100%;
-  height: 100%;
+.debugPanel, #debug-camera .viewPanel, #debug-camera .controlPanel {
+  background-color: #d6d3ce;
+  border: 2px outset #d6d3ce;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.debugHeader, #debugger > .header, #debugger .debugView > .header {
+  position: relative;
+  color: #fff;
+  border-left: 2px outset #d6d3ce;
+  border-top: 2px outset #d6d3ce;
+  border-right: 2px outset #d6d3ce;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background: -webkit-gradient(linear, 0% 0%, 100% 100%, color-stop(0%, #07246b), color-stop(100%, #a5cbf7));
+  background: -webkit-linear-gradient(top left, #07246b, #a5cbf7);
+  background: -moz-linear-gradient(top left, #07246b, #a5cbf7);
+  background: -o-linear-gradient(top left, #07246b, #a5cbf7);
+  background: linear-gradient(top left, #07246b, #a5cbf7);
 }
 
 #debugger {
   position: fixed;
   top: 0;
   right: 0;
-  min-width: 200px;
+  min-width: 300px;
+  font-family: "tahomaregular", Arial, Helvetica, sans-serif;
 }
-#debugger > .header {
-  position: relative;
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.8);
-}
-#debugger > .header > h4, #debugger > .header > .display {
-  font-size: 13px;
-  padding: 5px;
+#debugger > .header > h4 {
+  font-size: 12px;
+  padding: 4px;
 }
 #debugger > .header > .display {
   position: absolute;
   top: 0;
   right: 0;
+  font-size: 14px;
+  padding: 2px 4px;
 }
-#debugger .debugView > .header {
-  position: relative;
-  color: #fff;
-  background-color: rgba(40, 40, 40, 0.8);
-}
-#debugger .debugView > .header > h5, #debugger .debugView > .header > .display {
-  font-size: 13px;
-  padding: 5px;
+#debugger .debugView > .header > h5 {
+  font-size: 12px;
+  padding: 4px;
 }
 #debugger .debugView > .header > .display {
   position: absolute;
   top: 0;
   right: 0;
+  font-size: 14px;
+  padding: 2px 4px;
+}
+#debugger .debugView textarea {
+  display: block;
+  width: 100%;
+  margin: 0;
+  resize: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#debug-camera .viewPanel > select {
+  width: 100%;
+}
+#debug-camera .viewPanel > ul {
+  width: 100%;
+}
+#debug-camera .viewPanel > ul > li {
+  margin: 8px;
+  font-size: 12px;
+}
+#debug-camera .viewPanel > ul > li:before {
+  display: inline-block;
+  width: 80px;
+}
+#debug-camera .viewPanel > ul > li[data-prop="fov"]:before {
+  content: "fov: ";
+}
+#debug-camera .viewPanel > ul > li[data-prop="position-x"]:before {
+  content: "position.x: ";
+}
+#debug-camera .viewPanel > ul > li[data-prop="position-y"]:before {
+  content: "position.y: ";
+}
+#debug-camera .viewPanel > ul > li[data-prop="position-z"]:before {
+  content: "position.z: ";
+}
+#debug-camera .viewPanel > ul > li[data-prop="rotation-x"]:before {
+  content: "rotation.x: ";
+}
+#debug-camera .viewPanel > ul > li[data-prop="rotation-y"]:before {
+  content: "rotation.y: ";
+}
+#debug-camera .viewPanel > ul > li[data-prop="rotation-z"]:before {
+  content: "rotation.z: ";
+}
+#debug-camera .viewPanel > ul > li[data-prop="target-x"]:before {
+  content: "target.x: ";
+}
+#debug-camera .viewPanel > ul > li[data-prop="target-y"]:before {
+  content: "target.y: ";
+}
+#debug-camera .viewPanel > ul > li[data-prop="target-z"]:before {
+  content: "target.z: ";
+}
+#debug-camera .controlPanel > button {
+  display: inline-block;
+}
+#debug-camera .controlPanel > button.input:after {
+  content: "Input";
+}
+#debug-camera .controlPanel > button.output:after {
+  content: "Output";
+}
+
+#main {
+  width: 100%;
+  height: 100%;
+}
+
+.view3dContainer {
+  width: 100%;
+  height: 100%;
 }

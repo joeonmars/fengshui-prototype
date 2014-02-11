@@ -1,13 +1,14 @@
 goog.provide('fengshui.views.debug.Pathfinding');
 
 goog.require('fengshui.views.debug.DebugView');
+goog.require('fengshui.templates.debug');
 
 
 /**
  * @constructor
  */
 fengshui.views.debug.Pathfinding = function(){
-  goog.base(this, fengshui.templates.PathfindingDebugView);
+  goog.base(this, fengshui.templates.debug.PathfindingDebugView);
 
 	this._canvasContainerDom = goog.dom.getElementByClass('canvasContainer', this.domElement);
 	
@@ -23,6 +24,8 @@ fengshui.views.debug.Pathfinding = function(){
   	end: '#33CCFF',
   	path: 'rgba(255, 255, 0, 0.6)'
   });
+
+  this.show();
 };
 goog.inherits(fengshui.views.debug.Pathfinding, fengshui.views.debug.DebugView);
 

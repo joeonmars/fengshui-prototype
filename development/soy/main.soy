@@ -1,0 +1,25 @@
+{namespace fengshui.templates.main autoescape="false"}
+
+/**
+ * Say Hello
+ */
+{template .helloWorld}
+<div>
+	Hello World!
+</div>
+{/template}
+
+
+/**
+ * Main
+ * @param debug if has debugger
+ */
+{template .Main}
+<div id="main">
+	<div class="view3dContainer"></div>
+	
+	{if $debug != false}
+		{call fengshui.templates.debug.Debugger}{/call}
+	{/if}
+</div>
+{/template}
