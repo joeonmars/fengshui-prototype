@@ -6,8 +6,8 @@ goog.require('goog.style');
 goog.require('soy');
 goog.require('fengshui.templates.main');
 goog.require('fengshui.controllers.NavigationController');
-goog.require('fengshui.controllers.PathfindingController');
-goog.require('fengshui.controllers.View3DController');
+goog.require('fengshui.controllers.view3d.PathfindingController');
+goog.require('fengshui.controllers.view3d.View3DController');
 goog.require('fengshui.views.View3D');
 goog.require('fengshui.views.debug.Debugger');
 
@@ -44,8 +44,8 @@ fengshui.demo.main.views = {
 
 fengshui.demo.main.controllers = {
 	navigationController: fengshui.controllers.NavigationController.getInstance(),
-	pathfindingController: fengshui.controllers.PathfindingController.getInstance(),
-	view3dContainer: fengshui.controllers.View3DController.getInstance()
+	pathfindingController: fengshui.controllers.view3d.PathfindingController.getInstance(),
+	view3dContainer: fengshui.controllers.view3d.View3DController.getInstance()
 };
 
 goog.exportProperty(window, 'fengshui', fengshui);

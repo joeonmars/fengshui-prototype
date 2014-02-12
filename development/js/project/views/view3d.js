@@ -5,8 +5,8 @@ goog.require('goog.dom.query');
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events');
-goog.require('fengshui.controllers.CameraController');
-goog.require('fengshui.controllers.View3DController');
+goog.require('fengshui.controllers.view3d.CameraController');
+goog.require('fengshui.controllers.view3d.View3DController');
 
 
 /**
@@ -15,11 +15,11 @@ goog.require('fengshui.controllers.View3DController');
 fengshui.views.View3D = function(domElement){
   goog.base(this);
 
-  this.setParentEventTarget( fengshui.controllers.View3DController.getInstance() );
+  this.setParentEventTarget( fengshui.controllers.view3d.View3DController.getInstance() );
 
   this.domElement = domElement;
 	
-	this.cameraController = new fengshui.controllers.CameraController(this);
+	this.cameraController = new fengshui.controllers.view3d.CameraController(this);
 
   this._eventHandler = new goog.events.EventHandler(this);
 
@@ -158,9 +158,10 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 
 	this._controls.staticMoving = true;
 	this._controls.dynamicDampingFactor = 0.3;
+	//this._controls.enabled = false;
 
 	this._eventHandler.listen(this._controls, 'change', this.render, false, this);
-	this._eventHandler.listen(this, fengshui.controllers.CameraController.EventType.CAMERA_SET, this.onCameraSet, false, this);
+	this._eventHandler.listen(this, fengshui.events.EventType.CHANGE, this.onCameraChange, false, this);
 	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
 
 	// add collidables
@@ -186,7 +187,7 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 	goog.fx.anim.registerAnimation(this);
 
 	// test path finding
-	var pathfinder = fengshui.controllers.PathfindingController.getInstance();
+	var pathfinder = fengshui.controllers.view3d.PathfindingController.getInstance();
 
 	var start = new THREE.Vector3(150, 0, 150);
 	var end = new THREE.Vector3(-100, 0, -50);
@@ -204,7 +205,7 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 };
 
 
-fengshui.views.View3D.prototype.onCameraSet = function(e){
+fengshui.views.View3D.prototype.onCameraChange = function(e){
 
 	this._controls.object = e.camera;
 };
@@ -240,3 +241,11 @@ fengshui.views.View3D.prototype.onResize = function(e){
 
 
 fengshui.views.View3D.STATS = new Stats();
+
+
+fengshui.views.View3D.MODE = {
+	BROWSE: 'browse', //look around
+	CLOSE_UP: 'close_up', // lock to an object's unique perspective of view
+	PATH: 'path',	// following a path
+	TRANSITION: 'transition' // transition between different cameras for the above mode
+};

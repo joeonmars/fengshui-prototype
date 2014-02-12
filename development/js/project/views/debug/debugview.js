@@ -26,7 +26,7 @@ fengshui.views.debug.DebugView = function(template){
 	this._bodyDom = goog.dom.getElementByClass('body', this.domElement);
 	this._displayButton = goog.dom.query('.button.display', this.domElement)[0];
 
-	var view3dController = fengshui.controllers.View3DController.getInstance();
+	var view3dController = fengshui.controllers.view3d.View3DController.getInstance();
 
   this._eventHandler = new goog.events.EventHandler(this);
 	this._eventHandler.listen(this._displayButton, 'click', this.onClick, false, this);

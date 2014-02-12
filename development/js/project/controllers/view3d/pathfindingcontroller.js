@@ -1,4 +1,4 @@
-goog.provide('fengshui.controllers.PathfindingController');
+goog.provide('fengshui.controllers.view3d.PathfindingController');
 
 goog.require('goog.array');
 goog.require('goog.events.EventTarget');
@@ -9,16 +9,16 @@ goog.require('fengshui.views.debug.Pathfinding');
 /**
  * @constructor
  */
-fengshui.controllers.PathfindingController = function(){
+fengshui.controllers.view3d.PathfindingController = function(){
 
   goog.base(this);
 
 };
-goog.inherits(fengshui.controllers.PathfindingController, goog.events.EventTarget);
-goog.addSingletonGetter(fengshui.controllers.PathfindingController);
+goog.inherits(fengshui.controllers.view3d.PathfindingController, goog.events.EventTarget);
+goog.addSingletonGetter(fengshui.controllers.view3d.PathfindingController);
 
 
-fengshui.controllers.PathfindingController.prototype.findPath = function( start, end, collidables, scene, minCellsInRowOrCol ) {
+fengshui.controllers.view3d.PathfindingController.prototype.findPath = function( start, end, collidables, scene, minCellsInRowOrCol ) {
 
 	var gridMinX = 0, gridMinZ = 0;
 	var gridMaxX = 0, gridMaxZ = 0;
