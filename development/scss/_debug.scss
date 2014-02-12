@@ -90,9 +90,14 @@ $debug_border_style:  2px outset #d6d3ce;
 				width: 60%;
 			}
 
+			>.visible{
+				display: inline-block;
+				width: 10%;
+			}
+
 			>.use{
 				display: inline-block;
-				width: 40%;
+				width: 30%;
 
 				@include button("Use");
 			}

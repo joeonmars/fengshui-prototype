@@ -6,6 +6,7 @@ goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events');
 goog.require('fengshui.controllers.view3d.CameraController');
+goog.require('fengshui.controllers.view3d.ModeController');
 goog.require('fengshui.controllers.view3d.View3DController');
 
 
@@ -20,6 +21,7 @@ fengshui.views.View3D = function(domElement){
   this.domElement = domElement;
 	
 	this.cameraController = new fengshui.controllers.view3d.CameraController(this);
+	this.modeController = new fengshui.controllers.view3d.ModeController(this);
 
   this._eventHandler = new goog.events.EventHandler(this);
 
@@ -130,22 +132,22 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 	this._axisHelper = new THREE.AxisHelper( 1000 );
 	this._scene.add( this._axisHelper );
 
-	// create camera controller
+	// init camera controller
 	this.cameraController.init( this._scene );
 
 	// get default camera
-	var defaultCamera = this.cameraController.getCamera('default');
-	defaultCamera.position.x = 0;
-	defaultCamera.position.y = 50;
-	defaultCamera.position.z = 350;
+	var browseCamera = this.cameraController.getCamera( fengshui.views.View3D.MODE.BROWSE );
+	browseCamera.position.x = 0;
+	browseCamera.position.y = 50;
+	browseCamera.position.z = 350;
 
-	var shadowCamera = this.cameraController.addCamera('shadow');
-	this.cameraController.copyCameraAttributesFromTo(defaultCamera, shadowCamera);
-	shadowCamera.fov = 10;
-	shadowCamera.updateProjectionMatrix();
+	var closeupCamera = this.cameraController.getCamera( fengshui.views.View3D.MODE.CLOSE_UP );
+	this.cameraController.copyCameraAttributesFromTo(browseCamera, closeupCamera);
+	closeupCamera.fov = 10;
+	closeupCamera.updateProjectionMatrix();
 
 	// controls
-	this._controls = new THREE.TrackballControls( defaultCamera, this._renderer.domElement );
+	this._controls = new THREE.TrackballControls( browseCamera, this._renderer.domElement );
 	this._controls.rotateSpeed = 1.0;
 	this._controls.zoomSpeed = 1.2;
 	this._controls.panSpeed = 0.8;
@@ -183,6 +185,9 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 
 	this.render();
 
+	// init mode controller
+	this.modeController.init();
+
 	//
 	goog.fx.anim.registerAnimation(this);
 
@@ -201,7 +206,7 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 	//this.cameraController.animateFocusTo(new THREE.Vector3(0, 40, 0), 4);
 	//this.cameraController.animateFovTo(10, 4);
 	//this.cameraController.animateFocusTo(end, 1, Linear.easeNone);
-	//this.cameraController.animateTo( shadowCamera.position.clone(), bed.position.clone(), 30 );
+	//this.cameraController.animateTo( closeupCamera.position.clone(), bed.position.clone(), 30 );
 };
 
 

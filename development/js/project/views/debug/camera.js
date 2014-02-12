@@ -23,6 +23,7 @@ fengshui.views.debug.Camera = function(){
   this._targetZDom = goog.dom.query('li[data-prop="target-z"]', this.domElement)[0];
   this._selectDom = goog.dom.query('select', this.domElement)[0];
   this._textarea = goog.dom.query('textarea', this.domElement)[0];
+  this._visibleButton = goog.dom.query('.visible.button', this.domElement)[0];
   this._useButton = goog.dom.query('.use.button', this.domElement)[0];
   this._inputButton = goog.dom.query('.input.button', this.domElement)[0];
   this._outputButton = goog.dom.query('.output.button', this.domElement)[0];
@@ -31,6 +32,7 @@ fengshui.views.debug.Camera = function(){
   this._cameraController = null;
 
   this._eventHandler.listen(this._selectDom, fengshui.events.EventType.CHANGE, this.setSelectedCamera, false, this);
+  this._eventHandler.listen(this._visibleButton, 'click', this.onClick, false, this);
   this._eventHandler.listen(this._useButton, 'click', this.onClick, false, this);
   this._eventHandler.listen(this._inputButton, 'click', this.inputCameraAttributes, false, this);
   this._eventHandler.listen(this._outputButton, 'click', this.outputCameraAttributes, false, this);
@@ -61,6 +63,8 @@ fengshui.views.debug.Camera.prototype.setSelectedCamera = function(){
 	var name = this._selectDom.value;
 	this._camera = this._cameraController.getCamera(name);
 
+	this.updateVisibleButton();
+
 	return this._camera;
 };
 
@@ -86,7 +90,7 @@ fengshui.views.debug.Camera.prototype.inputCameraAttributes = function(){
 	this._camera.rotation.x = rotation['x'];
 	this._camera.rotation.y = rotation['y'];
 	this._camera.rotation.z = rotation['z'];
-	
+
 	if(target) {
 		this._camera.target = new THREE.Vector3(target['x'], target['y'], target['z']);
 		this._camera.lookAt( this._camera.target );
@@ -127,6 +131,18 @@ fengshui.views.debug.Camera.prototype.outputCameraAttributes = function(){
 	}
 
 	this._textarea.value = JSON.stringify(output, null, '\t');
+};
+
+
+fengshui.views.debug.Camera.prototype.updateVisibleButton = function(){
+
+	var cameraHelper = this._cameraController.getCameraHelper( this._camera.name );
+
+	if(cameraHelper.visible) {
+		goog.dom.classes.addRemove(this._visibleButton, 'fa-eye-slash', 'fa-eye');
+	}else {
+		goog.dom.classes.addRemove(this._visibleButton, 'fa-eye', 'fa-eye-slash');
+	}
 };
 
 
@@ -180,6 +196,13 @@ fengshui.views.debug.Camera.prototype.onClick = function(e){
 	switch(e.currentTarget) {
 		case this._useButton:
 		this._cameraController.setCamera( this._selectDom.value );
+		break;
+
+		case this._visibleButton:
+		var cameraHelper = this._cameraController.getCameraHelper( this._camera.name );
+		cameraHelper.visible = !cameraHelper.visible;
+		
+		this.updateVisibleButton();
 		break;
 	};
 };
