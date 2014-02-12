@@ -90,6 +90,9 @@ fengshui.controllers.CameraController.prototype.getCamera = function( name ){
 fengshui.controllers.CameraController.prototype.setCamera = function( name ){
 
   this._activeCamera = this._cameras[name];
+
+  this._controls.object = this._activeCamera;
+
   return this._activeCamera;
 };
 

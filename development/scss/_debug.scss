@@ -1,5 +1,11 @@
 $debug_border_style:  2px outset #d6d3ce;
 
+@mixin button($text) {
+	&:before{
+		content: $text;
+	}
+}
+
 .debugPanel{
 	background-color: #d6d3ce;
 	border: $debug_border_style;
@@ -78,8 +84,18 @@ $debug_border_style:  2px outset #d6d3ce;
 	.viewPanel{
 		@extend .debugPanel;
 
-		>select{
-			width: 100%;
+		>div{
+			>select{
+				display: inline-block;
+				width: 60%;
+			}
+
+			>.use{
+				display: inline-block;
+				width: 40%;
+
+				@include button("Use");
+			}
 		}
 
 		>ul{
@@ -95,63 +111,43 @@ $debug_border_style:  2px outset #d6d3ce;
 				}
 
 				&[data-prop="fov"] {
-					&:before{
-						content: "fov: ";
-					}
+					@include button("fov: ");
 				}
 
 				&[data-prop="position-x"] {
-					&:before{
-						content: "position.x: ";
-					}
+					@include button("position.x: ");
 				}
 
 				&[data-prop="position-y"] {
-					&:before{
-						content: "position.y: ";
-					}
+					@include button("position.y: ");
 				}
 
 				&[data-prop="position-z"] {
-					&:before{
-						content: "position.z: ";
-					}
+					@include button("position.z: ");
 				}
 
 				&[data-prop="rotation-x"] {
-					&:before{
-						content: "rotation.x: ";
-					}
+					@include button("rotation.x: ");
 				}
 
 				&[data-prop="rotation-y"] {
-					&:before{
-						content: "rotation.y: ";
-					}
+					@include button("rotation.y: ");
 				}
 
 				&[data-prop="rotation-z"] {
-					&:before{
-						content: "rotation.z: ";
-					}
+					@include button("rotation.z: ");
 				}
 
 				&[data-prop="target-x"] {
-					&:before{
-						content: "target.x: ";
-					}
+					@include button("target.x: ");
 				}
 
 				&[data-prop="target-y"] {
-					&:before{
-						content: "target.y: ";
-					}
+					@include button("target.y: ");
 				}
 
 				&[data-prop="target-z"] {
-					&:before{
-						content: "target.z: ";
-					}
+					@include button("target.z: ");
 				}
 			}
 		}
@@ -167,15 +163,11 @@ $debug_border_style:  2px outset #d6d3ce;
 			display: inline-block;
 
 			&.input{
-				&:after{
-					content: "Input";
-				}
+				@include button("Input");
 			}
 
 			&.output{
-				&:after{
-					content: "Output";
-				}
+				@include button("Output");
 			}
 		}
 	}

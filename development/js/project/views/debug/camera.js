@@ -11,7 +11,6 @@ fengshui.views.debug.Camera = function(){
 
   goog.base(this, fengshui.templates.debug.CameraDebugView);
 
-  this._selectDom = goog.dom.query('select', this.domElement)[0];
   this._fovDom = goog.dom.query('li[data-prop="fov"]', this.domElement)[0];
   this._positionXDom = goog.dom.query('li[data-prop="position-x"]', this.domElement)[0];
   this._positionYDom = goog.dom.query('li[data-prop="position-y"]', this.domElement)[0];
@@ -22,14 +21,17 @@ fengshui.views.debug.Camera = function(){
   this._targetXDom = goog.dom.query('li[data-prop="target-x"]', this.domElement)[0];
   this._targetYDom = goog.dom.query('li[data-prop="target-y"]', this.domElement)[0];
   this._targetZDom = goog.dom.query('li[data-prop="target-z"]', this.domElement)[0];
+  this._selectDom = goog.dom.query('select', this.domElement)[0];
   this._textarea = goog.dom.query('textarea', this.domElement)[0];
+  this._useButton = goog.dom.query('.use.button', this.domElement)[0];
   this._inputButton = goog.dom.query('.input.button', this.domElement)[0];
   this._outputButton = goog.dom.query('.output.button', this.domElement)[0];
 
   this._camera = null;
   this._cameraController = null;
 
-  this._eventHandler.listen(this._selectDom, fengshui.events.EventType.CHANGE, this.onSelectChange, false, this);
+  this._eventHandler.listen(this._selectDom, fengshui.events.EventType.CHANGE, this.setSelectedCamera, false, this);
+  this._eventHandler.listen(this._useButton, 'click', this.onClick, false, this);
   this._eventHandler.listen(this._inputButton, 'click', this.inputCameraAttributes, false, this);
   this._eventHandler.listen(this._outputButton, 'click', this.outputCameraAttributes, false, this);
 
@@ -51,6 +53,15 @@ fengshui.views.debug.Camera.prototype.hide = function(){
 
   goog.base(this, 'hide');
   goog.fx.anim.unregisterAnimation(this);
+};
+
+
+fengshui.views.debug.Camera.prototype.setSelectedCamera = function(){
+
+	var name = this._selectDom.value;
+	this._camera = this._cameraController.getCamera(name);
+
+	return this._camera;
 };
 
 
@@ -147,7 +158,7 @@ fengshui.views.debug.Camera.prototype.onAddCamera = function(e){
 
 	this._selectDom.add( optionDom );
 
-	this.onSelectChange();
+	this.setSelectedCamera();
 };
 
 
@@ -158,10 +169,15 @@ fengshui.views.debug.Camera.prototype.onRemoveCamera = function(e){
 };
 
 
-fengshui.views.debug.Camera.prototype.onSelectChange = function(e){
+fengshui.views.debug.Camera.prototype.onClick = function(e){
 
-	var name = this._selectDom.value;
-	this._camera = this._cameraController.getCamera(name);
+	goog.base(this, 'onClick', e);
+
+	switch(e.currentTarget) {
+		case this._useButton:
+		this._cameraController.setCamera( this._selectDom.value );
+		break;
+	};
 };
 
 

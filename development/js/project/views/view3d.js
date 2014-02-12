@@ -137,6 +137,7 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 
 	this._controls.noZoom = false;
 	this._controls.noPan = false;
+	this._controls.noRotate = false;
 	this._controls.minDistance = 100;
 	this._controls.maxDistance = 900;
 
@@ -148,7 +149,6 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 
 	// create camera controller
 	var shadowCamera = camera.clone();
-	shadowCamera.target = this._controls.target.clone();
 	shadowCamera.fov = 10;
 	shadowCamera.updateProjectionMatrix();
 
@@ -192,7 +192,7 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 	var spline = this.createSpline(coordinates, 0xff00f0);
 
 	// tween the camera
-	this.cameraController.followSpline(spline);
+	//this.cameraController.followSpline(spline);
 	//this.cameraController.animatePositionTo(new THREE.Vector3(0, 100, 600), 4);
 	//this.cameraController.animateFocusTo(new THREE.Vector3(0, 40, 0), 4);
 	//this.cameraController.animateFovTo(10, 4);

@@ -237,8 +237,16 @@ a {
   box-sizing: border-box;
 }
 
-#debug-camera .viewPanel > select {
-  width: 100%;
+#debug-camera .viewPanel > div > select {
+  display: inline-block;
+  width: 60%;
+}
+#debug-camera .viewPanel > div > .use {
+  display: inline-block;
+  width: 40%;
+}
+#debug-camera .viewPanel > div > .use:before {
+  content: "Use";
 }
 #debug-camera .viewPanel > ul {
   width: 100%;
@@ -284,10 +292,10 @@ a {
 #debug-camera .controlPanel > button {
   display: inline-block;
 }
-#debug-camera .controlPanel > button.input:after {
+#debug-camera .controlPanel > button.input:before {
   content: "Input";
 }
-#debug-camera .controlPanel > button.output:after {
+#debug-camera .controlPanel > button.output:before {
   content: "Output";
 }
 
