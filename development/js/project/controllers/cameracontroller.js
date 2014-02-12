@@ -3,73 +3,75 @@ goog.provide('fengshui.controllers.CameraController');
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events');
-goog.require('goog.object');
 goog.require('fengshui.events');
 
 
 /**
  * @constructor
  */
-fengshui.controllers.CameraController = function(){
+fengshui.controllers.CameraController = function(view3d){
   goog.base(this);
 
-  this._scene = null;
-  this._controls = null;
-  this._cameras = {};
-  this._cameraHelpers = {};
+  this.setParentEventTarget( view3d );
 
-  this._activeCamera = null
+  this.activeCamera = null;
+
+  this._view3d = view3d;
+  this._scene = null;
 
   this._eventHandler = new goog.events.EventHandler(this);
 };
 goog.inherits(fengshui.controllers.CameraController, goog.events.EventTarget);
 
 
-fengshui.controllers.CameraController.prototype.init = function( cameras, scene, controls ){
+fengshui.controllers.CameraController.prototype.init = function( scene ){
 
   this._scene = scene;
-  this._controls = controls;
 
-  goog.object.forEach(cameras, function(camera, name) {
-    this.addCamera(name, camera);
-  }, this);
-
-  this._activeCamera = this.setCamera('default');
+  this.addCamera('default');
+  this.setCamera('default');
 };
 
 
-fengshui.controllers.CameraController.prototype.addCamera = function( name, camera ){
+fengshui.controllers.CameraController.prototype.addCamera = function( name, fov, near, far ){
 
-  if(goog.object.containsKey(this._cameras, name)) return;
+  if(this.getCamera(name)) return;
 
-	goog.object.add(this._cameras, name, camera);
+  var fov = fov || 45;
+  var aspect = this._view3d.getViewSize().aspectRatio();
+  var near = near || 10;
+  var far = far || 10000;
+
+  var camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
+  camera.name = name;
   this._scene.add(camera);
 
 	var cameraHelper = new THREE.CameraHelper( camera );
-	goog.object.add(this._cameraHelpers, name, cameraHelper);
+  cameraHelper.name = name + '-helper';
   this._scene.add(cameraHelper);
 
   this.dispatchEvent({
     type: fengshui.events.EventType.ADD,
-    name: name,
     camera: camera
   });
+
+  return camera;
 };
 
 
 fengshui.controllers.CameraController.prototype.removeCamera = function( name ){
 
-  var camera = this._cameras[name];
-  this._scene.remove( camera );
-	goog.object.remove(this._cameras, name);
+  var camera = this.getCamera(name);
+  if(!camera) return;
 
-	var cameraHelper = this._cameraHelpers[name];
+  this._scene.remove( camera );
+
+	var cameraHelper = this.getCameraHelper(name);
+
 	this._scene.remove( cameraHelper );
-	goog.object.remove(this._cameraHelpers, name);
 
   this.dispatchEvent({
     type: fengshui.events.EventType.REMOVE,
-    name: name,
     camera: camera
   });
 };
@@ -77,29 +79,64 @@ fengshui.controllers.CameraController.prototype.removeCamera = function( name ){
 
 fengshui.controllers.CameraController.prototype.getCameras = function(){
 
-  return this._cameras;
+  var cameras = [];
+
+  this._scene.traverse(function(child) {
+    if(child instanceof THREE.PerspectiveCamera) {
+      cameras.push(child);
+    }
+  });
+
+  return cameras;
 };
 
 
 fengshui.controllers.CameraController.prototype.getCamera = function( name ){
 
-  return this._cameras[name];
+  return this._scene.getObjectByName(name);
+};
+
+
+fengshui.controllers.CameraController.prototype.getCameraHelper = function( name ){
+
+  return this._scene.getObjectByName(name + '-helper');
 };
 
 
 fengshui.controllers.CameraController.prototype.setCamera = function( name ){
 
-  this._activeCamera = this._cameras[name];
+  this.activeCamera = this.getCamera(name);
 
-  this._controls.object = this._activeCamera;
+  this.dispatchEvent({
+    type: fengshui.controllers.CameraController.EventType.CAMERA_SET,
+    camera: this.activeCamera
+  });
 
-  return this._activeCamera;
+  return this.activeCamera;
+};
+
+
+fengshui.controllers.CameraController.prototype.copyCameraAttributesFromTo = function( cameraA, cameraB ){
+
+  cameraB.position.x = cameraA.position.x;
+  cameraB.position.y = cameraA.position.y;
+  cameraB.position.z = cameraA.position.z;
+
+  cameraB.rotation.x = cameraA.rotation.x;
+  cameraB.rotation.y = cameraA.rotation.y;
+  cameraB.rotation.z = cameraA.rotation.z;
+
+  cameraB.fov = cameraA.fov;
+
+  cameraB.updateProjectionMatrix();
+
+  return cameraB;
 };
 
 
 fengshui.controllers.CameraController.prototype.animatePositionTo = function( position, duration, ease ){
 
-  var currentPosition = this._activeCamera.position;
+  var currentPosition = this.activeCamera.position;
   var duration = goog.isNumber(duration) ? duration : 1;
   var ease = ease || Quad.easeOut;
 
@@ -118,8 +155,7 @@ fengshui.controllers.CameraController.prototype.animatePositionTo = function( po
 
 fengshui.controllers.CameraController.prototype.animateFocusTo = function( lookAt, duration, ease ){
 
-  var target = this._controls.target;
-  var position = this._activeCamera.position;
+  var target = this.activeCamera.target;
   var duration = goog.isNumber(duration) ? duration : 1;
   var ease = ease || Quad.easeOut;
 
@@ -133,7 +169,7 @@ fengshui.controllers.CameraController.prototype.animateFocusTo = function( lookA
     onComplete: this.onTransitionComplete,
     onCompleteScope: this,
     onUpdate: function() {
-      this._activeCamera.lookAt( target );
+      this.activeCamera.lookAt( target );
     },
     onUpdateScope: this
   });
@@ -145,7 +181,7 @@ fengshui.controllers.CameraController.prototype.animateFovTo = function( fov, du
   var duration = goog.isNumber(duration) ? duration : 1;
   var ease = ease || Quad.easeOut;
   
-  TweenMax.to(this._activeCamera, duration, {
+  TweenMax.to(this.activeCamera, duration, {
     fov: fov,
     ease: ease,
     onStart: this.onTransitionStart,
@@ -153,7 +189,7 @@ fengshui.controllers.CameraController.prototype.animateFovTo = function( fov, du
     onComplete: this.onTransitionComplete,
     onCompleteScope: this,
     onUpdate: function() {
-      this._activeCamera.updateProjectionMatrix();
+      this.activeCamera.updateProjectionMatrix();
     },
     onUpdateScope: this
   });
@@ -197,28 +233,35 @@ fengshui.controllers.CameraController.prototype.onSplineStep = function(prop){
 
   var splinePosition = spline.getPointAt( t );
 
-  this._activeCamera.position.x = splinePosition.x;
-  //this._activeCamera.position.y = splinePosition.y;
-  this._activeCamera.position.z = splinePosition.z;
+  this.activeCamera.position.x = splinePosition.x;
+  //this.activeCamera.position.y = splinePosition.y;
+  this.activeCamera.position.z = splinePosition.z;
 };
 
 
 fengshui.controllers.CameraController.prototype.onTransitionStart = function(){
 
-  this._controls.enabled = false;
+  //this._controls.enabled = false;
 };
 
 
 fengshui.controllers.CameraController.prototype.onTransitionComplete = function(){
 
-  this._controls.enabled = true;
+  //this._controls.enabled = true;
 };
 
 
 fengshui.controllers.CameraController.prototype.onResize = function(aspect){
 
-  goog.object.forEach(this._cameras, function(camera, name) {
+  var cameras = this.getCameras();
+
+  goog.array.forEach(cameras, function(camera) {
     camera.aspect = aspect;
     camera.updateProjectionMatrix();
   }, this);
+};
+
+
+fengshui.controllers.CameraController.EventType = {
+  CAMERA_SET: 'camera_set'
 };

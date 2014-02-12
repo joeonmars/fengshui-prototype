@@ -86,7 +86,7 @@ fengshui.views.debug.Camera.prototype.inputCameraAttributes = function(){
 	this._camera.rotation.x = rotation['x'];
 	this._camera.rotation.y = rotation['y'];
 	this._camera.rotation.z = rotation['z'];
-
+	
 	if(target) {
 		this._camera.target = new THREE.Vector3(target['x'], target['y'], target['z']);
 		this._camera.lookAt( this._camera.target );
@@ -152,9 +152,11 @@ fengshui.views.debug.Camera.prototype.onView3DHide = function(e){
 
 fengshui.views.debug.Camera.prototype.onAddCamera = function(e){
 
+	var cameraName = e.camera.name;
+
 	var optionDom = goog.dom.createDom('option', {
-		'value': e.name
-	}, e.name);
+		'value': cameraName
+	}, cameraName);
 
 	this._selectDom.add( optionDom );
 
@@ -164,7 +166,9 @@ fengshui.views.debug.Camera.prototype.onAddCamera = function(e){
 
 fengshui.views.debug.Camera.prototype.onRemoveCamera = function(e){
 
-	var optionDom = goog.dom.query('option[value="'+e.name+'"]', this._selectDom)[0];
+	var cameraName = e.camera.name;
+
+	var optionDom = goog.dom.query('option[value="'+cameraName+'"]', this._selectDom)[0];
 	this._selectDom.remove( optionDom );
 };
 
