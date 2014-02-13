@@ -171,7 +171,7 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 	this.render();
 
 	// init mode controller
-	this.modeController.init( fengshui.views.View3D.Mode.DEBUG );
+	this.modeController.init( fengshui.views.View3D.Mode.BROWSE );
 
 	// test path finding
 	var pathfinder = fengshui.controllers.view3d.PathfindingController.getInstance();
@@ -229,6 +229,5 @@ fengshui.views.View3D.Mode = {
 	BROWSE: 'browse', //look around
 	CLOSE_UP: 'close_up', // lock to an object's unique perspective of view
 	PATH: 'path',	// following a path
-	TRANSITION: 'transition', // transition between different cameras for the above mode
-	DEBUG: 'debug' // for debug
+	TRANSITION: 'transition' // transition between different cameras for the above mode
 };

@@ -84,8 +84,8 @@ fengshui.controllers.view3d.ModeController.prototype.createBrowseControls = func
 	var camera = this._cameraController.getCamera( fengshui.views.View3D.Mode.BROWSE );
 
 	var controls = new THREE.BrowseControls( camera );
-	//this._browseControls.enabled = true;
-	controls.getObject().position.set( 0, 100, 350 );
+	controls.enabled = true;
+	controls.getObject().position.set( 0, 100, 250 );
 	this._view3d._scene.add( controls.getObject() );
 
 	return controls;
@@ -129,7 +129,7 @@ fengshui.controllers.view3d.ModeController.prototype.onModeChange = function(e){
 fengshui.controllers.view3d.ModeController.prototype.onAnimationFrame = function(now){
 	
 	var delta = this._clock.getDelta();
-
+	
 	this._browseControls.update( delta );
   this._trackballControls.update();
 };
