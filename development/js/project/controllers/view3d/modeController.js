@@ -5,6 +5,7 @@ goog.require('goog.events.EventHandler');
 goog.require('goog.events');
 goog.require('goog.object');
 goog.require('fengshui.events');
+goog.require('fengshui.controllers.controls.BrowseControls');
 
 
 /**
@@ -83,7 +84,7 @@ fengshui.controllers.view3d.ModeController.prototype.createBrowseControls = func
 	var renderElement = this._view3d.getRenderElement();
 	var camera = this._cameraController.getCamera( fengshui.views.View3D.Mode.BROWSE );
 
-	var controls = new THREE.BrowseControls( camera );
+	var controls = new fengshui.controllers.controls.BrowseControls( camera, renderElement );
 	controls.enabled = true;
 	controls.getObject().position.set( 0, 100, 250 );
 	this._view3d._scene.add( controls.getObject() );
@@ -129,7 +130,7 @@ fengshui.controllers.view3d.ModeController.prototype.onModeChange = function(e){
 fengshui.controllers.view3d.ModeController.prototype.onAnimationFrame = function(now){
 	
 	var delta = this._clock.getDelta();
-	
+
 	this._browseControls.update( delta );
   this._trackballControls.update();
 };
