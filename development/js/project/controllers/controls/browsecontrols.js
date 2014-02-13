@@ -3,7 +3,8 @@ goog.provide('fengshui.controllers.controls.BrowseControls');
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events');
-goog.require('goog.testing.PseudoRandom');
+goog.require('fengshui.utils.Randomizer');
+goog.require('fengshui.utils.MultiLinearInterpolator');
 
 /**
  * @constructor
@@ -37,7 +38,18 @@ fengshui.controllers.controls.BrowseControls = function(camera, domElement){
 	this._targetRotationX = 0;
 	this._targetRotationY = 0;
 
-	this._random = new goog.testing.PseudoRandom(1);
+	var randomXNumbers = fengshui.utils.Randomizer.getRandomNumbers(6, 10, true);
+	goog.array.forEach(randomXNumbers, function(number, index) {
+		if(index % 2 === 0) randomXNumbers[index] *= -1;
+	});
+
+	var randomYNumbers = fengshui.utils.Randomizer.getRandomNumbers(1, 10, true);
+	goog.array.forEach(randomYNumbers, function(number, index) {
+		if(index % 2 === 0) randomYNumbers[index] *= -1;
+	});
+
+	this._randomXInterpolator = new fengshui.utils.MultiLinearInterpolator(randomXNumbers, 8000);
+	this._randomYInterpolator = new fengshui.utils.MultiLinearInterpolator(randomYNumbers, 10000);
 
 	this._eventHandler = new goog.events.EventHandler(this);
 	this._eventHandler.listen(this._domElement, 'mousedown', this.onMouseDown, false, this);
@@ -74,7 +86,7 @@ fengshui.controllers.controls.BrowseControls.prototype.getDirection = function()
 };
 
 
-fengshui.controllers.controls.BrowseControls.prototype.update = function ( delta ) {
+fengshui.controllers.controls.BrowseControls.prototype.update = function ( delta, elapsed ) {
 
 	if ( !this.enabled ) return;
 
@@ -98,6 +110,15 @@ fengshui.controllers.controls.BrowseControls.prototype.update = function ( delta
 	this._yawObject.rotation.y += (this._targetRotationY - this._yawObject.rotation.y) * .1;
 	this._pitchObject.rotation.x += (this._targetRotationX - this._pitchObject.rotation.x) * .1;
 	this._pitchObject.rotation.x = Math.max( - PI_2, Math.min( PI_2, this._pitchObject.rotation.x ) );
+
+	// random rotating motion
+	this._randomXInterpolator.update( elapsed * 1000 );
+	this._randomYInterpolator.update( elapsed * 1000 );
+
+	var cameraRotateX = this._randomXInterpolator.getValue() * .04;
+	var cameraRotateY = this._randomYInterpolator.getValue() * .04;
+	this.camera.rotation.x = cameraRotateX;
+	this.camera.rotation.y = cameraRotateY;
 };
 
 

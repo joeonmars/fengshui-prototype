@@ -130,8 +130,9 @@ fengshui.controllers.view3d.ModeController.prototype.onModeChange = function(e){
 fengshui.controllers.view3d.ModeController.prototype.onAnimationFrame = function(now){
 	
 	var delta = this._clock.getDelta();
+	var elapsed = this._clock.getElapsedTime();
 
-	this._browseControls.update( delta );
+	this._browseControls.update( delta, elapsed );
   this._trackballControls.update();
 };
 
