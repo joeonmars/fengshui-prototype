@@ -18,9 +18,9 @@ fengshui.views.debug.Camera = function(){
   this._rotationXDom = goog.dom.query('li[data-prop="rotation-x"]', this.domElement)[0];
   this._rotationYDom = goog.dom.query('li[data-prop="rotation-y"]', this.domElement)[0];
   this._rotationZDom = goog.dom.query('li[data-prop="rotation-z"]', this.domElement)[0];
-  this._targetXDom = goog.dom.query('li[data-prop="target-x"]', this.domElement)[0];
-  this._targetYDom = goog.dom.query('li[data-prop="target-y"]', this.domElement)[0];
-  this._targetZDom = goog.dom.query('li[data-prop="target-z"]', this.domElement)[0];
+  this._lookXDom = goog.dom.query('li[data-prop="look-x"]', this.domElement)[0];
+  this._lookYDom = goog.dom.query('li[data-prop="look-y"]', this.domElement)[0];
+  this._lookZDom = goog.dom.query('li[data-prop="look-z"]', this.domElement)[0];
   this._selectDom = goog.dom.query('select', this.domElement)[0];
   this._textarea = goog.dom.query('textarea', this.domElement)[0];
   this._visibleButton = goog.dom.query('.visible.button', this.domElement)[0];
@@ -79,22 +79,11 @@ fengshui.views.debug.Camera.prototype.inputCameraAttributes = function(){
 	var fov = object['fov'];
 	var position = object['position'];
 	var rotation = object['rotation'];
-	var target = object['target'];
 
 	this._camera.fov = fov;
 
-	this._camera.position.x = position['x'];
-	this._camera.position.y = position['y'];
-	this._camera.position.z = position['z'];
-
-	this._camera.rotation.x = rotation['x'];
-	this._camera.rotation.y = rotation['y'];
-	this._camera.rotation.z = rotation['z'];
-
-	if(target) {
-		this._camera.target = new THREE.Vector3(target['x'], target['y'], target['z']);
-		this._camera.lookAt( this._camera.target );
-	}
+	this._camera.position.set(position['x'], position['y'], position['z']);
+	this._camera.rotation.set(rotation['x'], rotation['y'], rotation['z']);
 
 	this._camera.updateProjectionMatrix();
 };
@@ -107,7 +96,7 @@ fengshui.views.debug.Camera.prototype.outputCameraAttributes = function(){
 	var fov = this._camera.fov;
 	var position = this._camera.position;
 	var rotation = this._camera.rotation;
-	var target = this._camera.target;
+
 	var output = {};
 
 	output['fov'] = fov;
@@ -122,20 +111,12 @@ fengshui.views.debug.Camera.prototype.outputCameraAttributes = function(){
 		'z': rotation.z
 	};
 
-	if(target) {
-		output['target'] = {
-			'x': target.x,
-			'y': target.y,
-			'z': target.z
-		};
-	}
-
 	this._textarea.value = JSON.stringify(output, null, '\t');
 };
 
 
 fengshui.views.debug.Camera.prototype.updateVisibleButton = function(){
-
+	
 	var cameraHelper = this._cameraController.getCameraHelper( this._camera.name );
 
 	if(cameraHelper.visible) {
@@ -201,7 +182,7 @@ fengshui.views.debug.Camera.prototype.onClick = function(e){
 		case this._visibleButton:
 		var cameraHelper = this._cameraController.getCameraHelper( this._camera.name );
 		cameraHelper.visible = !cameraHelper.visible;
-		
+
 		this.updateVisibleButton();
 		break;
 	};
@@ -219,9 +200,9 @@ fengshui.views.debug.Camera.prototype.onAnimationFrame = function(now){
 	  this._rotationXDom.innerHTML = '';
 	  this._rotationYDom.innerHTML = '';
 	  this._rotationZDom.innerHTML = '';
-	  this._targetXDom.innerHTML = '';
-	  this._targetYDom.innerHTML = '';
-	  this._targetZDom.innerHTML = '';
+	  this._lookXDom.innerHTML = '';
+	  this._lookYDom.innerHTML = '';
+	  this._lookZDom.innerHTML = '';
 
 	}else {
 
@@ -232,9 +213,12 @@ fengshui.views.debug.Camera.prototype.onAnimationFrame = function(now){
 	  this._rotationXDom.innerHTML = this._camera.rotation.x;
 	  this._rotationYDom.innerHTML = this._camera.rotation.y;
 	  this._rotationZDom.innerHTML = this._camera.rotation.z;
-	  this._targetXDom.innerHTML = this._camera.target ? this._camera.target.x : '';
-	  this._targetYDom.innerHTML = this._camera.target ? this._camera.target.y : '';
-	  this._targetZDom.innerHTML = this._camera.target ? this._camera.target.z : '';
 
+	  var look = new THREE.Vector3(0, 0, -1);
+    look.applyEuler(this._camera.rotation, this._camera.rotation.order);
+
+	  this._lookXDom.innerHTML = look.x;
+	  this._lookYDom.innerHTML = look.y;
+	  this._lookZDom.innerHTML = look.z;
 	}
 };

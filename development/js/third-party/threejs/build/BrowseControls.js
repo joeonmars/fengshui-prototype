@@ -1,8 +1,9 @@
 /**
+ * @author joe zhou, mod
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.PointerLockControls = function ( camera ) {
+THREE.BrowseControls = function ( camera ) {
 
 	var scope = this;
 
@@ -38,7 +39,6 @@ THREE.PointerLockControls = function ( camera ) {
 		pitchObject.rotation.x -= movementY * 0.002;
 
 		pitchObject.rotation.x = Math.max( - PI_2, Math.min( PI_2, pitchObject.rotation.x ) );
-
 	};
 
 	var onKeyDown = function ( event ) {
@@ -107,6 +107,13 @@ THREE.PointerLockControls = function ( camera ) {
 
 	this.enabled = false;
 
+	this.reset = function () {
+
+		yawObject.rotation.y = 0;
+		pitchObject.rotation.x = 0;
+
+	};
+
 	this.getObject = function () {
 
 		return yawObject;
@@ -127,11 +134,11 @@ THREE.PointerLockControls = function ( camera ) {
 		var direction = new THREE.Vector3( 0, 0, -1 );
 		var rotation = new THREE.Euler( 0, 0, 0, "YXZ" );
 
-		return function( v ) {
+		return function(v) {
 
-			rotation.set( pitchObject.rotation.x, yawObject.rotation.y, 0 );
-
-			v.copy( direction ).applyEuler( rotation );
+			var v = yawObject.position.clone();
+      rotation.set( pitchObject.rotation.x, yawObject.rotation.y, 0 );
+      v.copy( direction ).applyEuler( rotation );
 
 			return v;
 

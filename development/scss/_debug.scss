@@ -143,16 +143,16 @@ $debug_border_style:  2px outset #d6d3ce;
 					@include button("rotation.z: ");
 				}
 
-				&[data-prop="target-x"] {
-					@include button("target.x: ");
+				&[data-prop="look-x"] {
+					@include button("look.x: ");
 				}
 
-				&[data-prop="target-y"] {
-					@include button("target.y: ");
+				&[data-prop="look-y"] {
+					@include button("look.y: ");
 				}
 
-				&[data-prop="target-z"] {
-					@include button("target.z: ");
+				&[data-prop="look-z"] {
+					@include button("look.z: ");
 				}
 			}
 		}

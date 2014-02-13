@@ -19,6 +19,9 @@ fengshui.controllers.view3d.CameraController = function(view3d){
   this._view3d = view3d;
   this._scene = null;
 
+  this._cameras = [];
+  this._cameraHelpers = [];
+
   this._eventHandler = new goog.events.EventHandler(this);
 };
 goog.inherits(fengshui.controllers.view3d.CameraController, goog.events.EventTarget);
@@ -28,12 +31,12 @@ fengshui.controllers.view3d.CameraController.prototype.init = function( scene ){
 
   this._scene = scene;
 
-  this.addCamera(fengshui.views.View3D.MODE.BROWSE);
-  this.addCamera(fengshui.views.View3D.MODE.CLOSE_UP);
-  this.addCamera(fengshui.views.View3D.MODE.PATH);
-  this.addCamera(fengshui.views.View3D.MODE.TRANSITION);
+  this.addCamera(fengshui.views.View3D.Mode.BROWSE);
+  this.addCamera(fengshui.views.View3D.Mode.CLOSE_UP);
+  this.addCamera(fengshui.views.View3D.Mode.PATH);
+  this.addCamera(fengshui.views.View3D.Mode.TRANSITION);
 
-  this.setCamera(fengshui.views.View3D.MODE.BROWSE);
+  this.setCamera(fengshui.views.View3D.Mode.BROWSE);
 };
 
 
@@ -49,10 +52,12 @@ fengshui.controllers.view3d.CameraController.prototype.addCamera = function( nam
   var camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
   camera.name = name;
   this._scene.add(camera);
+  this._cameras.push(camera);
 
 	var cameraHelper = new THREE.CameraHelper( camera );
   cameraHelper.name = name + '-helper';
   this._scene.add(cameraHelper);
+  this._cameraHelpers.push(cameraHelper);
 
   this.dispatchEvent({
     type: fengshui.events.EventType.ADD,
@@ -68,11 +73,13 @@ fengshui.controllers.view3d.CameraController.prototype.removeCamera = function( 
   var camera = this.getCamera(name);
   if(!camera) return;
 
-  this._scene.remove( camera );
+  camera.parent.remove( camera );
+  goog.array.remove(this._cameras, camera);
 
 	var cameraHelper = this.getCameraHelper(name);
 
-	this._scene.remove( cameraHelper );
+	camera.parent.remove( cameraHelper );
+  goog.array.remove(this._cameraHelpers, cameraHelper);
 
   this.dispatchEvent({
     type: fengshui.events.EventType.REMOVE,
@@ -83,27 +90,27 @@ fengshui.controllers.view3d.CameraController.prototype.removeCamera = function( 
 
 fengshui.controllers.view3d.CameraController.prototype.getCameras = function(){
 
-  var cameras = [];
-
-  this._scene.traverse(function(child) {
-    if(child instanceof THREE.PerspectiveCamera) {
-      cameras.push(child);
-    }
-  });
-
-  return cameras;
+  return this._cameras;
 };
 
 
 fengshui.controllers.view3d.CameraController.prototype.getCamera = function( name ){
 
-  return this._scene.getObjectByName(name);
+  var camera = goog.array.find(this._cameras, function(camera) {
+    return camera.name === name;
+  });
+
+  return camera;
 };
 
 
 fengshui.controllers.view3d.CameraController.prototype.getCameraHelper = function( name ){
 
-  return this._scene.getObjectByName(name + '-helper');
+  var cameraHelper = goog.array.find(this._cameraHelpers, function(cameraHelper) {
+    return cameraHelper.name === (name + '-helper');
+  });
+
+  return cameraHelper;
 };
 
 
@@ -122,13 +129,8 @@ fengshui.controllers.view3d.CameraController.prototype.setCamera = function( nam
 
 fengshui.controllers.view3d.CameraController.prototype.copyCameraAttributesFromTo = function( cameraA, cameraB ){
 
-  cameraB.position.x = cameraA.position.x;
-  cameraB.position.y = cameraA.position.y;
-  cameraB.position.z = cameraA.position.z;
-
-  cameraB.rotation.x = cameraA.rotation.x;
-  cameraB.rotation.y = cameraA.rotation.y;
-  cameraB.rotation.z = cameraA.rotation.z;
+  cameraB.position.copy( cameraA.position );
+  cameraB.rotation.copy( cameraA.rotation );
 
   cameraB.fov = cameraA.fov;
 

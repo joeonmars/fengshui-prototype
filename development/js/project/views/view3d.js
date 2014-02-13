@@ -31,8 +31,6 @@ fengshui.views.View3D = function(domElement){
 
 	this._splineGroupObject = null;
 
-	this._controls = null;
-
 	this._collidables = [];
 };
 goog.inherits(fengshui.views.View3D, goog.events.EventTarget);
@@ -60,6 +58,12 @@ fengshui.views.View3D.prototype.init = function(){
 fengshui.views.View3D.prototype.getViewSize = function(){
 
 	return goog.style.getSize(this.domElement);
+};
+
+
+fengshui.views.View3D.prototype.getRenderElement = function(){
+
+	return this._renderer.domElement;
 };
 
 
@@ -109,6 +113,7 @@ fengshui.views.View3D.prototype.createSpline = function(coordinates, color) {
 
 
 fengshui.views.View3D.prototype.getCameraZOfObjectExactPixelDimension = function(camera, object) {
+
 	var viewSize = this.getViewSize();
 
 	var vFOV = camera.fov * (Math.PI / 180);
@@ -136,35 +141,15 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 	this.cameraController.init( this._scene );
 
 	// get default camera
-	var browseCamera = this.cameraController.getCamera( fengshui.views.View3D.MODE.BROWSE );
+	var browseCamera = this.cameraController.getCamera( fengshui.views.View3D.Mode.BROWSE );
 	browseCamera.position.x = 0;
 	browseCamera.position.y = 50;
 	browseCamera.position.z = 350;
 
-	var closeupCamera = this.cameraController.getCamera( fengshui.views.View3D.MODE.CLOSE_UP );
+	var closeupCamera = this.cameraController.getCamera( fengshui.views.View3D.Mode.CLOSE_UP );
 	this.cameraController.copyCameraAttributesFromTo(browseCamera, closeupCamera);
 	closeupCamera.fov = 10;
 	closeupCamera.updateProjectionMatrix();
-
-	// controls
-	this._controls = new THREE.TrackballControls( browseCamera, this._renderer.domElement );
-	this._controls.rotateSpeed = 1.0;
-	this._controls.zoomSpeed = 1.2;
-	this._controls.panSpeed = 0.8;
-
-	this._controls.noZoom = false;
-	this._controls.noPan = false;
-	this._controls.noRotate = false;
-	this._controls.minDistance = 100;
-	this._controls.maxDistance = 900;
-
-	this._controls.staticMoving = true;
-	this._controls.dynamicDampingFactor = 0.3;
-	//this._controls.enabled = false;
-
-	this._eventHandler.listen(this._controls, 'change', this.render, false, this);
-	this._eventHandler.listen(this, fengshui.events.EventType.CHANGE, this.onCameraChange, false, this);
-	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
 
 	// add collidables
 	this._scene.traverse(goog.bind(function(child) {
@@ -186,10 +171,7 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 	this.render();
 
 	// init mode controller
-	this.modeController.init();
-
-	//
-	goog.fx.anim.registerAnimation(this);
+	this.modeController.init( fengshui.views.View3D.Mode.DEBUG );
 
 	// test path finding
 	var pathfinder = fengshui.controllers.view3d.PathfindingController.getInstance();
@@ -207,12 +189,11 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 	//this.cameraController.animateFovTo(10, 4);
 	//this.cameraController.animateFocusTo(end, 1, Linear.easeNone);
 	//this.cameraController.animateTo( closeupCamera.position.clone(), bed.position.clone(), 30 );
-};
 
 
-fengshui.views.View3D.prototype.onCameraChange = function(e){
-
-	this._controls.object = e.camera;
+	//
+	goog.fx.anim.registerAnimation(this);
+	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
 };
 
 
@@ -222,8 +203,6 @@ fengshui.views.View3D.prototype.onAnimationFrame = function(now){
 
   var bed = this._scene.getObjectByName('bed');
   bed.rotation.y = time * 0.7;
-
-  this._controls.update();
 
   fengshui.views.View3D.STATS.update();
 
@@ -239,8 +218,6 @@ fengshui.views.View3D.prototype.onResize = function(e){
 
 	this._renderer.setSize( viewSize.width, viewSize.height );
 
-	this._controls.handleResize();
-
 	this.render();
 };
 
@@ -248,9 +225,10 @@ fengshui.views.View3D.prototype.onResize = function(e){
 fengshui.views.View3D.STATS = new Stats();
 
 
-fengshui.views.View3D.MODE = {
+fengshui.views.View3D.Mode = {
 	BROWSE: 'browse', //look around
 	CLOSE_UP: 'close_up', // lock to an object's unique perspective of view
 	PATH: 'path',	// following a path
-	TRANSITION: 'transition' // transition between different cameras for the above mode
+	TRANSITION: 'transition', // transition between different cameras for the above mode
+	DEBUG: 'debug' // for debug
 };

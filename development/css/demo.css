@@ -284,14 +284,14 @@ a {
 #debug-camera .viewPanel > ul > li[data-prop="rotation-z"]:before {
   content: "rotation.z: ";
 }
-#debug-camera .viewPanel > ul > li[data-prop="target-x"]:before {
-  content: "target.x: ";
+#debug-camera .viewPanel > ul > li[data-prop="look-x"]:before {
+  content: "look.x: ";
 }
-#debug-camera .viewPanel > ul > li[data-prop="target-y"]:before {
-  content: "target.y: ";
+#debug-camera .viewPanel > ul > li[data-prop="look-y"]:before {
+  content: "look.y: ";
 }
-#debug-camera .viewPanel > ul > li[data-prop="target-z"]:before {
-  content: "target.z: ";
+#debug-camera .viewPanel > ul > li[data-prop="look-z"]:before {
+  content: "look.z: ";
 }
 #debug-camera .controlPanel > button {
   display: inline-block;
