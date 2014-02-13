@@ -83,7 +83,7 @@ fengshui.views.debug.Camera.prototype.inputCameraAttributes = function(){
 	this._camera.fov = fov;
 
 	this._camera.position.set(position['x'], position['y'], position['z']);
-	this._camera.rotation.set(rotation['x'], rotation['y'], rotation['z']);
+	this._camera.rotation.set(rotation['x'], rotation['y'], rotation['z'], 'XYZ');
 
 	this._camera.updateProjectionMatrix();
 };
