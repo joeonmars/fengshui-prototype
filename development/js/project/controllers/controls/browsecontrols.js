@@ -151,8 +151,8 @@ fengshui.controllers.controls.BrowseControls.prototype.onMouseMove = function ( 
 	this._lastMouseX = e.clientX;
 	this._lastMouseY = e.clientY;
 
-	this._targetRotationY = this._yawObject.rotation.y + movementX * 0.01;
-	this._targetRotationX = this._pitchObject.rotation.x + movementY * 0.01;
+	this._targetRotationY = this._yawObject.rotation.y + movementX * 0.004;
+	this._targetRotationX = this._pitchObject.rotation.x + movementY * 0.004;
 };
 
 

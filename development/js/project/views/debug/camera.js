@@ -206,16 +206,25 @@ fengshui.views.debug.Camera.prototype.onAnimationFrame = function(now){
 
 	}else {
 
+		// get camera's world position
+		this._camera.updateMatrixWorld();
+		var position = this._camera.position.clone();
+		position.applyMatrix4( this._camera.matrixWorld );
+
+		// get camera's world rotation
+		var rotation = this._camera.rotation.clone();
+		rotation.setFromRotationMatrix( this._camera.matrixWorld, 'XYZ' );
+
 		this._fovDom.innerHTML = this._camera.fov;
-	  this._positionXDom.innerHTML = this._camera.position.x;
-	  this._positionYDom.innerHTML = this._camera.position.y;
-	  this._positionZDom.innerHTML = this._camera.position.z;
-	  this._rotationXDom.innerHTML = this._camera.rotation.x;
-	  this._rotationYDom.innerHTML = this._camera.rotation.y;
-	  this._rotationZDom.innerHTML = this._camera.rotation.z;
+	  this._positionXDom.innerHTML = position.x;
+	  this._positionYDom.innerHTML = position.y;
+	  this._positionZDom.innerHTML = position.z;
+	  this._rotationXDom.innerHTML = rotation.x;
+	  this._rotationYDom.innerHTML = rotation.y;
+	  this._rotationZDom.innerHTML = rotation.z;
 
 	  var look = new THREE.Vector3(0, 0, -1);
-    look.applyEuler(this._camera.rotation, this._camera.rotation.order);
+    look.applyEuler(rotation, rotation.order);
 
 	  this._lookXDom.innerHTML = look.x;
 	  this._lookYDom.innerHTML = look.y;

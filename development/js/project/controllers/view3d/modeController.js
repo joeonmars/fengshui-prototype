@@ -86,7 +86,7 @@ fengshui.controllers.view3d.ModeController.prototype.createBrowseControls = func
 
 	var controls = new fengshui.controllers.controls.BrowseControls( camera, renderElement );
 	controls.enabled = true;
-	controls.getObject().position.set( 0, 100, 250 );
+	controls.getObject().position.set( 0, 100, 350 );
 	this._view3d._scene.add( controls.getObject() );
 
 	return controls;

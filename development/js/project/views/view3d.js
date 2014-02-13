@@ -142,9 +142,6 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 
 	// get default camera
 	var browseCamera = this.cameraController.getCamera( fengshui.views.View3D.Mode.BROWSE );
-	browseCamera.position.x = 0;
-	browseCamera.position.y = 50;
-	browseCamera.position.z = 350;
 
 	var closeupCamera = this.cameraController.getCamera( fengshui.views.View3D.Mode.CLOSE_UP );
 	this.cameraController.copyCameraAttributesFromTo(browseCamera, closeupCamera);
