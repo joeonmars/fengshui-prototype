@@ -19,19 +19,19 @@ fengshui.views.View3D = function(domElement){
   this.setParentEventTarget( fengshui.controllers.view3d.View3DController.getInstance() );
 
   this.domElement = domElement;
+	this.scene = null;
 	
-	this.cameraController = new fengshui.controllers.view3d.CameraController(this);
-	this.modeController = new fengshui.controllers.view3d.ModeController(this);
-
-  this._eventHandler = new goog.events.EventHandler(this);
-
-	this._scene = null;
 	this._renderer = null;
 	this._axisHelper = null;
 
 	this._splineGroupObject = null;
 
 	this._collidables = [];
+
+	this.cameraController = new fengshui.controllers.view3d.CameraController(this);
+	this.modeController = new fengshui.controllers.view3d.ModeController(this);
+
+  this._eventHandler = new goog.events.EventHandler(this);
 };
 goog.inherits(fengshui.views.View3D, goog.events.EventTarget);
 
@@ -85,7 +85,7 @@ fengshui.views.View3D.prototype.hide = function(){
 
 
 fengshui.views.View3D.prototype.render = function() {
-	this._renderer.render(this._scene, this.cameraController.activeCamera);
+	this._renderer.render(this.scene, this.cameraController.activeCamera);
 };
 
 
@@ -125,20 +125,20 @@ fengshui.views.View3D.prototype.getCameraZOfObjectExactPixelDimension = function
 
 fengshui.views.View3D.prototype.onLoad = function(result) {
 	
-	this._scene = result;
+	this.scene = result;
 	console.log(result);
 
 	// add spline group object
 	this._splineGroupObject = new THREE.Object3D();
 	this._splineGroupObject.name = 'spline-group';
-	this._scene.add( this._splineGroupObject );
+	this.scene.add( this._splineGroupObject );
 
 	// create axis helper
 	this._axisHelper = new THREE.AxisHelper( 1000 );
-	this._scene.add( this._axisHelper );
+	this.scene.add( this._axisHelper );
 
 	// init camera controller
-	this.cameraController.init( this._scene );
+	this.cameraController.init( this.scene );
 
 	// get default camera
 	var browseCamera = this.cameraController.getCamera( fengshui.views.View3D.Mode.BROWSE );
@@ -149,14 +149,14 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 	closeupCamera.updateProjectionMatrix();
 
 	// add collidables
-	this._scene.traverse(goog.bind(function(child) {
+	this.scene.traverse(goog.bind(function(child) {
 		if(child.userData['collidable'] === true) {
 			this._collidables.push(child);
 		}
 	}, this));
 
 	//
-	var bed = this._scene.getObjectByName('bed');
+	var bed = this.scene.getObjectByName('bed');
 	var material = new THREE.MeshBasicMaterial({
     map: THREE.ImageUtils.loadTexture('model/bed_bake.png'),
     transparent: true,
@@ -175,7 +175,7 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 
 	var start = new THREE.Vector3(150, 0, 150);
 	var end = new THREE.Vector3(-100, 0, -50);
-	var coordinates = pathfinder.findPath( start, end, this._collidables, this._scene );
+	var coordinates = pathfinder.findPath( start, end, this._collidables, this.scene );
 
 	var spline = this.createSpline(coordinates, 0xff00f0);
 
@@ -198,7 +198,7 @@ fengshui.views.View3D.prototype.onAnimationFrame = function(now){
 
   var time = now * 0.0004;
 
-  var bed = this._scene.getObjectByName('bed');
+  var bed = this.scene.getObjectByName('bed');
   bed.rotation.y = time * 0.7;
 
   fengshui.views.View3D.STATS.update();

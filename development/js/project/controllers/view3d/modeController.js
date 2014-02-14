@@ -83,11 +83,12 @@ fengshui.controllers.view3d.ModeController.prototype.createBrowseControls = func
 
 	var renderElement = this._view3d.getRenderElement();
 	var camera = this._cameraController.getCamera( fengshui.views.View3D.Mode.BROWSE );
+	var scene = this._view3d.scene;
 
-	var controls = new fengshui.controllers.controls.BrowseControls( camera, renderElement );
+	var controls = new fengshui.controllers.controls.BrowseControls( camera, scene, renderElement, this );
 	controls.enabled = true;
 	controls.getObject().position.set( 0, 100, 350 );
-	this._view3d._scene.add( controls.getObject() );
+	this._view3d.scene.add( controls.getObject() );
 
 	return controls;
 };
@@ -123,7 +124,7 @@ fengshui.controllers.view3d.ModeController.prototype.createTrackballControls = f
 
 fengshui.controllers.view3d.ModeController.prototype.onModeChange = function(e){
 
-	console.log('view3D mode changed to ' + e.mode);
+	console.log('view3D mode changed to ' + e.mode, e);
 };
 
 
@@ -132,7 +133,7 @@ fengshui.controllers.view3d.ModeController.prototype.onAnimationFrame = function
 	var delta = this._clock.getDelta();
 	var elapsed = this._clock.getElapsedTime();
 
-	this._browseControls.update( delta, elapsed );
+	this._browseControls.update( elapsed );
   this._trackballControls.update();
 };
 

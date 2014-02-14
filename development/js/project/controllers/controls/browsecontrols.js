@@ -10,13 +10,20 @@ goog.require('fengshui.utils.MultiLinearInterpolator');
  * @constructor
  * a mod of PointerLockControls...
  */
-fengshui.controllers.controls.BrowseControls = function(camera, domElement){
+fengshui.controllers.controls.BrowseControls = function(camera, scene, domElement, modeController){
   goog.base(this);
+
+  this.setParentEventTarget( modeController );
 
   this.enabled = false;
 
 	this.camera = camera;
 	this.camera.rotation.set( 0, 0, 0 );
+
+	this._scene = scene;
+	this._clickableObjects = goog.array.filter(this._scene.children, function(object) {
+		return (object instanceof THREE.Mesh);
+	});
 
 	this._pitchObject = new THREE.Object3D();
 	this._pitchObject.add( this.camera );
@@ -24,19 +31,16 @@ fengshui.controllers.controls.BrowseControls = function(camera, domElement){
 	this._yawObject = new THREE.Object3D();
 	this._yawObject.add( this._pitchObject );
 
-	this._domElement = domElement || document;
+	this._domElement = domElement;
 
-	this._moveForward = false;
-	this._moveBackward = false;
-	this._moveLeft = false;
-	this._moveRight = false;
-
-	this._velocity = new THREE.Vector3();
+	this._hasDragged = false;
 
 	this._lastMouseX = 0;
 	this._lastMouseY = 0;
 	this._targetRotationX = 0;
 	this._targetRotationY = 0;
+
+	this._projector = new THREE.Projector();
 
 	var randomXNumbers = fengshui.utils.Randomizer.getRandomNumbers(6, 10, true);
 	goog.array.forEach(randomXNumbers, function(number, index) {
@@ -52,9 +56,8 @@ fengshui.controllers.controls.BrowseControls = function(camera, domElement){
 	this._randomYInterpolator = new fengshui.utils.MultiLinearInterpolator(randomYNumbers, 10000);
 
 	this._eventHandler = new goog.events.EventHandler(this);
+	this._eventHandler.listen(this._domElement, 'click', this.onClick, false, this);
 	this._eventHandler.listen(this._domElement, 'mousedown', this.onMouseDown, false, this);
-	this._eventHandler.listen(document, 'keydown', this.onKeyDown, false, this);
-	this._eventHandler.listen(document, 'keyup', this.onKeyUp, false, this);
 };
 goog.inherits(fengshui.controllers.controls.BrowseControls, goog.events.EventTarget);
 
@@ -86,26 +89,11 @@ fengshui.controllers.controls.BrowseControls.prototype.getDirection = function()
 };
 
 
-fengshui.controllers.controls.BrowseControls.prototype.update = function ( delta, elapsed ) {
+fengshui.controllers.controls.BrowseControls.prototype.update = function ( elapsed ) {
 
 	if ( !this.enabled ) return;
 
-	delta *= 0.1;
-
 	var PI_2 = Math.PI / 2;
-
-	this._velocity.x += ( - this._velocity.x ) * 0.08 * delta;
-	this._velocity.z += ( - this._velocity.z ) * 0.08 * delta;
-
-	if ( this._moveForward ) this._velocity.z -= 0.12 * delta;
-	if ( this._moveBackward ) this._velocity.z += 0.12 * delta;
-
-	if ( this._moveLeft ) this._velocity.x -= 0.12 * delta;
-	if ( this._moveRight ) this._velocity.x += 0.12 * delta;
-
-	this._yawObject.translateX( this._velocity.x );
-	this._yawObject.translateY( this._velocity.y ); 
-	this._yawObject.translateZ( this._velocity.z );
 
 	this._yawObject.rotation.y += (this._targetRotationY - this._yawObject.rotation.y) * .1;
 	this._pitchObject.rotation.x += (this._targetRotationX - this._pitchObject.rotation.x) * .1;
@@ -122,28 +110,59 @@ fengshui.controllers.controls.BrowseControls.prototype.update = function ( delta
 };
 
 
+fengshui.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
+
+	if ( !this.enabled || this._hasDragged ) return;
+
+	var viewSize = goog.style.getSize(this._domElement);
+	var position = this.getObject().position;
+
+	var vector = new THREE.Vector3( ( e.clientX / viewSize.width ) * 2 - 1, - ( e.clientY / viewSize.height ) * 2 + 1, 0.5 );
+	this._projector.unprojectVector( vector, this.camera );
+
+	var raycaster = new THREE.Raycaster( position, vector.sub( position ).normalize() );
+
+	var intersects = raycaster.intersectObjects( this._clickableObjects );
+
+	if ( intersects.length > 0 ) {
+
+		console.log('clicked on ' + intersects[0].object.name);
+
+		this.dispatchEvent({
+			type: fengshui.events.EventType.CHANGE,
+			mode: fengshui.views.View3D.Mode.PATH,
+			position: intersects[0].point
+		});
+	}
+};
+
+
 fengshui.controllers.controls.BrowseControls.prototype.onMouseDown = function ( e ) {
 
 	if ( !this.enabled ) return;
+
+	this._hasDragged = false;
 
 	this._lastMouseX = e.clientX;
 	this._lastMouseY = e.clientY;
 
 	this._eventHandler.listen(this._domElement, 'mousemove', this.onMouseMove, false, this);
-	this._eventHandler.listen(this._domElement, 'mouseup', this.onMouseUp, false, this);
+	this._eventHandler.listen(document, 'mouseup', this.onMouseUp, false, this);
 };
 
 
 fengshui.controllers.controls.BrowseControls.prototype.onMouseUp = function ( e ) {
 
 	this._eventHandler.unlisten(this._domElement, 'mousemove', this.onMouseMove, false, this);
-	this._eventHandler.unlisten(this._domElement, 'mouseup', this.onMouseUp, false, this);
+	this._eventHandler.unlisten(document, 'mouseup', this.onMouseUp, false, this);
 };
 
 
 fengshui.controllers.controls.BrowseControls.prototype.onMouseMove = function ( e ) {
 
 	if ( !this.enabled ) return;
+
+	this._hasDragged = true;
 
 	var movementX = e.clientX - this._lastMouseX;
 	var movementY = e.clientY - this._lastMouseY;
@@ -153,57 +172,4 @@ fengshui.controllers.controls.BrowseControls.prototype.onMouseMove = function ( 
 
 	this._targetRotationY = this._yawObject.rotation.y + movementX * 0.004;
 	this._targetRotationX = this._pitchObject.rotation.x + movementY * 0.004;
-};
-
-
-fengshui.controllers.controls.BrowseControls.prototype.onKeyDown = function ( e ) {
-
-	switch ( e.keyCode ) {
-
-		case 38: // up
-		case 87: // w
-			this._moveForward = true;
-			break;
-
-		case 37: // left
-		case 65: // a
-			this._moveLeft = true; break;
-
-		case 40: // down
-		case 83: // s
-			this._moveBackward = true;
-			break;
-
-		case 39: // right
-		case 68: // d
-			this._moveRight = true;
-			break;
-	}
-};
-
-
-fengshui.controllers.controls.BrowseControls.prototype.onKeyUp = function (e) {
-
-	switch( e.keyCode ) {
-
-		case 38: // up
-		case 87: // w
-			this._moveForward = false;
-			break;
-
-		case 37: // left
-		case 65: // a
-			this._moveLeft = false;
-			break;
-
-		case 40: // down
-		case 83: // s
-			this._moveBackward = false;
-			break;
-
-		case 39: // right
-		case 68: // d
-			this._moveRight = false;
-			break;
-	}
 };
