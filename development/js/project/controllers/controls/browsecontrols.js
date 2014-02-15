@@ -10,20 +10,15 @@ goog.require('fengshui.utils.MultiLinearInterpolator');
  * @constructor
  * a mod of PointerLockControls...
  */
-fengshui.controllers.controls.BrowseControls = function(camera, scene, domElement, modeController){
+fengshui.controllers.controls.BrowseControls = function(camera, clickableObjects, domElement){
   goog.base(this);
-
-  this.setParentEventTarget( modeController );
 
   this.enabled = false;
 
 	this.camera = camera;
 	this.camera.rotation.set( 0, 0, 0 );
 
-	this._scene = scene;
-	this._clickableObjects = goog.array.filter(this._scene.children, function(object) {
-		return (object instanceof THREE.Mesh);
-	});
+	this._clickableObjects = clickableObjects;
 
 	this._pitchObject = new THREE.Object3D();
 	this._pitchObject.add( this.camera );

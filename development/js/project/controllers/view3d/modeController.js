@@ -85,10 +85,15 @@ fengshui.controllers.view3d.ModeController.prototype.createBrowseControls = func
 	var camera = this._cameraController.getCamera( fengshui.views.View3D.Mode.BROWSE );
 	var scene = this._view3d.scene;
 
-	var controls = new fengshui.controllers.controls.BrowseControls( camera, scene, renderElement, this );
+	var clickableObjects = goog.array.filter(scene.children, function(object) {
+		return (object instanceof THREE.Mesh);
+	});
+
+	var controls = new fengshui.controllers.controls.BrowseControls( camera, clickableObjects, renderElement );
+	controls.setParentEventTarget( this );
 	controls.enabled = true;
 	controls.getObject().position.set( 0, 100, 350 );
-	this._view3d.scene.add( controls.getObject() );
+	scene.add( controls.getObject() );
 
 	return controls;
 };
