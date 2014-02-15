@@ -91,9 +91,10 @@ fengshui.controllers.view3d.ModeController.prototype.createBrowseControls = func
 
 	var controls = new fengshui.controllers.controls.BrowseControls( camera, clickableObjects, renderElement );
 	controls.setParentEventTarget( this );
-	controls.enabled = true;
-	controls.getObject().position.set( 0, 100, 350 );
+	controls.setPosition( 0, 100, 350 );
 	scene.add( controls.getObject() );
+
+	controls.enable(true);
 
 	return controls;
 };

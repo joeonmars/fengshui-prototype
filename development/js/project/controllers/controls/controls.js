@@ -32,6 +32,55 @@ fengshui.controllers.controls.Controls = function(camera, domElement){
 goog.inherits(fengshui.controllers.controls.Controls, goog.events.EventTarget);
 
 
+fengshui.controllers.controls.Controls.prototype.getObject = function () {
+
+	return this._yawObject;
+};
+
+
+fengshui.controllers.controls.Controls.prototype.getCamera = function () {
+
+	return this._camera;
+};
+
+
+fengshui.controllers.controls.Controls.prototype.getPosition = function () {
+
+	return this.getObject().position;
+};
+
+
+fengshui.controllers.controls.Controls.prototype.getRotation = function () {
+
+	var rotation = new THREE.Euler( this._pitchObject.rotation.x, this._yawObject.rotation.y, 0, 'XYZ' );
+	return rotation;
+};
+
+
+fengshui.controllers.controls.Controls.prototype.setPosition = function (x, y, z) {
+
+	if(x instanceof THREE.Vector3) {
+		var position = x;
+		this._yawObject.position.copy( position );
+	}else {
+		this._yawObject.position.set(x, y, z);
+	}
+};
+
+
+fengshui.controllers.controls.Controls.prototype.setRotation = function (x, y) {
+
+	if(x instanceof THREE.Euler) {
+		var rotation = x;
+		this._pitchObject.rotation.x = rotation.x;
+		this._yawObject.rotation.y = rotation.y;
+	}else {
+		this._pitchObject.rotation.x = x;
+		this._yawObject.rotation.y = y;
+	}
+};
+
+
 fengshui.controllers.controls.Controls.prototype.reset = function () {
 
 	this._camera.position.set( 0, 0, 0 );
@@ -42,18 +91,6 @@ fengshui.controllers.controls.Controls.prototype.reset = function () {
 	
 	this._yawObject.position = this._originalPosition;
 	this._yawObject.rotation = this._originalRotation;
-};
-
-
-fengshui.controllers.controls.Controls.prototype.getObject = function () {
-
-	return this._yawObject;
-};
-
-
-fengshui.controllers.controls.Controls.prototype.getCamera = function () {
-
-	return this._camera;
 };
 
 

@@ -1,8 +1,8 @@
 goog.provide('fengshui.controllers.controls.BrowseControls');
 
-goog.require('goog.events.EventTarget');
-goog.require('goog.events.EventHandler');
 goog.require('goog.events');
+goog.require('goog.math');
+goog.require('fengshui.controllers.controls.Controls');
 goog.require('fengshui.utils.Randomizer');
 goog.require('fengshui.utils.MultiLinearInterpolator');
 
@@ -11,22 +11,10 @@ goog.require('fengshui.utils.MultiLinearInterpolator');
  * a mod of PointerLockControls...
  */
 fengshui.controllers.controls.BrowseControls = function(camera, clickableObjects, domElement){
-  goog.base(this);
 
-  this.enabled = false;
-
-	this.camera = camera;
-	this.camera.rotation.set( 0, 0, 0 );
+  goog.base(this, camera, domElement);
 
 	this._clickableObjects = clickableObjects;
-
-	this._pitchObject = new THREE.Object3D();
-	this._pitchObject.add( this.camera );
-
-	this._yawObject = new THREE.Object3D();
-	this._yawObject.add( this._pitchObject );
-
-	this._domElement = domElement;
 
 	this._hasDragged = false;
 
@@ -34,6 +22,9 @@ fengshui.controllers.controls.BrowseControls = function(camera, clickableObjects
 	this._lastMouseY = 0;
 	this._targetRotationX = 0;
 	this._targetRotationY = 0;
+
+	this._maxRotationX = goog.math.toRadians(45);
+	this._minRotationX = goog.math.toRadians(-45);
 
 	this._projector = new THREE.Projector();
 
@@ -49,44 +40,13 @@ fengshui.controllers.controls.BrowseControls = function(camera, clickableObjects
 
 	this._randomXInterpolator = new fengshui.utils.MultiLinearInterpolator(randomXNumbers, 8000);
 	this._randomYInterpolator = new fengshui.utils.MultiLinearInterpolator(randomYNumbers, 10000);
-
-	this._eventHandler = new goog.events.EventHandler(this);
-	this._eventHandler.listen(this._domElement, 'click', this.onClick, false, this);
-	this._eventHandler.listen(this._domElement, 'mousedown', this.onMouseDown, false, this);
 };
-goog.inherits(fengshui.controllers.controls.BrowseControls, goog.events.EventTarget);
-
-
-fengshui.controllers.controls.BrowseControls.prototype.reset = function () {
-
-	this._yawObject.rotation.y = 0;
-	this._pitchObject.rotation.x = 0;
-};
-
-
-fengshui.controllers.controls.BrowseControls.prototype.getObject = function () {
-
-	return this._yawObject;
-};
-
-
-fengshui.controllers.controls.BrowseControls.prototype.getDirection = function() {
-
-	// assumes the camera itself is not rotated
-	var direction = new THREE.Vector3( 0, 0, -1 );
-	var rotation = new THREE.Euler( 0, 0, 0, "YXZ" );
-
-	var v = this._yawObject.position.clone();
-	rotation.set( this._pitchObject.rotation.x, this._yawObject.rotation.y, 0 );
-	v.copy( direction ).applyEuler( rotation );
-
-	return v;
-};
+goog.inherits(fengshui.controllers.controls.BrowseControls, fengshui.controllers.controls.Controls);
 
 
 fengshui.controllers.controls.BrowseControls.prototype.update = function ( elapsed ) {
 
-	if ( !this.enabled ) return;
+	if ( !this._isEnabled ) return;
 
 	var PI_2 = Math.PI / 2;
 
@@ -100,20 +60,22 @@ fengshui.controllers.controls.BrowseControls.prototype.update = function ( elaps
 
 	var cameraRotateX = this._randomXInterpolator.getValue() * .04;
 	var cameraRotateY = this._randomYInterpolator.getValue() * .04;
-	this.camera.rotation.x = cameraRotateX;
-	this.camera.rotation.y = cameraRotateY;
+	this._camera.rotation.x = cameraRotateX;
+	this._camera.rotation.y = cameraRotateY;
 };
 
 
 fengshui.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 
-	if ( !this.enabled || this._hasDragged ) return;
+	goog.base(this, 'onClick', e);
+
+	if ( this._hasDragged ) return;
 
 	var viewSize = goog.style.getSize(this._domElement);
 	var position = this.getObject().position;
 
 	var vector = new THREE.Vector3( ( e.clientX / viewSize.width ) * 2 - 1, - ( e.clientY / viewSize.height ) * 2 + 1, 0.5 );
-	this._projector.unprojectVector( vector, this.camera );
+	this._projector.unprojectVector( vector, this._camera );
 
 	var raycaster = new THREE.Raycaster( position, vector.sub( position ).normalize() );
 
@@ -134,28 +96,18 @@ fengshui.controllers.controls.BrowseControls.prototype.onClick = function ( e ) 
 
 fengshui.controllers.controls.BrowseControls.prototype.onMouseDown = function ( e ) {
 
-	if ( !this.enabled ) return;
+	goog.base(this, 'onMouseDown', e);
 
 	this._hasDragged = false;
 
 	this._lastMouseX = e.clientX;
 	this._lastMouseY = e.clientY;
-
-	this._eventHandler.listen(this._domElement, 'mousemove', this.onMouseMove, false, this);
-	this._eventHandler.listen(document, 'mouseup', this.onMouseUp, false, this);
-};
-
-
-fengshui.controllers.controls.BrowseControls.prototype.onMouseUp = function ( e ) {
-
-	this._eventHandler.unlisten(this._domElement, 'mousemove', this.onMouseMove, false, this);
-	this._eventHandler.unlisten(document, 'mouseup', this.onMouseUp, false, this);
 };
 
 
 fengshui.controllers.controls.BrowseControls.prototype.onMouseMove = function ( e ) {
 
-	if ( !this.enabled ) return;
+	goog.base(this, 'onMouseMove', e);
 
 	this._hasDragged = true;
 
@@ -167,4 +119,7 @@ fengshui.controllers.controls.BrowseControls.prototype.onMouseMove = function ( 
 
 	this._targetRotationY = this._yawObject.rotation.y + movementX * 0.004;
 	this._targetRotationX = this._pitchObject.rotation.x + movementY * 0.004;
+
+	// limit vertical rotation
+	this._targetRotationX = Math.max(Math.min(this._maxRotationX, this._targetRotationX), this._minRotationX);
 };

@@ -1,5 +1,7 @@
 goog.provide('fengshui.models.object3d.FengshuiObject');
 
+goog.require('fengshui.models.object3d.Object3D');
+
 
 /**
  * @constructor
@@ -9,7 +11,7 @@ fengshui.models.object3d.FengshuiObject = function( mesh ){
   goog.base(this, mesh);
 
 };
-goog.inherits("fengshui.models.object3d.FengshuiObject", "fengshui.models.object3d.Object3D");
+goog.inherits(fengshui.models.object3d.FengshuiObject, fengshui.models.object3d.Object3D);
 
 
 fengshui.models.object3d.FengshuiObject.prototype.getRequirement = function() {
