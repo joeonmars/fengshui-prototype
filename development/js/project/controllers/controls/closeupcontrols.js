@@ -37,24 +37,11 @@ fengshui.controllers.controls.CloseUpControls = function(camera, domElement, vie
 goog.inherits(fengshui.controllers.controls.CloseUpControls, fengshui.controllers.controls.Controls);
 
 
-fengshui.controllers.controls.CloseUpControls.prototype.update = function ( elapsed ) {
+fengshui.controllers.controls.CloseUpControls.prototype.update = function () {
 
-	if ( !this._isEnabled ) return;
+	goog.base(this, 'update');
 
-	var PI_2 = Math.PI / 2;
-
-	this._yawObject.rotation.y += (this._targetRotationY - this._yawObject.rotation.y) * .1;
-	this._pitchObject.rotation.x += (this._targetRotationX - this._pitchObject.rotation.x) * .1;
-	this._pitchObject.rotation.x = Math.max( - PI_2, Math.min( PI_2, this._pitchObject.rotation.x ) );
-
-	// random rotating motion
-	this._randomXInterpolator.update( elapsed * 1000 );
-	this._randomYInterpolator.update( elapsed * 1000 );
-
-	var cameraRotateX = this._randomXInterpolator.getValue() * .04;
-	var cameraRotateY = this._randomYInterpolator.getValue() * .04;
-	this._camera.rotation.x = cameraRotateX;
-	this._camera.rotation.y = cameraRotateY;
+	var elapsed = this._clock.getElapsedTime();
 };
 
 

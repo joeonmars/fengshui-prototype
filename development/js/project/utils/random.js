@@ -15,7 +15,7 @@ fengshui.utils.Randomizer = function(){
 /**
  * Static Method, return seeded randomized numbers
  */
-fengshui.utils.Randomizer.getRandomNumbers = function(seed, amount, loop){
+fengshui.utils.Randomizer.getRandomNumbers = function(seed, amount){
 
 	var random = new goog.testing.PseudoRandom(seed);
 	var randomNumbers = [];
@@ -23,8 +23,6 @@ fengshui.utils.Randomizer.getRandomNumbers = function(seed, amount, loop){
 	for(var i = 0; i < amount; ++i) {
 		randomNumbers.push( random.random() );
 	}
-
-	if(loop === true) randomNumbers.push( randomNumbers[0] );
 
 	return randomNumbers;
 };

@@ -30,12 +30,16 @@ fengshui.controllers.controls.BrowseControls = function(camera, domElement, view
 
 	this._projector = new THREE.Projector();
 
-	var randomXNumbers = fengshui.utils.Randomizer.getRandomNumbers(6, 10, true);
+	var randomXNumbers = fengshui.utils.Randomizer.getRandomNumbers(6, 10);
+	randomXNumbers.unshift(0);
+	randomXNumbers.push(0);
 	goog.array.forEach(randomXNumbers, function(number, index) {
 		if(index % 2 === 0) randomXNumbers[index] *= -1;
 	});
 
-	var randomYNumbers = fengshui.utils.Randomizer.getRandomNumbers(1, 10, true);
+	var randomYNumbers = fengshui.utils.Randomizer.getRandomNumbers(1, 10);
+	randomYNumbers.unshift(0);
+	randomYNumbers.push(0);
 	goog.array.forEach(randomYNumbers, function(number, index) {
 		if(index % 2 === 0) randomYNumbers[index] *= -1;
 	});
@@ -71,9 +75,24 @@ fengshui.controllers.controls.BrowseControls.prototype.setRotation = function (x
 };
 
 
-fengshui.controllers.controls.BrowseControls.prototype.update = function ( elapsed ) {
+fengshui.controllers.controls.BrowseControls.prototype.enable = function( enable ) {
 
-	if ( !this._isEnabled ) return;
+	goog.base(this, 'enable', enable);
+
+	if(!this._isEnabled) {
+		// reset clock, thus set camera natural movement's playhead to 0
+		this._clock.startTime = 0;
+		this._clock.oldTime = 0;
+		this._clock.elapsedTime = 0;
+	}
+};
+
+
+fengshui.controllers.controls.BrowseControls.prototype.update = function () {
+
+	goog.base(this, 'update');
+
+	var elapsed = this._clock.getElapsedTime();
 
 	var PI_2 = Math.PI / 2;
 

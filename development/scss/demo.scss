@@ -1,16 +1,12 @@
 // --- Image Sprites ---
+/*
 $bed-sprite-dimensions: true;
 $bed-layout:smart;
 
 @import "textures/bed/*.png";
 @include all-bed-sprites;
-
-$benzai-sprite-dimensions: true;
-$benzai-layout:smart;
-
-@import "textures/benzai/*.png";
-@include all-benzai-sprites;
-
+*/
+ 
 @import "global";
 @import "debug";
 

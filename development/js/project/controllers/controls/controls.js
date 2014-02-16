@@ -16,6 +16,8 @@ fengshui.controllers.controls.Controls = function(camera, domElement, view3d){
   this._scene = this._view3d.scene;
 
   this._isEnabled = false;
+  this._clock = new THREE.Clock(false);
+
   this._originalPosition = this._camera.position.clone();
   this._originalRotation = this._camera.rotation.clone();
 
@@ -121,9 +123,20 @@ fengshui.controllers.controls.Controls.prototype.enable = function( enable ) {
 	if(this._isEnabled) {
 		this._eventHandler.listen(this._domElement, 'click', this.onClick, false, this);
 		this._eventHandler.listen(this._domElement, 'mousedown', this.onMouseDown, false, this);
+
+		this._clock.start();
+		goog.fx.anim.registerAnimation(this);
 	}else {
 		this._eventHandler.removeAll();
+
+		this._clock.stop();
+		goog.fx.anim.unregisterAnimation(this);
 	}
+};
+
+
+fengshui.controllers.controls.Controls.prototype.update = function() {
+
 };
 
 
@@ -138,6 +151,12 @@ fengshui.controllers.controls.Controls.prototype.getDirection = function() {
 	v.copy( direction ).applyEuler( rotation );
 
 	return v;
+};
+
+
+fengshui.controllers.controls.Controls.prototype.onAnimationFrame = function ( now ) {
+
+	this.update();
 };
 
 

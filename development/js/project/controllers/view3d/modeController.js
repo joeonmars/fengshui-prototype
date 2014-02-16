@@ -32,8 +32,6 @@ fengshui.controllers.view3d.ModeController = function( view3d ){
   this._control = null;
   this._mode = null;
 
-  this._clock = new THREE.Clock();
-
   this._modeControls = {};
   this._modeControls[fengshui.views.View3D.Mode.BROWSE] = null;
   this._modeControls[fengshui.views.View3D.Mode.CLOSE_UP] = null;
@@ -58,8 +56,6 @@ fengshui.controllers.view3d.ModeController.prototype.init = function( modeData )
   this._modeControls[fengshui.views.View3D.Mode.TRANSITION] = this._transitionControls;
 
   //
-  goog.fx.anim.registerAnimation(this);
-
   this._eventHandler.listen(this, fengshui.events.EventType.CHANGE, this.onModeChange, false, this);
 
   // set initial mode
@@ -177,17 +173,6 @@ fengshui.controllers.view3d.ModeController.prototype.onModeChange = function(e) 
 	this.control.enable(true);
 
 	this._cameraController.setCamera( this.control.getCamera() );
-};
-
-
-fengshui.controllers.view3d.ModeController.prototype.onAnimationFrame = function(now){
-	
-	var delta = this._clock.getDelta();
-	var elapsed = this._clock.getElapsedTime();
-
-	this._browseControls.update( elapsed );
-  this._closeUpControls.update( elapsed );
-  this._pathControls.update( elapsed );
 };
 
 
