@@ -168,19 +168,14 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 	this.render();
 
 	// init mode controller
-	this.modeController.init( fengshui.views.View3D.Mode.BROWSE );
-
-	// test path finding
-	var pathfinder = fengshui.controllers.view3d.PathfindingController.getInstance();
-
-	var start = new THREE.Vector3(150, 0, 150);
-	var end = new THREE.Vector3(-100, 0, -50);
-	var coordinates = pathfinder.findPath( start, end, this._collidables, this.scene );
-
-	var spline = this.createSpline(coordinates, 0xff00f0);
+	this.modeController.init({
+		mode: fengshui.views.View3D.Mode.BROWSE,
+		fromPosition: new THREE.Vector3(0, 80, 350),
+		fromRotation: new THREE.Euler(0, 0, 0, 'XYZ'),
+		fromPov: 45
+	});
 
 	// tween the camera
-	//this.cameraController.followSpline(spline);
 	//this.cameraController.animatePositionTo(new THREE.Vector3(0, 100, 600), 4);
 	//this.cameraController.animateFocusTo(new THREE.Vector3(0, 40, 0), 4);
 	//this.cameraController.animateFovTo(10, 4);
@@ -199,7 +194,7 @@ fengshui.views.View3D.prototype.onAnimationFrame = function(now){
   var time = now * 0.0004;
 
   var bed = this.scene.getObjectByName('bed');
-  bed.rotation.y = time * 0.7;
+  //bed.rotation.y = time * 0.5;
 
   fengshui.views.View3D.STATS.update();
 

@@ -18,7 +18,7 @@ goog.inherits(fengshui.controllers.view3d.PathfindingController, goog.events.Eve
 goog.addSingletonGetter(fengshui.controllers.view3d.PathfindingController);
 
 
-fengshui.controllers.view3d.PathfindingController.prototype.findPath = function( start, end, collidables, scene, minCellsInRowOrCol ) {
+fengshui.controllers.view3d.PathfindingController.prototype.generateMatrix = function( start, end, collidables, scene, minTilesInRowOrCol ) {
 
 	var gridMinX = 0, gridMinZ = 0;
 	var gridMaxX = 0, gridMaxZ = 0;
@@ -28,7 +28,7 @@ fengshui.controllers.view3d.PathfindingController.prototype.findPath = function(
 			var mesh = child;
 		  var box = new THREE.Box3().setFromObject( mesh );
 			
-			console.log(mesh.name + ' bounding box: ', box);
+			//console.log(mesh.name + ' bounding box: ', box);
 
 		  var minX = box.min.x;
 		  var minZ = box.min.z;
@@ -55,20 +55,20 @@ fengshui.controllers.view3d.PathfindingController.prototype.findPath = function(
 	  var collidableBox = new goog.math.Box(minZ, maxX, maxZ, minX);
 	  collidableBoxes.push( collidableBox );
 
-	  console.log(collidableBox);
+	  //console.log(collidableBox);
 	});
 
 	var gridWidth = Math.abs(gridMaxX - gridMinX);
 	var gridHeight = Math.abs(gridMaxZ - gridMinZ);
 
-	var minCellsInRowOrCol = minCellsInRowOrCol || 20;
-	var cellSize = (gridWidth > gridHeight) ? (gridWidth / minCellsInRowOrCol) : (gridHeight / minCellsInRowOrCol);
+	var minTilesInRowOrCol = minTilesInRowOrCol || 20;
+	var tileSize = (gridWidth > gridHeight) ? (gridWidth / minTilesInRowOrCol) : (gridHeight / minTilesInRowOrCol);
 
-	gridWidth += cellSize;
-	gridHeight += cellSize;
+	gridWidth += tileSize;
+	gridHeight += tileSize;
 
-	var numCols = Math.floor(gridWidth / cellSize);
-	var numRows = Math.floor(gridHeight / cellSize);
+	var numCols = Math.floor(gridWidth / tileSize);
+	var numRows = Math.floor(gridHeight / tileSize);
 
 	// generate matrix
 	var boxes = [];
@@ -79,10 +79,10 @@ fengshui.controllers.view3d.PathfindingController.prototype.findPath = function(
 		var rowData = [];
 
 		for(col = 0; col < numCols; ++col) {
-			var boxMinX = gridMinX + col * cellSize;
-			var boxMaxX = boxMinX + cellSize;
-			var boxMinZ = gridMinZ + row * cellSize;
-			var boxMaxZ = boxMinZ + cellSize;
+			var boxMinX = gridMinX + col * tileSize;
+			var boxMaxX = boxMinX + tileSize;
+			var boxMinZ = gridMinZ + row * tileSize;
+			var boxMaxZ = boxMinZ + tileSize;
 			var box = new goog.math.Box(boxMinZ, boxMaxX, boxMaxZ, boxMinX);
 			boxes.push(box);
 
@@ -96,36 +96,134 @@ fengshui.controllers.view3d.PathfindingController.prototype.findPath = function(
 		matrix.push(rowData);
 	}
 
-	var startCellCol = Math.floor(Math.abs(start.x - gridMinX) / cellSize);
-	var startCellRow = Math.floor(Math.abs(start.z - gridMinZ) / cellSize);
-	var startCell = [ startCellCol, startCellRow ];
+	var startTileCol = Math.floor(Math.abs(start.x - gridMinX) / tileSize);
+	var startTileRow = Math.floor(Math.abs(start.z - gridMinZ) / tileSize);
+	var startTile = [ startTileCol, startTileRow ];
 
-	var endCellCol = Math.floor(Math.abs(end.x - gridMinX) / cellSize);
-	var endCellRow = Math.floor(Math.abs(end.z - gridMinZ) / cellSize);
-	var endCell = [ endCellCol, endCellRow ];
+	var endTileCol = Math.floor(Math.abs(end.x - gridMinX) / tileSize);
+	var endTileRow = Math.floor(Math.abs(end.z - gridMinZ) / tileSize);
+	var endTile = [ endTileCol, endTileRow ];
+
+	var startTileType = matrix[startTileRow][startTileCol];
+	var endTileType = matrix[endTileRow][endTileCol];
+
+	var result = {
+		matrix: matrix,
+		gridMinX: gridMinX,
+		gridMinZ: gridMinZ,
+		gridWidth: gridWidth,
+		gridHeight: gridHeight,
+		numRows: numRows,
+		numCols: numCols,
+		tileSize: tileSize,
+		startTile: startTile,
+		endTile: endTile,
+		startTileType: startTileType,
+		endTileType: endTileType
+	};
+
+	return result;
+};
+
+
+fengshui.controllers.view3d.PathfindingController.prototype.getClosestWalkableTile = function( matrix, tile ) {
+
+	var shortestDistance = Number.MAX_VALUE;
+	var closestWalkableTile = null;
+
+	var row = 0;
+	var col = 0;
+	var numRows = matrix.length;
+	
+	for(row = 0; row < numRows; ++row) {
+
+		var numCols = matrix[row].length;
+
+		for(col = 0; col < numCols; ++col) {
+			var type = matrix[row][col];
+
+			if(type === 0) {
+
+				var dx = col - tile[0];
+				var dy = row - tile[1];
+				var distance = Math.sqrt(dx * dx + dy * dy);
+
+				if(distance < shortestDistance) {
+					shortestDistance = distance;
+					closestWalkableTile = [col, row];
+				}
+			}
+		}
+	}
+
+	return closestWalkableTile;
+};
+
+
+fengshui.controllers.view3d.PathfindingController.prototype.findPath = function( start, end, collidables, scene, minTilesInRowOrCol ) {
+
+	// get matrix
+	var matrixResult = this.generateMatrix( start, end, collidables, scene, minTilesInRowOrCol );
+
+	var matrix = matrixResult.matrix;
+	var gridMinX = matrixResult.gridMinX;
+	var gridMinZ = matrixResult.gridMinZ;
+	var gridWidth = matrixResult.gridWidth;
+	var gridHeight = matrixResult.gridHeight;
+	var numCols = matrixResult.numCols;
+	var numRows = matrixResult.numRows;
+	var tileSize = matrixResult.tileSize;
+	var startTile = matrixResult.startTile;
+	var endTile = matrixResult.endTile;
+	var startTileType = matrixResult.startTileType;
+	var endTileType = matrixResult.endTileType;
+
+	// get closest tile to the end tile if it's non-walkable
+	if(endTileType === 1) {
+
+		var closetWalkableTile = this.getClosestWalkableTile(matrix, endTile);
+
+		if(endTile) {
+			console.log( 'find closest non-walkable tile: ', endTile );
+			endTile = closetWalkableTile;
+		}else {
+			console.log( 'could not find closest non-walkable tile around: ', endTile);
+			return null;
+		}
+		
+	}
+
+	if(goog.array.equals(startTile, endTile)) {
+		console.log( 'start tile is the same as end tile: ', startTile);
+		return null;
+	}
 
 	// find path
 	var grid = new PF.Grid(numCols, numRows, matrix);
+
 	var finder = new PF.AStarFinder({
 		allowDiagonal: true,
 		heuristic: function(dx, dz) {
 			return Math.sqrt(Math.pow((start.x - dx), 2) + Math.pow((start.z - dz), 2));
 		}
 	});
-	var path = finder.findPath(startCell[0], startCell[1], endCell[0], endCell[1], grid);
+
+	var path = finder.findPath(startTile[0], startTile[1], endTile[0], endTile[1], grid);
 
 	// convert path coordinates from grid to 3d world
 	var smoothPath = PF.Util.smoothenPath(grid, path);
 	var coordinates = goog.array.map(smoothPath, function(coordinate) {
-		var x = coordinate[0] * cellSize + cellSize/2 + gridMinX;
+		var x = coordinate[0] * tileSize + tileSize/2 + gridMinX;
 		var y = 0;
-		var z = coordinate[1] * cellSize + cellSize/2 + gridMinZ;
+		var z = coordinate[1] * tileSize + tileSize/2 + gridMinZ;
 		return new THREE.Vector3(x, y, z);
 	});
 
+	coordinates[0] = start.clone().setY( 0 );
+
 	// draw debug view
 	var view = fengshui.views.debugger.pathfindingView;
-	view.update(matrix, gridWidth, gridHeight, numCols, numRows, cellSize, path);
+	view.update(matrix, gridWidth, gridHeight, numCols, numRows, tileSize, path);
 
 	//
 	return coordinates;

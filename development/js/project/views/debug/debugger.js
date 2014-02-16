@@ -25,6 +25,9 @@ fengshui.views.debug.Debugger = function(){
 	// create debug views
 	this.cameraView = new fengshui.views.debug.Camera();
 	this.pathfindingView = new fengshui.views.debug.Pathfinding();
+
+	//
+	this.hide();
 };
 goog.inherits(fengshui.views.debug.Debugger, goog.events.EventTarget);
 goog.addSingletonGetter(fengshui.views.debug.Debugger);

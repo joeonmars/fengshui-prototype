@@ -8,10 +8,12 @@ goog.require('goog.events');
  * @constructor
  * A custom camera control, wrapped the camera with pitch and yaw object
  */
-fengshui.controllers.controls.Controls = function(camera, domElement){
+fengshui.controllers.controls.Controls = function(camera, domElement, view3d){
   goog.base(this);
 
   this._camera = camera;
+  this._view3d = view3d;
+  this._scene = this._view3d.scene;
 
   this._isEnabled = false;
   this._originalPosition = this._camera.position.clone();
@@ -26,6 +28,8 @@ fengshui.controllers.controls.Controls = function(camera, domElement){
 	this._domElement = domElement;
 
 	this._eventHandler = new goog.events.EventHandler(this);
+
+	this._scene.add( this.getObject() );
 
 	this.reset();
 };
@@ -57,6 +61,12 @@ fengshui.controllers.controls.Controls.prototype.getRotation = function () {
 };
 
 
+fengshui.controllers.controls.Controls.prototype.getPov = function () {
+
+	return this._camera.pov;
+};
+
+
 fengshui.controllers.controls.Controls.prototype.setPosition = function (x, y, z) {
 
 	if(x instanceof THREE.Vector3) {
@@ -79,6 +89,14 @@ fengshui.controllers.controls.Controls.prototype.setRotation = function (x, y) {
 		this._yawObject.rotation.y = y;
 	}
 };
+
+
+fengshui.controllers.controls.Controls.prototype.setPov = function (pov) {
+
+	this._camera.pov = pov;
+	this._camera.updateProjectionMatrix();
+};
+
 
 
 fengshui.controllers.controls.Controls.prototype.reset = function () {
@@ -124,7 +142,6 @@ fengshui.controllers.controls.Controls.prototype.getDirection = function() {
 
 
 fengshui.controllers.controls.Controls.prototype.onClick = function ( e ) {
-
 
 };
 

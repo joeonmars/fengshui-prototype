@@ -114,9 +114,9 @@ fengshui.controllers.view3d.CameraController.prototype.getCameraHelper = functio
 };
 
 
-fengshui.controllers.view3d.CameraController.prototype.setCamera = function( name ){
+fengshui.controllers.view3d.CameraController.prototype.setCamera = function( val ){
 
-  this.activeCamera = this.getCamera(name);
+  this.activeCamera = goog.isString(val) ? this.getCamera( val ) : val;
 
   this.dispatchEvent({
     type: fengshui.events.EventType.CHANGE,

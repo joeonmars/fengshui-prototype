@@ -6,6 +6,8 @@ goog.require('goog.events');
 goog.require('goog.object');
 goog.require('fengshui.events');
 goog.require('fengshui.controllers.controls.BrowseControls');
+goog.require('fengshui.controllers.controls.CloseUpControls');
+goog.require('fengshui.controllers.controls.PathControls');
 
 
 /**
@@ -23,9 +25,11 @@ fengshui.controllers.view3d.ModeController = function( view3d ){
   this._cameraController = this._view3d.cameraController;
 
   this._browseControls = null;
-  this._trackballControls = null;
-  this._control = null;
+  this._closeUpControls = null;
+  this._pathControls = null;
+  this._transitionControls = null;
 
+  this._control = null;
   this._mode = null;
 
   this._clock = new THREE.Clock();
@@ -39,17 +43,19 @@ fengshui.controllers.view3d.ModeController = function( view3d ){
 goog.inherits(fengshui.controllers.view3d.ModeController, goog.events.EventTarget);
 
 
-fengshui.controllers.view3d.ModeController.prototype.init = function( mode ){
+fengshui.controllers.view3d.ModeController.prototype.init = function( modeData ){
 
 	// create mode controls
 	this._browseControls = this.createBrowseControls();
-	this._trackballControls = this.createTrackballControls();
+	this._closeUpControls = this.createCloseUpControls();
+	this._pathControls = this.createPathControls();
+	this._transitionControls = this.createTransitionControls();
 
 	// register mode controls
   this._modeControls[fengshui.views.View3D.Mode.BROWSE] = this._browseControls;
-  this._modeControls[fengshui.views.View3D.Mode.CLOSE_UP] = this._trackballControls;
-  this._modeControls[fengshui.views.View3D.Mode.PATH] = null;
-  this._modeControls[fengshui.views.View3D.Mode.TRANSITION] = null;
+  this._modeControls[fengshui.views.View3D.Mode.CLOSE_UP] = this._closeUpControls;
+  this._modeControls[fengshui.views.View3D.Mode.PATH] = this._pathControls;
+  this._modeControls[fengshui.views.View3D.Mode.TRANSITION] = this._transitionControls;
 
   //
   goog.fx.anim.registerAnimation(this);
@@ -57,7 +63,13 @@ fengshui.controllers.view3d.ModeController.prototype.init = function( mode ){
   this._eventHandler.listen(this, fengshui.events.EventType.CHANGE, this.onModeChange, false, this);
 
   // set initial mode
-  this.setMode( mode );
+  this.setMode( modeData );
+};
+
+
+fengshui.controllers.view3d.ModeController.prototype.getModeControl = function( mode ){
+
+	return this._modeControls[ mode ];
 };
 
 
@@ -67,14 +79,17 @@ fengshui.controllers.view3d.ModeController.prototype.getMode = function(){
 };
 
 
-fengshui.controllers.view3d.ModeController.prototype.setMode = function( mode ){
-
-	if(this._mode === mode) return;
-	else this._mode = mode;
+fengshui.controllers.view3d.ModeController.prototype.setMode = function( modeData ){
 
 	this.dispatchEvent({
 		type: fengshui.events.EventType.CHANGE,
-		mode: this._mode
+		mode: modeData.mode,
+		fromPosition: modeData.fromPosition,
+		toPosition: modeData.toPosition,
+		fromRotation: modeData.fromRotation,
+		toRotation: modeData.toRotation,
+		fromPov: modeData.fromPov,
+		toPov: modeData.toPov
 	});
 };
 
@@ -83,54 +98,85 @@ fengshui.controllers.view3d.ModeController.prototype.createBrowseControls = func
 
 	var renderElement = this._view3d.getRenderElement();
 	var camera = this._cameraController.getCamera( fengshui.views.View3D.Mode.BROWSE );
-	var scene = this._view3d.scene;
 
-	var clickableObjects = goog.array.filter(scene.children, function(object) {
-		return (object instanceof THREE.Mesh);
-	});
-
-	var controls = new fengshui.controllers.controls.BrowseControls( camera, clickableObjects, renderElement );
+	var controls = new fengshui.controllers.controls.BrowseControls( camera, renderElement, this._view3d );
 	controls.setParentEventTarget( this );
-	controls.setPosition( 0, 100, 350 );
-	scene.add( controls.getObject() );
-
-	controls.enable(true);
 
 	return controls;
 };
 
 
-fengshui.controllers.view3d.ModeController.prototype.createTrackballControls = function(){
+fengshui.controllers.view3d.ModeController.prototype.createCloseUpControls = function(){
 
 	var renderElement = this._view3d.getRenderElement();
 	var camera = this._cameraController.getCamera( fengshui.views.View3D.Mode.CLOSE_UP );
 
-	var controls = new THREE.TrackballControls( camera, renderElement );
-
-	with(controls) {
-		rotateSpeed = 1.0;
-		zoomSpeed = 1.2;
-		panSpeed = 0.8;
-		noZoom = false;
-		noPan = false;
-		noRotate = false;
-		minDistance = 100;
-		maxDistance = 900;
-		staticMoving = true;
-		dynamicDampingFactor = 0.3;
-		enabled = false;
-	};
-
-	this._eventHandler.listen(controls, fengshui.events.EventType.CHANGE, this._view3d.render, false, this._view3d);
-	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
+	var controls = new fengshui.controllers.controls.CloseUpControls( camera, renderElement, this._view3d );
+	controls.setParentEventTarget( this );
 
 	return controls;
 };
 
 
-fengshui.controllers.view3d.ModeController.prototype.onModeChange = function(e){
+fengshui.controllers.view3d.ModeController.prototype.createPathControls = function(){
 
-	console.log('view3D mode changed to ' + e.mode, e);
+	var renderElement = this._view3d.getRenderElement();
+	var camera = this._cameraController.getCamera( fengshui.views.View3D.Mode.PATH );
+	var scene = this._view3d.scene;
+
+	var controls = new fengshui.controllers.controls.PathControls( camera, renderElement, this._view3d );
+	controls.setParentEventTarget( this );
+	scene.add( controls.getObject() );
+
+	return controls;
+};
+
+
+fengshui.controllers.view3d.ModeController.prototype.createTransitionControls = function(){
+
+	return null;
+};
+
+
+fengshui.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
+
+	if(this._mode === e.mode) return;
+	else this._mode = e.mode;
+
+	console.log('view3D mode changed to ' + this._mode, e);
+
+	// handle current control
+	if(this.control) {
+		this.control.enable( false );
+	}
+
+	// get current control
+	this.control = this.getModeControl( e.mode );
+
+	switch(e.mode) {
+		case fengshui.views.View3D.Mode.BROWSE:
+		this.control.setPosition( e.fromPosition );
+		this.control.setRotation( e.fromRotation );
+		break;
+
+		case fengshui.views.View3D.Mode.CLOSE_UP:
+
+		break;
+
+		case fengshui.views.View3D.Mode.PATH:
+		this.control.setPosition( e.fromPosition );
+		this.control.setRotation( e.fromRotation );
+		this.control.start( e.toPosition, e.toRotation, e.toFov );
+		break;
+
+		case fengshui.views.View3D.Mode.TRANSITION:
+
+		break;
+	}
+
+	this.control.enable(true);
+
+	this._cameraController.setCamera( this.control.getCamera() );
 };
 
 
@@ -140,11 +186,12 @@ fengshui.controllers.view3d.ModeController.prototype.onAnimationFrame = function
 	var elapsed = this._clock.getElapsedTime();
 
 	this._browseControls.update( elapsed );
-  this._trackballControls.update();
+  this._closeUpControls.update( elapsed );
+  this._pathControls.update( elapsed );
 };
 
 
 fengshui.controllers.view3d.ModeController.prototype.onResize = function(e){
 
-	this._trackballControls.handleResize();
+	//
 };
