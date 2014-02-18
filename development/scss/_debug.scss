@@ -83,7 +83,8 @@ $debug_border_style:  2px outset #d6d3ce;
 #debug-camera{
 	.viewPanel{
 		@extend .debugPanel;
-
+		font-size: 12px;
+		
 		>div{
 			>select{
 				display: inline-block;
@@ -108,7 +109,6 @@ $debug_border_style:  2px outset #d6d3ce;
 
 			>li{
 				margin: 8px;
-				font-size: 12px;
 
 				&:before{
 					display: inline-block;
@@ -142,19 +142,11 @@ $debug_border_style:  2px outset #d6d3ce;
 				&[data-prop="rotation-z"] {
 					@include button("rotation.z: ");
 				}
-
-				&[data-prop="look-x"] {
-					@include button("look.x: ");
-				}
-
-				&[data-prop="look-y"] {
-					@include button("look.y: ");
-				}
-
-				&[data-prop="look-z"] {
-					@include button("look.z: ");
-				}
 			}
+		}
+
+		>label{
+
 		}
 	}
 	.controlPanel{

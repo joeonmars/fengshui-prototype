@@ -18,9 +18,7 @@ fengshui.views.debug.Camera = function(){
   this._rotationXDom = goog.dom.query('li[data-prop="rotation-x"]', this.domElement)[0];
   this._rotationYDom = goog.dom.query('li[data-prop="rotation-y"]', this.domElement)[0];
   this._rotationZDom = goog.dom.query('li[data-prop="rotation-z"]', this.domElement)[0];
-  this._lookXDom = goog.dom.query('li[data-prop="look-x"]', this.domElement)[0];
-  this._lookYDom = goog.dom.query('li[data-prop="look-y"]', this.domElement)[0];
-  this._lookZDom = goog.dom.query('li[data-prop="look-z"]', this.domElement)[0];
+  this._checkbox = goog.dom.query('.inDegrees', this.domElement)[0];
   this._selectDom = goog.dom.query('select', this.domElement)[0];
   this._textarea = goog.dom.query('textarea', this.domElement)[0];
   this._visibleButton = goog.dom.query('.visible.button', this.domElement)[0];
@@ -200,9 +198,6 @@ fengshui.views.debug.Camera.prototype.onAnimationFrame = function(now){
 	  this._rotationXDom.innerHTML = '';
 	  this._rotationYDom.innerHTML = '';
 	  this._rotationZDom.innerHTML = '';
-	  this._lookXDom.innerHTML = '';
-	  this._lookYDom.innerHTML = '';
-	  this._lookZDom.innerHTML = '';
 
 	}else {
 
@@ -219,15 +214,11 @@ fengshui.views.debug.Camera.prototype.onAnimationFrame = function(now){
 	  this._positionXDom.innerHTML = position.x;
 	  this._positionYDom.innerHTML = position.y;
 	  this._positionZDom.innerHTML = position.z;
-	  this._rotationXDom.innerHTML = rotation.x;
-	  this._rotationYDom.innerHTML = rotation.y;
-	  this._rotationZDom.innerHTML = rotation.z;
 
-	  var look = new THREE.Vector3(0, 0, -1);
-    look.applyEuler(rotation, rotation.order);
+	  var inDegrees = this._checkbox.checked;
 
-	  this._lookXDom.innerHTML = look.x;
-	  this._lookYDom.innerHTML = look.y;
-	  this._lookZDom.innerHTML = look.z;
+	  this._rotationXDom.innerHTML = inDegrees ? goog.math.toDegrees( rotation.x ) : rotation.x;
+	  this._rotationYDom.innerHTML = inDegrees ? goog.math.toDegrees( rotation.y ) : rotation.y;
+	  this._rotationZDom.innerHTML = inDegrees ? goog.math.toDegrees( rotation.z ) : rotation.z;
 	}
 };
