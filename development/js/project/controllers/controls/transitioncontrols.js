@@ -12,6 +12,7 @@ fengshui.controllers.controls.TransitionControls = function(camera, domElement, 
 
   goog.base(this, camera, domElement, view3d);
 
+  this._tweener = null;
 };
 goog.inherits(fengshui.controllers.controls.TransitionControls, fengshui.controllers.controls.Controls);
 
@@ -24,7 +25,7 @@ fengshui.controllers.controls.TransitionControls.prototype.update = function () 
 };
 
 
-fengshui.controllers.controls.TransitionControls.prototype.start = function ( toPosition, toRotation, toFov, nextMode ) {
+fengshui.controllers.controls.TransitionControls.prototype.start = function ( toPosition, toRotation, toFov, lookAt, nextMode ) {
 
 	var prop = {
 		val: 0
@@ -34,9 +35,9 @@ fengshui.controllers.controls.TransitionControls.prototype.start = function ( to
 	var fromRotation = this.getRotation();
 	var fromFov = this.getFov();
 
-	var tweener = TweenMax.to(prop, 1, {
+	this._tweener = TweenMax.to(prop, 1, {
 		val: 1,
-		ease: Sine.easeInOut,
+		ease: Quad.easeInOut,
 		onUpdate: function() {
 
 			var positionX = goog.math.lerp(fromPosition.x, toPosition.x, prop.val);
@@ -68,7 +69,6 @@ fengshui.controllers.controls.TransitionControls.prototype.onClick = function ( 
 
 	goog.base(this, 'onClick', e);
 
-	return;
 };
 
 

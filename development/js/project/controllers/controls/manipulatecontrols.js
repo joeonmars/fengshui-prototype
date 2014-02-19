@@ -24,17 +24,14 @@ fengshui.controllers.controls.ManipulateControls.prototype.update = function () 
 };
 
 
-fengshui.controllers.controls.ManipulateControls.prototype.start = function () {
-
-
-};
-
-
 fengshui.controllers.controls.ManipulateControls.prototype.onClick = function ( e ) {
 
 	goog.base(this, 'onClick', e);
 
-	return;
+	this.dispatchEvent({
+		type: fengshui.events.EventType.CHANGE,
+		mode: fengshui.views.View3D.Mode.BROWSE
+	});
 };
 
 
@@ -52,8 +49,15 @@ fengshui.controllers.controls.ManipulateControls.prototype.onMouseMove = functio
 };
 
 
-fengshui.controllers.controls.ManipulateControls.DefaultCameraSettings = {
-	position: new THREE.Vector3(250, 250, 250),
-	rotation: new THREE.Euler(goog.math.toRadians(-45), goog.math.toRadians(45), 0),
-	fov: 60
+fengshui.controllers.controls.ManipulateControls.getCameraSettings = function( position, rotation, fov ) {
+
+	var maxDistance = Math.max(Math.abs(position.x), Math.abs(position.y), Math.abs(position.z));
+
+	var settings = {
+		position: new THREE.Vector3( position.x/Math.abs(position.x) * maxDistance, position.y/Math.abs(position.y) * maxDistance, position.z/Math.abs(position.z) * maxDistance),
+		rotation: new THREE.Euler(goog.math.toRadians(-45), rotation.y, 0),
+		fov: 60
+	};
+
+	return settings;
 };

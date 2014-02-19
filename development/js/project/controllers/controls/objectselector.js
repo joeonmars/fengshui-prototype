@@ -67,7 +67,8 @@ fengshui.controllers.controls.ObjectSelector.prototype.doSelect = function () {
 	this._selectedObject = this._downObject;
 
 	this.dispatchEvent({
-		type: fengshui.events.EventType.CHANGE
+		type: fengshui.events.EventType.CHANGE,
+		object: this._selectedObject
 	});
 };
 
@@ -86,7 +87,7 @@ fengshui.controllers.controls.ObjectSelector.prototype.onMouseDown = function ( 
 
 	if(intersects.length > 0) {
 
-		this._downObject = intersects[0];
+		this._downObject = intersects[0].object;
 	}else {
 
 		return false;

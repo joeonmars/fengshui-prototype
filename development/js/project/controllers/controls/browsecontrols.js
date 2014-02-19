@@ -178,13 +178,14 @@ fengshui.controllers.controls.BrowseControls.prototype.onObjectSelected = functi
 
 	console.log('Object selected!');
 
-	var manipulateCameraSettings = fengshui.controllers.controls.ManipulateControls.DefaultCameraSettings;
-
+	var manipulateCameraSettings = fengshui.controllers.controls.ManipulateControls.getCameraSettings( this.getPosition(), this.getRotation(), this.getFov() );
+	
 	this.dispatchEvent({
 		type: fengshui.events.EventType.CHANGE,
 		mode: fengshui.views.View3D.Mode.MANIPULATE,
 		toPosition: manipulateCameraSettings.position,
 		toRotation: manipulateCameraSettings.rotation,
-		toFov: manipulateCameraSettings.fov
+		toFov: manipulateCameraSettings.fov,
+		lookAt: e.object.position
 	});
 };

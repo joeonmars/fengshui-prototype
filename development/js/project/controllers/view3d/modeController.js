@@ -193,6 +193,7 @@ fengshui.controllers.view3d.ModeController.prototype.onModeChange = function(e) 
 
 	var oldControl = this.control;
 	var newControl = this.getModeControl( this._mode );
+	var futureControl = this.getModeControl( e.mode );
 
 	// handle old control
 	if(oldControl) {
@@ -202,9 +203,13 @@ fengshui.controllers.view3d.ModeController.prototype.onModeChange = function(e) 
 	// set new control
 	this.control = newControl;
 
-	var fromPosition = e.fromPosition || e.target.getPosition();
-	var fromRotation = e.fromRotation || e.target.getRotation();
-	var fromFov = e.fromFov || e.target.getFov();
+	var fromPosition = e.fromPosition || oldControl.getPosition();
+	var fromRotation = e.fromRotation || oldControl.getRotation();
+	var fromFov = e.fromFov || oldControl.getFov();
+
+	var toPosition = e.toPosition || futureControl.getPosition();
+	var toRotation = e.toRotation || futureControl.getRotation();
+	var toFov = e.toFov || futureControl.getFov();
 
 	this.control.setPosition( fromPosition );
 	this.control.setRotation( fromRotation );
@@ -219,11 +224,11 @@ fengshui.controllers.view3d.ModeController.prototype.onModeChange = function(e) 
 		break;
 
 		case fengshui.views.View3D.Mode.PATH:
-		this.control.start( e.toPosition, e.toRotation, e.toFov );
+		this.control.start( toPosition, toRotation, toFov );
 		break;
 
 		case fengshui.views.View3D.Mode.TRANSITION:
-		this.control.start( e.toPosition, e.toRotation, e.toFov, e.mode );
+		this.control.start( toPosition, toRotation, toFov, e.lookAt, e.mode );
 		break;
 	}
 
