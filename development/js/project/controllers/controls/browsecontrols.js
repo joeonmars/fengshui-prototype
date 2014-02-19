@@ -3,6 +3,8 @@ goog.provide('fengshui.controllers.controls.BrowseControls');
 goog.require('goog.events');
 goog.require('goog.math');
 goog.require('fengshui.controllers.controls.Controls');
+goog.require('fengshui.controllers.controls.ObjectSelector');
+goog.require('fengshui.utils.ThreeUtils');
 goog.require('fengshui.utils.Randomizer');
 goog.require('fengshui.utils.MultiLinearInterpolator');
 
@@ -20,6 +22,8 @@ fengshui.controllers.controls.BrowseControls = function(camera, domElement, view
 
 	this._hasDragged = false;
 
+	this._objectSelector = new fengshui.controllers.controls.ObjectSelector( this._clickableObjects, this._camera, this._view3d.getRenderElement() );
+
 	this._lastMouseX = 0;
 	this._lastMouseY = 0;
 	this._targetRotationX = 0;
@@ -27,8 +31,6 @@ fengshui.controllers.controls.BrowseControls = function(camera, domElement, view
 
 	this._maxRotationX = goog.math.toRadians(45);
 	this._minRotationX = goog.math.toRadians(-45);
-
-	this._projector = new THREE.Projector();
 
 	var randomXNumbers = fengshui.utils.Randomizer.getRandomNumbers(6, 10);
 	randomXNumbers.unshift(0);
@@ -80,11 +82,18 @@ fengshui.controllers.controls.BrowseControls.prototype.enable = function( enable
 	goog.base(this, 'enable', enable);
 
 	if(!this._isEnabled) {
+
 		// reset clock, thus set camera natural movement's playhead to 0
 		this._clock.startTime = 0;
 		this._clock.oldTime = 0;
 		this._clock.elapsedTime = 0;
+
+	}else  {
+
+		this._eventHandler.listen(this._objectSelector, fengshui.events.EventType.CHANGE, this.onObjectSelected, false, this);
 	}
+
+	this._objectSelector.enable( this._isEnabled );
 };
 
 
@@ -117,15 +126,7 @@ fengshui.controllers.controls.BrowseControls.prototype.onClick = function ( e ) 
 
 	if ( this._hasDragged ) return;
 
-	var viewSize = goog.style.getSize(this._domElement);
-	var position = this.getObject().position;
-
-	var vector = new THREE.Vector3( ( e.clientX / viewSize.width ) * 2 - 1, - ( e.clientY / viewSize.height ) * 2 + 1, 0.5 );
-	this._projector.unprojectVector( vector, this._camera );
-
-	var raycaster = new THREE.Raycaster( position, vector.sub( position ).normalize() );
-
-	var intersects = raycaster.intersectObjects( this._clickableObjects );
+	var intersects = fengshui.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, this._clickableObjects, this._camera, this._domElement );
 
 	if ( intersects.length > 0 ) {
 
@@ -134,12 +135,9 @@ fengshui.controllers.controls.BrowseControls.prototype.onClick = function ( e ) 
 		this.dispatchEvent({
 			type: fengshui.events.EventType.CHANGE,
 			mode: fengshui.views.View3D.Mode.PATH,
-			fromPosition: this.getPosition(),
 			toPosition: intersects[0].point,
-			fromRotation: this.getRotation(),
 			toRotation: this.getRotation(),
-			fromPov: this.getPov(),
-			toPov: this.getPov()
+			toFov: this.getFov()
 		});
 	}
 };
@@ -173,4 +171,20 @@ fengshui.controllers.controls.BrowseControls.prototype.onMouseMove = function ( 
 
 	// limit vertical rotation
 	this._targetRotationX = Math.max(Math.min(this._maxRotationX, this._targetRotationX), this._minRotationX);
+};
+
+
+fengshui.controllers.controls.BrowseControls.prototype.onObjectSelected = function ( e ) {
+
+	console.log('Object selected!');
+
+	var manipulateCameraSettings = fengshui.controllers.controls.ManipulateControls.DefaultCameraSettings;
+
+	this.dispatchEvent({
+		type: fengshui.events.EventType.CHANGE,
+		mode: fengshui.views.View3D.Mode.MANIPULATE,
+		toPosition: manipulateCameraSettings.position,
+		toRotation: manipulateCameraSettings.rotation,
+		toFov: manipulateCameraSettings.fov
+	});
 };

@@ -4,6 +4,7 @@ goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events');
 
+
 /**
  * @constructor
  * A custom camera control, wrapped the camera with pitch and yaw object
@@ -63,9 +64,9 @@ fengshui.controllers.controls.Controls.prototype.getRotation = function () {
 };
 
 
-fengshui.controllers.controls.Controls.prototype.getPov = function () {
+fengshui.controllers.controls.Controls.prototype.getFov = function () {
 
-	return this._camera.pov;
+	return this._camera.fov;
 };
 
 
@@ -93,9 +94,9 @@ fengshui.controllers.controls.Controls.prototype.setRotation = function (x, y) {
 };
 
 
-fengshui.controllers.controls.Controls.prototype.setPov = function (pov) {
+fengshui.controllers.controls.Controls.prototype.setFov = function (fov) {
 
-	this._camera.pov = pov;
+	this._camera.fov = fov;
 	this._camera.updateProjectionMatrix();
 };
 

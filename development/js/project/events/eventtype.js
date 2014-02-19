@@ -6,6 +6,7 @@ goog.provide('fengshui.events');
  */
 fengshui.events.EventType = {
 	CHANGE: 'change',
+	CANCEL: 'cancel',
 	START: 'start',
 	END: 'end',
 	ADD: 'add',

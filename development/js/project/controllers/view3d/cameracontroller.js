@@ -33,6 +33,7 @@ fengshui.controllers.view3d.CameraController.prototype.init = function( scene ){
 
   this.addCamera(fengshui.views.View3D.Mode.BROWSE);
   this.addCamera(fengshui.views.View3D.Mode.CLOSE_UP);
+  this.addCamera(fengshui.views.View3D.Mode.MANIPULATE);
   this.addCamera(fengshui.views.View3D.Mode.PATH);
   this.addCamera(fengshui.views.View3D.Mode.TRANSITION);
 

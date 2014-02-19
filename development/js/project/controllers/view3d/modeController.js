@@ -7,7 +7,9 @@ goog.require('goog.object');
 goog.require('fengshui.events');
 goog.require('fengshui.controllers.controls.BrowseControls');
 goog.require('fengshui.controllers.controls.CloseUpControls');
+goog.require('fengshui.controllers.controls.ManipulateControls');
 goog.require('fengshui.controllers.controls.PathControls');
+goog.require('fengshui.controllers.controls.TransitionControls');
 
 
 /**
@@ -25,7 +27,7 @@ fengshui.controllers.view3d.ModeController = function( view3d ){
   this._cameraController = this._view3d.cameraController;
 
   this._browseControls = null;
-  this._closeUpControls = null;
+  this._manipulateControls = null;
   this._pathControls = null;
   this._transitionControls = null;
 
@@ -35,6 +37,7 @@ fengshui.controllers.view3d.ModeController = function( view3d ){
   this._modeControls = {};
   this._modeControls[fengshui.views.View3D.Mode.BROWSE] = null;
   this._modeControls[fengshui.views.View3D.Mode.CLOSE_UP] = null;
+  this._modeControls[fengshui.views.View3D.Mode.MANIPULATE] = null;
   this._modeControls[fengshui.views.View3D.Mode.PATH] = null;
   this._modeControls[fengshui.views.View3D.Mode.TRANSITION] = null;
 };
@@ -46,12 +49,14 @@ fengshui.controllers.view3d.ModeController.prototype.init = function( modeData )
 	// create mode controls
 	this._browseControls = this.createBrowseControls();
 	this._closeUpControls = this.createCloseUpControls();
+	this._manipulateControls = this.createManipulateControls();
 	this._pathControls = this.createPathControls();
 	this._transitionControls = this.createTransitionControls();
 
 	// register mode controls
   this._modeControls[fengshui.views.View3D.Mode.BROWSE] = this._browseControls;
   this._modeControls[fengshui.views.View3D.Mode.CLOSE_UP] = this._closeUpControls;
+  this._modeControls[fengshui.views.View3D.Mode.MANIPULATE] = this._manipulateControls;
   this._modeControls[fengshui.views.View3D.Mode.PATH] = this._pathControls;
   this._modeControls[fengshui.views.View3D.Mode.TRANSITION] = this._transitionControls;
 
@@ -84,9 +89,27 @@ fengshui.controllers.view3d.ModeController.prototype.setMode = function( modeDat
 		toPosition: modeData.toPosition,
 		fromRotation: modeData.fromRotation,
 		toRotation: modeData.toRotation,
-		fromPov: modeData.fromPov,
-		toPov: modeData.toPov
+		fromFov: modeData.fromFov,
+		toFov: modeData.toFov
 	});
+};
+
+
+fengshui.controllers.view3d.ModeController.prototype.requireTransitionMode = function(oldMode, newMode){
+
+	var requiredModes = [
+		[fengshui.views.View3D.Mode.BROWSE, fengshui.views.View3D.Mode.MANIPULATE]
+	];
+
+	var result = goog.array.find(requiredModes, function(modes) {
+		return (goog.array.indexOf(modes, oldMode) >= 0 && goog.array.indexOf(modes, newMode) >= 0);
+	});
+
+	if(result) {
+		return true;
+	}else {
+		return false;
+	}
 };
 
 
@@ -114,6 +137,18 @@ fengshui.controllers.view3d.ModeController.prototype.createCloseUpControls = fun
 };
 
 
+fengshui.controllers.view3d.ModeController.prototype.createManipulateControls = function(){
+
+	var renderElement = this._view3d.getRenderElement();
+	var camera = this._cameraController.getCamera( fengshui.views.View3D.Mode.MANIPULATE );
+
+	var controls = new fengshui.controllers.controls.ManipulateControls( camera, renderElement, this._view3d );
+	controls.setParentEventTarget( this );
+
+	return controls;
+};
+
+
 fengshui.controllers.view3d.ModeController.prototype.createPathControls = function(){
 
 	var renderElement = this._view3d.getRenderElement();
@@ -122,7 +157,6 @@ fengshui.controllers.view3d.ModeController.prototype.createPathControls = functi
 
 	var controls = new fengshui.controllers.controls.PathControls( camera, renderElement, this._view3d );
 	controls.setParentEventTarget( this );
-	scene.add( controls.getObject() );
 
 	return controls;
 };
@@ -130,43 +164,66 @@ fengshui.controllers.view3d.ModeController.prototype.createPathControls = functi
 
 fengshui.controllers.view3d.ModeController.prototype.createTransitionControls = function(){
 
-	return null;
+	var renderElement = this._view3d.getRenderElement();
+	var camera = this._cameraController.getCamera( fengshui.views.View3D.Mode.TRANSITION );
+
+	var controls = new fengshui.controllers.controls.TransitionControls( camera, renderElement, this._view3d );
+	controls.setParentEventTarget( this );
+
+	return controls;
 };
 
 
 fengshui.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 
-	if(this._mode === e.mode) return;
-	else this._mode = e.mode;
+	var oldMode = this._mode;
+	var newMode = e.mode;
 
-	console.log('view3D mode changed to ' + this._mode, e);
+	if(this._mode === newMode) {
 
-	// handle current control
-	if(this.control) {
-		this.control.enable( false );
+		return;
+	}else {
+
+		var requireTransitionMode = this.requireTransitionMode(oldMode, newMode);
+		newMode = requireTransitionMode ? fengshui.views.View3D.Mode.TRANSITION : newMode;
+		this._mode = newMode;
 	}
 
-	// get current control
-	this.control = this.getModeControl( e.mode );
+	console.log('view3D mode changed from ' + oldMode + ' to ' + newMode);
 
-	switch(e.mode) {
+	var oldControl = this.control;
+	var newControl = this.getModeControl( this._mode );
+
+	// handle old control
+	if(oldControl) {
+		oldControl.enable( false );
+	}
+
+	// set new control
+	this.control = newControl;
+
+	var fromPosition = e.fromPosition || e.target.getPosition();
+	var fromRotation = e.fromRotation || e.target.getRotation();
+	var fromFov = e.fromFov || e.target.getFov();
+
+	this.control.setPosition( fromPosition );
+	this.control.setRotation( fromRotation );
+	this.control.setFov( fromFov );
+
+	switch(this._mode) {
 		case fengshui.views.View3D.Mode.BROWSE:
-		this.control.setPosition( e.fromPosition );
-		this.control.setRotation( e.fromRotation );
 		break;
 
-		case fengshui.views.View3D.Mode.CLOSE_UP:
+		case fengshui.views.View3D.Mode.MANIPULATE:
 
 		break;
 
 		case fengshui.views.View3D.Mode.PATH:
-		this.control.setPosition( e.fromPosition );
-		this.control.setRotation( e.fromRotation );
 		this.control.start( e.toPosition, e.toRotation, e.toFov );
 		break;
 
 		case fengshui.views.View3D.Mode.TRANSITION:
-
+		this.control.start( e.toPosition, e.toRotation, e.toFov, e.mode );
 		break;
 	}
 

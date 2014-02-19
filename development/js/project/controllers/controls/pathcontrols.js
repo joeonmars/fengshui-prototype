@@ -98,12 +98,6 @@ fengshui.controllers.controls.PathControls.prototype.onSplineComplete = function
 
 	this.dispatchEvent({
 		type: fengshui.events.EventType.CHANGE,
-		mode: fengshui.views.View3D.Mode.BROWSE,
-		fromPosition: this.getPosition(),
-		toPosition: null,
-		fromRotation: this.getRotation(),
-		toRotation: null,
-		fromPov: this.getPov(),
-		toPov: null
+		mode: fengshui.views.View3D.Mode.BROWSE
 	});
 };

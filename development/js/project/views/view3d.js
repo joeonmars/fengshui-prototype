@@ -140,14 +140,6 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 	// init camera controller
 	this.cameraController.init( this.scene );
 
-	// get default camera
-	var browseCamera = this.cameraController.getCamera( fengshui.views.View3D.Mode.BROWSE );
-
-	var closeupCamera = this.cameraController.getCamera( fengshui.views.View3D.Mode.CLOSE_UP );
-	this.cameraController.copyCameraAttributesFromTo(browseCamera, closeupCamera);
-	closeupCamera.fov = 10;
-	closeupCamera.updateProjectionMatrix();
-
 	// add collidables
 	this.scene.traverse(goog.bind(function(child) {
 		if(child.userData['collidable'] === true) {
@@ -172,7 +164,7 @@ fengshui.views.View3D.prototype.onLoad = function(result) {
 		mode: fengshui.views.View3D.Mode.BROWSE,
 		fromPosition: new THREE.Vector3(0, 80, 350),
 		fromRotation: new THREE.Euler(0, 0, 0, 'XYZ'),
-		fromPov: 45
+		fromFov: 45
 	});
 
 	// tween the camera
@@ -219,7 +211,8 @@ fengshui.views.View3D.STATS = new Stats();
 
 fengshui.views.View3D.Mode = {
 	BROWSE: 'browse', //look around
-	CLOSE_UP: 'close_up', // lock to an object's unique perspective of view
+	CLOSE_UP: 'close_up', // a locked perspective viewing a specific object
+	MANIPULATE: 'manipulate', // isometrix view for ease of positioning/rotating control
 	PATH: 'path',	// following a path
 	TRANSITION: 'transition' // transition between different cameras for the above mode
 };
