@@ -15,7 +15,6 @@ fengshui.Config = {};
 
 fengshui.demo.main = function( config ) {
 	fengshui.Config = config;
-	fengshui.Config['imagePath'] = fengshui.Config['basePath'] + 'img/';
 	
 	goog.fx.anim.setAnimationWindow(window);
 

@@ -47,7 +47,8 @@
 
 	<body>
 		<!-- third-party -->
-		<script src="js/third-party/modernizr-latest.js"></script>
+		<script src="js/third-party/createjs/easeljs-0.7.1.min.js"></script>
+		<script src="js/third-party/createjs/preloadjs-0.4.1.min.js"></script>
 		<script src="js/third-party/greensock/TweenMax.min.js"></script>
 		<script src="js/third-party/greensock/plugins/CSSPlugin.min.js"></script>
 		<script src="js/third-party/greensock/plugins/ScrollToPlugin.min.js"></script>
