@@ -3,6 +3,7 @@ goog.provide('fengshui.controllers.SectionController');
 goog.require('goog.events.EventTarget');
 goog.require('goog.events');
 goog.require('fengshui.views.sections.Home');
+goog.require('fengshui.views.sections.Studio');
 
 /**
  * @constructor
@@ -13,9 +14,10 @@ fengshui.controllers.SectionController = function(){
   this._sections = {};
   this._section = null;
 
-  this._eventHandler = new goog.events.EventHandler(this);
+  var homeSection = this.addSection('home');
 
-  this.addSection('home');
+  this._eventHandler = new goog.events.EventHandler(this);
+  this._eventHandler.listenOnce(homeSection, fengshui.events.EventType.LOAD_COMPLETE, this.init, false, this);
 };
 goog.inherits(fengshui.controllers.SectionController, goog.events.EventTarget);
 goog.addSingletonGetter(fengshui.controllers.SectionController);
@@ -23,8 +25,8 @@ goog.addSingletonGetter(fengshui.controllers.SectionController);
 
 fengshui.controllers.SectionController.prototype.init = function(){
   
-  this.addSection('test');
-
+  this.addSection('studio');
+  
   this._eventHandler.listen(this, fengshui.events.EventType.ANIMATE_IN, this.onSectionAnimateIn, false, this);
   this._eventHandler.listen(this, fengshui.events.EventType.ANIMATE_OUT, this.onSectionAnimateOut, false, this);
   this._eventHandler.listen(this, fengshui.events.EventType.ANIMATED_IN, this.onSectionAnimatedIn, false, this);
@@ -46,6 +48,10 @@ fengshui.controllers.SectionController.prototype.addSection = function(id){
   	case 'home':
   	section = new fengshui.views.sections.Home;
   	break;
+
+    case 'studio':
+    section = new fengshui.views.sections.Studio;
+    break;
   }
 
   section.setParentEventTarget(this);

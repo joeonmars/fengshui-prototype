@@ -33,7 +33,9 @@ fengshui.controllers.NavigationController.prototype.init = function(){
   	this._navHistory = new goog.history.Html5History();
   	this._navHistory.setUseFragment(false);
   }else {
-  	this._navHistory = new goog.History(false);
+  	var input = goog.dom.createDom('input');
+  	var iframe = goog.dom.createDom('iframe');
+  	this._navHistory = new goog.History(false, null, input, iframe);
   }
 
   // the current token

@@ -121,7 +121,7 @@ fengshui.controllers.controls.BrowseControls.prototype.update = function () {
 
 
 fengshui.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
-
+	
 	goog.base(this, 'onClick', e);
 
 	if ( this._hasDragged ) return;

@@ -252,7 +252,47 @@ a {
   height: 100%;
 }
 
-.view3dContainer {
+.section {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+}
+.section.episode > .controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  z-index: 2;
+}
+.section.episode > .sceneUI {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  z-index: 1;
+}
+.section.episode > .sceneContainer {
+  width: 100%;
+  height: 100%;
+}
+
+#home > .preloader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -2px;
+  margin-left: -15%;
+  width: 30%;
+  height: 4px;
+  background: snow;
+  border: 1px solid silver;
+}
+#home > .preloader > .fill {
+  width: 0;
+  height: 100%;
+  background: silver;
 }

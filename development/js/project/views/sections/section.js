@@ -29,8 +29,11 @@ fengshui.views.sections.Section = function(domElement){
   	onCompleteScope: this
   });
 
+  // permanent events
+  goog.events.listen(fengshui.controllers.NavigationController.getInstance(), fengshui.events.EventType.CHANGE, this.onNavigationChange, false, this);
+
+  // activatable events
   this._eventHandler = new goog.events.EventHandler(this);
-  this._eventHandler.listen(fengshui.controllers.NavigationController.getInstance(), fengshui.events.EventType.CHANGE, this.onNavigationChange, false, this);
 
   // hide section by default
   this.hide();
@@ -61,6 +64,12 @@ fengshui.views.sections.Section.prototype.hide = function(){
 	this.dispatchEvent({
 		type: fengshui.events.EventType.HIDE
 	});
+};
+
+
+fengshui.views.sections.Section.prototype.isShown = function(){
+
+	return goog.style.isElementShown(this.domElement);
 };
 
 
@@ -97,6 +106,8 @@ fengshui.views.sections.Section.prototype.setAnimations = function(){
 
 fengshui.views.sections.Section.prototype.animateIn = function(){
 
+	if(this.isShown()) return;
+
 	this.show();
 	this.deactivate();
 	this._animateInTweener.restart();
@@ -108,6 +119,8 @@ fengshui.views.sections.Section.prototype.animateIn = function(){
 
 
 fengshui.views.sections.Section.prototype.animateOut = function(){
+
+	if(!this.isShown()) return;
 
 	this.deactivate();
 	this._animateOutTweener.restart();
@@ -139,8 +152,12 @@ fengshui.views.sections.Section.prototype.onAnimatedOut = function(e){
 
 
 fengshui.views.sections.Section.prototype.onNavigationChange = function(e){
-  
-  if(e.tokenArray && e.tokenArray[0] === this.id) {
+
+	var shouldAnimateIn = (e.tokenArray && e.tokenArray[0] === this.id);
+
+  if(shouldAnimateIn) {
   	this.animateIn();
+  }else {
+  	this.animateOut();
   }
 };
