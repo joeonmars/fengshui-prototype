@@ -67,6 +67,24 @@ fengshui.views.View3D.prototype.getRenderElement = function(){
 };
 
 
+fengshui.views.View3D.prototype.show = function(){
+ 
+ 	this.onResize();
+
+	this.dispatchEvent({
+    type: fengshui.events.EventType.SHOW
+  });
+};
+ 
+ 
+fengshui.views.View3D.prototype.hide = function(){
+ 
+	this.dispatchEvent({
+    type: fengshui.events.EventType.HIDE
+  });
+};
+
+
 fengshui.views.View3D.prototype.render = function() {
 	this._renderer.render(this.scene, this.cameraController.activeCamera);
 };

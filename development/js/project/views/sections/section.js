@@ -34,15 +34,15 @@ fengshui.views.sections.Section = function(domElement){
 
   // activatable events
   this._eventHandler = new goog.events.EventHandler(this);
-
-  // hide section by default
-  this.hide();
 };
 goog.inherits(fengshui.views.sections.Section, goog.events.EventTarget);
 
 
 fengshui.views.sections.Section.prototype.init = function(){
 
+  // hide section by default
+  this.hide();
+  
 	this.setAnimations();
 };
 

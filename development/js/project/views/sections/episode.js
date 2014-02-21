@@ -33,5 +33,13 @@ fengshui.views.sections.Episode.prototype.show = function(){
 
 	goog.base(this, 'show');
 
-	this._view3d.onResize();
+	this._view3d.show();
+};
+
+
+fengshui.views.sections.Episode.prototype.hide = function(){
+
+	goog.base(this, 'hide');
+
+	this._view3d.hide();
 };
