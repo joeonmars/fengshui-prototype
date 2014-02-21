@@ -8,10 +8,10 @@ goog.require('fengshui.templates.main');
 goog.require('fengshui.controllers.NavigationController');
 goog.require('fengshui.controllers.view3d.PathfindingController');
 goog.require('fengshui.controllers.view3d.View3DController');
+goog.require('fengshui.controllers.SectionController');
 goog.require('fengshui.views.View3D');
 goog.require('fengshui.views.debug.Debugger');
 
-fengshui.Config = {};
 
 fengshui.demo.main = function( config ) {
 	fengshui.Config = config;
@@ -35,18 +35,21 @@ fengshui.demo.main = function( config ) {
 	view3d.init();
 	view3d.show();
 
-	//fengshui.controllers.NavigationController.Implementation = fengshui.controllers.NavigationController.HASH;
-	fengshui.demo.main.controllers.navigationController.init();
+	var navigationController = fengshui.controllers.NavigationController.getInstance();
+	var sectionController = fengshui.controllers.SectionController.getInstance();
+	var pathfindingController = fengshui.controllers.view3d.PathfindingController.getInstance();
+	var view3dController = fengshui.controllers.view3d.View3DController.getInstance();
+
+	//sectionController.init();
+
+	fengshui.controllers.NavigationController.Implementation = fengshui.controllers.NavigationController.HASH;
+	navigationController.init();
+	navigationController.setToken('home');
 };
 
-fengshui.demo.main.views = {
-};
 
-fengshui.demo.main.controllers = {
-	navigationController: fengshui.controllers.NavigationController.getInstance(),
-	pathfindingController: fengshui.controllers.view3d.PathfindingController.getInstance(),
-	view3dContainer: fengshui.controllers.view3d.View3DController.getInstance()
-};
+fengshui.Config = {};
+
 
 goog.exportProperty(window, 'fengshui', fengshui);
 goog.exportProperty(fengshui, 'main', fengshui.demo.main);

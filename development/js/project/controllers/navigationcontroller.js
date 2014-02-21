@@ -33,12 +33,11 @@ fengshui.controllers.NavigationController.prototype.init = function(){
   	this._navHistory = new goog.history.Html5History();
   	this._navHistory.setUseFragment(false);
   }else {
-  	var input = goog.dom.createDom('input');
-  	var iframe = goog.dom.createDom('iframe');
-  	this._navHistory = new goog.History(false, null, input, iframe);
+  	this._navHistory = new goog.History(false);
   }
 
   // the current token
+  // "token/token/..."
   this._token = null;
 
   goog.events.listen(this._navHistory, goog.history.EventType.NAVIGATE, this.onNavigate, false, this);
@@ -48,65 +47,72 @@ fengshui.controllers.NavigationController.prototype.init = function(){
 
 
 fengshui.controllers.NavigationController.prototype.setToken = function(token, title){
-	// if using hash, make sure the '/' is prepended
-	if(!this._useHistoryAPI) {
-		if(!goog.string.startsWith(token, '/')) {
-			token = ('/').concat(token);
-		}
-	}
 
-	this._navHistory.setToken(token ,title);
+	this._navHistory.setToken(token, title);
 };
 
 
-fengshui.controllers.NavigationController.prototype.getToken = function(){
-	var token = this._navHistory.getToken();
-	if(goog.string.startsWith(token, '/')) {
-		token = token.substring(1);
+fengshui.controllers.NavigationController.prototype.getTokenString = function(){
+
+	return this._token;
+};
+
+
+fengshui.controllers.NavigationController.prototype.getTokenArray = function(){
+
+	var tokens = this._token.split('/');
+
+	if(tokens.length > 0) {
+		if(tokens[0] === '') tokens.shift();
+	}else {
+		tokens = null;
 	}
-	return token;
+
+	return tokens;
 };
 
 
 fengshui.controllers.NavigationController.prototype.replaceToken = function(token, title){
+
 	this._navHistory.replaceToken(token ,title);
 };
 
 
-fengshui.controllers.NavigationController.prototype.handleToken = function(token){
-	console.log('handle token: ' + token);
+fengshui.controllers.NavigationController.prototype.handleToken = function(tokenString, tokenArray){
+
+	console.log('handle token: ' + tokenString);
+
+	this.dispatchEvent({
+		type: fengshui.events.EventType.CHANGE,
+		tokenString: tokenString,
+		tokenArray: tokenArray
+	});
+};
+
+
+fengshui.controllers.NavigationController.prototype.getUrlBeforeHash = function(token){
+	
+	var url = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '') + window.location.pathname;
+	return url;
 };
 
 
 fengshui.controllers.NavigationController.prototype.onNavigate = function(e){
-	// validate the token by HTML5 history API support,
-	// optionally append or remove hash fragment,
-	// and reset the window location
-	var tokenStr = goog.string.remove(window.location.href, fengshui.Config.basePath);
 
-	if(e.token === '' && tokenStr !== '') {
-		if(this._useHistoryAPI) {
-			// indicates a possible hash bang to be removed
-			if(goog.string.startsWith(tokenStr, '#/')) {
-				var token = tokenStr.substring(2);
-				window.location = fengshui.Config.basePath + token;
-			}
-		}else{
-			// indicates a possible lack of hash bang
-			if(!goog.string.startsWith(tokenStr, '#/')) {
-				var token = ('#/').concat(tokenStr);
-				window.location = fengshui.Config.basePath + token;
-			}
-		}
+	// normalize event token format between history api and hash
+	// always being 'token/token...'
+	var eToken = e.token;
 
-		return false;
+	if(goog.string.startsWith(eToken, '#/')) {
+		eToken.replace('#/', '');
+	}else if(goog.string.startsWith(eToken, '/')) {
+		eToken.replace('/', '');
 	}
 
-	// skip duplicated token returned by the closure html5History API
-	if(this._token === e.token) return false;
-	else this._token = e.token;
+	if(this._token === eToken) return false;
+	else this._token = eToken;
 
-	this.handleToken( this.getToken() );
+	this.handleToken( this.getTokenString(), this.getTokenArray() );
 };
 
 
