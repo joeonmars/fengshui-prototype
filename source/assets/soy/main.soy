@@ -1,0 +1,54 @@
+{namespace feng.templates.main autoescape="false"}
+
+/**
+ * Say Hello
+ */
+{template .HelloWorld}
+<div>
+	Hello World!
+</div>
+{/template}
+
+
+/**
+ * Section Episodes Content 
+ */
+{template .SectionEpisodeContent}
+<div class="controls">
+</div>
+<div class="sceneUI">
+</div>
+<div class="sceneContainer">
+</div>
+{/template}
+
+
+/**
+ * Main
+ * @param debug if has debugger
+ */
+{template .Main}
+<div id="main">
+	<div class="section" id="home">
+		<div class="preloader">
+			<div class="fill"></div>
+		</div>
+	</div>
+
+	<div class="section episode" id="studio">
+		{call .SectionEpisodeContent}{/call}
+	</div>
+<!--
+	<div class="section episode" id="twobedroom">
+		{call .SectionEpisodeContent}{/call}
+	</div>
+
+	<div class="section episode" id="townhouse">
+		{call .SectionEpisodeContent}{/call}
+	</div>
+-->
+	{if $debug != false}
+		{call feng.templates.debug.Debugger}{/call}
+	{/if}
+</div>
+{/template}

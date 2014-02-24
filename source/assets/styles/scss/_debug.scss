@@ -1,0 +1,199 @@
+$debug_border_style:  2px outset #d6d3ce;
+
+@mixin button($text) {
+	&:before{
+		content: $text;
+	}
+}
+
+.debugPanel{
+	background-color: #d6d3ce;
+	border: $debug_border_style;
+	@include box-sizing(border-box);
+};
+
+.debugHeader{
+	position: relative;
+	color: #fff;
+	border-left: $debug_border_style;
+	border-top: $debug_border_style;
+	border-right: $debug_border_style;
+	@include box-sizing(border-box);
+	@include background( linear-gradient(top left, #07246b, #a5cbf7) );
+}
+
+#debugger{
+	position: fixed;
+	top: 0;
+	right: 0;
+	min-width: 300px;
+	font-family: $font_tahoma;
+
+	>.header{
+		@extend .debugHeader;
+
+		>h4{
+			font-size: 12px;
+			padding: 4px;
+		}
+
+		>.display{
+			position: absolute;
+			top: 0;
+			right: 0;
+			font-size: 14px;
+			padding: 2px 4px;
+			font-family: $font_awesome;
+
+			&:after{
+				content: "\f06e";
+			}
+
+			&.invisible{
+				&:after{
+					content: "\f070";
+				}
+			}
+		}
+	}
+
+	.debugView{
+		>.header{
+			@extend .debugHeader;
+
+			>h5{
+				font-size: 12px;
+				padding: 4px;
+			}
+
+			>.display{
+				position: absolute;
+				top: 0;
+				right: 0;
+				font-size: 14px;
+				padding: 2px 4px;
+				font-family: $font_awesome;
+
+				&:after{
+					content: "\f06e";
+				}
+
+				&.invisible{
+					&:after{
+						content: "\f070";
+					}
+				}
+			}
+		}
+
+		textarea{
+			display: block;
+			width: 100%;
+			margin: 0;
+			resize: none;
+			@include box-sizing(border-box);
+		}
+	}
+}
+
+#debug-pathfinding{
+	.canvasContainer{
+		background-color: #000;
+
+		>canvas{
+			display: block;
+			width: auto;
+			max-height: 450px;
+		}
+	}
+}
+
+#debug-camera{
+	.viewPanel{
+		@extend .debugPanel;
+		font-size: 12px;
+		
+		>div{
+			>select{
+				display: inline-block;
+				width: 60%;
+			}
+
+			>.visible{
+				display: inline-block;
+				width: 10%;
+			}
+
+			>.use{
+				display: inline-block;
+				width: 30%;
+
+				@include button("Use");
+			}
+		}
+
+		>ul{
+			width: 100%;
+
+			>li{
+				margin: 8px;
+
+				&:before{
+					display: inline-block;
+					width: 80px;
+				}
+
+				&[data-prop="fov"] {
+					@include button("fov: ");
+				}
+
+				&[data-prop="position-x"] {
+					@include button("position.x: ");
+				}
+
+				&[data-prop="position-y"] {
+					@include button("position.y: ");
+				}
+
+				&[data-prop="position-z"] {
+					@include button("position.z: ");
+				}
+
+				&[data-prop="rotation-x"] {
+					@include button("rotation.x: ");
+				}
+
+				&[data-prop="rotation-y"] {
+					@include button("rotation.y: ");
+				}
+
+				&[data-prop="rotation-z"] {
+					@include button("rotation.z: ");
+				}
+			}
+		}
+
+		>label{
+
+		}
+	}
+	.controlPanel{
+		@extend .debugPanel;
+
+		>textarea{
+
+		}
+
+		>button{
+			display: inline-block;
+
+			&.input{
+				@include button("Input");
+			}
+
+			&.output{
+				@include button("Output");
+			}
+		}
+	}
+}

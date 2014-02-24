@@ -1,0 +1,33 @@
+{
+"images": ["avatar.png"],
+"frames": [
+
+    [2, 2, 253, 726], 
+    [257, 350, 189, 552], 
+    [257, 2, 203, 346], 
+    [2, 730, 184, 197], 
+    [2, 929, 180, 466], 
+    [188, 904, 168, 299], 
+    [184, 1205, 168, 243], 
+    [354, 1331, 123, 107], 
+    [354, 1205, 139, 124], 
+    [358, 904, 116, 86]
+],
+"animations": {
+    
+        "adult-body":[0], 
+        "adult-costume-1":[1], 
+        "adult-costume-2":[2], 
+        "adult-hair-1":[3], 
+        "kid-body":[4], 
+        "kid-costume-1":[5], 
+        "kid-costume-2":[6], 
+        "kid-hair-1":[7], 
+        "kid-hair-2":[8], 
+        "kid-hair-3":[9]
+},
+"texturepacker": [
+        "SmartUpdateHash: $TexturePacker:SmartUpdate:e096a4e10cfb6efda662d721b9ace477:7105505d88ef6d4cf3fd839266c8be8f:5d4b6864684bc48387365e911f120a44$",
+        "Created with TexturePacker (http://www.texturepacker.com) for EaselJS"
+]
+}

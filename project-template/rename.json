@@ -1,0 +1,4 @@
+{
+  "source/assets/js/project/namespace.js": "source/assets/js/project/{%= namespace %}.js",
+  "source/assets/styles/scss/namespace.scss": "source/assets/styles/scss/{%= namespace %}.scss"
+}

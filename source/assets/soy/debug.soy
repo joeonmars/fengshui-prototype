@@ -1,0 +1,82 @@
+{namespace feng.templates.debug autoescape="false"}
+
+
+/**
+ * Debugger
+ */
+{template .Debugger}
+<div id="debugger">
+	<div class="header">
+		<h4>Debugger</h4>
+		<div class="button display"></div>
+	</div>
+	<ul>
+	</ul>
+</div>
+{/template}
+
+
+/**
+ * Debug View
+ * @param id the debug view Id
+ * @param title The debug view title
+ * @param body the body content
+ */
+{template .DebugView}
+<li class="debugView" id="{$id}">
+	<div class="header">
+		<h5>{$title}</h5>
+		<div class="button display"></div>
+	</div>
+	<div class="body">{$body}</div>
+</li>
+{/template}
+
+
+/**
+ * Camera Debug View
+ */
+{template .CameraDebugView}
+	{call .DebugView}
+		{param id}debug-camera{/param}
+		{param title}Camera{/param}
+		{param body}
+			<div class="viewPanel">
+				<div>
+					<select></select>
+					<button type="button" class="button use"></button>
+					<div class="button visible"></div>
+				</div>
+				<ul>
+					<li data-prop="fov"></li>
+					<li data-prop="position-x"></li>
+					<li data-prop="position-y"></li>
+					<li data-prop="position-z"></li>
+					<li data-prop="rotation-x"></li>
+					<li data-prop="rotation-y"></li>
+					<li data-prop="rotation-z"></li>
+				</ul>
+				<label><input class="inDegrees" type="checkbox">in degrees</label>
+			</div>
+			<div class="controlPanel">
+				<textarea rows="10"></textarea>
+				<button type="button" class="button input"></button>
+				<button type="button" class="button output"></button>
+			</div>
+		{/param}
+	{/call}
+{/template}
+
+
+/**
+ * Pathfinding Debug View
+ */
+{template .PathfindingDebugView}
+	{call .DebugView}
+		{param id}debug-pathfinding{/param}
+		{param title}Pathfinding{/param}
+		{param body}
+			<div class="canvasContainer"></div>
+		{/param}
+	{/call}
+{/template}

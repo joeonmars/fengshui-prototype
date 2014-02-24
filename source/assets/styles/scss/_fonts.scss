@@ -1,0 +1,6 @@
+@include font-face("FontAwesome", font-files("fontawesome/fontawesome-webfont.ttf", "fontawesome/fontawesome-webfont.woff", "fontawesome/fontawesome-webfont.svg"), "fontawesome/fontawesome-webfont.eot");
+@include font-face("tahomaregular", font-files("tahoma/tahoma-webfont.ttf", "tahoma/tahoma-webfont.woff", "tahoma/tahoma-webfont.svg"), "tahoma/tahoma-webfont.eot");
+
+$font_system: Helvetica, Arial, sans-serif;
+$font_awesome: "FontAwesome";
+$font_tahoma: "tahomaregular";
