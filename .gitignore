@@ -2,3 +2,6 @@
 *.sublime-project
 *.sublime-workspace
 *.scssc
+/design
+/node_modules
+/.sass-cache
