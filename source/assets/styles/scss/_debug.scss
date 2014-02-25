@@ -27,6 +27,7 @@ $debug_border_style:  2px outset #d6d3ce;
 	top: 0;
 	right: 0;
 	min-width: 300px;
+	z-index: 100;
 	font-family: $font_tahoma;
 
 	>.header{

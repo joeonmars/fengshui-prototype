@@ -5,6 +5,7 @@ goog.require('goog.events.EventTarget');
 goog.require('feng.events');
 goog.require('feng.views.sections.Section');
 goog.require('feng.views.View3D');
+goog.require('feng.views.sections.controls.Compass');
 
 
 /**
@@ -14,6 +15,7 @@ feng.views.sections.Episode = function(domElement){
 
   goog.base(this, domElement);
 
+  this._compass = new feng.views.sections.controls.Compass( goog.dom.getElementByClass('compass', this.domElement) );
   this._view3d = null;
 };
 goog.inherits(feng.views.sections.Episode, feng.views.sections.Section);
@@ -32,6 +34,8 @@ feng.views.sections.Episode.prototype.show = function(){
 	if(this._view3d) {
 		this._view3d.show();
 	}
+
+	this._compass.activate();
 };
 
 
@@ -42,6 +46,8 @@ feng.views.sections.Episode.prototype.hide = function(){
 	if(this._view3d) {
 		this._view3d.hide();
 	}
+
+	this._compass.deactivate();
 };
 
 

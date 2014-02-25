@@ -131,7 +131,14 @@ feng.views.debug.Camera.prototype.onView3DShow = function(e){
 
   var view3d = e.target;
   this._cameraController = view3d.cameraController;
-  
+
+	var cameras = view3d.cameraController.getCameras();
+	goog.object.forEach(cameras, function(camera) {
+		this.onAddCamera({
+			camera: camera
+		});
+	}, this);
+
 	this._cameraControllerEventHandler.listen(this._cameraController, feng.events.EventType.ADD, this.onAddCamera, false, this);
 	this._cameraControllerEventHandler.listen(this._cameraController, feng.events.EventType.REMOVE, this.onRemoveCamera, false, this);
 };
@@ -141,6 +148,16 @@ feng.views.debug.Camera.prototype.onView3DHide = function(e){
 
   goog.base(this, 'onView3DHide', e);
 
+  var view3d = e.target;
+  this._cameraController = view3d.cameraController;
+
+	var cameras = view3d.cameraController.getCameras();
+	goog.object.forEach(cameras, function(camera) {
+		this.onRemoveCamera({
+			camera: camera
+		});
+	}, this);
+
   this._cameraControllerEventHandler.removeAll();
 };
 
@@ -148,6 +165,10 @@ feng.views.debug.Camera.prototype.onView3DHide = function(e){
 feng.views.debug.Camera.prototype.onAddCamera = function(e){
 
 	var cameraName = e.camera.name;
+
+	// add the camera option if not existed
+	var optionDoms = goog.dom.query('option[value="'+cameraName+'"]', this._selectDom);
+	if(optionDoms.length > 0) return;
 
 	var optionDom = goog.dom.createDom('option', {
 		'value': cameraName
@@ -163,7 +184,12 @@ feng.views.debug.Camera.prototype.onRemoveCamera = function(e){
 
 	var cameraName = e.camera.name;
 
-	var optionDom = goog.dom.query('option[value="'+cameraName+'"]', this._selectDom)[0];
+	// remove the camera option only if exists
+	var optionDoms = goog.dom.query('option[value="'+cameraName+'"]', this._selectDom);
+	if(optionDoms.length <= 0) return;
+
+	var optionDom = optionDoms[0];
+
 	this._selectDom.remove( optionDom );
 };
 

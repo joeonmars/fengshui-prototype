@@ -27,7 +27,7 @@ feng.views.debug.Debugger = function(){
 	this.pathfindingView = new feng.views.debug.Pathfinding();
 
 	//
-	//this.hide();
+	this.hide();
 };
 goog.inherits(feng.views.debug.Debugger, goog.events.EventTarget);
 goog.addSingletonGetter(feng.views.debug.Debugger);

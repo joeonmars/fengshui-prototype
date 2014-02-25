@@ -43,18 +43,38 @@ a{
   text-decoration: none;
 }
 
-input{
-  -webkit-appearance: none;
+.grab {
+  cursor: url(../cursor/openhand.cur) 4 4, move;
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+  cursor: -o-grab;
+  cursor: -ms-grab;
+  cursor: grab;
 }
 
-.absoluteTopLeft{
-  position: absolute;
-  top: 0;
-  left: 0;
+.grabbing{
+  cursor: url(../cursor/closedhand.cur) 4 4, move;
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing;
+  cursor: -o-grabbing;
+  cursor: -ms-grabbing;
+  cursor: grabbing;
 }
 
 .button{
   @include user-select('none');
   cursor: pointer;
   text-align: center;
+}
+
+@mixin absoluteTopLeft() {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+@mixin absoluteTopRight() {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
