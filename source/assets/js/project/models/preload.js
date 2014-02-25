@@ -16,6 +16,10 @@ feng.models.Preload = function(){
 		'homepage': {
 
 		},
+		'studio': {
+			'scene-data': 'json/scene-bed-bake.json',
+			'texture-bed': 'model/bed_bake.png'
+		},
 		'avatar': {
 			'texture': 'images/texture/avatar/avatar.png',
 			'texture-data': 'json/avatar.json'
@@ -55,7 +59,10 @@ feng.models.Preload.prototype.getManifest = function( keys ) {
 		var manifest = [];
 
 		goog.object.forEach(asset, function(src, id) {
-			manifest.push( {id: keys+'.'+id, src: src} );
+			// if src is an Url rather than result
+			if(goog.isString(src)) {
+				manifest.push( {id: keys+'.'+id, src: src} );
+			}
 		});
 		
 		return manifest;

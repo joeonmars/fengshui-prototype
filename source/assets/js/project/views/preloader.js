@@ -12,12 +12,12 @@ feng.views.Preloader = function(domElement, duration){
 
   goog.base(this);
 
+  this.model = feng.models.Preload.getInstance();
+  this.isCompleted = false;
+  
   this._domElement = domElement;
 
   this._loader = new createjs.LoadQueue(true, feng.Config['assetsPath']);
-  this._model = feng.models.Preload.getInstance();
-  
-  this._isCompleted = false;
 
   var fps = 30;
   this._ticker = new goog.Timer(1000/fps);
@@ -33,7 +33,7 @@ goog.inherits(feng.views.Preloader, goog.events.EventTarget);
 
 feng.views.Preloader.prototype.load = function( keys ){
 
-	if(this._isCompleted) return false;
+	if(this.isCompleted) return false;
 
 	this._loader.on("loadstart", goog.bind(this.onLoadStart, this));
 	this._loader.on("fileload", goog.bind(this.onFileLoad, this));
@@ -45,16 +45,21 @@ feng.views.Preloader.prototype.load = function( keys ){
 
 	if(goog.isString(keys)) {
 
-		manifest = manifest.concat( this._model.getManifest( keys ) );
+		manifest = manifest.concat( this.model.getManifest( keys ) );
 
 	}else if(goog.isArray(keys)) {
 
 		goog.array.forEach(keys, function(key) {
-			manifest = manifest.concat( this._model.getManifest( key ) );
+			manifest = manifest.concat( this.model.getManifest( key ) );
 		}, this);
 	}
 
-	this._loader.loadManifest( manifest );
+	if(manifest.length > 0) {
+		this._loader.loadManifest( manifest );
+	}else {
+		this.onComplete();
+		this._loader.progress = 1;
+	}
 
 	this._ticked = 1;
 	this._ticker.start();
@@ -73,7 +78,7 @@ feng.views.Preloader.prototype.onLoadStart = function(e){
 
 feng.views.Preloader.prototype.onFileLoad = function(e){
 
-	this._model.setAsset(e.item.id, e.result);
+	this.model.setAsset(e.item.id, e.result);
 };
 
 
@@ -83,10 +88,6 @@ feng.views.Preloader.prototype.onComplete = function(e){
 
 		console.log('preloader files load complete');
 
-		// register loaded assets to model
-
-
-		//
 		this._loader.removeAllEventListeners();
 
 		this.dispatchEvent({
@@ -99,7 +100,7 @@ feng.views.Preloader.prototype.onComplete = function(e){
 
 		this._ticker.stop();
 
-		this._isCompleted = true;
+		this.isCompleted = true;
 
 		this.dispatchEvent({
 			type: feng.events.EventType.COMPLETE

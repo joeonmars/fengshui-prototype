@@ -43,16 +43,10 @@ $debug_border_style:  2px outset #d6d3ce;
 			right: 0;
 			font-size: 14px;
 			padding: 2px 4px;
-			font-family: $font_awesome;
-
-			&:after{
-				content: "\f06e";
-			}
+			@include font-awesome("fa-eye");
 
 			&.invisible{
-				&:after{
-					content: "\f070";
-				}
+				@include font-awesome("fa-eye-slash");
 			}
 		}
 	}
@@ -72,16 +66,10 @@ $debug_border_style:  2px outset #d6d3ce;
 				right: 0;
 				font-size: 14px;
 				padding: 2px 4px;
-				font-family: $font_awesome;
-
-				&:after{
-					content: "\f06e";
-				}
+				@include font-awesome("fa-eye");
 
 				&.invisible{
-					&:after{
-						content: "\f070";
-					}
+					@include font-awesome("fa-eye-slash");
 				}
 			}
 		}

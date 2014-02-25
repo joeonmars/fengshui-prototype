@@ -26,7 +26,7 @@ feng.templates.main.HelloWorld = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.main.SectionEpisodeContent = function(opt_data, opt_ignored) {
-  return '<div class="controls"></div><div class="sceneUI"></div><div class="sceneContainer"></div>';
+  return '<div class="preloader"></div><div class="controls"></div><div class="sceneUI"></div><div class="sceneContainer"></div>';
 };
 
 

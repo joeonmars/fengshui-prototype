@@ -8,19 +8,21 @@ goog.require('goog.events');
 goog.require('feng.controllers.view3d.CameraController');
 goog.require('feng.controllers.view3d.ModeController');
 goog.require('feng.controllers.view3d.View3DController');
+goog.require('feng.models.Preload');
 
 
 /**
  * @constructor
  */
-feng.views.View3D = function(domElement){
+feng.views.View3D = function(domElement, id){
   goog.base(this);
 
   this.setParentEventTarget( feng.controllers.view3d.View3DController.getInstance() );
 
+  this.id = id;
   this.domElement = domElement;
 	this.scene = null;
-	
+
 	this._renderer = null;
 	this._axisHelper = null;
 
@@ -31,7 +33,7 @@ feng.views.View3D = function(domElement){
 	this.cameraController = new feng.controllers.view3d.CameraController(this);
 	this.modeController = new feng.controllers.view3d.ModeController(this);
 
-  this._eventHandler = new goog.events.EventHandler(this);
+	this._eventHandler = new goog.events.EventHandler(this);
 };
 goog.inherits(feng.views.View3D, goog.events.EventTarget);
 
@@ -49,9 +51,7 @@ feng.views.View3D.prototype.init = function(){
 	goog.dom.appendChild( this.domElement, this._renderer.domElement );
 	goog.dom.appendChild( this.domElement, feng.views.View3D.STATS.domElement );
 
-	// loader
-	var loader = new THREE.ObjectLoader();
-	loader.load( feng.Config['assetsPath'] + "json/scene-bed-bake.json", goog.bind(this.onLoad, this) );
+	this.constructScene();
 };
 
 
@@ -124,10 +124,15 @@ feng.views.View3D.prototype.getCameraZOfObjectExactPixelDimension = function(cam
 };
 
 
-feng.views.View3D.prototype.onLoad = function(result) {
+feng.views.View3D.prototype.constructScene = function() {
 	
-	this.scene = result;
-	console.log(result);
+	// create a threejs loader just for parsing scene data
+	var loader = new THREE.ObjectLoader();
+
+	var preloadModel = feng.models.Preload.getInstance();
+	var sceneData = preloadModel.getAsset(this.id+'.scene-data');
+
+	this.scene = loader.parse( sceneData );
 
 	// add spline group object
 	this._splineGroupObject = new THREE.Object3D();
@@ -150,8 +155,9 @@ feng.views.View3D.prototype.onLoad = function(result) {
 
 	//
 	var bed = this.scene.getObjectByName('bed');
+	var bedTextureSrc = preloadModel.getAsset(this.id+'.texture-bed').src;
 	var material = new THREE.MeshBasicMaterial({
-    map: THREE.ImageUtils.loadTexture(feng.Config['assetsPath'] + 'model/bed_bake.png'),
+    map: THREE.ImageUtils.loadTexture( bedTextureSrc ),
     transparent: true,
     side: THREE.DoubleSide
   });

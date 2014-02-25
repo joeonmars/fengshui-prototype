@@ -6,6 +6,7 @@ goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventHandler');
 goog.require('feng.events');
 goog.require('feng.controllers.NavigationController');
+goog.require('feng.views.Preloader');
 
 
 /**
@@ -28,6 +29,13 @@ feng.views.sections.Section = function(domElement){
   	onComplete: this.onAnimatedOut,
   	onCompleteScope: this
   });
+
+  // section loader
+  this._assetKeys = [this.id];
+
+  this._preloaderDom = goog.dom.query('.preloader', this.domElement)[0];
+  this._preloader = new feng.views.Preloader( this._preloaderDom );
+  this._preloader.setParentEventTarget(this);
 
   // permanent events
   goog.events.listen(feng.controllers.NavigationController.getInstance(), feng.events.EventType.CHANGE, this.onNavigationChange, false, this);
@@ -75,6 +83,10 @@ feng.views.sections.Section.prototype.isShown = function(){
 
 feng.views.sections.Section.prototype.activate = function(){
 
+	this._eventHandler.listen(this, feng.events.EventType.START, this.onLoadStart, false, this);
+	this._eventHandler.listen(this, feng.events.EventType.PROGRESS, this.onLoadProgress, false, this);
+	this._eventHandler.listen(this, feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this);
+	this._eventHandler.listen(this, feng.events.EventType.COMPLETE, this.onPreloaderComplete, false, this);
 };
 
 
@@ -138,6 +150,11 @@ feng.views.sections.Section.prototype.onAnimatedIn = function(e){
 	this.dispatchEvent({
 		type: feng.events.EventType.ANIMATED_IN
 	});
+
+	var shouldLoad = this._preloader.load( this._assetKeys );
+	if(!shouldLoad) {
+
+	}
 };
 
 
@@ -148,6 +165,32 @@ feng.views.sections.Section.prototype.onAnimatedOut = function(e){
 	this.dispatchEvent({
 		type: feng.events.EventType.ANIMATED_OUT
 	});
+};
+
+
+feng.views.sections.Section.prototype.onLoadStart = function(e){
+
+
+};
+
+
+feng.views.sections.Section.prototype.onLoadProgress = function(e){
+
+	//console.log(e.progress);
+};
+
+
+feng.views.sections.Section.prototype.onLoadComplete = function(e){
+
+};
+
+
+feng.views.sections.Section.prototype.onPreloaderComplete = function(e){
+
+	this._eventHandler.unlisten(this, feng.events.EventType.START, this.onLoadStart, false, this);
+	this._eventHandler.unlisten(this, feng.events.EventType.PROGRESS, this.onLoadProgress, false, this);
+	this._eventHandler.unlisten(this, feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this);
+	this._eventHandler.unlisten(this, feng.events.EventType.COMPLETE, this.onLoadComplete, false, this);
 };
 
 

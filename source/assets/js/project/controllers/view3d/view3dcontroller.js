@@ -20,11 +20,11 @@ goog.addSingletonGetter(feng.controllers.view3d.View3DController);
 
 feng.controllers.view3d.View3DController.prototype.onShowView3D = function(e){
 
-	console.log('Show View3D: ', e.target);
+	console.log('Show View3D: ', e.target.id);
 };
 
 
 feng.controllers.view3d.View3DController.prototype.onHideView3D = function(e){
 
-	console.log('Remove View3D: ', e.target);
+	console.log('Hide View3D: ', e.target.id);
 };

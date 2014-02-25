@@ -131,9 +131,9 @@ feng.views.debug.Camera.prototype.onView3DShow = function(e){
 
   var view3d = e.target;
   this._cameraController = view3d.cameraController;
- 	
- 	this._cameraControllerEventHandler.listen(this._cameraController, feng.events.EventType.ADD, this.onAddCamera, false, this);
- 	this._cameraControllerEventHandler.listen(this._cameraController, feng.events.EventType.REMOVE, this.onRemoveCamera, false, this);
+  
+	this._cameraControllerEventHandler.listen(this._cameraController, feng.events.EventType.ADD, this.onAddCamera, false, this);
+	this._cameraControllerEventHandler.listen(this._cameraController, feng.events.EventType.REMOVE, this.onRemoveCamera, false, this);
 };
 
 
