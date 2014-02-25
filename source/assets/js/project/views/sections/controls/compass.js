@@ -62,6 +62,24 @@ feng.views.sections.controls.Compass.prototype.getDraggedAngle = function(mouseX
 };
 
 
+feng.views.sections.controls.Compass.prototype.onChange = function(e){
+
+	// when angle has changed...
+	var angle = e.angle;
+
+	goog.style.setStyle(this._directionsDom, 'transform', 'rotate(' + angle + 'deg)');
+
+	goog.array.forEach(this._directionDoms, function(dom) {
+		goog.style.setStyle(dom, 'transform', 'rotate(' + -angle + 'deg)');
+	}, this);
+
+	this.dispatchEvent({
+		type: feng.events.EventType.CHANGE,
+		angle: angle
+	});
+};
+
+
 feng.views.sections.controls.Compass.prototype.onMouseDown = function(e){
 
 	this._isDragging = true;
@@ -101,7 +119,26 @@ feng.views.sections.controls.Compass.prototype.onMouseUp = function(e){
 
 feng.views.sections.controls.Compass.prototype.onClick = function(e){
 
+	var angle;
 
+	if(goog.dom.classes.has(e.target, 'n')) {
+
+
+	}else if(goog.dom.classes.has(e.target, 's')) {
+
+
+	}else if(goog.dom.classes.has(e.target, 'w')) {
+
+
+	}else if(goog.dom.classes.has(e.target, 'e')) {
+
+
+	}
+
+	this.onChange({
+		target: this,
+		angle: angle
+	});
 };
 
 
@@ -110,11 +147,11 @@ feng.views.sections.controls.Compass.prototype.onAnimationFrame = function(now){
 	var angleDiff = goog.math.angleDifference(this._currentAngle, this._endAngle);
 
 	this._currentAngle += angleDiff * .25;
-	goog.style.setStyle(this._directionsDom, 'transform', 'rotate(' + this._currentAngle + 'deg)');
 
-	goog.array.forEach(this._directionDoms, function(dom) {
-		goog.style.setStyle(dom, 'transform', 'rotate(' + -this._currentAngle + 'deg)');
-	}, this);
+	this.onChange({
+		target: this,
+		angle: this._currentAngle
+	});
 
 	var hasReachedEnd = (Math.abs(angleDiff) < 1);
 

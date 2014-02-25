@@ -101,7 +101,6 @@ feng.controllers.controls.Controls.prototype.setFov = function (fov) {
 };
 
 
-
 feng.controllers.controls.Controls.prototype.reset = function () {
 
 	this._camera.position.set( 0, 0, 0 );
@@ -138,6 +137,12 @@ feng.controllers.controls.Controls.prototype.enable = function( enable ) {
 
 feng.controllers.controls.Controls.prototype.update = function() {
 
+};
+
+
+feng.controllers.controls.Controls.prototype.rotateTo = function (rotation) {
+
+	
 };
 
 
