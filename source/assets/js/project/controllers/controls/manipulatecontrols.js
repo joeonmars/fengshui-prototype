@@ -23,6 +23,9 @@ feng.controllers.controls.ManipulateControls.prototype.update = function () {
 	goog.base(this, 'update');
 
 	var elapsed = this._clock.getElapsedTime();
+
+	//this.getObject().lookAt( this._scene.position );
+	//this.getObject().camera.position.x = Math.floor(Math.cos( timer ) * 200);
 };
 
 

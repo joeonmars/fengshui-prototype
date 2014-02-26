@@ -79,7 +79,7 @@ feng.controllers.view3d.CameraController.prototype.removeCamera = function( name
 
 	var cameraHelper = this.getCameraHelper(name);
 
-	camera.parent.remove( cameraHelper );
+	cameraHelper.parent.remove( cameraHelper );
   goog.array.remove(this._cameraHelpers, cameraHelper);
 
   this.dispatchEvent({
