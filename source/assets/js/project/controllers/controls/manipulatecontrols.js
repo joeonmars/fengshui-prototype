@@ -7,6 +7,8 @@ goog.require('feng.controllers.controls.Controls');
 
 /**
  * @constructor
+ * a combination of trackball controls and transform controls
+ * WIP
  */
 feng.controllers.controls.ManipulateControls = function(camera, domElement, view3d){
 

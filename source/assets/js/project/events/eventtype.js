@@ -10,6 +10,7 @@ feng.events.EventType = {
 	PROGRESS: 'progress',
 	COMPLETE: 'complete',
 	ERROR: 'error',
+	UPDATE: 'update',
 	CHANGE: 'change',
 	CANCEL: 'cancel',
 	START: 'start',

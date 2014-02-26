@@ -14,7 +14,7 @@ goog.require('feng.models.Preload');
 /**
  * @constructor
  */
-feng.views.View3D = function(domElement, id, interactionEventResolver){
+feng.views.View3D = function(domElement, id, eventMediator){
   goog.base(this);
 
   this.setParentEventTarget( feng.controllers.view3d.View3DController.getInstance() );
@@ -22,7 +22,7 @@ feng.views.View3D = function(domElement, id, interactionEventResolver){
   this.id = id;
   this.domElement = domElement;
 
-  this.interactionEventResolver = interactionEventResolver;
+  this.eventMediator = eventMediator;
 
   this.cameraController = null;
 	this.modeController = null;

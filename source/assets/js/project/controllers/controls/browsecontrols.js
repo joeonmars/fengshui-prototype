@@ -16,6 +16,8 @@ feng.controllers.controls.BrowseControls = function(camera, domElement, view3d){
 
   goog.base(this, camera, domElement, view3d);
 
+  this._eventMediator = this._view3d.eventMediator;
+
 	this._clickableObjects = goog.array.filter(this._scene.children, function(object) {
 		return (object instanceof THREE.Mesh);
 	});
@@ -81,16 +83,22 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable ) {
 
 	goog.base(this, 'enable', enable);
 
-	if(!this._isEnabled) {
+	if(this._isEnabled) {
+
+		this._eventHandler.listen(this._objectSelector, feng.events.EventType.CHANGE, this.onObjectSelected, false, this);
+		this._eventHandler.listen(this._eventMediator.getEventTarget(), feng.events.EventType.UPDATE, this.onMediatorEvent, false, this);
+
+		this._eventMediator.listen(this, feng.events.EventType.UPDATE);
+
+	}else  {
 
 		// reset clock, thus set camera natural movement's playhead to 0
 		this._clock.startTime = 0;
 		this._clock.oldTime = 0;
 		this._clock.elapsedTime = 0;
 
-	}else  {
+		this._eventMediator.unlisten(this, feng.events.EventType.UPDATE);
 
-		this._eventHandler.listen(this._objectSelector, feng.events.EventType.CHANGE, this.onObjectSelected, false, this);
 	}
 
 	this._objectSelector.enable( this._isEnabled );
@@ -117,6 +125,12 @@ feng.controllers.controls.BrowseControls.prototype.update = function () {
 	var cameraRotateY = this._randomYInterpolator.getValue() * .04;
 	this._camera.rotation.x = cameraRotateX;
 	this._camera.rotation.y = cameraRotateY;
+
+	//
+	this.dispatchEvent({
+		type: feng.events.EventType.UPDATE,
+		rotationY: this._yawObject.rotation.y
+	});
 };
 
 
@@ -188,4 +202,25 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelected = function (
 		toFov: manipulateCameraSettings.fov,
 		lookAt: e.object.position
 	});
+};
+
+
+
+feng.controllers.controls.BrowseControls.prototype.onMediatorEvent = function(e){
+
+	switch(e.type) {
+
+		case feng.events.EventType.UPDATE:
+
+		if(e.target instanceof feng.views.sections.controls.Compass) {
+			var radians = goog.math.toRadians( e.angle );
+			this._yawObject.rotation.y = radians;
+			this._targetRotationY = radians;
+		}
+
+		break;
+
+		default:
+		break;
+	}
 };

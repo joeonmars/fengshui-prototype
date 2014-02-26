@@ -18,10 +18,9 @@ feng.controllers.controls.Controls = function(camera, domElement, view3d){
 
   this._eventHandler = new goog.events.EventHandler(this);
 
-  this._interactionEventResolver = this._view3d.interactionEventResolver;
-
   this._isEnabled = false;
   this._clock = new THREE.Clock(false);
+  this._rotation = new THREE.Euler();
 
   this._originalPosition = this._camera.position.clone();
   this._originalRotation = this._camera.rotation.clone();
@@ -61,8 +60,8 @@ feng.controllers.controls.Controls.prototype.getPosition = function () {
 
 feng.controllers.controls.Controls.prototype.getRotation = function () {
 
-	var rotation = new THREE.Euler( this._pitchObject.rotation.x, this._yawObject.rotation.y, 0, 'XYZ' );
-	return rotation;
+	this._rotation.set( this._pitchObject.rotation.x, this._yawObject.rotation.y, 0, 'XYZ' );
+	return this._rotation;
 };
 
 
@@ -87,12 +86,15 @@ feng.controllers.controls.Controls.prototype.setRotation = function (x, y) {
 
 	if(x instanceof THREE.Euler) {
 		var rotation = x;
-		this._pitchObject.rotation.x = rotation.x;
-		this._yawObject.rotation.y = rotation.y;
+		this._rotation.x = rotation.x;
+		this._rotation.y = rotation.y;
 	}else {
-		this._pitchObject.rotation.x = x;
-		this._yawObject.rotation.y = y;
+		this._rotation.x = x;
+		this._rotation.y = y;
 	}
+
+	this._pitchObject.rotation.x = this._rotation.x;
+	this._yawObject.rotation.y = this._rotation.y;
 };
 
 
@@ -127,8 +129,6 @@ feng.controllers.controls.Controls.prototype.enable = function( enable ) {
 		this._eventHandler.listen(this._domElement, 'click', this.onClick, false, this);
 		this._eventHandler.listen(this._domElement, 'mousedown', this.onMouseDown, false, this);
 
-		this._eventHandler.listen(this._interactionEventResolver.getEventTarget(), feng.events.EventType.CHANGE, this.onChange, false, this);
-
 		this._clock.start();
 		goog.fx.anim.registerAnimation(this);
 
@@ -138,7 +138,7 @@ feng.controllers.controls.Controls.prototype.enable = function( enable ) {
 
 		this._clock.stop();
 		goog.fx.anim.unregisterAnimation(this);
-		
+
 	}
 };
 
@@ -189,13 +189,4 @@ feng.controllers.controls.Controls.prototype.onMouseUp = function ( e ) {
 
 feng.controllers.controls.Controls.prototype.onMouseMove = function ( e ) {
 
-};
-
-
-feng.controllers.controls.Controls.prototype.onChange = function(e){
-
-	if(e.target instanceof feng.views.sections.controls.Compass) {
-		var radians = goog.math.toRadians( e.angle );
-		this.setRotation(this.getRotation().x, radians);
-	}
 };

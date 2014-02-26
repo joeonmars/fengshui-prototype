@@ -10,7 +10,7 @@ goog.require('feng.events');
 /**
  * @constructor
  */
-feng.views.sections.controls.Compass = function(domElement){
+feng.views.sections.controls.Compass = function(domElement, eventMediator){
   goog.base(this);
 
   this.domElement = domElement;
@@ -29,6 +29,7 @@ feng.views.sections.controls.Compass = function(domElement){
   this._center = this.getCenter();
 
   this._eventHandler = new goog.events.EventHandler(this);
+  this._eventMediator = eventMediator;
 };
 goog.inherits(feng.views.sections.controls.Compass, goog.events.EventTarget);
 
@@ -36,13 +37,17 @@ goog.inherits(feng.views.sections.controls.Compass, goog.events.EventTarget);
 feng.views.sections.controls.Compass.prototype.activate = function(){
 
   this._eventHandler.listen(this.domElement, 'mousedown', this.onMouseDown, false, this);
-  this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
+  this._eventHandler.listen(this._eventMediator.getEventTarget(), feng.events.EventType.UPDATE, this.onMediatorEvent, false, this);
+
+  this._eventMediator.listen(this, feng.events.EventType.UPDATE);
 };
 
 
 feng.views.sections.controls.Compass.prototype.deactivate = function(){
 
   this._eventHandler.removeAll();
+
+  this._eventMediator.unlisten(this, feng.events.EventType.UPDATE);
 };
 
 
@@ -63,21 +68,13 @@ feng.views.sections.controls.Compass.prototype.getDraggedAngle = function(mouseX
 };
 
 
-feng.views.sections.controls.Compass.prototype.onChange = function(e){
-
-	// when angle has changed...
-	var angle = e.angle;
+feng.views.sections.controls.Compass.prototype.render = function(angle){
 
 	goog.style.setStyle(this._directionsDom, 'transform', 'rotate(' + angle + 'deg)');
 
 	goog.array.forEach(this._directionDoms, function(dom) {
 		goog.style.setStyle(dom, 'transform', 'rotate(' + -angle + 'deg)');
 	}, this);
-
-	this.dispatchEvent({
-		type: feng.events.EventType.CHANGE,
-		angle: angle
-	});
 };
 
 
@@ -118,35 +115,33 @@ feng.views.sections.controls.Compass.prototype.onMouseUp = function(e){
 
 	goog.dom.classes.remove(this.domElement, 'grabbing');
 	goog.dom.classes.remove(document.body, 'grabbing');
-};
 
+	if(!this._hasDragged) {
+		var angle;
 
-feng.views.sections.controls.Compass.prototype.onClick = function(e){
+		if(goog.dom.classes.has(e.target, 'n')) {
 
-	if(this._hasDragged) return false;
+			angle = 0;
+		}else if(goog.dom.classes.has(e.target, 's')) {
 
-	var angle;
+			angle = 180;
+		}else if(goog.dom.classes.has(e.target, 'w')) {
 
-	if(goog.dom.classes.has(e.target, 'n')) {
+			angle = 90;
+		}else if(goog.dom.classes.has(e.target, 'e')) {
 
-		angle = 0;
-	}else if(goog.dom.classes.has(e.target, 's')) {
+			angle = -90;
+		}
 
-		angle = 180;
-	}else if(goog.dom.classes.has(e.target, 'w')) {
+		if(goog.isNumber(angle)) {
+			this._endAngle = angle;
 
-		angle = 90;
-	}else if(goog.dom.classes.has(e.target, 'e')) {
-
-		angle = -90;
+			this.dispatchEvent({
+				type: feng.events.EventType.UPDATE,
+				angle: this._endAngle
+			});
+		}
 	}
-
-	this._endAngle = angle;
-
-	this.onChange({
-		target: this,
-		angle: angle
-	});
 };
 
 
@@ -156,8 +151,8 @@ feng.views.sections.controls.Compass.prototype.onAnimationFrame = function(now){
 
 	this._currentAngle += angleDiff * .25;
 
-	this.onChange({
-		target: this,
+	this.dispatchEvent({
+		type: feng.events.EventType.UPDATE,
 		angle: this._currentAngle
 	});
 
@@ -172,4 +167,22 @@ feng.views.sections.controls.Compass.prototype.onAnimationFrame = function(now){
 feng.views.sections.controls.Compass.prototype.onResize = function(e){
 
 	this._center = this.getCenter();
+};
+
+
+feng.views.sections.controls.Compass.prototype.onMediatorEvent = function(e){
+
+	switch(e.type) {
+		case feng.events.EventType.UPDATE:
+
+		if(e.target instanceof feng.controllers.controls.BrowseControls) {
+			var deg = goog.math.toDegrees( e.rotationY );
+			this.render( deg );
+		}
+
+		break;
+
+		default:
+		break;
+	}
 };
