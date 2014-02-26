@@ -16,7 +16,7 @@ goog.addDependency('../../../../project/controllers/view3d/cameracontroller.js',
 goog.addDependency('../../../../project/controllers/view3d/modeController.js', ['feng.controllers.view3d.ModeController'], ['feng.controllers.controls.BrowseControls', 'feng.controllers.controls.CloseUpControls', 'feng.controllers.controls.ManipulateControls', 'feng.controllers.controls.PathControls', 'feng.controllers.controls.TransitionControls', 'feng.events', 'goog.events', 'goog.events.EventHandler', 'goog.events.EventTarget', 'goog.object']);
 goog.addDependency('../../../../project/controllers/view3d/pathfindingcontroller.js', ['feng.controllers.view3d.PathfindingController'], ['feng.views.debug.Pathfinding', 'goog.array', 'goog.events', 'goog.events.EventTarget', 'goog.math.Box']);
 goog.addDependency('../../../../project/controllers/view3d/view3dcontroller.js', ['feng.controllers.view3d.View3DController'], ['feng.events', 'goog.events.EventHandler', 'goog.events.EventTarget']);
-goog.addDependency('../../../../project/events/eventresolver.js', ['feng.events.EventResolver'], ['goog.events', 'goog.events.EventHandler', 'goog.events.EventTarget']);
+goog.addDependency('../../../../project/events/eventresolver.js', ['feng.events.EventResolver'], ['goog.Disposable', 'goog.events', 'goog.events.EventHandler', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/events/eventtype.js', ['feng.events'], []);
 goog.addDependency('../../../../project/feng.js', ['feng'], ['feng.apps.Demo', 'feng.apps.Main']);
 goog.addDependency('../../../../project/models/avatar/avatar.js', ['feng.models.avatar.Avatar'], ['goog.math', 'goog.object']);

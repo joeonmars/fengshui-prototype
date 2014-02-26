@@ -22,10 +22,10 @@ feng.views.View3D = function(domElement, id, interactionEventResolver){
   this.id = id;
   this.domElement = domElement;
 
+  this.interactionEventResolver = interactionEventResolver;
+
   this.cameraController = null;
 	this.modeController = null;
-
-	this.interactionEventResolver = interactionEventResolver;
 
 	this.scene = null;
 
@@ -195,14 +195,6 @@ feng.views.View3D.prototype.constructScene = function() {
 		fromRotation: new THREE.Euler(0, 0, 0, 'XYZ'),
 		fromFov: 45
 	});
-
-	// tween the camera
-	//this.cameraController.animatePositionTo(new THREE.Vector3(0, 100, 600), 4);
-	//this.cameraController.animateFocusTo(new THREE.Vector3(0, 40, 0), 4);
-	//this.cameraController.animateFovTo(10, 4);
-	//this.cameraController.animateFocusTo(end, 1, Linear.easeNone);
-	//this.cameraController.animateTo( closeupCamera.position.clone(), bed.position.clone(), 30 );
-
 
 	//
 	goog.fx.anim.registerAnimation(this);

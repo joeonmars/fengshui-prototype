@@ -19,8 +19,6 @@ feng.controllers.controls.Controls = function(camera, domElement, view3d){
   this._eventHandler = new goog.events.EventHandler(this);
 
   this._interactionEventResolver = this._view3d.interactionEventResolver;
-  this._interactionEventResolver.addEventTarget( this );
-  this._eventHandler.listen(this, feng.events.EventType.CHANGE, this.onChange, false, this);
 
   this._isEnabled = false;
   this._clock = new THREE.Clock(false);
@@ -125,16 +123,22 @@ feng.controllers.controls.Controls.prototype.enable = function( enable ) {
 	this._isEnabled = enable;
 
 	if(this._isEnabled) {
+
 		this._eventHandler.listen(this._domElement, 'click', this.onClick, false, this);
 		this._eventHandler.listen(this._domElement, 'mousedown', this.onMouseDown, false, this);
 
+		this._eventHandler.listen(this._interactionEventResolver.getEventTarget(), feng.events.EventType.CHANGE, this.onChange, false, this);
+
 		this._clock.start();
 		goog.fx.anim.registerAnimation(this);
+
 	}else {
+
 		this._eventHandler.removeAll();
 
 		this._clock.stop();
 		goog.fx.anim.unregisterAnimation(this);
+		
 	}
 };
 

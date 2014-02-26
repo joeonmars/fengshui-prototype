@@ -3,39 +3,23 @@ goog.provide('feng.events.EventResolver');
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events');
+goog.require('goog.Disposable');
 
 
 /**
  * @constructor
  */
 feng.events.EventResolver = function(){
-  goog.base(this);
 
   this._eventHandler = new goog.events.EventHandler(this);
-  this._eventTargets = [];
+  this._eventTarget = new goog.events.EventTarget();
 };
-goog.inherits(feng.events.EventResolver, goog.events.EventTarget);
+goog.inherits(feng.events.EventResolver, goog.Disposable);
 
 
-feng.events.EventResolver.prototype.getEventHandler = function(){
+feng.events.EventResolver.prototype.getEventTarget = function(){
 
-	return this._eventHandler;
-};
-
-
-feng.events.EventResolver.prototype.addEventTarget = function( eventTarget ){
-
-	if(goog.array.contains(this._eventTargets, eventTarget)) return;
-
-	this._eventTargets.push(eventTarget);
-};
-
-
-feng.events.EventResolver.prototype.removeEventTarget = function( eventTarget ){
-
-	if(!goog.array.contains(this._eventTargets, eventTarget)) return;
-	
-	goog.array.remove(this._eventTargets, eventTarget);
+	return this._eventTarget;
 };
 
 
@@ -59,7 +43,5 @@ feng.events.EventResolver.prototype.unlistenAll = function(){
 
 feng.events.EventResolver.prototype.onHandleEvent = function(e){
 
-	goog.array.forEach(this._eventTargets, function(target) {
-		target.dispatchEvent(e);
-	});
+	this._eventTarget.dispatchEvent(e);
 };

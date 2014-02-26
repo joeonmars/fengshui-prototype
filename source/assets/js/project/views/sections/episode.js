@@ -56,6 +56,7 @@ feng.views.sections.Episode.prototype.activate = function(){
 	goog.base(this, 'activate');
 
 	this._interactionEventResolver.listen(this._compass, feng.events.EventType.CHANGE);
+	//this._interactionEventResolver.listen(this._view3d, feng.events.EventType.CHANGE);
 
 	if(this._view3d) {
 		this._view3d.activate();
