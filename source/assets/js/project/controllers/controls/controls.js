@@ -16,6 +16,12 @@ feng.controllers.controls.Controls = function(camera, domElement, view3d){
   this._view3d = view3d;
   this._scene = this._view3d.scene;
 
+  this._eventHandler = new goog.events.EventHandler(this);
+
+  this._interactionEventResolver = this._view3d.interactionEventResolver;
+  this._interactionEventResolver.addEventTarget( this );
+  this._eventHandler.listen(this, feng.events.EventType.CHANGE, this.onChange, false, this);
+
   this._isEnabled = false;
   this._clock = new THREE.Clock(false);
 
@@ -29,8 +35,6 @@ feng.controllers.controls.Controls = function(camera, domElement, view3d){
 	this._yawObject.add( this._pitchObject );
 
 	this._domElement = domElement;
-
-	this._eventHandler = new goog.events.EventHandler(this);
 
 	this._scene.add( this.getObject() );
 
@@ -140,12 +144,6 @@ feng.controllers.controls.Controls.prototype.update = function() {
 };
 
 
-feng.controllers.controls.Controls.prototype.rotateTo = function (rotation) {
-
-	
-};
-
-
 feng.controllers.controls.Controls.prototype.getDirection = function() {
 
 	// assumes the camera itself is not rotated
@@ -187,4 +185,13 @@ feng.controllers.controls.Controls.prototype.onMouseUp = function ( e ) {
 
 feng.controllers.controls.Controls.prototype.onMouseMove = function ( e ) {
 
+};
+
+
+feng.controllers.controls.Controls.prototype.onChange = function(e){
+
+	if(e.target instanceof feng.views.sections.controls.Compass) {
+		var radians = goog.math.toRadians( e.angle );
+		this.setRotation(this.getRotation().x, radians);
+	}
 };

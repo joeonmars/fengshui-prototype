@@ -14,13 +14,19 @@ goog.require('feng.models.Preload');
 /**
  * @constructor
  */
-feng.views.View3D = function(domElement, id){
+feng.views.View3D = function(domElement, id, interactionEventResolver){
   goog.base(this);
 
   this.setParentEventTarget( feng.controllers.view3d.View3DController.getInstance() );
 
   this.id = id;
   this.domElement = domElement;
+
+  this.cameraController = null;
+	this.modeController = null;
+
+	this.interactionEventResolver = interactionEventResolver;
+
 	this.scene = null;
 
 	this._renderer = null;
@@ -30,8 +36,7 @@ feng.views.View3D = function(domElement, id){
 
 	this._collidables = [];
 
-	this.cameraController = new feng.controllers.view3d.CameraController(this);
-	this.modeController = new feng.controllers.view3d.ModeController(this);
+	this._isConstructed = false;
 
 	this._eventHandler = new goog.events.EventHandler(this);
 };
@@ -39,6 +44,9 @@ goog.inherits(feng.views.View3D, goog.events.EventTarget);
 
 
 feng.views.View3D.prototype.init = function(){
+
+	this.cameraController = new feng.controllers.view3d.CameraController(this);
+	this.modeController = new feng.controllers.view3d.ModeController(this);
 
 	var viewSize = this.getViewSize();
 
@@ -64,6 +72,18 @@ feng.views.View3D.prototype.getViewSize = function(){
 feng.views.View3D.prototype.getRenderElement = function(){
 
 	return this._renderer.domElement;
+};
+
+
+feng.views.View3D.prototype.activate = function(){
+ 
+ 	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
+};
+ 
+ 
+feng.views.View3D.prototype.deactivate = function(){
+ 
+	this._eventHandler.removeAll();
 };
 
 
@@ -126,6 +146,8 @@ feng.views.View3D.prototype.getCameraZOfObjectExactPixelDimension = function(cam
 
 feng.views.View3D.prototype.constructScene = function() {
 	
+	this._isConstructed = true;
+
 	// create a threejs loader just for parsing scene data
 	var loader = new THREE.ObjectLoader();
 
@@ -184,7 +206,6 @@ feng.views.View3D.prototype.constructScene = function() {
 
 	//
 	goog.fx.anim.registerAnimation(this);
-	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
 };
 
 

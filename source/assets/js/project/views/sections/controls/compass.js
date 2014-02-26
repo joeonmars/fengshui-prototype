@@ -19,6 +19,7 @@ feng.views.sections.controls.Compass = function(domElement){
   this._directionDoms = goog.dom.getChildren(this._directionsDom);
 
   this._isDragging = false;
+  this._hasDragged = false;
 
   this._startDragAngle = 0;
   this._startAngle = 0;
@@ -83,6 +84,7 @@ feng.views.sections.controls.Compass.prototype.onChange = function(e){
 feng.views.sections.controls.Compass.prototype.onMouseDown = function(e){
 
 	this._isDragging = true;
+	this._hasDragged = false;
 
 	this._eventHandler.listen(document, 'mousemove', this.onMouseMove, false, this);
 	this._eventHandler.listen(document, 'mouseup', this.onMouseUp, false, this);
@@ -99,6 +101,8 @@ feng.views.sections.controls.Compass.prototype.onMouseDown = function(e){
 
 
 feng.views.sections.controls.Compass.prototype.onMouseMove = function(e){
+
+	this._hasDragged = true;
 
 	var dragAngleDiff = this.getDraggedAngle(e.clientX, e.clientY) - this._startDragAngle;
 	this._endAngle = this._startAngle + dragAngleDiff;
@@ -119,21 +123,25 @@ feng.views.sections.controls.Compass.prototype.onMouseUp = function(e){
 
 feng.views.sections.controls.Compass.prototype.onClick = function(e){
 
+	if(this._hasDragged) return false;
+
 	var angle;
 
 	if(goog.dom.classes.has(e.target, 'n')) {
 
-
+		angle = 0;
 	}else if(goog.dom.classes.has(e.target, 's')) {
 
-
+		angle = 180;
 	}else if(goog.dom.classes.has(e.target, 'w')) {
 
-
+		angle = 90;
 	}else if(goog.dom.classes.has(e.target, 'e')) {
 
-
+		angle = -90;
 	}
+
+	this._endAngle = angle;
 
 	this.onChange({
 		target: this,

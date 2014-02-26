@@ -179,6 +179,8 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	var oldMode = this._mode;
 	var newMode = e.mode;
 
+	if(!newMode) return false;
+
 	if(this._mode === newMode) {
 
 		return;
