@@ -3,6 +3,7 @@ goog.provide('feng.controllers.controls.ManipulateControls');
 goog.require('goog.events');
 goog.require('goog.math');
 goog.require('feng.controllers.controls.Controls');
+goog.require('feng.utils.ThreeUtils');
 
 
 /**
@@ -54,13 +55,19 @@ feng.controllers.controls.ManipulateControls.prototype.onMouseMove = function ( 
 };
 
 
-feng.controllers.controls.ManipulateControls.getCameraSettings = function( position, rotation, fov ) {
+feng.controllers.controls.ManipulateControls.getCameraSettings = function( cameraPosition, objectPosition, fov ) {
 
-	var maxDistance = Math.max(Math.abs(position.x), Math.abs(position.y), Math.abs(position.z));
+	var maxDistance = Math.max(Math.abs(cameraPosition.x), Math.abs(cameraPosition.y), Math.abs(cameraPosition.z));
+
+	var position = new THREE.Vector3( cameraPosition.x/Math.abs(cameraPosition.x) * maxDistance, cameraPosition.y/Math.abs(cameraPosition.y) * maxDistance, cameraPosition.z/Math.abs(cameraPosition.z) * maxDistance);
+	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
+	var up = new THREE.Vector3(0, 1, 0);
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, objectPosition, up);
+	rotation.setFromQuaternion( quaternion );
 
 	var settings = {
-		position: new THREE.Vector3( position.x/Math.abs(position.x) * maxDistance, position.y/Math.abs(position.y) * maxDistance, position.z/Math.abs(position.z) * maxDistance),
-		rotation: new THREE.Euler(goog.math.toRadians(-45), rotation.y, 0, 'YXZ'),
+		position: position,
+		rotation: rotation,
 		fov: 60
 	};
 

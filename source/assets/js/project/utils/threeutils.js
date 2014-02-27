@@ -26,3 +26,48 @@ feng.utils.ThreeUtils.getObjectsBy2DPosition = function ( clientX, clientY, obje
 
 	return intersects;
 };
+
+
+feng.utils.ThreeUtils.getQuaternionByLookAt = function( vecFrom, vecTo, vecUp ) {
+
+	var mtx4 = new THREE.Matrix4();
+	mtx4.lookAt( vecFrom, vecTo, vecUp );
+
+	var elements = mtx4.elements;
+
+	var m00 = elements[0], m10 = elements[1], m20 = elements[2],
+	m01 = elements[4], m11 = elements[5], m21 = elements[6],
+	m02 = elements[8], m12 = elements[9], m22 = elements[10];
+
+	var t = m00 + m11 + m22,s,x,y,z,w;
+
+	if (t > 0) { 
+	  s =  Math.sqrt(t+1)*2; 
+	  w = 0.25 * s;            
+	  x = (m21 - m12) / s;
+	  y = (m02 - m20) / s;
+	  z = (m10 - m01) / s;
+	} else if ((m00 > m11) && (m00 > m22)) {
+	  s =  Math.sqrt(1.0 + m00 - m11 - m22)*2;
+	  x = s * 0.25;
+	  y = (m10 + m01) / s;
+	  z = (m02 + m20) / s;
+	  w = (m21 - m12) / s;
+	} else if (m11 > m22) {
+	  s =  Math.sqrt(1.0 + m11 - m00 - m22) *2; 
+	  y = s * 0.25;
+	  x = (m10 + m01) / s;
+	  z = (m21 + m12) / s;
+	  w = (m02 - m20) / s;
+	} else {
+	  s =  Math.sqrt(1.0 + m22 - m00 - m11) *2; 
+	  z = s * 0.25;
+	  x = (m02 + m20) / s;
+	  y = (m21 + m12) / s;
+	  w = (m10 - m01) / s;
+	}
+
+	var rotation = new THREE.Quaternion(x,y,z,w);
+	rotation.normalize();
+	return rotation;
+};
