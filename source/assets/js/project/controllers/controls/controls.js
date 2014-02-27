@@ -20,7 +20,7 @@ feng.controllers.controls.Controls = function(camera, domElement, view3d){
 
   this._isEnabled = false;
   this._clock = new THREE.Clock(false);
-  this._rotation = new THREE.Euler();
+  this._rotation = new THREE.Euler(0, 0, 0, 'YXZ'); //YXZ is to overcome gimbal lock
 
   this._originalPosition = this._camera.position.clone();
   this._originalRotation = this._camera.rotation.clone();
@@ -60,7 +60,8 @@ feng.controllers.controls.Controls.prototype.getPosition = function () {
 
 feng.controllers.controls.Controls.prototype.getRotation = function () {
 
-	this._rotation.set( this._pitchObject.rotation.x, this._yawObject.rotation.y, 0, 'XYZ' );
+	this._rotation.x = this._pitchObject.rotation.x;
+	this._rotation.y = this._yawObject.rotation.y;
 	return this._rotation;
 };
 
@@ -152,7 +153,7 @@ feng.controllers.controls.Controls.prototype.getDirection = function() {
 
 	// assumes the camera itself is not rotated
 	var direction = new THREE.Vector3( 0, 0, -1 );
-	var rotation = new THREE.Euler( 0, 0, 0, "YXZ" );
+	var rotation = new THREE.Euler( 0, 0, 0, 'YXZ' );
 
 	var v = this._yawObject.position.clone();
 	rotation.set( this._pitchObject.rotation.x, this._yawObject.rotation.y, 0 );

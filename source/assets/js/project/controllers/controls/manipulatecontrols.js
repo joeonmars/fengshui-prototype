@@ -60,7 +60,7 @@ feng.controllers.controls.ManipulateControls.getCameraSettings = function( posit
 
 	var settings = {
 		position: new THREE.Vector3( position.x/Math.abs(position.x) * maxDistance, position.y/Math.abs(position.y) * maxDistance, position.z/Math.abs(position.z) * maxDistance),
-		rotation: new THREE.Euler(goog.math.toRadians(-45), rotation.y, 0),
+		rotation: new THREE.Euler(goog.math.toRadians(-45), rotation.y, 0, 'YXZ'),
 		fov: 60
 	};
 

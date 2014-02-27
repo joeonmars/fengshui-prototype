@@ -59,7 +59,7 @@ feng.controllers.controls.BrowseControls.prototype.getRotation = function () {
 	var rx = this._targetRotationX + this._camera.rotation.x;
 	var ry = this._targetRotationY + this._camera.rotation.y;
 	var rz = 0;
-	var rotation = new THREE.Euler( rx, ry, rz, 'XYZ' );
+	var rotation = new THREE.Euler( rx, ry, rz, 'YXZ' );
 	return rotation;
 };
 
