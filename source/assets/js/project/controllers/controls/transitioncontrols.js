@@ -28,32 +28,16 @@ feng.controllers.controls.TransitionControls.prototype.update = function () {
 feng.controllers.controls.TransitionControls.prototype.start = function ( toPosition, toRotation, toFov, lookAt, nextMode ) {
 
 	var prop = {
-		val: 0
+		positionVal: 0,
+		rotationVal: 0,
+		fovVal: 0
 	};
 
 	var fromPosition = this.getPosition();
 	var fromRotation = this.getRotation();
 	var fromFov = this.getFov();
 
-	this._tweener = TweenMax.to(prop, 1, {
-		val: 1,
-		ease: Quad.easeInOut,
-		onUpdate: function() {
-
-			var positionX = goog.math.lerp(fromPosition.x, toPosition.x, prop.val);
-			var positionY = goog.math.lerp(fromPosition.y, toPosition.y, prop.val);
-			var positionZ = goog.math.lerp(fromPosition.z, toPosition.z, prop.val);
-
-			var rotationX = goog.math.lerp(fromRotation.x, toRotation.x, prop.val);
-			var rotationY = goog.math.lerp(fromRotation.y, toRotation.y, prop.val);
-
-			var fov = goog.math.lerp(fromFov, toFov, prop.val);
-
-			this.setPosition( positionX, positionY, positionZ );
-			this.setRotation( rotationX, rotationY );
-			this.setFov( fov );
-		},
-		onUpdateScope: this,
+	this._tweener = new TimelineMax({
 		onComplete: function() {
 			this.dispatchEvent({
 				type: feng.events.EventType.CHANGE,
@@ -62,6 +46,47 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 		},
 		onCompleteScope: this
 	});
+
+	var positionTweener = TweenMax.to(prop, 2, {
+		positionVal: 1,
+		ease: Quad.easeInOut,
+		onUpdate: function() {
+
+			var positionX = goog.math.lerp(fromPosition.x, toPosition.x, prop.positionVal);
+			var positionY = goog.math.lerp(fromPosition.y, toPosition.y, prop.positionVal);
+			var positionZ = goog.math.lerp(fromPosition.z, toPosition.z, prop.positionVal);
+
+			this.setPosition( positionX, positionY, positionZ );
+		},
+		onUpdateScope: this
+	});
+
+	var rotationTweener = TweenMax.to(prop, 2, {
+		rotationVal: 1,
+		ease: Quad.easeInOut,
+		onUpdate: function() {
+
+			var rotationX = goog.math.lerp(fromRotation.x, toRotation.x, prop.rotationVal);
+			var rotationY = goog.math.lerp(fromRotation.y, toRotation.y, prop.rotationVal);
+
+			this.setRotation( rotationX, rotationY );
+		},
+		onUpdateScope: this
+	});
+
+	var fovTweener = TweenMax.to(prop, 1, {
+		fovVal: 1,
+		ease: Quad.easeInOut,
+		onUpdate: function() {
+
+			var fov = goog.math.lerp(fromFov, toFov, prop.fovVal);
+
+			this.setFov( fov );
+		},
+		onUpdateScope: this
+	});
+
+	this._tweener.add([positionTweener, rotationTweener, fovTweener], 0, 'start');
 };
 
 

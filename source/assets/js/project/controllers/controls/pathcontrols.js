@@ -80,17 +80,14 @@ feng.controllers.controls.PathControls.prototype.onSplineStep = function ( prop 
   var splinePosition = spline.getPointAt( t );
 
   this.setPosition( splinePosition.x, this.getPosition().y, splinePosition.z );
-
-  //var rad = goog.math.toRadians( 10 );
-  /*
+/*
   var p = spline.getPointAt( Math.min(1, t + 0.001) );
-  p.y = this.getObject().position.y;
 
-	this.getObject().lookAt( p );
-	this.getObject().rotation.x = 0;
-	this.getObject().rotation.z = 0;
-	*/
-	//this.getObject().rotation.y = goog.math.toRadians( 10 );
+  var q = feng.utils.ThreeUtils.getQuaternionByLookAt(splinePosition, p, new THREE.Vector3(0,1,0));
+  var r = new THREE.Euler(0, 0, 0, 'YXZ');
+  r.setFromQuaternion(q, 'YXZ');
+
+	this.getObject().rotation.y = r.y;*/
 };
 
 
