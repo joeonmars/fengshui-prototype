@@ -192,15 +192,10 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelected = function (
 
 	console.log('Object selected!');
 
-	var manipulateCameraSettings = feng.controllers.controls.ManipulateControls.getCameraSettings( this.getPosition(), e.object.position, this.getFov() );
-	
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		mode: feng.views.View3D.Mode.MANIPULATE,
-		toPosition: manipulateCameraSettings.position,
-		toRotation: manipulateCameraSettings.rotation,
-		toFov: manipulateCameraSettings.fov,
-		lookAt: e.object.position
+		object: e.object
 	});
 };
 

@@ -15,8 +15,47 @@ feng.controllers.controls.ManipulateControls = function(camera, domElement, view
 
   goog.base(this, camera, domElement, view3d);
 
+  this._activeObject = null;
+  this._eventMediator = this._view3d.eventMediator;
 };
 goog.inherits(feng.controllers.controls.ManipulateControls, feng.controllers.controls.Controls);
+
+
+feng.controllers.controls.ManipulateControls.prototype.setCamera = function( cameraPosition, object, fov ) {
+
+	var maxDistance = Math.max(Math.abs(cameraPosition.x), Math.abs(cameraPosition.y), Math.abs(cameraPosition.z));
+
+	var position = new THREE.Vector3( cameraPosition.x/Math.abs(cameraPosition.x), cameraPosition.y/Math.abs(cameraPosition.y), cameraPosition.z/Math.abs(cameraPosition.z)).multiplyScalar( maxDistance );
+
+	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
+	var up = new THREE.Vector3(0, 1, 0);
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, object.position, up);
+	rotation.setFromQuaternion( quaternion );
+
+	this._activeObject = object;
+
+	this.setPosition( position );
+	this.setRotation( rotation );
+	this.setFov( 60 );
+};
+
+
+feng.controllers.controls.ManipulateControls.prototype.enable = function( enable ) {
+
+	goog.base(this, 'enable', enable);
+
+	if(this._isEnabled) {
+
+		this._eventHandler.listen(this._eventMediator.getEventTarget(), feng.events.EventType.UPDATE, this.onMediatorEvent, false, this);
+
+		this._eventMediator.listen(this, feng.events.EventType.UPDATE);
+
+	}else  {
+
+		this._eventMediator.unlisten(this, feng.events.EventType.UPDATE);
+
+	}
+};
 
 
 feng.controllers.controls.ManipulateControls.prototype.update = function () {
@@ -24,9 +63,6 @@ feng.controllers.controls.ManipulateControls.prototype.update = function () {
 	goog.base(this, 'update');
 
 	var elapsed = this._clock.getElapsedTime();
-
-	//this.getObject().lookAt( this._scene.position );
-	//this.getObject().camera.position.x = Math.floor(Math.cos( timer ) * 200);
 };
 
 
@@ -55,21 +91,32 @@ feng.controllers.controls.ManipulateControls.prototype.onMouseMove = function ( 
 };
 
 
-feng.controllers.controls.ManipulateControls.getCameraSettings = function( cameraPosition, objectPosition, fov ) {
+feng.controllers.controls.ManipulateControls.prototype.onMediatorEvent = function(e){
 
-	var maxDistance = Math.max(Math.abs(cameraPosition.x), Math.abs(cameraPosition.y), Math.abs(cameraPosition.z));
+	switch(e.type) {
 
-	var position = new THREE.Vector3( cameraPosition.x/Math.abs(cameraPosition.x) * maxDistance, cameraPosition.y/Math.abs(cameraPosition.y) * maxDistance, cameraPosition.z/Math.abs(cameraPosition.z) * maxDistance);
-	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
-	var up = new THREE.Vector3(0, 1, 0);
-	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, objectPosition, up);
-	rotation.setFromQuaternion( quaternion );
+		case feng.events.EventType.UPDATE:
 
-	var settings = {
-		position: position,
-		rotation: rotation,
-		fov: 60
-	};
+		if(e.target instanceof feng.views.sections.controls.Compass) {
+			var radians = THREE.Math.degToRad( e.angle );
 
-	return settings;
+			var radius = this.getPosition().y;
+			var posX = radius * Math.sin( radians );
+			var posZ = radius * Math.cos( radians );
+			var posY = radius;
+
+			this.setPosition( posX, posY, posZ );
+
+			// look at
+			var up = new THREE.Vector3(0, 1, 0);
+			var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
+			var objectPosition = new THREE.Vector3(0, 0, 0);
+			var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), this._activeObject.position, up);
+			rotation.setFromQuaternion( quaternion );
+
+			this.setRotation( rotation );
+		}
+
+		break;
+	}
 };

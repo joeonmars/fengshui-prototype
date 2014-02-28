@@ -205,6 +205,12 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	// set new control
 	this.control = newControl;
 
+	switch(e.mode) {
+		case feng.views.View3D.Mode.MANIPULATE:
+		this._manipulateControls.setCamera( oldControl.getPosition(), e.object, oldControl.getFov() );
+		break;
+	};
+
 	var fromPosition = e.fromPosition || oldControl.getPosition();
 	var fromRotation = e.fromRotation || oldControl.getRotation();
 	var fromFov = e.fromFov || oldControl.getFov();
@@ -219,19 +225,22 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 
 	switch(this._mode) {
 		case feng.views.View3D.Mode.BROWSE:
-		break;
+			break;
 
 		case feng.views.View3D.Mode.MANIPULATE:
-
-		break;
+			console.log(e);
+			break;
 
 		case feng.views.View3D.Mode.PATH:
-		this.control.start( toPosition, toRotation, toFov );
-		break;
+			this.control.start( toPosition, toRotation, toFov );
+			break;
 
 		case feng.views.View3D.Mode.TRANSITION:
-		this.control.start( toPosition, toRotation, toFov, e.lookAt, e.mode );
-		break;
+			this.control.start( toPosition, toRotation, toFov, e );
+			break;
+
+		default:
+			break;
 	}
 
 	this.control.enable(true);

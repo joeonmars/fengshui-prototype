@@ -25,7 +25,7 @@ feng.controllers.controls.TransitionControls.prototype.update = function () {
 };
 
 
-feng.controllers.controls.TransitionControls.prototype.start = function ( toPosition, toRotation, toFov, lookAt, nextMode ) {
+feng.controllers.controls.TransitionControls.prototype.start = function ( toPosition, toRotation, toFov, lastModeEvent ) {
 
 	var prop = {
 		positionVal: 0,
@@ -39,10 +39,13 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 
 	this._tweener = new TimelineMax({
 		onComplete: function() {
-			this.dispatchEvent({
+			var ev = {
 				type: feng.events.EventType.CHANGE,
-				mode: nextMode
-			});
+				mode: lastModeEvent.mode,
+				object: lastModeEvent.object
+			};
+
+			this.dispatchEvent(ev);
 		},
 		onCompleteScope: this
 	});
