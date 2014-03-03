@@ -3,10 +3,10 @@ goog.provide('feng.views.sections.Episode');
 goog.require('goog.dom');
 goog.require('goog.events.EventTarget');
 goog.require('feng.events');
+goog.require('feng.events.EventMediator');
 goog.require('feng.views.sections.Section');
 goog.require('feng.views.View3D');
 goog.require('feng.views.sections.controls.Compass');
-goog.require('feng.events.EventMediator');
 
 
 /**
@@ -21,6 +21,7 @@ feng.views.sections.Episode = function(domElement){
 
   var compassDom = goog.dom.getElementByClass('compass', this.domElement);
   this._compass = new feng.views.sections.controls.Compass( compassDom, this._eventMediator );
+
   this._view3d = null;
 };
 goog.inherits(feng.views.sections.Episode, feng.views.sections.Section);
@@ -84,8 +85,9 @@ feng.views.sections.Episode.prototype.onLoadComplete = function(e){
 
 	if(!this._view3d) {
 		// create view 3d
-		var view3dContainer = goog.dom.query('.sceneContainer', this.domElement)[0];
-		this._view3d = new feng.views.View3D( view3dContainer, this.id, this._eventMediator );
+		var view3dElement = goog.dom.getElementByClass('sceneContainer', this.domElement);
+		var uiElement = goog.dom.getElementByClass('sceneUI', this.domElement);
+		this._view3d = new feng.views.View3D( view3dElement, uiElement, this.id, this._eventMediator );
 		this._view3d.init();
 		this._view3d.show();
 		this._view3d.activate();

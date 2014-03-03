@@ -9,7 +9,8 @@ goog.require('goog.events');
  * @constructor
  * A custom camera control, wrapped the camera with pitch and yaw object
  */
-feng.controllers.controls.Controls = function(camera, domElement, view3d){
+feng.controllers.controls.Controls = function(camera, view3d, domElement){
+	
   goog.base(this);
 
   this._camera = camera;

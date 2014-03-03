@@ -14,13 +14,14 @@ goog.require('feng.models.Preload');
 /**
  * @constructor
  */
-feng.views.View3D = function(domElement, id, eventMediator){
+feng.views.View3D = function(domElement, uiElement, id, eventMediator){
   goog.base(this);
 
   this.setParentEventTarget( feng.controllers.view3d.View3DController.getInstance() );
 
   this.id = id;
   this.domElement = domElement;
+  this.uiElement = uiElement;
 
   this.eventMediator = eventMediator;
 

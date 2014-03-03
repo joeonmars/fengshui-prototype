@@ -115,10 +115,11 @@ feng.controllers.view3d.ModeController.prototype.requireTransitionMode = functio
 
 feng.controllers.view3d.ModeController.prototype.createBrowseControls = function(){
 
+	var uiElement = this._view3d.uiElement;
 	var renderElement = this._view3d.getRenderElement();
 	var camera = this._cameraController.getCamera( feng.views.View3D.Mode.BROWSE );
 
-	var controls = new feng.controllers.controls.BrowseControls( camera, renderElement, this._view3d );
+	var controls = new feng.controllers.controls.BrowseControls( camera, this._view3d, renderElement );
 	controls.setParentEventTarget( this );
 
 	return controls;
@@ -130,7 +131,7 @@ feng.controllers.view3d.ModeController.prototype.createCloseUpControls = functio
 	var renderElement = this._view3d.getRenderElement();
 	var camera = this._cameraController.getCamera( feng.views.View3D.Mode.CLOSE_UP );
 
-	var controls = new feng.controllers.controls.CloseUpControls( camera, renderElement, this._view3d );
+	var controls = new feng.controllers.controls.CloseUpControls( camera, this._view3d, renderElement );
 	controls.setParentEventTarget( this );
 
 	return controls;
@@ -139,10 +140,11 @@ feng.controllers.view3d.ModeController.prototype.createCloseUpControls = functio
 
 feng.controllers.view3d.ModeController.prototype.createManipulateControls = function(){
 
+	var uiElement = this._view3d.uiElement;
 	var renderElement = this._view3d.getRenderElement();
 	var camera = this._cameraController.getCamera( feng.views.View3D.Mode.MANIPULATE );
 
-	var controls = new feng.controllers.controls.ManipulateControls( camera, renderElement, this._view3d );
+	var controls = new feng.controllers.controls.ManipulateControls( camera, this._view3d, renderElement, uiElement );
 	controls.setParentEventTarget( this );
 
 	return controls;
@@ -155,7 +157,7 @@ feng.controllers.view3d.ModeController.prototype.createPathControls = function()
 	var camera = this._cameraController.getCamera( feng.views.View3D.Mode.PATH );
 	var scene = this._view3d.scene;
 
-	var controls = new feng.controllers.controls.PathControls( camera, renderElement, this._view3d );
+	var controls = new feng.controllers.controls.PathControls( camera, this._view3d, renderElement );
 	controls.setParentEventTarget( this );
 
 	return controls;
@@ -167,7 +169,7 @@ feng.controllers.view3d.ModeController.prototype.createTransitionControls = func
 	var renderElement = this._view3d.getRenderElement();
 	var camera = this._cameraController.getCamera( feng.views.View3D.Mode.TRANSITION );
 
-	var controls = new feng.controllers.controls.TransitionControls( camera, renderElement, this._view3d );
+	var controls = new feng.controllers.controls.TransitionControls( camera, this._view3d, renderElement );
 	controls.setParentEventTarget( this );
 
 	return controls;

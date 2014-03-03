@@ -5,6 +5,7 @@ goog.provide('feng.templates.main');
 
 goog.require('soy');
 goog.require('soydata');
+goog.require('feng.templates.controls');
 goog.require('feng.templates.debug');
 
 
@@ -26,7 +27,7 @@ feng.templates.main.HelloWorld = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.main.SectionEpisodeContent = function(opt_data, opt_ignored) {
-  return '<div class="preloader"></div><div class="sceneUI"><div class="controls"><div class="inner"><div class="compass grab"><div class="directions"><div class="n">N</div><div class="s">S</div><div class="w">W</div><div class="e">E</div></div></div></div></div></div><div class="sceneContainer"></div>';
+  return '<div class="preloader"></div><div class="sceneUI"><div class="controls">' + feng.templates.controls.Compass(null) + feng.templates.controls.Manipulator(null) + '</div></div><div class="sceneContainer"></div>';
 };
 
 

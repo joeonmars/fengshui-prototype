@@ -71,3 +71,26 @@ feng.utils.ThreeUtils.getQuaternionByLookAt = function( vecFrom, vecTo, vecUp ) 
 	rotation.normalize();
 	return rotation;
 };
+
+
+feng.utils.ThreeUtils.get2DCoordinates = function( position, camera, renderElementSize ) {
+
+	// this will give us position relative to the world
+	var p = position.clone();
+
+	// projectVector will translate position to 2d
+	var projector = new THREE.Projector();
+	var v = projector.projectVector(p, camera);
+
+	// translate our vector so that percX=0 represents
+	// the left edge, percX=1 is the right edge,
+	// percY=0 is the top edge, and percY=1 is the bottom edge.
+	var percX = (v.x + 1) / 2;
+	var percY = (-v.y + 1) / 2;
+
+	// scale these values to our viewport size
+	var x = percX * renderElementSize.width;
+	var y = percY * renderElementSize.height;
+
+	return {x: x, y: y};
+};

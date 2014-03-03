@@ -11,9 +11,9 @@ goog.require('feng.utils.MultiLinearInterpolator');
  * @constructor
  * a mod of PointerLockControls...
  */
-feng.controllers.controls.BrowseControls = function(camera, domElement, view3d){
+feng.controllers.controls.BrowseControls = function(camera, view3d, domElement){
 
-  goog.base(this, camera, domElement, view3d);
+  goog.base(this, camera, view3d, domElement);
 
   this._eventMediator = this._view3d.eventMediator;
 
@@ -21,7 +21,7 @@ feng.controllers.controls.BrowseControls = function(camera, domElement, view3d){
 		return (object instanceof THREE.Mesh);
 	});
 
-	this._hasDragged = false;
+	this._shouldCancelClick = false;
 
 	this._objectSelector = new feng.views.sections.controls.ObjectSelector( this._clickableObjects, this._camera, this._view3d.getRenderElement() );
 
@@ -30,8 +30,8 @@ feng.controllers.controls.BrowseControls = function(camera, domElement, view3d){
 	this._targetRotationX = 0;
 	this._targetRotationY = 0;
 
-	this._maxRotationX = THREE.Math.degToRad(45);
-	this._minRotationX = THREE.Math.degToRad(-45);
+	this._maxRotationX = THREE.Math.degToRad(40);
+	this._minRotationX = THREE.Math.degToRad(-40);
 
 	var randomXNumbers = feng.utils.Randomizer.getRandomNumbers(6, 10);
 	randomXNumbers.unshift(0);
@@ -84,6 +84,7 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable ) {
 
 	if(this._isEnabled) {
 
+		this._eventHandler.listen(this._objectSelector, feng.events.EventType.START, this.onObjectSelectStart, false, this);
 		this._eventHandler.listen(this._objectSelector, feng.events.EventType.CHANGE, this.onObjectSelected, false, this);
 		this._eventHandler.listen(this._eventMediator.getEventTarget(), feng.events.EventType.UPDATE, this.onMediatorEvent, false, this);
 
@@ -100,7 +101,11 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable ) {
 
 	}
 
-	this._objectSelector.enable( this._isEnabled );
+	if(this._isEnabled) {
+		this._objectSelector.activate();
+	}else {
+		this._objectSelector.deactivate();
+	}
 };
 
 
@@ -137,7 +142,7 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 	
 	goog.base(this, 'onClick', e);
 
-	if ( this._hasDragged ) return;
+	if ( this._shouldCancelClick ) return;
 
 	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, this._clickableObjects, this._camera, this._domElement );
 
@@ -160,7 +165,7 @@ feng.controllers.controls.BrowseControls.prototype.onMouseDown = function ( e ) 
 
 	goog.base(this, 'onMouseDown', e);
 
-	this._hasDragged = false;
+	this._shouldCancelClick = false;
 
 	this._lastMouseX = e.clientX;
 	this._lastMouseY = e.clientY;
@@ -171,7 +176,7 @@ feng.controllers.controls.BrowseControls.prototype.onMouseMove = function ( e ) 
 
 	goog.base(this, 'onMouseMove', e);
 
-	this._hasDragged = true;
+	this._shouldCancelClick = true;
 
 	var movementX = e.clientX - this._lastMouseX;
 	var movementY = e.clientY - this._lastMouseY;
@@ -187,6 +192,12 @@ feng.controllers.controls.BrowseControls.prototype.onMouseMove = function ( e ) 
 };
 
 
+feng.controllers.controls.BrowseControls.prototype.onObjectSelectStart = function ( e ) {
+
+	this._shouldCancelClick = true;
+};
+
+
 feng.controllers.controls.BrowseControls.prototype.onObjectSelected = function ( e ) {
 
 	console.log('Object selected!');
@@ -197,7 +208,6 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelected = function (
 		object: e.object
 	});
 };
-
 
 
 feng.controllers.controls.BrowseControls.prototype.onMediatorEvent = function(e){

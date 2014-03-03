@@ -4,6 +4,7 @@ goog.require('goog.events');
 goog.require('goog.math');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.utils.ThreeUtils');
+goog.require('feng.views.sections.controls.Manipulator');
 
 
 /**
@@ -11,12 +12,15 @@ goog.require('feng.utils.ThreeUtils');
  * a combination of trackball controls and transform controls
  * WIP
  */
-feng.controllers.controls.ManipulateControls = function(camera, domElement, view3d){
+feng.controllers.controls.ManipulateControls = function(camera, view3d, domElement, uiElement){
 
-  goog.base(this, camera, domElement, view3d);
+  goog.base(this, camera, view3d, domElement);
 
   this._activeObject = null;
   this._eventMediator = this._view3d.eventMediator;
+
+  var manipulatorDom = goog.dom.getElementByClass('manipulator', uiElement);
+  this._manipulator = new feng.views.sections.controls.Manipulator( manipulatorDom, this._eventMediator );
 };
 goog.inherits(feng.controllers.controls.ManipulateControls, feng.controllers.controls.Controls);
 
@@ -50,10 +54,15 @@ feng.controllers.controls.ManipulateControls.prototype.enable = function( enable
 
 		this._eventMediator.listen(this, feng.events.EventType.UPDATE);
 
+		this._manipulator.show();
+		this._manipulator.activate();
+
 	}else  {
 
 		this._eventMediator.unlisten(this, feng.events.EventType.UPDATE);
 
+		this._manipulator.hide();
+		this._manipulator.deactivate();
 	}
 };
 
@@ -67,6 +76,12 @@ feng.controllers.controls.ManipulateControls.prototype.update = function () {
 		type: feng.events.EventType.UPDATE,
 		rotationY: this._yawObject.rotation.y
 	});
+
+	//
+	var renderElement = this._view3d.getRenderElement();
+	var renderElementSize = goog.style.getSize( renderElement );
+	var object2d = feng.utils.ThreeUtils.get2DCoordinates( this._activeObject.position, this._camera, renderElementSize );
+	this._manipulator.update( object2d.x, object2d.y );
 };
 
 

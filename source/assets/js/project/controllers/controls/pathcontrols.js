@@ -9,9 +9,9 @@ goog.require('feng.utils.MultiLinearInterpolator');
 /**
  * @constructor
  */
-feng.controllers.controls.PathControls = function(camera, domElement, view3d){
+feng.controllers.controls.PathControls = function(camera, view3d, domElement){
 
-  goog.base(this, camera, domElement, view3d);
+  goog.base(this, camera, view3d, domElement);
 
   this._collidables = goog.array.filter(this._scene.children, function(child) {
   	return (child.userData['collidable'] === true);

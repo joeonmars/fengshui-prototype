@@ -2,18 +2,16 @@ goog.provide('feng.views.sections.controls.Compass');
 
 goog.require('goog.dom');
 goog.require('goog.dom.query');
-goog.require('goog.events.EventTarget');
-goog.require('goog.events.EventHandler');
 goog.require('feng.events');
+goog.require('feng.views.sections.controls.Controls');
 
 
 /**
  * @constructor
  */
 feng.views.sections.controls.Compass = function(domElement, eventMediator){
-  goog.base(this);
-
-  this.domElement = domElement;
+	
+  goog.base(this, domElement);
 
   this._directionsDom = goog.dom.query('.directions', this.domElement)[0];
   this._directionDoms = goog.dom.getChildren(this._directionsDom);
@@ -28,13 +26,14 @@ feng.views.sections.controls.Compass = function(domElement, eventMediator){
 
   this._center = this.getCenter();
 
-  this._eventHandler = new goog.events.EventHandler(this);
   this._eventMediator = eventMediator;
 };
-goog.inherits(feng.views.sections.controls.Compass, goog.events.EventTarget);
+goog.inherits(feng.views.sections.controls.Compass, feng.views.sections.controls.Controls);
 
 
 feng.views.sections.controls.Compass.prototype.activate = function(){
+
+	goog.base(this, 'activate');
 
   this._eventHandler.listen(this.domElement, 'mousedown', this.onMouseDown, false, this);
   this._eventHandler.listen(this._eventMediator.getEventTarget(), feng.events.EventType.UPDATE, this.onMediatorEvent, false, this);
@@ -45,7 +44,7 @@ feng.views.sections.controls.Compass.prototype.activate = function(){
 
 feng.views.sections.controls.Compass.prototype.deactivate = function(){
 
-  this._eventHandler.removeAll();
+  goog.base(this, 'deactivate');
 
   this._eventMediator.unlisten(this, feng.events.EventType.UPDATE);
 };

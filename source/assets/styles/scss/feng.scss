@@ -24,54 +24,80 @@
 				width: 100%;
 				height: 0;
 				z-index: 2;
-				padding: 40px;
-				@include box-sizing(border-box);
 
-				>.inner{
-					position: relative;
-					width: 100%;
+				>.compass{
+					@include absoluteTopRight;
+					width: 80px;
+					height: 80px;
+					margin: 40px;
+					background-color: #888;
+					@include border-radius(50%);
 
-					>.compass{
-						@include absoluteTopRight;
-						width: 80px;
-						height: 80px;
-						background-color: #888;
-						@include border-radius(50%);
+					>.directions{
+						width: 100%;
+						height: 100%;
 
-						>.directions{
-							width: 100%;
-							height: 100%;
+						>div{
+							position: absolute;
+							width: 20px;
+							height: 20px;
+							font-size: 12px;
+							line-height: 20px;
+							text-align: center;
+							outline: 1px solid gray;
+							@include user-select(none);
 
-							>div{
-								position: absolute;
-								width: 20px;
-								height: 20px;
-								font-size: 12px;
-								line-height: 20px;
-								text-align: center;
-								outline: 1px solid gray;
-								@include user-select(none);
-
-								&.n{
-									top: 20px * .5;
-									left: (80px - 20px) * .5;
-								}
-
-								&.s{
-									bottom: 20px * .5;
-									left: (80px - 20px) * .5;
-								}
-
-								&.w{
-									top: (80px - 20px) * .5;
-									left: 20px * .5;
-								}
-
-								&.e{
-									top: (80px - 20px) * .5;
-									right: 20px * .5;
-								}
+							&.n{
+								top: 20px * .5;
+								left: (80px - 20px) * .5;
 							}
+
+							&.s{
+								bottom: 20px * .5;
+								left: (80px - 20px) * .5;
+							}
+
+							&.w{
+								top: (80px - 20px) * .5;
+								left: 20px * .5;
+							}
+
+							&.e{
+								top: (80px - 20px) * .5;
+								right: 20px * .5;
+							}
+						}
+					}
+				}
+
+				>.manipulator{
+					position: absolute;
+
+					>div{
+						display: inline-block;
+						margin: 10px;
+						@extend .button;
+
+						&:after{
+							display: block;
+							color: red;
+							font-size: 30px;
+							line-height: 50px;
+							width: 50px;
+							height: 50px;
+							background: #ddd;
+						}
+
+						&.move{
+							@include font-awesome("fa-arrows");
+						}
+
+						&.rotate{
+							@include font-awesome("fa-refresh");
+						}
+
+						&.close{
+							@include font-awesome("fa-times-circle");
 						}
 					}
 				}

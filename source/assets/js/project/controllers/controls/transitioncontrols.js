@@ -8,9 +8,9 @@ goog.require('feng.controllers.controls.Controls');
 /**
  * @constructor
  */
-feng.controllers.controls.TransitionControls = function(camera, domElement, view3d){
+feng.controllers.controls.TransitionControls = function(camera, view3d, domElement){
 
-  goog.base(this, camera, domElement, view3d);
+  goog.base(this, camera, view3d, domElement);
 
   this._tweener = null;
 };
