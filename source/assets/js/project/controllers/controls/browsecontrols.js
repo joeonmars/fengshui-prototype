@@ -3,7 +3,7 @@ goog.provide('feng.controllers.controls.BrowseControls');
 goog.require('goog.events');
 goog.require('goog.math');
 goog.require('feng.controllers.controls.Controls');
-goog.require('feng.controllers.controls.ObjectSelector');
+goog.require('feng.views.sections.controls.ObjectSelector');
 goog.require('feng.utils.ThreeUtils');
 goog.require('feng.utils.Randomizer');
 goog.require('feng.utils.MultiLinearInterpolator');
@@ -24,7 +24,7 @@ feng.controllers.controls.BrowseControls = function(camera, domElement, view3d){
 
 	this._hasDragged = false;
 
-	this._objectSelector = new feng.controllers.controls.ObjectSelector( this._clickableObjects, this._camera, this._view3d.getRenderElement() );
+	this._objectSelector = new feng.views.sections.controls.ObjectSelector( this._clickableObjects, this._camera, this._view3d.getRenderElement() );
 
 	this._lastMouseX = 0;
 	this._lastMouseY = 0;

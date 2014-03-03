@@ -1,4 +1,4 @@
-goog.provide('feng.controllers.controls.ObjectSelector');
+goog.provide('feng.views.sections.controls.ObjectSelector');
 
 goog.require('goog.events');
 goog.require('goog.events.EventTarget');
@@ -8,7 +8,7 @@ goog.require('goog.events.EventHandler');
 /**
  * @constructor
  */
-feng.controllers.controls.ObjectSelector = function(objects, camera, domElement){
+feng.views.sections.controls.ObjectSelector = function(objects, camera, domElement){
 
   goog.base(this);
 
@@ -26,10 +26,10 @@ feng.controllers.controls.ObjectSelector = function(objects, camera, domElement)
 
 	this.update( objects, camera, domElement );
 };
-goog.inherits(feng.controllers.controls.ObjectSelector, goog.events.EventTarget);
+goog.inherits(feng.views.sections.controls.ObjectSelector, goog.events.EventTarget);
 
 
-feng.controllers.controls.ObjectSelector.prototype.update = function (objects, camera, domElement) {
+feng.views.sections.controls.ObjectSelector.prototype.update = function (objects, camera, domElement) {
 
 	var wasEnabled = this._isEnabled;
 
@@ -43,7 +43,7 @@ feng.controllers.controls.ObjectSelector.prototype.update = function (objects, c
 };
 
 
-feng.controllers.controls.ObjectSelector.prototype.enable = function (enable) {
+feng.views.sections.controls.ObjectSelector.prototype.enable = function (enable) {
 
 	if(this._isEnabled === enable) {
 		return;
@@ -62,7 +62,7 @@ feng.controllers.controls.ObjectSelector.prototype.enable = function (enable) {
 };
 
 
-feng.controllers.controls.ObjectSelector.prototype.doSelect = function () {
+feng.views.sections.controls.ObjectSelector.prototype.doSelect = function () {
 
 	this._selectedObject = this._downObject;
 
@@ -73,13 +73,13 @@ feng.controllers.controls.ObjectSelector.prototype.doSelect = function () {
 };
 
 
-feng.controllers.controls.ObjectSelector.prototype.cancelSelect = function () {
+feng.views.sections.controls.ObjectSelector.prototype.cancelSelect = function () {
 
 	
 };
 
 
-feng.controllers.controls.ObjectSelector.prototype.onMouseDown = function ( e ) {
+feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e ) {
 
 	this._selectedObject = null;
 
@@ -101,13 +101,13 @@ feng.controllers.controls.ObjectSelector.prototype.onMouseDown = function ( e ) 
 };
 
 
-feng.controllers.controls.ObjectSelector.prototype.onMouseMove = function ( e ) {
+feng.views.sections.controls.ObjectSelector.prototype.onMouseMove = function ( e ) {
 
 	this.onMouseUp();
 };
 
 
-feng.controllers.controls.ObjectSelector.prototype.onMouseUp = function ( e ) {
+feng.views.sections.controls.ObjectSelector.prototype.onMouseUp = function ( e ) {
 
 	this._eventHandler.unlisten(this._domElement, 'mousemove', this.onMouseMove, false, this);
 	this._eventHandler.unlisten(document, 'mouseup', this.onMouseUp, false, this);
@@ -118,7 +118,7 @@ feng.controllers.controls.ObjectSelector.prototype.onMouseUp = function ( e ) {
 };
 
 
-feng.controllers.controls.ObjectSelector.prototype.onAnimationFrame = function ( now ) {
+feng.views.sections.controls.ObjectSelector.prototype.onAnimationFrame = function ( now ) {
 
 	var progress = Math.min(1, (now - this._startTime) / this._duration);
 
