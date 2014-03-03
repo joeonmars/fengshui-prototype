@@ -1,7 +1,6 @@
 goog.provide('feng.controllers.controls.BrowseControls');
 
 goog.require('goog.events');
-goog.require('goog.math');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.controllers.controls.ObjectSelector');
 goog.require('feng.utils.ThreeUtils');
@@ -31,8 +30,8 @@ feng.controllers.controls.BrowseControls = function(camera, domElement, view3d){
 	this._targetRotationX = 0;
 	this._targetRotationY = 0;
 
-	this._maxRotationX = goog.math.toRadians(45);
-	this._minRotationX = goog.math.toRadians(-45);
+	this._maxRotationX = THREE.Math.degToRad(45);
+	this._minRotationX = THREE.Math.degToRad(-45);
 
 	var randomXNumbers = feng.utils.Randomizer.getRandomNumbers(6, 10);
 	randomXNumbers.unshift(0);
@@ -208,7 +207,7 @@ feng.controllers.controls.BrowseControls.prototype.onMediatorEvent = function(e)
 		case feng.events.EventType.UPDATE:
 
 		if(e.target instanceof feng.views.sections.controls.Compass) {
-			var radians = goog.math.toRadians( e.angle );
+			var radians = THREE.Math.degToRad( e.angle%360 );
 			this._yawObject.rotation.y = radians;
 			this._targetRotationY = radians;
 		}

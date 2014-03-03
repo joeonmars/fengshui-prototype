@@ -62,7 +62,11 @@ feng.controllers.controls.ManipulateControls.prototype.update = function () {
 
 	goog.base(this, 'update');
 
-	var elapsed = this._clock.getElapsedTime();
+	//
+	this.dispatchEvent({
+		type: feng.events.EventType.UPDATE,
+		rotationY: this._yawObject.rotation.y
+	});
 };
 
 
@@ -98,7 +102,7 @@ feng.controllers.controls.ManipulateControls.prototype.onMediatorEvent = functio
 		case feng.events.EventType.UPDATE:
 
 		if(e.target instanceof feng.views.sections.controls.Compass) {
-			var radians = THREE.Math.degToRad( e.angle );
+			var radians = THREE.Math.degToRad( e.angle%360 );
 
 			var radius = this.getPosition().y;
 			var posX = radius * Math.sin( radians );
