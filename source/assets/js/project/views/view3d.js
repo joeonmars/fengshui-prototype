@@ -56,7 +56,7 @@ feng.views.View3D.prototype.init = function(){
 	});
 	this._renderer.setClearColor(0xffffff, 1);
 	this._renderer.setSize( viewSize.width, viewSize.height );
-
+	
 	goog.dom.appendChild( this.domElement, this._renderer.domElement );
 	goog.dom.appendChild( this.domElement, feng.views.View3D.STATS.domElement );
 
@@ -79,6 +79,44 @@ feng.views.View3D.prototype.getRenderElement = function(){
 feng.views.View3D.prototype.getGround = function(){
 
 	return this.scene.getObjectByName('ground');
+};
+
+
+feng.views.View3D.prototype.getMeshBox = function(mesh){
+
+	var box = new THREE.Box3().setFromObject( mesh );
+  var minX = box.min.x;
+  var minZ = box.min.z;
+  var maxX = box.max.x;
+  var maxZ = box.max.z;
+
+  return (new goog.math.Box(minZ, maxX, maxZ, minX));
+};
+
+
+feng.views.View3D.prototype.getCollidables = function(excludes){
+
+	excludes = goog.isArray(excludes) ? excludes : [excludes];
+
+	var collidables = goog.array.filter(this.scene.children, function(child) {
+  	return (goog.array.indexOf(excludes, child) < 0 && child.userData['collidable'] === true);
+  });
+
+  return collidables;
+};
+
+
+feng.views.View3D.prototype.getCollidableBoxes = function(excludes){
+
+	var collidables = this.getCollidables(excludes);
+
+	var collidableBoxes = [];
+
+	goog.array.forEach(collidables, function(mesh) {
+	  collidableBoxes.push( this.getMeshBox(mesh) );
+	}, this);
+
+	return collidableBoxes;
 };
 
 

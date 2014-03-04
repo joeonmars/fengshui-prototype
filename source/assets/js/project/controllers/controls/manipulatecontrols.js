@@ -24,6 +24,7 @@ feng.controllers.controls.ManipulateControls = function(camera, view3d, domEleme
   this._plane = new THREE.Plane(new THREE.Vector3( 0, 1, 0 ));
 
   this._rotateTweener = null;
+  this._collidableBoxes = null;
 
   var manipulatorDom = goog.dom.getElementByClass('manipulator', uiElement);
   this._manipulator = new feng.views.sections.controls.Manipulator( manipulatorDom );
@@ -34,21 +35,34 @@ goog.inherits(feng.controllers.controls.ManipulateControls, feng.controllers.con
 
 feng.controllers.controls.ManipulateControls.prototype.setCamera = function( cameraPosition, object, fov ) {
 
-	var maxDistance = Math.max(Math.abs(cameraPosition.x), Math.abs(cameraPosition.y), Math.abs(cameraPosition.z));
-
-	var position = new THREE.Vector3( cameraPosition.x/Math.abs(cameraPosition.x), cameraPosition.y/Math.abs(cameraPosition.y), cameraPosition.z/Math.abs(cameraPosition.z)).multiplyScalar( maxDistance );
-
+	// get camera angle from center
 	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
-	var lookAtPosition = new THREE.Vector3(0, 0, 0); //object.position
+	var lookAtPosition = new THREE.Vector3(0, 0, 0);
+	var up = new THREE.Vector3(0, 1, 0);
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(cameraPosition, lookAtPosition, up);
+	rotation.setFromQuaternion( quaternion );
+
+	// get position by camera angle
+	var cameraHeight = 400;
+	var x = cameraHeight * Math.sin( rotation.y );
+	var z = cameraHeight * Math.cos( rotation.y );
+	var y = cameraHeight;
+
+	var position = new THREE.Vector3(x, y, z);
+
+	// get rotation looking at center
+	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
+	var lookAtPosition = new THREE.Vector3(0, 0, 0);
 	var up = new THREE.Vector3(0, 1, 0);
 	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, lookAtPosition, up);
 	rotation.setFromQuaternion( quaternion );
 
-	this._activeObject = object;
-
+	// apply
 	this.setPosition( position );
 	this.setRotation( rotation );
 	this.setFov( 60 );
+
+	this._activeObject = object;
 };
 
 
@@ -147,12 +161,23 @@ feng.controllers.controls.ManipulateControls.prototype.onMoveObject = function (
 	  var maxZ = Math.abs(groundBox.max.z - groundBox.min.z) / 2;
 
 	  this._movePosition.x = Math.max(-maxX, Math.min(globalIntersect.x, maxX));
-	  this._movePosition.z = Math.max(-maxZ, Math.min(globalIntersect.z, maxZ));   
+	  this._movePosition.z = Math.max(-maxZ, Math.min(globalIntersect.z, maxZ));
 
 	}
 
+	// detect box collision
+	var objectBox = this._view3d.getMeshBox( this._activeObject );
+	var collided = goog.array.find(this._collidableBoxes, function(collidableBox) {
+		return goog.math.Box.intersects(collidableBox, objectBox);
+	}, this);
+
+	// set object position
 	this._activeObject.position.x = this._movePosition.x;
 	this._activeObject.position.z = this._movePosition.z;
+
+	if(collided) {
+		//this._activeObject.renderDepth = 1;
+	}
 
 	console.log('move');
 };
@@ -179,6 +204,8 @@ feng.controllers.controls.ManipulateControls.prototype.onManipulate = function (
 
 		this._manipulator.hide();
 
+		this._collidableBoxes = this._view3d.getCollidableBoxes( this._activeObject );
+
 		this.onMoveObject(e);
 	}
 	else if(e.rotate) {
@@ -203,12 +230,13 @@ feng.controllers.controls.ManipulateControls.prototype.onMediatorEvent = functio
 		case feng.events.EventType.UPDATE:
 
 		if(e.target instanceof feng.views.sections.controls.Compass) {
+
 			var radians = THREE.Math.degToRad( e.angle%360 );
 
-			var radius = this.getPosition().y;
-			var posX = radius * Math.sin( radians );
-			var posZ = radius * Math.cos( radians );
-			var posY = radius;
+			var cameraHeight = this.getPosition().y;
+			var posX = cameraHeight * Math.sin( radians );
+			var posZ = cameraHeight * Math.cos( radians );
+			var posY = cameraHeight;
 
 			this.setPosition( posX, posY, posZ );
 

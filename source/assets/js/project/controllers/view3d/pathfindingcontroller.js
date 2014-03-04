@@ -18,7 +18,7 @@ goog.inherits(feng.controllers.view3d.PathfindingController, goog.events.EventTa
 goog.addSingletonGetter(feng.controllers.view3d.PathfindingController);
 
 
-feng.controllers.view3d.PathfindingController.prototype.generateMatrix = function( start, end, collidables, scene, minTilesInRowOrCol ) {
+feng.controllers.view3d.PathfindingController.prototype.generateMatrix = function( start, end, collidableBoxes, scene, minTilesInRowOrCol ) {
 
 	var gridMinX = 0, gridMinZ = 0;
 	var gridMaxX = 0, gridMaxZ = 0;
@@ -40,22 +40,6 @@ feng.controllers.view3d.PathfindingController.prototype.generateMatrix = functio
 		  gridMaxX = Math.max(gridMaxX, maxX, start.x, end.x);
 		  gridMaxZ = Math.max(gridMaxZ, maxZ, start.z, end.z);
 		}
-	});
-
-	var collidableBoxes = [];
-
-	goog.array.forEach(collidables, function(mesh) {
-	  var box = new THREE.Box3().setFromObject( mesh );
-
-	  var minX = box.min.x;
-	  var minZ = box.min.z;
-	  var maxX = box.max.x;
-	  var maxZ = box.max.z;
-
-	  var collidableBox = new goog.math.Box(minZ, maxX, maxZ, minX);
-	  collidableBoxes.push( collidableBox );
-
-	  //console.log(collidableBox);
 	});
 
 	var gridWidth = Math.abs(gridMaxX - gridMinX);
@@ -160,10 +144,10 @@ feng.controllers.view3d.PathfindingController.prototype.getClosestWalkableTile =
 };
 
 
-feng.controllers.view3d.PathfindingController.prototype.findPath = function( start, end, collidables, scene, minTilesInRowOrCol ) {
+feng.controllers.view3d.PathfindingController.prototype.findPath = function( start, end, collidableBoxes, scene, minTilesInRowOrCol ) {
 
 	// get matrix
-	var matrixResult = this.generateMatrix( start, end, collidables, scene, minTilesInRowOrCol );
+	var matrixResult = this.generateMatrix( start, end, collidableBoxes, scene, minTilesInRowOrCol );
 
 	var matrix = matrixResult.matrix;
 	var gridMinX = matrixResult.gridMinX;

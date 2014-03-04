@@ -13,10 +13,6 @@ feng.controllers.controls.PathControls = function(camera, view3d, domElement){
 
   goog.base(this, camera, view3d, domElement);
 
-  this._collidables = goog.array.filter(this._scene.children, function(child) {
-  	return (child.userData['collidable'] === true);
-  });
-
 	this._targetRotationY = 0;
 	this._tweener = null;
 };
@@ -37,7 +33,8 @@ feng.controllers.controls.PathControls.prototype.start = function ( toPosition, 
 
 	var start = this.getPosition();
 	var end = toPosition;
-	var coordinates = pathfinder.findPath( start, end, this._collidables, this._scene );
+	var collidableBoxes = this._view3d.getCollidableBoxes();
+	var coordinates = pathfinder.findPath( start, end, collidableBoxes, this._scene );
 
 	if(!coordinates) {
 		this.onSplineComplete();
