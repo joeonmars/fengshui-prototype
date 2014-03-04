@@ -11,7 +11,7 @@ goog.require('feng.utils.MultiLinearInterpolator');
  * @constructor
  * a mod of PointerLockControls...
  */
-feng.controllers.controls.BrowseControls = function(camera, view3d, domElement){
+feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, uiElement){
 
   goog.base(this, camera, view3d, domElement);
 
@@ -23,7 +23,9 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement){
 
 	this._shouldCancelClick = false;
 
-	this._objectSelector = new feng.views.sections.controls.ObjectSelector( this._clickableObjects, this._camera, this._view3d.getRenderElement() );
+	var objectSelectorEl = goog.dom.getElementByClass('objectSelector', uiElement);
+	var renderEl = this._view3d.getRenderElement();
+	this._objectSelector = new feng.views.sections.controls.ObjectSelector( this._clickableObjects, this._camera, objectSelectorEl, renderEl );
 
 	this._lastMouseX = 0;
 	this._lastMouseY = 0;
@@ -102,8 +104,10 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable ) {
 	}
 
 	if(this._isEnabled) {
+		this._objectSelector.show();
 		this._objectSelector.activate();
 	}else {
+		this._objectSelector.hide();
 		this._objectSelector.deactivate();
 	}
 };
@@ -130,10 +134,21 @@ feng.controllers.controls.BrowseControls.prototype.update = function () {
 	this._camera.rotation.x = cameraRotateX;
 	this._camera.rotation.y = cameraRotateY;
 
+	// update object selector position
+	var object = this._objectSelector._downObject;
+
+	if(object) {
+		var renderElement = this._view3d.getRenderElement();
+		var renderElementSize = goog.style.getSize( renderElement );
+
+		var object2d = feng.utils.ThreeUtils.get2DCoordinates( object.position, this._camera, renderElementSize );
+		this._objectSelector.setPosition( object2d.x, object2d.y );
+	}
+
 	//
 	this.dispatchEvent({
 		type: feng.events.EventType.UPDATE,
-		rotationY: this._yawObject.rotation.y
+		rotationY: this.getYaw()
 	});
 };
 
@@ -217,9 +232,9 @@ feng.controllers.controls.BrowseControls.prototype.onMediatorEvent = function(e)
 		case feng.events.EventType.UPDATE:
 
 		if(e.target instanceof feng.views.sections.controls.Compass) {
-			var radians = THREE.Math.degToRad( e.angle%360 );
-			this._yawObject.rotation.y = radians;
-			this._targetRotationY = radians;
+			var rad = THREE.Math.degToRad( e.angle );
+			this.setYaw( rad );
+			this._targetRotationY = rad;
 		}
 
 		break;

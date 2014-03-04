@@ -27,7 +27,7 @@ feng.templates.main.HelloWorld = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.main.SectionEpisodeContent = function(opt_data, opt_ignored) {
-  return '<div class="preloader"></div><div class="sceneUI"><div class="controls">' + feng.templates.controls.Compass(null) + feng.templates.controls.Manipulator(null) + '</div></div><div class="sceneContainer"></div>';
+  return '<div class="preloader"></div><div class="sceneUI"><div class="controls">' + feng.templates.controls.Compass(null) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.Manipulator(null) + '</div></div><div class="sceneContainer"></div>';
 };
 
 

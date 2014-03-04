@@ -27,3 +27,14 @@ feng.templates.controls.Compass = function(opt_data, opt_ignored) {
 feng.templates.controls.Manipulator = function(opt_data, opt_ignored) {
   return '<div class="manipulator"><div class="move"></div><div class="rotate"></div><div class="close"></div></div>';
 };
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.controls.ObjectSelector = function(opt_data, opt_ignored) {
+  return '<div class="objectSelector"><div class="fill"></div></div>';
+};

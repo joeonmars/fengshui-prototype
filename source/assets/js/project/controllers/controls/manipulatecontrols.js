@@ -32,8 +32,9 @@ feng.controllers.controls.ManipulateControls.prototype.setCamera = function( cam
 	var position = new THREE.Vector3( cameraPosition.x/Math.abs(cameraPosition.x), cameraPosition.y/Math.abs(cameraPosition.y), cameraPosition.z/Math.abs(cameraPosition.z)).multiplyScalar( maxDistance );
 
 	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
+	var lookAtPosition = new THREE.Vector3(0, 0, 0); //object.position
 	var up = new THREE.Vector3(0, 1, 0);
-	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, object.position, up);
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, lookAtPosition, up);
 	rotation.setFromQuaternion( quaternion );
 
 	this._activeObject = object;
@@ -74,7 +75,7 @@ feng.controllers.controls.ManipulateControls.prototype.update = function () {
 	//
 	this.dispatchEvent({
 		type: feng.events.EventType.UPDATE,
-		rotationY: this._yawObject.rotation.y
+		rotationY: this.getYaw()
 	});
 
 	//
@@ -129,8 +130,9 @@ feng.controllers.controls.ManipulateControls.prototype.onMediatorEvent = functio
 			// look at
 			var up = new THREE.Vector3(0, 1, 0);
 			var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
-			var objectPosition = new THREE.Vector3(0, 0, 0);
-			var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), this._activeObject.position, up);
+			var centerPosition = new THREE.Vector3(0, 0, 0);
+			var position = centerPosition; // this._activeObject.position
+			var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), position, up);
 			rotation.setFromQuaternion( quaternion );
 
 			this.setRotation( rotation );

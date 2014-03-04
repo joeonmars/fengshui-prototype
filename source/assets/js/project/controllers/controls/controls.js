@@ -67,6 +67,18 @@ feng.controllers.controls.Controls.prototype.getRotation = function () {
 };
 
 
+feng.controllers.controls.Controls.prototype.getPitch = function () {
+
+	return this._pitchObject.rotation.x;
+};
+
+
+feng.controllers.controls.Controls.prototype.getYaw = function () {
+
+	return this._yawObject.rotation.y;
+};
+
+
 feng.controllers.controls.Controls.prototype.getFov = function () {
 
 	return this._camera.fov;
@@ -97,6 +109,18 @@ feng.controllers.controls.Controls.prototype.setRotation = function (x, y) {
 
 	this._pitchObject.rotation.x = this._rotation.x;
 	this._yawObject.rotation.y = this._rotation.y;
+};
+
+
+feng.controllers.controls.Controls.prototype.setPitch = function (pitch) {
+
+	this._pitchObject.rotation.x = pitch;
+};
+
+
+feng.controllers.controls.Controls.prototype.setYaw = function (yaw) {
+
+	this._yawObject.rotation.y = yaw;
 };
 
 

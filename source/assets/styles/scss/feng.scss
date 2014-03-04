@@ -101,6 +101,19 @@
 						}
 					}
 				}
+
+				>.objectSelector{
+					position: absolute;
+					width: 100px;
+					height: 8px;
+					background: #888;
+
+					>.fill{
+						width: 0%;
+						height: 100%;
+						background: blue;
+					}
+				}
 			}
 		}
 

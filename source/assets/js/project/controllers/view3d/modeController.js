@@ -119,7 +119,7 @@ feng.controllers.view3d.ModeController.prototype.createBrowseControls = function
 	var renderElement = this._view3d.getRenderElement();
 	var camera = this._cameraController.getCamera( feng.views.View3D.Mode.BROWSE );
 
-	var controls = new feng.controllers.controls.BrowseControls( camera, this._view3d, renderElement );
+	var controls = new feng.controllers.controls.BrowseControls( camera, this._view3d, renderElement, uiElement );
 	controls.setParentEventTarget( this );
 
 	return controls;
@@ -220,6 +220,17 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	var toPosition = e.toPosition || futureControl.getPosition();
 	var toRotation = e.toRotation || futureControl.getRotation();
 	var toFov = e.toFov || futureControl.getFov();
+
+	/* use shortest rotation, based on the TweenMax AS3 shortrotation... */
+	var cap = Math.PI * 2;
+	var diff = (toRotation.y - fromRotation.y) % cap;
+
+	if (diff != diff % (cap / 2)) {
+		diff = (diff < 0) ? diff + cap : diff - cap;
+	}
+
+	toRotation.y = fromRotation.y + diff;
+	/* end */
 
 	this.control.setPosition( fromPosition );
 	this.control.setRotation( fromRotation );
