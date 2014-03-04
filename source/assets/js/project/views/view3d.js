@@ -76,6 +76,12 @@ feng.views.View3D.prototype.getRenderElement = function(){
 };
 
 
+feng.views.View3D.prototype.getGround = function(){
+
+	return this.scene.getObjectByName('ground');
+};
+
+
 feng.views.View3D.prototype.activate = function(){
  
  	this._eventHandler.listen(window, 'resize', this.onResize, false, this);

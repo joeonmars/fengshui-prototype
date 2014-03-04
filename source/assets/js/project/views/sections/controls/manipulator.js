@@ -9,15 +9,13 @@ goog.require('feng.views.sections.controls.Controls');
 /**
  * @constructor
  */
-feng.views.sections.controls.Manipulator = function(domElement, eventMediator){
+feng.views.sections.controls.Manipulator = function(domElement){
 
   goog.base(this, domElement);
 
   this._moveButton = goog.dom.getElementByClass('move', this.domElement);
   this._rotateButton = goog.dom.getElementByClass('rotate', this.domElement);
   this._closeButton = goog.dom.getElementByClass('close', this.domElement);
-
-  this._eventMediator = eventMediator;
 
   this.hide();
 };
@@ -56,14 +54,27 @@ feng.views.sections.controls.Manipulator.prototype.onClick = function(e){
  	switch(e.currentTarget) {
  		case this._moveButton:
 
+      this.dispatchEvent({
+        type: feng.events.EventType.CHANGE,
+        move: true,
+        clientX: e.clientX,
+        clientY: e.clientY
+      });
  			break;
 
  		case this._rotateButton:
 
+      this.dispatchEvent({
+        type: feng.events.EventType.CHANGE,
+        rotate: true
+      });
  			break;
 
  		case this._closeButton:
 
+      this.dispatchEvent({
+        type: feng.events.EventType.CLOSE
+      });
  			break;
  	}
 };
