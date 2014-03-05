@@ -29,7 +29,7 @@
 
 
 /**
- * Main
+ * Main App
  * @param debug if has debugger
  */
 {template .Main}
@@ -55,5 +55,15 @@
 	{if $debug != false}
 		{call feng.templates.debug.Debugger}{/call}
 	{/if}
+</div>
+{/template}
+
+
+/**
+ * Spline App
+ */
+{template .Spline}
+<div id="spline">
+	<canvas></canvas>
 </div>
 {/template}

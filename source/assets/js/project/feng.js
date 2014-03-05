@@ -2,6 +2,7 @@ goog.provide('feng');
 
 goog.require('feng.apps.Main');
 goog.require('feng.apps.Demo');
+goog.require('feng.apps.Spline');
 
 
 feng.Config = {};
@@ -13,11 +14,15 @@ feng.init = function( config ) {
 	
 	switch(feng.Config['app']) {
 		case 'main':
-		feng.apps.Main();
+		feng.apps.Main.getInstance();
 		break;
 
 		case 'demo':
-		feng.apps.Demo();
+		feng.apps.Demo.getInstance();
+		break;
+
+		case 'spline':
+		feng.apps.Spline.getInstance();
 		break;
 	};
 };

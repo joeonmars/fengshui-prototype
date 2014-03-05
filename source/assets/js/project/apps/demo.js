@@ -33,3 +33,4 @@ feng.apps.Demo = function() {
 	navigationController.init();
 	navigationController.setToken('home');
 };
+goog.addSingletonGetter(feng.apps.Demo);

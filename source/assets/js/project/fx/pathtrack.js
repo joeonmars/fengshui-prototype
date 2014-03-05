@@ -1,0 +1,107 @@
+goog.provide('feng.fx.PathTrack');
+
+goog.require('feng.utils.Randomizer');
+
+/**
+ * @constructor
+ */
+feng.fx.PathTrack = function(controlPoints, segmentLength, isClosed, color){
+
+  goog.base(this);
+
+  this.controlPoints = controlPoints;
+  this._isClosed = closed;
+
+  this._spline = !this._isClosed ? new THREE.SplineCurve3(controlPoints) : new THREE.ClosedSplineCurve3(controlPoints);
+
+  this._material = new THREE.LineBasicMaterial({
+  	color: color || '#000000'
+  });
+
+  // init draw
+  this.updateTrack( this.controlPoints, segmentLength );
+};
+goog.inherits(feng.fx.PathTrack, THREE.Object3D);
+
+
+feng.fx.PathTrack.prototype.addControlPoint = function(val){
+
+	var id;
+
+	if(val instanceof THREE.Mesh) {
+		id = val.userData.id;
+	}else if(val instanceof Number) {
+		id = val;
+	}else {
+		id = this.controlPoints.length - 1;
+	}
+
+	var startControlPoint = this.controlPoints[id];
+	var endControlPoint = this.controlPoints[Math.min(this.controlPoints.length-1, id+1)];
+/* WIP
+	var newControlPoint;
+
+	if(startControlPoint === endControlPoint) {
+		newControlPoint = startControlPoint.clone().lerp(endControlPoint, .5);
+	}else {
+		newControlPoint = startControlPoint.clone().lerp(endControlPoint, .5);
+	}
+ */
+};
+
+
+feng.fx.PathTrack.prototype.removeControlPoint = function(val){
+
+	var id;
+
+	if(val instanceof THREE.Mesh) {
+		id = val.userData.id;
+	}else if(val instanceof Number) {
+		id = val;
+	}else {
+		id = this.controlPoints.length - 1;
+	}
+};
+
+
+feng.fx.PathTrack.prototype.setControlPointByMesh = function(mesh){
+
+	var id = mesh.userData.id;
+	this.controlPoints[id].position.copy( mesh.position );
+	this.updateTrack();
+};
+
+
+feng.fx.PathTrack.prototype.updateTrack = function(){
+
+	this._spline.updateArcLengths();
+
+	// remove children
+	goog.array.forEachRight(this.children, function(child) {
+		this.remove(child);
+	}, this);
+
+	// create new segments
+	var segmentLength = segmentLength || 10;
+	var divisions = Math.floor(this._spline.getLength() / segmentLength);
+  var splinePoints = this._spline.getSpacedPoints(divisions);
+
+  var lineGeometry = new THREE.Geometry();
+  goog.array.forEach(splinePoints, function(splinePoint) {
+  	lineGeometry.vertices.push(splinePoint);
+  });
+
+  var line = new THREE.Line(lineGeometry, this._material);
+  this.add(line);
+
+  // create cubes for dragging
+  goog.array.forEach(this.controlPoints, function(coordinate, index) {
+  	var geometry = new THREE.CubeGeometry(5, 5, 5);
+  	var cube = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+        color: feng.utils.Randomizer.getRandomNumber(index*100) * 0xffffff
+    }));
+    cube.userData.id = index;
+    cube.position.copy(coordinate);
+    this.add(cube);
+  }, this);
+};

@@ -13,6 +13,16 @@ feng.utils.Randomizer = function(){
 
 
 /**
+ * Static Method, return seeded randomized number
+ */
+feng.utils.Randomizer.getRandomNumber = function(seed){
+
+	var random = new goog.testing.PseudoRandom(seed);
+	return random.random();
+};
+
+
+/**
  * Static Method, return seeded randomized numbers
  */
 feng.utils.Randomizer.getRandomNumbers = function(seed, amount){

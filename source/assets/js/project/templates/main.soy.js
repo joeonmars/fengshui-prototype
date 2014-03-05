@@ -40,3 +40,14 @@ feng.templates.main.SectionEpisodeContent = function(opt_data, opt_ignored) {
 feng.templates.main.Main = function(opt_data, opt_ignored) {
   return '<div id="main"><div class="section" id="home"><div class="preloader"><div class="fill"></div></div></div><div class="section episode" id="studio">' + feng.templates.main.SectionEpisodeContent(null) + '</div><!--<div class="section episode" id="twobedroom">' + feng.templates.main.SectionEpisodeContent(null) + '</div><div class="section episode" id="townhouse">' + feng.templates.main.SectionEpisodeContent(null) + '</div>-->' + ((opt_data.debug != false) ? feng.templates.debug.Debugger(null) : '') + '</div>';
 };
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.main.Spline = function(opt_data, opt_ignored) {
+  return '<div id="spline"><canvas></canvas></div>';
+};

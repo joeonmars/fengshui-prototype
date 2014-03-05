@@ -32,6 +32,7 @@
 		<script src="assets/js/thirdparty/greensock/TweenMax.min.js"></script>
 		<script src="assets/js/thirdparty/stats.min.js"></script>
 		<script src="assets/js/thirdparty/threejs/build/three.min.js"></script>
+		<script src="assets/js/thirdparty/threejs/examples/js/controls/OrbitControls.js"></script>
 		<script src="assets/js/thirdparty/pathfinding-browser.min.js"></script>
 
 		<!-- project js -->
@@ -63,7 +64,7 @@
 			var config = {
 				basePath: '<?php echo URLADDR; ?>',
 				assetsPath: '<?php echo URLADDR; ?>'+'assets/',
-				app: 'demo',
+				app: 'spline',//'demo',
 				debug: true
 			};
 

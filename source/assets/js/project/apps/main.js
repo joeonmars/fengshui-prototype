@@ -10,3 +10,4 @@ feng.apps.Main = function() {
 	goog.fx.anim.setAnimationWindow(window);
 	
 };
+goog.addSingletonGetter(feng.apps.Main);
