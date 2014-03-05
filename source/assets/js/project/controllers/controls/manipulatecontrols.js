@@ -21,7 +21,7 @@ feng.controllers.controls.ManipulateControls = function(camera, view3d, domEleme
 
   this._mousePosition = new THREE.Vector3();
   this._movePosition = new THREE.Vector3();
-  this._plane = new THREE.Plane(new THREE.Vector3( 0, 1, 0 ));
+  this._plane = new THREE.Plane( new THREE.Vector3(0,1,0) );
 
   this._rotateTweener = null;
   this._collidableBoxes = null;
@@ -165,18 +165,25 @@ feng.controllers.controls.ManipulateControls.prototype.onMoveObject = function (
 
 	}
 
-	// detect box collision
+	// create current mouse box
 	var objectBox = this._view3d.getMeshBox( this._activeObject );
+	var objectHalfWidth = Math.abs(objectBox.right - objectBox.left) / 2;
+	var objectHalfHeight = Math.abs(objectBox.bottom - objectBox.top) / 2;
+	var top = this._movePosition.z - objectHalfHeight;
+	var right = this._movePosition.x + objectHalfWidth;
+	var bottom = this._movePosition.z + objectHalfHeight;
+	var left = this._movePosition.x - objectHalfWidth;
+	var mouseBox = new goog.math.Box(top, right, bottom, left);
+
+	// detect collision
 	var collided = goog.array.find(this._collidableBoxes, function(collidableBox) {
-		return goog.math.Box.intersects(collidableBox, objectBox);
+		return goog.math.Box.intersects(collidableBox, mouseBox);
 	}, this);
 
-	// set object position
-	this._activeObject.position.x = this._movePosition.x;
-	this._activeObject.position.z = this._movePosition.z;
-
-	if(collided) {
-		//this._activeObject.renderDepth = 1;
+	if(!collided) {
+		// set object position
+		this._activeObject.position.x = this._movePosition.x;
+		this._activeObject.position.z = this._movePosition.z;
 	}
 
 	console.log('move');
