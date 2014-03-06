@@ -71,6 +71,5 @@
 			feng.init( config );
 		</script>
 	</body>
-	
 
 </html>

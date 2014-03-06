@@ -18,8 +18,11 @@ feng.models.Preload = function(){
 		},
 		'studio': {
 			'interior1': {
-				'scene-data': 'json/scene-bed-bake.json',
+				'scene-data': 'json/scene-interior1.json',
 				'texture-bed': 'model/bed_bake.png'
+			},
+			'interior2': {
+				'scene-data': 'json/scene-interior2.json'
 			}
 		},
 		'avatar': {
@@ -78,7 +81,7 @@ feng.models.Preload.prototype.getManifest = function( keys ) {
 		var object = asset;
 		parseObject(key, object);
 	}
-	
+
 	return manifest;
 };
 

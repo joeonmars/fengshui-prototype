@@ -80,3 +80,23 @@
 		{/param}
 	{/call}
 {/template}
+
+
+/**
+ * Path Track Debug View
+ */
+{template .PathTrackDebugView}
+	{call .DebugView}
+		{param id}debug-pathtrack{/param}
+		{param title}Path Track{/param}
+		{param body}
+			<div>
+				<div class="scene"><label>Scene</label><select></select></div>
+				<button type="button" class="button add"></button>
+				<button type="button" class="button remove"></button>
+				<button type="button" class="button output"></button>
+				<textarea rows="10"></textarea>
+			</div>
+		{/param}
+	{/call}
+{/template}

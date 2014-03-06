@@ -7,6 +7,7 @@ goog.require('goog.events.EventHandler');
 goog.require('goog.events');
 goog.require('feng.views.debug.Camera');
 goog.require('feng.views.debug.Pathfinding');
+goog.require('feng.views.debug.PathTrack');
 
 
 /**
@@ -22,9 +23,16 @@ feng.views.debug.Debugger = function(){
   this._eventHandler = new goog.events.EventHandler(this);
 	this._eventHandler.listen(this._displayButton, 'click', this.onClick, false, this);
 
-	// create debug views
-	this.cameraView = new feng.views.debug.Camera();
-	this.pathfindingView = new feng.views.debug.Pathfinding();
+	// optionally create debug views
+	if(feng.views.debug.Debugger.Options.CAMERA) {
+		this.cameraView = new feng.views.debug.Camera();
+	}
+	if(feng.views.debug.Debugger.Options.PATHFINDING) {
+		this.pathfindingView = new feng.views.debug.Pathfinding();
+	}
+	if(feng.views.debug.Debugger.Options.PATH_TRACK) {
+		this.pathTrackView = new feng.views.debug.PathTrack();
+	}
 
 	//
 	this.hide();
@@ -60,4 +68,11 @@ feng.views.debug.Debugger.prototype.onClick = function(e) {
 		default:
 		break;
 	}
+};
+
+
+feng.views.debug.Debugger.Options = {
+	CAMERA: true,
+	PATHFINDING: true,
+	PATH_TRACK: false
 };

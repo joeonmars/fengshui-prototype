@@ -60,7 +60,7 @@ feng.views.Preloader.prototype.load = function( keys ){
 		this.onComplete();
 		this._loader.progress = 1;
 	}
-	
+
 	this._ticked = 1;
 	this._ticker.start();
 };
@@ -79,6 +79,12 @@ feng.views.Preloader.prototype.onLoadStart = function(e){
 feng.views.Preloader.prototype.onFileLoad = function(e){
 
 	this.model.setAsset(e.item.id, e.result);
+
+	this.dispatchEvent({
+		type: feng.events.EventType.LOAD,
+		id: e.item.id,
+		result: e.result
+	});
 };
 
 

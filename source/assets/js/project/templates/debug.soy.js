@@ -49,3 +49,14 @@ feng.templates.debug.CameraDebugView = function(opt_data, opt_ignored) {
 feng.templates.debug.PathfindingDebugView = function(opt_data, opt_ignored) {
   return '\t' + feng.templates.debug.DebugView({id: 'debug-pathfinding', title: 'Pathfinding', body: '<div class="canvasContainer"></div>'});
 };
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.debug.PathTrackDebugView = function(opt_data, opt_ignored) {
+  return '\t' + feng.templates.debug.DebugView({id: 'debug-pathtrack', title: 'Path Track', body: '<div><div class="scene"><label>Scene</label><select></select></div><button type="button" class="button add"></button><button type="button" class="button remove"></button><button type="button" class="button output"></button><textarea rows="10"></textarea></div>'});
+};

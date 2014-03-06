@@ -13,6 +13,8 @@ goog.require('feng.views.debug.Debugger');
 
 feng.apps.Demo = function() {
 
+	goog.base(this);
+	
 	goog.fx.anim.setAnimationWindow(window);
 
 	var debug = feng.Config['debug'];
@@ -33,4 +35,5 @@ feng.apps.Demo = function() {
 	navigationController.init();
 	navigationController.setToken('home');
 };
+goog.inherits(feng.apps.Demo, goog.events.EventTarget);
 goog.addSingletonGetter(feng.apps.Demo);

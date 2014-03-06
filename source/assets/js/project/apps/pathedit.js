@@ -7,15 +7,24 @@ goog.require('feng.fx.PathTrack');
 goog.require('feng.models.Preload');
 goog.require('feng.views.Preloader');
 goog.require('feng.views.View3D');
+goog.require('feng.views.debug.Debugger');
 
 
 feng.apps.PathEdit = function() {
+
+	goog.base(this);
 
 	goog.fx.anim.setAnimationWindow(window);
 
 	this._preloader = new feng.views.Preloader(null, 250);
 
+	this._sceneKeys = [
+		'studio.interior1',
+		'studio.interior2'
+	];
+
 	this._scene = null;
+	this._scenes = [];
 	this._camera = null;
 	this._renderer = null;
 	this._controls = null;
@@ -24,10 +33,11 @@ feng.apps.PathEdit = function() {
 	this._mousePosition = new THREE.Vector3();
 	this._offset = new THREE.Vector3();
 	this._intersect = null;
-	this._selectedControl = null;
+	this._controlPoint = null;
 
 	this.init();
 };
+goog.inherits(feng.apps.PathEdit, goog.events.EventTarget);
 goog.addSingletonGetter(feng.apps.PathEdit);
 
 
@@ -35,24 +45,6 @@ feng.apps.PathEdit.prototype.init = function() {
 
 	var mainFrag = soy.renderAsFragment(feng.templates.main.Spline);
 	goog.dom.appendChild(document.body, mainFrag);
-
-	this._preloader.load('studio.interior1');
-	goog.events.listenOnce(this._preloader, feng.events.EventType.COMPLETE, this.onLoadComplete, false, this);
-};
-
-
-feng.apps.PathEdit.prototype.render = function() {
-
-	this._renderer.render(this._scene, this._camera);
-};
-
-
-feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
-
-	var preloadModel = feng.models.Preload.getInstance();
-	var sceneData = preloadModel.getAsset('studio.interior1.scene-data');
-
-	this._scene = feng.views.View3D.constructScene( 'studio', 'interior1', sceneData );
 
 	var canvas = goog.dom.query('#spline > canvas')[0];
 
@@ -68,21 +60,125 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 	this._camera.position.y = 500;
 	this._camera.position.z = 500;
 
-	var coordinates = [
-		new THREE.Vector3(100, 200, 0),
-		new THREE.Vector3(150, 250, 10),
-		new THREE.Vector3(50, -100, 100),
-		new THREE.Vector3(-100, 0, -200)
-	];
-	this._pathTrack = new feng.fx.PathTrack(coordinates);
-	this._scene.add( this._pathTrack );
-
 	goog.events.listen(this._renderer.domElement, 'mousedown', this.onMouseDown, false, this);
 	goog.events.listen(window, 'resize', this.onResize, false, this);
-	
+
 	this._controls = new THREE.OrbitControls(this._camera, this._renderer.domElement);
 
+	this._preloader.load( this._sceneKeys );
+	goog.events.listenOnce(this._preloader, feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this);
+};
+
+
+feng.apps.PathEdit.prototype.highlightControl = function() {
+
+	this._pathTrack.getObjectByName('cube'+goog.array.indexOf(this._pathTrack.controlPoints, this._controlPoint)).material.opacity = 1;
+};
+
+
+feng.apps.PathEdit.prototype.render = function() {
+
+	this._renderer.render(this._scene, this._camera);
+};
+
+
+feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
+
+	this._scenes = goog.array.map(this._sceneKeys, function(sceneKey) {
+
+		var preloadModel = feng.models.Preload.getInstance();
+		var sceneData = preloadModel.getAsset(sceneKey);
+
+		var sectionId = sceneKey.split('.')[0];
+		var sceneId = sceneKey.split('.')[1];
+		
+		var scene = feng.views.View3D.constructScene( sectionId, sceneId, sceneData );
+
+		var coordinates = [
+			new THREE.Vector3(100, 200, 0),
+			new THREE.Vector3(150, 250, 10),
+			new THREE.Vector3(50, -100, 100),
+			new THREE.Vector3(-100, 0, -200)
+		];
+		var pathTrack = new feng.fx.PathTrack(coordinates);
+		scene.add( pathTrack );
+
+		return scene;
+	}, this);
+
+	this._scene = this._scenes[0];
+
+	//
 	goog.fx.anim.registerAnimation(this);
+
+	// create debugger
+	with(feng.views.debug.Debugger.Options) {
+		CAMERA = false;
+		PATHFINDING = false;
+		PATH_TRACK = true;
+	};
+	
+	feng.views.debug.Debugger.getInstance();
+
+	goog.events.listen(this, feng.events.EventType.ADD, this.onAddControlPoint, false, this);
+	goog.events.listen(this, feng.events.EventType.REMOVE, this.onRemoveControlPoint, false, this);
+	goog.events.listen(this, feng.events.EventType.CHANGE, this.onSceneChange, false, this);
+
+	//
+	this.dispatchEvent({
+		type: e.type,
+		scenes: this._scenes
+	});
+};
+
+
+feng.apps.PathEdit.prototype.onSceneChange = function(e) {
+
+	if(e.sceneName) {
+		this._scene = goog.array.find(this._scenes, function(scene) {
+			return scene.name === e.sceneName;
+		});
+	}
+};
+
+
+feng.apps.PathEdit.prototype.onAddControlPoint = function(e) {
+
+	if(this._controlPoint) {
+
+		this._pathTrack.addControlPoint( this._controlPoint );
+
+		var currentControlId = goog.array.indexOf(this._pathTrack.controlPoints, this._controlPoint);
+		var nextControlId = currentControlId + 1;
+		this._controlPoint = this._pathTrack.controlPoints[nextControlId];
+
+		this._pathTrack.updateTrack();
+		this.highlightControl();
+	}
+};
+
+
+feng.apps.PathEdit.prototype.onRemoveControlPoint = function(e) {
+
+	if(this._controlPoint) {
+		var currentControlId = goog.array.indexOf(this._pathTrack.controlPoints, this._controlPoint);
+		var nextControlId = Math.max(0, currentControlId-1);
+
+		if(currentControlId === nextControlId) {
+			if(this._pathTrack.controlPoints.length <= 1) {
+				return;
+			}
+		}
+
+		var controlToRemove = this._controlPoint;
+
+		this._controlPoint = this._pathTrack.controlPoints[nextControlId];
+
+		this._pathTrack.removeControlPoint( controlToRemove );
+
+		this._pathTrack.updateTrack();
+		this.highlightControl();
+	}
 };
 
 
@@ -93,7 +189,16 @@ feng.apps.PathEdit.prototype.onMouseDown = function(e) {
 
   var projector = new THREE.Projector();
   var raycaster = projector.pickingRay( this._mousePosition, this._camera );
-  var intersects = raycaster.intersectObjects( this._pathTrack.children );
+
+  var pathTracksChildren = [];
+
+  goog.array.forEach(this._scene.children, function(child) {
+  	if(child instanceof feng.fx.PathTrack) {
+  		goog.array.extend(pathTracksChildren, child.children);
+  	}
+  });
+
+  var intersects = raycaster.intersectObjects( pathTracksChildren );
 
   if(intersects.length > 0) {
 
@@ -102,15 +207,34 @@ feng.apps.PathEdit.prototype.onMouseDown = function(e) {
   	if(intersect.object instanceof THREE.Mesh) {
 
   		this._intersect = intersect;
-	  	this._selectedControl = this._intersect.object;
-	    this._offset.copy( this._intersect.point ).sub( this._selectedControl.position );
+  		this._pathTrack = this._intersect.object.parent;
+	  	this._controlPoint = this._intersect.object.position;
+
+	    this._offset.copy( this._intersect.point ).sub( this._controlPoint );
 
 	    this._controls.enabled = false;
 
 			goog.events.listen(document, 'mousemove', this.onMouseMove, false, this);
 			goog.events.listen(document, 'mouseup', this.onMouseUp, false, this);
+
+			this.highlightControl();
   	}
+  }else {
+
+  	if(this._pathTrack) {
+  		this._pathTrack.updateTrack();
+  	}
+
+  	this._intersect = null;
+  	this._pathTrack = null;
+  	this._controlPoint = null;
   }
+
+  this.dispatchEvent({
+  	type: feng.events.EventType.CHANGE,
+  	controlPoint: this._controlPoint,
+  	pathTrack: this._pathTrack
+  });
 };
 
 
@@ -123,26 +247,18 @@ feng.apps.PathEdit.prototype.onMouseMove = function(e) {
   var raycaster = projector.pickingRay( this._mousePosition, this._camera );
   var ray = raycaster.ray;
 
-	if(this._selectedControl) {
-	  var targetPos = ray.direction.clone().multiplyScalar( this._intersect.distance ).add( ray.origin );
-	  targetPos.sub(this._offset);
+  var targetPos = ray.direction.clone().multiplyScalar( this._intersect.distance ).add( ray.origin );
+  targetPos.sub(this._offset);
 
-	  var moveX, moveY, moveZ;
-	  moveX = moveY = moveZ = true;
+  this._controlPoint.copy( targetPos );
 
-	  if(moveX) this._selectedControl.position.x = targetPos.x;
-	  if(moveY) this._selectedControl.position.y = targetPos.y;
-	  if(moveZ) this._selectedControl.position.z = targetPos.z;
+  this._pathTrack.updateTrack();
 
-	  this._pathTrack.updateTrack();
-	}
+  this.highlightControl();
 };
 
 
 feng.apps.PathEdit.prototype.onMouseUp = function(e) {
-
-	this._intersect = null;
-	this._selectedControl = null;
 
 	this._controls.enabled = true;
 
@@ -154,7 +270,6 @@ feng.apps.PathEdit.prototype.onMouseUp = function(e) {
 feng.apps.PathEdit.prototype.onAnimationFrame = function(now) {
 
 	this._controls.update();
-	
 	this.render();
 };
 

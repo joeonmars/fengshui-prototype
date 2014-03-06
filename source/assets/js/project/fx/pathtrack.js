@@ -30,6 +30,8 @@ feng.fx.PathTrack.prototype.addControlPoint = function(val){
 
 	if(val instanceof THREE.Mesh) {
 		id = val.userData.id;
+	}else if(val instanceof THREE.Vector3) {
+		id = goog.array.indexOf(this.controlPoints, val);
 	}else if(goog.isNumber(val)) {
 		id = val;
 	}else {
@@ -61,6 +63,8 @@ feng.fx.PathTrack.prototype.removeControlPoint = function(val){
 
 	if(val instanceof THREE.Mesh) {
 		id = val.userData.id;
+	}else if(val instanceof THREE.Vector3) {
+		id = goog.array.indexOf(this.controlPoints, val);
 	}else if(goog.isNumber(val)) {
 		id = val;
 	}else {
@@ -97,9 +101,11 @@ feng.fx.PathTrack.prototype.updateTrack = function(){
 
   // create cubes for dragging
   goog.array.forEach(this.controlPoints, function(coordinate, index) {
-  	var geometry = new THREE.CubeGeometry(5, 5, 5);
+  	var geometry = new THREE.CubeGeometry(6, 6, 6);
   	var cube = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
-        color: feng.utils.Randomizer.getRandomNumber(index*100) * 0xffffff
+  		transparent: true,
+  		opacity: .2,
+      color: feng.utils.Randomizer.getRandomNumber(index*100) * 0xffffff
     }));
     cube.name = 'cube'+index;
     cube.userData.id = index;

@@ -49,5 +49,5 @@ feng.templates.main.Main = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.main.Spline = function(opt_data, opt_ignored) {
-  return '<div id="spline"><canvas></canvas></div>';
+  return '<div id="spline">' + feng.templates.debug.Debugger(null) + '<canvas></canvas></div>';
 };

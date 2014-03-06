@@ -9,6 +9,7 @@ $debug_border_style:  2px outset #d6d3ce;
 .debugPanel{
 	background-color: #d6d3ce;
 	border: $debug_border_style;
+	padding: 5px;
 	@include box-sizing(border-box);
 };
 
@@ -183,6 +184,39 @@ $debug_border_style:  2px outset #d6d3ce;
 			&.output{
 				@include button("Output");
 			}
+		}
+	}
+}
+
+#debug-pathtrack{
+	>.body{
+		@extend .debugPanel;
+
+		.scene{
+			>label{
+				display: inline-block;
+				vertical-align: middle;
+				font-size: 12px;
+				width: 20%;
+			}
+			
+			>select{
+				display: inline-block;
+				vertical-align: middle;
+				width: 80%;
+			}
+		}
+
+		.add{
+			@include font-awesome("fa-plus");
+		}
+
+		.remove{
+			@include font-awesome("fa-minus");
+		}
+
+		.output{
+			@include button("Output");
 		}
 	}
 }
