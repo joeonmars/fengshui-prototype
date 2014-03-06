@@ -30,7 +30,7 @@ feng.fx.PathTrack.prototype.addControlPoint = function(val){
 
 	if(val instanceof THREE.Mesh) {
 		id = val.userData.id;
-	}else if(val instanceof Number) {
+	}else if(goog.isNumber(val)) {
 		id = val;
 	}else {
 		id = this.controlPoints.length - 1;
@@ -38,15 +38,20 @@ feng.fx.PathTrack.prototype.addControlPoint = function(val){
 
 	var startControlPoint = this.controlPoints[id];
 	var endControlPoint = this.controlPoints[Math.min(this.controlPoints.length-1, id+1)];
-/* WIP
+
 	var newControlPoint;
 
 	if(startControlPoint === endControlPoint) {
-		newControlPoint = startControlPoint.clone().lerp(endControlPoint, .5);
+		newControlPoint = startControlPoint.clone().add( startControlPoint );
 	}else {
 		newControlPoint = startControlPoint.clone().lerp(endControlPoint, .5);
 	}
- */
+
+	goog.array.insertAt(this.controlPoints, newControlPoint, id+1);
+
+	this.updateTrack();
+
+	return this.getObjectByName('cube'+(id+1));
 };
 
 
@@ -56,18 +61,14 @@ feng.fx.PathTrack.prototype.removeControlPoint = function(val){
 
 	if(val instanceof THREE.Mesh) {
 		id = val.userData.id;
-	}else if(val instanceof Number) {
+	}else if(goog.isNumber(val)) {
 		id = val;
 	}else {
 		id = this.controlPoints.length - 1;
 	}
-};
 
+	goog.array.removeAt(this.controlPoints, id);
 
-feng.fx.PathTrack.prototype.setControlPointByMesh = function(mesh){
-
-	var id = mesh.userData.id;
-	this.controlPoints[id].position.copy( mesh.position );
 	this.updateTrack();
 };
 
@@ -100,8 +101,9 @@ feng.fx.PathTrack.prototype.updateTrack = function(){
   	var cube = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
         color: feng.utils.Randomizer.getRandomNumber(index*100) * 0xffffff
     }));
+    cube.name = 'cube'+index;
     cube.userData.id = index;
-    cube.position.copy(coordinate);
+    cube.position = coordinate;
     this.add(cube);
   }, this);
 };

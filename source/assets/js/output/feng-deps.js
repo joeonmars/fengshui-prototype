@@ -2,7 +2,7 @@
 // Please do not edit.
 goog.addDependency('../../../../project/apps/demo.js', ['feng.apps.Demo'], ['feng.controllers.NavigationController', 'feng.controllers.SectionController', 'feng.controllers.view3d.PathfindingController', 'feng.controllers.view3d.View3DController', 'feng.templates.main', 'feng.views.debug.Debugger', 'goog.dom', 'goog.fx.anim', 'goog.style']);
 goog.addDependency('../../../../project/apps/main.js', ['feng.apps.Main'], ['feng.templates.main', 'goog.dom', 'goog.fx']);
-goog.addDependency('../../../../project/apps/spline.js', ['feng.apps.Spline'], ['feng.fx.PathTrack', 'feng.templates.main', 'goog.dom', 'goog.fx.anim']);
+goog.addDependency('../../../../project/apps/pathedit.js', ['feng.apps.PathEdit'], ['feng.fx.PathTrack', 'feng.templates.main', 'goog.dom', 'goog.fx.anim']);
 goog.addDependency('../../../../project/controllers/controls/browsecontrols.js', ['feng.controllers.controls.BrowseControls'], ['feng.controllers.controls.Controls', 'feng.utils.MultiLinearInterpolator', 'feng.utils.Randomizer', 'feng.utils.ThreeUtils', 'feng.views.sections.controls.ObjectSelector', 'goog.events']);
 goog.addDependency('../../../../project/controllers/controls/closeupcontrols.js', ['feng.controllers.controls.CloseUpControls'], ['feng.controllers.controls.Controls', 'feng.utils.MultiLinearInterpolator', 'feng.utils.Randomizer', 'goog.events', 'goog.math']);
 goog.addDependency('../../../../project/controllers/controls/controls.js', ['feng.controllers.controls.Controls'], ['goog.events', 'goog.events.EventHandler', 'goog.events.EventTarget']);
@@ -18,7 +18,7 @@ goog.addDependency('../../../../project/controllers/view3d/pathfindingcontroller
 goog.addDependency('../../../../project/controllers/view3d/view3dcontroller.js', ['feng.controllers.view3d.View3DController'], ['feng.events', 'goog.events.EventHandler', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/events/eventmediator.js', ['feng.events.EventMediator'], ['goog.Disposable', 'goog.events', 'goog.events.EventHandler', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/events/eventtype.js', ['feng.events'], []);
-goog.addDependency('../../../../project/feng.js', ['feng'], ['feng.apps.Demo', 'feng.apps.Main', 'feng.apps.Spline']);
+goog.addDependency('../../../../project/feng.js', ['feng'], ['feng.apps.Demo', 'feng.apps.Main', 'feng.apps.PathEdit']);
 goog.addDependency('../../../../project/fx/pathtrack.js', ['feng.fx.PathTrack'], ['feng.utils.Randomizer']);
 goog.addDependency('../../../../project/models/avatar/avatar.js', ['feng.models.avatar.Avatar'], ['goog.math', 'goog.object']);
 goog.addDependency('../../../../project/models/object3d/FengshuiObject.js', ['feng.models.object3d.FengshuiObject'], ['feng.models.object3d.Object3D']);

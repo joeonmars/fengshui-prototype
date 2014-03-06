@@ -1,4 +1,4 @@
-goog.provide('feng.apps.Spline');
+goog.provide('feng.apps.PathEdit');
 
 goog.require('goog.dom');
 goog.require('goog.fx.anim');
@@ -6,7 +6,7 @@ goog.require('feng.templates.main');
 goog.require('feng.fx.PathTrack');
 
 
-feng.apps.Spline = function() {
+feng.apps.PathEdit = function() {
 
 	goog.fx.anim.setAnimationWindow(window);
 
@@ -18,10 +18,10 @@ feng.apps.Spline = function() {
 
 	this.init();
 };
-goog.addSingletonGetter(feng.apps.Spline);
+goog.addSingletonGetter(feng.apps.PathEdit);
 
 
-feng.apps.Spline.prototype.init = function() {
+feng.apps.PathEdit.prototype.init = function() {
 
 	var mainFrag = soy.renderAsFragment(feng.templates.main.Spline);
 	goog.dom.appendChild(document.body, mainFrag);
@@ -72,13 +72,13 @@ feng.apps.Spline.prototype.init = function() {
 };
 
 
-feng.apps.Spline.prototype.render = function() {
+feng.apps.PathEdit.prototype.render = function() {
 
 	this._renderer.render(this._scene, this._camera);
 };
 
 
-feng.apps.Spline.prototype.onAnimationFrame = function(now) {
+feng.apps.PathEdit.prototype.onAnimationFrame = function(now) {
 
 	//this._pathTrack.controlPoints[0].x ++;
 	//this._pathTrack.updateTrack();
@@ -88,8 +88,10 @@ feng.apps.Spline.prototype.onAnimationFrame = function(now) {
 };
 
 
-feng.apps.Spline.prototype.onResize = function(e) {
+feng.apps.PathEdit.prototype.onResize = function(e) {
 
+	this._camera.aspect = window.innerWidth / window.innerHeight;
+	this._camera.updateProjectionMatrix();
 	this._renderer.setSize( window.innerWidth, window.innerHeight );
 
 	this.render();

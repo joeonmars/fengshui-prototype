@@ -2,7 +2,7 @@ goog.provide('feng');
 
 goog.require('feng.apps.Main');
 goog.require('feng.apps.Demo');
-goog.require('feng.apps.Spline');
+goog.require('feng.apps.PathEdit');
 
 
 feng.Config = {};
@@ -21,8 +21,8 @@ feng.init = function( config ) {
 		feng.apps.Demo.getInstance();
 		break;
 
-		case 'spline':
-		feng.apps.Spline.getInstance();
+		case 'pathedit':
+		feng.apps.PathEdit.getInstance();
 		break;
 	};
 };
