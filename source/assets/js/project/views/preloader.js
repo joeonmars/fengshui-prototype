@@ -60,7 +60,7 @@ feng.views.Preloader.prototype.load = function( keys ){
 		this.onComplete();
 		this._loader.progress = 1;
 	}
-
+	
 	this._ticked = 1;
 	this._ticker.start();
 };

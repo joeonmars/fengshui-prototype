@@ -150,7 +150,7 @@ feng.views.sections.Section.prototype.onAnimatedIn = function(e){
 	this.dispatchEvent({
 		type: feng.events.EventType.ANIMATED_IN
 	});
-
+	
 	var shouldLoad = this._preloader.load( this._assetKeys );
 	if(!shouldLoad) {
 

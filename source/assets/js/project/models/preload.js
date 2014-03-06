@@ -17,8 +17,10 @@ feng.models.Preload = function(){
 
 		},
 		'studio': {
-			'scene-data': 'json/scene-bed-bake.json',
-			'texture-bed': 'model/bed_bake.png'
+			'interior1': {
+				'scene-data': 'json/scene-bed-bake.json',
+				'texture-bed': 'model/bed_bake.png'
+			}
 		},
 		'avatar': {
 			'texture': 'images/texture/avatar/avatar.png',
@@ -50,24 +52,34 @@ feng.models.Preload.prototype.getManifest = function( keys ) {
 
 	var asset = this.getDataByKeys( keys );
 
+	var manifest = [];
+
+	var parseObject = function(key, asset) {
+
+		goog.object.forEach(asset, function(obj, id) {
+
+			if(goog.isString(obj)) {
+				// if obj is an Url rather than result
+				manifest.push( {id: key+'.'+id, src: obj} );
+			}else {
+				// if obj is an Object contains keys
+				parseObject(key+'.'+id, obj);
+			}
+		});
+	};
+
 	if(goog.isString(asset)) {
 
-		return [{id: keys, src: asset}];
+		manifest.push( {id: keys, src: asset} );
 
 	}else {
 
-		var manifest = [];
-
-		goog.object.forEach(asset, function(src, id) {
-			// if src is an Url rather than result
-			if(goog.isString(src)) {
-				manifest.push( {id: keys+'.'+id, src: src} );
-			}
-		});
-		
-		return manifest;
-
+		var key = keys;
+		var object = asset;
+		parseObject(key, object);
 	}
+	
+	return manifest;
 };
 
 

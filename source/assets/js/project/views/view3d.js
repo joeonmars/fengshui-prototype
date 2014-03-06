@@ -37,8 +37,6 @@ feng.views.View3D = function(domElement, uiElement, id, eventMediator){
 
 	this._collidables = [];
 
-	this._isConstructed = false;
-
 	this._eventHandler = new goog.events.EventHandler(this);
 };
 goog.inherits(feng.views.View3D, goog.events.EventTarget);
@@ -60,7 +58,7 @@ feng.views.View3D.prototype.init = function(){
 	goog.dom.appendChild( this.domElement, this._renderer.domElement );
 	goog.dom.appendChild( this.domElement, feng.views.View3D.STATS.domElement );
 
-	this.constructScene();
+	this.initScene();
 };
 
 
@@ -178,28 +176,16 @@ feng.views.View3D.prototype.createSpline = function(coordinates, color) {
 };
 
 
-feng.views.View3D.prototype.getCameraZOfObjectExactPixelDimension = function(camera, object) {
-
-	var viewSize = this.getViewSize();
-
-	var vFOV = camera.fov * (Math.PI / 180);
-	var cameraZ = viewSize.height / (2 * Math.tan(vFOV / 2) );
-
-	return cameraZ;
-};
-
-
-feng.views.View3D.prototype.constructScene = function() {
+feng.views.View3D.prototype.initScene = function() {
 	
-	this._isConstructed = true;
+	this.scene = feng.views.View3D.constructScene(this.id, 'interior1');
 
-	// create a threejs loader just for parsing scene data
-	var loader = new THREE.ObjectLoader();
-
-	var preloadModel = feng.models.Preload.getInstance();
-	var sceneData = preloadModel.getAsset(this.id+'.scene-data');
-
-	this.scene = loader.parse( sceneData );
+	// add collidables
+	this.scene.traverse(goog.bind(function(child) {
+		if(child.userData['collidable'] === true) {
+			this._collidables.push(child);
+		}
+	}, this));
 
 	// add spline group object
 	this._splineGroupObject = new THREE.Object3D();
@@ -212,26 +198,6 @@ feng.views.View3D.prototype.constructScene = function() {
 
 	// init camera controller
 	this.cameraController.init( this.scene );
-
-	// add collidables
-	this.scene.traverse(goog.bind(function(child) {
-		if(child.userData['collidable'] === true) {
-			this._collidables.push(child);
-		}
-	}, this));
-
-	//
-	var bed = this.scene.getObjectByName('bed');
-	var bedTextureSrc = preloadModel.getAsset(this.id+'.texture-bed').src;
-	var material = new THREE.MeshBasicMaterial({
-    map: THREE.ImageUtils.loadTexture( bedTextureSrc ),
-    transparent: true,
-    side: THREE.DoubleSide
-  });
-  material.alphaTest = 0.5;
-  bed.material = material;
-
-	this.render();
 
 	// init mode controller
 	this.modeController.init({
@@ -248,11 +214,6 @@ feng.views.View3D.prototype.constructScene = function() {
 
 feng.views.View3D.prototype.onAnimationFrame = function(now){
 
-  var time = now * 0.0004;
-
-  var bed = this.scene.getObjectByName('bed');
-  //bed.rotation.y = time * 0.5;
-
   feng.views.View3D.STATS.update();
 
   this.render();
@@ -268,6 +229,45 @@ feng.views.View3D.prototype.onResize = function(e){
 	this._renderer.setSize( viewSize.width, viewSize.height );
 
 	this.render();
+};
+
+
+feng.views.View3D.constructScene = function(sectionId, sceneId) {
+
+	// create a threejs loader just for parsing scene data
+	var loader = new THREE.ObjectLoader();
+
+	// get scene data
+	var preloadModel = feng.models.Preload.getInstance();
+	var sceneDataPrefix = sectionId+'.'+sceneId;
+	var sceneData = preloadModel.getAsset(sceneDataPrefix+'.scene-data');
+	var scene = loader.parse( sceneData );
+
+	// parse scene children
+	var checkChildren = function(object) {
+		if(object instanceof THREE.Object3D) {
+			if(object.userData['texture']) {
+				var textureSrc = preloadModel.getAsset(sceneDataPrefix+'.'+object.userData['texture']).src;
+				object.material.color.setRGB(1, 1, 1);
+			  object.material.map = THREE.ImageUtils.loadTexture( textureSrc );
+
+			  if(object.userData['alpha'] === true) {
+			  	object.material.alphaTest = 0.5;
+			  }
+			}
+
+			var children = object.children;
+			goog.array.forEach(children, function(child) {
+				checkChildren(child);
+			});
+		}
+  };
+
+	scene.traverse(function(child) {
+		checkChildren(child);
+	});
+
+  return scene;
 };
 
 
