@@ -244,13 +244,17 @@ $debug_border_style:  2px outset #d6d3ce;
 				}
 			}
 
-			>.stop{
+			>.camera{
 				width: 30px;
 				height: 30px;
 				margin-right: 4px;
 				vertical-align: middle;
 
-				@include font-awesome("fa-stop");
+				@include font-awesome("fa-video-camera");
+
+				&.fly{
+					@include font-awesome("fa-plane");
+				}
 			}
 
 			>input{

@@ -66,11 +66,9 @@ feng.apps.PathEdit.prototype.init = function() {
 	this._editCamera.position.y = 500;
 	this._editCamera.position.z = 500;
 
-	this._motionCamera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.01, 1000 );
+	this._motionCamera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
 
 	this._camera = this._editCamera;
-
-	this._motionCameraHelper = new THREE.CameraHelper( this._motionCamera );
 
 	goog.events.listen(this._renderer.domElement, 'mousedown', this.onMouseDown, false, this);
 	goog.events.listen(window, 'resize', this.onResize, false, this);
@@ -85,6 +83,16 @@ feng.apps.PathEdit.prototype.init = function() {
 feng.apps.PathEdit.prototype.highlightControl = function() {
 
 	this._pathTrack.getObjectByName('cube'+goog.array.indexOf(this._pathTrack.controlPoints, this._controlPoint)).material.opacity = 1;
+};
+
+
+feng.apps.PathEdit.prototype.updateMotionTweener = function() {
+
+	var tempProgress = this._motionTweener ? this._motionTweener.progress() : 0;
+	this._motionTweener = null;
+	this.onPlay();
+	this._motionTweener.progress(tempProgress);
+	this.onPause();
 };
 
 
@@ -106,11 +114,14 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 		
 		var scene = feng.views.View3D.constructScene( sectionId, sceneId, sceneData );
 
+		var motionCameraHelper = new THREE.CameraHelper( this._motionCamera );
+		motionCameraHelper.name = 'motionCameraHelper';
+		scene.add( motionCameraHelper );
+
 		var coordinates = [
-			new THREE.Vector3(100, 200, 0),
-			new THREE.Vector3(150, 250, 10),
-			new THREE.Vector3(50, -100, 100),
-			new THREE.Vector3(-100, 0, -200)
+			new THREE.Vector3(100, 40, 0),
+			new THREE.Vector3(-30, 50, -50),
+			new THREE.Vector3(-100, 50, -200)
 		];
 		var pathTrack = new feng.fx.PathTrack(coordinates);
 		scene.add( pathTrack );
@@ -119,7 +130,10 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 	}, this);
 
 	this._scene = this._scenes[0];
-	this._scene.add( this._motionCameraHelper );
+	this._scene.add( this._editCamera );
+	this._scene.add( this._motionCamera );
+
+	this._motionCameraHelper = this._scene.getObjectByName('motionCameraHelper');
 
 	//
 	goog.fx.anim.registerAnimation(this);
@@ -135,10 +149,10 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 
 	goog.events.listen(this, feng.events.EventType.ADD, this.onAddControlPoint, false, this);
 	goog.events.listen(this, feng.events.EventType.REMOVE, this.onRemoveControlPoint, false, this);
-	goog.events.listen(this, feng.events.EventType.CHANGE, this.onSceneChange, false, this);
+	goog.events.listen(this, feng.events.EventType.CHANGE, this.onChange, false, this);
 	goog.events.listen(this, feng.events.EventType.PLAY, this.onPlay, false, this);
 	goog.events.listen(this, feng.events.EventType.PAUSE, this.onPause, false, this);
-	goog.events.listen(this, feng.events.EventType.STOP, this.onStop, false, this);
+	goog.events.listen(this, feng.events.EventType.PROGRESS, this.onProgress, false, this);
 
 	//
 	this.dispatchEvent({
@@ -148,35 +162,54 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 };
 
 
-feng.apps.PathEdit.prototype.onSceneChange = function(e) {
+feng.apps.PathEdit.prototype.onChange = function(e) {
 
 	if(e.sceneName) {
 		this._scene = goog.array.find(this._scenes, function(scene) {
 			return scene.name === e.sceneName;
 		});
 
-		this._scene.add( this._motionCameraHelper );
+		this._scene.add( this._editCamera );
+		this._scene.add( this._motionCamera );
+
+	  this._pathTrack = goog.array.find(this._scene.children, function(child) {
+	  	return (child instanceof feng.fx.PathTrack);
+	  });
+
+  	this._motionCameraHelper = this._scene.getObjectByName('motionCameraHelper');
+
+		this.updateMotionTweener();
+	}
+
+	if(e.fly === true) {
+
+		this._camera = this._motionCamera;
+
+	}else if(e.fly === false) {
+
+		this._camera = this._editCamera;
+
 	}
 };
 
 
 feng.apps.PathEdit.prototype.onPlay = function(e) {
 // refer to http://mrdoob.github.io/three.js/examples/webgl_geometry_extrude_splines.html
+
 	if(!this._motionTweener) {
 
 		var prop = {
-			val: 0
+			progress: 0
 		};
 
 		this._motionTweener = TweenMax.to(prop, 5, {
-			val: 1,
+			progress: 1,
 			ease: Linear.easeNone,
-			onUpdate: function() {
-				var position = this._pathTrack.spline.getPointAt( prop.val );
-				var nextPosition = this._pathTrack.spline.getPointAt( Math.min(1, prop.val + 0.05) );
-				this._motionCamera.position.copy( position );
-			},
-			onUpdateScope: this
+			onUpdate: this.onProgress,
+			onUpdateParams: [prop],
+			onUpdateScope: this,
+			onComplete: this.onComplete,
+			onCompleteScope: this
 		});
 	}
 
@@ -185,8 +218,19 @@ feng.apps.PathEdit.prototype.onPlay = function(e) {
 	}else {
 		this._motionTweener.play();
 	}
+};
 
-	this._camera = this._motionCamera;
+
+feng.apps.PathEdit.prototype.onProgress = function(e) {
+
+	var position = this._pathTrack.spline.getPointAt( e.progress );
+	var nextPosition = this._pathTrack.spline.getPointAt( Math.min(1, e.progress + 0.05) );
+	this._motionCamera.position.copy( position );
+
+	this.dispatchEvent({
+		type: feng.events.EventType.CHANGE,
+		progress: e.progress
+	});
 };
 
 
@@ -196,11 +240,12 @@ feng.apps.PathEdit.prototype.onPause = function(e) {
 };
 
 
-feng.apps.PathEdit.prototype.onStop = function(e) {
+feng.apps.PathEdit.prototype.onComplete = function(e) {
 
-	this._motionTweener.pause();
-
-	this._camera = this._editCamera;
+	this.dispatchEvent({
+		type: feng.events.EventType.CHANGE,
+		complete: true
+	});
 };
 
 
@@ -279,17 +324,9 @@ feng.apps.PathEdit.prototype.onMouseDown = function(e) {
 			goog.events.listen(document, 'mousemove', this.onMouseMove, false, this);
 			goog.events.listen(document, 'mouseup', this.onMouseUp, false, this);
 
+			this._pathTrack.updateTrack();
 			this.highlightControl();
   	}
-  }else {
-
-  	if(this._pathTrack) {
-  		this._pathTrack.updateTrack();
-  	}
-
-  	this._intersect = null;
-  	this._pathTrack = null;
-  	this._controlPoint = null;
   }
 
   this.dispatchEvent({
@@ -317,6 +354,9 @@ feng.apps.PathEdit.prototype.onMouseMove = function(e) {
   this._pathTrack.updateTrack();
 
   this.highlightControl();
+
+  // refresh progress of new spline
+	this.updateMotionTweener();
 };
 
 

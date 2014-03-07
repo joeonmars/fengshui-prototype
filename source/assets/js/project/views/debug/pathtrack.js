@@ -18,7 +18,7 @@ feng.views.debug.PathTrack = function(){
   this._outputButton = goog.dom.query('.button.output', this.domElement)[0];
   this._textarea = goog.dom.query('textarea', this.domElement)[0];
   this._playButton = goog.dom.query('.button.play', this.domElement)[0];
-  this._stopButton = goog.dom.query('.button.stop', this.domElement)[0];
+  this._cameraButton = goog.dom.query('.button.camera', this.domElement)[0];
   this._range = goog.dom.query('input', this.domElement)[0];
 
   this._pathTrack = null;
@@ -28,7 +28,7 @@ feng.views.debug.PathTrack = function(){
   this._eventHandler.listen(this._removeButton, 'click', this.onClick, false, this);
   this._eventHandler.listen(this._outputButton, 'click', this.onClick, false, this);
   this._eventHandler.listen(this._playButton, 'click', this.onClick, false, this);
-  this._eventHandler.listen(this._stopButton, 'click', this.onClick, false, this);
+  this._eventHandler.listen(this._cameraButton, 'click', this.onClick, false, this);
   this._eventHandler.listen(this._range, feng.events.EventType.CHANGE, this.onProgressChange, false, this);
   this._eventHandler.listen(this._pathEditApp, feng.events.EventType.CHANGE, this.onPathEditChange, false, this);
   this._eventHandler.listenOnce(this._pathEditApp, feng.events.EventType.LOAD_COMPLETE, this.onScenesLoadComplete, false, this);
@@ -107,10 +107,22 @@ feng.views.debug.PathTrack.prototype.onClick = function(e){
     }
     break;
 
-    case this._stopButton:
-    this._pathEditApp.dispatchEvent({
-      type: feng.events.EventType.STOP
-    });
+    case this._cameraButton:
+    if(goog.dom.classes.has(this._cameraButton, 'fly')) {
+      goog.dom.classes.remove(this._cameraButton, 'fly');
+
+      this._pathEditApp.dispatchEvent({
+        type: feng.events.EventType.CHANGE,
+        fly: true
+      });
+    }else {
+      goog.dom.classes.add(this._cameraButton, 'fly');
+
+      this._pathEditApp.dispatchEvent({
+        type: feng.events.EventType.CHANGE,
+        fly: false
+      });
+    }
     break;
   }
 };
@@ -118,7 +130,10 @@ feng.views.debug.PathTrack.prototype.onClick = function(e){
 
 feng.views.debug.PathTrack.prototype.onProgressChange = function(e){
 
-  //this._range.value
+  this._pathEditApp.dispatchEvent({
+    type: feng.events.EventType.PROGRESS,
+    progress: this._range.value / 100
+  });
 };
 
 
@@ -129,6 +144,14 @@ feng.views.debug.PathTrack.prototype.onPathEditChange = function(e){
     this._addButton.disabled = disabled;
     this._removeButton.disabled = disabled;
     this._outputButton.disabled = disabled;
+  }
+
+  if(goog.isNumber(e.progress)) {
+    this._range.value = Math.round(e.progress * 100);
+  }
+
+  if(e.complete === true) {
+    goog.dom.classes.remove(this._playButton, 'paused');
   }
 
   this._pathTrack = e.pathTrack;
