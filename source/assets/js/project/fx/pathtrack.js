@@ -13,14 +13,34 @@ feng.fx.PathTrack = function(controlPoints, segmentLength, isClosed, color){
   this._isClosed = closed;
   this.spline = !this._isClosed ? new THREE.SplineCurve3(controlPoints) : new THREE.ClosedSplineCurve3(controlPoints);
 
-  this._material = new THREE.LineBasicMaterial({
-  	color: color || '#000000'
+  this.tubeGeometry = null;
+  this.segments = null;
+
+  this._material = new THREE.MeshBasicMaterial({
+  	color: color || '#000000',
+		opacity: 0.4,
+		transparent: true,
+		wireframe: true
   });
 
   // init draw
   this.updateTrack( this.controlPoints, segmentLength );
 };
 goog.inherits(feng.fx.PathTrack, THREE.Object3D);
+
+
+feng.fx.PathTrack.prototype.getControlMeshes = function(){
+
+	var meshes = [];
+
+	goog.array.forEach(this.children, function(child) {
+		if(child.geometry instanceof THREE.CubeGeometry) {
+			meshes.push(child);
+		}
+	});
+
+	return meshes;
+};
 
 
 feng.fx.PathTrack.prototype.addControlPoint = function(val){
@@ -87,16 +107,12 @@ feng.fx.PathTrack.prototype.updateTrack = function(){
 
 	// create new segments
 	var segmentLength = segmentLength || 10;
-	var divisions = Math.floor(this.spline.getLength() / segmentLength);
-  var splinePoints = this.spline.getSpacedPoints(divisions);
+	this.segments = Math.floor(this.spline.getLength() / segmentLength);
+  var splinePoints = this.spline.getSpacedPoints( this.segments );
 
-  var lineGeometry = new THREE.Geometry();
-  goog.array.forEach(splinePoints, function(splinePoint) {
-  	lineGeometry.vertices.push(splinePoint);
-  });
-
-  var line = new THREE.Line(lineGeometry, this._material);
-  this.add(line);
+  this.tubeGeometry = new THREE.TubeGeometry(this.spline, this.segments, .5, 4, this._isClosed);
+  var tubeMesh = new THREE.Mesh( this.tubeGeometry, this._material );
+  this.add(tubeMesh);
 
   // create cubes for dragging
   goog.array.forEach(this.controlPoints, function(coordinate, index) {

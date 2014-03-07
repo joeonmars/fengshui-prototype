@@ -28,6 +28,7 @@ feng.apps.PathEdit = function() {
 	this._scenes = [];
 	this._camera = null;
 	this._editCamera = null;
+	this._pathCamera = null;
 	this._motionCamera = null;
 	this._motionCameraHelper = null;
 	this._renderer = null;
@@ -66,7 +67,9 @@ feng.apps.PathEdit.prototype.init = function() {
 	this._editCamera.position.y = 500;
 	this._editCamera.position.z = 500;
 
-	this._motionCamera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
+	this._pathCamera = new THREE.PerspectiveCamera();
+
+	this._motionCamera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 1000 );
 
 	this._camera = this._editCamera;
 
@@ -77,6 +80,15 @@ feng.apps.PathEdit.prototype.init = function() {
 
 	this._preloader.load( this._sceneKeys );
 	goog.events.listenOnce(this._preloader, feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this);
+};
+
+
+feng.apps.PathEdit.prototype.getDefaultPathTrack = function() {
+	var pathTrack = goog.array.find(this._scene.children, function(child) {
+  	return (child instanceof feng.fx.PathTrack);
+  });
+
+  return pathTrack;
 };
 
 
@@ -135,6 +147,8 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 
 	this._motionCameraHelper = this._scene.getObjectByName('motionCameraHelper');
 
+	this._pathTrack = this.getDefaultPathTrack();
+
 	//
 	goog.fx.anim.registerAnimation(this);
 
@@ -172,9 +186,7 @@ feng.apps.PathEdit.prototype.onChange = function(e) {
 		this._scene.add( this._editCamera );
 		this._scene.add( this._motionCamera );
 
-	  this._pathTrack = goog.array.find(this._scene.children, function(child) {
-	  	return (child instanceof feng.fx.PathTrack);
-	  });
+	  this._pathTrack = this.getDefaultPathTrack();
 
   	this._motionCameraHelper = this._scene.getObjectByName('motionCameraHelper');
 
@@ -202,7 +214,7 @@ feng.apps.PathEdit.prototype.onPlay = function(e) {
 			progress: 0
 		};
 
-		this._motionTweener = TweenMax.to(prop, 5, {
+		this._motionTweener = TweenMax.to(prop, 10, {
 			progress: 1,
 			ease: Linear.easeNone,
 			onUpdate: this.onProgress,
@@ -223,14 +235,51 @@ feng.apps.PathEdit.prototype.onPlay = function(e) {
 
 feng.apps.PathEdit.prototype.onProgress = function(e) {
 
-	var position = this._pathTrack.spline.getPointAt( e.progress );
-	var nextPosition = this._pathTrack.spline.getPointAt( Math.min(1, e.progress + 0.05) );
-	this._motionCamera.position.copy( position );
-
+	//
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		progress: e.progress
 	});
+
+	//
+	var tube = this._pathTrack.tubeGeometry;
+	var t = e.progress;
+	var pos = tube.path.getPointAt( t );
+
+	// interpolation
+	var segments = tube.tangents.length;
+	var pickt = t * segments;
+	var pick = Math.floor( pickt );
+	var pickNext = ( pick + 1 ) % segments;
+
+	if(pickt > segments-1) return;
+
+	var binormal = new THREE.Vector3();
+	binormal.subVectors( tube.binormals[ pickNext ], tube.binormals[ pick ] );
+	binormal.multiplyScalar( pickt - pick ).add( tube.binormals[ pick ] );
+
+	var dir = tube.path.getTangentAt( t );
+
+	var offset = -15;
+
+	var normal = new THREE.Vector3();
+	normal.copy( binormal ).cross( dir );
+
+	// We move on a offset on its binormal
+	pos.add( normal.clone().multiplyScalar( offset ) );
+
+	this._motionCamera.position.copy( pos );
+
+	var lookAt = tube.path.getPointAt( ( t + 30 / tube.path.getLength() ) % 1 );
+	lookAt.copy( pos ).add( dir );
+
+	var up = new THREE.Vector3(0,1,0);
+
+	this._pathCamera.matrix.lookAt(pos, lookAt, up);
+	this._pathCamera.rotation.setFromRotationMatrix( this._pathCamera.matrix, this._pathCamera.rotation.order );
+
+	var euler = new THREE.Euler().setFromQuaternion( this._pathCamera.quaternion );
+	this._motionCamera.rotation.copy(euler);
 };
 
 
@@ -301,7 +350,7 @@ feng.apps.PathEdit.prototype.onMouseDown = function(e) {
 
   goog.array.forEach(this._scene.children, function(child) {
   	if(child instanceof feng.fx.PathTrack) {
-  		goog.array.extend(pathTracksChildren, child.children);
+  		goog.array.extend(pathTracksChildren, child.getControlMeshes());
   	}
   });
 
