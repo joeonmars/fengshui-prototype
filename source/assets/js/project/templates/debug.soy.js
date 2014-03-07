@@ -58,5 +58,5 @@ feng.templates.debug.PathfindingDebugView = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.debug.PathTrackDebugView = function(opt_data, opt_ignored) {
-  return '\t' + feng.templates.debug.DebugView({id: 'debug-pathtrack', title: 'Path Track', body: '<div><div class="scene"><label>Scene</label><select></select></div><button type="button" class="button add"></button><button type="button" class="button remove"></button><button type="button" class="button output"></button><textarea rows="10"></textarea></div>'});
+  return '\t' + feng.templates.debug.DebugView({id: 'debug-pathtrack', title: 'Path Track', body: '<div class="editPanel"><div class="scene"><label>Scene</label><select></select></div><button type="button" class="button add"></button><button type="button" class="button remove"></button><button type="button" class="button output"></button><textarea rows="10"></textarea></div><div class="playbackPanel"><label>Playback</label><div class="controls"><button type="button" class="button play"></button><button type="button" class="button stop"></button><input type="range" min="0" max="100" value="0"></div></div>'});
 };

@@ -11,8 +11,7 @@ feng.fx.PathTrack = function(controlPoints, segmentLength, isClosed, color){
 
   this.controlPoints = controlPoints;
   this._isClosed = closed;
-
-  this._spline = !this._isClosed ? new THREE.SplineCurve3(controlPoints) : new THREE.ClosedSplineCurve3(controlPoints);
+  this.spline = !this._isClosed ? new THREE.SplineCurve3(controlPoints) : new THREE.ClosedSplineCurve3(controlPoints);
 
   this._material = new THREE.LineBasicMaterial({
   	color: color || '#000000'
@@ -79,7 +78,7 @@ feng.fx.PathTrack.prototype.removeControlPoint = function(val){
 
 feng.fx.PathTrack.prototype.updateTrack = function(){
 
-	this._spline.updateArcLengths();
+	this.spline.updateArcLengths();
 
 	// remove children
 	goog.array.forEachRight(this.children, function(child) {
@@ -88,8 +87,8 @@ feng.fx.PathTrack.prototype.updateTrack = function(){
 
 	// create new segments
 	var segmentLength = segmentLength || 10;
-	var divisions = Math.floor(this._spline.getLength() / segmentLength);
-  var splinePoints = this._spline.getSpacedPoints(divisions);
+	var divisions = Math.floor(this.spline.getLength() / segmentLength);
+  var splinePoints = this.spline.getSpacedPoints(divisions);
 
   var lineGeometry = new THREE.Geometry();
   goog.array.forEach(splinePoints, function(splinePoint) {

@@ -1,0 +1,63 @@
+{
+	"metadata": {
+		"version": 4.3,
+		"type": "Object",
+		"generator": "ObjectExporter"
+	},
+	"geometries": [
+		{
+			"uuid": "F2219B5C-6ED3-4172-8554-3468A31789AE",
+			"type": "PlaneGeometry",
+			"width": 400,
+			"height": 400,
+			"widthSegments": 1,
+			"heightSegments": 1
+		},
+		{
+			"uuid": "FBC471FA-D2D4-44A2-B72E-4BB8A1B8DF0C",
+			"type": "IcosahedronGeometry",
+			"radius": 75,
+			"detail": 2
+		}],
+	"materials": [
+		{
+			"uuid": "6C36570F-5736-4FB8-843D-87EE9FE71DDC",
+			"type": "MeshBasicMaterial",
+			"color": 13355979,
+			"side": 2,
+			"opacity": 1,
+			"transparent": false,
+			"wireframe": false
+		},
+		{
+			"uuid": "E95C8CF8-9F35-484F-AEDD-D76A44C4CF89",
+			"type": "MeshBasicMaterial",
+			"color": 16728319,
+			"opacity": 1,
+			"transparent": false,
+			"wireframe": true
+		}],
+	"object": {
+		"uuid": "368C85AE-5982-4F4A-8F77-5591367516F7",
+		"name": "interior3",
+		"type": "Scene",
+		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
+		"children": [
+			{
+				"uuid": "B46B1BE2-0AF9-4840-9160-9D81034B8045",
+				"name": "ground",
+				"type": "Mesh",
+				"geometry": "F2219B5C-6ED3-4172-8554-3468A31789AE",
+				"material": "6C36570F-5736-4FB8-843D-87EE9FE71DDC",
+				"matrix": [1,0,0,0,0,0.000796136970166117,0.9999997019767761,0,0,-0.9999997019767761,0.000796136970166117,0,0,0,0,1]
+			},
+			{
+				"uuid": "370C0672-CF29-4BA6-9015-5F262788AF89",
+				"name": "Icosahedron 1",
+				"type": "Mesh",
+				"geometry": "FBC471FA-D2D4-44A2-B72E-4BB8A1B8DF0C",
+				"material": "E95C8CF8-9F35-484F-AEDD-D76A44C4CF89",
+				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,98.30427551269531,0,1]
+			}]
+	}
+}

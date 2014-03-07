@@ -17,6 +17,9 @@ feng.views.debug.PathTrack = function(){
   this._removeButton = goog.dom.query('.button.remove', this.domElement)[0];
   this._outputButton = goog.dom.query('.button.output', this.domElement)[0];
   this._textarea = goog.dom.query('textarea', this.domElement)[0];
+  this._playButton = goog.dom.query('.button.play', this.domElement)[0];
+  this._stopButton = goog.dom.query('.button.stop', this.domElement)[0];
+  this._range = goog.dom.query('input', this.domElement)[0];
 
   this._pathTrack = null;
 
@@ -24,6 +27,9 @@ feng.views.debug.PathTrack = function(){
   this._eventHandler.listen(this._addButton, 'click', this.onClick, false, this);
   this._eventHandler.listen(this._removeButton, 'click', this.onClick, false, this);
   this._eventHandler.listen(this._outputButton, 'click', this.onClick, false, this);
+  this._eventHandler.listen(this._playButton, 'click', this.onClick, false, this);
+  this._eventHandler.listen(this._stopButton, 'click', this.onClick, false, this);
+  this._eventHandler.listen(this._range, feng.events.EventType.CHANGE, this.onProgressChange, false, this);
   this._eventHandler.listen(this._pathEditApp, feng.events.EventType.CHANGE, this.onPathEditChange, false, this);
   this._eventHandler.listenOnce(this._pathEditApp, feng.events.EventType.LOAD_COMPLETE, this.onScenesLoadComplete, false, this);
 
@@ -84,7 +90,35 @@ feng.views.debug.PathTrack.prototype.onClick = function(e){
 
     this._textarea.value = JSON.stringify(output, null, '\t');
     break;
+
+    case this._playButton:
+    if(goog.dom.classes.has(this._playButton, 'paused')) {
+      goog.dom.classes.remove(this._playButton, 'paused');
+
+      this._pathEditApp.dispatchEvent({
+        type: feng.events.EventType.PAUSE
+      });
+    }else {
+      goog.dom.classes.add(this._playButton, 'paused');
+
+      this._pathEditApp.dispatchEvent({
+        type: feng.events.EventType.PLAY
+      });
+    }
+    break;
+
+    case this._stopButton:
+    this._pathEditApp.dispatchEvent({
+      type: feng.events.EventType.STOP
+    });
+    break;
   }
+};
+
+
+feng.views.debug.PathTrack.prototype.onProgressChange = function(e){
+
+  //this._range.value
 };
 
 

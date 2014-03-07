@@ -20,12 +20,16 @@ feng.apps.PathEdit = function() {
 
 	this._sceneKeys = [
 		'studio.interior1',
-		'studio.interior2'
+		'studio.interior2',
+		'studio.interior3'
 	];
 
 	this._scene = null;
 	this._scenes = [];
 	this._camera = null;
+	this._editCamera = null;
+	this._motionCamera = null;
+	this._motionCameraHelper = null;
 	this._renderer = null;
 	this._controls = null;
 	this._pathTrack = null;
@@ -34,6 +38,8 @@ feng.apps.PathEdit = function() {
 	this._offset = new THREE.Vector3();
 	this._intersect = null;
 	this._controlPoint = null;
+
+	this._motionTweener = null;
 
 	this.init();
 };
@@ -55,10 +61,16 @@ feng.apps.PathEdit.prototype.init = function() {
 	this._renderer.setClearColor(0xffffff, 1);
 	this._renderer.setSize( window.innerWidth, window.innerHeight );
 
-	this._camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
-	this._camera.position.x = 500;
-	this._camera.position.y = 500;
-	this._camera.position.z = 500;
+	this._editCamera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+	this._editCamera.position.x = 500;
+	this._editCamera.position.y = 500;
+	this._editCamera.position.z = 500;
+
+	this._motionCamera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.01, 1000 );
+
+	this._camera = this._editCamera;
+
+	this._motionCameraHelper = new THREE.CameraHelper( this._motionCamera );
 
 	goog.events.listen(this._renderer.domElement, 'mousedown', this.onMouseDown, false, this);
 	goog.events.listen(window, 'resize', this.onResize, false, this);
@@ -107,6 +119,7 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 	}, this);
 
 	this._scene = this._scenes[0];
+	this._scene.add( this._motionCameraHelper );
 
 	//
 	goog.fx.anim.registerAnimation(this);
@@ -123,6 +136,9 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 	goog.events.listen(this, feng.events.EventType.ADD, this.onAddControlPoint, false, this);
 	goog.events.listen(this, feng.events.EventType.REMOVE, this.onRemoveControlPoint, false, this);
 	goog.events.listen(this, feng.events.EventType.CHANGE, this.onSceneChange, false, this);
+	goog.events.listen(this, feng.events.EventType.PLAY, this.onPlay, false, this);
+	goog.events.listen(this, feng.events.EventType.PAUSE, this.onPause, false, this);
+	goog.events.listen(this, feng.events.EventType.STOP, this.onStop, false, this);
 
 	//
 	this.dispatchEvent({
@@ -138,7 +154,53 @@ feng.apps.PathEdit.prototype.onSceneChange = function(e) {
 		this._scene = goog.array.find(this._scenes, function(scene) {
 			return scene.name === e.sceneName;
 		});
+
+		this._scene.add( this._motionCameraHelper );
 	}
+};
+
+
+feng.apps.PathEdit.prototype.onPlay = function(e) {
+// refer to http://mrdoob.github.io/three.js/examples/webgl_geometry_extrude_splines.html
+	if(!this._motionTweener) {
+
+		var prop = {
+			val: 0
+		};
+
+		this._motionTweener = TweenMax.to(prop, 5, {
+			val: 1,
+			ease: Linear.easeNone,
+			onUpdate: function() {
+				var position = this._pathTrack.spline.getPointAt( prop.val );
+				var nextPosition = this._pathTrack.spline.getPointAt( Math.min(1, prop.val + 0.05) );
+				this._motionCamera.position.copy( position );
+			},
+			onUpdateScope: this
+		});
+	}
+
+	if(this._motionTweener.progress() === 1) {
+		this._motionTweener.restart();
+	}else {
+		this._motionTweener.play();
+	}
+
+	this._camera = this._motionCamera;
+};
+
+
+feng.apps.PathEdit.prototype.onPause = function(e) {
+
+	this._motionTweener.pause();
+};
+
+
+feng.apps.PathEdit.prototype.onStop = function(e) {
+
+	this._motionTweener.pause();
+
+	this._camera = this._editCamera;
 };
 
 

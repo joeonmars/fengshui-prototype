@@ -23,6 +23,9 @@ feng.models.Preload = function(){
 			},
 			'interior2': {
 				'scene-data': 'json/scene-interior2.json'
+			},
+			'interior3': {
+				'scene-data': 'json/scene-interior3.json'
 			}
 		},
 		'avatar': {

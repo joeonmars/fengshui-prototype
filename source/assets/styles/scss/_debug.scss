@@ -189,7 +189,7 @@ $debug_border_style:  2px outset #d6d3ce;
 }
 
 #debug-pathtrack{
-	>.body{
+	.editPanel{
 		@extend .debugPanel;
 
 		.scene{
@@ -217,6 +217,46 @@ $debug_border_style:  2px outset #d6d3ce;
 
 		.output{
 			@include button("Output");
+		}
+	}
+
+	.playbackPanel{
+		@extend .debugPanel;
+
+		label{
+			display: block;
+			font-size: 12px;
+		}
+
+		.controls{
+			margin-top: 6px;
+
+			>.play{
+				width: 30px;
+				height: 30px;
+				margin-right: 4px;
+				vertical-align: middle;
+				
+				@include font-awesome("fa-play");
+
+				&.paused{
+					@include font-awesome("fa-pause");
+				}
+			}
+
+			>.stop{
+				width: 30px;
+				height: 30px;
+				margin-right: 4px;
+				vertical-align: middle;
+
+				@include font-awesome("fa-stop");
+			}
+
+			>input{
+				vertical-align: middle;
+				width: 210px;
+			}
 		}
 	}
 }
