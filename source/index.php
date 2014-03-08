@@ -64,7 +64,7 @@
 			var config = {
 				basePath: '<?php echo URLADDR; ?>',
 				assetsPath: '<?php echo URLADDR; ?>'+'assets/',
-				app: 'demo',//'demo',
+				app: 'pathedit',//'demo',
 				debug: true
 			};
 
