@@ -45,42 +45,49 @@
 		}],
 	"materials": [
 		{
-			"uuid": "71F2F4F0-8227-44D4-BCD0-CF32693527B0",
-			"type": "MeshBasicMaterial",
+			"uuid": "7A3832C6-EF90-441B-A6BC-E9AAD68302CE",
+			"type": "MeshLambertMaterial",
 			"color": 10724259,
-			"side": 2,
-			"opacity": 1,
-			"transparent": true,
-			"wireframe": false
-		},
-		{
-			"uuid": "6C36570F-5736-4FB8-843D-87EE9FE71DDC",
-			"type": "MeshBasicMaterial",
-			"color": 13355979,
+			"ambient": 16777215,
+			"emissive": 0,
 			"side": 2,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "F354EA2C-E3DE-4A4B-8F3C-37190DADB5C3",
-			"type": "MeshBasicMaterial",
+			"uuid": "D1B27899-B4A6-462B-9931-2EDD324A031C",
+			"type": "MeshLambertMaterial",
+			"color": 12632256,
+			"ambient": 16777215,
+			"emissive": 0,
+			"opacity": 1,
+			"transparent": false,
+			"wireframe": false
+		},
+		{
+			"uuid": "F9C2A2F4-48A2-4067-BFBF-75FE2041C4A4",
+			"type": "MeshLambertMaterial",
 			"color": 16749312,
+			"ambient": 16777215,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "22B72A22-D1F7-473A-9E36-F7B7653913A0",
-			"type": "MeshBasicMaterial",
+			"uuid": "44476A3A-57A0-4F10-9B66-B7B234D7FEC7",
+			"type": "MeshLambertMaterial",
 			"color": 11172162,
+			"ambient": 16777215,
+			"emissive": 0,
 			"side": 2,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		}],
 	"object": {
-		"uuid": "DB79B667-EBD5-40C1-A14F-C4B344C6DC2C",
+		"uuid": "04EA2A7E-BCB7-44C0-9030-D128F866B408",
 		"name": "interior1",
 		"type": "Scene",
 		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
@@ -95,16 +102,16 @@
 				},
 				"type": "Mesh",
 				"geometry": "9E9D7162-E638-4B77-BA23-5141E2A0DD11",
-				"material": "71F2F4F0-8227-44D4-BCD0-CF32693527B0",
-				"matrix": [0.007963267154991627,-9.99999713897705,0,0,25.399991989135742,0.020226698368787766,0,0,0,0,16.950000762939453,0,0,22.040000915527344,1.1399999856948853,1]
+				"material": "7A3832C6-EF90-441B-A6BC-E9AAD68302CE",
+				"matrix": [0.007962128147482872,-9.99999713897705,0,0,25.399991989135742,0.02022380381822586,0,0,0,0,16.950000762939453,0,0,19.129213333129883,1.1399999856948853,1]
 			},
 			{
 				"uuid": "B46B1BE2-0AF9-4840-9160-9D81034B8045",
 				"name": "ground",
 				"type": "Mesh",
 				"geometry": "F2219B5C-6ED3-4172-8554-3468A31789AE",
-				"material": "6C36570F-5736-4FB8-843D-87EE9FE71DDC",
-				"matrix": [1,0,0,0,0,0.0007962126983329654,0.9999997019767761,0,0,-0.9999997019767761,0.0007962126983329654,0,0,0,0,1]
+				"material": "D1B27899-B4A6-462B-9931-2EDD324A031C",
+				"matrix": [1,0,0,0,0,0.0007963267271406949,-0.9999997019767761,0,0,0.9999997019767761,0.0007963267271406949,0,0,0,0,1]
 			},
 			{
 				"uuid": "1A6F0A60-3DF8-4586-8A55-6485D4ACFB1D",
@@ -114,7 +121,7 @@
 				},
 				"type": "Mesh",
 				"geometry": "DE162C14-1327-46F3-956B-7B531C42D8DB",
-				"material": "F354EA2C-E3DE-4A4B-8F3C-37190DADB5C3",
+				"material": "F9C2A2F4-48A2-4067-BFBF-75FE2041C4A4",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,100,50,100,1]
 			},
 			{
@@ -122,8 +129,24 @@
 				"name": "sofa",
 				"type": "Mesh",
 				"geometry": "D506E8C4-8B29-4C4A-A7CA-D21E19CC6A9B",
-				"material": "22B72A22-D1F7-473A-9E36-F7B7653913A0",
-				"matrix": [0.3583298921585083,0,449.9998779296875,0,0,450,0,0,-449.9998779296875,0,0.3583298921585083,0,116.95318603515625,39.23198699951172,-151.02999877929688,1]
+				"material": "44476A3A-57A0-4F10-9B66-B7B234D7FEC7",
+				"matrix": [0.3583470284938812,0,449.9998779296875,0,0,450,0,0,-449.9998779296875,0,0.3583470284938812,0,116.94999694824219,38,-151.02999877929688,1]
+			},
+			{
+				"uuid": "9D3379F6-CEFA-4104-9649-712BFAEE2262",
+				"name": "HemisphereLight",
+				"type": "HemisphereLight",
+				"color": 16777215,
+				"groundColor": 16777215,
+				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,300,0,1]
+			},
+			{
+				"uuid": "D7D1BF6C-3F76-4D07-9E09-F3B4D2B0C042",
+				"name": "DirectionalLight",
+				"type": "DirectionalLight",
+				"color": 16777215,
+				"intensity": 0.2,
+				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,45,150,50,1]
 			}]
 	}
 }

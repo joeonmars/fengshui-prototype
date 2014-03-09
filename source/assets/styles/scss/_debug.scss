@@ -112,6 +112,11 @@ $debug_border_style:  2px outset #d6d3ce;
 			>.visible{
 				display: inline-block;
 				width: 10%;
+				@include font-awesome("fa-eye");
+
+				&.invisible{
+					@include font-awesome("fa-eye-slash");
+				}
 			}
 
 			>.use{

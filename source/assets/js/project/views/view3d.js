@@ -52,6 +52,7 @@ feng.views.View3D.prototype.init = function(){
 	this._renderer = new THREE.WebGLRenderer({
 		antialias: true
 	});
+	this._renderer.shadowMapEnabled = true;
 	this._renderer.setClearColor(0xffffff, 1);
 	this._renderer.setSize( viewSize.width, viewSize.height );
 	
@@ -256,12 +257,38 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 			  }
 			}
 
+			if(object instanceof THREE.DirectionalLight) {
+				object.castShadow = true;
+
+				object.shadowMapWidth = 2048;
+				object.shadowMapHeight = 2048;
+
+				var d = 1000;
+				object.shadowCameraLeft = -d;
+				object.shadowCameraRight = d;
+				object.shadowCameraTop = d;
+				object.shadowCameraBottom = -d;
+				object.shadowCameraFar = 1000;
+				object.shadowDarkness = 0.04;
+				//object.shadowCameraVisible = true;
+			}
+
+			if(object instanceof THREE.Mesh) {
+				object.castShadow = true;
+			}
+
+			if(object.material) {
+				object.material.shading = THREE.FlatShading;
+			}
+
 			var children = object.children;
 			goog.array.forEach(children, function(child) {
 				checkChildren(child);
 			});
 		}
   };
+
+  scene.getObjectByName('ground').receiveShadow = true;
 
 	scene.traverse(function(child) {
 		checkChildren(child);
