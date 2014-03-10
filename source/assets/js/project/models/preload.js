@@ -19,7 +19,8 @@ feng.models.Preload = function(){
 		'studio': {
 			'interior1': {
 				'scene-data': 'json/scene-interior1.json',
-				'texture-bed': 'model/bed-texture.jpg'
+				'texture-bed': 'model/bed/bed-texture.jpg',
+				'texture-cabinet': 'model/cabinet/cabinet-texture.jpg'
 			},
 			'interior2': {
 				'scene-data': 'json/scene-interior2.json'

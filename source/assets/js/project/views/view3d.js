@@ -249,10 +249,10 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 		if(object instanceof THREE.Object3D) {
 			if(object.userData['texture']) {
 				var textureSrc = preloadModel.getAsset(sceneDataPrefix+'.'+object.userData['texture']).src;
-				object.material.color.setRGB(1, 1, 1);
 			  object.material.map = THREE.ImageUtils.loadTexture( textureSrc );
-
+			  
 			  if(object.userData['alpha'] === true) {
+			  	object.material.color.setRGB(1, 1, 1);
 			  	object.material.alphaTest = 0.5;
 			  }
 			}
