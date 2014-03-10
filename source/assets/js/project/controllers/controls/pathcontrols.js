@@ -3,6 +3,7 @@ goog.provide('feng.controllers.controls.PathControls');
 goog.require('goog.events');
 goog.require('goog.math');
 goog.require('feng.controllers.controls.Controls');
+goog.require('feng.fx.PathTrack');
 goog.require('feng.utils.Randomizer');
 goog.require('feng.utils.MultiLinearInterpolator');
 
@@ -15,8 +16,41 @@ feng.controllers.controls.PathControls = function(camera, view3d, domElement){
 
 	this._targetRotationY = 0;
 	this._tweener = null;
+	this._pathTrack = null;
 };
 goog.inherits(feng.controllers.controls.PathControls, feng.controllers.controls.Controls);
+
+
+feng.controllers.controls.PathControls.prototype.setCamera = function( fromPosition, toPosition ) {
+
+	this.setPosition( fromPosition );
+	
+	var pathfinder = feng.controllers.view3d.PathfindingController.getInstance();
+
+	var start = this.getPosition();
+	var end = toPosition;
+	var collidableBoxes = this._view3d.getCollidableBoxes();
+	var coordinates = pathfinder.findPath( start, end, collidableBoxes, this._scene );
+
+	if(!coordinates) {
+
+		return false;
+
+	}else {
+
+		if(this._pathTrack) {
+			this._scene.remove( this._pathTrack );
+		}
+
+		this._pathTrack = new feng.fx.PathTrack( coordinates );
+		this._scene.add( this._pathTrack );
+
+		this.onPathProgress( {t: 0} );
+
+		return true;
+
+	}
+};
 
 
 feng.controllers.controls.PathControls.prototype.update = function () {
@@ -27,82 +61,46 @@ feng.controllers.controls.PathControls.prototype.update = function () {
 };
 
 
-feng.controllers.controls.PathControls.prototype.start = function ( toPosition, toRotation, toFov ) {
+feng.controllers.controls.PathControls.prototype.start = function ( toPosition ) {
 
-	var pathfinder = feng.controllers.view3d.PathfindingController.getInstance();
-
-	var start = this.getPosition();
-	var end = toPosition;
-	var collidableBoxes = this._view3d.getCollidableBoxes();
-	var coordinates = pathfinder.findPath( start, end, collidableBoxes, this._scene );
-
-	if(!coordinates) {
-		this.onSplineComplete();
-		return;
-	}
-
-	var randomColor = "#" + Math.random().toString(16).slice(2, 8);
-	var spline = this._view3d.createSpline(coordinates, randomColor);
-	var splineLength = spline.getLength();
-	var duration = Math.max(1, splineLength / 80);
+	var length = this._pathTrack.spline.getLength();
+	var duration = Math.max(1, length / 80);
 
 	var prop = {
-    t: 0,
-    spline: spline
+    t: 0
   };
 
   this._tweener = TweenMax.to(prop, duration, {
     t: 1,
-    ease: Sine.easeInOut,
-    onUpdate: this.onSplineStep,
+    ease: Linear.easeNone,
+    onUpdate: this.onPathProgress,
     onUpdateParams: [prop],
-    onUpdateScope: this
+    onUpdateScope: this,
+    onComplete: this.onPathComplete,
+    onCompleteScope: this
   });
 
   goog.fx.anim.registerAnimation(this);
 };
 
 
-feng.controllers.controls.PathControls.prototype.onSplineStep = function ( prop ) {
+feng.controllers.controls.PathControls.prototype.onPathProgress = function ( prop ) {
 
   var t = prop.t;
-  var spline = prop.spline;
-  var splinePosition = spline.getPointAt( t );
+  var pathTrack = this._pathTrack;
+  var pathCamera = pathTrack.getCameraAt(t);
+  var cameraPosition = pathCamera.position;
+  var cameraRotation = pathCamera.rotation;
 
-  this.setPosition( splinePosition.x, this.getPosition().y, splinePosition.z );
-
-  if(t + 0.1 <= 1) {
-	  var p = spline.getPointAt( t + 0.1 );
-
-	  var q = feng.utils.ThreeUtils.getQuaternionByLookAt(splinePosition, p, new THREE.Vector3(0,1,0));
-	  var r = new THREE.Euler(0, 0, 0, 'YXZ');
-	  r.setFromQuaternion(q, 'YXZ');
-
-	  this._targetRotationY = r.y;
-  }
+  this.setPosition( cameraPosition.x, this.getPosition().y, cameraPosition.z );
+  this.setRotation( cameraRotation.x, cameraRotation.y, cameraRotation.z );
 };
 
 
-feng.controllers.controls.PathControls.prototype.onSplineComplete = function () {
+feng.controllers.controls.PathControls.prototype.onPathComplete = function () {
 
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		mode: feng.views.View3D.Mode.BROWSE
 	});
-};
-
-
-feng.controllers.controls.PathControls.prototype.onAnimationFrame = function (now) {
-
-	var currentRotationY = this.getObject().rotation.y;
-	this.getObject().rotation.y += (this._targetRotationY - currentRotationY) * .05;
-
-	var thresholdDeg = 1;
-	var currentDeg = THREE.Math.radToDeg( currentRotationY );
-	var targetDeg = THREE.Math.radToDeg( this._targetRotationY );
-
-	if(Math.abs(currentDeg - targetDeg) < thresholdDeg && !this._tweener.isActive()) {
-		goog.fx.anim.unregisterAnimation(this);
-		this.onSplineComplete();
-	}
 };

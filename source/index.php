@@ -32,7 +32,15 @@
 		<script src="assets/js/thirdparty/greensock/TweenMax.min.js"></script>
 		<script src="assets/js/thirdparty/stats.min.js"></script>
 		<script src="assets/js/thirdparty/threejs/build/three.min.js"></script>
-		<script src="assets/js/thirdparty/threejs/examples/js/controls/OrbitControls.js"></script>
+		<script src="assets/js/thirdparty/threejs-utils/EffectComposer.js"></script>
+		<script src="assets/js/thirdparty/threejs-utils/RenderPass.js"></script>
+		<script src="assets/js/thirdparty/threejs-utils/ShaderPass.js"></script>
+		<script src="assets/js/thirdparty/threejs-utils/BloomPass.js"></script>
+		<script src="assets/js/thirdparty/threejs-utils/MaskPass.js"></script>
+		<script src="assets/js/thirdparty/threejs-utils/CopyShader.js"></script>
+		<script src="assets/js/thirdparty/threejs-utils/FXAAShader.js"></script>
+		<script src="assets/js/thirdparty/threejs-utils/ConvolutionShader.js"></script>
+		<script src="assets/js/thirdparty/threejs-utils/OrbitControls.js"></script>
 		<script src="assets/js/thirdparty/pathfinding-browser.min.js"></script>
 
 		<!-- project js -->

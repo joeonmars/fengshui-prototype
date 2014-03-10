@@ -8,6 +8,7 @@ goog.require('goog.events');
 goog.require('feng.controllers.view3d.CameraController');
 goog.require('feng.controllers.view3d.ModeController');
 goog.require('feng.controllers.view3d.View3DController');
+goog.require('feng.fx.PostProcessing');
 goog.require('feng.models.Preload');
 
 
@@ -32,8 +33,7 @@ feng.views.View3D = function(domElement, uiElement, id, eventMediator){
 
 	this._renderer = null;
 	this._axisHelper = null;
-
-	this._splineGroupObject = null;
+	this._post = null;
 
 	this._collidables = [];
 
@@ -53,11 +53,18 @@ feng.views.View3D.prototype.init = function(){
 		antialias: true
 	});
 	this._renderer.shadowMapEnabled = true;
+	this._renderer.shadowMapType = THREE.PCFSoftShadowMap;
 	this._renderer.setClearColor(0xffffff, 1);
 	this._renderer.setSize( viewSize.width, viewSize.height );
 	
 	goog.dom.appendChild( this.domElement, this._renderer.domElement );
 	goog.dom.appendChild( this.domElement, feng.views.View3D.STATS.domElement );
+
+	this._post = new feng.fx.PostProcessing(this._renderer, {
+		renderer: this._renderer,
+		enableFXAA: true,
+		enableBloom: true
+	});
 
 	this.initScene();
 };
@@ -122,12 +129,16 @@ feng.views.View3D.prototype.getCollidableBoxes = function(excludes){
 feng.views.View3D.prototype.activate = function(){
  
  	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
+
+ 	this._post.activate();
 };
  
  
 feng.views.View3D.prototype.deactivate = function(){
  
 	this._eventHandler.removeAll();
+
+	this._post.deactivate();
 };
 
 
@@ -150,30 +161,9 @@ feng.views.View3D.prototype.hide = function(){
 
 
 feng.views.View3D.prototype.render = function() {
-	this._renderer.render(this.scene, this.cameraController.activeCamera);
-};
 
-
-feng.views.View3D.prototype.createSpline = function(coordinates, color) {
-	var numPoints = 50;
-
-  var spline = new THREE.SplineCurve3(coordinates);
-
-  var material = new THREE.LineBasicMaterial({
-      color: color || '#000000'
-  });
-
-  var geometry = new THREE.Geometry();
-  var splinePoints = spline.getPoints(numPoints);
-
-  goog.array.forEach(splinePoints, function(splinePoint) {
-  	geometry.vertices.push(splinePoint);
-  });
-
-  var line = new THREE.Line(geometry, material);
-  this._splineGroupObject.add(line);
-
-  return spline;
+	this._post.render(this.scene, this.cameraController.activeCamera);
+	//this._renderer.render(this.scene, this.cameraController.activeCamera);
 };
 
 
@@ -187,11 +177,6 @@ feng.views.View3D.prototype.initScene = function() {
 			this._collidables.push(child);
 		}
 	}, this));
-
-	// add spline group object
-	this._splineGroupObject = new THREE.Object3D();
-	this._splineGroupObject.name = 'spline-group';
-	this.scene.add( this._splineGroupObject );
 
 	// create axis helper
 	this._axisHelper = new THREE.AxisHelper( 1000 );
@@ -207,6 +192,9 @@ feng.views.View3D.prototype.initScene = function() {
 		fromRotation: new THREE.Euler(0, 0, 0, 'XYZ'),
 		fromFov: 45
 	});
+
+	// init post-processing
+	this._post.updateRenderPass(this.scene, this.cameraController.activeCamera);
 
 	//
 	goog.fx.anim.registerAnimation(this);
@@ -260,8 +248,8 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 			if(object instanceof THREE.DirectionalLight) {
 				object.castShadow = true;
 
-				object.shadowMapWidth = 2048;
-				object.shadowMapHeight = 2048;
+				object.shadowMapWidth = 1024;
+				object.shadowMapHeight = 1024;
 
 				var d = 1000;
 				object.shadowCameraLeft = -d;
