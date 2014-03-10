@@ -20,6 +20,7 @@ goog.addDependency('../../../../project/events/eventmediator.js', ['feng.events.
 goog.addDependency('../../../../project/events/eventtype.js', ['feng.events'], []);
 goog.addDependency('../../../../project/feng.js', ['feng'], ['feng.apps.Demo', 'feng.apps.Main', 'feng.apps.PathEdit']);
 goog.addDependency('../../../../project/fx/pathtrack.js', ['feng.fx.PathTrack'], ['feng.utils.Randomizer']);
+goog.addDependency('../../../../project/fx/postprocessing.js', ['feng.fx.PostProcessing'], []);
 goog.addDependency('../../../../project/models/avatar/avatar.js', ['feng.models.avatar.Avatar'], ['goog.math', 'goog.object']);
 goog.addDependency('../../../../project/models/object3d/FengshuiObject.js', ['feng.models.object3d.FengshuiObject'], ['feng.models.object3d.Object3D']);
 goog.addDependency('../../../../project/models/object3d/bed.js', ['feng.models.object3d.Bed'], ['feng.models.object3d.Object3D']);
@@ -49,4 +50,4 @@ goog.addDependency('../../../../project/views/sections/episode.js', ['feng.views
 goog.addDependency('../../../../project/views/sections/home.js', ['feng.views.sections.Home'], ['feng.events', 'feng.views.sections.Section', 'goog.dom', 'goog.dom.query', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/views/sections/section.js', ['feng.views.sections.Section'], ['feng.controllers.NavigationController', 'feng.events', 'feng.views.Preloader', 'goog.dom', 'goog.dom.query', 'goog.events.EventHandler', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/views/sections/studio.js', ['feng.views.sections.Studio'], ['feng.events', 'feng.views.sections.Episode', 'goog.dom']);
-goog.addDependency('../../../../project/views/view3d.js', ['feng.views.View3D'], ['feng.controllers.view3d.CameraController', 'feng.controllers.view3d.ModeController', 'feng.controllers.view3d.View3DController', 'feng.models.Preload', 'goog.dom', 'goog.dom.query', 'goog.events', 'goog.events.EventHandler', 'goog.events.EventTarget']);
+goog.addDependency('../../../../project/views/view3d.js', ['feng.views.View3D'], ['feng.controllers.view3d.CameraController', 'feng.controllers.view3d.ModeController', 'feng.controllers.view3d.View3DController', 'feng.fx.PostProcessing', 'feng.models.Preload', 'goog.dom', 'goog.dom.query', 'goog.events', 'goog.events.EventHandler', 'goog.events.EventTarget']);
