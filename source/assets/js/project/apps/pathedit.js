@@ -28,7 +28,6 @@ feng.apps.PathEdit = function() {
 	this._scenes = [];
 	this._camera = null;
 	this._editCamera = null;
-	this._pathCamera = null;
 	this._motionCamera = null;
 	this._motionCameraHelper = null;
 	this._renderer = null;
@@ -66,8 +65,6 @@ feng.apps.PathEdit.prototype.init = function() {
 	this._editCamera.position.x = 500;
 	this._editCamera.position.y = 500;
 	this._editCamera.position.z = 500;
-
-	this._pathCamera = new THREE.PerspectiveCamera();
 
 	this._motionCamera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 1000 );
 
@@ -242,44 +239,10 @@ feng.apps.PathEdit.prototype.onProgress = function(e) {
 	});
 
 	//
-	var tube = this._pathTrack.tubeGeometry;
-	var t = e.progress;
-	var pos = tube.path.getPointAt( t );
+	var pathCamera = this._pathTrack.getCameraAt( e.progress );
 
-	// interpolation
-	var segments = tube.tangents.length;
-	var pickt = t * segments;
-	var pick = Math.floor( pickt );
-	var pickNext = ( pick + 1 ) % segments;
-
-	if(pickt > segments-1) return;
-
-	var binormal = new THREE.Vector3();
-	binormal.subVectors( tube.binormals[ pickNext ], tube.binormals[ pick ] );
-	binormal.multiplyScalar( pickt - pick ).add( tube.binormals[ pick ] );
-
-	var dir = tube.path.getTangentAt( t );
-
-	var offset = -15;
-
-	var normal = new THREE.Vector3();
-	normal.copy( binormal ).cross( dir );
-
-	// We move on a offset on its binormal
-	pos.add( normal.clone().multiplyScalar( offset ) );
-
-	this._motionCamera.position.copy( pos );
-
-	var lookAt = tube.path.getPointAt( ( t + 30 / tube.path.getLength() ) % 1 );
-	lookAt.copy( pos ).add( dir );
-
-	var up = new THREE.Vector3(0,1,0);
-
-	this._pathCamera.matrix.lookAt(pos, lookAt, up);
-	this._pathCamera.rotation.setFromRotationMatrix( this._pathCamera.matrix, this._pathCamera.rotation.order );
-
-	var euler = new THREE.Euler().setFromQuaternion( this._pathCamera.quaternion );
-	this._motionCamera.rotation.copy(euler);
+	this._motionCamera.position.copy( pathCamera.position );
+	this._motionCamera.rotation.copy( pathCamera.rotation );
 };
 
 

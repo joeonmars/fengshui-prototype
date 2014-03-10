@@ -33,8 +33,6 @@ feng.views.View3D = function(domElement, uiElement, id, eventMediator){
 	this._renderer = null;
 	this._axisHelper = null;
 
-	this._splineGroupObject = null;
-
 	this._collidables = [];
 
 	this._eventHandler = new goog.events.EventHandler(this);
@@ -154,29 +152,6 @@ feng.views.View3D.prototype.render = function() {
 };
 
 
-feng.views.View3D.prototype.createSpline = function(coordinates, color) {
-	var numPoints = 50;
-
-  var spline = new THREE.SplineCurve3(coordinates);
-
-  var material = new THREE.LineBasicMaterial({
-      color: color || '#000000'
-  });
-
-  var geometry = new THREE.Geometry();
-  var splinePoints = spline.getPoints(numPoints);
-
-  goog.array.forEach(splinePoints, function(splinePoint) {
-  	geometry.vertices.push(splinePoint);
-  });
-
-  var line = new THREE.Line(geometry, material);
-  this._splineGroupObject.add(line);
-
-  return spline;
-};
-
-
 feng.views.View3D.prototype.initScene = function() {
 	
 	this.scene = feng.views.View3D.constructScene(this.id, 'interior1');
@@ -187,11 +162,6 @@ feng.views.View3D.prototype.initScene = function() {
 			this._collidables.push(child);
 		}
 	}, this));
-
-	// add spline group object
-	this._splineGroupObject = new THREE.Object3D();
-	this._splineGroupObject.name = 'spline-group';
-	this.scene.add( this._splineGroupObject );
 
 	// create axis helper
 	this._axisHelper = new THREE.AxisHelper( 1000 );

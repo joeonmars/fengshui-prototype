@@ -10,7 +10,7 @@ feng.fx.PathTrack = function(controlPoints, segmentLength, isClosed, color){
   goog.base(this);
 
   this.controlPoints = controlPoints;
-  this._isClosed = closed;
+  this._isClosed = isClosed;
   this.spline = !this._isClosed ? new THREE.SplineCurve3(controlPoints) : new THREE.ClosedSplineCurve3(controlPoints);
 
   this.tubeGeometry = null;
@@ -22,6 +22,12 @@ feng.fx.PathTrack = function(controlPoints, segmentLength, isClosed, color){
 		transparent: true,
 		wireframe: true
   });
+
+  // a dummy camera for calculating the position/rotation on spline
+  this._pathCamera = new THREE.PerspectiveCamera();
+  this._binormal = new THREE.Vector3();
+  this._normal = new THREE.Vector3();
+  this._up = new THREE.Vector3(0, 1, 0);
 
   // init draw
   this.updateTrack( this.controlPoints, segmentLength );
@@ -40,6 +46,49 @@ feng.fx.PathTrack.prototype.getControlMeshes = function(){
 	});
 
 	return meshes;
+};
+
+
+feng.fx.PathTrack.prototype.getCameraAt = function(t){
+
+	var tube = this.tubeGeometry;
+	var pos = tube.path.getPointAt( t );
+
+	// interpolation
+	var segments = tube.tangents.length;
+	var pickt = t * segments;
+	var pick = Math.floor( pickt );
+	var pickNext = ( pick + 1 ) % segments;
+
+	if(pickt <= segments-1) {
+
+		var binormal = this._binormal;
+		binormal.subVectors( tube.binormals[ pickNext ], tube.binormals[ pick ] );
+		binormal.multiplyScalar( pickt - pick ).add( tube.binormals[ pick ] );
+
+		var dir = tube.path.getTangentAt( t );
+
+		var offset = -15;
+
+		var normal = this._normal;
+		normal.copy( binormal ).cross( dir );
+
+		// We move on a offset on its binormal
+		pos.add( normal.clone().multiplyScalar( offset ) );
+
+		this._pathCamera.position.copy( pos );
+
+		var lookAt = tube.path.getPointAt( ( t + 30 / tube.path.getLength() ) % 1 );
+		lookAt.copy( pos ).add( dir );
+
+		this._pathCamera.matrix.lookAt(pos, lookAt, this._up);
+		this._pathCamera.rotation.setFromRotationMatrix( this._pathCamera.matrix, this._pathCamera.rotation.order );
+
+		var euler = new THREE.Euler().setFromQuaternion( this._pathCamera.quaternion );
+		this._pathCamera.rotation.copy(euler);
+	}
+
+	return this._pathCamera;
 };
 
 

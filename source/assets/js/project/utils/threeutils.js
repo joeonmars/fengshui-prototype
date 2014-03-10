@@ -94,3 +94,32 @@ feng.utils.ThreeUtils.get2DCoordinates = function( position, camera, renderEleme
 
 	return {x: x, y: y};
 };
+
+
+feng.utils.ThreeUtils.getShortestRotation = function( from, to ) {
+	// use shortest rotation, based on the TweenMax AS3 shortrotation...
+	var calculate = function(fromVal, toVal) {
+		var cap = Math.PI * 2;
+		var diff = (toVal - fromVal) % cap;
+
+		if (diff != diff % (cap / 2)) {
+			diff = (diff < 0) ? diff + cap : diff - cap;
+		}
+
+		var shortest = fromVal + diff;
+
+		return shortest;
+	}
+
+	if(from instanceof THREE.Euler && to instanceof THREE.Euler) {
+
+		to.x = calculate(from.x, to.x);
+		to.y = calculate(from.y, to.y);
+		to.z = calculate(from.z, to.z);
+	}else {
+
+		to = calculate(from, to);
+	}
+
+	return to;
+};
