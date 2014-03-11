@@ -27,6 +27,12 @@ feng.controllers.controls.ManipulateControls = function(camera, view3d, domEleme
   this._rotateTweener = null;
   this._collidableBoxes = null;
 
+  this._isMouseMoving = false;
+
+  this._moveAnimationFrameTarget = {
+  	onAnimationFrame: goog.bind(this.onMoveAnimationFrame, this)
+  };
+
   var manipulatorDom = goog.dom.getElementByClass('manipulator', uiElement);
   this._manipulator = new feng.views.sections.controls.Manipulator( manipulatorDom );
   this._manipulator.setParentEventTarget( this );
@@ -137,16 +143,12 @@ feng.controllers.controls.ManipulateControls.prototype.onMoveObject = function (
 	var ground = this._view3d.getGround();
 
   var projector = new THREE.Projector();
-  var raycaster = projector.pickingRay( this._mousePosition.clone(), this._camera );
+  var groundRay = projector.pickingRay( this._mousePosition.clone(), this._camera );
+	var groundIntersects = groundRay.intersectObject( ground );
 
-	var globalRay = raycaster.ray.clone();
-  var globalIntersect = globalRay.intersectPlane( this._plane );
+	if(groundIntersects.length > 0) {
 
-	var intersects = raycaster.intersectObject( ground );
-
-	if(intersects.length > 0) {
-
-		var intersect = intersects[0];
+		var intersect = groundIntersects[0];
 
 		var normalMatrix = new THREE.Matrix3();
 		normalMatrix.getNormalMatrix( intersect.object.matrixWorld );
@@ -156,17 +158,20 @@ feng.controllers.controls.ManipulateControls.prototype.onMoveObject = function (
 		vec.applyMatrix3( normalMatrix ).normalize();
 
 		this._movePosition.addVectors( intersect.point, vec );
-
 	}
 
 	// limit move position within ground
-	var groundBox = new THREE.Box3().setFromObject( ground );
+	var globalRay = groundRay.ray.clone();
+  var globalIntersect = globalRay.intersectPlane( this._plane );
 
+	var groundBox = new THREE.Box3().setFromObject( ground );
   var maxX = (groundBox.max.x - groundBox.min.x) / 2;
   var maxZ = (groundBox.max.z - groundBox.min.z) / 2;
 
   this._movePosition.x = Math.max(-maxX + objectHalfWidth, Math.min(globalIntersect.x, maxX - objectHalfWidth));
   this._movePosition.z = Math.max(-maxZ + objectHalfHeight, Math.min(globalIntersect.z, maxZ - objectHalfHeight));
+  this._movePosition.y = this._activeObject.position.y;
+  //this._movePosition.y = feng.controllers.controls.Controls.Default.STANCE_HEIGHT / 2;
 
 	// create current mouse box
 	var top = this._movePosition.z - objectHalfHeight;
@@ -179,6 +184,7 @@ feng.controllers.controls.ManipulateControls.prototype.onMoveObject = function (
 	var collidedBox = goog.array.find(this._collidableBoxes, function(collidableBox) {
 		return goog.math.Box.intersects(collidableBox, mouseBox);
 	}, this);
+
 
 	// resolve collision if detected
 	if(collidedBox) {
@@ -211,9 +217,6 @@ feng.controllers.controls.ManipulateControls.prototype.onMoveObject = function (
 			this._movePosition.z -= overlapZ;
 		}
 	}
-
-	this._activeObject.position.x = this._movePosition.x;
-	this._activeObject.position.z = this._movePosition.z;
 };
 
 
@@ -223,6 +226,8 @@ feng.controllers.controls.ManipulateControls.prototype.onDropObject = function (
 	this._eventHandler.unlisten(this._domElement, 'click', this.onDropObject, false, this);
 
 	this._manipulator.show();
+
+	this._isMouseMoving = false;
 
 	console.log('drop');
 };
@@ -242,6 +247,10 @@ feng.controllers.controls.ManipulateControls.prototype.onManipulate = function (
 		this._activeObjectBox = this._view3d.getMeshBox( this._activeObject );
 
 		this.onMoveObject(e);
+
+		this._isMouseMoving = true;
+
+		goog.fx.anim.registerAnimation( this._moveAnimationFrameTarget );
 	}
 	else if(e.rotate) {
 		
@@ -287,5 +296,25 @@ feng.controllers.controls.ManipulateControls.prototype.onMediatorEvent = functio
 		}
 
 		break;
+	}
+};
+
+
+feng.controllers.controls.ManipulateControls.prototype.onMoveAnimationFrame = function(now){
+
+	var ease = .5;
+	this._activeObject.position.x += (this._movePosition.x - this._activeObject.position.x) * ease;
+	this._activeObject.position.y += (this._movePosition.y - this._activeObject.position.y) * ease;
+	this._activeObject.position.z += (this._movePosition.z - this._activeObject.position.z) * ease;
+	
+	if(!this._isMouseMoving) {
+
+		//this._movePosition.y = 0;
+
+		var diff = this._activeObject.position.distanceTo( this._movePosition );
+
+		if(Math.round(diff) === 0) {
+			goog.fx.anim.unregisterAnimation( this._moveAnimationFrameTarget );
+		}
 	}
 };
