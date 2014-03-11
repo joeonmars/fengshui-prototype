@@ -170,7 +170,8 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 			mode: feng.views.View3D.Mode.PATH,
 			toPosition: intersects[0].point,
 			toRotation: this.getRotation(),
-			toFov: this.getFov()
+			toFov: this.getFov(),
+			intersectPosition: intersects[0].point
 		});
 	}
 };

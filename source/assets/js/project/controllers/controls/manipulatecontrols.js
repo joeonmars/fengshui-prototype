@@ -33,13 +33,13 @@ feng.controllers.controls.ManipulateControls = function(camera, view3d, domEleme
 goog.inherits(feng.controllers.controls.ManipulateControls, feng.controllers.controls.Controls);
 
 
-feng.controllers.controls.ManipulateControls.prototype.setCamera = function( cameraPosition, object, fov ) {
+feng.controllers.controls.ManipulateControls.prototype.setCamera = function( fromPosition, fromFov, object ) {
 
 	// get camera angle from center
 	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
 	var lookAtPosition = new THREE.Vector3(0, 0, 0);
 	var up = new THREE.Vector3(0, 1, 0);
-	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(cameraPosition, lookAtPosition, up);
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(fromPosition, lookAtPosition, up);
 	rotation.setFromQuaternion( quaternion );
 
 	// get position by camera angle

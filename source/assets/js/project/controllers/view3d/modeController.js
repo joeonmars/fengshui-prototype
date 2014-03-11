@@ -228,11 +228,11 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 
 		switch(futureControl) {
 			case this._manipulateControls:
-			this._manipulateControls.setCamera( fromPosition, e.object, fromFov );
+			this._manipulateControls.setCamera( fromPosition, fromFov, e.object );
 			break;
 
 			case this._pathControls:
-			this._pathControls.setCamera( fromPosition, toPosition );
+			this._pathControls.setCamera( fromPosition, toPosition, e.intersectPosition );
 			break;
 		};
 

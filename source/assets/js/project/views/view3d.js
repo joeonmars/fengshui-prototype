@@ -59,13 +59,13 @@ feng.views.View3D.prototype.init = function(){
 	
 	goog.dom.appendChild( this.domElement, this._renderer.domElement );
 	goog.dom.appendChild( this.domElement, feng.views.View3D.STATS.domElement );
-
+/*
 	this._post = new feng.fx.PostProcessing(this._renderer, {
 		renderer: this._renderer,
 		enableFXAA: true,
 		enableBloom: true
 	});
-
+*/
 	this.initScene();
 };
 
@@ -130,7 +130,7 @@ feng.views.View3D.prototype.activate = function(){
  
  	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
 
- 	this._post.activate();
+ 	//this._post.activate();
 };
  
  
@@ -138,7 +138,7 @@ feng.views.View3D.prototype.deactivate = function(){
  
 	this._eventHandler.removeAll();
 
-	this._post.deactivate();
+	//this._post.deactivate();
 };
 
 
@@ -162,8 +162,8 @@ feng.views.View3D.prototype.hide = function(){
 
 feng.views.View3D.prototype.render = function() {
 
-	this._post.render(this.scene, this.cameraController.activeCamera);
-	//this._renderer.render(this.scene, this.cameraController.activeCamera);
+	//this._post.render(this.scene, this.cameraController.activeCamera);
+	this._renderer.render(this.scene, this.cameraController.activeCamera);
 };
 
 
@@ -192,9 +192,6 @@ feng.views.View3D.prototype.initScene = function() {
 		fromRotation: new THREE.Euler(0, 0, 0, 'XYZ'),
 		fromFov: 45
 	});
-
-	// init post-processing
-	this._post.updateRenderPass(this.scene, this.cameraController.activeCamera);
 
 	//
 	goog.fx.anim.registerAnimation(this);

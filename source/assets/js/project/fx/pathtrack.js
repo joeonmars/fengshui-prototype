@@ -5,7 +5,7 @@ goog.require('feng.utils.Randomizer');
 /**
  * @constructor
  */
-feng.fx.PathTrack = function(controlPoints, segmentLength, isClosed, color){
+feng.fx.PathTrack = function(controlPoints, segmentLength, offset, isClosed, color){
 
   goog.base(this);
 
@@ -18,9 +18,9 @@ feng.fx.PathTrack = function(controlPoints, segmentLength, isClosed, color){
 
   this._material = new THREE.MeshBasicMaterial({
   	color: color || '#000000',
-		opacity: 0.4,
-		transparent: true,
-		wireframe: true
+	opacity: 0.4,
+	transparent: true,
+	wireframe: true
   });
 
   // a dummy camera for calculating the position/rotation on spline
@@ -28,6 +28,7 @@ feng.fx.PathTrack = function(controlPoints, segmentLength, isClosed, color){
   this._binormal = new THREE.Vector3();
   this._normal = new THREE.Vector3();
   this._up = new THREE.Vector3(0, 1, 0);
+  this._offset = goog.isNumber(offset) ? offset : -15;
 
   // init draw
   this.updateTrack( this.controlPoints, segmentLength );
@@ -68,13 +69,11 @@ feng.fx.PathTrack.prototype.getCameraAt = function(t){
 
 		var dir = tube.path.getTangentAt( t );
 
-		var offset = -15;
-
 		var normal = this._normal;
 		normal.copy( binormal ).cross( dir );
 
 		// We move on a offset on its binormal
-		pos.add( normal.clone().multiplyScalar( offset ) );
+		pos.add( normal.clone().multiplyScalar( this._offset ) );
 
 		this._pathCamera.position.copy( pos );
 
@@ -84,8 +83,8 @@ feng.fx.PathTrack.prototype.getCameraAt = function(t){
 		this._pathCamera.matrix.lookAt(pos, lookAt, this._up);
 		this._pathCamera.rotation.setFromRotationMatrix( this._pathCamera.matrix, this._pathCamera.rotation.order );
 
-		var euler = new THREE.Euler().setFromQuaternion( this._pathCamera.quaternion );
-		this._pathCamera.rotation.copy(euler);
+		var euler = new THREE.Euler(0, 0, 0, 'YXZ').setFromQuaternion( this._pathCamera.quaternion );
+		this._pathCamera.rotation = euler;
 	}
 
 	return this._pathCamera;

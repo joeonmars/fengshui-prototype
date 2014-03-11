@@ -4,8 +4,7 @@ goog.require('goog.events');
 goog.require('goog.math');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.fx.PathTrack');
-goog.require('feng.utils.Randomizer');
-goog.require('feng.utils.MultiLinearInterpolator');
+goog.require('feng.utils.ThreeUtils');
 
 /**
  * @constructor
@@ -21,7 +20,7 @@ feng.controllers.controls.PathControls = function(camera, view3d, domElement){
 goog.inherits(feng.controllers.controls.PathControls, feng.controllers.controls.Controls);
 
 
-feng.controllers.controls.PathControls.prototype.setCamera = function( fromPosition, toPosition ) {
+feng.controllers.controls.PathControls.prototype.setCamera = function( fromPosition, toPosition, intersectPosition ) {
 
 	this.setPosition( fromPosition );
 	
@@ -38,11 +37,17 @@ feng.controllers.controls.PathControls.prototype.setCamera = function( fromPosit
 
 	}else {
 
+		// calculate rotation looking at intersect
+		var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( fromPosition, intersectPosition, new THREE.Vector3(0, 1, 0) );
+		var rotation = new THREE.Euler(0, 0, 0, 'YXZ').setFromQuaternion( quaternion );
+		this.setPitch( rotation.x );
+
+		//
 		if(this._pathTrack) {
 			this._scene.remove( this._pathTrack );
 		}
 
-		this._pathTrack = new feng.fx.PathTrack( coordinates );
+		this._pathTrack = new feng.fx.PathTrack( coordinates, 40, 0 );
 		this._scene.add( this._pathTrack );
 
 		this.onPathProgress( {t: 0} );
@@ -93,7 +98,7 @@ feng.controllers.controls.PathControls.prototype.onPathProgress = function ( pro
   var cameraRotation = pathCamera.rotation;
 
   this.setPosition( cameraPosition.x, this.getPosition().y, cameraPosition.z );
-  this.setRotation( cameraRotation.x, cameraRotation.y, cameraRotation.z );
+  this.setRotation( this.getRotation().x, cameraRotation.y, cameraRotation.z );
 };
 
 
