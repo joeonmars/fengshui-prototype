@@ -99,8 +99,7 @@ feng.controllers.view3d.ModeController.prototype.requireTransitionMode = functio
 
 	var requiredModes = [
 		[feng.views.View3D.Mode.BROWSE, feng.views.View3D.Mode.MANIPULATE],
-		[feng.views.View3D.Mode.MANIPULATE, feng.views.View3D.Mode.BROWSE],
-		[feng.views.View3D.Mode.BROWSE, feng.views.View3D.Mode.PATH]
+		[feng.views.View3D.Mode.MANIPULATE, feng.views.View3D.Mode.BROWSE]
 	];
 
 	var result = goog.array.find(requiredModes, function(modes) {
@@ -211,6 +210,10 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	var fromRotation = e.fromRotation || oldControl.getRotation();
 	var fromFov = e.fromFov || oldControl.getFov();
 
+	var toPosition = e.toPosition;
+	var toRotation = feng.utils.ThreeUtils.getShortestRotation( fromRotation, e.toRotation );
+	var toFov = e.toFov;
+
 	this.control.setPosition( fromPosition );
 	this.control.setRotation( fromRotation );
 	this.control.setFov( fromFov );
@@ -222,17 +225,9 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	// and input transition controls
 	if(this._mode === feng.views.View3D.Mode.TRANSITION) {
 
-		var toPosition = e.toPosition;
-		var toRotation = feng.utils.ThreeUtils.getShortestRotation( fromRotation, e.toRotation );
-		var toFov = e.toFov;
-
 		switch(futureControl) {
 			case this._manipulateControls:
 			this._manipulateControls.setCamera( fromPosition, fromFov, e.object );
-			break;
-
-			case this._pathControls:
-			this._pathControls.setCamera( fromPosition, toPosition, e.intersectPosition );
 			break;
 		};
 
@@ -250,7 +245,7 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 			break;
 
 		case feng.views.View3D.Mode.PATH:
-			this.control.start( toPosition );
+			this.control.start( fromPosition, toPosition, e.intersectPosition );
 			break;
 
 		case feng.views.View3D.Mode.TRANSITION:
