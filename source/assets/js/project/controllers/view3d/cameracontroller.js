@@ -128,19 +128,6 @@ feng.controllers.view3d.CameraController.prototype.setCamera = function( val ){
 };
 
 
-feng.controllers.view3d.CameraController.prototype.copyCameraAttributesFromTo = function( cameraA, cameraB ){
-
-  cameraB.position.copy( cameraA.position );
-  cameraB.rotation.copy( cameraA.rotation );
-
-  cameraB.fov = cameraA.fov;
-
-  cameraB.updateProjectionMatrix();
-
-  return cameraB;
-};
-
-
 feng.controllers.view3d.CameraController.prototype.onResize = function(aspect){
 
   var cameras = this.getCameras();

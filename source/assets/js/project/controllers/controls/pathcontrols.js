@@ -52,7 +52,9 @@ feng.controllers.controls.PathControls.prototype.start = function ( fromPosition
 	this._scene.add( this._pathTrack );
 
 	var length = this._pathTrack.spline.getLength();
-	var duration = Math.max(1, length / 80);
+	var distance = length - 90;
+	var distanceT = Math.max(0, distance / length);
+	var duration = Math.max(1, distance / 80);
 
 	// calculate rotation looking at intersect
 	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( fromPosition, intersectPosition, new THREE.Vector3(0, 1, 0) );
@@ -62,13 +64,15 @@ feng.controllers.controls.PathControls.prototype.start = function ( fromPosition
 	var toRotation = feng.utils.ThreeUtils.getShortestRotation(fromRotation, toRotation);
 
 	var prop = {
-    t: 0,
+    positionT: 0,
+    rotationT: 0,
     fromRotation: fromRotation,
     toRotation: toRotation
   };
 
   this._tweener = TweenMax.to(prop, duration, {
-    t: 1,
+    positionT: distanceT,
+    rotationT: 1,
     ease: Linear.easeNone,
     onUpdate: this.onPathProgress,
     onUpdateParams: [prop],
@@ -83,16 +87,17 @@ feng.controllers.controls.PathControls.prototype.start = function ( fromPosition
 
 feng.controllers.controls.PathControls.prototype.onPathProgress = function ( prop ) {
 
-  var t = prop.t;
+  var positionT = prop.positionT;
   var pathTrack = this._pathTrack;
-  var pathCamera = pathTrack.getCameraAt(t);
+  var pathCamera = pathTrack.getCameraAt( positionT );
   var cameraPosition = pathCamera.position;
 
+  var rotationT = prop.rotationT;
   var fromRotation = prop.fromRotation;
   var toRotation = prop.toRotation;
-  var cameraRotationX = goog.math.lerp(fromRotation.x, toRotation.x, t);
-  var cameraRotationY = goog.math.lerp(fromRotation.y, toRotation.y, t);
-  var cameraRotationZ = goog.math.lerp(fromRotation.z, toRotation.z, t);
+  var cameraRotationX = goog.math.lerp(fromRotation.x, toRotation.x, rotationT);
+  var cameraRotationY = goog.math.lerp(fromRotation.y, toRotation.y, rotationT);
+  var cameraRotationZ = goog.math.lerp(fromRotation.z, toRotation.z, rotationT);
 
   this.setPosition( cameraPosition.x, this.getPosition().y, cameraPosition.z );
   this.setRotation( cameraRotationX, cameraRotationY, cameraRotationZ );

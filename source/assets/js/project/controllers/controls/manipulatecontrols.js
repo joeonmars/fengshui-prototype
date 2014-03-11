@@ -17,6 +17,7 @@ feng.controllers.controls.ManipulateControls = function(camera, view3d, domEleme
   goog.base(this, camera, view3d, domElement);
 
   this._activeObject = null;
+  this._activeObjectBox = null;
   this._eventMediator = this._view3d.eventMediator;
 
   this._mousePosition = new THREE.Vector3();
@@ -130,6 +131,9 @@ feng.controllers.controls.ManipulateControls.prototype.onMoveObject = function (
 	this._mousePosition.x = ( e.clientX / viewSize.width ) * 2 - 1;
 	this._mousePosition.y = - ( e.clientY / viewSize.height ) * 2 + 1;
 
+	var objectHalfWidth = (this._activeObjectBox.right - this._activeObjectBox.left) / 2;
+	var objectHalfHeight = (this._activeObjectBox.bottom - this._activeObjectBox.top) / 2;
+
 	var ground = this._view3d.getGround();
 
   var projector = new THREE.Projector();
@@ -153,22 +157,18 @@ feng.controllers.controls.ManipulateControls.prototype.onMoveObject = function (
 
 		this._movePosition.addVectors( intersect.point, vec );
 
-	}else {
-
-		var groundBox = new THREE.Box3().setFromObject( ground );
-
-	  var maxX = Math.abs(groundBox.max.x - groundBox.min.x) / 2;
-	  var maxZ = Math.abs(groundBox.max.z - groundBox.min.z) / 2;
-
-	  this._movePosition.x = Math.max(-maxX, Math.min(globalIntersect.x, maxX));
-	  this._movePosition.z = Math.max(-maxZ, Math.min(globalIntersect.z, maxZ));
-
 	}
 
+	// limit move position within ground
+	var groundBox = new THREE.Box3().setFromObject( ground );
+
+  var maxX = (groundBox.max.x - groundBox.min.x) / 2;
+  var maxZ = (groundBox.max.z - groundBox.min.z) / 2;
+
+  this._movePosition.x = Math.max(-maxX + objectHalfWidth, Math.min(globalIntersect.x, maxX - objectHalfWidth));
+  this._movePosition.z = Math.max(-maxZ + objectHalfHeight, Math.min(globalIntersect.z, maxZ - objectHalfHeight));
+
 	// create current mouse box
-	var objectBox = this._view3d.getMeshBox( this._activeObject );
-	var objectHalfWidth = Math.abs(objectBox.right - objectBox.left) / 2;
-	var objectHalfHeight = Math.abs(objectBox.bottom - objectBox.top) / 2;
 	var top = this._movePosition.z - objectHalfHeight;
 	var right = this._movePosition.x + objectHalfWidth;
 	var bottom = this._movePosition.z + objectHalfHeight;
@@ -176,17 +176,44 @@ feng.controllers.controls.ManipulateControls.prototype.onMoveObject = function (
 	var mouseBox = new goog.math.Box(top, right, bottom, left);
 
 	// detect collision
-	var collided = goog.array.find(this._collidableBoxes, function(collidableBox) {
+	var collidedBox = goog.array.find(this._collidableBoxes, function(collidableBox) {
 		return goog.math.Box.intersects(collidableBox, mouseBox);
 	}, this);
 
-	if(!collided) {
-		// set object position
-		this._activeObject.position.x = this._movePosition.x;
-		this._activeObject.position.z = this._movePosition.z;
+	// resolve collision if detected
+	if(collidedBox) {
+
+		// resolve x component
+		var overlapX;
+		var mouseBoxCenterX = mouseBox.left + objectHalfWidth;
+		var collidedBoxCenterX = collidedBox.left + (collidedBox.right - collidedBox.left) / 2;
+
+		if(mouseBoxCenterX < collidedBoxCenterX) {
+			overlapX = mouseBox.right - collidedBox.left;
+		}else {
+			overlapX = mouseBox.left - collidedBox.right;
+		}
+
+		// resolve z component
+		var overlapZ;
+		var mouseBoxCenterZ = mouseBox.top + objectHalfHeight;
+		var collidedBoxCenterZ = collidedBox.top + (collidedBox.bottom - collidedBox.top) / 2;
+
+		if(mouseBoxCenterZ < collidedBoxCenterZ) {
+			overlapZ = mouseBox.bottom - collidedBox.top;
+		}else {
+			overlapZ = mouseBox.top - collidedBox.bottom;
+		}
+
+		if(Math.abs(overlapX) < Math.abs(overlapZ)) {
+			this._movePosition.x -= overlapX;
+		}else {
+			this._movePosition.z -= overlapZ;
+		}
 	}
 
-	console.log('move');
+	this._activeObject.position.x = this._movePosition.x;
+	this._activeObject.position.z = this._movePosition.z;
 };
 
 
@@ -212,6 +239,7 @@ feng.controllers.controls.ManipulateControls.prototype.onManipulate = function (
 		this._manipulator.hide();
 
 		this._collidableBoxes = this._view3d.getCollidableBoxes( this._activeObject );
+		this._activeObjectBox = this._view3d.getMeshBox( this._activeObject );
 
 		this.onMoveObject(e);
 	}

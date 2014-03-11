@@ -32,7 +32,6 @@ feng.views.View3D = function(domElement, uiElement, id, eventMediator){
 	this.scene = null;
 
 	this._renderer = null;
-	this._axisHelper = null;
 	this._post = null;
 
 	this._collidables = [];
@@ -178,17 +177,13 @@ feng.views.View3D.prototype.initScene = function() {
 		}
 	}, this));
 
-	// create axis helper
-	this._axisHelper = new THREE.AxisHelper( 1000 );
-	this.scene.add( this._axisHelper );
-
 	// init camera controller
 	this.cameraController.init( this.scene );
 
 	// init mode controller
 	this.modeController.init({
 		mode: feng.views.View3D.Mode.BROWSE,
-		fromPosition: new THREE.Vector3(0, 80, 350),
+		fromPosition: new THREE.Vector3(0, 90, 350),
 		fromRotation: new THREE.Euler(0, 0, 0, 'XYZ'),
 		fromFov: 45
 	});
