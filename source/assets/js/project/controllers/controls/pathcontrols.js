@@ -56,6 +56,9 @@ feng.controllers.controls.PathControls.prototype.start = function ( fromPosition
 	var distanceT = Math.max(0, distance / length);
 	var duration = Math.max(1, distance / 80);
 
+	var footstepLength = 20;
+	var footsteps = Math.floor(distance / footstepLength);
+
 	// calculate rotation looking at intersect
 	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( fromPosition, intersectPosition, new THREE.Vector3(0, 1, 0) );
 	var toRotation = new THREE.Euler(0, 0, 0, 'YXZ').setFromQuaternion( quaternion );
@@ -66,6 +69,7 @@ feng.controllers.controls.PathControls.prototype.start = function ( fromPosition
 	var prop = {
     positionT: 0,
     rotationT: 0,
+    footstep: 0,
     fromRotation: fromRotation,
     toRotation: toRotation
   };
@@ -73,6 +77,7 @@ feng.controllers.controls.PathControls.prototype.start = function ( fromPosition
   this._tweener = TweenMax.to(prop, duration, {
     positionT: distanceT,
     rotationT: 1,
+    footstep: Math.PI * footsteps,
     ease: Linear.easeNone,
     onUpdate: this.onPathProgress,
     onUpdateParams: [prop],
@@ -99,7 +104,11 @@ feng.controllers.controls.PathControls.prototype.onPathProgress = function ( pro
   var cameraRotationY = goog.math.lerp(fromRotation.y, toRotation.y, rotationT);
   var cameraRotationZ = goog.math.lerp(fromRotation.z, toRotation.z, rotationT);
 
-  this.setPosition( cameraPosition.x, this.getPosition().y, cameraPosition.z );
+  var footstepHeight = ( Math.sin(prop.footstep) * .5 + .5 ) * 1;
+  var defaultHeight = feng.controllers.controls.Controls.Default.STANCE_HEIGHT;
+  var cameraY = defaultHeight + footstepHeight;
+
+  this.setPosition( cameraPosition.x, cameraY, cameraPosition.z );
   this.setRotation( cameraRotationX, cameraRotationY, cameraRotationZ );
 };
 

@@ -183,7 +183,7 @@ feng.views.View3D.prototype.initScene = function() {
 	// init mode controller
 	this.modeController.init({
 		mode: feng.views.View3D.Mode.BROWSE,
-		fromPosition: new THREE.Vector3(0, 90, 350),
+		fromPosition: new THREE.Vector3(0, feng.controllers.controls.Controls.Default.STANCE_HEIGHT, 350),
 		fromRotation: new THREE.Euler(0, 0, 0, 'XYZ'),
 		fromFov: 45
 	});

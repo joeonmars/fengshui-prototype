@@ -216,3 +216,8 @@ feng.controllers.controls.Controls.prototype.onMouseUp = function ( e ) {
 feng.controllers.controls.Controls.prototype.onMouseMove = function ( e ) {
 
 };
+
+
+feng.controllers.controls.Controls.Default = {
+	STANCE_HEIGHT: 90, // as 180cm..
+};
