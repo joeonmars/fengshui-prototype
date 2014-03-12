@@ -119,9 +119,18 @@ feng.controllers.controls.ManipulateControls.prototype.close = function () {
 };
 
 
-feng.controllers.controls.ManipulateControls.prototype.onObjectRotated = function ( e ) {
+feng.controllers.controls.ManipulateControls.prototype.syncPhysics = function(){
 
-	this._activeObject.rotation.y = this._activeObject.rotation.y % (Math.PI * 2);
+	// update position
+	var threePosition = this._physics.getActiveBox3DPosition();
+	threePosition.y = this._activeObject.position.y;
+
+	this._activeObject.position.set(threePosition.x, threePosition.y, threePosition.z);
+
+	// update rotation
+	var rotation = this._physics.getActiveBoxRotation();
+
+	this._activeObject.rotation.y = rotation;
 };
 
 
@@ -157,12 +166,12 @@ feng.controllers.controls.ManipulateControls.prototype.onDropObject = function (
 
 feng.controllers.controls.ManipulateControls.prototype.onManipulate = function ( e ) {
 
+	var collidableBoxes = this._view3d.getCollidableBoxes( this._activeObject );
+	var activeObjectBox = this._view3d.getMeshBoxBeforeRotation( this._activeObject );
+
 	if(e.move) {
 
-		var collidableBoxes = this._view3d.getCollidableBoxes( this._activeObject );
-		var activeObjectBox = this._view3d.getMeshBox( this._activeObject );
-		
-		this._physics.start( this._view3d.getCollidableBoxes( this._activeObject ), activeObjectBox );
+		this._physics.startMove( collidableBoxes, activeObjectBox );
 
 		// init move object
 		this._eventHandler.listen(this._domElement, 'mousemove', this.onMoveObject, false, this);
@@ -174,13 +183,26 @@ feng.controllers.controls.ManipulateControls.prototype.onManipulate = function (
 	}
 	else if(e.rotate) {
 		
-		// prevent rotating during tweening
-		if(this._rotateTweener && this._rotateTweener.isActive()) return;
+		// prevent rotating during physics running
+		if(this._physics.isRunning) return;
+		
+		this._physics.startRotate( collidableBoxes, activeObjectBox );
 
 		// rotate object around it's own Y axis
-		this._rotateTweener = TweenMax.to(this._activeObject.rotation, .2, {
-			y: this._activeObject.rotation.y + Math.PI/2,
-			onComplete: this.onObjectRotated,
+		var prop = {
+			rad: this._activeObject.rotation.y
+		};
+
+		this._rotateTweener = TweenMax.to(prop, .2, {
+			rad: prop.rad + Math.PI / 2,
+			onUpdate: function() {
+				this._physics.updateActiveBox( null, null, prop.rad );
+			},
+			onUpdateScope: this,
+			onComplete: function() {
+				this._physics.stop();
+				this.syncPhysics();
+			},
 			onCompleteScope: this
 		});
 	}
@@ -225,9 +247,7 @@ feng.controllers.controls.ManipulateControls.prototype.onAnimationFrame = functi
 	goog.base(this, 'onAnimationFrame', now);
 
 	if(this._physics.isRunning) {
-		var threePosition = this._physics.getActiveBox3DPosition();
-		threePosition.y = this._activeObject.position.y;
-
-		this._activeObject.position.set(threePosition.x, threePosition.y, threePosition.z);
+		
+		this.syncPhysics();
 	}
 };

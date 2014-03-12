@@ -89,13 +89,36 @@ feng.views.View3D.prototype.getGround = function(){
 
 feng.views.View3D.prototype.getMeshBox = function(mesh){
 
-	var box = new THREE.Box3().setFromObject( mesh );
-  var minX = box.min.x;
-  var minZ = box.min.z;
-  var maxX = box.max.x;
-  var maxZ = box.max.z;
+	var box3 = new THREE.Box3().setFromObject( mesh );
+  var minX = box3.min.x;
+  var minZ = box3.min.z;
+  var maxX = box3.max.x;
+  var maxZ = box3.max.z;
 
-  return (new goog.math.Box(minZ, maxX, maxZ, minX));
+  var box2 = new goog.math.Box(minZ, maxX, maxZ, minX);
+
+  return box2;
+};
+
+
+feng.views.View3D.prototype.getMeshBoxBeforeRotation = function(mesh){
+
+	var rotationY = mesh.rotation.y;
+	mesh.rotation.y = 0;
+
+	var box3 = new THREE.Box3().setFromObject( mesh );
+
+	mesh.rotation.y = rotationY;
+
+  var minX = box3.min.x;
+  var minZ = box3.min.z;
+  var maxX = box3.max.x;
+  var maxZ = box3.max.z;
+
+  var box2 = new goog.math.Box(minZ, maxX, maxZ, minX);
+  box2.rotation = rotationY;
+
+  return box2;
 };
 
 

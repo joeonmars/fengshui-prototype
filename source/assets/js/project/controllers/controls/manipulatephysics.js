@@ -42,7 +42,62 @@ feng.controllers.controls.ManipulatePhysics = function(){
 };
 
 
-feng.controllers.controls.ManipulatePhysics.prototype.start = function(boxes, activeBox){
+feng.controllers.controls.ManipulatePhysics.prototype.startMove = function(boxes, activeBox){
+
+	if(this.isRunning) return;
+
+	this.createEnvironment(boxes, activeBox);
+
+  // create mouse joint
+  var mouseJointDef = new Box2D.Dynamics.Joints.b2MouseJointDef;
+  mouseJointDef.bodyA = this._world.GetGroundBody();
+  mouseJointDef.bodyB = this._activeBoxBody;
+  mouseJointDef.target.Set(this._activeBoxBody.GetPosition().x, this._activeBoxBody.GetPosition().y);
+  mouseJointDef.maxForce = 300.0 * this._activeBoxBody.GetMass();
+  mouseJointDef.dampingRatio = 1;
+
+  this._mouseJoint = this._world.CreateJoint( mouseJointDef );
+  this._activeBoxBody.SetAwake(true);
+
+	// run box2d
+	this.isRunning = true;
+
+	goog.fx.anim.registerAnimation(this);
+};
+
+
+feng.controllers.controls.ManipulatePhysics.prototype.startRotate = function(boxes, activeBox){
+
+	if(this.isRunning) return;
+
+	this.createEnvironment(boxes, activeBox);
+
+	// run box2d
+	this.isRunning = true;
+
+	goog.fx.anim.registerAnimation(this);
+};
+
+
+feng.controllers.controls.ManipulatePhysics.prototype.stop = function(){
+
+	this.updateWorld();
+
+	for(b = this._world.GetBodyList(); b; b = b.GetNext()) { 
+		this._world.DestroyBody( b );
+	}
+
+	for(j = this._world.GetJointList(); j; j = j.GetNext()) { 
+		this._world.DestroyJoint( j );
+	}
+
+	this.isRunning = false;
+
+	goog.fx.anim.unregisterAnimation(this);
+};
+
+
+feng.controllers.controls.ManipulatePhysics.prototype.createEnvironment = function(boxes, activeBox){
 
 	// create box bodies
 	goog.array.forEach(boxes, function(box) {
@@ -98,8 +153,9 @@ feng.controllers.controls.ManipulatePhysics.prototype.start = function(boxes, ac
 	this._world.CreateBody(bodyDef).CreateFixture(fixDef);
 
 	// create active box body
+	var activeBoxRotation = activeBox.rotation;
 	activeBox = activeBox.clone().scale( this._unitScale );
-
+	
 	var boxHalfWidth = (activeBox.right - activeBox.left) * .5;
 	var boxHalfHeight = (activeBox.bottom - activeBox.top) * .5;
 	var boxX = activeBox.left + boxHalfWidth + this._worldOffset.width;
@@ -111,45 +167,12 @@ feng.controllers.controls.ManipulatePhysics.prototype.start = function(boxes, ac
 
   var bodyDef = new Box2D.Dynamics.b2BodyDef();
 	bodyDef.type = Box2D.Dynamics.b2Body.b2_dynamicBody;
+	bodyDef.angle = activeBoxRotation;
   bodyDef.position.Set(boxX, boxY);
 
   this._activeBoxBody = this._world.CreateBody( bodyDef );
+  this._activeBoxBody.SetAngularVelocity( 0 );
   this._activeBoxBody.CreateFixture( fixDef );
-
-  // create mouse joint
-  var mouseJointDef = new Box2D.Dynamics.Joints.b2MouseJointDef;
-  mouseJointDef.bodyA = this._world.GetGroundBody();
-  mouseJointDef.bodyB = this._activeBoxBody;
-  mouseJointDef.target.Set(boxX, boxY);
-  mouseJointDef.maxForce = 300.0 * this._activeBoxBody.GetMass();
-  mouseJointDef.dampingRatio = 1;
-
-  this._mouseJoint = this._world.CreateJoint( mouseJointDef );
-  this._activeBoxBody.SetAwake(true);
-
-	// run box2d
-	this.isRunning = true;
-
-	goog.fx.anim.registerAnimation(this);
-};
-
-
-feng.controllers.controls.ManipulatePhysics.prototype.stop = function(){
-
-	for(b = this._world.GetBodyList(); b; b = b.GetNext()) { 
-		this._world.DestroyBody( b );
-	}
-
-	for(j = this._world.GetJointList(); j; j = j.GetNext()) { 
-		this._world.DestroyJoint( j );
-	}
-
-	// update world after emptied
-	this.onAnimationFrame();
-
-	this.isRunning = false;
-
-	goog.fx.anim.unregisterAnimation(this);
 };
 
 
@@ -165,17 +188,36 @@ feng.controllers.controls.ManipulatePhysics.prototype.getActiveBox3DPosition = f
 };
 
 
-feng.controllers.controls.ManipulatePhysics.prototype.updateActiveBox = function(x, y){
+feng.controllers.controls.ManipulatePhysics.prototype.getActiveBoxRotation = function(){
 
-	var mouseX = x * this._unitScale + this._worldOffset.width;
-	var mouseY = y * this._unitScale + this._worldOffset.height;
-	this._mouseJoint.SetTarget( new Box2D.Common.Math.b2Vec2(mouseX, mouseY) );
+	return this._activeBoxBody.GetAngle();
+};
+
+
+feng.controllers.controls.ManipulatePhysics.prototype.updateWorld = function(){
+
+	this._world.Step(1/60, 10, 10);
+  this._world.ClearForces();
+};
+
+
+feng.controllers.controls.ManipulatePhysics.prototype.updateActiveBox = function(x, y, rad){
+
+	if(goog.isNumber(x) && goog.isNumber(y)) {
+		var mouseX = x * this._unitScale + this._worldOffset.width;
+		var mouseY = y * this._unitScale + this._worldOffset.height;
+		this._mouseJoint.SetTarget( new Box2D.Common.Math.b2Vec2(mouseX, mouseY) );
+	}
+
+	if(goog.isNumber(rad)) {
+		this._activeBoxBody.SetAngle( rad );
+	}
 };
 
 
 feng.controllers.controls.ManipulatePhysics.prototype.onAnimationFrame = function(now){
 
-	this._world.Step(1/60, 10, 10);
-  this._world.DrawDebugData();
-  this._world.ClearForces();
+	this.updateWorld();
+
+	this._world.DrawDebugData();
 };
