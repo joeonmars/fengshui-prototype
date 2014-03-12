@@ -5,6 +5,7 @@ goog.require('goog.math');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.utils.ThreeUtils');
 goog.require('feng.views.sections.controls.Manipulator');
+goog.require('feng.controllers.controls.ManipulatePhysics');
 
 
 /**
@@ -28,6 +29,8 @@ feng.controllers.controls.ManipulateControls = function(camera, view3d, domEleme
   this._collidableBoxes = null;
 
   this._isMouseMoving = false;
+
+  this._physics = new feng.controllers.controls.ManipulatePhysics();
 
   this._moveAnimationFrameTarget = {
   	onAnimationFrame: goog.bind(this.onMoveAnimationFrame, this)
@@ -160,6 +163,9 @@ feng.controllers.controls.ManipulateControls.prototype.onMoveObject = function (
 		this._movePosition.addVectors( intersect.point, vec );
 	}
 
+	this._movePosition.y = this._activeObject.position.y;
+	
+/*
 	// limit move position within ground
 	var globalRay = groundRay.ray.clone();
   var globalIntersect = globalRay.intersectPlane( this._plane );
@@ -217,6 +223,10 @@ feng.controllers.controls.ManipulateControls.prototype.onMoveObject = function (
 			this._movePosition.z -= overlapZ;
 		}
 	}
+*/
+
+	//
+	this._physics.updateActiveBox( this._movePosition.x, this._movePosition.z );
 };
 
 
@@ -229,6 +239,8 @@ feng.controllers.controls.ManipulateControls.prototype.onDropObject = function (
 
 	this._isMouseMoving = false;
 
+	this._physics.stop();
+
 	console.log('drop');
 };
 
@@ -237,14 +249,16 @@ feng.controllers.controls.ManipulateControls.prototype.onManipulate = function (
 
 	if(e.move) {
 
+		this._collidableBoxes = this._view3d.getCollidableBoxes( this._activeObject );
+		this._activeObjectBox = this._view3d.getMeshBox( this._activeObject );
+
+		this._physics.start( this._view3d.getCollidableBoxes( this._activeObject ), this._activeObjectBox );
+
 		// init move object
 		this._eventHandler.listen(this._domElement, 'mousemove', this.onMoveObject, false, this);
 		this._eventHandler.listen(this._domElement, 'click', this.onDropObject, false, this);
 
 		this._manipulator.hide();
-
-		this._collidableBoxes = this._view3d.getCollidableBoxes( this._activeObject );
-		this._activeObjectBox = this._view3d.getMeshBox( this._activeObject );
 
 		this.onMoveObject(e);
 
