@@ -18,7 +18,6 @@ feng.controllers.controls.ManipulateControls = function(camera, view3d, domEleme
   goog.base(this, camera, view3d, domElement);
 
   this._activeObject = null;
-  this._activeObjectBox = null;
   this._eventMediator = this._view3d.eventMediator;
 
   this._mousePosition = new THREE.Vector3();
@@ -26,15 +25,8 @@ feng.controllers.controls.ManipulateControls = function(camera, view3d, domEleme
   this._plane = new THREE.Plane( new THREE.Vector3(0,1,0) );
 
   this._rotateTweener = null;
-  this._collidableBoxes = null;
-
-  this._isMouseMoving = false;
 
   this._physics = new feng.controllers.controls.ManipulatePhysics();
-
-  this._moveAnimationFrameTarget = {
-  	onAnimationFrame: goog.bind(this.onMoveAnimationFrame, this)
-  };
 
   var manipulatorDom = goog.dom.getElementByClass('manipulator', uiElement);
   this._manipulator = new feng.views.sections.controls.Manipulator( manipulatorDom );
@@ -140,92 +132,12 @@ feng.controllers.controls.ManipulateControls.prototype.onMoveObject = function (
 	this._mousePosition.x = ( e.clientX / viewSize.width ) * 2 - 1;
 	this._mousePosition.y = - ( e.clientY / viewSize.height ) * 2 + 1;
 
-	var objectHalfWidth = (this._activeObjectBox.right - this._activeObjectBox.left) / 2;
-	var objectHalfHeight = (this._activeObjectBox.bottom - this._activeObjectBox.top) / 2;
-
-	var ground = this._view3d.getGround();
-
   var projector = new THREE.Projector();
-  var groundRay = projector.pickingRay( this._mousePosition.clone(), this._camera );
-	var groundIntersects = groundRay.intersectObject( ground );
+  var ray = projector.pickingRay( this._mousePosition.clone(), this._camera ).ray;
+	var intersect = ray.intersectPlane( this._plane );
 
-	if(groundIntersects.length > 0) {
-
-		var intersect = groundIntersects[0];
-
-		var normalMatrix = new THREE.Matrix3();
-		normalMatrix.getNormalMatrix( intersect.object.matrixWorld );
-
-		var vec = new THREE.Vector3();
-		vec.copy( intersect.face.normal );
-		vec.applyMatrix3( normalMatrix ).normalize();
-
-		this._movePosition.addVectors( intersect.point, vec );
-	}
-
-	this._movePosition.y = this._activeObject.position.y;
+	this._movePosition.copy( intersect );
 	
-/*
-	// limit move position within ground
-	var globalRay = groundRay.ray.clone();
-  var globalIntersect = globalRay.intersectPlane( this._plane );
-
-	var groundBox = new THREE.Box3().setFromObject( ground );
-  var maxX = (groundBox.max.x - groundBox.min.x) / 2;
-  var maxZ = (groundBox.max.z - groundBox.min.z) / 2;
-
-  this._movePosition.x = Math.max(-maxX + objectHalfWidth, Math.min(globalIntersect.x, maxX - objectHalfWidth));
-  this._movePosition.z = Math.max(-maxZ + objectHalfHeight, Math.min(globalIntersect.z, maxZ - objectHalfHeight));
-  this._movePosition.y = this._activeObject.position.y;
-  //this._movePosition.y = feng.controllers.controls.Controls.Default.STANCE_HEIGHT / 2;
-
-	// create current mouse box
-	var top = this._movePosition.z - objectHalfHeight;
-	var right = this._movePosition.x + objectHalfWidth;
-	var bottom = this._movePosition.z + objectHalfHeight;
-	var left = this._movePosition.x - objectHalfWidth;
-	var mouseBox = new goog.math.Box(top, right, bottom, left);
-
-	// detect collision
-	var collidedBox = goog.array.find(this._collidableBoxes, function(collidableBox) {
-		return goog.math.Box.intersects(collidableBox, mouseBox);
-	}, this);
-
-
-	// resolve collision if detected
-	if(collidedBox) {
-
-		// resolve x component
-		var overlapX;
-		var mouseBoxCenterX = mouseBox.left + objectHalfWidth;
-		var collidedBoxCenterX = collidedBox.left + (collidedBox.right - collidedBox.left) / 2;
-
-		if(mouseBoxCenterX < collidedBoxCenterX) {
-			overlapX = mouseBox.right - collidedBox.left;
-		}else {
-			overlapX = mouseBox.left - collidedBox.right;
-		}
-
-		// resolve z component
-		var overlapZ;
-		var mouseBoxCenterZ = mouseBox.top + objectHalfHeight;
-		var collidedBoxCenterZ = collidedBox.top + (collidedBox.bottom - collidedBox.top) / 2;
-
-		if(mouseBoxCenterZ < collidedBoxCenterZ) {
-			overlapZ = mouseBox.bottom - collidedBox.top;
-		}else {
-			overlapZ = mouseBox.top - collidedBox.bottom;
-		}
-
-		if(Math.abs(overlapX) < Math.abs(overlapZ)) {
-			this._movePosition.x -= overlapX;
-		}else {
-			this._movePosition.z -= overlapZ;
-		}
-	}
-*/
-
-	//
 	this._physics.updateActiveBox( this._movePosition.x, this._movePosition.z );
 };
 
@@ -237,8 +149,6 @@ feng.controllers.controls.ManipulateControls.prototype.onDropObject = function (
 
 	this._manipulator.show();
 
-	this._isMouseMoving = false;
-
 	this._physics.stop();
 
 	console.log('drop');
@@ -249,10 +159,10 @@ feng.controllers.controls.ManipulateControls.prototype.onManipulate = function (
 
 	if(e.move) {
 
-		this._collidableBoxes = this._view3d.getCollidableBoxes( this._activeObject );
-		this._activeObjectBox = this._view3d.getMeshBox( this._activeObject );
-
-		this._physics.start( this._view3d.getCollidableBoxes( this._activeObject ), this._activeObjectBox );
+		var collidableBoxes = this._view3d.getCollidableBoxes( this._activeObject );
+		var activeObjectBox = this._view3d.getMeshBox( this._activeObject );
+		
+		this._physics.start( this._view3d.getCollidableBoxes( this._activeObject ), activeObjectBox );
 
 		// init move object
 		this._eventHandler.listen(this._domElement, 'mousemove', this.onMoveObject, false, this);
@@ -261,10 +171,6 @@ feng.controllers.controls.ManipulateControls.prototype.onManipulate = function (
 		this._manipulator.hide();
 
 		this.onMoveObject(e);
-
-		this._isMouseMoving = true;
-
-		goog.fx.anim.registerAnimation( this._moveAnimationFrameTarget );
 	}
 	else if(e.rotate) {
 		
@@ -314,21 +220,14 @@ feng.controllers.controls.ManipulateControls.prototype.onMediatorEvent = functio
 };
 
 
-feng.controllers.controls.ManipulateControls.prototype.onMoveAnimationFrame = function(now){
+feng.controllers.controls.ManipulateControls.prototype.onAnimationFrame = function(now){
 
-	var ease = .5;
-	this._activeObject.position.x += (this._movePosition.x - this._activeObject.position.x) * ease;
-	this._activeObject.position.y += (this._movePosition.y - this._activeObject.position.y) * ease;
-	this._activeObject.position.z += (this._movePosition.z - this._activeObject.position.z) * ease;
-	
-	if(!this._isMouseMoving) {
+	goog.base(this, 'onAnimationFrame', now);
 
-		//this._movePosition.y = 0;
+	if(this._physics.isRunning) {
+		var threePosition = this._physics.getActiveBox3DPosition();
+		threePosition.y = this._activeObject.position.y;
 
-		var diff = this._activeObject.position.distanceTo( this._movePosition );
-
-		if(Math.round(diff) === 0) {
-			goog.fx.anim.unregisterAnimation( this._moveAnimationFrameTarget );
-		}
+		this._activeObject.position.set(threePosition.x, threePosition.y, threePosition.z);
 	}
 };
