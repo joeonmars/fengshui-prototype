@@ -193,6 +193,20 @@ $debug_border_style:  2px outset #d6d3ce;
 	}
 }
 
+#debug-manipulate{
+	.viewPanel{
+		@extend .debugPanel;
+		
+		>canvas{
+			display: block;
+			margin: 0 auto;
+			width: 100%;
+			height: auto;
+			background-color: #000;
+		}
+	}
+}
+
 #debug-pathtrack{
 	.editPanel{
 		@extend .debugPanel;

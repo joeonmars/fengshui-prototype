@@ -6,6 +6,7 @@ goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events');
 goog.require('feng.views.debug.Camera');
+goog.require('feng.views.debug.Manipulate');
 goog.require('feng.views.debug.Pathfinding');
 goog.require('feng.views.debug.PathTrack');
 
@@ -26,6 +27,9 @@ feng.views.debug.Debugger = function(){
 	// optionally create debug views
 	if(feng.views.debug.Debugger.Options.CAMERA) {
 		this.cameraView = new feng.views.debug.Camera();
+	}
+	if(feng.views.debug.Debugger.Options.MANIPULATE) {
+		this.manipulateView = new feng.views.debug.Manipulate();
 	}
 	if(feng.views.debug.Debugger.Options.PATHFINDING) {
 		this.pathfindingView = new feng.views.debug.Pathfinding();
@@ -73,6 +77,7 @@ feng.views.debug.Debugger.prototype.onClick = function(e) {
 
 feng.views.debug.Debugger.Options = {
 	CAMERA: true,
+	MANIPULATE: true,
 	PATHFINDING: true,
 	PATH_TRACK: false
 };

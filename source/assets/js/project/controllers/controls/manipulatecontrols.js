@@ -20,13 +20,14 @@ feng.controllers.controls.ManipulateControls = function(camera, view3d, domEleme
   this._activeObject = null;
   this._eventMediator = this._view3d.eventMediator;
 
-  this._mousePosition = new THREE.Vector3();
-  this._movePosition = new THREE.Vector3();
   this._plane = new THREE.Plane( new THREE.Vector3(0,1,0) );
 
   this._rotateTweener = null;
 
-  this._physics = new feng.controllers.controls.ManipulatePhysics();
+  var groundBox = this._view3d.getMeshBox( this._view3d.getGround() );
+  var groundWidth = groundBox.right - groundBox.left;
+  var groundHeight = groundBox.bottom - groundBox.top;
+  this.physics = new feng.controllers.controls.ManipulatePhysics( groundWidth, groundHeight );
 
   var manipulatorDom = goog.dom.getElementByClass('manipulator', uiElement);
   this._manipulator = new feng.views.sections.controls.Manipulator( manipulatorDom );
@@ -122,13 +123,13 @@ feng.controllers.controls.ManipulateControls.prototype.close = function () {
 feng.controllers.controls.ManipulateControls.prototype.syncPhysics = function(){
 
 	// update position
-	var threePosition = this._physics.getActiveBox3DPosition();
+	var threePosition = this.physics.getActiveBox3DPosition();
 	threePosition.y = this._activeObject.position.y;
 
 	this._activeObject.position.set(threePosition.x, threePosition.y, threePosition.z);
 
 	// update rotation
-	var rotation = this._physics.getActiveBoxRotation();
+	var rotation = this.physics.getActiveBoxRotation();
 
 	this._activeObject.rotation.y = rotation;
 };
@@ -138,16 +139,15 @@ feng.controllers.controls.ManipulateControls.prototype.onMoveObject = function (
 
 	var viewSize = this._view3d.getViewSize();
 
-	this._mousePosition.x = ( e.clientX / viewSize.width ) * 2 - 1;
-	this._mousePosition.y = - ( e.clientY / viewSize.height ) * 2 + 1;
+	var mousePos = new THREE.Vector3();
+	mousePos.x = ( e.clientX / viewSize.width ) * 2 - 1;
+	mousePos.y = - ( e.clientY / viewSize.height ) * 2 + 1;
 
   var projector = new THREE.Projector();
-  var ray = projector.pickingRay( this._mousePosition.clone(), this._camera ).ray;
+  var ray = projector.pickingRay( mousePos, this._camera ).ray;
 	var intersect = ray.intersectPlane( this._plane );
 
-	this._movePosition.copy( intersect );
-	
-	this._physics.updateActiveBox( this._movePosition.x, this._movePosition.z );
+	this.physics.updateActiveBox( intersect.x, intersect.z );
 };
 
 
@@ -158,7 +158,7 @@ feng.controllers.controls.ManipulateControls.prototype.onDropObject = function (
 
 	this._manipulator.show();
 
-	this._physics.stop();
+	this.physics.stop();
 
 	console.log('drop');
 };
@@ -171,7 +171,7 @@ feng.controllers.controls.ManipulateControls.prototype.onManipulate = function (
 
 	if(e.move) {
 
-		this._physics.startMove( collidableBoxes, activeObjectBox );
+		this.physics.startMove( collidableBoxes, activeObjectBox );
 
 		// init move object
 		this._eventHandler.listen(this._domElement, 'mousemove', this.onMoveObject, false, this);
@@ -184,9 +184,9 @@ feng.controllers.controls.ManipulateControls.prototype.onManipulate = function (
 	else if(e.rotate) {
 		
 		// prevent rotating during physics running
-		if(this._physics.isRunning) return;
-		
-		this._physics.startRotate( collidableBoxes, activeObjectBox );
+		if(this.physics.isRunning) return;
+
+		this.physics.startRotate( collidableBoxes, activeObjectBox );
 
 		// rotate object around it's own Y axis
 		var prop = {
@@ -196,11 +196,11 @@ feng.controllers.controls.ManipulateControls.prototype.onManipulate = function (
 		this._rotateTweener = TweenMax.to(prop, .2, {
 			rad: prop.rad + Math.PI / 2,
 			onUpdate: function() {
-				this._physics.updateActiveBox( null, null, prop.rad );
+				this.physics.updateActiveBox( null, null, prop.rad );
 			},
 			onUpdateScope: this,
 			onComplete: function() {
-				this._physics.stop();
+				this.physics.stop();
 				this.syncPhysics();
 			},
 			onCompleteScope: this
@@ -246,7 +246,7 @@ feng.controllers.controls.ManipulateControls.prototype.onAnimationFrame = functi
 
 	goog.base(this, 'onAnimationFrame', now);
 
-	if(this._physics.isRunning) {
+	if(this.physics.isRunning) {
 		
 		this.syncPhysics();
 	}

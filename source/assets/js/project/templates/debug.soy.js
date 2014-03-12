@@ -46,6 +46,17 @@ feng.templates.debug.CameraDebugView = function(opt_data, opt_ignored) {
  * @return {string}
  * @notypecheck
  */
+feng.templates.debug.ManipulateDebugView = function(opt_data, opt_ignored) {
+  return '\t' + feng.templates.debug.DebugView({id: 'debug-manipulate', title: 'Manipulate', body: '<div class="viewPanel"></div>'});
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
 feng.templates.debug.PathfindingDebugView = function(opt_data, opt_ignored) {
   return '\t' + feng.templates.debug.DebugView({id: 'debug-pathfinding', title: 'Pathfinding', body: '<div class="canvasContainer"></div>'});
 };

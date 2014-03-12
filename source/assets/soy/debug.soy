@@ -69,6 +69,21 @@
 
 
 /**
+ * Manipulate Debug View
+ */
+{template .ManipulateDebugView}
+	{call .DebugView}
+		{param id}debug-manipulate{/param}
+		{param title}Manipulate{/param}
+		{param body}
+			<div class="viewPanel">
+			</div>
+		{/param}
+	{/call}
+{/template}
+
+
+/**
  * Pathfinding Debug View
  */
 {template .PathfindingDebugView}
