@@ -114,8 +114,15 @@ feng.controllers.controls.ManipulateControls.prototype.update = function () {
 feng.controllers.controls.ManipulateControls.prototype.close = function () {
 
 	var closeUpControls = this._view3d.modeController.getModeControl(feng.views.View3D.Mode.CLOSE_UP);
-	var toPosition = this.getPosition().clone();
-	toPosition.y = closeUpControls.getPosition().y;
+	var objectPosition = this._activeObject.position;
+	var currentPosition = this.getPosition();
+
+	var d = objectPosition.distanceTo( currentPosition );
+	var sine = (currentPosition.z - objectPosition.z) / d;
+	var rad = Math.asin( sine );
+	var x = objectPosition.x + Math.cos(rad) * 90;
+	var z = objectPosition.z + Math.sin(rad) * 90;
+	var toPosition = new THREE.Vector3(x, closeUpControls.getPosition().y, z);
 
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
