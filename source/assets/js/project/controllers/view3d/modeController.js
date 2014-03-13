@@ -98,8 +98,9 @@ feng.controllers.view3d.ModeController.prototype.setMode = function( modeData ){
 feng.controllers.view3d.ModeController.prototype.requireTransitionMode = function(oldMode, newMode){
 
 	var requiredModes = [
-		[feng.views.View3D.Mode.BROWSE, feng.views.View3D.Mode.MANIPULATE],
-		[feng.views.View3D.Mode.MANIPULATE, feng.views.View3D.Mode.BROWSE]
+		[feng.views.View3D.Mode.BROWSE, feng.views.View3D.Mode.CLOSE_UP],
+		[feng.views.View3D.Mode.CLOSE_UP, feng.views.View3D.Mode.MANIPULATE],
+		[feng.views.View3D.Mode.MANIPULATE, feng.views.View3D.Mode.CLOSE_UP]
 	];
 
 	var result = goog.array.find(requiredModes, function(modes) {
@@ -127,10 +128,11 @@ feng.controllers.view3d.ModeController.prototype.createBrowseControls = function
 
 feng.controllers.view3d.ModeController.prototype.createCloseUpControls = function(){
 
+	var uiElement = this._view3d.uiElement;
 	var renderElement = this._view3d.getRenderElement();
 	var camera = this._cameraController.getCamera( feng.views.View3D.Mode.CLOSE_UP );
 
-	var controls = new feng.controllers.controls.CloseUpControls( camera, this._view3d, renderElement );
+	var controls = new feng.controllers.controls.CloseUpControls( camera, this._view3d, renderElement, uiElement );
 	controls.setParentEventTarget( this );
 
 	return controls;
@@ -217,15 +219,19 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	this.control.setPosition( fromPosition );
 	this.control.setRotation( fromRotation );
 	this.control.setFov( fromFov );
-	this.control.enable( true );
+	this.control.enable( true, e.eventToTrigger );
 
 	this._cameraController.setCamera( this.control.getCamera() );
 
-	// if current mode is transition, set the future controls start values
-	// and input transition controls
+	// if current mode is transition,
+	// set the future controls start values and input transition controls
 	if(this._mode === feng.views.View3D.Mode.TRANSITION) {
 
 		switch(futureControl) {
+			case this._closeUpControls:
+			this._closeUpControls.setCamera( toPosition, e.object );
+			break;
+
 			case this._manipulateControls:
 			this._manipulateControls.setCamera( fromPosition, fromFov, e.object );
 			break;
@@ -238,6 +244,10 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 
 	switch(this._mode) {
 		case feng.views.View3D.Mode.BROWSE:
+			break;
+
+		case feng.views.View3D.Mode.CLOSE_UP:
+			console.log('close up');
 			break;
 
 		case feng.views.View3D.Mode.MANIPULATE:

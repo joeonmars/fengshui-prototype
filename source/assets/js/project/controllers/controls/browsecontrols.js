@@ -87,7 +87,7 @@ feng.controllers.controls.BrowseControls.prototype.setRotation = function (x, y,
 };
 
 
-feng.controllers.controls.BrowseControls.prototype.enable = function( enable ) {
+feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mouseEventToTrigger ) {
 
 	goog.base(this, 'enable', enable);
 
@@ -98,6 +98,10 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable ) {
 		this._eventHandler.listen(this._eventMediator.getEventTarget(), feng.events.EventType.UPDATE, this.onMediatorEvent, false, this);
 
 		this._eventMediator.listen(this, feng.events.EventType.UPDATE);
+
+		if(mouseEventToTrigger) {
+			this.onMouseDown( mouseEventToTrigger );
+		}
 
 	}else  {
 
@@ -227,7 +231,8 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelected = function (
 
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
-		mode: feng.views.View3D.Mode.MANIPULATE,
+		mode: feng.views.View3D.Mode.CLOSE_UP,
+		toPosition: this.getPosition(),
 		object: e.object
 	});
 };

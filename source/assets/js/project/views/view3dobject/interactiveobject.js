@@ -1,6 +1,5 @@
 goog.provide('feng.views.interactiveobject.InteractiveObject');
 
-goog.require('goog.array');
 goog.require('feng.views.interactiveobject.View3DObject');
 
 /**

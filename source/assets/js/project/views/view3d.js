@@ -61,7 +61,6 @@ feng.views.View3D.prototype.init = function(){
 	this._renderer.setSize( viewSize.width, viewSize.height );
 	
 	goog.dom.appendChild( this.domElement, this._renderer.domElement );
-	goog.dom.appendChild( this.domElement, feng.views.View3D.STATS.domElement );
 /*
 	this._post = new feng.fx.PostProcessing(this._renderer, {
 		renderer: this._renderer,
@@ -147,6 +146,8 @@ feng.views.View3D.prototype.deactivate = function(){
 
 
 feng.views.View3D.prototype.show = function(){
+ 
+	goog.dom.appendChild( this.domElement, feng.views.View3D.STATS.domElement );
  
  	this.onResize();
 

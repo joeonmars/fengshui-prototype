@@ -113,9 +113,15 @@ feng.controllers.controls.ManipulateControls.prototype.update = function () {
 
 feng.controllers.controls.ManipulateControls.prototype.close = function () {
 
+	var closeUpControls = this._view3d.modeController.getModeControl(feng.views.View3D.Mode.CLOSE_UP);
+	var toPosition = this.getPosition().clone();
+	toPosition.y = closeUpControls.getPosition().y;
+
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
-		mode: feng.views.View3D.Mode.BROWSE
+		mode: feng.views.View3D.Mode.CLOSE_UP,
+		toPosition: toPosition,
+		object: this._activeObject
 	});
 };
 
