@@ -252,6 +252,7 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 		if(object instanceof THREE.Object3D) {
 			if(object.userData['texture']) {
 				var textureSrc = preloadModel.getAsset(sceneDataPrefix+'.'+object.userData['texture']).src;
+			  console.log(object, object.userData['texture']);
 			  object.material.map = THREE.ImageUtils.loadTexture( textureSrc );
 			  
 			  if(object.userData['alpha'] === true) {

@@ -19,11 +19,12 @@ feng.models.Preload = function(){
 		'studio': {
 			'interior1': {
 				'scene-data': 'json/scene-interior1.json',
-				'texture-bed': 'model/bed/bed-texture.jpg',
-				'texture-cabinet': 'model/cabinet/cabinet-texture.jpg'
+				'texture-bed': 'images/texture/bed-texture.jpg',
+				'texture-cabinet': 'images/texture/cabinet-texture.jpg'
 			},
 			'interior2': {
-				'scene-data': 'json/scene-interior2.json'
+				'scene-data': 'json/scene-interior2.json',
+				'texture-pc': 'images/texture/pc-texture.jpg'
 			},
 			'interior3': {
 				'scene-data': 'json/scene-interior3.json'
