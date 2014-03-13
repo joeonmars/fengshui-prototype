@@ -3,6 +3,7 @@ goog.provide('feng.controllers.controls.BrowseControls');
 goog.require('goog.events');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.views.sections.controls.ObjectSelector');
+goog.require('feng.views.interactiveobject.InteractiveObject');
 goog.require('feng.utils.ThreeUtils');
 goog.require('feng.utils.Randomizer');
 goog.require('feng.utils.MultiLinearInterpolator');
@@ -17,9 +18,10 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 
   this._eventMediator = this._view3d.eventMediator;
 
-	this._clickableObjects = goog.array.filter(this._scene.children, function(object) {
-		return (object instanceof THREE.Mesh);
-	});
+	this._clickableObjects = [];
+	goog.object.forEach(this._view3d.view3dObjects, function(view3dObject) {
+		this._clickableObjects.push( view3dObject.object3d );
+	}, this);
 
 	this._interactiveObjects = [];
 	goog.object.forEach(this._view3d.interactiveObjects, function(interactiveObject) {

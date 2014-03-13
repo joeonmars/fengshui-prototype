@@ -10,6 +10,7 @@ goog.require('feng.controllers.view3d.ModeController');
 goog.require('feng.controllers.view3d.View3DController');
 goog.require('feng.fx.PostProcessing');
 goog.require('feng.models.Preload');
+goog.require('feng.views.interactiveobject.View3DObject');
 goog.require('feng.views.interactiveobject.InteractiveObject');
 
 
@@ -36,6 +37,7 @@ feng.views.View3D = function(domElement, uiElement, id, eventMediator){
 	this._post = null;
 
 	this._collidables = [];
+	this.view3dObjects = {};
 	this.interactiveObjects = {};
 
 	this._eventHandler = new goog.events.EventHandler(this);
@@ -89,44 +91,15 @@ feng.views.View3D.prototype.getGround = function(){
 };
 
 
+feng.views.View3D.prototype.getView3dObject = function( name ){
+
+	return this.view3dObjects[ name ];
+};
+
+
 feng.views.View3D.prototype.getInteractiveObject = function( name ){
 
 	return this.interactiveObjects[ name ];
-};
-
-
-feng.views.View3D.prototype.getMeshBox = function(mesh){
-
-	var box3 = new THREE.Box3().setFromObject( mesh );
-  var minX = box3.min.x;
-  var minZ = box3.min.z;
-  var maxX = box3.max.x;
-  var maxZ = box3.max.z;
-
-  var box2 = new goog.math.Box(minZ, maxX, maxZ, minX);
-
-  return box2;
-};
-
-
-feng.views.View3D.prototype.getMeshBoxBeforeRotation = function(mesh){
-
-	var rotationY = mesh.rotation.y;
-	mesh.rotation.y = 0;
-
-	var box3 = new THREE.Box3().setFromObject( mesh );
-
-	mesh.rotation.y = rotationY;
-
-  var minX = box3.min.x;
-  var minZ = box3.min.z;
-  var maxX = box3.max.x;
-  var maxZ = box3.max.z;
-
-  var box2 = new goog.math.Box(minZ, maxX, maxZ, minX);
-  box2.rotation = rotationY;
-
-  return box2;
 };
 
 
@@ -149,7 +122,8 @@ feng.views.View3D.prototype.getCollidableBoxes = function(excludes){
 	var collidableBoxes = [];
 
 	goog.array.forEach(collidables, function(mesh) {
-	  collidableBoxes.push( this.getMeshBox(mesh) );
+		var object = this.getView3dObject( mesh.name );
+	  collidableBoxes.push( object.getBox() );
 	}, this);
 
 	return collidableBoxes;
@@ -204,11 +178,19 @@ feng.views.View3D.prototype.initScene = function() {
 	// parse scene objects
 	var parse = goog.bind( function(object) {
 
-		// create interactive object (optinally)
+		if(!(object instanceof THREE.Object3D)) return;
+
 		var interactions = object.userData['interactions'];
-		if(interactions && interactions.length > 0) {
+
+		if(!interactions || interactions.length === 0) {
+			// create view3d object
+			var view3dObject = new feng.views.interactiveobject.View3DObject( object );
+			this.view3dObjects[ object.name ] = view3dObject;
+		}else {
+			// create interactive object (optinally)
 			var interactiveObject = new feng.views.interactiveobject.InteractiveObject( object, interactions );
 			this.interactiveObjects[ object.name ] = interactiveObject;
+			this.view3dObjects[ object.name ] = interactiveObject;
 		}
 
 		// add collidables (optinally)

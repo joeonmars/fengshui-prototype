@@ -24,10 +24,10 @@ feng.controllers.controls.ManipulateControls = function(camera, view3d, domEleme
 
   this._rotateTweener = null;
 
-  var groundBox = this._view3d.getMeshBox( this._view3d.getGround() );
-  var groundWidth = groundBox.right - groundBox.left;
-  var groundHeight = groundBox.bottom - groundBox.top;
-  this.physics = new feng.controllers.controls.ManipulatePhysics( groundWidth, groundHeight );
+  var groundBox = this._view3d.getView3dObject( 'ground' ).getBox();
+  var width = groundBox.right - groundBox.left;
+  var height = groundBox.bottom - groundBox.top;
+  this.physics = new feng.controllers.controls.ManipulatePhysics( width, height );
 
   var manipulatorDom = goog.dom.getElementByClass('manipulator', uiElement);
   this._manipulator = new feng.views.sections.controls.Manipulator( manipulatorDom );
@@ -167,7 +167,9 @@ feng.controllers.controls.ManipulateControls.prototype.onDropObject = function (
 feng.controllers.controls.ManipulateControls.prototype.onManipulate = function ( e ) {
 
 	var collidableBoxes = this._view3d.getCollidableBoxes( this._activeObject );
-	var activeObjectBox = this._view3d.getMeshBoxBeforeRotation( this._activeObject );
+
+	var activeObject = this._view3d.getView3dObject( this._activeObject.name );
+	var activeObjectBox = activeObject.getBoxBeforeRotation();
 
 	if(e.move) {
 
