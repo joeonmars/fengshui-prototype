@@ -21,11 +21,16 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 		return (object instanceof THREE.Mesh);
 	});
 
+	this._interactiveObjects = [];
+	goog.object.forEach(this._view3d.interactiveObjects, function(interactiveObject) {
+		this._interactiveObjects.push( interactiveObject.object3d );
+	}, this);
+
 	this._shouldCancelClick = false;
 
 	var objectSelectorEl = goog.dom.getElementByClass('objectSelector', uiElement);
 	var renderEl = this._view3d.getRenderElement();
-	this._objectSelector = new feng.views.sections.controls.ObjectSelector( this._clickableObjects, this._camera, objectSelectorEl, renderEl );
+	this._objectSelector = new feng.views.sections.controls.ObjectSelector( this._interactiveObjects, this._camera, objectSelectorEl, renderEl );
 
 	this._lastMouseX = 0;
 	this._lastMouseY = 0;

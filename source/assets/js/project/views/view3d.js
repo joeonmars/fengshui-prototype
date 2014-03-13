@@ -10,6 +10,7 @@ goog.require('feng.controllers.view3d.ModeController');
 goog.require('feng.controllers.view3d.View3DController');
 goog.require('feng.fx.PostProcessing');
 goog.require('feng.models.Preload');
+goog.require('feng.views.interactiveobject.InteractiveObject');
 
 
 /**
@@ -35,6 +36,7 @@ feng.views.View3D = function(domElement, uiElement, id, eventMediator){
 	this._post = null;
 
 	this._collidables = [];
+	this.interactiveObjects = {};
 
 	this._eventHandler = new goog.events.EventHandler(this);
 };
@@ -84,6 +86,12 @@ feng.views.View3D.prototype.getRenderElement = function(){
 feng.views.View3D.prototype.getGround = function(){
 
 	return this.scene.getObjectByName('ground');
+};
+
+
+feng.views.View3D.prototype.getInteractiveObject = function( name ){
+
+	return this.interactiveObjects[ name ];
 };
 
 
@@ -193,12 +201,25 @@ feng.views.View3D.prototype.initScene = function() {
 	
 	this.scene = feng.views.View3D.constructScene(this.id, 'interior1');
 
-	// add collidables
-	this.scene.traverse(goog.bind(function(child) {
-		if(child.userData['collidable'] === true) {
-			this._collidables.push(child);
+	// parse scene objects
+	var parse = goog.bind( function(object) {
+
+		// create interactive object (optinally)
+		var interactions = object.userData['interactions'];
+		if(interactions && interactions.length > 0) {
+			var interactiveObject = new feng.views.interactiveobject.InteractiveObject( object, interactions );
+			this.interactiveObjects[ object.name ] = interactiveObject;
 		}
-	}, this));
+
+		// add collidables (optinally)
+		if(object.userData['collidable'] === true) {
+			this._collidables.push( object );
+		}
+	}, this);
+
+	goog.array.forEach(this.scene.children, function(child) {
+		feng.views.View3D.parseChildren(child, parse);
+	});
 
 	// init camera controller
 	this.cameraController.init( this.scene );
@@ -236,6 +257,19 @@ feng.views.View3D.prototype.onResize = function(e){
 };
 
 
+feng.views.View3D.parseChildren = function(object, parseFunc) {
+
+	parseFunc( object );
+
+	if(object instanceof THREE.Object3D) {
+
+		goog.array.forEach(object.children, function(child) {
+			feng.views.View3D.parseChildren(child, parseFunc);
+		});
+	}
+};
+
+
 feng.views.View3D.constructScene = function(sectionId, sceneId) {
 
 	// create a threejs loader just for parsing scene data
@@ -248,11 +282,10 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 	var scene = loader.parse( sceneData );
 
 	// parse scene children
-	var checkChildren = function(object) {
+	var parse = function(object) {
 		if(object instanceof THREE.Object3D) {
 			if(object.userData['texture']) {
 				var textureSrc = preloadModel.getAsset(sceneDataPrefix+'.'+object.userData['texture']).src;
-			  console.log(object, object.userData['texture']);
 			  object.material.map = THREE.ImageUtils.loadTexture( textureSrc );
 			  
 			  if(object.userData['alpha'] === true) {
@@ -284,18 +317,13 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 			if(object.material) {
 				object.material.shading = THREE.FlatShading;
 			}
-
-			var children = object.children;
-			goog.array.forEach(children, function(child) {
-				checkChildren(child);
-			});
 		}
   };
 
   scene.getObjectByName('ground').receiveShadow = true;
-
-	scene.traverse(function(child) {
-		checkChildren(child);
+	
+	goog.array.forEach(scene.children, function(child) {
+		feng.views.View3D.parseChildren(child, parse);
 	});
 
   return scene;

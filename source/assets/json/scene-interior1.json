@@ -107,7 +107,7 @@
 			"wireframe": false
 		}],
 	"object": {
-		"uuid": "4B7DF1C2-7503-4389-8D71-1631FF636136",
+		"uuid": "4F293291-4875-4F72-99F7-65DAD799279C",
 		"name": "interior1",
 		"type": "Scene",
 		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
@@ -118,7 +118,7 @@
 				"type": "Mesh",
 				"geometry": "F2219B5C-6ED3-4172-8554-3468A31789AE",
 				"material": "D1B27899-B4A6-462B-9931-2EDD324A031C",
-				"matrix": [1,0,0,0,0,0.0007958364440128207,-0.9999997019767761,0,0,0.9999997019767761,0.0007958364440128207,0,0,0,0,1]
+				"matrix": [1,0,0,0,0,0.0007957991911098361,-0.9999997019767761,0,0,0.9999997019767761,0.0007957991911098361,0,0,0,0,1]
 			},
 			{
 				"uuid": "1A6F0A60-3DF8-4586-8A55-6485D4ACFB1D",
@@ -151,7 +151,10 @@
 				"uuid": "B6D50AB4-8103-41BE-B3EA-E3B248960E13",
 				"name": "sofa",
 				"userData": {
-					"collidable": true
+					"collidable": true,
+					"interactions": [
+						"move",
+						"rotate"]
 				},
 				"type": "Mesh",
 				"geometry": "6B1B755C-FEB8-4622-876F-86CCB3CEBD8C",
@@ -163,12 +166,15 @@
 				"name": "cabinet",
 				"userData": {
 					"collidable": true,
-					"texture": "texture-cabinet"
+					"texture": "texture-cabinet",
+					"interactions": [
+						"move",
+						"rotate"]
 				},
 				"type": "Mesh",
 				"geometry": "87F11A33-20E0-404B-952D-D3142CCD27EB",
 				"material": "ED4A1FEB-C300-4104-AC82-8258C9A25CC3",
-				"matrix": [0.00015924253966659307,0,-0.19999994337558746,0,0,0.20000000298023224,0,0,0.19999994337558746,0,0.00015924253966659307,0,-187.5711669921875,29.25,138.72169494628906,1]
+				"matrix": [0.00015926534251775593,0,-0.19999994337558746,0,0,0.20000000298023224,0,0,0.19999994337558746,0,0.00015926534251775593,0,-187.57000732421875,29.25,138.72000122070312,1]
 			},
 			{
 				"uuid": "AD908E26-00E7-40C2-BEFD-D39208A7B508",
@@ -176,7 +182,10 @@
 				"userData": {
 					"collidable": true,
 					"texture": "texture-bed",
-					"alpha": false
+					"alpha": false,
+					"interactions": [
+						"move",
+						"rotate"]
 				},
 				"type": "Mesh",
 				"geometry": "0AA164EA-5414-4722-947C-06EF6AA7CCFE",

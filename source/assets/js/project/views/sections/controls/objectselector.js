@@ -112,11 +112,9 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e
 	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, this._selectableObjects, this._camera, this._renderElement );
 
 	if(intersects.length > 0) {
-
 		this._downObject = intersects[0].object;
 	}else {
-
-		return false;
+		return;
 	}
 
 	this._eventHandler.listen(document, 'mousemove', this.onMouseMove, false, this);
