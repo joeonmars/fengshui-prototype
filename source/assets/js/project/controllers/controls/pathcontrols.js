@@ -54,7 +54,9 @@ feng.controllers.controls.PathControls.prototype.start = function ( fromPosition
 	var length = this._pathTrack.spline.getLength();
 	var distance = length - 90;
 	var distanceT = Math.max(0, distance / length);
-	var duration = Math.max(1, distance / 80);
+	
+	// adult walking speed is 1.564 meter per second
+	var duration = distance * 2 / 156.4;
 
 	var footstepLength = 20;
 	var footsteps = Math.floor(distance / footstepLength);

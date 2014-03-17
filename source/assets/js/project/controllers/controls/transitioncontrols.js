@@ -27,15 +27,19 @@ feng.controllers.controls.TransitionControls.prototype.update = function () {
 
 feng.controllers.controls.TransitionControls.prototype.start = function ( toPosition, toRotation, toFov, lastModeEvent ) {
 
-	var prop = {
-		positionVal: 0,
-		rotationVal: 0,
-		fovVal: 0
-	};
-
 	var fromPosition = this.getPosition();
 	var fromRotation = this.getRotation();
 	var fromFov = this.getFov();
+
+	var prop = {
+		positionX: fromPosition.x,
+		positionY: fromPosition.y,
+		positionZ: fromPosition.z,
+		rotationX: fromRotation.x,
+		rotationY: fromRotation.y,
+		rotationZ: fromRotation.z,
+		fov: fromFov
+	};
 
 	this._tweener = new TimelineMax({
 		onComplete: function() {
@@ -50,41 +54,38 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 		onCompleteScope: this
 	});
 
-	var positionTweener = TweenMax.to(prop, 2, {
-		positionVal: 1,
+	var dur = 1;
+
+	var positionTweener = TweenMax.to(prop, dur, {
+		positionX: toPosition.x,
+		positionY: toPosition.y,
+		positionZ: toPosition.z,
 		ease: Quad.easeInOut,
 		onUpdate: function() {
 
-			var positionX = goog.math.lerp(fromPosition.x, toPosition.x, prop.positionVal);
-			var positionY = goog.math.lerp(fromPosition.y, toPosition.y, prop.positionVal);
-			var positionZ = goog.math.lerp(fromPosition.z, toPosition.z, prop.positionVal);
-
-			this.setPosition( positionX, positionY, positionZ );
+			this.setPosition( prop.positionX, prop.positionY, prop.positionZ );
 		},
 		onUpdateScope: this
 	});
 
-	var rotationTweener = TweenMax.to(prop, 2, {
-		rotationVal: 1,
+	var rotationTweener = TweenMax.to(prop, dur, {
+		rotationX: toRotation.x,
+		rotationY: toRotation.y,
+		rotationZ: toRotation.z,
 		ease: Quad.easeInOut,
 		onUpdate: function() {
 
-			var rotationX = goog.math.lerp(fromRotation.x, toRotation.x, prop.rotationVal);
-			var rotationY = goog.math.lerp(fromRotation.y, toRotation.y, prop.rotationVal);
-
-			this.setRotation( rotationX, rotationY );
+			this.setRotation( prop.rotationX, prop.rotationY, prop.rotationZ );
 		},
 		onUpdateScope: this
 	});
 
-	var fovTweener = TweenMax.to(prop, 2, {
-		fovVal: 1,
+	var fovTweener = TweenMax.to(prop, dur, {
+		fov: toFov,
 		ease: Quad.easeInOut,
 		onUpdate: function() {
 
-			var fov = goog.math.lerp(fromFov, toFov, prop.fovVal);
-
-			this.setFov( fov );
+			this.setFov( prop.fov );
 		},
 		onUpdateScope: this
 	});
