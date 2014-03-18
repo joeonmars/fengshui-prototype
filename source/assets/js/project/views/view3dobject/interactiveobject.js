@@ -1,39 +1,42 @@
-goog.provide('feng.views.interactiveobject.InteractiveObject');
+goog.provide('feng.views.view3dobject.InteractiveObject');
 
-goog.require('feng.views.interactiveobject.View3DObject');
+goog.require('feng.views.view3dobject.View3DObject');
 
 /**
  * @constructor
  * A 3d object that can be interacted in view3d
  */
-feng.views.interactiveobject.InteractiveObject = function( object3d, interactions ){
+feng.views.view3dobject.InteractiveObject = function( object3d, interactions ){
 
   goog.base(this, object3d);
 
   this.interactions = interactions;
 };
-goog.inherits(feng.views.interactiveobject.InteractiveObject, feng.views.interactiveobject.View3DObject);
+goog.inherits(feng.views.view3dobject.InteractiveObject, feng.views.view3dobject.View3DObject);
 
 
-feng.views.interactiveobject.InteractiveObject.prototype.hasInteraction = function( interaction ){
+feng.views.view3dobject.InteractiveObject.prototype.hasInteraction = function( interaction ){
 
 	return goog.array.contains(this.interactions, interaction);
 };
 
 
 /*
- * Allowed interactions
+ * Interactions
  */
-feng.views.interactiveobject.InteractiveObject.Interaction = {
+feng.views.view3dobject.InteractiveObject.Interaction = {
 	MOVE: 'move',
-	ROTATE: 'rotate'
+	ROTATE: 'rotate',
+  PLACE: 'place',
+  CHANGE_ACCESSORY: 'change_accessory'
 };
 
 
 /*
  * Classes to be created by external json data
  */
-feng.views.interactiveobject.InteractiveObject.Type = {
-	'door': 'feng.views.interactiveobject.Door',
-	'wallpaper': 'feng.views.interactiveobject.Wallpaper'
+feng.views.view3dobject.InteractiveObject.Type = {
+  'holder': feng.views.view3dobject.HolderObject,
+	'door': 'feng.views.view3dobject.Door',
+	'wallpaper': 'feng.views.view3dobject.Wallpaper'
 };

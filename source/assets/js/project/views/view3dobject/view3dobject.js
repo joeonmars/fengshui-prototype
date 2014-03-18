@@ -1,4 +1,4 @@
-goog.provide('feng.views.interactiveobject.View3DObject');
+goog.provide('feng.views.view3dobject.View3DObject');
 
 goog.require('goog.events.EventTarget');
 goog.require('goog.math.Box');
@@ -7,16 +7,16 @@ goog.require('goog.math.Box');
  * @constructor
  * A 3d object in view3d
  */
-feng.views.interactiveobject.View3DObject = function( object3d ){
+feng.views.view3dobject.View3DObject = function( object3d ){
 
   goog.base(this);
 
   this.object3d = object3d;
 };
-goog.inherits(feng.views.interactiveobject.View3DObject, goog.events.EventTarget);
+goog.inherits(feng.views.view3dobject.View3DObject, goog.events.EventTarget);
 
 
-feng.views.interactiveobject.View3DObject.prototype.getBox = function(){
+feng.views.view3dobject.View3DObject.prototype.getBox = function(){
 
   var box3 = new THREE.Box3().setFromObject( this.object3d );
   var minX = box3.min.x;
@@ -30,7 +30,7 @@ feng.views.interactiveobject.View3DObject.prototype.getBox = function(){
 };
 
 
-feng.views.interactiveobject.View3DObject.prototype.getBoxBeforeRotation = function(){
+feng.views.view3dobject.View3DObject.prototype.getBoxBeforeRotation = function(){
 
   var rotationY = this.object3d.rotation.y;
   this.object3d.rotation.y = 0;
@@ -48,4 +48,16 @@ feng.views.interactiveobject.View3DObject.prototype.getBoxBeforeRotation = funct
   box2.rotation = rotationY;
 
   return box2;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.show = function(){
+
+  this.object3d.visible = true;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.hide = function(){
+
+  this.object3d.visible = false;
 };

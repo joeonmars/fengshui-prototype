@@ -10,8 +10,8 @@ goog.require('feng.controllers.view3d.ModeController');
 goog.require('feng.controllers.view3d.View3DController');
 goog.require('feng.fx.PostProcessing');
 goog.require('feng.models.Preload');
-goog.require('feng.views.interactiveobject.View3DObject');
-goog.require('feng.views.interactiveobject.InteractiveObject');
+goog.require('feng.views.view3dobject.View3DObject');
+goog.require('feng.views.view3dobject.InteractiveObject');
 
 
 /**
@@ -181,17 +181,28 @@ feng.views.View3D.prototype.initScene = function() {
 
 		if(!(object instanceof THREE.Object3D)) return;
 
-		var interactions = object.userData['interactions'];
+		var interactions = object.userData['interactions'] || [];
+		var objectClass = object.userData['class'];
 
-		if(!interactions || interactions.length === 0) {
-			// create view3d object
-			var view3dObject = new feng.views.interactiveobject.View3DObject( object );
-			this.view3dObjects[ object.name ] = view3dObject;
-		}else {
-			// create interactive object (optinally)
-			var interactiveObject = new feng.views.interactiveobject.InteractiveObject( object, interactions );
+		if(objectClass) {
+
+			// create specific class object
+			var typedObject = new feng.views.view3dobject.InteractiveObject.Type[objectClass]( object, interactions );
+			this.view3dObjects[ object.name ] = typedObject;
+
+		}else if(interactions.length > 0) {
+
+			// create interactive object
+			var interactiveObject = new feng.views.view3dobject.InteractiveObject( object, interactions );
 			this.interactiveObjects[ object.name ] = interactiveObject;
 			this.view3dObjects[ object.name ] = interactiveObject;
+
+		}else {
+
+			// create view3d object
+			var view3dObject = new feng.views.view3dobject.View3DObject( object );
+			this.view3dObjects[ object.name ] = view3dObject;
+
 		}
 
 		// add collidables (optinally)

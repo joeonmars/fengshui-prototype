@@ -3,7 +3,6 @@ goog.provide('feng.controllers.controls.BrowseControls');
 goog.require('goog.events');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.views.sections.controls.ObjectSelector');
-goog.require('feng.views.interactiveobject.InteractiveObject');
 goog.require('feng.utils.ThreeUtils');
 goog.require('feng.utils.Randomizer');
 goog.require('feng.utils.MultiLinearInterpolator');
