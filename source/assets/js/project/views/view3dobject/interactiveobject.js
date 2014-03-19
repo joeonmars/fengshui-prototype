@@ -30,13 +30,3 @@ feng.views.view3dobject.InteractiveObject.Interaction = {
   PLACE: 'place',
   CHANGE_ACCESSORY: 'change_accessory'
 };
-
-
-/*
- * Classes to be created by external json data
- */
-feng.views.view3dobject.InteractiveObject.Type = {
-  'holder': feng.views.view3dobject.HolderObject,
-	'door': 'feng.views.view3dobject.Door',
-	'wallpaper': 'feng.views.view3dobject.Wallpaper'
-};

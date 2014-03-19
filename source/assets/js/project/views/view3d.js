@@ -8,11 +8,12 @@ goog.require('goog.events');
 goog.require('feng.controllers.view3d.CameraController');
 goog.require('feng.controllers.view3d.ModeController');
 goog.require('feng.controllers.view3d.View3DController');
+goog.require('feng.fx.TextureAnimator');
 goog.require('feng.fx.PostProcessing');
 goog.require('feng.models.Preload');
 goog.require('feng.views.view3dobject.View3DObject');
 goog.require('feng.views.view3dobject.InteractiveObject');
-
+goog.require('feng.views.view3dobject.HolderObject');
 
 /**
  * @constructor
@@ -176,18 +177,28 @@ feng.views.View3D.prototype.initScene = function() {
 	
 	this.scene = feng.views.View3D.constructScene(this.id, 'interior1');
 
+	/*
+	 * Classes to be created by external json data
+	 */
+	var objectClass = {
+	  'holder': feng.views.view3dobject.HolderObject,
+		'door': 'feng.views.view3dobject.Door',
+		'wallpaper': 'feng.views.view3dobject.Wallpaper'
+	};
+
 	// parse scene objects
 	var parse = goog.bind( function(object) {
 
 		if(!(object instanceof THREE.Object3D)) return;
 
 		var interactions = object.userData['interactions'] || [];
-		var objectClass = object.userData['class'];
+		var className = object.userData['class'];
 
-		if(objectClass) {
+		if(className) {
 
 			// create specific class object
-			var typedObject = new feng.views.view3dobject.InteractiveObject.Type[objectClass]( object, interactions );
+			var typedObject = new objectClass[className]( object, interactions );
+			this.interactiveObjects[ object.name ] = typedObject;
 			this.view3dObjects[ object.name ] = typedObject;
 
 		}else if(interactions.length > 0) {
@@ -278,15 +289,34 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 	// parse scene children
 	var parse = function(object) {
 		if(object instanceof THREE.Object3D) {
-			if(object.userData['texture']) {
-				var textureSrc = preloadModel.getAsset(sceneDataPrefix+'.'+object.userData['texture']).src;
+
+			var textureData = object.userData['texture'] || object.userData['animated-texture'];
+
+			if(goog.isString(textureData)) {
+				// if texture data is still
+				var textureSrc = preloadModel.getAsset(sceneDataPrefix+'.'+textureData).src;
 			  object.material.map = THREE.ImageUtils.loadTexture( textureSrc );
-			  
-			  if(object.userData['alpha'] === true) {
-			  	object.material.color.setRGB(1, 1, 1);
-			  	object.material.alphaTest = 0.5;
-			  }
+			}else if(goog.isObject(textureData)) {
+				// if texture data is animated spritesheet
+				var textureSrc = preloadModel.getAsset(sceneDataPrefix+'.'+textureData['texture']).src;
+				object.material.map = THREE.ImageUtils.loadTexture( textureSrc );
+				object.material.color.setRGB(1, 1, 1);
+
+				// create texture animator
+				var texture = object.material.map;
+				var htiles = textureData['htiles'];
+				var vtiles = textureData['vtiles'];
+				var ntiles = textureData['ntiles'];
+				var duration = textureData['duration'];
+				var textureAnimator = new feng.fx.TextureAnimator(texture, htiles, vtiles, ntiles, duration);
+				textureData['texture-animator'] = textureAnimator;
+				textureAnimator.start();
 			}
+
+			if(object.userData['alpha'] === true) {
+		  	object.material.color.setRGB(1, 1, 1);
+		  	object.material.alphaTest = 0.5;
+		  }
 
 			if(object instanceof THREE.DirectionalLight) {
 				object.castShadow = true;

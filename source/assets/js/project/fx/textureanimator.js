@@ -1,4 +1,4 @@
-goog.provide('feng.utils.TextureAnimator');
+goog.provide('feng.fx.TextureAnimator');
 
 goog.require('goog.events.EventTarget');
 
@@ -6,7 +6,7 @@ goog.require('goog.events.EventTarget');
 /**
  * @constructor
  */
-feng.utils.TextureAnimator = function ( texture, tilesHoriz, tilesVert, numTiles, tileDispDuration ) {
+feng.fx.TextureAnimator = function ( texture, tilesHoriz, tilesVert, numTiles, tileDispDuration ) {
 
 	this._tilesHorizontal = tilesHoriz;
   this._tilesVertical = tilesVert;
@@ -22,24 +22,24 @@ feng.utils.TextureAnimator = function ( texture, tilesHoriz, tilesVert, numTiles
 
   this._clock = new THREE.Clock( false );
 };
-goog.inherits(feng.utils.TextureAnimator, goog.events.EventTarget);
+goog.inherits(feng.fx.TextureAnimator, goog.events.EventTarget);
 
 
-feng.utils.TextureAnimator.prototype.start = function() {
+feng.fx.TextureAnimator.prototype.start = function() {
 
 	this._clock.start();
 	goog.fx.anim.registerAnimation( this );
 };
 
 
-feng.utils.TextureAnimator.prototype.stop = function() {
+feng.fx.TextureAnimator.prototype.stop = function() {
 
 	this._clock.stop();
 	goog.fx.anim.unregisterAnimation( this );
 };
 
 
-feng.utils.TextureAnimator.prototype.onAnimationFrame = function( now ) {
+feng.fx.TextureAnimator.prototype.onAnimationFrame = function( now ) {
 
 	var currentColumn, currentRow;
 
@@ -58,6 +58,6 @@ feng.utils.TextureAnimator.prototype.onAnimationFrame = function( now ) {
     this._texture.offset.x = currentColumn / this._tilesHorizontal;
 
     currentRow = Math.floor(this._currentTile / this._tilesHorizontal);
-    this.texture.offset.y = currentRow / this._tilesVertical;
+    this._texture.offset.y = currentRow / this._tilesVertical;
   }
 };
