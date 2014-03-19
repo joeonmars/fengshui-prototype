@@ -14,19 +14,23 @@ goog.require('feng.models.Preload');
 goog.require('feng.views.view3dobject.View3DObject');
 goog.require('feng.views.view3dobject.InteractiveObject');
 goog.require('feng.views.view3dobject.HolderObject');
+goog.require('feng.views.view3dobject.GatewayObject');
 
 /**
  * @constructor
  */
-feng.views.View3D = function(domElement, uiElement, id, eventMediator){
+feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eventMediator){
   goog.base(this);
 
   this.setParentEventTarget( feng.controllers.view3d.View3DController.getInstance() );
 
-  this.id = id;
-  this.domElement = domElement;
-  this.uiElement = uiElement;
+  this.id = viewId;
+  this.sectionId = sectionId;
 
+  this.domElement = null;
+  this.containerElement = containerElement;
+  this.uiElement = uiElement;
+  
   this.eventMediator = eventMediator;
 
   this.cameraController = null;
@@ -61,7 +65,9 @@ feng.views.View3D.prototype.init = function(){
 	this._renderer.setClearColor(0xffffff, 1);
 	this._renderer.setSize( viewSize.width, viewSize.height );
 	
-	goog.dom.appendChild( this.domElement, this._renderer.domElement );
+	this.domElement = this._renderer.domElement;
+
+	goog.dom.appendChild( this.containerElement, this.domElement );
 /*
 	this._post = new feng.fx.PostProcessing(this._renderer, {
 		renderer: this._renderer,
@@ -70,18 +76,14 @@ feng.views.View3D.prototype.init = function(){
 	});
 */
 	this.initScene();
+
+	this.hide();
 };
 
 
 feng.views.View3D.prototype.getViewSize = function(){
 
-	return goog.style.getSize(this.domElement);
-};
-
-
-feng.views.View3D.prototype.getRenderElement = function(){
-
-	return this._renderer.domElement;
+	return goog.style.getSize(this.containerElement);
 };
 
 
@@ -148,21 +150,66 @@ feng.views.View3D.prototype.deactivate = function(){
 
 feng.views.View3D.prototype.show = function(){
  
-	goog.dom.appendChild( this.domElement, feng.views.View3D.STATS.domElement );
+	goog.dom.appendChild( this.containerElement, feng.views.View3D.STATS.domElement );
  
+	goog.style.showElement(this.domElement, true);
+
  	this.onResize();
 
 	this.dispatchEvent({
     type: feng.events.EventType.SHOW
   });
+
+	goog.fx.anim.registerAnimation(this);
 };
- 
+
  
 feng.views.View3D.prototype.hide = function(){
  
+ 	goog.style.showElement(this.domElement, false);
+
+ 	goog.fx.anim.unregisterAnimation(this);
+
 	this.dispatchEvent({
     type: feng.events.EventType.HIDE
   });
+};
+
+
+feng.views.View3D.prototype.fadeIn = function(){
+ 
+ 	var tweener = TweenMax.fromTo(this.domElement, .5, {
+ 		opacity: 0
+ 	}, {
+ 		opacity: 1
+ 	});
+
+ 	tweener.eventCallback("onStart", goog.bind(function() {
+ 		this.show();
+ 	}, this));
+
+ 	tweener.eventCallback("onComplete", goog.bind(function() {
+ 		this.dispatchEvent({
+ 			type: feng.events.EventType.ANIMATED_IN
+ 		});
+ 	}, this));
+};
+
+
+feng.views.View3D.prototype.fadeOut = function(){
+ 
+ 	var tweener = TweenMax.fromTo(this.domElement, .5, {
+ 		opacity: 1
+ 	}, {
+ 		opacity: 0
+ 	});
+
+ 	tweener.eventCallback("onComplete", goog.bind(function() {
+ 		this.hide();
+ 		this.dispatchEvent({
+ 			type: feng.events.EventType.ANIMATED_OUT
+ 		});
+ 	}, this));
 };
 
 
@@ -175,13 +222,14 @@ feng.views.View3D.prototype.render = function() {
 
 feng.views.View3D.prototype.initScene = function() {
 	
-	this.scene = feng.views.View3D.constructScene(this.id, 'interior1');
+	this.scene = feng.views.View3D.constructScene(this.sectionId, this.id);
 
 	/*
 	 * Classes to be created by external json data
 	 */
 	var objectClass = {
 	  'holder': feng.views.view3dobject.HolderObject,
+	  'gateway': feng.views.view3dobject.GatewayObject,
 		'door': 'feng.views.view3dobject.Door',
 		'wallpaper': 'feng.views.view3dobject.Wallpaper'
 	};
@@ -236,9 +284,6 @@ feng.views.View3D.prototype.initScene = function() {
 		fromRotation: new THREE.Euler(0, 0, 0, 'XYZ'),
 		fromFov: 45
 	});
-
-	//
-	goog.fx.anim.registerAnimation(this);
 };
 
 

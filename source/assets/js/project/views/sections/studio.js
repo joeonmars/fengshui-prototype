@@ -13,6 +13,7 @@ feng.views.sections.Studio = function(){
 	var domElement = goog.dom.getElement('studio');
   goog.base(this, domElement);
 
+  this._viewIds = ['interior1', 'interior2'];
 };
 goog.inherits(feng.views.sections.Studio, feng.views.sections.Episode);
 

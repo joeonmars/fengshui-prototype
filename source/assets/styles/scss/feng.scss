@@ -124,7 +124,9 @@
 			height: 100%;
 
 			>canvas{
+				position: absolute;
 				display: block;
+				top: 0;
 			}
 		}
 	}

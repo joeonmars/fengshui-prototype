@@ -116,7 +116,7 @@ feng.controllers.view3d.ModeController.prototype.requireTransitionMode = functio
 feng.controllers.view3d.ModeController.prototype.createBrowseControls = function(){
 
 	var uiElement = this._view3d.uiElement;
-	var renderElement = this._view3d.getRenderElement();
+	var renderElement = this._view3d.domElement;
 	var camera = this._cameraController.getCamera( feng.views.View3D.Mode.BROWSE );
 
 	var controls = new feng.controllers.controls.BrowseControls( camera, this._view3d, renderElement, uiElement );
@@ -129,7 +129,7 @@ feng.controllers.view3d.ModeController.prototype.createBrowseControls = function
 feng.controllers.view3d.ModeController.prototype.createCloseUpControls = function(){
 
 	var uiElement = this._view3d.uiElement;
-	var renderElement = this._view3d.getRenderElement();
+	var renderElement = this._view3d.domElement;
 	var camera = this._cameraController.getCamera( feng.views.View3D.Mode.CLOSE_UP );
 
 	var controls = new feng.controllers.controls.CloseUpControls( camera, this._view3d, renderElement, uiElement );
@@ -142,7 +142,7 @@ feng.controllers.view3d.ModeController.prototype.createCloseUpControls = functio
 feng.controllers.view3d.ModeController.prototype.createManipulateControls = function(){
 
 	var uiElement = this._view3d.uiElement;
-	var renderElement = this._view3d.getRenderElement();
+	var renderElement = this._view3d.domElement;
 	var camera = this._cameraController.getCamera( feng.views.View3D.Mode.MANIPULATE );
 
 	var controls = new feng.controllers.controls.ManipulateControls( camera, this._view3d, renderElement, uiElement );
@@ -154,7 +154,7 @@ feng.controllers.view3d.ModeController.prototype.createManipulateControls = func
 
 feng.controllers.view3d.ModeController.prototype.createPathControls = function(){
 
-	var renderElement = this._view3d.getRenderElement();
+	var renderElement = this._view3d.domElement;
 	var camera = this._cameraController.getCamera( feng.views.View3D.Mode.PATH );
 	var scene = this._view3d.scene;
 
@@ -167,7 +167,7 @@ feng.controllers.view3d.ModeController.prototype.createPathControls = function()
 
 feng.controllers.view3d.ModeController.prototype.createTransitionControls = function(){
 
-	var renderElement = this._view3d.getRenderElement();
+	var renderElement = this._view3d.domElement;
 	var camera = this._cameraController.getCamera( feng.views.View3D.Mode.TRANSITION );
 
 	var controls = new feng.controllers.controls.TransitionControls( camera, this._view3d, renderElement );

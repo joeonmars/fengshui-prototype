@@ -28,5 +28,6 @@ feng.views.view3dobject.InteractiveObject.Interaction = {
 	MOVE: 'move',
 	ROTATE: 'rotate',
   PLACE: 'place',
-  CHANGE_ACCESSORY: 'change_accessory'
+  CHANGE_ACCESSORY: 'change_accessory',
+  ENTER: 'enter'
 };

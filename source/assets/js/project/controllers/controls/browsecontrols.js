@@ -30,7 +30,7 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 	this._shouldCancelClick = false;
 
 	var objectSelectorEl = goog.dom.getElementByClass('objectSelector', uiElement);
-	var renderEl = this._view3d.getRenderElement();
+	var renderEl = this._view3d.domElement;
 	this._objectSelector = new feng.views.sections.controls.ObjectSelector( this._interactiveObjects, this._camera, objectSelectorEl, renderEl );
 
 	this._lastMouseX = 0;
@@ -148,7 +148,7 @@ feng.controllers.controls.BrowseControls.prototype.update = function () {
 	var object = this._objectSelector._downObject;
 
 	if(object) {
-		var renderElement = this._view3d.getRenderElement();
+		var renderElement = this._view3d.domElement;
 		var renderElementSize = goog.style.getSize( renderElement );
 
 		var object2d = feng.utils.ThreeUtils.get2DCoordinates( object.position, this._camera, renderElementSize );

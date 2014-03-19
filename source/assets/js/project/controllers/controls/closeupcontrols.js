@@ -73,7 +73,7 @@ feng.controllers.controls.CloseUpControls.prototype.update = function() {
 
 	goog.base(this, 'update');
 
-	var renderElement = this._view3d.getRenderElement();
+	var renderElement = this._view3d.domElement;
 	var renderElementSize = goog.style.getSize( renderElement );
 	var object2d = feng.utils.ThreeUtils.get2DCoordinates( this._activeObject.position, this._camera, renderElementSize );
 	this._manipulator.update( object2d.x, object2d.y );

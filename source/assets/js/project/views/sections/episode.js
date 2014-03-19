@@ -22,6 +22,8 @@ feng.views.sections.Episode = function(domElement){
   var compassDom = goog.dom.getElementByClass('compass', this.domElement);
   this._compass = new feng.views.sections.controls.Compass( compassDom, this._eventMediator );
 
+  this._viewIds = [];
+  this._view3ds = [];
   this._view3d = null;
 };
 goog.inherits(feng.views.sections.Episode, feng.views.sections.Section);
@@ -83,12 +85,23 @@ feng.views.sections.Episode.prototype.onLoadComplete = function(e){
 
 	goog.base(this, 'onLoadComplete', e);
 
-	if(!this._view3d) {
-		// create view 3d
-		var view3dElement = goog.dom.getElementByClass('sceneContainer', this.domElement);
-		var uiElement = goog.dom.getElementByClass('sceneUI', this.domElement);
-		this._view3d = new feng.views.View3D( view3dElement, uiElement, this.id, this._eventMediator );
-		this._view3d.init();
+	if(this._view3ds.length === 0) {
+
+		// create view 3ds
+		var view3dContainerEl = goog.dom.getElementByClass('sceneContainer', this.domElement);
+		var uiEl = goog.dom.getElementByClass('sceneUI', this.domElement);
+
+		var sectionId = this.id;
+
+		this._view3ds = goog.array.map(this._viewIds, function(viewId) {
+
+			var view3d = new feng.views.View3D( sectionId, viewId, view3dContainerEl, uiEl, this._eventMediator );
+			view3d.init();
+
+			return view3d;
+		}, this);
+
+		this._view3d = this._view3ds[0];
 		this._view3d.show();
 		this._view3d.activate();
 	}
