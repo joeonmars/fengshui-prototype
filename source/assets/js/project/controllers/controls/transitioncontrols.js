@@ -17,15 +17,7 @@ feng.controllers.controls.TransitionControls = function(camera, view3d, domEleme
 goog.inherits(feng.controllers.controls.TransitionControls, feng.controllers.controls.Controls);
 
 
-feng.controllers.controls.TransitionControls.prototype.update = function () {
-
-	goog.base(this, 'update');
-
-	var elapsed = this._clock.getElapsedTime();
-};
-
-
-feng.controllers.controls.TransitionControls.prototype.start = function ( toPosition, toRotation, toFov, lastModeEvent ) {
+feng.controllers.controls.TransitionControls.prototype.start = function ( toPosition, toRotation, toFov, nextMode ) {
 
 	var fromPosition = this.getPosition();
 	var fromRotation = this.getRotation();
@@ -45,8 +37,7 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 		onComplete: function() {
 			var ev = {
 				type: feng.events.EventType.CHANGE,
-				mode: lastModeEvent.mode,
-				object: lastModeEvent.object
+				mode: nextMode
 			};
 
 			this.dispatchEvent(ev);
@@ -91,25 +82,4 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 	});
 
 	this._tweener.add([positionTweener, rotationTweener, fovTweener], 0, 'start');
-};
-
-
-feng.controllers.controls.TransitionControls.prototype.onClick = function ( e ) {
-
-	goog.base(this, 'onClick', e);
-
-};
-
-
-feng.controllers.controls.TransitionControls.prototype.onMouseDown = function ( e ) {
-
-	goog.base(this, 'onMouseDown', e);
-
-};
-
-
-feng.controllers.controls.TransitionControls.prototype.onMouseMove = function ( e ) {
-
-	goog.base(this, 'onMouseMove', e);
-
 };

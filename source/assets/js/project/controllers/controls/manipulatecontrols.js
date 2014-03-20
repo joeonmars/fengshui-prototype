@@ -106,7 +106,8 @@ feng.controllers.controls.ManipulateControls.prototype.update = function () {
 	//
 	var renderElement = this._view3d.domElement;
 	var renderElementSize = goog.style.getSize( renderElement );
-	var object2d = feng.utils.ThreeUtils.get2DCoordinates( this._activeObject.position, this._camera, renderElementSize );
+	var object3d = this._activeObject.object3d;
+	var object2d = feng.utils.ThreeUtils.get2DCoordinates( object3d.position, this._camera, renderElementSize );
 	this._manipulator.update( object2d.x, object2d.y );
 };
 
@@ -114,7 +115,7 @@ feng.controllers.controls.ManipulateControls.prototype.update = function () {
 feng.controllers.controls.ManipulateControls.prototype.close = function () {
 
 	var closeUpControls = this._view3d.modeController.getModeControl(feng.views.View3D.Mode.CLOSE_UP);
-	var objectPosition = this._activeObject.position;
+	var objectPosition = this._activeObject.object3d.position;
 	var currentPosition = this.getPosition();
 
 	var d = objectPosition.distanceTo( currentPosition );
@@ -126,7 +127,8 @@ feng.controllers.controls.ManipulateControls.prototype.close = function () {
 
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
-		mode: feng.views.View3D.Mode.CLOSE_UP,
+		mode: feng.views.View3D.Mode.TRANSITION,
+		nextMode: feng.views.View3D.Mode.CLOSE_UP,
 		toPosition: toPosition,
 		object: this._activeObject
 	});
@@ -135,16 +137,18 @@ feng.controllers.controls.ManipulateControls.prototype.close = function () {
 
 feng.controllers.controls.ManipulateControls.prototype.syncPhysics = function(){
 
+	var object3d = this._activeObject.object3d;
+
 	// update position
 	var threePosition = this.physics.getActiveBox3DPosition();
-	threePosition.y = this._activeObject.position.y;
+	threePosition.y = object3d.position.y;
 
-	this._activeObject.position.set(threePosition.x, threePosition.y, threePosition.z);
+	object3d.position.set(threePosition.x, threePosition.y, threePosition.z);
 
 	// update rotation
 	var rotation = this.physics.getActiveBoxRotation();
 
-	this._activeObject.rotation.y = rotation;
+	object3d.rotation.y = rotation;
 };
 
 
@@ -179,9 +183,11 @@ feng.controllers.controls.ManipulateControls.prototype.onDropObject = function (
 
 feng.controllers.controls.ManipulateControls.prototype.onManipulate = function ( e ) {
 
-	var collidableBoxes = this._view3d.getCollidableBoxes( this._activeObject );
+	var object3d = this._activeObject.object3d;
 
-	var activeObject = this._view3d.getView3dObject( this._activeObject.name );
+	var collidableBoxes = this._view3d.getCollidableBoxes( object3d );
+
+	var activeObject = this._view3d.getView3dObject( object3d.name );
 	var activeObjectBox = activeObject.getBoxBeforeRotation();
 
 	if(e.move) {
@@ -205,7 +211,7 @@ feng.controllers.controls.ManipulateControls.prototype.onManipulate = function (
 
 		// rotate object around it's own Y axis
 		var prop = {
-			rad: this._activeObject.rotation.y
+			rad: object3d.rotation.y
 		};
 
 		this._rotateTweener = TweenMax.to(prop, .2, {
@@ -245,7 +251,7 @@ feng.controllers.controls.ManipulateControls.prototype.onMediatorEvent = functio
 			var up = new THREE.Vector3(0, 1, 0);
 			var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
 			var centerPosition = new THREE.Vector3(0, 0, 0);
-			var position = centerPosition; // this._activeObject.position
+			var position = centerPosition;
 			var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), position, up);
 			rotation.setFromQuaternion( quaternion );
 

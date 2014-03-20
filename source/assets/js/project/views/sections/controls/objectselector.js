@@ -36,7 +36,7 @@ goog.inherits(feng.views.sections.controls.ObjectSelector, feng.views.sections.c
 
 feng.views.sections.controls.ObjectSelector.prototype.update = function (objects, camera, domElement) {
 
-	this._selectableObjects = objects;
+	this._selectableObjects = goog.object.getValues(objects);
 	this._camera = camera;
 	this._domElement = domElement;
 };
@@ -109,13 +109,21 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e
 
 	this._selectedObject = null;
 
-	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, this._selectableObjects, this._camera, this._renderElement );
+	var object3ds = goog.array.map(this._selectableObjects, function(object) {
+		return object.object3d;
+	});
 
-	if(intersects.length > 0) {
-		this._downObject = intersects[0].object;
-	}else {
-		return;
+	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, object3ds, this._camera, this._renderElement );
+
+	if(intersects.length === 0) {
+		return false;
 	}
+
+	var interactiveObject = goog.array.find(this._selectableObjects, function(object) {
+		return (object.object3d === intersects[0].object);
+	}, this);
+
+	this._downObject = interactiveObject;
 
 	this._eventHandler.listen(document, 'mousemove', this.onMouseMove, false, this);
 	this._eventHandler.listen(document, 'mouseup', this.onMouseUp, false, this);

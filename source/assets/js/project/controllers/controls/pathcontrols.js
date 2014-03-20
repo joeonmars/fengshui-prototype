@@ -28,7 +28,7 @@ feng.controllers.controls.PathControls.prototype.update = function () {
 };
 
 
-feng.controllers.controls.PathControls.prototype.start = function ( fromPosition, toPosition, intersectPosition ) {
+feng.controllers.controls.PathControls.prototype.start = function ( fromPosition, toPosition, intersectPosition, nextMode ) {
 
 	var pathfinder = feng.controllers.view3d.PathfindingController.getInstance();
 
@@ -36,10 +36,10 @@ feng.controllers.controls.PathControls.prototype.start = function ( fromPosition
 	var end = toPosition;
 	var collidableBoxes = this._view3d.getCollidableBoxes();
 	var coordinates = pathfinder.findPath( start, end, collidableBoxes, this._scene );
-
+	
 	if(!coordinates) {
 
-		this.onPathComplete();
+		this.onPathComplete( nextMode );
 		return;
 	}
 
@@ -85,6 +85,7 @@ feng.controllers.controls.PathControls.prototype.start = function ( fromPosition
     onUpdateParams: [prop],
     onUpdateScope: this,
     onComplete: this.onPathComplete,
+    onCompleteParams: [nextMode],
     onCompleteScope: this
   });
 
@@ -115,10 +116,10 @@ feng.controllers.controls.PathControls.prototype.onPathProgress = function ( pro
 };
 
 
-feng.controllers.controls.PathControls.prototype.onPathComplete = function () {
+feng.controllers.controls.PathControls.prototype.onPathComplete = function ( nextMode ) {
 
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
-		mode: feng.views.View3D.Mode.BROWSE
+		mode: nextMode
 	});
 };

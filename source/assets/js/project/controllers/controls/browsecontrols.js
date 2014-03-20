@@ -17,21 +17,12 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 
   this._eventMediator = this._view3d.eventMediator;
 
-	this._clickableObjects = [];
-	goog.object.forEach(this._view3d.view3dObjects, function(view3dObject) {
-		this._clickableObjects.push( view3dObject.object3d );
-	}, this);
-
-	this._interactiveObjects = [];
-	goog.object.forEach(this._view3d.interactiveObjects, function(interactiveObject) {
-		this._interactiveObjects.push( interactiveObject.object3d );
-	}, this);
-
 	this._shouldCancelClick = false;
 
 	var objectSelectorEl = goog.dom.getElementByClass('objectSelector', uiElement);
 	var renderEl = this._view3d.domElement;
-	this._objectSelector = new feng.views.sections.controls.ObjectSelector( this._interactiveObjects, this._camera, objectSelectorEl, renderEl );
+	var interactiveObjects = this._view3d.interactiveObjects;
+	this._objectSelector = new feng.views.sections.controls.ObjectSelector( interactiveObjects, this._camera, objectSelectorEl, renderEl );
 
 	this._lastMouseX = 0;
 	this._lastMouseY = 0;
@@ -150,8 +141,9 @@ feng.controllers.controls.BrowseControls.prototype.update = function () {
 	if(object) {
 		var renderElement = this._view3d.domElement;
 		var renderElementSize = goog.style.getSize( renderElement );
+		var object3d = object.object3d;
 
-		var object2d = feng.utils.ThreeUtils.get2DCoordinates( object.position, this._camera, renderElementSize );
+		var object2d = feng.utils.ThreeUtils.get2DCoordinates( object3d.position, this._camera, renderElementSize );
 		this._objectSelector.setPosition( object2d.x, object2d.y );
 	}
 
@@ -169,7 +161,12 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 
 	if ( this._shouldCancelClick ) return;
 
-	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, this._clickableObjects, this._camera, this._domElement );
+	var clickableObjects = [];
+	goog.object.forEach(this._view3d.view3dObjects, function(object) {
+		clickableObjects.push( object.object3d );
+	});
+	
+	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, clickableObjects, this._camera, this._domElement );
 
 	if ( intersects.length > 0 ) {
 
@@ -178,6 +175,7 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 		this.dispatchEvent({
 			type: feng.events.EventType.CHANGE,
 			mode: feng.views.View3D.Mode.PATH,
+			nextMode: feng.views.View3D.Mode.BROWSE,
 			toPosition: intersects[0].point,
 			toRotation: this.getRotation(),
 			toFov: this.getFov(),
@@ -230,7 +228,8 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelected = function (
 
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
-		mode: feng.views.View3D.Mode.CLOSE_UP,
+		mode: feng.views.View3D.Mode.TRANSITION,
+		nextMode: feng.views.View3D.Mode.CLOSE_UP,
 		toPosition: this.getPosition(),
 		object: e.object
 	});

@@ -95,24 +95,6 @@ feng.controllers.view3d.ModeController.prototype.setMode = function( modeData ){
 };
 
 
-feng.controllers.view3d.ModeController.prototype.requireTransitionMode = function(oldMode, newMode){
-
-	var requiredModes = [
-		[feng.views.View3D.Mode.BROWSE, feng.views.View3D.Mode.CLOSE_UP],
-		[feng.views.View3D.Mode.CLOSE_UP, feng.views.View3D.Mode.MANIPULATE],
-		[feng.views.View3D.Mode.MANIPULATE, feng.views.View3D.Mode.CLOSE_UP]
-	];
-
-	var result = goog.array.find(requiredModes, function(modes) {
-		var oldModeIndex = goog.array.indexOf(modes, oldMode);
-		var newModeIndex = goog.array.indexOf(modes, newMode);
-		return (oldModeIndex >= 0 && newModeIndex >= 0 && oldModeIndex < newModeIndex);
-	});
-
-	return goog.isDefAndNotNull( result );
-};
-
-
 feng.controllers.view3d.ModeController.prototype.createBrowseControls = function(){
 
 	var uiElement = this._view3d.uiElement;
@@ -181,6 +163,7 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 
 	var oldMode = this._mode;
 	var newMode = e.mode;
+	var nextMode = e.nextMode;
 
 	if(!newMode) return false;
 
@@ -189,8 +172,6 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 		return;
 	}else {
 
-		var requireTransitionMode = this.requireTransitionMode(oldMode, newMode);
-		newMode = requireTransitionMode ? feng.views.View3D.Mode.TRANSITION : newMode;
 		this._mode = newMode;
 	}
 
@@ -198,7 +179,7 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 
 	var oldControl = this.control;
 	var newControl = this.getModeControl( this._mode );
-	var futureControl = this.getModeControl( e.mode );
+	var nextControl = this.getModeControl( nextMode );
 
 	// handle old control
 	if(oldControl) {
@@ -213,7 +194,7 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	var fromFov = e.fromFov || oldControl.getFov();
 
 	var toPosition = e.toPosition;
-	var toRotation = feng.utils.ThreeUtils.getShortestRotation( fromRotation, e.toRotation );
+	var toRotation = feng.utils.ThreeUtils.getShortestRotation( fromRotation, toRotation );
 	var toFov = e.toFov;
 
 	this.control.setPosition( fromPosition );
@@ -223,23 +204,29 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 
 	this._cameraController.setCamera( this.control.getCamera() );
 
-	// if current mode is transition,
-	// set the future controls start values and input transition controls
-	if(this._mode === feng.views.View3D.Mode.TRANSITION) {
+	// if next mode is set,
+	// set and get the next mode controls start values and use that for current controls' end value
+	if(nextControl) {
 
-		switch(futureControl) {
+		var shouldUpdateTo;
+
+		switch(nextControl) {
 			case this._closeUpControls:
 			this._closeUpControls.setCamera( toPosition, e.object );
+			shouldUpdateTo = true;
 			break;
 
 			case this._manipulateControls:
 			this._manipulateControls.setCamera( fromPosition, fromFov, e.object );
+			shouldUpdateTo = true;
 			break;
 		};
 
-		toPosition = futureControl.getPosition();
-		toRotation = feng.utils.ThreeUtils.getShortestRotation( fromRotation, futureControl.getRotation() );
-		toFov = futureControl.getFov();
+		if(shouldUpdateTo) {
+			toPosition = nextControl.getPosition();
+			toRotation = feng.utils.ThreeUtils.getShortestRotation( fromRotation, nextControl.getRotation() );
+			toFov = nextControl.getFov();
+		}
 	}
 
 	switch(this._mode) {
@@ -255,11 +242,11 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 			break;
 
 		case feng.views.View3D.Mode.PATH:
-			this.control.start( fromPosition, toPosition, e.intersectPosition );
+			this.control.start( fromPosition, toPosition, e.intersectPosition, nextMode );
 			break;
 
 		case feng.views.View3D.Mode.TRANSITION:
-			this.control.start( toPosition, toRotation, toFov, e );
+			this.control.start( toPosition, toRotation, toFov, nextMode );
 			break;
 
 		default:
