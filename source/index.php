@@ -47,7 +47,7 @@
 		<!-- project js -->
 		<?php
 			$USE_COMPILE_JS = false;
-			if (strpos(URLADDR,'dev.') == false && strpos(URLADDR,'local.') == false) {
+			if (strpos(URLADDR,'dev.') == false && strpos(URLADDR,'local.') == false && strpos(URLADDR,'joe.') == false) {
 		    $USE_COMPILE_JS = true;
 			}
 			if (isset($_GET['compile'])) {

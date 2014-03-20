@@ -124,6 +124,7 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e
 	}, this);
 
 	this._downObject = interactiveObject;
+	this.setPosition( e.clientX, e.clientY );
 
 	this._eventHandler.listen(document, 'mousemove', this.onMouseMove, false, this);
 	this._eventHandler.listen(document, 'mouseup', this.onMouseUp, false, this);

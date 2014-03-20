@@ -102,7 +102,6 @@ feng.views.sections.Episode.prototype.onLoadComplete = function(e){
 		}, this);
 
 		this._view3d = this._view3ds[0];
-		this._view3d.show();
-		this._view3d.activate();
+		this._view3d.fadeIn();
 	}
 };

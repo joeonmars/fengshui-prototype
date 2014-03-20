@@ -125,7 +125,8 @@ feng.controllers.controls.PathControls.prototype.onPathComplete = function ( gat
 		this._view3d.dispatchEvent({
 			type: feng.events.EventType.CHANGE,
 			sectionId: this._view3d.sectionId,
-			viewId: gateway.viewId
+			viewId: gateway.viewId,
+			origin: gateway.origin
 		});
 	}
 

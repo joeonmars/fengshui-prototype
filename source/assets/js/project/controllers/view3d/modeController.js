@@ -42,7 +42,7 @@ feng.controllers.view3d.ModeController = function( view3d ){
 goog.inherits(feng.controllers.view3d.ModeController, goog.events.EventTarget);
 
 
-feng.controllers.view3d.ModeController.prototype.init = function( modeData ){
+feng.controllers.view3d.ModeController.prototype.init = function(){
 
 	// create mode controls
 	this._browseControls = this.createBrowseControls();
@@ -60,9 +60,6 @@ feng.controllers.view3d.ModeController.prototype.init = function( modeData ){
 
   //
   this._eventHandler.listen(this, feng.events.EventType.CHANGE, this.onModeChange, false, this);
-
-  // set initial mode
-  this.setMode( modeData );
 };
 
 

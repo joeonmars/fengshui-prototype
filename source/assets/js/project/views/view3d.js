@@ -39,6 +39,8 @@ feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eve
   this.cameraController = null;
 	this.modeController = null;
 
+	this.origin = new THREE.Vector3(0, feng.controllers.controls.Controls.Default.STANCE_HEIGHT, 400);
+
 	this.scene = null;
 
 	this._renderer = null;
@@ -281,12 +283,7 @@ feng.views.View3D.prototype.initScene = function() {
 	this.cameraController.init( this.scene );
 
 	// init mode controller
-	this.modeController.init({
-		mode: feng.views.View3D.Mode.BROWSE,
-		fromPosition: new THREE.Vector3(0, feng.controllers.controls.Controls.Default.STANCE_HEIGHT, 350),
-		fromRotation: new THREE.Euler(0, 0, 0, 'XYZ'),
-		fromFov: 45
-	});
+	this.modeController.init();
 };
 
 

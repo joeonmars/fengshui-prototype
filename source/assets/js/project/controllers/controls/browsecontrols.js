@@ -135,18 +135,6 @@ feng.controllers.controls.BrowseControls.prototype.update = function () {
 	this._camera.rotation.x = cameraRotateX;
 	this._camera.rotation.y = cameraRotateY;
 
-	// update object selector position
-	var object = this._objectSelector._downObject;
-
-	if(object) {
-		var renderElement = this._view3d.domElement;
-		var renderElementSize = goog.style.getSize( renderElement );
-		var object3d = object.object3d;
-
-		var object2d = feng.utils.ThreeUtils.get2DCoordinates( object3d.position, this._camera, renderElementSize );
-		this._objectSelector.setPosition( object2d.x, object2d.y );
-	}
-
 	//
 	this.dispatchEvent({
 		type: feng.events.EventType.UPDATE,

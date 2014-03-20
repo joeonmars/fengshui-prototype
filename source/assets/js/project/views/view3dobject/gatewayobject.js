@@ -20,9 +20,9 @@ feng.views.view3dobject.GatewayObject = function( object3d, interactions ){
   this.viewId = this.object3d.userData['viewid'];
   this.gatewayId = this.object3d.userData['gatewayid'];
 
-  var origin = this.object3d.getObjectByName('origin');
+  var originObject = this.object3d.getObjectByName('origin');
   this.object3d.updateMatrixWorld();
-  this.originPosition = new THREE.Vector3().setFromMatrixPosition( origin.matrixWorld );
+  this.origin = new THREE.Vector3().setFromMatrixPosition( originObject.matrixWorld );
 
   this.hasEntered = false;
 };

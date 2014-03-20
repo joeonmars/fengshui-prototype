@@ -49,15 +49,32 @@ feng.controllers.view3d.View3DController.prototype.onShowView3D = function(e){
 	console.log('Show View3D: ', e.target.id);
 
 	this.view3d = e.target;
+
+	var position = this.view3d.origin;
+	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
+  var lookAtPosition = new THREE.Vector3(0, feng.controllers.controls.Controls.Default.STANCE_HEIGHT, 0);
+  var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, lookAtPosition);
+  rotation.setFromQuaternion( quaternion );
+
+	this.view3d.modeController.setMode({
+		mode: feng.views.View3D.Mode.BROWSE,
+		fromPosition: position,
+		fromRotation: rotation,
+		fromFov: 45
+	});
 };
 
 
 feng.controllers.view3d.View3DController.prototype.onChangeView3D = function(e){
 
-	var from = e.target;console.log(from)
+	var from = e.target;
 	from.fadeOut();
 
 	this._view3dToFadeIn = this.getView3D( e.sectionId, e.viewId );
+
+	var originPosition = e.origin || this._view3dToFadeIn.origin;
+	this._view3dToFadeIn.origin.setX( originPosition.x );
+	this._view3dToFadeIn.origin.setZ( originPosition.z );
 
 	console.log('Change View3D from: ' + e.target.id + ' to ' + this._view3dToFadeIn.id);
 };
