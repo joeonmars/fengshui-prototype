@@ -259,11 +259,10 @@ feng.controllers.controls.ManipulateControls.prototype.onMediatorEvent = functio
 			this.setPosition( posX, posY, posZ );
 
 			// look at
-			var up = new THREE.Vector3(0, 1, 0);
 			var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
 			var centerPosition = new THREE.Vector3(0, 0, 0);
 			var position = centerPosition;
-			var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), position, up);
+			var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), position);
 			rotation.setFromQuaternion( quaternion );
 
 			this.setRotation( rotation );

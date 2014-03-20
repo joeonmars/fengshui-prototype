@@ -12,8 +12,6 @@ goog.require('feng.events');
 feng.controllers.view3d.CameraController = function(view3d){
   goog.base(this);
 
-  this.setParentEventTarget( view3d );
-
   this.activeCamera = null;
 
   this._view3d = view3d;

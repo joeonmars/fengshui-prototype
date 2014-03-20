@@ -102,7 +102,21 @@ feng.controllers.controls.CloseUpControls.prototype.onManipulate = function ( e 
 
 		case interaction.ENTER:
 
-			console.log("ENTER!");
+			var gatewayPosition = this._activeObject.object3d.position;
+			var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
+			var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), gatewayPosition);
+			rotation.setFromQuaternion( quaternion );
+
+			this.dispatchEvent({
+				type: feng.events.EventType.CHANGE,
+				mode: feng.views.View3D.Mode.PATH,
+				nextMode: null,
+				gateway: this._activeObject,
+				toPosition: gatewayPosition,
+				toRotation: rotation,
+				toFov: this.getFov(),
+				intersectPosition: gatewayPosition
+			});
 			break;
 
 		case 'close':

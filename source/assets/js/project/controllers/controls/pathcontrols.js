@@ -28,7 +28,7 @@ feng.controllers.controls.PathControls.prototype.update = function () {
 };
 
 
-feng.controllers.controls.PathControls.prototype.start = function ( fromPosition, toPosition, intersectPosition, nextMode ) {
+feng.controllers.controls.PathControls.prototype.start = function ( fromPosition, toPosition, intersectPosition, gateway, nextMode ) {
 
 	var pathfinder = feng.controllers.view3d.PathfindingController.getInstance();
 
@@ -39,7 +39,7 @@ feng.controllers.controls.PathControls.prototype.start = function ( fromPosition
 	
 	if(!coordinates) {
 
-		this.onPathComplete( nextMode );
+		this.onPathComplete( gateway, nextMode );
 		return;
 	}
 
@@ -85,7 +85,7 @@ feng.controllers.controls.PathControls.prototype.start = function ( fromPosition
     onUpdateParams: [prop],
     onUpdateScope: this,
     onComplete: this.onPathComplete,
-    onCompleteParams: [nextMode],
+    onCompleteParams: [gateway, nextMode],
     onCompleteScope: this
   });
 
@@ -116,7 +116,18 @@ feng.controllers.controls.PathControls.prototype.onPathProgress = function ( pro
 };
 
 
-feng.controllers.controls.PathControls.prototype.onPathComplete = function ( nextMode ) {
+feng.controllers.controls.PathControls.prototype.onPathComplete = function ( gateway, nextMode ) {
+
+	if(gateway) {
+		// if event has gateway object, animate the gateway and fade out view3d
+		gateway.enter();
+
+		this._view3d.dispatchEvent({
+			type: feng.events.EventType.CHANGE,
+			sectionId: this._view3d.sectionId,
+			viewId: gateway.viewId
+		});
+	}
 
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,

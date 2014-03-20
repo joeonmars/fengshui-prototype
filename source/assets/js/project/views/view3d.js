@@ -22,10 +22,13 @@ goog.require('feng.views.view3dobject.GatewayObject');
 feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eventMediator){
   goog.base(this);
 
-  this.setParentEventTarget( feng.controllers.view3d.View3DController.getInstance() );
-
   this.id = viewId;
   this.sectionId = sectionId;
+
+  var view3dController = feng.controllers.view3d.View3DController.getInstance();
+  view3dController.registerView3D( this );
+
+  this.setParentEventTarget( view3dController );
 
   this.domElement = null;
   this.containerElement = containerElement;

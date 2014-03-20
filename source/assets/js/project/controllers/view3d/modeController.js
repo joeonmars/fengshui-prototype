@@ -19,8 +19,6 @@ feng.controllers.view3d.ModeController = function( view3d ){
 
   goog.base(this);
 
-  this.setParentEventTarget( view3d );
-
   this._eventHandler = new goog.events.EventHandler(this);
 
   this._view3d = view3d;
@@ -242,7 +240,7 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 			break;
 
 		case feng.views.View3D.Mode.PATH:
-			this.control.start( fromPosition, toPosition, e.intersectPosition, nextMode );
+			this.control.start( fromPosition, toPosition, e.intersectPosition, e.gateway, nextMode );
 			break;
 
 		case feng.views.View3D.Mode.TRANSITION:

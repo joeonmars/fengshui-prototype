@@ -30,6 +30,8 @@ feng.utils.ThreeUtils.getObjectsBy2DPosition = function ( clientX, clientY, obje
 
 feng.utils.ThreeUtils.getQuaternionByLookAt = function( vecFrom, vecTo, vecUp ) {
 
+	var vecUp = vecUp || new THREE.Vector3(0, 1, 0);
+
 	var mtx4 = new THREE.Matrix4();
 	mtx4.lookAt( vecFrom, vecTo, vecUp );
 
