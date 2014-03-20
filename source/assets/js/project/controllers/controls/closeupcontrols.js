@@ -66,7 +66,7 @@ feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		mode: feng.views.View3D.Mode.BROWSE,
-		eventToTrigger: e.eventToTrigger
+		eventToTrigger: e ? e.eventToTrigger : null
 	});
 };
 
@@ -85,13 +85,30 @@ feng.controllers.controls.CloseUpControls.prototype.update = function() {
 
 feng.controllers.controls.CloseUpControls.prototype.onManipulate = function ( e ) {
 
-	if(e.move || e.rotate) {
-		this.dispatchEvent({
-			type: feng.events.EventType.CHANGE,
-			mode: feng.views.View3D.Mode.TRANSITION,
-			nextMode: feng.views.View3D.Mode.MANIPULATE,
-			object: this._activeObject
-		});
+	var interaction = feng.views.view3dobject.InteractiveObject.Interaction;
+
+	switch(e.interaction) {
+
+		case interaction.MOVE:
+		case interaction.ROTATE:
+
+			this.dispatchEvent({
+				type: feng.events.EventType.CHANGE,
+				mode: feng.views.View3D.Mode.TRANSITION,
+				nextMode: feng.views.View3D.Mode.MANIPULATE,
+				object: this._activeObject
+			});
+			break;
+
+		case interaction.ENTER:
+
+			console.log("ENTER!");
+			break;
+
+		case 'close':
+
+			this.close();
+			break;
 	}
 };
 

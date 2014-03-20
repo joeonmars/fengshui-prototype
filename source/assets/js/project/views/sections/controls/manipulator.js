@@ -78,34 +78,32 @@ feng.views.sections.controls.Manipulator.prototype.update = function(x, y){
 
 feng.views.sections.controls.Manipulator.prototype.onClick = function(e){
 
- 	switch(e.currentTarget) {
- 		case this._buttons['move']:
+  var classname = goog.object.findKey(this._buttons, function(button) {
+    return button === e.currentTarget;
+  });
 
-      this.dispatchEvent({
-        type: feng.events.EventType.CHANGE,
-        move: true,
-        clientX: e.clientX,
-        clientY: e.clientY
-      });
+  var ev = {
+    type: feng.events.EventType.CHANGE,
+    interaction: classname
+  };
+
+  var interaction = feng.views.view3dobject.InteractiveObject.Interaction;
+
+ 	switch(classname) {
+ 		case interaction.MOVE:
+      ev.clientX = e.clientX;
+      ev.clientY = e.clientY;
  			break;
 
- 		case this._buttons['rotate']:
-
-      this.dispatchEvent({
-        type: feng.events.EventType.CHANGE,
-        rotate: true
-      });
+ 		case interaction.ROTATE:
  			break;
 
-    case this._buttons['enter']:
-
+    case interaction.ENTER:
       break;
 
- 		case this._buttons['close']:
-
-      this.dispatchEvent({
-        type: feng.events.EventType.CLOSE
-      });
+ 		case interaction.CLOSE:
  			break;
  	}
+
+  this.dispatchEvent(ev);
 };

@@ -75,7 +75,6 @@ feng.controllers.controls.ManipulateControls.prototype.enable = function( enable
 
 	if(this._isEnabled) {
 
-		this._eventHandler.listen(this._manipulator, feng.events.EventType.CLOSE, this.close, false, this);
 		this._eventHandler.listen(this._manipulator, feng.events.EventType.CHANGE, this.onManipulate, false, this);
 		this._eventHandler.listen(this._eventMediator.getEventTarget(), feng.events.EventType.UPDATE, this.onMediatorEvent, false, this);
 		this._eventMediator.listen(this, feng.events.EventType.UPDATE);
@@ -191,42 +190,53 @@ feng.controllers.controls.ManipulateControls.prototype.onManipulate = function (
 	var activeObject = this._view3d.getView3dObject( object3d.name );
 	var activeObjectBox = activeObject.getBoxBeforeRotation();
 
-	if(e.move) {
+	var interaction = feng.views.view3dobject.InteractiveObject.Interaction;
+	
+	switch(e.interaction) {
 
-		this.physics.startMove( collidableBoxes, activeObjectBox );
+		case interaction.MOVE:
 
-		// init move object
-		this._eventHandler.listen(this._domElement, 'mousemove', this.onMoveObject, false, this);
-		this._eventHandler.listen(this._domElement, 'click', this.onDropObject, false, this);
+			this.physics.startMove( collidableBoxes, activeObjectBox );
 
-		this._manipulator.hide();
+			// init move object
+			this._eventHandler.listen(this._domElement, 'mousemove', this.onMoveObject, false, this);
+			this._eventHandler.listen(this._domElement, 'click', this.onDropObject, false, this);
 
-		this.onMoveObject(e);
-	}
-	else if(e.rotate) {
-		
-		// prevent rotating during physics running
-		if(this.physics.isRunning) return;
+			this._manipulator.hide();
 
-		this.physics.startRotate( collidableBoxes, activeObjectBox );
+			this.onMoveObject(e);
+			break;
 
-		// rotate object around it's own Y axis
-		var prop = {
-			rad: object3d.rotation.y
-		};
+		case interaction.ROTATE:
 
-		this._rotateTweener = TweenMax.to(prop, .2, {
-			rad: prop.rad + Math.PI / 2,
-			onUpdate: function() {
-				this.physics.updateActiveBox( null, null, prop.rad );
-			},
-			onUpdateScope: this,
-			onComplete: function() {
-				this.physics.stop();
-				this.syncPhysics();
-			},
-			onCompleteScope: this
-		});
+			// prevent rotating during physics running
+			if(this.physics.isRunning) return;
+
+			this.physics.startRotate( collidableBoxes, activeObjectBox );
+
+			// rotate object around it's own Y axis
+			var prop = {
+				rad: object3d.rotation.y
+			};
+
+			this._rotateTweener = TweenMax.to(prop, .2, {
+				rad: prop.rad + Math.PI / 2,
+				onUpdate: function() {
+					this.physics.updateActiveBox( null, null, prop.rad );
+				},
+				onUpdateScope: this,
+				onComplete: function() {
+					this.physics.stop();
+					this.syncPhysics();
+				},
+				onCompleteScope: this
+			});
+			break;
+
+		case 'close':
+
+			this.close();
+			break;
 	}
 };
 

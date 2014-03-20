@@ -75,43 +75,45 @@
 				>.manipulator{
 					position: absolute;
 
-					>div{
-						display: inline-block;
-						margin: 10px;
-						@extend .button;
+					>ul{
+						>li{
+							display: inline-block;
+							margin: 10px;
+							@extend .button;
 
-						&:after{
-							display: block;
-							color: red;
-							font-size: 30px;
-							line-height: 50px;
-							width: 50px;
-							height: 50px;
-							background: #ddd;
-						}
+							&:after{
+								display: block;
+								color: red;
+								font-size: 30px;
+								line-height: 50px;
+								width: 50px;
+								height: 50px;
+								background: #ddd;
+							}
 
-						&.move{
-							@include font-awesome("fa-arrows");
-						}
+							&.move{
+								@include font-awesome("fa-arrows");
+							}
 
-						&.rotate{
-							@include font-awesome("fa-refresh");
-						}
+							&.rotate{
+								@include font-awesome("fa-refresh");
+							}
 
-						&.enter{
-							@include font-awesome("fa-key");
-						}
+							&.enter{
+								@include font-awesome("fa-key");
+							}
 
-						&.place{
-							@include font-awesome("fa-exchange");
-						}
+							&.place{
+								@include font-awesome("fa-exchange");
+							}
 
-						&.change_accessory{
-							@include font-awesome("fa-coffee");
-						}
+							&.change_accessory{
+								@include font-awesome("fa-coffee");
+							}
 
-						&.close{
-							@include font-awesome("fa-times-circle");
+							&.close{
+								@include font-awesome("fa-times-circle");
+							}
 						}
 					}
 				}
