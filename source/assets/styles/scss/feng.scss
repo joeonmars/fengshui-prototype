@@ -102,6 +102,14 @@
 							@include font-awesome("fa-key");
 						}
 
+						&.place{
+							@include font-awesome("fa-exchange");
+						}
+
+						&.change_accessory{
+							@include font-awesome("fa-coffee");
+						}
+
 						&.close{
 							@include font-awesome("fa-times-circle");
 						}

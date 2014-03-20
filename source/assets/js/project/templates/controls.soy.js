@@ -25,7 +25,7 @@ feng.templates.controls.Compass = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.controls.Manipulator = function(opt_data, opt_ignored) {
-  return '<div class="manipulator"><div class="move"></div><div class="rotate"></div><div class="enter"></div><div class="close"></div></div>';
+  return '<div class="manipulator"><div class="move"></div><div class="rotate"></div><div class="enter"></div><div class="place"></div><div class="change_accessory"></div><div class="close"></div></div>';
 };
 
 

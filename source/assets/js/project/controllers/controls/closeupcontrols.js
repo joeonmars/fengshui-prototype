@@ -50,7 +50,8 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable ) 
 		this._eventHandler.listen(this._manipulator, feng.events.EventType.CHANGE, this.onManipulate, false, this);
 
 		this._manipulator.show();
-		this._manipulator.activate();
+		this._manipulator.activate( this._activeObject.interactions );
+		this.update();
 
 	}else  {
 

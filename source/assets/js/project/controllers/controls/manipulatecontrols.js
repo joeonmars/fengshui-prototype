@@ -81,7 +81,8 @@ feng.controllers.controls.ManipulateControls.prototype.enable = function( enable
 		this._eventMediator.listen(this, feng.events.EventType.UPDATE);
 
 		this._manipulator.show();
-		this._manipulator.activate();
+		this._manipulator.activate( ['move', 'rotate'] );
+		this.update();
 
 	}else  {
 

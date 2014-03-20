@@ -13,22 +13,49 @@ feng.views.sections.controls.Manipulator = function(domElement){
 
   goog.base(this, domElement);
 
-  this._moveButton = goog.dom.getElementByClass('move', this.domElement);
-  this._rotateButton = goog.dom.getElementByClass('rotate', this.domElement);
-  this._closeButton = goog.dom.getElementByClass('close', this.domElement);
+  this._buttons = {};
+
+  var interactions = feng.views.view3dobject.InteractiveObject.Interaction;
+  goog.object.forEach(interactions, function(interaction) {
+    this.registerButton( interaction );
+  }, this);
+
+  this.registerButton('close');
 
   this.hide();
 };
 goog.inherits(feng.views.sections.controls.Manipulator, feng.views.sections.controls.Controls);
 
 
-feng.views.sections.controls.Manipulator.prototype.activate = function(){
+feng.views.sections.controls.Manipulator.prototype.registerButton = function( classname ){
 
+  var button = goog.dom.getElementByClass(classname, this.domElement);
+  this._buttons[classname] = button;
+
+  return button;
+};
+
+
+feng.views.sections.controls.Manipulator.prototype.activate = function( interactions ){
+  
 	goog.base(this, 'activate');
 
-  this._eventHandler.listen(this._moveButton, 'click', this.onClick, false, this);
-  this._eventHandler.listen(this._rotateButton, 'click', this.onClick, false, this);
-  this._eventHandler.listen(this._closeButton, 'click', this.onClick, false, this);
+  // hide all buttons first
+  goog.object.forEach(this._buttons, function(button) {
+    goog.style.showElement(button, false);
+  });
+
+  // show and add button of interactions
+  goog.array.forEach(interactions, function(interaction) {
+    var button = this._buttons[interaction];
+    goog.style.showElement(button, true);
+    this._eventHandler.listen(button, 'click', this.onClick, false, this);
+  }, this);
+
+  // plus a close button
+  var closeButton = this._buttons['close'];
+  goog.style.showElement(closeButton, true);
+  this._eventHandler.listen(closeButton, 'click', this.onClick, false, this);
 };
 
 
@@ -52,7 +79,7 @@ feng.views.sections.controls.Manipulator.prototype.update = function(x, y){
 feng.views.sections.controls.Manipulator.prototype.onClick = function(e){
 
  	switch(e.currentTarget) {
- 		case this._moveButton:
+ 		case this._buttons['move']:
 
       this.dispatchEvent({
         type: feng.events.EventType.CHANGE,
@@ -62,7 +89,7 @@ feng.views.sections.controls.Manipulator.prototype.onClick = function(e){
       });
  			break;
 
- 		case this._rotateButton:
+ 		case this._buttons['rotate']:
 
       this.dispatchEvent({
         type: feng.events.EventType.CHANGE,
@@ -70,7 +97,11 @@ feng.views.sections.controls.Manipulator.prototype.onClick = function(e){
       });
  			break;
 
- 		case this._closeButton:
+    case this._buttons['enter']:
+
+      break;
+
+ 		case this._buttons['close']:
 
       this.dispatchEvent({
         type: feng.events.EventType.CLOSE
