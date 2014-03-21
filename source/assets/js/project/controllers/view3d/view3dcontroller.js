@@ -72,9 +72,11 @@ feng.controllers.view3d.View3DController.prototype.onChangeView3D = function(e){
 
 	this._view3dToFadeIn = this.getView3D( e.sectionId, e.viewId );
 
-	var originPosition = e.origin || this._view3dToFadeIn.origin;
-	this._view3dToFadeIn.origin.setX( originPosition.x );
-	this._view3dToFadeIn.origin.setZ( originPosition.z );
+	var gateway = this._view3dToFadeIn.interactiveObjects[ e.gatewayId ];
+	var origin = gateway.origin;
+
+	this._view3dToFadeIn.origin.setX( origin.x );
+	this._view3dToFadeIn.origin.setZ( origin.z );
 
 	console.log('Change View3D from: ' + e.target.id + ' to ' + this._view3dToFadeIn.id);
 };

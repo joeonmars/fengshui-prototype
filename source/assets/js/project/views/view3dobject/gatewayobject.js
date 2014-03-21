@@ -23,7 +23,7 @@ feng.views.view3dobject.GatewayObject = function( object3d, interactions ){
   var originObject = this.object3d.getObjectByName('origin');
   this.object3d.updateMatrixWorld();
   this.origin = new THREE.Vector3().setFromMatrixPosition( originObject.matrixWorld );
-
+  
   this.hasEntered = false;
 };
 goog.inherits(feng.views.view3dobject.GatewayObject, feng.views.view3dobject.InteractiveObject);
