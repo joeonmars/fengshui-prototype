@@ -7,8 +7,9 @@ goog.require('goog.object');
 goog.require('feng.events');
 goog.require('feng.controllers.controls.BrowseControls');
 goog.require('feng.controllers.controls.CloseUpControls');
+goog.require('feng.controllers.controls.FlowControls');
 goog.require('feng.controllers.controls.ManipulateControls');
-goog.require('feng.controllers.controls.PathControls');
+goog.require('feng.controllers.controls.WalkControls');
 goog.require('feng.controllers.controls.TransitionControls');
 
 
@@ -25,19 +26,15 @@ feng.controllers.view3d.ModeController = function( view3d ){
   this._cameraController = this._view3d.cameraController;
 
   this._browseControls = null;
+  this._flowControls = null;
   this._manipulateControls = null;
-  this._pathControls = null;
+  this._walkControls = null;
   this._transitionControls = null;
 
   this._control = null;
   this._mode = null;
 
   this._modeControls = {};
-  this._modeControls[feng.views.View3D.Mode.BROWSE] = null;
-  this._modeControls[feng.views.View3D.Mode.CLOSE_UP] = null;
-  this._modeControls[feng.views.View3D.Mode.MANIPULATE] = null;
-  this._modeControls[feng.views.View3D.Mode.PATH] = null;
-  this._modeControls[feng.views.View3D.Mode.TRANSITION] = null;
 };
 goog.inherits(feng.controllers.view3d.ModeController, goog.events.EventTarget);
 
@@ -47,16 +44,18 @@ feng.controllers.view3d.ModeController.prototype.init = function(){
 	// create mode controls
 	this._browseControls = this.createBrowseControls();
 	this._closeUpControls = this.createCloseUpControls();
+	this._flowControls = this.createFlowControls();
 	this._manipulateControls = this.createManipulateControls();
-	this._pathControls = this.createPathControls();
+	this._walkControls = this.createWalkControls();
 	this._transitionControls = this.createTransitionControls();
 
 	// register mode controls
-  this._modeControls[feng.views.View3D.Mode.BROWSE] = this._browseControls;
-  this._modeControls[feng.views.View3D.Mode.CLOSE_UP] = this._closeUpControls;
-  this._modeControls[feng.views.View3D.Mode.MANIPULATE] = this._manipulateControls;
-  this._modeControls[feng.views.View3D.Mode.PATH] = this._pathControls;
-  this._modeControls[feng.views.View3D.Mode.TRANSITION] = this._transitionControls;
+  this._modeControls[feng.controllers.view3d.ModeController.Mode.BROWSE] = this._browseControls;
+  this._modeControls[feng.controllers.view3d.ModeController.Mode.CLOSE_UP] = this._closeUpControls;
+  this._modeControls[feng.controllers.view3d.ModeController.Mode.FLOW] = this._flowControls;
+  this._modeControls[feng.controllers.view3d.ModeController.Mode.MANIPULATE] = this._manipulateControls;
+  this._modeControls[feng.controllers.view3d.ModeController.Mode.WALK] = this._walkControls;
+  this._modeControls[feng.controllers.view3d.ModeController.Mode.TRANSITION] = this._transitionControls;
 
   //
   this._eventHandler.listen(this, feng.events.EventType.CHANGE, this.onModeChange, false, this);
@@ -94,7 +93,7 @@ feng.controllers.view3d.ModeController.prototype.createBrowseControls = function
 
 	var uiElement = this._view3d.uiElement;
 	var renderElement = this._view3d.domElement;
-	var camera = this._cameraController.getCamera( feng.views.View3D.Mode.BROWSE );
+	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.BROWSE );
 
 	var controls = new feng.controllers.controls.BrowseControls( camera, this._view3d, renderElement, uiElement );
 	controls.setParentEventTarget( this );
@@ -107,9 +106,22 @@ feng.controllers.view3d.ModeController.prototype.createCloseUpControls = functio
 
 	var uiElement = this._view3d.uiElement;
 	var renderElement = this._view3d.domElement;
-	var camera = this._cameraController.getCamera( feng.views.View3D.Mode.CLOSE_UP );
+	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.CLOSE_UP );
 
 	var controls = new feng.controllers.controls.CloseUpControls( camera, this._view3d, renderElement, uiElement );
+	controls.setParentEventTarget( this );
+
+	return controls;
+};
+
+
+feng.controllers.view3d.ModeController.prototype.createFlowControls = function(){
+
+	var renderElement = this._view3d.domElement;
+	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.WALK );
+	var scene = this._view3d.scene;
+
+	var controls = new feng.controllers.controls.FlowControls( camera, this._view3d, renderElement );
 	controls.setParentEventTarget( this );
 
 	return controls;
@@ -120,7 +132,7 @@ feng.controllers.view3d.ModeController.prototype.createManipulateControls = func
 
 	var uiElement = this._view3d.uiElement;
 	var renderElement = this._view3d.domElement;
-	var camera = this._cameraController.getCamera( feng.views.View3D.Mode.MANIPULATE );
+	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.MANIPULATE );
 
 	var controls = new feng.controllers.controls.ManipulateControls( camera, this._view3d, renderElement, uiElement );
 	controls.setParentEventTarget( this );
@@ -129,13 +141,13 @@ feng.controllers.view3d.ModeController.prototype.createManipulateControls = func
 };
 
 
-feng.controllers.view3d.ModeController.prototype.createPathControls = function(){
+feng.controllers.view3d.ModeController.prototype.createWalkControls = function(){
 
 	var renderElement = this._view3d.domElement;
-	var camera = this._cameraController.getCamera( feng.views.View3D.Mode.PATH );
+	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.WALK );
 	var scene = this._view3d.scene;
 
-	var controls = new feng.controllers.controls.PathControls( camera, this._view3d, renderElement );
+	var controls = new feng.controllers.controls.WalkControls( camera, this._view3d, renderElement );
 	controls.setParentEventTarget( this );
 
 	return controls;
@@ -145,7 +157,7 @@ feng.controllers.view3d.ModeController.prototype.createPathControls = function()
 feng.controllers.view3d.ModeController.prototype.createTransitionControls = function(){
 
 	var renderElement = this._view3d.domElement;
-	var camera = this._cameraController.getCamera( feng.views.View3D.Mode.TRANSITION );
+	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.TRANSITION );
 
 	var controls = new feng.controllers.controls.TransitionControls( camera, this._view3d, renderElement );
 	controls.setParentEventTarget( this );
@@ -225,22 +237,22 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	}
 
 	switch(this._mode) {
-		case feng.views.View3D.Mode.BROWSE:
+		case feng.controllers.view3d.ModeController.Mode.BROWSE:
 			break;
 
-		case feng.views.View3D.Mode.CLOSE_UP:
+		case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
 			console.log('close up');
 			break;
 
-		case feng.views.View3D.Mode.MANIPULATE:
+		case feng.controllers.view3d.ModeController.Mode.MANIPULATE:
 			console.log(e);
 			break;
 
-		case feng.views.View3D.Mode.PATH:
+		case feng.controllers.view3d.ModeController.Mode.WALK:
 			this.control.start( fromPosition, toPosition, e.intersectPosition, e.gateway, nextMode );
 			break;
 
-		case feng.views.View3D.Mode.TRANSITION:
+		case feng.controllers.view3d.ModeController.Mode.TRANSITION:
 			this.control.start( toPosition, toRotation, toFov, nextMode );
 			break;
 
@@ -250,7 +262,11 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 };
 
 
-feng.controllers.view3d.ModeController.prototype.onResize = function(e){
-
-	//
+feng.controllers.view3d.ModeController.Mode = {
+	BROWSE: 'browse', //look around
+	CLOSE_UP: 'close_up', // a locked perspective viewing a specific object
+	MANIPULATE: 'manipulate', // isometrix view for ease of positioning/rotating control
+	WALK: 'walk',	// walk along a path
+	FLOW: 'flow', // follow along the energy flow
+	TRANSITION: 'transition' // transition between different cameras for the above mode
 };

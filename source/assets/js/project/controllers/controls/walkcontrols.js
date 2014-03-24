@@ -1,4 +1,4 @@
-goog.provide('feng.controllers.controls.PathControls');
+goog.provide('feng.controllers.controls.WalkControls');
 
 goog.require('goog.events');
 goog.require('goog.math');
@@ -9,26 +9,23 @@ goog.require('feng.utils.ThreeUtils');
 /**
  * @constructor
  */
-feng.controllers.controls.PathControls = function(camera, view3d, domElement){
+feng.controllers.controls.WalkControls = function(camera, view3d, domElement){
 
   goog.base(this, camera, view3d, domElement);
 
-	this._targetRotationY = 0;
 	this._tweener = null;
 	this._pathTrack = null;
 };
-goog.inherits(feng.controllers.controls.PathControls, feng.controllers.controls.Controls);
+goog.inherits(feng.controllers.controls.WalkControls, feng.controllers.controls.Controls);
 
 
-feng.controllers.controls.PathControls.prototype.update = function () {
+feng.controllers.controls.WalkControls.prototype.update = function () {
 
 	goog.base(this, 'update');
-
-	var elapsed = this._clock.getElapsedTime();
 };
 
 
-feng.controllers.controls.PathControls.prototype.start = function ( fromPosition, toPosition, intersectPosition, gateway, nextMode ) {
+feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition, toPosition, intersectPosition, gateway, nextMode ) {
 
 	var pathfinder = feng.controllers.view3d.PathfindingController.getInstance();
 
@@ -88,12 +85,10 @@ feng.controllers.controls.PathControls.prototype.start = function ( fromPosition
     onCompleteParams: [gateway, nextMode],
     onCompleteScope: this
   });
-
-  goog.fx.anim.registerAnimation(this);
 };
 
 
-feng.controllers.controls.PathControls.prototype.onPathProgress = function ( prop ) {
+feng.controllers.controls.WalkControls.prototype.onPathProgress = function ( prop ) {
 
   var positionT = prop.positionT;
   var pathTrack = this._pathTrack;
@@ -116,7 +111,7 @@ feng.controllers.controls.PathControls.prototype.onPathProgress = function ( pro
 };
 
 
-feng.controllers.controls.PathControls.prototype.onPathComplete = function ( gateway, nextMode ) {
+feng.controllers.controls.WalkControls.prototype.onPathComplete = function ( gateway, nextMode ) {
 
 	if(gateway) {
 		// if event has gateway object, animate the gateway and fade out view3d

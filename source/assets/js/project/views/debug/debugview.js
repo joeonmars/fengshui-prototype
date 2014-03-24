@@ -11,13 +11,13 @@ goog.require('goog.events');
 /**
  * @constructor
  */
-feng.views.debug.DebugView = function(template){
+feng.views.debug.DebugView = function(template, templateData){
   goog.base(this);
 
   this.parentDom = goog.dom.query('#debugger > ul')[0];
 
   var placeholderDom = goog.dom.createDom('div');
-	var frag = soy.renderAsFragment(template);
+	var frag = soy.renderAsFragment(template, templateData);
 	goog.dom.appendChild(placeholderDom, frag);
 
 	this.domElement = goog.dom.getFirstElementChild(placeholderDom);

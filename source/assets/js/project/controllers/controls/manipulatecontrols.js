@@ -114,7 +114,7 @@ feng.controllers.controls.ManipulateControls.prototype.update = function () {
 
 feng.controllers.controls.ManipulateControls.prototype.close = function () {
 
-	var closeUpControls = this._view3d.modeController.getModeControl(feng.views.View3D.Mode.CLOSE_UP);
+	var closeUpControls = this._view3d.modeController.getModeControl(feng.controllers.view3d.ModeController.Mode.CLOSE_UP);
 	var objectPosition = this._activeObject.object3d.position;
 	var currentPosition = this.getPosition();
 
@@ -127,8 +127,8 @@ feng.controllers.controls.ManipulateControls.prototype.close = function () {
 
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
-		mode: feng.views.View3D.Mode.TRANSITION,
-		nextMode: feng.views.View3D.Mode.CLOSE_UP,
+		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+		nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
 		toPosition: toPosition,
 		object: this._activeObject
 	});

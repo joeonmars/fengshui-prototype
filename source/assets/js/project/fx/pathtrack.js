@@ -50,6 +50,13 @@ feng.fx.PathTrack.prototype.getControlMeshes = function(){
 };
 
 
+feng.fx.PathTrack.prototype.getSpacedPoints = function(){
+
+	var tube = this.tubeGeometry;
+	return tube.path.getSpacedPoints( this.segments );
+};
+
+
 feng.fx.PathTrack.prototype.getCameraAt = function(t){
 
 	var tube = this.tubeGeometry;
@@ -156,7 +163,6 @@ feng.fx.PathTrack.prototype.updateTrack = function(){
 	// create new segments
 	var segmentLength = segmentLength || 10;
 	this.segments = Math.floor(this.spline.getLength() / segmentLength);
-  var splinePoints = this.spline.getSpacedPoints( this.segments );
 
   this.tubeGeometry = new THREE.TubeGeometry(this.spline, this.segments, .5, 4, this._isClosed);
   var tubeMesh = new THREE.Mesh( this.tubeGeometry, this._material );

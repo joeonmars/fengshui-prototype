@@ -8,6 +8,7 @@ goog.require('goog.events');
 goog.require('feng.controllers.view3d.CameraController');
 goog.require('feng.controllers.view3d.ModeController');
 goog.require('feng.controllers.view3d.View3DController');
+goog.require('feng.fx.EnergyFlow');
 goog.require('feng.fx.TextureAnimator');
 goog.require('feng.fx.PostProcessing');
 goog.require('feng.models.Preload');
@@ -42,13 +43,15 @@ feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eve
 	this.origin = new THREE.Vector3(0, feng.controllers.controls.Controls.Default.STANCE_HEIGHT, 400);
 
 	this.scene = null;
+	this.energyFlow = null;
+
+	this.view3dObjects = {};
+	this.interactiveObjects = {};
+
+	this._collidables = [];
 
 	this._renderer = null;
 	this._post = null;
-
-	this._collidables = [];
-	this.view3dObjects = {};
-	this.interactiveObjects = {};
 
 	this._eventHandler = new goog.events.EventHandler(this);
 };
@@ -279,6 +282,10 @@ feng.views.View3D.prototype.initScene = function() {
 		feng.views.View3D.parseChildren(child, parse);
 	});
 
+	// init enegy flow
+	this.energyFlow = new feng.fx.EnergyFlow([new THREE.Vector3(), new THREE.Vector3()]);
+	this.scene.add( this.energyFlow );
+
 	// init camera controller
 	this.cameraController.init( this.scene );
 
@@ -395,12 +402,3 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 
 
 feng.views.View3D.STATS = new Stats();
-
-
-feng.views.View3D.Mode = {
-	BROWSE: 'browse', //look around
-	CLOSE_UP: 'close_up', // a locked perspective viewing a specific object
-	MANIPULATE: 'manipulate', // isometrix view for ease of positioning/rotating control
-	PATH: 'path',	// following a path
-	TRANSITION: 'transition' // transition between different cameras for the above mode
-};

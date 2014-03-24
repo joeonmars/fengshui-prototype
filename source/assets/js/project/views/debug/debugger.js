@@ -5,6 +5,8 @@ goog.require('goog.dom.query');
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events');
+goog.require('feng.models.achievements.Achievements');
+goog.require('feng.views.debug.Achievements');
 goog.require('feng.views.debug.Camera');
 goog.require('feng.views.debug.Manipulate');
 goog.require('feng.views.debug.Pathfinding');
@@ -33,6 +35,9 @@ feng.views.debug.Debugger = function(){
 	}
 	if(feng.views.debug.Debugger.Options.PATHFINDING) {
 		this.pathfindingView = new feng.views.debug.Pathfinding();
+	}
+	if(feng.views.debug.Debugger.Options.ACHIEVEMENTS) {
+		this.achievementsView = new feng.views.debug.Achievements();
 	}
 	if(feng.views.debug.Debugger.Options.PATH_TRACK) {
 		this.pathTrackView = new feng.views.debug.PathTrack();
@@ -79,5 +84,6 @@ feng.views.debug.Debugger.Options = {
 	CAMERA: true,
 	MANIPULATE: true,
 	PATHFINDING: true,
+	ACHIEVEMENTS: true,
 	PATH_TRACK: false
 };

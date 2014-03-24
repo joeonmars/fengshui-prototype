@@ -57,7 +57,7 @@ feng.controllers.view3d.View3DController.prototype.onShowView3D = function(e){
   rotation.setFromQuaternion( quaternion );
 
 	this.view3d.modeController.setMode({
-		mode: feng.views.View3D.Mode.BROWSE,
+		mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
 		fromPosition: position,
 		fromRotation: rotation,
 		fromFov: 45

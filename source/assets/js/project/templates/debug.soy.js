@@ -68,6 +68,27 @@ feng.templates.debug.PathfindingDebugView = function(opt_data, opt_ignored) {
  * @return {string}
  * @notypecheck
  */
+feng.templates.debug.AchievementsDebugView = function(opt_data, opt_ignored) {
+  var output = '\t';
+  var param52 = '<div class="tipsPanel"><ul class="tips">';
+  var tipList54 = opt_data.tips;
+  var tipListLen54 = tipList54.length;
+  for (var tipIndex54 = 0; tipIndex54 < tipListLen54; tipIndex54++) {
+    var tipData54 = tipList54[tipIndex54];
+    param52 += '<li data-tip-id="' + tipData54.id + '" data-view-id="' + tipData54.viewId + '" data-section-id="' + tipData54.sectionId + '"><div class="icon"></div><div class="caption"><p>' + tipData54.id + '</p><p>' + tipData54.viewId + '</p><p>' + tipData54.sectionId + '</p></div></li>';
+  }
+  param52 += '</ul></div>';
+  output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param52});
+  return output;
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
 feng.templates.debug.PathTrackDebugView = function(opt_data, opt_ignored) {
   return '\t' + feng.templates.debug.DebugView({id: 'debug-pathtrack', title: 'Path Track', body: '<div class="editPanel"><div class="scene"><label>Scene</label><select></select></div><button type="button" class="button add"></button><button type="button" class="button remove"></button><button type="button" class="button output"></button><textarea rows="10"></textarea></div><div class="playbackPanel"><label>Playback</label><div class="controls"><button type="button" class="button play"></button><button type="button" class="button camera fly"></button><input type="range" min="0" max="100" value="0"></div></div>'});
 };

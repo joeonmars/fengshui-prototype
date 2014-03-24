@@ -98,6 +98,34 @@
 
 
 /**
+ * Achievements Debug View
+ * @param tips tips
+ */
+{template .AchievementsDebugView}
+	{call .DebugView}
+		{param id}debug-achievements{/param}
+		{param title}Achievements{/param}
+		{param body}
+			<div class="tipsPanel">
+				<ul class="tips">
+					{foreach $tip in $tips}
+						<li data-tip-id="{ $tip.id }" data-view-id="{ $tip.viewId }" data-section-id="{ $tip.sectionId }">
+							<div class="icon"></div>
+							<div class="caption">
+								<p>{ $tip.id }</p>
+								<p>{ $tip.viewId }</p>
+								<p>{ $tip.sectionId }</p>
+							</div>
+						</li>
+					{/foreach}
+				</ul>
+			</div>
+		{/param}
+	{/call}
+{/template}
+
+
+/**
  * Path Track Debug View
  */
 {template .PathTrackDebugView}

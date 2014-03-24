@@ -162,8 +162,8 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 
 		this.dispatchEvent({
 			type: feng.events.EventType.CHANGE,
-			mode: feng.views.View3D.Mode.PATH,
-			nextMode: feng.views.View3D.Mode.BROWSE,
+			mode: feng.controllers.view3d.ModeController.Mode.WALK,
+			nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
 			toPosition: intersects[0].point,
 			toRotation: this.getRotation(),
 			toFov: this.getFov(),
@@ -216,8 +216,8 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelected = function (
 
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
-		mode: feng.views.View3D.Mode.TRANSITION,
-		nextMode: feng.views.View3D.Mode.CLOSE_UP,
+		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+		nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
 		toPosition: this.getPosition(),
 		object: e.object
 	});

@@ -49,8 +49,6 @@ feng.views.debug.Pathfinding.prototype.update = function(matrix, gridWidth, grid
 
 	var context = canvas.getContext('2d');
 
-	console.log(canvas, 'numCols: '+numCols+', numCells: '+numRows+', cellSize: '+cellSize);
-
 	var row = 0;
 	var col = 0;
 	var canvasCellSize = cellSize * this._debugScale;

@@ -207,6 +207,50 @@ $debug_border_style:  2px outset #d6d3ce;
 	}
 }
 
+#debug-achievements{
+	.tipsPanel{
+		@extend .debugPanel;
+
+		>ul{
+			width: 100%;
+			text-align: center;
+
+			>li{
+				display: inline-block;
+				margin: 10px;
+				cursor: pointer;
+
+				&.clicked{
+					>.icon{
+						border: 2px solid #555;
+					}
+				}
+
+				&.required{
+					>.icon{
+						border: 2px dashed #555;
+					}
+				}
+
+				>.icon{
+					width: 80px;
+					height: 80px;
+					background: #999;
+					@include box-sizing(border-box);
+				}
+
+				>.caption{
+					>p{
+						font-size: 11px;
+						line-height: 16px;
+						-webkit-font-smoothing: antialiased;
+					}
+				}
+			}
+		}
+	}
+}
+
 #debug-pathtrack{
 	.editPanel{
 		@extend .debugPanel;

@@ -65,7 +65,7 @@ feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
 
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
-		mode: feng.views.View3D.Mode.BROWSE,
+		mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
 		eventToTrigger: e ? e.eventToTrigger : null
 	});
 };
@@ -94,8 +94,8 @@ feng.controllers.controls.CloseUpControls.prototype.onManipulate = function ( e 
 
 			this.dispatchEvent({
 				type: feng.events.EventType.CHANGE,
-				mode: feng.views.View3D.Mode.TRANSITION,
-				nextMode: feng.views.View3D.Mode.MANIPULATE,
+				mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+				nextMode: feng.controllers.view3d.ModeController.Mode.MANIPULATE,
 				object: this._activeObject
 			});
 			break;
@@ -109,7 +109,7 @@ feng.controllers.controls.CloseUpControls.prototype.onManipulate = function ( e 
 
 			this.dispatchEvent({
 				type: feng.events.EventType.CHANGE,
-				mode: feng.views.View3D.Mode.PATH,
+				mode: feng.controllers.view3d.ModeController.Mode.WALK,
 				nextMode: null,
 				gateway: this._activeObject,
 				toPosition: gatewayPosition,
