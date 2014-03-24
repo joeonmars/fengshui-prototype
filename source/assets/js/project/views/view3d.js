@@ -358,11 +358,6 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 				textureAnimator.start();
 			}
 
-			if(object.userData['alpha'] === true) {
-		  	object.material.color.setRGB(1, 1, 1);
-		  	object.material.alphaTest = 0.5;
-		  }
-
 			if(object instanceof THREE.DirectionalLight) {
 				object.castShadow = true;
 

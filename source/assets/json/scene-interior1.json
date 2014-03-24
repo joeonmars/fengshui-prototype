@@ -212,7 +212,6 @@
 				"userData": {
 					"collidable": true,
 					"texture": "texture-bed",
-					"alpha": false,
 					"interactions": [
 						"move",
 						"rotate"]
