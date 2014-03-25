@@ -11,10 +11,8 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId ){
   this.viewId = viewId;
   this.sectionId = sectionId;
 
-  this.image = {
-  	small: '',
-  	large: ''
-  };
+  this.image = '';
+  this.sprite = '';
 
   this.unlocked = false;
 

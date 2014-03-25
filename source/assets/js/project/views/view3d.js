@@ -65,9 +65,7 @@ feng.views.View3D.prototype.init = function(){
 
 	var viewSize = this.getViewSize();
 
-	this._renderer = new THREE.WebGLRenderer({
-		antialias: true
-	});
+	this._renderer = new THREE.WebGLRenderer();
 	this._renderer.shadowMapEnabled = true;
 	this._renderer.shadowMapType = THREE.PCFSoftShadowMap;
 	this._renderer.setClearColor(0xffffff, 1);
@@ -76,14 +74,12 @@ feng.views.View3D.prototype.init = function(){
 	this.domElement = this._renderer.domElement;
 
 	goog.dom.appendChild( this.containerElement, this.domElement );
-/*
-	this._post = new feng.fx.PostProcessing(this._renderer, {
-		renderer: this._renderer,
-		enableFXAA: true,
-		enableBloom: true
-	});
-*/
+
 	this.initScene();
+
+	this._post = new feng.fx.PostProcessing(this._renderer, {
+		enableBloom: false
+	});
 
 	this.hide();
 };
@@ -144,7 +140,7 @@ feng.views.View3D.prototype.activate = function(){
  
  	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
 
- 	//this._post.activate();
+ 	this._post.activate();
 };
  
  
@@ -152,7 +148,7 @@ feng.views.View3D.prototype.deactivate = function(){
  
 	this._eventHandler.removeAll();
 
-	//this._post.deactivate();
+	this._post.deactivate();
 };
 
 
@@ -222,9 +218,8 @@ feng.views.View3D.prototype.fadeOut = function(){
 
 
 feng.views.View3D.prototype.render = function() {
-
-	//this._post.render(this.scene, this.cameraController.activeCamera);
-	this._renderer.render(this.scene, this.cameraController.activeCamera);
+	
+	this._post.render(this.scene, this.cameraController.activeCamera);
 };
 
 
