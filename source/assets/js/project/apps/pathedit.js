@@ -47,6 +47,7 @@ feng.apps.PathEdit = function() {
 	this._mouseWheelHandler = null;
 	this._zoomFactor = 1;
 	this._zoom = 1;
+	this._isObjectsShown = true;
 
 	this.init();
 };
@@ -108,6 +109,18 @@ feng.apps.PathEdit.prototype.getDefaultPathTrack = function() {
 feng.apps.PathEdit.prototype.highlightControl = function() {
 
 	this._pathTrack.getObjectByName('cube'+goog.array.indexOf(this._pathTrack.controlPoints, this._controlPoint)).material.opacity = 1;
+};
+
+
+feng.apps.PathEdit.prototype.showObjects = function(shouldShow) {
+
+	this._isObjectsShown = shouldShow;
+
+	goog.array.forEach(this._scene.children, function(child) {
+		if(!(child instanceof feng.fx.PathTrack)) {
+			child.visible = shouldShow;
+		}
+	});
 };
 
 
@@ -206,6 +219,8 @@ feng.apps.PathEdit.prototype.onChange = function(e) {
   	this._motionCameraHelper = this._scene.getObjectByName('motionCameraHelper');
 
 		this.updateMotionTweener();
+
+		this.showObjects(true);
 	}
 
 	if(e.fly === true) {
@@ -457,6 +472,19 @@ feng.apps.PathEdit.prototype.onKey = function(e) {
 		this._editCamera.position.x = 0;
 		this._editCamera.position.y = 0;
 		this._editCamera.position.z = -500;
+		break;
+
+		case goog.events.KeyCodes.EQUALS:
+		this.onAddControlPoint();
+		break;
+
+		case goog.events.KeyCodes.DASH:
+		this.onRemoveControlPoint();
+		break;
+
+		case goog.events.KeyCodes.H:
+		this._isObjectsShown = !this._isObjectsShown;
+		this.showObjects( this._isObjectsShown );
 		break;
 	};
 };
