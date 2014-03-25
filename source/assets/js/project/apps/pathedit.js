@@ -1,6 +1,8 @@
 goog.provide('feng.apps.PathEdit');
 
 goog.require('goog.dom');
+goog.require('goog.events.KeyHandler');
+goog.require('goog.events.MouseWheelHandler');
 goog.require('goog.fx.anim');
 goog.require('feng.templates.main');
 goog.require('feng.fx.PathTrack');
@@ -41,6 +43,11 @@ feng.apps.PathEdit = function() {
 
 	this._motionTweener = null;
 
+	this._keyHandler = null;
+	this._mouseWheelHandler = null;
+	this._zoomFactor = 1;
+	this._zoom = 1;
+
 	this.init();
 };
 goog.inherits(feng.apps.PathEdit, goog.events.EventTarget);
@@ -52,7 +59,8 @@ feng.apps.PathEdit.prototype.init = function() {
 	var mainFrag = soy.renderAsFragment(feng.templates.main.Spline);
 	goog.dom.appendChild(document.body, mainFrag);
 
-	var canvas = goog.dom.query('#spline > canvas')[0];
+	var domElement = goog.dom.getElement('spline');
+	var canvas = goog.dom.query('canvas', domElement)[0];
 
 	this._renderer = new THREE.WebGLRenderer({
 		canvas: canvas,
@@ -61,7 +69,7 @@ feng.apps.PathEdit.prototype.init = function() {
 	this._renderer.setClearColor(0xffffff, 1);
 	this._renderer.setSize( window.innerWidth, window.innerHeight );
 
-	this._editCamera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+	this._editCamera = new THREE.CombinedCamera( window.innerWidth, window.innerHeight, 45, 1, 10000, 1, 10000 );
 	this._editCamera.position.x = 500;
 	this._editCamera.position.y = 500;
 	this._editCamera.position.z = 500;
@@ -70,10 +78,18 @@ feng.apps.PathEdit.prototype.init = function() {
 
 	this._camera = this._editCamera;
 
+	this._keyHandler = new goog.events.KeyHandler( document );
+	goog.events.listen(this._keyHandler, 'key', this.onKey, false, this);
+
+	this._mouseWheelHandler = new goog.events.MouseWheelHandler( this._renderer.domElement );
+	goog.events.listen(this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this);
+
 	goog.events.listen(this._renderer.domElement, 'mousedown', this.onMouseDown, false, this);
 	goog.events.listen(window, 'resize', this.onResize, false, this);
 
 	this._controls = new THREE.OrbitControls(this._camera, this._renderer.domElement);
+	this._controls.noZoom = true;
+	this._controls.noKeys = true;
 
 	this._preloader.load( this._sceneKeys );
 	goog.events.listenOnce(this._preloader, feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this);
@@ -153,6 +169,8 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 	with(feng.views.debug.Debugger.Options) {
 		CAMERA = false;
 		PATHFINDING = false;
+		MANIPULATE = false;
+		ACHIEVEMENTS = false;
 		PATH_TRACK = true;
 	};
 	
@@ -381,6 +399,85 @@ feng.apps.PathEdit.prototype.onMouseUp = function(e) {
 };
 
 
+feng.apps.PathEdit.prototype.onKey = function(e) {
+
+	switch(e.target.tagName) {
+		case goog.dom.TagName.TEXTAREA:
+		case goog.dom.TagName.INPUT:
+		return false;
+		break;
+	};
+
+	e.preventDefault();
+
+	switch(e.keyCode) {
+		case goog.events.KeyCodes.TAB:
+		if(this._editCamera.inPerspectiveMode) {
+			this._zoomFactor = 10;
+			this._editCamera.toOrthographic();
+			this._editCamera.setZoom(this._zoom * this._zoomFactor);
+		}else {
+			this._zoomFactor = 1;
+			this._editCamera.toPerspective();
+			this._editCamera.setZoom(this._zoom * this._zoomFactor);
+		}
+		break;
+
+		case goog.events.KeyCodes.ONE:
+		this._editCamera.position.x = 0;
+		this._editCamera.position.y = 500;
+		this._editCamera.position.z = 0;
+		break;
+
+		case goog.events.KeyCodes.TWO:
+		this._editCamera.position.x = 0;
+		this._editCamera.position.y = -500;
+		this._editCamera.position.z = 0;
+		break;
+
+		case goog.events.KeyCodes.THREE:
+		this._editCamera.position.x = 500;
+		this._editCamera.position.y = 0;
+		this._editCamera.position.z = 0;
+		break;
+
+		case goog.events.KeyCodes.FOUR:
+		this._editCamera.position.x = -500;
+		this._editCamera.position.y = 0;
+		this._editCamera.position.z = 0;
+		break;
+
+		case goog.events.KeyCodes.FIVE:
+		this._editCamera.position.x = 0;
+		this._editCamera.position.y = 0;
+		this._editCamera.position.z = 500;
+		break;
+
+		case goog.events.KeyCodes.SIX:
+		this._editCamera.position.x = 0;
+		this._editCamera.position.y = 0;
+		this._editCamera.position.z = -500;
+		break;
+	};
+};
+
+
+feng.apps.PathEdit.prototype.onMouseWheel = function(e) {
+
+	e.preventDefault();
+
+	if(e.deltaY > 0) {
+
+		this._zoom /= 1.1;
+	}else {
+
+		this._zoom *= 1.1;
+	}
+
+	this._editCamera.setZoom( this._zoom * this._zoomFactor );
+};
+
+
 feng.apps.PathEdit.prototype.onAnimationFrame = function(now) {
 
 	this._controls.update();
@@ -390,8 +487,12 @@ feng.apps.PathEdit.prototype.onAnimationFrame = function(now) {
 
 feng.apps.PathEdit.prototype.onResize = function(e) {
 
-	this._camera.aspect = window.innerWidth / window.innerHeight;
-	this._camera.updateProjectionMatrix();
+	this._editCamera.setSize( window.innerWidth, window.innerHeight );
+	this._editCamera.updateProjectionMatrix();	
+
+	this._motionCamera.aspect = window.innerWidth / window.innerHeight;
+	this._motionCamera.updateProjectionMatrix();		
+
 	this._renderer.setSize( window.innerWidth, window.innerHeight );
 
 	this.render();
