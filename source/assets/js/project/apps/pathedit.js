@@ -174,6 +174,8 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 	this._motionCameraHelper = this._scene.getObjectByName('motionCameraHelper');
 
 	this._pathTrack = this.getDefaultPathTrack();
+	this._controlPoint = this._pathTrack.controlPoints[0];
+	this.highlightControl();
 
 	//
 	goog.fx.anim.registerAnimation(this);
@@ -201,10 +203,25 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 		type: e.type,
 		scenes: this._scenes
 	});
+
+	this.dispatchEvent({
+  	type: feng.events.EventType.CHANGE,
+  	controlPoint: this._controlPoint,
+  	pathTrack: this._pathTrack
+  });
 };
 
 
 feng.apps.PathEdit.prototype.onChange = function(e) {
+
+	if(e.fly === true) {
+
+		this._camera = this._motionCamera;
+
+	}else if(e.fly === false) {
+
+		this._camera = this._editCamera;
+	}
 
 	if(e.sceneName) {
 		this._scene = goog.array.find(this._scenes, function(scene) {
@@ -215,22 +232,20 @@ feng.apps.PathEdit.prototype.onChange = function(e) {
 		this._scene.add( this._motionCamera );
 
 	  this._pathTrack = this.getDefaultPathTrack();
+	  this._controlPoint = this._pathTrack.controlPoints[0];
+	  this.highlightControl();
 
   	this._motionCameraHelper = this._scene.getObjectByName('motionCameraHelper');
 
 		this.updateMotionTweener();
 
 		this.showObjects(true);
-	}
 
-	if(e.fly === true) {
-
-		this._camera = this._motionCamera;
-
-	}else if(e.fly === false) {
-
-		this._camera = this._editCamera;
-
+		this.dispatchEvent({
+	  	type: feng.events.EventType.CHANGE,
+	  	controlPoint: this._controlPoint,
+	  	pathTrack: this._pathTrack
+	  });
 	}
 };
 
@@ -402,6 +417,11 @@ feng.apps.PathEdit.prototype.onMouseMove = function(e) {
 
   // refresh progress of new spline
 	this.updateMotionTweener();
+
+	this.dispatchEvent({
+  	type: feng.events.EventType.CHANGE,
+  	controlPoint: this._controlPoint
+  });
 };
 
 
@@ -480,6 +500,14 @@ feng.apps.PathEdit.prototype.onKey = function(e) {
 
 		case goog.events.KeyCodes.DASH:
 		this.onRemoveControlPoint();
+		break;
+
+		case goog.events.KeyCodes.C:
+		var shouldFly = (this._camera === this._editCamera);
+		this.dispatchEvent({
+			type: feng.events.EventType.CHANGE,
+			fly: shouldFly
+		});
 		break;
 
 		case goog.events.KeyCodes.H:

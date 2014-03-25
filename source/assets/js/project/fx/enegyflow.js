@@ -7,12 +7,11 @@ goog.require('feng.fx.PathTrack');
  */
 feng.fx.EnergyFlow = function(controlPoints){
 
-	var segmentLength = null;
 	var offset = null;
 	var isClosed = false;
 	var color = '#48D1CC';
 
-  goog.base(this, controlPoints, segmentLength, offset, isClosed, color);
+  goog.base(this, controlPoints, offset, isClosed, color);
 
 };
 goog.inherits(feng.fx.EnergyFlow, feng.fx.PathTrack);

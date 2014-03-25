@@ -5,22 +5,21 @@ goog.require('feng.utils.Randomizer');
 /**
  * @constructor
  */
-feng.fx.PathTrack = function(controlPoints, segmentLength, offset, isClosed, color){
+feng.fx.PathTrack = function(controlPoints, offset, isClosed, color){
 
   goog.base(this);
 
-  this.controlPoints = controlPoints;
-  this._isClosed = isClosed;
-  this.spline = !this._isClosed ? new THREE.SplineCurve3(controlPoints) : new THREE.ClosedSplineCurve3(controlPoints);
+  this.controlPoints = null;
+  this._isClosed = false;
+  this.spline = null;
 
   this.tubeGeometry = null;
   this.segments = null;
 
   this._material = new THREE.MeshBasicMaterial({
-  	color: color || '#000000',
-	opacity: 0.4,
-	transparent: true,
-	wireframe: true
+		opacity: 0.4,
+		transparent: true,
+		wireframe: true
   });
 
   // a dummy camera for calculating the position/rotation on spline
@@ -28,12 +27,25 @@ feng.fx.PathTrack = function(controlPoints, segmentLength, offset, isClosed, col
   this._binormal = new THREE.Vector3();
   this._normal = new THREE.Vector3();
   this._up = new THREE.Vector3(0, 1, 0);
-  this._offset = goog.isNumber(offset) ? offset : -15;
+  this._offset = 0;
 
-  // init draw
-  this.updateTrack( this.controlPoints, segmentLength );
+  this.create( controlPoints, offset, isClosed, color );
 };
 goog.inherits(feng.fx.PathTrack, THREE.Object3D);
+
+
+feng.fx.PathTrack.prototype.create = function(controlPoints, offset, isClosed, color){
+
+  this.controlPoints = controlPoints;
+  this._isClosed = isClosed;
+  this.spline = !this._isClosed ? new THREE.SplineCurve3(controlPoints) : new THREE.ClosedSplineCurve3(controlPoints);
+
+  this._material.color = color || '#000000';
+
+  this._offset = goog.isNumber(offset) ? offset : -15;
+
+  this.updateTrack();
+};
 
 
 feng.fx.PathTrack.prototype.getControlMeshes = function(){
@@ -161,7 +173,7 @@ feng.fx.PathTrack.prototype.updateTrack = function(){
 	}, this);
 
 	// create new segments
-	var segmentLength = segmentLength || 10;
+	var segmentLength = 10;
 	this.segments = Math.floor(this.spline.getLength() / segmentLength);
 
   this.tubeGeometry = new THREE.TubeGeometry(this.spline, this.segments, .5, 4, this._isClosed);

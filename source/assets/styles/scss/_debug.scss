@@ -270,16 +270,51 @@ $debug_border_style:  2px outset #d6d3ce;
 			}
 		}
 
-		.add{
-			@include font-awesome("fa-plus");
-		}
-
-		.remove{
-			@include font-awesome("fa-minus");
-		}
-
 		.output{
 			@include button("Output");
+		}
+	}
+
+	.pointPanel{
+		@extend .debugPanel;
+
+		>label{
+			display: block;
+			font-size: 12px;
+		}
+
+		>.add{
+			@include font-awesome("fa-plus");
+			margin: 6px 4px;
+			margin-left: 0;
+			width: 30px;
+			height: 30px;
+		}
+
+		>.remove{
+			@include font-awesome("fa-minus");
+			margin: 6px 4px;
+			width: 30px;
+			height: 30px;
+		}
+
+		>ul{
+			margin: 5px 0;
+
+			>li{
+
+				>label{
+					display: inline-block;
+					vertical-align: middle;
+					font-size: 12px;
+					min-width: 50px;
+				}
+
+				>input{
+					display: inline-block;
+					width: 200px;
+				}
+			}
 		}
 	}
 

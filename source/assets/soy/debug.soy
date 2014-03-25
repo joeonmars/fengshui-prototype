@@ -135,10 +135,20 @@
 		{param body}
 			<div class="editPanel">
 				<div class="scene"><label>Scene</label><select></select></div>
+				<button type="button" class="button output"></button>
+				<input type="file" class="button import">
+				<textarea rows="10"></textarea>
+			</div>
+			<div class="pointPanel">
+				<label>Control Point</label>
 				<button type="button" class="button add"></button>
 				<button type="button" class="button remove"></button>
-				<button type="button" class="button output"></button>
-				<textarea rows="10"></textarea>
+				<ul>
+					<li><label>x</label><input name="x" type="number"></li>
+					<li><label>y</label><input name="y" type="number"></li>
+					<li><label>z</label><input name="z" type="number"></li>
+					<li><label>tipid</label><input name="tipid" type="text"></li>
+				</ul>
 			</div>
 			<div class="playbackPanel">
 				<label>Playback</label>
