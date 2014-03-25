@@ -50,9 +50,37 @@ feng.fx.EnergyFlow.prototype.getNearest = function( position ){
 };
 
 
-/*
-feng.fx.EnergyFlow.prototype.getTOfTip = function( tip ){
+feng.fx.EnergyFlow.prototype.getTipsOfProgress = function( progress ){
 
-	var tipView3dObject = tip.getView3dObject();
+	var currentControlPointIndex = Math.floor( (this.controlPoints.length - 1) * progress );
+	var nextControlPointIndex = Math.min( currentControlPointIndex + 1, this.controlPoints.length - 1 );
+
+	// get weight by T, calculated T by U (progress)
+	var progressT = this.spline.getUtoTmapping( progress );
+	var currentT = currentControlPointIndex / (this.controlPoints.length - 1);
+	var nextT = nextControlPointIndex / (this.controlPoints.length - 1);
+	var weight = (progressT - currentT) / (nextT - currentT);
+
+	// get tips
+	var currentControlPoint = this.controlPoints[ currentControlPointIndex ];
+	var nextControlPoint = this.controlPoints[ nextControlPointIndex ];
+
+	var currentTipId = currentControlPoint.tipId || '';
+	var nextTipId = nextControlPoint.tipId || '';
+
+	var currentTip = currentTipId;
+	var nextTip = nextTipId;
+
+	return {
+		current: currentTip,
+		next: nextTip,
+		weight: weight
+	};
 };
-*/
+
+
+feng.fx.EnergyFlow.prototype.updateTrack = function(){
+
+	goog.base(this, 'updateTrack');
+
+};

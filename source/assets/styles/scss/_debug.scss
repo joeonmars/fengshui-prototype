@@ -283,19 +283,19 @@ $debug_border_style:  2px outset #d6d3ce;
 			font-size: 12px;
 		}
 
-		>.add{
-			@include font-awesome("fa-plus");
-			margin: 6px 4px;
-			margin-left: 0;
+		>button{
+			margin: 6px 2px;
 			width: 30px;
 			height: 30px;
-		}
 
-		>.remove{
-			@include font-awesome("fa-minus");
-			margin: 6px 4px;
-			width: 30px;
-			height: 30px;
+			&.add{
+				@include font-awesome("fa-plus");
+				margin-left: 0;
+			}
+
+			&.remove{
+				@include font-awesome("fa-minus");
+			}
 		}
 
 		>ul{

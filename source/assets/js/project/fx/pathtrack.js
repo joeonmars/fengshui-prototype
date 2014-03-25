@@ -4,6 +4,7 @@ goog.require('feng.utils.Randomizer');
 
 /**
  * @constructor
+ * Based on http://mrdoob.github.io/three.js/examples/webgl_geometry_extrude_splines.html
  */
 feng.fx.PathTrack = function(controlPoints, offset, isClosed, color){
 
@@ -64,8 +65,7 @@ feng.fx.PathTrack.prototype.getControlMeshes = function(){
 
 feng.fx.PathTrack.prototype.getSpacedPoints = function(){
 
-	var tube = this.tubeGeometry;
-	return tube.path.getSpacedPoints( this.segments );
+	return this.spline.getSpacedPoints( this.segments );
 };
 
 

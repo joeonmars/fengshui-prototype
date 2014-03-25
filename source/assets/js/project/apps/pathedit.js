@@ -5,6 +5,7 @@ goog.require('goog.events.KeyHandler');
 goog.require('goog.events.MouseWheelHandler');
 goog.require('goog.fx.anim');
 goog.require('feng.templates.main');
+goog.require('feng.fx.EnergyFlow');
 goog.require('feng.fx.PathTrack');
 goog.require('feng.models.Preload');
 goog.require('feng.views.Preloader');
@@ -161,7 +162,7 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 			new THREE.Vector3(-30, 50, -50),
 			new THREE.Vector3(-100, 50, -200)
 		];
-		var pathTrack = new feng.fx.PathTrack(coordinates);
+		var pathTrack = new feng.fx.EnergyFlow(coordinates);
 		scene.add( pathTrack );
 
 		return scene;
@@ -251,7 +252,6 @@ feng.apps.PathEdit.prototype.onChange = function(e) {
 
 
 feng.apps.PathEdit.prototype.onPlay = function(e) {
-// refer to http://mrdoob.github.io/three.js/examples/webgl_geometry_extrude_splines.html
 
 	if(!this._motionTweener) {
 
@@ -291,6 +291,8 @@ feng.apps.PathEdit.prototype.onProgress = function(e) {
 
 	this._motionCamera.position.copy( pathCamera.position );
 	this._motionCamera.rotation.copy( pathCamera.rotation );
+
+	console.log(this._pathTrack.getTipsOfProgress(e.progress));
 };
 
 
