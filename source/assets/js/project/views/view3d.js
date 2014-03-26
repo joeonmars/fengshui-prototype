@@ -21,6 +21,7 @@ goog.require('feng.views.view3dobject.GatewayObject');
  * @constructor
  */
 feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eventMediator){
+
   goog.base(this);
 
   this.id = viewId;
@@ -277,9 +278,15 @@ feng.views.View3D.prototype.initScene = function() {
 		feng.views.View3D.parseChildren(child, parse);
 	});
 
-	// init enegy flow
-	this.energyFlow = new feng.fx.EnergyFlow([new THREE.Vector3(), new THREE.Vector3()]);
-	this.scene.add( this.energyFlow );
+	// init energyflow
+	var preloadModel = feng.models.Preload.getInstance();
+	var energyFlowData = preloadModel.getAsset(this.sectionId+'.'+this.id+'.energyflow-data');
+
+	if(energyFlowData) {
+		var controlPoints = energyFlowData['controlPoints'];
+		this.energyFlow = new feng.fx.EnergyFlow( controlPoints, this.id, this.sectionId );
+		this.scene.add( this.energyFlow );
+	}
 
 	// init camera controller
 	this.cameraController.init( this.scene );

@@ -225,12 +225,12 @@ feng.views.debug.PathTrack.prototype.onFileImport = function(e){
     var controlPointsData = parsedJSON['controlPoints'];
     var controlPoints = goog.array.map(controlPointsData, function(data) {
       var point = new THREE.Vector3(data['x'], data['y'], data['z']);
-      point.tipId = data['tipid'];
+      point['tipid'] = data['tipid'];
       return point;
     });
 
     this._pathTrack.create( controlPoints );
-
+    
   }, this);
 
   reader.readAsText(file);

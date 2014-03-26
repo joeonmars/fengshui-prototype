@@ -125,3 +125,14 @@ feng.utils.ThreeUtils.getShortestRotation = function( from, to ) {
 
 	return to;
 };
+
+
+feng.utils.ThreeUtils.lerpBetween = function( a, b, x ) {
+
+	var newObj = a.clone();
+	newObj.x = goog.math.lerp(a.x, b.x, x);
+	newObj.y = goog.math.lerp(a.y, b.y, x);
+	newObj.z = goog.math.lerp(a.z, b.z, x);
+
+	return newObj;
+};

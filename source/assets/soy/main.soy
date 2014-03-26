@@ -1,29 +1,27 @@
 {namespace feng.templates.main autoescape="false"}
 
-/**
- * Say Hello
- */
-{template .HelloWorld}
-<div>
-	Hello World!
-</div>
-{/template}
-
 
 /**
- * Section Episodes Content 
+ * Episode Section
+ * @param id section id
+ * @param tips fengshui tips of section
  */
-{template .SectionEpisodeContent}
-<div class="preloader">
-</div>
-<div class="sceneUI">
-	<div class="controls">
-		{call feng.templates.controls.Compass}{/call}
-		{call feng.templates.controls.ObjectSelector}{/call}
-		{call feng.templates.controls.Manipulator}{/call}
+{template .EpisodeSection}
+<div class="section episode" id="{ $id }">
+	<div class="preloader">
 	</div>
-</div>
-<div class="sceneContainer">
+	<div class="sceneUI">
+		<div class="controls">
+			{call feng.templates.controls.Compass}{/call}
+			{call feng.templates.controls.ObjectSelector}{/call}
+			{call feng.templates.controls.Manipulator}{/call}
+			{call feng.templates.controls.ProgressBar}
+				{param tips: $tips /}
+			{/call}
+		</div>
+	</div>
+	<div class="sceneContainer">
+	</div>
 </div>
 {/template}
 
@@ -40,18 +38,6 @@
 		</div>
 	</div>
 
-	<div class="section episode" id="studio">
-		{call .SectionEpisodeContent}{/call}
-	</div>
-<!--
-	<div class="section episode" id="twobedroom">
-		{call .SectionEpisodeContent}{/call}
-	</div>
-
-	<div class="section episode" id="townhouse">
-		{call .SectionEpisodeContent}{/call}
-	</div>
--->
 	{if $debug != false}
 		{call feng.templates.debug.Debugger}{/call}
 	{/if}

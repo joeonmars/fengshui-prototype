@@ -69,24 +69,35 @@ feng.fx.PathTrack.prototype.getSpacedPoints = function(){
 };
 
 
-feng.fx.PathTrack.prototype.getCameraAt = function(t){
+feng.fx.PathTrack.prototype.getEstimatedDistanceBetweenU = function(u1, u2){
+
+	var lengths = this.spline.getLengths();
+	var d1 = lengths[ Math.floor( (lengths.length - 1) * u1 ) ];
+	var d2 = lengths[ Math.floor( (lengths.length - 1) * u2 ) ];
+	var d = d2 - d1;
+
+	return d;
+};
+
+
+feng.fx.PathTrack.prototype.getCameraAt = function(u){
 
 	var tube = this.tubeGeometry;
-	var pos = tube.path.getPointAt( t );
+	var pos = tube.path.getPointAt( u );
 
 	// interpolation
 	var segments = tube.tangents.length;
-	var pickt = t * segments;
-	var pick = Math.floor( pickt );
+	var picku = u * segments;
+	var pick = Math.floor( picku );
 	var pickNext = ( pick + 1 ) % segments;
 
-	if(pickt <= segments-1) {
+	if(picku <= segments-1) {
 
 		var binormal = this._binormal;
 		binormal.subVectors( tube.binormals[ pickNext ], tube.binormals[ pick ] );
-		binormal.multiplyScalar( pickt - pick ).add( tube.binormals[ pick ] );
+		binormal.multiplyScalar( picku - pick ).add( tube.binormals[ pick ] );
 
-		var dir = tube.path.getTangentAt( t );
+		var dir = tube.path.getTangentAt( u );
 
 		var normal = this._normal;
 		normal.copy( binormal ).cross( dir );
@@ -96,7 +107,7 @@ feng.fx.PathTrack.prototype.getCameraAt = function(t){
 
 		this._pathCamera.position.copy( pos );
 
-		var lookAt = tube.path.getPointAt( ( t + 30 / tube.path.getLength() ) % 1 );
+		var lookAt = tube.path.getPointAt( ( u + 30 / tube.path.getLength() ) % 1 );
 		lookAt.copy( pos ).add( dir );
 
 		this._pathCamera.matrix.lookAt(pos, lookAt, this._up);

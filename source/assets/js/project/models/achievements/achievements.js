@@ -26,11 +26,11 @@ feng.models.achievements.Achievements = function(){
       'corridor': [
 
       ],
-      'scene-interior-1': [
-
+      'interior1': [
+        new feng.models.achievements.Tip('bed', 'interior1', 'studio'),
       ],
-      'scene-interior-2': [
-        new feng.models.achievements.Tip('rubberplant', 'scene-interior-2', 'studio'),
+      'interior2': [
+        new feng.models.achievements.Tip('rubberplant', 'interior2', 'studio'),
       ]
     },
 
@@ -55,7 +55,7 @@ goog.addSingletonGetter(feng.models.achievements.Achievements);
 
 feng.models.achievements.Achievements.prototype.getTip = function(tipId, viewId, sectionId) {
 
-  var tips = this.getTips( viewId, sectionId );
+  var tips = this.getTipsOfView( viewId, sectionId );
   var tip = goog.array.find(tips, function(t) {
     return t.id === tipId;
   });
@@ -64,9 +64,21 @@ feng.models.achievements.Achievements.prototype.getTip = function(tipId, viewId,
 };
 
 
-feng.models.achievements.Achievements.prototype.getTips = function(viewId, sectionId) {
+feng.models.achievements.Achievements.prototype.getTipsOfView = function(viewId, sectionId) {
 
   return this._sections[ sectionId ][ viewId ];
+};
+
+
+feng.models.achievements.Achievements.prototype.getTipsOfSection = function(sectionId) {
+
+  var tips = [];
+  var views = this._sections[ sectionId ];
+  goog.object.forEach(views, function(viewTips) {
+    goog.array.extend(tips, viewTips);
+  });
+
+  return tips;
 };
 
 

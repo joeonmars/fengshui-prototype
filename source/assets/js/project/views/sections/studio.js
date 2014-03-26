@@ -10,8 +10,16 @@ goog.require('feng.views.sections.Episode');
  */
 feng.views.sections.Studio = function(){
 
-	var domElement = goog.dom.getElement('studio');
-  goog.base(this, domElement);
+	var achievements = feng.models.achievements.Achievements.getInstance();
+	var tips = achievements.getTipsOfSection( 'studio' );
+	
+	var template = feng.templates.main.EpisodeSection;
+	var templateData = {
+		id: 'studio',
+		tips: tips
+	};
+
+  goog.base(this, template, templateData);
 
   this._viewIds = ['interior1', 'interior2'];
 };

@@ -19,12 +19,6 @@ feng.controllers.controls.WalkControls = function(camera, view3d, domElement){
 goog.inherits(feng.controllers.controls.WalkControls, feng.controllers.controls.Controls);
 
 
-feng.controllers.controls.WalkControls.prototype.update = function () {
-
-	goog.base(this, 'update');
-};
-
-
 feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition, toPosition, intersectPosition, gateway, nextMode ) {
 
 	var pathfinder = feng.controllers.view3d.PathfindingController.getInstance();
@@ -53,7 +47,7 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 	var distanceT = Math.max(0, distance / length);
 	
 	// adult walking speed is 1.564 meter per second
-	var duration = distance * 2 / 156.4;
+	var duration = distance * 2 / (1.564 * 100);
 
 	var footstepLength = 20;
 	var footsteps = Math.floor(distance / footstepLength);
@@ -66,16 +60,16 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 	var toRotation = feng.utils.ThreeUtils.getShortestRotation(fromRotation, toRotation);
 
 	var prop = {
-    positionT: 0,
-    rotationT: 0,
+    positionU: 0,
+    rotationU: 0,
     footstep: 0,
     fromRotation: fromRotation,
     toRotation: toRotation
   };
 
   this._tweener = TweenMax.to(prop, duration, {
-    positionT: distanceT,
-    rotationT: 1,
+    positionU: distanceT,
+    rotationU: 1,
     footstep: Math.PI * footsteps,
     ease: Linear.easeNone,
     onUpdate: this.onPathProgress,
@@ -90,17 +84,17 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 
 feng.controllers.controls.WalkControls.prototype.onPathProgress = function ( prop ) {
 
-  var positionT = prop.positionT;
+  var positionU = prop.positionU;
   var pathTrack = this._pathTrack;
-  var pathCamera = pathTrack.getCameraAt( positionT );
+  var pathCamera = pathTrack.getCameraAt( positionU );
   var cameraPosition = pathCamera.position;
 
-  var rotationT = prop.rotationT;
+  var rotationU = prop.rotationU;
   var fromRotation = prop.fromRotation;
   var toRotation = prop.toRotation;
-  var cameraRotationX = goog.math.lerp(fromRotation.x, toRotation.x, rotationT);
-  var cameraRotationY = goog.math.lerp(fromRotation.y, toRotation.y, rotationT);
-  var cameraRotationZ = goog.math.lerp(fromRotation.z, toRotation.z, rotationT);
+  var cameraRotationX = goog.math.lerp(fromRotation.x, toRotation.x, rotationU);
+  var cameraRotationY = goog.math.lerp(fromRotation.y, toRotation.y, rotationU);
+  var cameraRotationZ = goog.math.lerp(fromRotation.z, toRotation.z, rotationU);
 
   var footstepHeight = Math.sin(prop.footstep) * .5;
   var defaultHeight = feng.controllers.controls.Controls.Default.STANCE_HEIGHT;

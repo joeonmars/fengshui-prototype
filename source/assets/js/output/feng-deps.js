@@ -21,7 +21,7 @@ goog.addDependency('../../../../project/controllers/view3d/view3dcontroller.js',
 goog.addDependency('../../../../project/events/eventmediator.js', ['feng.events.EventMediator'], ['goog.Disposable', 'goog.events', 'goog.events.EventHandler', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/events/eventtype.js', ['feng.events'], []);
 goog.addDependency('../../../../project/feng.js', ['feng'], ['feng.apps.Demo', 'feng.apps.Main', 'feng.apps.PathEdit']);
-goog.addDependency('../../../../project/fx/enegyflow.js', ['feng.fx.EnergyFlow'], ['feng.fx.PathTrack']);
+goog.addDependency('../../../../project/fx/enegyflow.js', ['feng.fx.EnergyFlow'], ['feng.fx.PathTrack', 'feng.models.achievements.Achievements']);
 goog.addDependency('../../../../project/fx/pathtrack.js', ['feng.fx.PathTrack'], ['feng.utils.Randomizer']);
 goog.addDependency('../../../../project/fx/postprocessing.js', ['feng.fx.PostProcessing'], []);
 goog.addDependency('../../../../project/fx/textureanimator.js', ['feng.fx.TextureAnimator'], ['goog.events.EventTarget']);
@@ -50,7 +50,8 @@ goog.addDependency('../../../../project/views/sections/controls/compass.js', ['f
 goog.addDependency('../../../../project/views/sections/controls/controls.js', ['feng.views.sections.controls.Controls'], ['goog.events.EventHandler', 'goog.events.EventTarget', 'goog.style']);
 goog.addDependency('../../../../project/views/sections/controls/manipulator.js', ['feng.views.sections.controls.Manipulator'], ['feng.events', 'feng.views.sections.controls.Controls', 'goog.dom', 'goog.dom.query']);
 goog.addDependency('../../../../project/views/sections/controls/objectselector.js', ['feng.views.sections.controls.ObjectSelector'], ['feng.views.sections.controls.Controls', 'goog.async.Delay', 'goog.events']);
-goog.addDependency('../../../../project/views/sections/episode.js', ['feng.views.sections.Episode'], ['feng.events', 'feng.events.EventMediator', 'feng.views.View3D', 'feng.views.sections.Section', 'feng.views.sections.controls.Compass', 'goog.dom', 'goog.events.EventTarget']);
+goog.addDependency('../../../../project/views/sections/controls/progressbar.js', ['feng.views.sections.controls.ProgressBar'], ['feng.models.achievements.Achievements', 'feng.views.sections.controls.Controls', 'goog.events']);
+goog.addDependency('../../../../project/views/sections/episode.js', ['feng.views.sections.Episode'], ['feng.events', 'feng.events.EventMediator', 'feng.views.View3D', 'feng.views.sections.Section', 'feng.views.sections.controls.Compass', 'feng.views.sections.controls.ProgressBar', 'goog.dom', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/views/sections/home.js', ['feng.views.sections.Home'], ['feng.events', 'feng.views.sections.Section', 'goog.dom', 'goog.dom.query', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/views/sections/section.js', ['feng.views.sections.Section'], ['feng.controllers.NavigationController', 'feng.events', 'feng.views.Preloader', 'goog.dom', 'goog.dom.query', 'goog.events.EventHandler', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/views/sections/studio.js', ['feng.views.sections.Studio'], ['feng.events', 'feng.views.sections.Episode', 'goog.dom']);

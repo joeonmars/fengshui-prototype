@@ -118,10 +118,10 @@ feng.controllers.view3d.ModeController.prototype.createCloseUpControls = functio
 feng.controllers.view3d.ModeController.prototype.createFlowControls = function(){
 
 	var renderElement = this._view3d.domElement;
-	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.WALK );
-	var scene = this._view3d.scene;
+	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.FLOW );
+	var energyFlow = this._view3d.energyFlow;
 
-	var controls = new feng.controllers.controls.FlowControls( camera, this._view3d, renderElement );
+	var controls = new feng.controllers.controls.FlowControls( camera, this._view3d, renderElement, energyFlow );
 	controls.setParentEventTarget( this );
 
 	return controls;
@@ -145,7 +145,6 @@ feng.controllers.view3d.ModeController.prototype.createWalkControls = function()
 
 	var renderElement = this._view3d.domElement;
 	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.WALK );
-	var scene = this._view3d.scene;
 
 	var controls = new feng.controllers.controls.WalkControls( camera, this._view3d, renderElement );
 	controls.setParentEventTarget( this );
@@ -242,6 +241,10 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 
 		case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
 			console.log('close up');
+			break;
+
+		case feng.controllers.view3d.ModeController.Mode.FLOW:
+			this.control.start( fromPosition, e.gateway, nextMode );
 			break;
 
 		case feng.controllers.view3d.ModeController.Mode.MANIPULATE:

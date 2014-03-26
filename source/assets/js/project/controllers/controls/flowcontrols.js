@@ -9,20 +9,14 @@ goog.require('feng.utils.ThreeUtils');
 /**
  * @constructor
  */
-feng.controllers.controls.FlowControls = function(camera, view3d, domElement){
+feng.controllers.controls.FlowControls = function(camera, view3d, domElement, energyFlow){
 
   goog.base(this, camera, view3d, domElement);
 
-  this._energyFlow = this._view3d.energyFlow;
+  this._energyFlow = energyFlow;
 	this._tweener = null;
 };
 goog.inherits(feng.controllers.controls.FlowControls, feng.controllers.controls.Controls);
-
-
-feng.controllers.controls.FlowControls.prototype.update = function () {
-
-	goog.base(this, 'update');
-};
 
 
 feng.controllers.controls.FlowControls.prototype.start = function ( fromPosition, gateway, nextMode ) {
@@ -31,30 +25,44 @@ feng.controllers.controls.FlowControls.prototype.start = function ( fromPosition
 	var nearest = this._energyFlow.getNearest( fromPosition );
 
 	// start path animation from closest t
+	var fromU = nearest.u;
+	var toU = 1;
+
 	var prop = {
-    t: nearest.t
+    u: fromU
   };
 
+  var distanceBetweenU = this._energyFlow.getEstimatedDistanceBetweenU(fromU, toU);
+  var duration = distanceBetweenU * 2 / (1.564 / 2 * 100);	// adult walking speed is 1.564 meter per second
+
   this._tweener = TweenMax.to(prop, duration, {
-    t: 1,
+    u: 1,
     ease: Linear.easeNone,
     onUpdate: this.onPathProgress,
     onUpdateParams: [prop],
     onUpdateScope: this,
     onComplete: this.onPathComplete,
     onCompleteParams: [gateway, nextMode],
-    onCompleteScope: this
+    onCompleteScope: this,
+    repeat: -1
   });
 };
 
 
 feng.controllers.controls.FlowControls.prototype.onPathProgress = function ( prop ) {
 
+	var tips = this._energyFlow.getTipsAndWeightOfProgress( prop.u );
+	var object1 = tips.current ? tips.current.getView3dObject().object3d : null;
+	var object2 = tips.next ? tips.next.getView3dObject().object3d : null;
+	var lookAtRotation = this._energyFlow.interpolateLookAt( object1, object2, tips.weight );
+
 	//
-	var pathCamera = this._energyFlow.getCameraAt( prop.t );
+	var pathCamera = this._energyFlow.getCameraAt( prop.u );
+
+	var rotation = pathCamera.rotation; //this._energyFlow.getLookAt( object2 );
 
 	this.setPosition( pathCamera.position );
-	this.setRotation( pathCamera.rotation );
+	this.setRotation( rotation );
 };
 
 
