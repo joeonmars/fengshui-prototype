@@ -85,9 +85,12 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 
 		this._eventHandler.listen(this._objectSelector, feng.events.EventType.START, this.onObjectSelectStart, false, this);
 		this._eventHandler.listen(this._objectSelector, feng.events.EventType.CHANGE, this.onObjectSelected, false, this);
-		this._eventHandler.listen(this._eventMediator.getEventTarget(), feng.events.EventType.UPDATE, this.onMediatorEvent, false, this);
 
+		this._eventHandler.listen(this._eventMediator.getEventTarget(), feng.events.EventType.UPDATE, this.onMediatorEvent, false, this);
 		this._eventMediator.listen(this, feng.events.EventType.UPDATE);
+
+		this._eventHandler.listen(this._eventMediator.getEventTarget(), feng.events.EventType.CHANGE, this.onMediatorEvent, false, this);
+		this._eventMediator.listen(this, feng.events.EventType.CHANGE);
 
 		if(mouseEventToTrigger) {
 			this.onMouseDown( mouseEventToTrigger );
@@ -238,7 +241,12 @@ feng.controllers.controls.BrowseControls.prototype.onMediatorEvent = function(e)
 
 		break;
 
-		default:
+		case feng.events.EventType.CHANGE:
+
+		if(e.target instanceof feng.views.sections.controls.ProgressBar) {
+			console.log(e);
+		}
+
 		break;
 	}
 };

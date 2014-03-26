@@ -41,3 +41,22 @@
 	<div class="fill"></div>
 </div>
 {/template}
+
+
+/**
+ * Progress Bar
+ * @param tips fengshui tips
+ */
+{template .ProgressBar}
+<div class="progressBar">
+	<div class="inner">
+		<ul class="tips">
+			{foreach $tip in $tips}
+				<li class="{if $tip.unlocked != true}locked{/if}" data-tip-id="{ $tip.id }" data-view-id="{ $tip.viewId }" data-section-id="{ $tip.sectionId }">
+				{ $tip.id }
+				</li>
+			{/foreach}
+		</ul>
+	</div>
+</div>
+{/template}

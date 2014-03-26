@@ -38,3 +38,22 @@ feng.templates.controls.Manipulator = function(opt_data, opt_ignored) {
 feng.templates.controls.ObjectSelector = function(opt_data, opt_ignored) {
   return '<div class="objectSelector"><div class="fill"></div></div>';
 };
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
+  var output = '<div class="progressBar"><div class="inner"><ul class="tips">';
+  var tipList10 = opt_data.tips;
+  var tipListLen10 = tipList10.length;
+  for (var tipIndex10 = 0; tipIndex10 < tipListLen10; tipIndex10++) {
+    var tipData10 = tipList10[tipIndex10];
+    output += '<li class="' + ((tipData10.unlocked != true) ? 'locked' : '') + '" data-tip-id="' + tipData10.id + '" data-view-id="' + tipData10.viewId + '" data-section-id="' + tipData10.sectionId + '">' + tipData10.id + '</li>';
+  }
+  output += '</ul></div></div>';
+  return output;
+};

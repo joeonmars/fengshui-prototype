@@ -9,11 +9,11 @@ goog.require('feng.utils.ThreeUtils');
 /**
  * @constructor
  */
-feng.controllers.controls.FlowControls = function(camera, view3d, domElement){
+feng.controllers.controls.FlowControls = function(camera, view3d, domElement, energyFlow){
 
   goog.base(this, camera, view3d, domElement);
 
-  this._energyFlow = this._view3d.energyFlow;
+  this._energyFlow = energyFlow;
 	this._tweener = null;
 };
 goog.inherits(feng.controllers.controls.FlowControls, feng.controllers.controls.Controls);

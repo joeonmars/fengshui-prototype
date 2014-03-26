@@ -292,7 +292,7 @@ feng.apps.PathEdit.prototype.onProgress = function(e) {
 	this._motionCamera.position.copy( pathCamera.position );
 	this._motionCamera.rotation.copy( pathCamera.rotation );
 
-	//console.log(this._pathTrack.getTipsOfProgress(e.progress));
+	console.log(this._pathTrack.getTipsOfProgress(e.progress));
 };
 
 

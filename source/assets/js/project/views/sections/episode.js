@@ -7,12 +7,20 @@ goog.require('feng.events.EventMediator');
 goog.require('feng.views.sections.Section');
 goog.require('feng.views.View3D');
 goog.require('feng.views.sections.controls.Compass');
+goog.require('feng.views.sections.controls.ProgressBar');
 
 
 /**
  * @constructor
  */
-feng.views.sections.Episode = function(domElement){
+feng.views.sections.Episode = function(template, templateData){
+
+	var domFrag = soy.renderAsFragment(template, templateData);
+
+	var mainElement = goog.dom.getElement('main');
+  goog.dom.appendChild(mainElement, domFrag);
+
+  var domElement = goog.dom.getElement( templateData.id );
 
   goog.base(this, domElement);
 
@@ -21,6 +29,9 @@ feng.views.sections.Episode = function(domElement){
 
   var compassDom = goog.dom.getElementByClass('compass', this.domElement);
   this._compass = new feng.views.sections.controls.Compass( compassDom, this._eventMediator );
+
+  var progressBarDom = goog.dom.getElementByClass('progressBar', this.domElement);
+  this._progressBar = new feng.views.sections.controls.ProgressBar( progressBarDom, this._eventMediator );
 
   this._viewIds = [];
   this._view3ds = [];
@@ -64,6 +75,7 @@ feng.views.sections.Episode.prototype.activate = function(){
 	}
 
 	this._compass.activate();
+	this._progressBar.activate();
 };
 
 
@@ -78,6 +90,7 @@ feng.views.sections.Episode.prototype.deactivate = function(){
 	}
 
 	this._compass.deactivate();
+	this._progressBar.deactivate();
 };
 
 

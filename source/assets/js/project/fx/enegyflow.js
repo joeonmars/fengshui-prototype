@@ -52,24 +52,43 @@ feng.fx.EnergyFlow.prototype.getNearest = function( position ){
 
 feng.fx.EnergyFlow.prototype.getTipsOfProgress = function( progress ){
 
+	var totalControlPoints = this.controlPoints.length;
+
 	var progressT = this.spline.getUtoTmapping( progress );
+	var currentControlPoint, nextControlPoint;
+	var currentT = 0, nextT = 1;
+	var currentTipId = '', nextTipId = '';
 
-	var currentControlPointIndex = Math.floor( (this.controlPoints.length - 1) * progressT );
-	var nextControlPointIndex = Math.min( currentControlPointIndex + 1, this.controlPoints.length - 1 );
+	var progressControlPointIndex = Math.floor( (totalControlPoints - 1) * progressT );
 
-	// get weight by T, calculated T by U (progress)
-	var currentT = currentControlPointIndex / (this.controlPoints.length - 1);
-	var nextT = nextControlPointIndex / (this.controlPoints.length - 1);
+	goog.array.forEach(this.controlPoints, function(controlPoint, index) {
+
+		if(controlPoint.tipId) {
+
+			var controlPointT = index / (totalControlPoints - 1);
+
+			if(index <= progressControlPointIndex) {
+
+				currentT = controlPointT;
+				currentTipId = controlPoint.tipId;
+				currentControlPoint = controlPoint;
+
+			}else {
+			
+				if(!nextTipId) {
+					nextT = controlPointT;
+					nextTipId = controlPoint.tipId;
+					nextControlPoint = controlPoint;
+				}
+
+			}
+		}
+	});
+
+	// get weight by T, which is calculated from U (progress)
 	var weight = (progressT - currentT) / (nextT - currentT);
-	if(nextT === currentT) weight = 1;
 
 	// get tips
-	var currentControlPoint = this.controlPoints[ currentControlPointIndex ];
-	var nextControlPoint = this.controlPoints[ nextControlPointIndex ];
-
-	var currentTipId = currentControlPoint.tipId || '';
-	var nextTipId = nextControlPoint.tipId || '';
-
 	var currentTip = currentTipId;
 	var nextTip = nextTipId;
 
