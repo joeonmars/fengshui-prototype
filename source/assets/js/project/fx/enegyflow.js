@@ -52,14 +52,16 @@ feng.fx.EnergyFlow.prototype.getNearest = function( position ){
 
 feng.fx.EnergyFlow.prototype.getTipsOfProgress = function( progress ){
 
-	var currentControlPointIndex = Math.floor( (this.controlPoints.length - 1) * progress );
+	var progressT = this.spline.getUtoTmapping( progress );
+
+	var currentControlPointIndex = Math.floor( (this.controlPoints.length - 1) * progressT );
 	var nextControlPointIndex = Math.min( currentControlPointIndex + 1, this.controlPoints.length - 1 );
 
 	// get weight by T, calculated T by U (progress)
-	var progressT = this.spline.getUtoTmapping( progress );
 	var currentT = currentControlPointIndex / (this.controlPoints.length - 1);
 	var nextT = nextControlPointIndex / (this.controlPoints.length - 1);
 	var weight = (progressT - currentT) / (nextT - currentT);
+	if(nextT === currentT) weight = 1;
 
 	// get tips
 	var currentControlPoint = this.controlPoints[ currentControlPointIndex ];
