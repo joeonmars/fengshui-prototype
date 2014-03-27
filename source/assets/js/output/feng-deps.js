@@ -20,7 +20,7 @@ goog.addDependency('../../../../project/controllers/view3d/pathfindingcontroller
 goog.addDependency('../../../../project/controllers/view3d/view3dcontroller.js', ['feng.controllers.view3d.View3DController'], ['feng.events', 'goog.events.EventHandler', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/events/eventmediator.js', ['feng.events.EventMediator'], ['goog.Disposable', 'goog.events', 'goog.events.EventHandler', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/events/eventtype.js', ['feng.events'], []);
-goog.addDependency('../../../../project/feng.js', ['feng'], ['feng.apps.Demo', 'feng.apps.Main', 'feng.apps.PathEdit']);
+goog.addDependency('../../../../project/feng.js', ['feng'], ['feng.apps.Demo', 'feng.apps.Main', 'feng.apps.PathEdit', 'goog.Uri']);
 goog.addDependency('../../../../project/fx/enegyflow.js', ['feng.fx.EnergyFlow'], ['feng.fx.PathTrack', 'feng.models.achievements.Achievements']);
 goog.addDependency('../../../../project/fx/pathtrack.js', ['feng.fx.PathTrack'], ['feng.utils.Randomizer']);
 goog.addDependency('../../../../project/fx/postprocessing.js', ['feng.fx.PostProcessing'], []);
