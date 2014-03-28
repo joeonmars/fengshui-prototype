@@ -50,8 +50,16 @@ feng.views.sections.Episode.prototype.show = function(){
 
 	goog.base(this, 'show');
 
+	this.showView();
+};
+
+
+feng.views.sections.Episode.prototype.showView = function(){
+
 	if(this._view3d) {
 		this._view3d.show();
+		this._compass.show();
+		this._progressBar.show();
 	}
 };
 
@@ -62,6 +70,8 @@ feng.views.sections.Episode.prototype.hide = function(){
 
 	if(this._view3d) {
 		this._view3d.hide();
+		this._compass.hide();
+		this._progressBar.hide();
 	}
 };
 
@@ -70,12 +80,17 @@ feng.views.sections.Episode.prototype.activate = function(){
 
 	goog.base(this, 'activate');
 
+	this.activateView();
+};
+
+
+feng.views.sections.Episode.prototype.activateView = function(){
+
 	if(this._view3d) {
 		this._view3d.activate();
+		this._compass.activate();
+		this._progressBar.activate();
 	}
-
-	this._compass.activate();
-	this._progressBar.activate();
 };
 
 
@@ -87,10 +102,9 @@ feng.views.sections.Episode.prototype.deactivate = function(){
 
 	if(this._view3d) {
 		this._view3d.deactivate();
+		this._compass.deactivate();
+		this._progressBar.deactivate();
 	}
-
-	this._compass.deactivate();
-	this._progressBar.deactivate();
 };
 
 
@@ -116,5 +130,8 @@ feng.views.sections.Episode.prototype.onLoadComplete = function(e){
 
 		this._view3d = this._view3ds[0];
 		this._view3d.fadeIn();
+
+		this.showView();
+		this.activateView();
 	}
 };

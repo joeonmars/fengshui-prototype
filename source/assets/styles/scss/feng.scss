@@ -140,19 +140,25 @@
 					>.inner{
 						margin: 0 auto;
 						width: 800px;
-						height: 8px;
-						background: rgba(0, 0, 0, .4);
+						height: 100px;
+						//outline: 1px solid #ddd;
 
 						>.tips{
 							position: absolute;
-							top: -16px;
+							z-index: 1;
 
 							>li{
 								position: absolute;
 								width: 40px;
 								height: 40px;
+								margin-left: -20px;
+								margin-top: -20px;
 								background: #888;
 								cursor: pointer;
+								font-size: 10px;
+								line-height: 40px;
+								text-align: center;
+								@include border-radius(50%);
 							}
 						}
 					}

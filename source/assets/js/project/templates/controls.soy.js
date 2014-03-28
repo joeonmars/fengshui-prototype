@@ -52,7 +52,7 @@ feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var tipListLen10 = tipList10.length;
   for (var tipIndex10 = 0; tipIndex10 < tipListLen10; tipIndex10++) {
     var tipData10 = tipList10[tipIndex10];
-    output += '<li class="' + ((tipData10.unlocked != true) ? 'locked' : '') + '" data-tip-id="' + tipData10.id + '" data-view-id="' + tipData10.viewId + '" data-section-id="' + tipData10.sectionId + '">' + tipData10.id + '</li>';
+    output += '<li class="tip ' + ((tipData10.unlocked != true) ? 'locked' : '') + '" data-tip-id="' + tipData10.id + '" data-view-id="' + tipData10.viewId + '" data-section-id="' + tipData10.sectionId + '">' + tipData10.id + '</li>';
   }
   output += '</ul></div></div>';
   return output;
