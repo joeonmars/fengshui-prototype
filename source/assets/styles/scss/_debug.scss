@@ -131,66 +131,16 @@ $debug_border_style:  2px outset #d6d3ce;
 			width: 100%;
 
 			>li{
-				margin: 8px;
+				margin: 4px;
 
-				&:before{
+				>label{
 					display: inline-block;
-					width: 80px;
+					width: 60px;
 				}
-
-				&[data-prop="fov"] {
-					@include button("fov: ");
-				}
-
-				&[data-prop="position-x"] {
-					@include button("position.x: ");
-				}
-
-				&[data-prop="position-y"] {
-					@include button("position.y: ");
-				}
-
-				&[data-prop="position-z"] {
-					@include button("position.z: ");
-				}
-
-				&[data-prop="rotation-x"] {
-					@include button("rotation.x: ");
-				}
-
-				&[data-prop="rotation-y"] {
-					@include button("rotation.y: ");
-				}
-
-				&[data-prop="rotation-z"] {
-					@include button("rotation.z: ");
-				}
-			}
-		}
-
-		>label{
-
-		}
-	}
-	.controlPanel{
-		@extend .debugPanel;
-
-		>textarea{
-
-		}
-
-		>button{
-			display: inline-block;
-
-			&.input{
-				@include button("Input");
-			}
-
-			&.output{
-				@include button("Output");
 			}
 		}
 	}
+
 }
 
 #debug-manipulate{

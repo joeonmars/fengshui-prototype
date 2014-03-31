@@ -39,7 +39,7 @@
 {template .CameraDebugView}
 	{call .DebugView}
 		{param id}debug-camera{/param}
-		{param title}Camera{/param}
+		{param title}Camera Controls{/param}
 		{param body}
 			<div class="viewPanel">
 				<div>
@@ -48,20 +48,15 @@
 					<div class="button visible"></div>
 				</div>
 				<ul>
-					<li data-prop="fov"></li>
-					<li data-prop="position-x"></li>
-					<li data-prop="position-y"></li>
-					<li data-prop="position-z"></li>
-					<li data-prop="rotation-x"></li>
-					<li data-prop="rotation-y"></li>
-					<li data-prop="rotation-z"></li>
+					<li><label>fov</label><input name="fov" type="number"></li>
+					<li><label>position x</label><input name="position-x" type="number"></li>
+					<li><label>position y</label><input name="position-y" type="number"></li>
+					<li><label>position z</label><input name="position-z" type="number"></li>
+					<li><label>rotation x</label><input name="rotation-x" type="number"></li>
+					<li><label>rotation y</label><input name="rotation-y" type="number"></li>
+					<li><label>rotation z</label><input name="rotation-z" type="number"></li>
+					<li><input class="degrees" type="checkbox">in degrees</li>
 				</ul>
-				<label><input class="inDegrees" type="checkbox">in degrees</label>
-			</div>
-			<div class="controlPanel">
-				<textarea rows="10"></textarea>
-				<button type="button" class="button input"></button>
-				<button type="button" class="button output"></button>
 			</div>
 		{/param}
 	{/call}

@@ -25,7 +25,7 @@ feng.views.debug.Pathfinding = function(){
   	path: 'rgba(255, 255, 0, 0.6)'
   });
 
-  this.show();
+  this.hide();
 };
 goog.inherits(feng.views.debug.Pathfinding, feng.views.debug.DebugView);
 

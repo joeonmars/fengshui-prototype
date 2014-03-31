@@ -36,7 +36,7 @@ feng.templates.debug.DebugView = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.debug.CameraDebugView = function(opt_data, opt_ignored) {
-  return '\t' + feng.templates.debug.DebugView({id: 'debug-camera', title: 'Camera', body: '<div class="viewPanel"><div><select></select><button type="button" class="button use"></button><div class="button visible"></div></div><ul><li data-prop="fov"></li><li data-prop="position-x"></li><li data-prop="position-y"></li><li data-prop="position-z"></li><li data-prop="rotation-x"></li><li data-prop="rotation-y"></li><li data-prop="rotation-z"></li></ul><label><input class="inDegrees" type="checkbox">in degrees</label></div><div class="controlPanel"><textarea rows="10"></textarea><button type="button" class="button input"></button><button type="button" class="button output"></button></div>'});
+  return '\t' + feng.templates.debug.DebugView({id: 'debug-camera', title: 'Camera Controls', body: '<div class="viewPanel"><div><select></select><button type="button" class="button use"></button><div class="button visible"></div></div><ul><li><label>fov</label><input name="fov" type="number"></li><li><label>position x</label><input name="position-x" type="number"></li><li><label>position y</label><input name="position-y" type="number"></li><li><label>position z</label><input name="position-z" type="number"></li><li><label>rotation x</label><input name="rotation-x" type="number"></li><li><label>rotation y</label><input name="rotation-y" type="number"></li><li><label>rotation z</label><input name="rotation-z" type="number"></li><li><input class="degrees" type="checkbox">in degrees</li></ul></div>'});
 };
 
 

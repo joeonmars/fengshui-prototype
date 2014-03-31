@@ -12,6 +12,7 @@ feng.views.debug.Manipulate = function(){
 
 	this._viewPanelDom = goog.dom.getElementByClass('viewPanel', this.domElement);
 
+	this.hide();
 };
 goog.inherits(feng.views.debug.Manipulate, feng.views.debug.DebugView);
 
