@@ -1,11 +1,23 @@
-fengshui-prototype
+FengShui prototype
 ======================
 
-Fengshui is a web-application to introduce useful interior design tips suggested by Fengshui principles.
+FengShui is a 3D web-application introducing useful interior design tips suggested by Fengshui principles.
 
-Project built with:  
+Tools
+======================
+
 Grunt Task  
 Google Closure Library  
 Closure template  
 Closure compiler  
-Compass  
+Compass
+
+Setup
+======================
+
+CD to project folder  
+grunt init project-template  
+npm install  
+grunt for development  
+grunt build for building production code  
+have fun...
