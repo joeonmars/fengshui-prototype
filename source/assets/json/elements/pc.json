@@ -47,13 +47,6 @@
 	"object": {
 		"uuid": "9CEDF1C3-221C-4F44-84AB-ED10002EE344",
 		"name": "pc",
-		"userData": {
-			"collidable": true,
-			"texture": "texture-pc",
-			"interactions": [
-				"move",
-				"rotate"]
-		},
 		"type": "Mesh",
 		"geometry": "2E3E0059-2E63-44BF-810C-69C0A5672DBF",
 		"material": "60C1AF4E-6FC7-4A12-A4DC-A226BF4A462E",
@@ -62,15 +55,6 @@
 			{
 				"uuid": "54BE5DEE-7667-4150-BCB1-27676AAB876B",
 				"name": "screen",
-				"userData": {
-					"animated-texture": {
-						"texture": "texture-screensaver",
-						"htiles": 45,
-						"vtiles": 1,
-						"ntiles": 45,
-						"duration": 100
-					}
-				},
 				"type": "Mesh",
 				"geometry": "8E30A614-B02F-492E-8763-0C8039293BBA",
 				"material": "2CA8C739-39A6-4366-9F08-A9DFDE6C48EE",

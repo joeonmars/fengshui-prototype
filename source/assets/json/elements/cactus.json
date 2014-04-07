@@ -30,9 +30,6 @@
 	"object": {
 		"uuid": "762CF997-01B7-456B-9D35-EB077478593C",
 		"name": "cactus",
-		"userData": {
-			"texture": "texture-cactus"
-		},
 		"type": "Mesh",
 		"geometry": "9D2E0DE7-ECC8-49F9-A765-8C9B9267ADEE",
 		"material": "747B4EE7-BECA-43D3-B7CA-7A485A1AC138",

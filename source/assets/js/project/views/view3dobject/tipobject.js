@@ -6,9 +6,9 @@ goog.require('feng.views.view3dobject.InteractiveObject');
  * @constructor
  * An interactive object that carries a feng-shui tip
  */
-feng.views.view3dobject.TipObject = function( object3d, interactions ){
+feng.views.view3dobject.TipObject = function( object3d, data ){
 
-  goog.base(this, object3d, interactions);
+  goog.base(this, object3d, data);
 
 };
 goog.inherits(feng.views.view3dobject.TipObject, feng.views.view3dobject.InteractiveObject);

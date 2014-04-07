@@ -106,7 +106,7 @@
 			"wireframe": false
 		}],
 	"object": {
-		"uuid": "75A1ADD8-EFBF-4D40-88A0-52666D365324",
+		"uuid": "4A67E1BA-BF32-465B-99F7-8DAD5CA35620",
 		"name": "interior2",
 		"type": "Scene",
 		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
@@ -117,7 +117,7 @@
 				"type": "Mesh",
 				"geometry": "F2219B5C-6ED3-4172-8554-3468A31789AE",
 				"material": "6C36570F-5736-4FB8-843D-87EE9FE71DDC",
-				"matrix": [1,0,0,0,0,0.0007962886593304574,-0.9999997019767761,0,0,0.9999997019767761,0.0007962886593304574,0,0,0,0,1]
+				"matrix": [1,0,0,0,0,0.000796250649727881,-0.9999997019767761,0,0,0.9999997019767761,0.000796250649727881,0,0,0,0,1]
 			},
 			{
 				"uuid": "0B845078-B793-4C44-96E6-AA99C450895C",
@@ -126,6 +126,11 @@
 				"color": 16777215,
 				"intensity": 0.2,
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,50,150,50,1]
+			},
+			{
+				"uuid": "1DECDB1F-348E-4287-AD4F-75C2126A8257",
+				"type": "Object3D",
+				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
 				"uuid": "16452BA5-D1FB-46D6-A8A0-7B98838821FD",
@@ -138,12 +143,6 @@
 			{
 				"uuid": "D4830745-01D2-4F5D-93A2-03BE191292F5",
 				"name": "door",
-				"userData": {
-					"class": "gateway",
-					"viewid": "interior1",
-					"gatewayid": "door",
-					"collidable": true
-				},
 				"type": "Mesh",
 				"geometry": "F365D9E5-3B8C-4F49-9AA8-4E7FDE9C9509",
 				"material": "74907D0F-D4A0-468A-94B1-8C4BA64BC93A",
@@ -159,13 +158,6 @@
 			{
 				"uuid": "9CEDF1C3-221C-4F44-84AB-ED10002EE344",
 				"name": "pc",
-				"userData": {
-					"collidable": true,
-					"texture": "texture-pc",
-					"interactions": [
-						"move",
-						"rotate"]
-				},
 				"type": "Mesh",
 				"geometry": "2E3E0059-2E63-44BF-810C-69C0A5672DBF",
 				"material": "60C1AF4E-6FC7-4A12-A4DC-A226BF4A462E",
@@ -174,15 +166,6 @@
 					{
 						"uuid": "54BE5DEE-7667-4150-BCB1-27676AAB876B",
 						"name": "screen",
-						"userData": {
-							"animated-texture": {
-								"texture": "texture-screensaver",
-								"htiles": 45,
-								"vtiles": 1,
-								"ntiles": 45,
-								"duration": 100
-							}
-						},
 						"type": "Mesh",
 						"geometry": "8E30A614-B02F-492E-8763-0C8039293BBA",
 						"material": "2CA8C739-39A6-4366-9F08-A9DFDE6C48EE",
@@ -192,13 +175,10 @@
 			{
 				"uuid": "762CF997-01B7-456B-9D35-EB077478593C",
 				"name": "cactus",
-				"userData": {
-					"texture": "texture-cactus"
-				},
 				"type": "Mesh",
 				"geometry": "9D2E0DE7-ECC8-49F9-A765-8C9B9267ADEE",
 				"material": "747B4EE7-BECA-43D3-B7CA-7A485A1AC138",
-				"matrix": [8,0,0,0,0,8,0,0,0,0,8,0,-102.3718032836914,7.6664276123046875,63.309906005859375,1]
+				"matrix": [8,0,0,0,0,8,0,0,0,0,8,0,-102.37000274658203,7.670000076293945,63.310001373291016,1]
 			}]
 	}
 }

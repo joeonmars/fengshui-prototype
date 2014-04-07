@@ -6,11 +6,11 @@ goog.require('feng.views.view3dobject.View3DObject');
  * @constructor
  * A 3d object that can be interacted in view3d
  */
-feng.views.view3dobject.InteractiveObject = function( object3d, interactions ){
+feng.views.view3dobject.InteractiveObject = function( object3d, data ){
 
-  goog.base(this, object3d);
+  goog.base(this, object3d, data);
 
-  this.interactions = interactions;
+  this.interactions = this.data.interactions || [];
 };
 goog.inherits(feng.views.view3dobject.InteractiveObject, feng.views.view3dobject.View3DObject);
 

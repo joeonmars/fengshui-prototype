@@ -12,6 +12,7 @@ goog.require('feng.fx.EnergyFlow');
 goog.require('feng.fx.TextureAnimator');
 goog.require('feng.fx.PostProcessing');
 goog.require('feng.models.Preload');
+goog.require('feng.models.View3D');
 goog.require('feng.views.view3dobject.View3DObject');
 goog.require('feng.views.view3dobject.InteractiveObject');
 goog.require('feng.views.view3dobject.HolderObject');
@@ -114,8 +115,14 @@ feng.views.View3D.prototype.getCollidables = function(excludes){
 
 	excludes = goog.isArray(excludes) ? excludes : [excludes];
 
-	var collidables = goog.array.filter(this.scene.children, function(child) {
-  	return (goog.array.indexOf(excludes, child) < 0 && child.userData['collidable'] === true);
+	var sectionId = this.sectionId;
+	var sceneId = this.id;
+
+	var collidables = goog.array.filter(this.scene.children, function(object) {
+
+		var objectData = feng.models.View3D.getData(sectionId+'.'+sceneId+'.'+object.name);
+  	return (goog.array.indexOf(excludes, object) < 0 && objectData.collidable === true);
+
   });
 
   return collidables;
@@ -239,37 +246,41 @@ feng.views.View3D.prototype.initScene = function() {
 	};
 
 	// parse scene objects
+	var sectionId = this.sectionId;
+	var sceneId = this.id;
+
 	var parse = goog.bind( function(object) {
 
 		if(!(object instanceof THREE.Object3D)) return;
 
-		var interactions = object.userData['interactions'] || [];
-		var className = object.userData['class'];
+		var objectData = feng.models.View3D.getData(sectionId+'.'+sceneId+'.'+object.name);
+		var interactions = objectData.interactions || [];
+		var className = objectData.class;
 
 		if(className) {
 
 			// create specific class object
-			var typedObject = new objectClass[className]( object, interactions );
+			var typedObject = new objectClass[className]( object, objectData );
 			this.interactiveObjects[ object.name ] = typedObject;
 			this.view3dObjects[ object.name ] = typedObject;
 
 		}else if(interactions.length > 0) {
 
 			// create interactive object
-			var interactiveObject = new feng.views.view3dobject.InteractiveObject( object, interactions );
+			var interactiveObject = new feng.views.view3dobject.InteractiveObject( object, objectData );
 			this.interactiveObjects[ object.name ] = interactiveObject;
 			this.view3dObjects[ object.name ] = interactiveObject;
 
 		}else {
 
 			// create view3d object
-			var view3dObject = new feng.views.view3dobject.View3DObject( object );
+			var view3dObject = new feng.views.view3dobject.View3DObject( object, objectData );
 			this.view3dObjects[ object.name ] = view3dObject;
 
 		}
 
 		// add collidables (optinally)
-		if(object.userData['collidable'] === true) {
+		if(objectData.collidable === true) {
 			this._collidables.push( object );
 		}
 	}, this);
@@ -342,29 +353,36 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 
 	// parse scene children
 	var parse = function(object) {
+
+		var objectData = feng.models.View3D.getData(sectionId+'.'+sceneId+'.'+object.name);
+
 		if(object instanceof THREE.Object3D) {
 
-			var textureData = object.userData['texture'] || object.userData['animated-texture'];
+			var textureData = objectData.texture;
 
 			if(goog.isString(textureData)) {
-				// if texture data is still
+
+				// if texture data is image
 				var textureSrc = preloadModel.getAsset(sceneDataPrefix+'.'+textureData).src;
 			  object.material.map = THREE.ImageUtils.loadTexture( textureSrc );
+
 			}else if(goog.isObject(textureData)) {
+
 				// if texture data is animated spritesheet
-				var textureSrc = preloadModel.getAsset(sceneDataPrefix+'.'+textureData['texture']).src;
+				var textureSrc = preloadModel.getAsset(sceneDataPrefix+'.'+textureData.texture).src;
 				object.material.map = THREE.ImageUtils.loadTexture( textureSrc );
 				object.material.color.setRGB(1, 1, 1);
 
 				// create texture animator
 				var texture = object.material.map;
-				var htiles = textureData['htiles'];
-				var vtiles = textureData['vtiles'];
-				var ntiles = textureData['ntiles'];
-				var duration = textureData['duration'];
+				var htiles = textureData.htiles;
+				var vtiles = textureData.vtiles;
+				var ntiles = textureData.ntiles;
+				var duration = textureData.duration;
 				var textureAnimator = new feng.fx.TextureAnimator(texture, htiles, vtiles, ntiles, duration);
-				textureData['texture-animator'] = textureAnimator;
+				textureData.animator = textureAnimator;
 				textureAnimator.start();
+
 			}
 
 			if(object instanceof THREE.DirectionalLight) {
@@ -385,6 +403,7 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 
 			if(object instanceof THREE.Mesh) {
 				object.castShadow = true;
+				object.receiveShadow = objectData.receiveShadow;
 			}
 
 			if(object.material) {
@@ -393,8 +412,6 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 		}
   };
 
-  scene.getObjectByName('ground').receiveShadow = true;
-	
 	goog.array.forEach(scene.children, function(child) {
 		feng.views.View3D.parseChildren(child, parse);
 	});

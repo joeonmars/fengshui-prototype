@@ -6,16 +6,14 @@ goog.require('feng.views.view3dobject.InteractiveObject');
  * @constructor
  * An interactive object that is placeable on other holder objects
  */
-feng.views.view3dobject.AccessoryObject = function( object3d, interactions ){
+feng.views.view3dobject.AccessoryObject = function( object3d, data ){
+
+  goog.base(this, object3d, data);
 
 	var place = feng.views.view3dobject.InteractiveObject.Interaction.PLACE;
-	if(!goog.array.contains(interactions, place)) {
-		interactions.push(place);
+	if(!goog.array.contains(this.interactions, place)) {
+		this.interactions.push(place);
 	}
-
-  goog.base(this, object3d, interactions);
-
-  this.interactions = interactions;
 
   this.holder = null;
 };

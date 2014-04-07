@@ -7,11 +7,12 @@ goog.require('goog.math.Box');
  * @constructor
  * A 3d object in view3d
  */
-feng.views.view3dobject.View3DObject = function( object3d ){
+feng.views.view3dobject.View3DObject = function( object3d, data ){
 
   goog.base(this);
 
   this.object3d = object3d;
+  this.data = data;
 };
 goog.inherits(feng.views.view3dobject.View3DObject, goog.events.EventTarget);
 

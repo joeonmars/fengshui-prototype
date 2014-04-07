@@ -129,7 +129,7 @@
 			"wireframe": false
 		}],
 	"object": {
-		"uuid": "77C7F965-413A-4C06-AAE6-117038903390",
+		"uuid": "58CFD51F-1D65-4462-82E1-239C90A40E88",
 		"name": "interior1",
 		"type": "Scene",
 		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
@@ -140,14 +140,11 @@
 				"type": "Mesh",
 				"geometry": "F2219B5C-6ED3-4172-8554-3468A31789AE",
 				"material": "D1B27899-B4A6-462B-9931-2EDD324A031C",
-				"matrix": [1,0,0,0,0,0.0007955400506034493,-0.9999997019767761,0,0,0.9999997019767761,0.0007955400506034493,0,0,0,0,1]
+				"matrix": [1,0,0,0,0,0.000795503263361752,-0.9999997019767761,0,0,0.9999997019767761,0.000795503263361752,0,0,0,0,1]
 			},
 			{
 				"uuid": "1A6F0A60-3DF8-4586-8A55-6485D4ACFB1D",
 				"name": "wall",
-				"userData": {
-					"collidable": true
-				},
 				"type": "Mesh",
 				"geometry": "DE162C14-1327-46F3-956B-7B531C42D8DB",
 				"material": "F9C2A2F4-48A2-4067-BFBF-75FE2041C4A4",
@@ -172,12 +169,6 @@
 			{
 				"uuid": "B6D50AB4-8103-41BE-B3EA-E3B248960E13",
 				"name": "sofa",
-				"userData": {
-					"collidable": true,
-					"interactions": [
-						"move",
-						"rotate"]
-				},
 				"type": "Mesh",
 				"geometry": "6B1B755C-FEB8-4622-876F-86CCB3CEBD8C",
 				"material": "91ABA2D9-264D-49EB-83BA-926F12EE044F",
@@ -186,18 +177,10 @@
 			{
 				"uuid": "8F420A2C-4F45-4189-8B13-88368FB5B01F",
 				"name": "cabinet",
-				"userData": {
-					"class": "holder",
-					"collidable": true,
-					"texture": "texture-cabinet",
-					"interactions": [
-						"move",
-						"rotate"]
-				},
 				"type": "Mesh",
 				"geometry": "87F11A33-20E0-404B-952D-D3142CCD27EB",
 				"material": "ED4A1FEB-C300-4104-AC82-8258C9A25CC3",
-				"matrix": [0.0001592577318660915,0,-0.19999994337558746,0,0,0.20000000298023224,0,0,0.19999994337558746,0,0.0001592577318660915,0,-187.57000732421875,29.25,138.72000122070312,1],
+				"matrix": [0.00015926534251775593,0,-0.19999994337558746,0,0,0.20000000298023224,0,0,0.19999994337558746,0,0.00015926534251775593,0,-187.57000732421875,29.25,138.72000122070312,1],
 				"children": [
 					{
 						"uuid": "703BDE68-7A5C-4CD6-834F-6481FAF9E65B",
@@ -209,13 +192,6 @@
 			{
 				"uuid": "93BE4C46-E418-4B6F-AD06-D4DEB5B7ECAA",
 				"name": "bed",
-				"userData": {
-					"collidable": true,
-					"texture": "texture-bed",
-					"interactions": [
-						"move",
-						"rotate"]
-				},
 				"type": "Mesh",
 				"geometry": "C1253732-CB08-4B59-A265-3965A189D761",
 				"material": "D3D7A0F3-AB21-409E-BE61-EBB0D41616D2",
@@ -224,12 +200,6 @@
 			{
 				"uuid": "0D8C09E6-F0B5-4A6C-AA8D-ABC9C687587A",
 				"name": "door",
-				"userData": {
-					"class": "gateway",
-					"viewid": "interior2",
-					"gatewayid": "door",
-					"collidable": true
-				},
 				"type": "Mesh",
 				"geometry": "9676EE65-4280-4C1F-A0B1-DE482A79D6E7",
 				"material": "4AFD5007-6F2C-420B-9EB8-FB32C2F79CDE",
