@@ -25,6 +25,7 @@ feng.models.Preload = function(){
 			},
 			'interior2': {
 				'scene-data': 'json/scene-interior2.json',
+				'energyflow-data': 'json/energyflow/energyflow-2.json',
 				'texture-pc': 'images/texture/pc-texture.jpg',
 				'texture-screensaver': 'images/texture/spritesheet/screensaver.png',
 				'texture-cactus': 'images/texture/cactus-texture.png',
