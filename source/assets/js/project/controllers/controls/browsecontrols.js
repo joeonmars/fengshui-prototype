@@ -1,6 +1,7 @@
 goog.provide('feng.controllers.controls.BrowseControls');
 
 goog.require('goog.events');
+goog.require('goog.math.Box');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.views.sections.controls.ObjectSelector');
 goog.require('feng.utils.ThreeUtils');
@@ -17,7 +18,7 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 
   this._eventMediator = this._view3d.eventMediator;
 
-	this._shouldCancelClick = false;
+	this._shouldIgnoreClick = false;
 
 	var objectSelectorEl = goog.dom.getElementByClass('objectSelector', uiElement);
 	var renderEl = this._view3d.domElement;
@@ -150,7 +151,7 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 	
 	goog.base(this, 'onClick', e);
 
-	if ( this._shouldCancelClick ) return;
+	if ( this._shouldIgnoreClick ) return;
 
 	var clickableObjects = [];
 	goog.object.forEach(this._view3d.view3dObjects, function(object) {
@@ -180,7 +181,7 @@ feng.controllers.controls.BrowseControls.prototype.onMouseDown = function ( e ) 
 
 	goog.base(this, 'onMouseDown', e);
 
-	this._shouldCancelClick = false;
+	this._shouldIgnoreClick = false;
 
 	this._lastMouseX = e.clientX;
 	this._lastMouseY = e.clientY;
@@ -191,7 +192,7 @@ feng.controllers.controls.BrowseControls.prototype.onMouseMove = function ( e ) 
 
 	goog.base(this, 'onMouseMove', e);
 
-	this._shouldCancelClick = true;
+	this._shouldIgnoreClick = true;
 
 	var movementX = e.clientX - this._lastMouseX;
 	var movementY = e.clientY - this._lastMouseY;
@@ -209,7 +210,7 @@ feng.controllers.controls.BrowseControls.prototype.onMouseMove = function ( e ) 
 
 feng.controllers.controls.BrowseControls.prototype.onObjectSelectStart = function ( e ) {
 
-	this._shouldCancelClick = true;
+	this._shouldIgnoreClick = true;
 };
 
 
@@ -217,13 +218,38 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelected = function (
 
 	console.log('Object selected!');
 
-	this.dispatchEvent({
-		type: feng.events.EventType.CHANGE,
-		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-		nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-		toPosition: this.getPosition(),
-		object: e.object
-	});
+	var position = e.object.object3d.position;
+	var camera = this.getCamera();
+	var size = this._view3d.getViewSize();
+	var object2dCoord = feng.utils.ThreeUtils.get2DCoordinates(position, camera, size);
+
+	var scale = 2 / 3;
+	var w = size.width * scale;
+	var h = size.height * scale;
+	var x = ( size.width - w ) / 2;
+	var y = ( size.height - h ) / 2;
+	var viewportBox = new goog.math.Box(y, x + w, y + h, x);
+
+	var shouldTransition = !viewportBox.contains( object2dCoord );
+
+	if(shouldTransition) {
+
+		this.dispatchEvent({
+			type: feng.events.EventType.CHANGE,
+			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
+			toPosition: this.getPosition(),
+			object: e.object
+		});
+	}else {
+
+		this.dispatchEvent({
+			type: feng.events.EventType.CHANGE,
+			mode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
+			toPosition: this.getPosition(),
+			object: e.object
+		});
+	}
 };
 
 

@@ -40,9 +40,11 @@ feng.controllers.controls.CloseUpControls.prototype.setCamera = function( positi
 };
 
 
-feng.controllers.controls.CloseUpControls.prototype.enable = function( enable ) {
+feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, object ) {
 
 	goog.base(this, 'enable', enable);
+
+	this._activeObject = object || this._activeObject;
 
 	if(this._isEnabled) {
 
@@ -51,7 +53,6 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable ) 
 
 		this._manipulator.show();
 		this._manipulator.activate( this._activeObject.interactions );
-		this.update();
 
 	}else  {
 
@@ -75,11 +76,10 @@ feng.controllers.controls.CloseUpControls.prototype.update = function() {
 
 	goog.base(this, 'update');
 
-	var renderElement = this._view3d.domElement;
-	var renderElementSize = goog.style.getSize( renderElement );
-	var object3d = this._activeObject.object3d;
-	var object2d = feng.utils.ThreeUtils.get2DCoordinates( object3d.position, this._camera, renderElementSize );
-	this._manipulator.update( object2d.x, object2d.y );
+	var viewSize = this._view3d.getViewSize();
+	var position3d = this._activeObject.object3d.position;
+	var position2d = feng.utils.ThreeUtils.get2DCoordinates( position3d, this._camera, viewSize );
+	this._manipulator.update( position2d.x, position2d.y );
 };
 
 

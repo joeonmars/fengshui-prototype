@@ -206,7 +206,20 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	this.control.setPosition( fromPosition );
 	this.control.setRotation( fromRotation );
 	this.control.setFov( fromFov );
-	this.control.enable( true, e.eventToTrigger );
+
+	switch(this.control) {
+		case this._browseControls:
+		this.control.enable( true, e.eventToTrigger );
+		break;
+
+		case this._closeUpControls:
+		this.control.enable( true, e.object );
+		break;	
+
+		default:
+		this.control.enable( true );
+		break;
+	}
 
 	this._cameraController.setCamera( this.control.getCamera() );
 
@@ -240,7 +253,6 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 			break;
 
 		case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
-			console.log('close up');
 			break;
 
 		case feng.controllers.view3d.ModeController.Mode.FLOW:
