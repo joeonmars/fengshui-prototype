@@ -49,7 +49,7 @@ feng.models.View3D.Data = {
 			'door': {
 				class: "gateway",
 				collidable: true,
-				viewid: "interior1",
+				viewid: "interior3",
 				gatewayid: "door"
 			},
 			'pc': {
@@ -74,8 +74,39 @@ feng.models.View3D.Data = {
 			}
 		},
 		'interior3': {
-			'ground': {
+			'wall': {
+				texture: "texture-wall",
 				receiveShadow: true
+			},
+			'door': {
+				class: "gateway",
+				collidable: true,
+				viewid: "interior2",
+				gatewayid: "door"
+			},
+			'bathtub': {
+				texture: "texture-bathtub"
+			},
+			'closet-door': {
+				texture: "texture-closet-door"
+			},
+			'closet': {
+				texture: "texture-closet"
+			},
+			'lamp': {
+				texture: "texture-lamp"
+			},
+			'shelf': {
+				texture: "texture-shelf"
+			},
+			'toilet': {
+				texture: "texture-toilet"
+			},
+			'towel': {
+				texture: "texture-towel"
+			},
+			'washer': {
+				texture: "texture-washer"
 			}
 		}
 	}

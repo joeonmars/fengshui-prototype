@@ -76,7 +76,7 @@ feng.apps.PathEdit.prototype.init = function() {
 	this._editCamera.position.y = 500;
 	this._editCamera.position.z = 500;
 
-	this._motionCamera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 1000 );
+	this._motionCamera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 1000 );
 
 	this._camera = this._editCamera;
 

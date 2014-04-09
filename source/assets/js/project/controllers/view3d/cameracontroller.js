@@ -44,7 +44,7 @@ feng.controllers.view3d.CameraController.prototype.addCamera = function( name, f
 
   if(this.getCamera(name)) return;
 
-  var fov = fov || 45;
+  var fov = fov || 35;
   var aspect = this._view3d.getViewSize().aspectRatio();
   var near = near || 10;
   var far = far || 10000;

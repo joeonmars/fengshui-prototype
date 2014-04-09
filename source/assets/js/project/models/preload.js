@@ -31,7 +31,17 @@ feng.models.Preload = function(){
 				'texture-cactus': 'images/texture/cactus-texture.png',
 			},
 			'interior3': {
-				'scene-data': 'json/scene-interior3.json'
+				'scene-data': 'json/scene-interior3.json',
+				'energyflow-data': 'json/energyflow/energyflow-3.json',
+				'texture-bathtub': 'images/texture/studio/bathroom/bathtub.png',
+				'texture-closet-door': 'images/texture/studio/bathroom/closet-door.jpg',
+				'texture-closet': 'images/texture/studio/bathroom/closet.jpg',
+				'texture-lamp': 'images/texture/studio/bathroom/lamp.png',
+				'texture-shelf': 'images/texture/studio/bathroom/shelf.png',
+				'texture-toilet': 'images/texture/studio/bathroom/toilet.png',
+				'texture-towel': 'images/texture/studio/bathroom/towel.png',
+				'texture-wall': 'images/texture/studio/bathroom/wall.png',
+				'texture-washer': 'images/texture/studio/bathroom/washer.jpg'
 			}
 		},
 		'avatar': {

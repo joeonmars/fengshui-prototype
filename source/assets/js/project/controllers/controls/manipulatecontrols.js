@@ -24,9 +24,10 @@ feng.controllers.controls.ManipulateControls = function(camera, view3d, domEleme
 
   this._rotateTweener = null;
 
-  var groundBox = this._view3d.getView3dObject( 'ground' ).getBox();
-  var width = groundBox.right - groundBox.left;
-  var height = groundBox.bottom - groundBox.top;
+  var boundObject = this._view3d.getView3dObject( 'ground' ) || this._view3d.getView3dObject( 'wall' );
+  var boundBox = boundObject.getBox();
+  var width = boundBox.right - boundBox.left;
+  var height = boundBox.bottom - boundBox.top;
   this.physics = new feng.controllers.controls.ManipulatePhysics( width, height );
 
   var manipulatorDom = goog.dom.getElementByClass('manipulator', uiElement);
