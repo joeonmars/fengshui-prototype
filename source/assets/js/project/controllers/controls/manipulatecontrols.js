@@ -11,7 +11,6 @@ goog.require('feng.controllers.controls.ManipulatePhysics');
 /**
  * @constructor
  * a combination of trackball controls and transform controls
- * WIP
  */
 feng.controllers.controls.ManipulateControls = function(camera, view3d, domElement, uiElement){
 
@@ -79,6 +78,8 @@ feng.controllers.controls.ManipulateControls.prototype.enable = function( enable
 		this._eventHandler.listen(this._manipulator, feng.events.EventType.CHANGE, this.onManipulate, false, this);
 		this._eventHandler.listen(this._eventMediator.getEventTarget(), feng.events.EventType.UPDATE, this.onMediatorEvent, false, this);
 		this._eventMediator.listen(this, feng.events.EventType.UPDATE);
+
+		this._eventHandler.listen(this._view3d.domElement, 'click', this.onClickView, false, this);
 
 		this._manipulator.show();
 		this._manipulator.activate( ['move', 'rotate'] );
@@ -239,6 +240,23 @@ feng.controllers.controls.ManipulateControls.prototype.onManipulate = function (
 			this.close();
 			break;
 	}
+};
+
+
+feng.controllers.controls.ManipulateControls.prototype.onClickView = function(e){
+
+	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition(
+		e.clientX,
+		e.clientY,
+		this._view3d.editables,
+		this._camera,
+		this._view3d.domElement);
+
+	if(intersects.length === 0) {
+		return false;
+	}
+
+	this._activeObject = this._view3d.interactiveObjects[ intersects[0].object.name ];
 };
 
 

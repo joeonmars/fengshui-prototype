@@ -50,7 +50,8 @@ feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eve
 	this.view3dObjects = {};
 	this.interactiveObjects = {};
 
-	this._collidables = [];
+	this.editables = [];
+	this.collidables = [];
 
 	this._renderer = null;
 	this._post = null;
@@ -279,10 +280,17 @@ feng.views.View3D.prototype.initScene = function() {
 
 		}
 
-		// add collidables (optinally)
+		// add collidables
 		if(objectData.collidable === true) {
-			this._collidables.push( object );
+			this.collidables.push( object );
 		}
+
+		// add editables
+		var interactions = objectData.interactions;
+		if(interactions && (goog.array.contains(interactions, 'move') || goog.array.contains(interactions, 'rotate'))) {
+			this.editables.push( object );
+		}
+
 	}, this);
 
 	goog.array.forEach(this.scene.children, function(child) {

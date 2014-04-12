@@ -90,7 +90,6 @@ feng.views.sections.controls.ProgressBar.prototype.activate = function(){
 	}, this);
 
 	this._eventHandler.listen(this._innerEl, 'mouseover', this.onMouseOver, false, this );
-  this._eventHandler.listen(this._innerEl, 'mousemove', this.onMouseMove, false, this );
   this._eventHandler.listen(this._innerEl, 'mouseout', this.onMouseOut, false, this );
 };
 
@@ -247,29 +246,6 @@ feng.views.sections.controls.ProgressBar.prototype.onMouseOver = function(e){
     },
     onUpdateScope: this
   });
-};
-
-
-feng.views.sections.controls.ProgressBar.prototype.onMouseMove = function(e){
-
-	var offset = goog.style.getPageOffset( this._innerEl );
-	var mouseX = e.clientX - offset.x;
-	var mouseY = e.clientY - offset.y;
-	var mouseRadius = this._svgSize.width / this._totalSections;
-
-	this._mouseLeft = mouseX - mouseRadius;
-	this._mouseRight = mouseX + mouseRadius;
-	this._mouseTop = mouseY;
-
-	this._localMouse.x = mouseX - this._circleOffset.x;
-	this._localMouse.y = mouseY - this._circleOffset.y;
-
-	for( var i = 0; i < this._totalCircles; i++ ) {
-	  var circle = this._circles[i];
-	  var circleGlobalX = parseFloat(circle.attr('cx')) + this._circleOffset.x;
-	  var circleGlobalY = parseFloat(circle.attr('cy')) + this._circleOffset.y;
-	  this._affectedValues[i] = this.getAffectedByMouse( circleGlobalX, circleGlobalY );
-	}
 };
 
 

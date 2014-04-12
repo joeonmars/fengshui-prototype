@@ -17,7 +17,7 @@ feng.utils.ThreeUtils.getObjectsBy2DPosition = function ( clientX, clientY, obje
 
 	var vector = new THREE.Vector3( ( clientX / viewSize.width ) * 2 - 1, - ( clientY / viewSize.height ) * 2 + 1, 0.5 );
 	
-	var projector = new THREE.Projector();
+	var projector = feng.utils.ThreeUtils.projector;
 	projector.unprojectVector( vector, camera );
 
 	var raycaster = new THREE.Raycaster( position, vector.sub( position ).normalize() );
@@ -81,7 +81,7 @@ feng.utils.ThreeUtils.get2DCoordinates = function( position, camera, renderEleme
 	var p = position.clone();
 
 	// projectVector will translate position to 2d
-	var projector = new THREE.Projector();
+	var projector = feng.utils.ThreeUtils.projector;
 	var v = projector.projectVector(p, camera);
 
 	// translate our vector so that percX=0 represents
@@ -136,3 +136,6 @@ feng.utils.ThreeUtils.lerpBetween = function( a, b, x ) {
 
 	return newObj;
 };
+
+
+feng.utils.ThreeUtils.projector = new THREE.Projector();
