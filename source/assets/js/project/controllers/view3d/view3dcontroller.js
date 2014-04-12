@@ -60,7 +60,7 @@ feng.controllers.view3d.View3DController.prototype.onShowView3D = function(e){
 		mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
 		fromPosition: position,
 		fromRotation: rotation,
-		fromFov: 35
+		fromFov: 40
 	});
 };
 
