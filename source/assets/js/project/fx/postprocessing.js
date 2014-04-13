@@ -87,8 +87,6 @@ feng.fx.PostProcessing.prototype.setOptions = function( options ){
 feng.fx.PostProcessing.prototype.render = function(scene, camera){
 
 	this.updateRenderPass(scene, camera);
-
-	this._renderer.clear();
 	this._composer.render();
 };
 

@@ -11,6 +11,7 @@ goog.require('feng.controllers.view3d.View3DController');
 goog.require('feng.fx.EnergyFlow');
 goog.require('feng.fx.TextureAnimator');
 goog.require('feng.fx.PostProcessing');
+goog.require('feng.fx.Mirror');
 goog.require('feng.models.Preload');
 goog.require('feng.models.View3D');
 goog.require('feng.views.view3dobject.View3DObject');
@@ -52,6 +53,8 @@ feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eve
 
 	this.editables = [];
 	this.collidables = [];
+
+	this._mirror = null;
 
 	this._renderer = null;
 	this._post = null;
@@ -228,13 +231,18 @@ feng.views.View3D.prototype.fadeOut = function(){
 
 feng.views.View3D.prototype.render = function() {
 	
+	if(this._mirror) {
+		this._mirror.render();
+	}
+
 	this._post.render(this.scene, this.cameraController.activeCamera);
 };
 
 
 feng.views.View3D.prototype.initScene = function() {
 	
-	this.scene = feng.views.View3D.constructScene(this.sectionId, this.id);
+	var constructed = feng.views.View3D.constructScene(this.sectionId, this.id);
+	this.scene = constructed.scene;
 
 	/*
 	 * Classes to be created by external json data
@@ -312,6 +320,14 @@ feng.views.View3D.prototype.initScene = function() {
 
 	// init mode controller
 	this.modeController.init();
+
+	// create mirrors
+	var mirrorObject = constructed.mirrorObject;
+	if(mirrorObject) {
+		this._mirror = new feng.fx.Mirror( this._renderer, this.cameraController.activeCamera );
+		mirrorObject.material = this._mirror.material;
+		mirrorObject.add( this._mirror );
+	}
 };
 
 
@@ -358,6 +374,7 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 	var sceneDataPrefix = sectionId+'.'+sceneId;
 	var sceneData = preloadModel.getAsset(sceneDataPrefix+'.scene-data');
 	var scene = loader.parse( sceneData );
+	var mirrorObject = null;
 
 	// parse scene children
 	var parse = function(object) {
@@ -412,10 +429,14 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 			if(object instanceof THREE.Mesh) {
 				object.castShadow = true;
 				object.receiveShadow = objectData.receiveShadow;
-			}
 
-			if(object.material) {
-				object.material.shading = THREE.FlatShading;
+				if(object.material) {
+					object.material.shading = THREE.FlatShading;
+				}
+
+				if(objectData.mirror === true) {
+					mirrorObject = object;
+				}
 			}
 		}
   };
@@ -424,7 +445,10 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 		feng.views.View3D.parseChildren(child, parse);
 	});
 
-  return scene;
+  return {
+  	scene: scene,
+  	mirrorObject: mirrorObject
+  };
 };
 
 

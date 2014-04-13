@@ -87,6 +87,9 @@ feng.models.View3D.Data = {
 			'bathtub': {
 				texture: "texture-bathtub"
 			},
+			'closet-door-mirror': {
+				mirror: true
+			},
 			'closet-door': {
 				texture: "texture-closet-door"
 			},

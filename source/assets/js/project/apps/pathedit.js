@@ -146,12 +146,12 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 	this._scenes = goog.array.map(this._sceneKeys, function(sceneKey) {
 
 		var preloadModel = feng.models.Preload.getInstance();
-		var sceneData = preloadModel.getAsset(sceneKey);
 
 		var sectionId = sceneKey.split('.')[0];
 		var sceneId = sceneKey.split('.')[1];
 		
-		var scene = feng.views.View3D.constructScene( sectionId, sceneId, sceneData );
+		var constructed = feng.views.View3D.constructScene( sectionId, sceneId );
+		var scene = constructed.scene;
 
 		var motionCameraHelper = new THREE.CameraHelper( this._motionCamera );
 		motionCameraHelper.name = 'motionCameraHelper';
