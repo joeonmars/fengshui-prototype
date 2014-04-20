@@ -179,7 +179,7 @@ feng.views.sections.controls.Compass.prototype.onMediatorEvent = function(e){
 			this.render( deg );
 		}
 
-		if(e.target instanceof feng.controllers.controls.ManipulateControls) {
+		if(e.target instanceof feng.controllers.controls.DesignControls) {
 			var deg = goog.math.toDegrees( e.rotationY );
 			this.render( deg );
 		}

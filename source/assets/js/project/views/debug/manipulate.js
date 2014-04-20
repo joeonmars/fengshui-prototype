@@ -22,8 +22,8 @@ feng.views.debug.Manipulate.prototype.onView3DShow = function(e){
   goog.base(this, 'onView3DShow', e);
 
   var view3d = e.target;
-  var manipulateControls = view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.MANIPULATE );
-  var physics = manipulateControls.physics;
+  var designControls = view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.DESIGN );
+  var physics = designControls.physics;
 
   goog.dom.removeChildren( this._viewPanelDom );
   goog.dom.appendChild( this._viewPanelDom, physics.debugCanvas );

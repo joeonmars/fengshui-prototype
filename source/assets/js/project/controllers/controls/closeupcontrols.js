@@ -95,7 +95,7 @@ feng.controllers.controls.CloseUpControls.prototype.onManipulate = function ( e 
 			this.dispatchEvent({
 				type: feng.events.EventType.CHANGE,
 				mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-				nextMode: feng.controllers.view3d.ModeController.Mode.MANIPULATE,
+				nextMode: feng.controllers.view3d.ModeController.Mode.DESIGN,
 				object: this._activeObject
 			});
 			break;

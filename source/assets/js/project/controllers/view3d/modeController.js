@@ -8,7 +8,7 @@ goog.require('feng.events');
 goog.require('feng.controllers.controls.BrowseControls');
 goog.require('feng.controllers.controls.CloseUpControls');
 goog.require('feng.controllers.controls.FlowControls');
-goog.require('feng.controllers.controls.ManipulateControls');
+goog.require('feng.controllers.controls.DesignControls');
 goog.require('feng.controllers.controls.WalkControls');
 goog.require('feng.controllers.controls.TransitionControls');
 
@@ -27,7 +27,7 @@ feng.controllers.view3d.ModeController = function( view3d ){
 
   this._browseControls = null;
   this._flowControls = null;
-  this._manipulateControls = null;
+  this._designControls = null;
   this._walkControls = null;
   this._transitionControls = null;
 
@@ -45,7 +45,7 @@ feng.controllers.view3d.ModeController.prototype.init = function(){
 	this._browseControls = this.createBrowseControls();
 	this._closeUpControls = this.createCloseUpControls();
 	this._flowControls = this.createFlowControls();
-	this._manipulateControls = this.createManipulateControls();
+	this._designControls = this.createDesignControls();
 	this._walkControls = this.createWalkControls();
 	this._transitionControls = this.createTransitionControls();
 
@@ -53,7 +53,7 @@ feng.controllers.view3d.ModeController.prototype.init = function(){
   this._modeControls[feng.controllers.view3d.ModeController.Mode.BROWSE] = this._browseControls;
   this._modeControls[feng.controllers.view3d.ModeController.Mode.CLOSE_UP] = this._closeUpControls;
   this._modeControls[feng.controllers.view3d.ModeController.Mode.FLOW] = this._flowControls;
-  this._modeControls[feng.controllers.view3d.ModeController.Mode.MANIPULATE] = this._manipulateControls;
+  this._modeControls[feng.controllers.view3d.ModeController.Mode.DESIGN] = this._designControls;
   this._modeControls[feng.controllers.view3d.ModeController.Mode.WALK] = this._walkControls;
   this._modeControls[feng.controllers.view3d.ModeController.Mode.TRANSITION] = this._transitionControls;
 
@@ -128,13 +128,13 @@ feng.controllers.view3d.ModeController.prototype.createFlowControls = function()
 };
 
 
-feng.controllers.view3d.ModeController.prototype.createManipulateControls = function(){
+feng.controllers.view3d.ModeController.prototype.createDesignControls = function(){
 
 	var uiElement = this._view3d.uiElement;
 	var renderElement = this._view3d.domElement;
-	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.MANIPULATE );
+	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.DESIGN );
 
-	var controls = new feng.controllers.controls.ManipulateControls( camera, this._view3d, renderElement, uiElement );
+	var controls = new feng.controllers.controls.DesignControls( camera, this._view3d, renderElement, uiElement );
 	controls.setParentEventTarget( this );
 
 	return controls;
@@ -235,8 +235,8 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 			shouldUpdateTo = true;
 			break;
 
-			case this._manipulateControls:
-			this._manipulateControls.setCamera( fromPosition, fromFov, e.object );
+			case this._designControls:
+			this._designControls.setCamera( fromPosition, fromFov, e.object );
 			shouldUpdateTo = true;
 			break;
 		};
@@ -259,7 +259,7 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 			this.control.start( fromPosition, e.gateway, nextMode );
 			break;
 
-		case feng.controllers.view3d.ModeController.Mode.MANIPULATE:
+		case feng.controllers.view3d.ModeController.Mode.DESIGN:
 			console.log(e);
 			break;
 
@@ -280,7 +280,7 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 feng.controllers.view3d.ModeController.Mode = {
 	BROWSE: 'browse', //look around
 	CLOSE_UP: 'close_up', // a locked perspective viewing a specific object
-	MANIPULATE: 'manipulate', // isometrix view for ease of positioning/rotating control
+	DESIGN: 'design', // isometrix view for ease of positioning/rotating control
 	WALK: 'walk',	// walk along a path
 	FLOW: 'flow', // follow along the energy flow
 	TRANSITION: 'transition' // transition between different cameras for the above mode

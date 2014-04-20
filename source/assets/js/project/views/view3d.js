@@ -231,10 +231,12 @@ feng.views.View3D.prototype.fadeOut = function(){
 
 feng.views.View3D.prototype.render = function() {
 	
+	/*
 	if(this._mirror) {
 		this._mirror.render();
 	}
-
+	*/
+	
 	this._post.render(this.scene, this.cameraController.activeCamera);
 };
 

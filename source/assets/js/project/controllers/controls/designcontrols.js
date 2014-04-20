@@ -1,4 +1,4 @@
-goog.provide('feng.controllers.controls.ManipulateControls');
+goog.provide('feng.controllers.controls.DesignControls');
 
 goog.require('goog.fx.anim.Animated');
 goog.require('goog.math');
@@ -6,13 +6,14 @@ goog.require('feng.controllers.controls.Controls');
 goog.require('feng.utils.ThreeUtils');
 goog.require('feng.views.sections.controls.Manipulator');
 goog.require('feng.controllers.controls.ManipulatePhysics');
+goog.require('feng.views.sections.controls.ZoomSlider');
 
 
 /**
  * @constructor
  * a combination of trackball controls and transform controls
  */
-feng.controllers.controls.ManipulateControls = function(camera, view3d, domElement, uiElement){
+feng.controllers.controls.DesignControls = function(camera, view3d, domElement, uiElement){
 
   goog.base(this, camera, view3d, domElement);
 
@@ -32,11 +33,14 @@ feng.controllers.controls.ManipulateControls = function(camera, view3d, domEleme
   var manipulatorDom = goog.dom.getElementByClass('manipulator', uiElement);
   this._manipulator = new feng.views.sections.controls.Manipulator( manipulatorDom );
   this._manipulator.setParentEventTarget( this );
+
+  var zoomSliderDom = goog.dom.createDom('div');
+  this._zoomSlider = new feng.views.sections.controls.ZoomSlider( zoomSliderDom, this._view3d.domElement );
 };
-goog.inherits(feng.controllers.controls.ManipulateControls, feng.controllers.controls.Controls);
+goog.inherits(feng.controllers.controls.DesignControls, feng.controllers.controls.Controls);
 
 
-feng.controllers.controls.ManipulateControls.prototype.setCamera = function( fromPosition, fromFov, object ) {
+feng.controllers.controls.DesignControls.prototype.setCamera = function( fromPosition, fromFov, object ) {
 
 	// get camera angle from center
 	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
@@ -63,13 +67,13 @@ feng.controllers.controls.ManipulateControls.prototype.setCamera = function( fro
 	// apply
 	this.setPosition( position );
 	this.setRotation( rotation );
-	this.setFov( 60 );
+	this.setFov( this._zoomSlider.calculateFov() );
 
 	this._activeObject = object;
 };
 
 
-feng.controllers.controls.ManipulateControls.prototype.enable = function( enable ) {
+feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 
 	goog.base(this, 'enable', enable);
 
@@ -81,6 +85,9 @@ feng.controllers.controls.ManipulateControls.prototype.enable = function( enable
 
 		this._eventHandler.listen(this._view3d.domElement, 'click', this.onClickView, false, this);
 
+		this._zoomSlider.activate();
+		this._zoomSlider.show();
+
 		this._manipulator.show();
 		this._manipulator.activate( ['move', 'rotate'] );
 		this.update();
@@ -89,13 +96,16 @@ feng.controllers.controls.ManipulateControls.prototype.enable = function( enable
 
 		this._eventMediator.unlisten(this, feng.events.EventType.UPDATE);
 
+		this._zoomSlider.deactivate();
+		this._zoomSlider.hide();
+
 		this._manipulator.hide();
 		this._manipulator.deactivate();
 	}
 };
 
 
-feng.controllers.controls.ManipulateControls.prototype.update = function () {
+feng.controllers.controls.DesignControls.prototype.update = function () {
 
 	goog.base(this, 'update');
 
@@ -114,7 +124,7 @@ feng.controllers.controls.ManipulateControls.prototype.update = function () {
 };
 
 
-feng.controllers.controls.ManipulateControls.prototype.close = function () {
+feng.controllers.controls.DesignControls.prototype.close = function () {
 
 	var closeUpControls = this._view3d.modeController.getModeControl(feng.controllers.view3d.ModeController.Mode.CLOSE_UP);
 	var objectPosition = this._activeObject.object3d.position;
@@ -137,7 +147,7 @@ feng.controllers.controls.ManipulateControls.prototype.close = function () {
 };
 
 
-feng.controllers.controls.ManipulateControls.prototype.syncPhysics = function(){
+feng.controllers.controls.DesignControls.prototype.syncPhysics = function(){
 
 	var object3d = this._activeObject.object3d;
 
@@ -154,7 +164,7 @@ feng.controllers.controls.ManipulateControls.prototype.syncPhysics = function(){
 };
 
 
-feng.controllers.controls.ManipulateControls.prototype.onMoveObject = function ( e ) {
+feng.controllers.controls.DesignControls.prototype.onMoveObject = function ( e ) {
 
 	var viewSize = this._view3d.getViewSize();
 
@@ -170,7 +180,7 @@ feng.controllers.controls.ManipulateControls.prototype.onMoveObject = function (
 };
 
 
-feng.controllers.controls.ManipulateControls.prototype.onDropObject = function ( e ) {
+feng.controllers.controls.DesignControls.prototype.onDropObject = function ( e ) {
 
 	this._eventHandler.unlisten(this._domElement, 'mousemove', this.onMoveObject, false, this);
 	this._eventHandler.unlisten(this._domElement, 'click', this.onDropObject, false, this);
@@ -183,7 +193,7 @@ feng.controllers.controls.ManipulateControls.prototype.onDropObject = function (
 };
 
 
-feng.controllers.controls.ManipulateControls.prototype.onManipulate = function ( e ) {
+feng.controllers.controls.DesignControls.prototype.onManipulate = function ( e ) {
 
 	var object3d = this._activeObject.object3d;
 
@@ -243,7 +253,7 @@ feng.controllers.controls.ManipulateControls.prototype.onManipulate = function (
 };
 
 
-feng.controllers.controls.ManipulateControls.prototype.onClickView = function(e){
+feng.controllers.controls.DesignControls.prototype.onClickView = function(e){
 
 	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition(
 		e.clientX,
@@ -260,7 +270,7 @@ feng.controllers.controls.ManipulateControls.prototype.onClickView = function(e)
 };
 
 
-feng.controllers.controls.ManipulateControls.prototype.onMediatorEvent = function(e){
+feng.controllers.controls.DesignControls.prototype.onMediatorEvent = function(e){
 
 	switch(e.type) {
 
@@ -292,7 +302,7 @@ feng.controllers.controls.ManipulateControls.prototype.onMediatorEvent = functio
 };
 
 
-feng.controllers.controls.ManipulateControls.prototype.onAnimationFrame = function(now){
+feng.controllers.controls.DesignControls.prototype.onAnimationFrame = function(now){
 
 	goog.base(this, 'onAnimationFrame', now);
 
@@ -300,4 +310,6 @@ feng.controllers.controls.ManipulateControls.prototype.onAnimationFrame = functi
 		
 		this.syncPhysics();
 	}
+
+	this.setFov( this._zoomSlider.getCurrentFov() );
 };

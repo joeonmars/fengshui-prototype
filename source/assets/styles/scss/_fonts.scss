@@ -1,10 +1,15 @@
 @include font-face("FontAwesome", font-files("fontawesome/fontawesome-webfont.ttf", "fontawesome/fontawesome-webfont.woff", "fontawesome/fontawesome-webfont.svg"), "fontawesome/fontawesome-webfont.eot");
 @include font-face("tahomaregular", font-files("tahoma/tahoma-webfont.ttf", "tahoma/tahoma-webfont.woff", "tahoma/tahoma-webfont.svg"), "tahoma/tahoma-webfont.eot");
+@include font-face("marine_upbold", font-files("marineup/tipotype_-_marineup-bold-webfont.ttf", "marineup/tipotype_-_marineup-bold-webfont.woff", "marineup/tipotype_-_marineup-bold-webfont.svg"), "marineup/tipotype_-_marineup-bold-webfont.eot");
+@include font-face("marine_uplight", font-files("marineup/tipotype_-_marineup-light-webfont.ttf", "marineup/tipotype_-_marineup-light-webfont.woff", "marineup/tipotype_-_marineup-light-webfont.svg"), "marineup/tipotype_-_marineup-light-webfont.eot");
+@include font-face("marine_up_regularregular", font-files("marineup/tipotype_-_marineup-webfont.ttf", "marineup/tipotype_-_marineup-webfont.woff", "marineup/tipotype_-_marineup-webfont.svg"), "marineup/tipotype_-_marineup-webfont.eot");
 
-$font_system: Helvetica, Arial, sans-serif;
 $font_awesome: "FontAwesome";
 $font_tahoma: "tahomaregular";
-
+$font_marineup_bold: "marine_upbold";
+$font_marineup_light: "marine_uplight";
+$font_marineup: "marine_up_regularregular";
+$font_system: $font_marineup, Helvetica, Arial, sans-serif;
 
 @mixin font-awesome($class) {
 
