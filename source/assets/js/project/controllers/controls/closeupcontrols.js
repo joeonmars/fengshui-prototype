@@ -119,6 +119,11 @@ feng.controllers.controls.CloseUpControls.prototype.onManipulate = function ( e 
 			});
 			break;
 
+
+	    case interaction.CHANGE_ACCESSORY:
+	      this._activeObject.accessory.nextAccessory();
+	      break;
+
 		case 'close':
 
 			this.close();

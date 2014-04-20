@@ -203,7 +203,7 @@ feng.controllers.controls.DesignControls.prototype.onManipulate = function ( e )
 	var activeObjectBox = activeObject.getBoxBeforeRotation();
 
 	var interaction = feng.views.view3dobject.InteractiveObject.Interaction;
-	
+
 	switch(e.interaction) {
 
 		case interaction.MOVE:

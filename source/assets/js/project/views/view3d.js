@@ -14,10 +14,12 @@ goog.require('feng.fx.PostProcessing');
 goog.require('feng.fx.Mirror');
 goog.require('feng.models.Preload');
 goog.require('feng.models.View3D');
+goog.require('feng.models.Accessories');
 goog.require('feng.views.view3dobject.View3DObject');
 goog.require('feng.views.view3dobject.InteractiveObject');
 goog.require('feng.views.view3dobject.HolderObject');
 goog.require('feng.views.view3dobject.GatewayObject');
+goog.require('feng.views.view3dobject.AccessoryObject');
 
 /**
  * @constructor
@@ -236,7 +238,7 @@ feng.views.View3D.prototype.render = function() {
 		this._mirror.render();
 	}
 	*/
-	
+
 	this._post.render(this.scene, this.cameraController.activeCamera);
 };
 
@@ -260,6 +262,8 @@ feng.views.View3D.prototype.initScene = function() {
 	var sectionId = this.sectionId;
 	var sceneId = this.id;
 
+	var accessories = feng.models.Accessories.getInstance().getAccessories(sectionId, sceneId);
+
 	var parse = goog.bind( function(object) {
 
 		if(!(object instanceof THREE.Object3D)) return;
@@ -271,9 +275,15 @@ feng.views.View3D.prototype.initScene = function() {
 		if(className) {
 
 			// create specific class object
-			var typedObject = new objectClass[className]( object, objectData );
+			var typedObject = new objectClass[className](object, objectData);
+
 			this.interactiveObjects[ object.name ] = typedObject;
 			this.view3dObjects[ object.name ] = typedObject;
+
+			if(className === 'holder') {
+				var accessoryObject = new feng.views.view3dobject.AccessoryObject( accessories );
+				typedObject.updateAccessory( accessoryObject );
+			}
 
 		}else if(interactions.length > 0) {
 
@@ -418,13 +428,13 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 				object.shadowMapWidth = 1024;
 				object.shadowMapHeight = 1024;
 
-				var d = 1000;
+				var d = 400;
 				object.shadowCameraLeft = -d;
 				object.shadowCameraRight = d;
 				object.shadowCameraTop = d;
 				object.shadowCameraBottom = -d;
-				object.shadowCameraFar = 1000;
-				object.shadowDarkness = 0.04;
+				object.shadowCameraFar = 400;
+				object.shadowDarkness = 0.05;
 				//object.shadowCameraVisible = true;
 			}
 

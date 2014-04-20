@@ -14,6 +14,8 @@ feng.views.sections.Home = function(){
 
 	var domElement = goog.dom.getElement('home');
   goog.base(this, domElement);
+
+  this.assetKeys = [this.id, 'accessories'];
 };
 goog.inherits(feng.views.sections.Home, feng.views.sections.Section);
 

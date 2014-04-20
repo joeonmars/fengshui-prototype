@@ -16,37 +16,39 @@ feng.models.Preload = function(){
 		'homepage': {
 
 		},
+		'accessories': {
+			'rubberplant-data': 'json/elements/rubberplant.json',
+			'rubberplant-texture': 'images/texture/rubberplant.png',
+			'cactus-data': 'json/elements/cactus.json',
+			'cactus-texture': 'images/texture/cactus.png'
+		},
 		'studio': {
 			'interior1': {
 				'scene-data': 'json/scene-interior1.json',
 				'energyflow-data': 'json/energyflow/energyflow-1.json',
-				'texture-bed': 'images/texture/bed-texture.jpg',
-				'texture-cabinet': 'images/texture/cabinet-texture.jpg'
+				'bed-texture': 'images/texture/bed.jpg',
+				'cabinet-texture': 'images/texture/cabinet.jpg'
 			},
 			'interior2': {
 				'scene-data': 'json/scene-interior2.json',
 				'energyflow-data': 'json/energyflow/energyflow-2.json',
-				'texture-pc': 'images/texture/pc-texture.jpg',
-				'texture-screensaver': 'images/texture/spritesheet/screensaver.png',
-				'texture-cactus': 'images/texture/cactus-texture.png',
+				'pc-texture': 'images/texture/pc.jpg',
+				'screensaver-texture': 'images/texture/spritesheet/screensaver.png',
+				'cactus-texture': 'images/texture/cactus.png',
 			},
 			'bathroom': {
 				'scene-data': 'json/bathroom.json',
 				'energyflow-data': 'json/energyflow/energyflow-3.json',
-				'texture-bathtub': 'images/texture/studio/bathroom/bathtub.png',
-				'texture-closet-door': 'images/texture/studio/bathroom/closet-door.png',
-				'texture-closet': 'images/texture/studio/bathroom/closet.jpg',
-				'texture-lamp': 'images/texture/studio/bathroom/lamp.png',
-				'texture-shelf': 'images/texture/studio/bathroom/shelf.png',
-				'texture-toilet': 'images/texture/studio/bathroom/toilet.png',
-				'texture-towel': 'images/texture/studio/bathroom/towel.png',
-				'texture-wall': 'images/texture/studio/bathroom/wall.jpg',
-				'texture-washer': 'images/texture/studio/bathroom/washer.jpg'
+				'bathtub-texture': 'images/texture/studio/bathroom/bathtub.png',
+				'closet-door-texture': 'images/texture/studio/bathroom/closet-door.png',
+				'closet-texture': 'images/texture/studio/bathroom/closet.jpg',
+				'lamp-texture': 'images/texture/studio/bathroom/lamp.png',
+				'shelf-texture': 'images/texture/studio/bathroom/shelf.png',
+				'toilet-texture': 'images/texture/studio/bathroom/toilet.png',
+				'towel-texture': 'images/texture/studio/bathroom/towel.png',
+				'wall-texture': 'images/texture/studio/bathroom/wall.jpg',
+				'washer-texture': 'images/texture/studio/bathroom/washer.jpg'
 			}
-		},
-		'avatar': {
-			'texture': 'images/texture/avatar/avatar.png',
-			'texture-data': 'json/avatar.json'
 		}
 	};
 };

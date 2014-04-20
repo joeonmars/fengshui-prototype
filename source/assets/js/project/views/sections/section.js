@@ -31,7 +31,7 @@ feng.views.sections.Section = function(domElement){
   });
 
   // section loader
-  this._assetKeys = [this.id];
+  this.assetKeys = [this.id];
 
   this._preloaderDom = goog.dom.query('.preloader', this.domElement)[0];
   this._preloader = new feng.views.Preloader( this._preloaderDom );
@@ -151,7 +151,7 @@ feng.views.sections.Section.prototype.onAnimatedIn = function(e){
 		type: feng.events.EventType.ANIMATED_IN
 	});
 	
-	var shouldLoad = this._preloader.load( this._assetKeys );
+	var shouldLoad = this._preloader.load( this.assetKeys );
 	if(!shouldLoad) {
 
 	}

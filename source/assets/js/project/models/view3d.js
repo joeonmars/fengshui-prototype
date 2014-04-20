@@ -20,8 +20,9 @@ feng.models.View3D.Data = {
 			},
 			'cabinet': {
 				class: "holder",
+				receiveShadow: true,
 				collidable: true,
-				texture: "texture-cabinet",
+				texture: "cabinet-texture",
 				interactions: [
 					"move",
 					"rotate"
@@ -29,7 +30,7 @@ feng.models.View3D.Data = {
 			},
 			'bed': {
 				collidable: true,
-				texture: "texture-bed",
+				texture: "bed-texture",
 				interactions: [
 					"move",
 					"rotate"
@@ -54,7 +55,7 @@ feng.models.View3D.Data = {
 			},
 			'pc': {
 				collidable: true,
-				texture: "texture-pc",
+				texture: "pc-texture",
 				interactions: [
 					"move",
 					"rotate"
@@ -62,7 +63,7 @@ feng.models.View3D.Data = {
 			},
 			'screen': {
 				texture: {
-					texture: "texture-screensaver",
+					texture: "screensaver-texture",
 					htiles: 45,
 					vtiles: 1,
 					ntiles: 45,
@@ -70,12 +71,12 @@ feng.models.View3D.Data = {
 				}
 			},
 			'cactus': {
-				texture: "texture-cactus"
+				texture: "cactus-texture"
 			}
 		},
 		'bathroom': {
 			'wall': {
-				texture: "texture-wall",
+				texture: "wall-texture",
 				receiveShadow: true
 			},
 			'door': {
@@ -85,35 +86,34 @@ feng.models.View3D.Data = {
 				gatewayid: "door"
 			},
 			'bathtub': {
-				texture: "texture-bathtub"
+				texture: "bathtub-texture"
 			},
 			'closet-door-mirror': {
 				mirror: true
 			},
 			'closet-door': {
-				texture: "texture-closet-door"
+				texture: "closet-door-texture"
 			},
 			'closet': {
-				texture: "texture-closet"
+				texture: "closet-texture"
 			},
 			'lamp': {
-				texture: "texture-lamp"
+				texture: "lamp-texture"
 			},
 			'shelf': {
-				texture: "texture-shelf"
+				texture: "shelf-texture"
 			},
 			'toilet': {
-				texture: "texture-toilet"
+				texture: "toilet-texture"
 			},
 			'towel': {
-				texture: "texture-towel"
+				texture: "towel-texture"
 			},
 			'washer': {
-				texture: "texture-washer"
+				texture: "washer-texture"
 			}
 		}
 	}
-
 };
 
 
