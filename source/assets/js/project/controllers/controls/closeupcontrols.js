@@ -18,6 +18,8 @@ feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement,
   var manipulatorDom = goog.dom.getElementByClass('manipulator', uiElement);
   this._manipulator = new feng.views.sections.controls.Manipulator( manipulatorDom );
   this._manipulator.setParentEventTarget( this );
+
+  this._tempPosition = new THREE.Vector3();
 };
 goog.inherits(feng.controllers.controls.CloseUpControls, feng.controllers.controls.Controls);
 
@@ -27,7 +29,7 @@ feng.controllers.controls.CloseUpControls.prototype.setCamera = function( positi
 	// get camera angle looking at the object
 	var object3d = object.object3d;
 	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
-	var lookAtPosition = object3d.position.clone();
+	var lookAtPosition = feng.utils.ThreeUtils.getWorldPosition( object3d );
 	var up = new THREE.Vector3(0, 1, 0);
 	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, lookAtPosition, up);
 	rotation.setFromQuaternion( quaternion );
@@ -77,7 +79,7 @@ feng.controllers.controls.CloseUpControls.prototype.update = function() {
 	goog.base(this, 'update');
 
 	var viewSize = this._view3d.getViewSize();
-	var position3d = this._activeObject.object3d.position;
+	var position3d = feng.utils.ThreeUtils.getWorldPosition( this._activeObject.object3d, this._tempPosition );
 	var position2d = feng.utils.ThreeUtils.get2DCoordinates( position3d, this._camera, viewSize );
 	this._manipulator.update( position2d.x, position2d.y );
 };
@@ -121,7 +123,11 @@ feng.controllers.controls.CloseUpControls.prototype.onManipulate = function ( e 
 
 
 	    case interaction.CHANGE_ACCESSORY:
-	      this._activeObject.accessory.nextAccessory();
+	    	var accessory = (this._activeObject instanceof feng.views.view3dobject.AccessoryObject)
+	    		? this._activeObject
+	    		: this._activeObject.accessory;
+
+	      accessory.nextAccessory();
 	      break;
 
 		case 'close':

@@ -53,6 +53,7 @@ feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eve
 	this.view3dObjects = {};
 	this.interactiveObjects = {};
 
+	this.accessories = [];
 	this.editables = [];
 	this.collidables = [];
 
@@ -262,7 +263,7 @@ feng.views.View3D.prototype.initScene = function() {
 	var sectionId = this.sectionId;
 	var sceneId = this.id;
 
-	var accessories = feng.models.Accessories.getInstance().getAccessories(sectionId, sceneId);
+	this.accessories = feng.models.Accessories.getInstance().getAccessories(sectionId, sceneId);
 
 	var parse = goog.bind( function(object) {
 
@@ -281,8 +282,12 @@ feng.views.View3D.prototype.initScene = function() {
 			this.view3dObjects[ object.name ] = typedObject;
 
 			if(className === 'holder') {
-				var accessoryObject = new feng.views.view3dobject.AccessoryObject( accessories );
-				typedObject.updateAccessory( accessoryObject );
+				var accessoryObject = new feng.views.view3dobject.AccessoryObject( this.accessories );
+				accessoryObject.registerHolder( typedObject );
+
+				var objectName = accessoryObject.object3d.name;
+				this.interactiveObjects[ objectName ] = accessoryObject;
+				this.view3dObjects[ objectName ] = accessoryObject;
 			}
 
 		}else if(interactions.length > 0) {

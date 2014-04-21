@@ -22,7 +22,9 @@ feng.models.Accessories.Data = {
 feng.models.Accessories.prototype.getAccessoryObject3D = function(name) {
 
 	if(name === 'empty') {
-		return new THREE.Object3D();
+		var empty = new THREE.Object3D();
+		empty.name = "empty";
+		return empty;
 	}
 
 	var preloadModel = feng.models.Preload.getInstance();

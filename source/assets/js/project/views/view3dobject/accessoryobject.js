@@ -10,14 +10,22 @@ goog.require('feng.views.view3dobject.InteractiveObject');
 feng.views.view3dobject.AccessoryObject = function( accessories ){
 
 	var object3d = new THREE.Object3D();
+
 	var data = {
-		interactions: ['place']
+		interactions: ['change_accessory', 'place']
 	};
 
   goog.base(this, object3d, data);
 
+  this.object3d.name = 'accessory-' + goog.now();
+  this.object3d.interactiveObject = null;
+
   this._accessory = null;
   this._accessories = accessories;
+
+	goog.array.forEach(this._accessories, function(accessory) {
+		accessory.interactiveObject = this;
+	}, this);
 
   this.changeAccessoryByIndex(0);
 };

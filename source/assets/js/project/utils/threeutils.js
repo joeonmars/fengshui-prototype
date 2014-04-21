@@ -127,6 +127,15 @@ feng.utils.ThreeUtils.getShortestRotation = function( from, to ) {
 };
 
 
+feng.utils.ThreeUtils.getWorldPosition = function( object, position ) {
+
+	var vector = position || new THREE.Vector3();
+	vector.setFromMatrixPosition( object.matrixWorld );
+
+	return vector;
+};
+
+
 feng.utils.ThreeUtils.lerpBetween = function( a, b, x ) {
 
 	var newObj = a.clone();

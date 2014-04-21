@@ -42,6 +42,33 @@ feng.views.sections.controls.ObjectSelector.prototype.update = function (objects
 };
 
 
+feng.views.sections.controls.ObjectSelector.prototype.getHitTestMeshes = function () {
+
+	var hitTestMeshes = [];
+
+	var parseObject = function(object) {
+		
+		if(object.interactiveObject) {
+			hitTestMeshes.push( object );
+		}else {
+			var children = object.children;
+
+			if(children.length > 0) {
+				goog.array.forEach(children, function(child) {
+					parseObject( child );
+				});
+			}
+		}
+	};
+
+	goog.array.forEach(this._selectableObjects, function(object) {
+		parseObject( object.object3d );
+	}, this);
+
+	return hitTestMeshes;
+};
+
+
 feng.views.sections.controls.ObjectSelector.prototype.setPosition = function (x, y) {
 
 	goog.style.setPosition(this.domElement, x, y);
@@ -109,21 +136,15 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e
 
 	this._selectedObject = null;
 
-	var object3ds = goog.array.map(this._selectableObjects, function(object) {
-		return object.object3d;
-	});
+	var meshes = this.getHitTestMeshes()
 
-	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, object3ds, this._camera, this._renderElement );
+	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, meshes, this._camera, this._renderElement );
 
 	if(intersects.length === 0) {
 		return false;
 	}
 
-	var interactiveObject = goog.array.find(this._selectableObjects, function(object) {
-		return (object.object3d === intersects[0].object);
-	}, this);
-
-	this._downObject = interactiveObject;
+	this._downObject = intersects[0].object.interactiveObject;
 	this.setPosition( e.clientX, e.clientY );
 
 	this._eventHandler.listen(document, 'mousemove', this.onMouseMove, false, this);

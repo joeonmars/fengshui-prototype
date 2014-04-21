@@ -218,7 +218,7 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelected = function (
 
 	console.log('Object selected!');
 
-	var position = e.object.object3d.position;
+	var position = feng.utils.ThreeUtils.getWorldPosition( e.object.object3d );
 	var camera = this.getCamera();
 	var size = this._view3d.getViewSize();
 	var object2dCoord = feng.utils.ThreeUtils.get2DCoordinates(position, camera, size);
