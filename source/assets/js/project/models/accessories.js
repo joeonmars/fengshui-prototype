@@ -12,7 +12,7 @@ goog.addSingletonGetter(feng.models.Accessories);
 
 feng.models.Accessories.Data = {
 	'studio': {
-		'interior1': ['empty', 'rubberplant', 'cactus'],
+		'interior1': ['rubberplant', 'cactus'],
 		'interior2': [],
 		'bathroom': []
 	}
@@ -20,12 +20,6 @@ feng.models.Accessories.Data = {
 
 
 feng.models.Accessories.prototype.getAccessoryObject3D = function(name) {
-
-	if(name === 'empty') {
-		var empty = new THREE.Object3D();
-		empty.name = "empty";
-		return empty;
-	}
 
 	var preloadModel = feng.models.Preload.getInstance();
 

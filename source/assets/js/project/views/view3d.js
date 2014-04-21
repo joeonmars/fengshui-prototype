@@ -282,8 +282,7 @@ feng.views.View3D.prototype.initScene = function() {
 			this.view3dObjects[ object.name ] = typedObject;
 
 			if(className === 'holder') {
-				var accessoryObject = new feng.views.view3dobject.AccessoryObject( this.accessories );
-				accessoryObject.registerHolder( typedObject );
+				var accessoryObject = new feng.views.view3dobject.AccessoryObject( this.accessories, typedObject, 'empty' );
 
 				var objectName = accessoryObject.object3d.name;
 				this.interactiveObjects[ objectName ] = accessoryObject;

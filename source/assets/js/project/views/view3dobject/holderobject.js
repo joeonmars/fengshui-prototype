@@ -11,9 +11,7 @@ feng.views.view3dobject.HolderObject = function( object3d, data ){
 	goog.base(this, object3d, data);
 
 	var changeAccessory = feng.views.view3dobject.InteractiveObject.Interaction.CHANGE_ACCESSORY;
-	if(!goog.array.contains(this.interactions, changeAccessory)) {
-		this.interactions.push(changeAccessory);
-	}
+	this.interactions.push(changeAccessory);
 
 	this.accessory = null;
 

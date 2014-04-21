@@ -7,34 +7,39 @@ goog.require('feng.views.view3dobject.InteractiveObject');
  * @constructor
  * An interactive object that is placeable on other holder objects, and is changeable itself
  */
-feng.views.view3dobject.AccessoryObject = function( accessories ){
+feng.views.view3dobject.AccessoryObject = function( accessories, holder, defaultAccessory ){
 
 	var object3d = new THREE.Object3D();
 
 	var data = {
-		interactions: ['change_accessory', 'place']
+		interactions: ['change_accessory', 'place', 'rotate']
 	};
 
   goog.base(this, object3d, data);
 
+  this.physical = false;
+
   this.object3d.name = 'accessory-' + goog.now();
   this.object3d.interactiveObject = null;
 
+	this._emptyAccessory = new THREE.Object3D();
+	this._emptyAccessory.name = "empty";
+
   this._accessory = null;
-  this._accessories = accessories;
+  this._accessories = accessories.concat();
+  this._accessories.push( this._emptyAccessory );
 
-	goog.array.forEach(this._accessories, function(accessory) {
-		accessory.interactiveObject = this;
-	}, this);
+  this._availableAccessories = this.getAvailableAccessories();
 
-  this.changeAccessoryByIndex(0);
+	this.holder = this.registerHolder( holder, defaultAccessory || 0 );
 };
 goog.inherits(feng.views.view3dobject.AccessoryObject, feng.views.view3dobject.InteractiveObject);
 
 
 feng.views.view3dobject.AccessoryObject.prototype.registerHolder = function( holder, defaultAccessory ) {
 
-	holder.updateAccessory( this );
+	this.holder = holder;
+	this.holder.updateAccessory( this );
 
 	if(goog.isNumber(defaultAccessory)) {
 
@@ -45,19 +50,36 @@ feng.views.view3dobject.AccessoryObject.prototype.registerHolder = function( hol
 		this.changeAccessoryByName( defaultAccessory );
 
 	}
+
+	return this.holder;
+};
+
+
+feng.views.view3dobject.AccessoryObject.prototype.getAvailableAccessories = function() {
+
+	// return non-parent accessories and the empty accessory
+	var availables = goog.array.filter(this._accessories, function(accessory) {
+		return (!accessory.parent || accessory === this._accessory || accessory === this._emptyAccessory);
+	}, this);
+
+	return availables;
 };
 
 
 feng.views.view3dobject.AccessoryObject.prototype.changeAccessoryByIndex = function(index) {
 
-	var accessory = this._accessories[index];
+	this._availableAccessories = this.getAvailableAccessories();
+
+	var accessory = this._availableAccessories[index];
 	this.changeAccessory( accessory );
 };
 
 
 feng.views.view3dobject.AccessoryObject.prototype.changeAccessoryByName = function(name) {
 
-	var accessory = goog.array.find(this._accessories, function(accessory) {
+	this._availableAccessories = this.getAvailableAccessories();
+
+	var accessory = goog.array.find(this._availableAccessories, function(accessory) {
 		return accessory.name === name;
 	});
 
@@ -72,27 +94,33 @@ feng.views.view3dobject.AccessoryObject.prototype.changeAccessory = function(acc
 	}
 
 	this._accessory = accessory;
+	this._accessory.interactiveObject = this;
+
 	this.object3d.add( this._accessory );
 };
 
 
 feng.views.view3dobject.AccessoryObject.prototype.prevAccessory = function(){
 
-	var index = goog.array.indexOf(this._accessories, this._accessory) - 1;
+	this._availableAccessories = this.getAvailableAccessories();
+
+	var index = goog.array.indexOf(this._availableAccessories, this._accessory) - 1;
 	if(index < 0) {
-		index = this._accessories.length - 1;
+		index = this._availableAccessories.length - 1;
 	}
 
-	this.changeAccessory( this._accessories[index] );
+	this.changeAccessory( this._availableAccessories[index] );
 };
 
 
 feng.views.view3dobject.AccessoryObject.prototype.nextAccessory = function(){
 
-	var index = goog.array.indexOf(this._accessories, this._accessory) + 1;
-	if(index > this._accessories.length - 1) {
+	this._availableAccessories = this.getAvailableAccessories();
+
+	var index = goog.array.indexOf(this._availableAccessories, this._accessory) + 1;
+	if(index > this._availableAccessories.length - 1) {
 		index = 0;
 	}
 
-	this.changeAccessory( this._accessories[index] );
+	this.changeAccessory( this._availableAccessories[index] );
 };

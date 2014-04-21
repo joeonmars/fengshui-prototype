@@ -12,6 +12,7 @@ feng.views.view3dobject.InteractiveObject = function( object3d, data ){
 
   this.object3d.interactiveObject = this;
   this.interactions = this.data.interactions || [];
+  this.physical = true;
 };
 goog.inherits(feng.views.view3dobject.InteractiveObject, feng.views.view3dobject.View3DObject);
 

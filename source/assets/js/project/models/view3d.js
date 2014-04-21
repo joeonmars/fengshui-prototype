@@ -29,6 +29,8 @@ feng.models.View3D.Data = {
 				]
 			},
 			'bed': {
+				class: "holder",
+				receiveShadow: true,
 				collidable: true,
 				texture: "bed-texture",
 				interactions: [
