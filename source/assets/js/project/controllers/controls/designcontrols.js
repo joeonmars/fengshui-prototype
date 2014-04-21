@@ -5,7 +5,7 @@ goog.require('goog.math');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.utils.ThreeUtils');
 goog.require('feng.views.sections.controls.Manipulator');
-goog.require('feng.controllers.controls.ManipulatePhysics');
+goog.require('feng.controllers.controls.Physics');
 goog.require('feng.views.sections.controls.ZoomSlider');
 
 
@@ -28,7 +28,7 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement, 
   var boundBox = boundObject.getBox();
   var width = boundBox.right - boundBox.left;
   var height = boundBox.bottom - boundBox.top;
-  this.physics = new feng.controllers.controls.ManipulatePhysics( width, height );
+  this.physics = new feng.controllers.controls.Physics( width, height );
 
   var manipulatorDom = goog.dom.getElementByClass('manipulator', uiElement);
   this._manipulator = new feng.views.sections.controls.Manipulator( manipulatorDom );

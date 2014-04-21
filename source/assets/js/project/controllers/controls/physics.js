@@ -1,11 +1,11 @@
-goog.provide('feng.controllers.controls.ManipulatePhysics');
+goog.provide('feng.controllers.controls.Physics');
 
 
 
 /**
  * @constructor
  */
-feng.controllers.controls.ManipulatePhysics = function( worldWidth, worldHeight ){
+feng.controllers.controls.Physics = function( worldWidth, worldHeight ){
 
 	this.isRunning = false;
 
@@ -41,7 +41,7 @@ feng.controllers.controls.ManipulatePhysics = function( worldWidth, worldHeight 
 };
 
 
-feng.controllers.controls.ManipulatePhysics.prototype.createEnvironment = function(boxes, activeBox){
+feng.controllers.controls.Physics.prototype.createEnvironment = function(boxes, activeBox){
 
 	// create box bodies
 	goog.array.forEach(boxes, function(box) {
@@ -112,7 +112,7 @@ feng.controllers.controls.ManipulatePhysics.prototype.createEnvironment = functi
 };
 
 
-feng.controllers.controls.ManipulatePhysics.prototype.startMove = function(boxes, activeBox){
+feng.controllers.controls.Physics.prototype.startMove = function(boxes, activeBox){
 
 	if(this.isRunning) return;
 
@@ -136,7 +136,7 @@ feng.controllers.controls.ManipulatePhysics.prototype.startMove = function(boxes
 };
 
 
-feng.controllers.controls.ManipulatePhysics.prototype.startRotate = function(boxes, activeBox){
+feng.controllers.controls.Physics.prototype.startRotate = function(boxes, activeBox){
 
 	if(this.isRunning) return;
 
@@ -149,7 +149,7 @@ feng.controllers.controls.ManipulatePhysics.prototype.startRotate = function(box
 };
 
 
-feng.controllers.controls.ManipulatePhysics.prototype.stop = function(){
+feng.controllers.controls.Physics.prototype.stop = function(){
 
 	this.updateWorld();
 
@@ -167,7 +167,7 @@ feng.controllers.controls.ManipulatePhysics.prototype.stop = function(){
 };
 
 
-feng.controllers.controls.ManipulatePhysics.prototype.getActiveBox3DPosition = function(){
+feng.controllers.controls.Physics.prototype.getActiveBox3DPosition = function(){
 
 	var bodyPosition = this._activeBoxBody.GetPosition();
 	var threePosition = {
@@ -179,20 +179,20 @@ feng.controllers.controls.ManipulatePhysics.prototype.getActiveBox3DPosition = f
 };
 
 
-feng.controllers.controls.ManipulatePhysics.prototype.getActiveBoxRotation = function(){
+feng.controllers.controls.Physics.prototype.getActiveBoxRotation = function(){
 
 	return this._activeBoxBody.GetAngle();
 };
 
 
-feng.controllers.controls.ManipulatePhysics.prototype.updateWorld = function(){
+feng.controllers.controls.Physics.prototype.updateWorld = function(){
 
 	this._world.Step(1/60, 10, 10);
   this._world.ClearForces();
 };
 
 
-feng.controllers.controls.ManipulatePhysics.prototype.updateActiveBox = function(x, y, rad){
+feng.controllers.controls.Physics.prototype.updateActiveBox = function(x, y, rad){
 
 	if(goog.isNumber(x) && goog.isNumber(y)) {
 		var mouseX = x * this._unitScale + this._worldOffset.width;
@@ -206,7 +206,7 @@ feng.controllers.controls.ManipulatePhysics.prototype.updateActiveBox = function
 };
 
 
-feng.controllers.controls.ManipulatePhysics.prototype.onAnimationFrame = function(now){
+feng.controllers.controls.Physics.prototype.onAnimationFrame = function(now){
 
 	this.updateWorld();
 
