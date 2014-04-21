@@ -3,9 +3,9 @@ goog.provide('feng.controllers.controls.DesignControls');
 goog.require('goog.fx.anim.Animated');
 goog.require('goog.math');
 goog.require('feng.controllers.controls.Controls');
+goog.require('feng.controllers.controls.InteractionResolver');
 goog.require('feng.utils.ThreeUtils');
 goog.require('feng.views.sections.controls.Manipulator');
-goog.require('feng.controllers.controls.Physics');
 goog.require('feng.views.sections.controls.ZoomSlider');
 
 
@@ -20,15 +20,13 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement, 
   this._activeObject = null;
   this._eventMediator = this._view3d.eventMediator;
 
-  this._plane = new THREE.Plane( new THREE.Vector3(0,1,0) );
-
-  this._rotateTweener = null;
+  this._interactionResolver = feng.controllers.controls.InteractionResolver.getInstance();
 
   var boundObject = this._view3d.getView3dObject( 'ground' ) || this._view3d.getView3dObject( 'wall' );
   var boundBox = boundObject.getBox();
-  var width = boundBox.right - boundBox.left;
-  var height = boundBox.bottom - boundBox.top;
-  this.physics = new feng.controllers.controls.Physics( width, height );
+  this._worldWidth = boundBox.right - boundBox.left;
+  this._worldHeight = boundBox.bottom - boundBox.top;
+  this._worldId = this._view3d.sectionId + '.' + this._view3d.id;
 
   var manipulatorDom = goog.dom.getElementByClass('manipulator', uiElement);
   this._manipulator = new feng.views.sections.controls.Manipulator( manipulatorDom );
@@ -84,6 +82,9 @@ feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 		this._eventMediator.listen(this, feng.events.EventType.UPDATE);
 
 		this._eventHandler.listen(this._view3d.domElement, 'click', this.onClickView, false, this);
+
+		this._eventHandler.listen(this._interactionResolver, feng.events.EventType.START, this.onInteractionStart, false, this);
+		this._eventHandler.listen(this._interactionResolver, feng.events.EventType.END, this.onInteractionEnd, false, this);
 
 		this._zoomSlider.activate();
 		this._zoomSlider.show();
@@ -147,132 +148,19 @@ feng.controllers.controls.DesignControls.prototype.close = function () {
 };
 
 
-feng.controllers.controls.DesignControls.prototype.syncPhysics = function(){
-
-	var object3d = this._activeObject.object3d;
-
-	// update position
-	var threePosition = this.physics.getActiveBox3DPosition();
-	threePosition.y = object3d.position.y;
-
-	object3d.position.set(threePosition.x, threePosition.y, threePosition.z);
-
-	// update rotation
-	var rotation = this.physics.getActiveBoxRotation();
-
-	object3d.rotation.y = rotation;
-};
-
-
-feng.controllers.controls.DesignControls.prototype.onMoveObject = function ( e ) {
-
-	var viewSize = this._view3d.getViewSize();
-
-	var mousePos = new THREE.Vector3();
-	mousePos.x = ( e.clientX / viewSize.width ) * 2 - 1;
-	mousePos.y = - ( e.clientY / viewSize.height ) * 2 + 1;
-
-  var projector = new THREE.Projector();
-  var ray = projector.pickingRay( mousePos, this._camera ).ray;
-	var intersect = ray.intersectPlane( this._plane );
-
-	this.physics.updateActiveBox( intersect.x, intersect.z );
-};
-
-
-feng.controllers.controls.DesignControls.prototype.onDropObject = function ( e ) {
-
-	this._eventHandler.unlisten(this._domElement, 'mousemove', this.onMoveObject, false, this);
-	this._eventHandler.unlisten(this._domElement, 'click', this.onDropObject, false, this);
-
-	this._manipulator.show();
-
-	this.physics.stop();
-
-	console.log('drop');
-};
-
-
 feng.controllers.controls.DesignControls.prototype.onManipulate = function ( e ) {
 
-	var physical = this._activeObject.physical;
-	var object3d = this._activeObject.object3d;
+	var collidableBoxes = this._view3d.getCollidableBoxes( this._activeObject.object3d );
+	var objectBox = this._activeObject.getBoxBeforeRotation();
 
-	var interaction = feng.views.view3dobject.InteractiveObject.Interaction;
-
-	if(physical) {
-
-		var collidableBoxes = this._view3d.getCollidableBoxes( object3d );
-		var objectBox = this._activeObject.getBoxBeforeRotation();
-
-		switch(e.interaction) {
-
-			case interaction.MOVE:
-
-				this.physics.startMove( collidableBoxes, objectBox );
-
-				// init move object
-				this._eventHandler.listen(this._domElement, 'mousemove', this.onMoveObject, false, this);
-				this._eventHandler.listen(this._domElement, 'click', this.onDropObject, false, this);
-
-				this._manipulator.hide();
-
-				this.onMoveObject(e);
-				break;
-
-			case interaction.ROTATE:
-
-				if(this._rotateTweener && this._rotateTweener.isActive()) return;
-
-				// prevent rotating during physics running
-				if(this.physics.isRunning) return;
-
-				this.physics.startRotate( collidableBoxes, objectBox );
-
-				// rotate object around it's own Y axis
-				var prop = {
-					rad: object3d.rotation.y
-				};
-
-				this._rotateTweener = TweenMax.to(prop, .2, {
-					rad: prop.rad + Math.PI / 2,
-					onUpdate: function() {
-						this.physics.updateActiveBox( null, null, prop.rad );
-					},
-					onUpdateScope: this,
-					onComplete: function() {
-						this.physics.stop();
-						this.syncPhysics();
-					},
-					onCompleteScope: this
-				});
-				break;
-		}
-
-	}else {
-
-		switch(e.interaction) {
-
-			case interaction.ROTATE:
-
-				if(this._rotateTweener && this._rotateTweener.isActive()) return;
-
-				var y = object3d.rotation.y;
-
-				this._rotateTweener = TweenMax.to(object3d.rotation, .2, {
-					y: y + Math.PI / 2
-				});
-				break;
-		}
-
-	}
-
-	switch(e.interaction) {
-
-		case 'close':
-			this.close();
-			break;
-	}
+	this._interactionResolver.resolve( this._activeObject, e.interaction, {
+		worldId: this._worldId,
+		worldWidth: this._worldWidth,
+		worldHeight: this._worldHeight,
+		collidableBoxes: collidableBoxes,
+		objectBox: objectBox,
+		camera: this._camera
+	});
 };
 
 
@@ -325,14 +213,25 @@ feng.controllers.controls.DesignControls.prototype.onMediatorEvent = function(e)
 };
 
 
+feng.controllers.controls.DesignControls.prototype.onInteractionStart = function(e){
+
+	this._manipulator.hide();
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onInteractionEnd = function(e){
+
+	this._manipulator.show();
+
+	if(e.interaction === 'close') {
+		this.close();
+	}
+};
+
+
 feng.controllers.controls.DesignControls.prototype.onAnimationFrame = function(now){
 
 	goog.base(this, 'onAnimationFrame', now);
-
-	if(this.physics.isRunning) {
-		
-		this.syncPhysics();
-	}
 
 	this.setFov( this._zoomSlider.getCurrentFov() );
 };

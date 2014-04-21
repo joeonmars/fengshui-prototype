@@ -2,6 +2,7 @@ goog.provide('feng.views.debug.Manipulate');
 
 goog.require('feng.views.debug.DebugView');
 goog.require('feng.templates.debug');
+goog.require('feng.controllers.controls.InteractionResolver');
 
 
 /**
@@ -12,19 +13,20 @@ feng.views.debug.Manipulate = function(){
 
 	this._viewPanelDom = goog.dom.getElementByClass('viewPanel', this.domElement);
 
+	var interactionResolver = feng.controllers.controls.InteractionResolver.getInstance();
+	this._eventHandler.listen(interactionResolver, feng.events.EventType.START, this.onInteractionStart, false, this);
+
 	this.hide();
 };
 goog.inherits(feng.views.debug.Manipulate, feng.views.debug.DebugView);
 
 
-feng.views.debug.Manipulate.prototype.onView3DShow = function(e){
+feng.views.debug.Manipulate.prototype.onInteractionStart = function(e){
 
-  goog.base(this, 'onView3DShow', e);
+  var physics = e.target._physicsInteraction._currentPhysics;
 
-  var view3d = e.target;
-  var designControls = view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.DESIGN );
-  var physics = designControls.physics;
-
-  goog.dom.removeChildren( this._viewPanelDom );
-  goog.dom.appendChild( this._viewPanelDom, physics.debugCanvas );
+  if(physics) {
+  	goog.dom.removeChildren( this._viewPanelDom );
+  	goog.dom.appendChild( this._viewPanelDom, physics.debugCanvas );
+  }
 };

@@ -4,6 +4,7 @@ goog.require('goog.events');
 goog.require('goog.math');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.views.sections.controls.Manipulator');
+goog.require('feng.controllers.controls.InteractionResolver');
 
 
 /**
@@ -18,6 +19,8 @@ feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement,
   var manipulatorDom = goog.dom.getElementByClass('manipulator', uiElement);
   this._manipulator = new feng.views.sections.controls.Manipulator( manipulatorDom );
   this._manipulator.setParentEventTarget( this );
+
+  this._interactionResolver = feng.controllers.controls.InteractionResolver.getInstance();
 
   this._tempPosition = new THREE.Vector3();
 };
@@ -52,6 +55,9 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 
 		this._eventHandler.listen(this._manipulator, feng.events.EventType.CLOSE, this.close, false, this);
 		this._eventHandler.listen(this._manipulator, feng.events.EventType.CHANGE, this.onManipulate, false, this);
+
+		this._eventHandler.listen(this._interactionResolver, feng.events.EventType.START, this.onInteractionStart, false, this);
+		this._eventHandler.listen(this._interactionResolver, feng.events.EventType.END, this.onInteractionEnd, false, this);
 
 		this._manipulator.show();
 		this._manipulator.activate( this._activeObject.interactions );
@@ -88,53 +94,27 @@ feng.controllers.controls.CloseUpControls.prototype.update = function() {
 feng.controllers.controls.CloseUpControls.prototype.onManipulate = function ( e ) {
 
 	var interaction = feng.views.view3dobject.InteractiveObject.Interaction;
+	var physical = this._activeObject.physical;
+	var shouldGoDesignMode = false;
 
-	switch(e.interaction) {
+	if(e.interaction === interaction.MOVE) shouldGoDesignMode = true;
+	if(physical && e.interaction === interaction.ROTATE) shouldGoDesignMode = true;
 
-		case interaction.MOVE:
-		case interaction.ROTATE:
+	if(shouldGoDesignMode) {
 
-			this.dispatchEvent({
-				type: feng.events.EventType.CHANGE,
-				mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-				nextMode: feng.controllers.view3d.ModeController.Mode.DESIGN,
-				object: this._activeObject
-			});
-			break;
+		this.dispatchEvent({
+			type: feng.events.EventType.CHANGE,
+			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+			nextMode: feng.controllers.view3d.ModeController.Mode.DESIGN,
+			object: this._activeObject
+		});
 
-		case interaction.ENTER:
+	}else {
 
-			var gatewayPosition = this._activeObject.object3d.position;
-			var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
-			var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), gatewayPosition);
-			rotation.setFromQuaternion( quaternion );
+		this._interactionResolver.resolve( this._activeObject, e.interaction );
 
-			this.dispatchEvent({
-				type: feng.events.EventType.CHANGE,
-				mode: feng.controllers.view3d.ModeController.Mode.WALK,
-				nextMode: null,
-				gateway: this._activeObject,
-				toPosition: gatewayPosition,
-				toRotation: rotation,
-				toFov: this.getFov(),
-				intersectPosition: gatewayPosition
-			});
-			break;
-
-
-	    case interaction.CHANGE_ACCESSORY:
-	    	var accessory = (this._activeObject instanceof feng.views.view3dobject.AccessoryObject)
-	    		? this._activeObject
-	    		: this._activeObject.accessory;
-
-	      accessory.nextAccessory();
-	      break;
-
-		case 'close':
-
-			this.close();
-			break;
 	}
+	
 };
 
 
@@ -145,4 +125,39 @@ feng.controllers.controls.CloseUpControls.prototype.onMouseDown = function ( e )
 	this.close({
 		eventToTrigger: e
 	});
+};
+
+
+feng.controllers.controls.CloseUpControls.prototype.onInteractionStart = function(e){
+
+	this._manipulator.hide();
+};
+
+
+feng.controllers.controls.CloseUpControls.prototype.onInteractionEnd = function(e){
+
+	this._manipulator.show();
+
+	if(e.interaction === "enter") {
+
+		var gatewayPosition = this._activeObject.object3d.position;
+		var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
+		var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), gatewayPosition);
+		rotation.setFromQuaternion( quaternion );
+
+		this.dispatchEvent({
+			type: feng.events.EventType.CHANGE,
+			mode: feng.controllers.view3d.ModeController.Mode.WALK,
+			nextMode: null,
+			gateway: this._activeObject,
+			toPosition: gatewayPosition,
+			toRotation: rotation,
+			toFov: this.getFov(),
+			intersectPosition: gatewayPosition
+		});
+	}
+
+	if(e.interaction === 'close') {
+		this.close();
+	}
 };

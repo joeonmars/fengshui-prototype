@@ -15,15 +15,16 @@ feng.controllers.controls.PhysicsInteraction = function( startFunc, endFunc ){
 	this._startFunc = startFunc;
 	this._endFunc = endFunc;
 
-  this._physics = null;
   this._object = null;
   this._rotateTweener = null;
   this._plane = new THREE.Plane( new THREE.Vector3(0,1,0) );
   this._projector = new THREE.Projector();
+  this._camera = null;
   this._eventHandler = new goog.events.EventHandler( this );
 
   // collection of physics worlds of unique id
   this._physics = {};
+  this._currentPhysics = null;
 };
 goog.inherits(feng.controllers.controls.PhysicsInteraction, goog.events.EventTarget);
 
@@ -33,6 +34,7 @@ feng.controllers.controls.PhysicsInteraction.prototype.setPhysicsWorld = functio
   var physics = this._physics[id] || new feng.controllers.controls.Physics( width, height );
 
   this._physics[id] = physics;
+  this._currentPhysics = physics;
 
   return physics;
 };
@@ -43,44 +45,46 @@ feng.controllers.controls.PhysicsInteraction.prototype.syncPhysics = function(){
 	var object3d = this._object.object3d;
 
 	// update position
-	var threePosition = this._physics.getActiveBox3DPosition();
+	var threePosition = this._currentPhysics.getActiveBox3DPosition();
 	threePosition.y = object3d.position.y;
 
 	object3d.position.set(threePosition.x, threePosition.y, threePosition.z);
 
 	// update rotation
-	var rotation = this._physics.getActiveBoxRotation();
+	var rotation = this._currentPhysics.getActiveBoxRotation();
 
 	object3d.rotation.y = rotation;
 };
 
 
-feng.controllers.controls.PhysicsInteraction.prototype.move = function( object, collidableBoxes, objectBox ){
+feng.controllers.controls.PhysicsInteraction.prototype.move = function( object, collidableBoxes, objectBox, camera ){
 
 	this._object = object;
+	this._camera = camera;
 
-	this._physics.startMove( collidableBoxes, objectBox );
+	this._currentPhysics.startMove( collidableBoxes, objectBox );
 
 	this._eventHandler.listen(window, 'mousemove', this.onMoveUpdate, false, this);
-	this._eventHandler.listen(window, 'click', this.onMoveEnd, false, this);
+	this._eventHandler.listen(window, 'mouseup', this.onMoveEnd, false, this);
 
-	this.onMoveUpdate(e);
-
+	goog.fx.anim.registerAnimation( this );
 	this._startFunc();
 };
 
 
-feng.controllers.controls.PhysicsInteraction.prototype.rotate = function( object, collidableBoxes, objectBox ){
+feng.controllers.controls.PhysicsInteraction.prototype.rotate = function( object, collidableBoxes, objectBox, camera ){
 
 	this._object = object;
 	var object3d = this._object.object3d;
 
+	this._camera = camera;
+
 	if(this._rotateTweener && this._rotateTweener.isActive()) return;
 
 	// prevent rotating during physics running
-	if(this._physics.isRunning) return;
+	if(this._currentPhysics.isRunning) return;
 
-	this._physics.startRotate( collidableBoxes, objectBox );
+	this._currentPhysics.startRotate( collidableBoxes, objectBox );
 
 	// rotate object around it's own Y axis
 	var prop = {
@@ -96,6 +100,7 @@ feng.controllers.controls.PhysicsInteraction.prototype.rotate = function( object
 		onCompleteScope: this
 	});
 
+	goog.fx.anim.registerAnimation( this );
 	this._startFunc();
 };
 
@@ -109,33 +114,41 @@ feng.controllers.controls.PhysicsInteraction.prototype.onMoveUpdate = function (
   var ray = this._projector.pickingRay( mousePos, this._camera ).ray;
 	var intersect = ray.intersectPlane( this._plane );
 
-	this._physics.updateActiveBox( intersect.x, intersect.z );
-
-	this.syncPhysics();
+	this._currentPhysics.updateActiveBox( intersect.x, intersect.z );
 };
 
 
 feng.controllers.controls.PhysicsInteraction.prototype.onMoveEnd = function ( e ) {
 
-	this._eventHandler.unlisten(window, 'mousemove', this.onMoveUpdate, false, this);
-	this._eventHandler.unlisten(window, 'click', this.onMoveEnd, false, this);
+	this._eventHandler.removeAll();
 
-	this._physics.stop();
+	this._currentPhysics.stop();
 
+	goog.fx.anim.unregisterAnimation( this );
 	this._endFunc();
 };
 
 
 feng.controllers.controls.PhysicsInteraction.prototype.onRotateUpdate = function ( prop ) {
 
-	this._physics.updateActiveBox( null, null, prop.rad );
+	this._currentPhysics.updateActiveBox( null, null, prop.rad );
 };
 
 
-feng.controllers.controls.PhysicsInteraction.prototype.onRotateEnd = function ( prop ) {
+feng.controllers.controls.PhysicsInteraction.prototype.onRotateEnd = function () {
 
-	this._physics.stop();
+	this._currentPhysics.stop();
+
 	this.syncPhysics();
 
+	goog.fx.anim.unregisterAnimation( this );
 	this._endFunc();
+};
+
+
+feng.controllers.controls.PhysicsInteraction.prototype.onAnimationFrame = function ( now ) {
+
+	if(this._currentPhysics.isRunning) {
+		this.syncPhysics();
+	}
 };

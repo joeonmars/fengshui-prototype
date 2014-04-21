@@ -17,7 +17,7 @@ feng.controllers.controls.InteractionResolver = function(){
 
 	var _startInteraction = goog.bind(this.startInteraction, this);
 	var _endInteraction = goog.bind(this.endInteraction, this);
-  this._physicsinteraction = new feng.controllers.controls.PhysicsInteraction(_startInteraction, _endInteraction);
+  this._physicsInteraction = new feng.controllers.controls.PhysicsInteraction(_startInteraction, _endInteraction);
 
   this._eventHandler = new goog.events.EventHandler( this );
 };
@@ -32,33 +32,36 @@ feng.controllers.controls.InteractionResolver.prototype.resolve = function( obje
 	var physical = this._object.physical;
 	var object3d = this._object.object3d;
 
-	var interaction = feng.views.view3dobject.InteractiveObject.Interaction;
+	var type = feng.views.view3dobject.InteractiveObject.Interaction;
 
-	switch(e.interaction) {
+	switch(interaction) {
 
-		case interaction.MOVE:
+		case type.MOVE:
 
 			if(physical) {
+				var worldId = options.worldId;
 				var worldWidth = options.worldWidth;
 				var worldHeight = options.worldHeight;
 				var collidableBoxes = options.collidableBoxes;
 				var objectBox = options.objectBox;
+				var camera = options.camera;
 
-				this._physicsinteraction.setPhysicsWorld( worldWidth, worldHeight );
-				this._physicsinteraction.resolve( object, collidableBoxes, objectBox );
+				this._physicsInteraction.setPhysicsWorld( worldId, worldWidth, worldHeight );
+				this._physicsInteraction.move( object, collidableBoxes, objectBox, camera );
 			}
 			break;
 
-		case interaction.ROTATE:
+		case type.ROTATE:
 
 			if(physical) {
 				var worldWidth = options.worldWidth;
 				var worldHeight = options.worldHeight;
 				var collidableBoxes = options.collidableBoxes;
 				var objectBox = options.objectBox;
+				var camera = options.camera;
 
-				this._physicsinteraction.setPhysicsWorld( worldWidth, worldHeight );
-				this._physicsinteraction.resolve( object, collidableBoxes, objectBox );
+				this._physicsInteraction.setPhysicsWorld( worldId, worldWidth, worldHeight );
+				this._physicsInteraction.rotate( object, collidableBoxes, objectBox, camera );
 
 			}else {
 
@@ -72,8 +75,22 @@ feng.controllers.controls.InteractionResolver.prototype.resolve = function( obje
 			}
 			break;
 
+		case type.CHANGE_ACCESSORY:
+			var accessory = (this._object instanceof feng.views.view3dobject.AccessoryObject)
+	  		? this._object
+	  		: this._object.accessory;
+
+      accessory.nextAccessory();
+
+      this.endInteraction( interaction );
+			break;
+
+		case type.ENTER:
+			this.endInteraction( interaction );
+			break;
+
 		case 'close':
-			this.endInteraction( e.interaction );
+			this.endInteraction( interaction );
 			break;
 	}
 };
