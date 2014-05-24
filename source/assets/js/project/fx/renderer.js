@@ -91,7 +91,7 @@ feng.fx.Renderer = function(canvas, scene, camera){
 	this._outputComposer.addPass( this._fxaaPass );
 
 	//
-	this.setCamera(camera);
+	this.setCamera( camera );
 };
 goog.inherits(feng.fx.Renderer, goog.events.EventTarget);
 

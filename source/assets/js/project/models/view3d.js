@@ -20,7 +20,6 @@ feng.models.View3D.Data = {
 			},
 			'cabinet': {
 				class: "holder",
-				receiveShadow: true,
 				collidable: true,
 				texture: "cabinet-texture",
 				interactions: [
@@ -30,7 +29,6 @@ feng.models.View3D.Data = {
 			},
 			'bed': {
 				class: "holder",
-				receiveShadow: true,
 				collidable: true,
 				texture: "bed-texture",
 				interactions: [
@@ -78,8 +76,7 @@ feng.models.View3D.Data = {
 		},
 		'bathroom': {
 			'wall': {
-				texture: "wall-texture",
-				receiveShadow: true
+				texture: "wall-texture"
 			},
 			'door': {
 				class: "gateway",

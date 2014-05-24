@@ -154,8 +154,6 @@ feng.views.View3D.prototype.deactivate = function(){
 
 feng.views.View3D.prototype.show = function(){
  
-	goog.dom.appendChild( this.containerElement, feng.views.View3D.STATS.domElement );
- 
 	goog.style.showElement(this.domElement, true);
 
  	this.onResize();
@@ -320,8 +318,6 @@ feng.views.View3D.prototype.initScene = function() {
 
 feng.views.View3D.prototype.onAnimationFrame = function(now){
 
-  feng.views.View3D.STATS.update();
-
   this.render();
 };
 
@@ -437,6 +433,3 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
   	scene: scene
   };
 };
-
-
-feng.views.View3D.STATS = new Stats();
