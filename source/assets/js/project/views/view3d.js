@@ -57,8 +57,6 @@ feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eve
 	this.editables = [];
 	this.collidables = [];
 
-	this._mirror = null;
-
 	this._renderer = null;
 	this._post = null;
 
@@ -234,12 +232,6 @@ feng.views.View3D.prototype.fadeOut = function(){
 
 feng.views.View3D.prototype.render = function() {
 	
-	/*
-	if(this._mirror) {
-		this._mirror.render();
-	}
-	*/
-
 	this._post.render(this.scene, this.cameraController.activeCamera);
 };
 
@@ -336,14 +328,6 @@ feng.views.View3D.prototype.initScene = function() {
 
 	// init mode controller
 	this.modeController.init();
-
-	// create mirrors
-	var mirrorObject = constructed.mirrorObject;
-	if(mirrorObject) {
-		this._mirror = new feng.fx.Mirror( this._renderer, this.cameraController.activeCamera );
-		mirrorObject.material = this._mirror.material;
-		mirrorObject.add( this._mirror );
-	}
 };
 
 
@@ -390,7 +374,6 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 	var sceneDataPrefix = sectionId+'.'+sceneId;
 	var sceneData = preloadModel.getAsset(sceneDataPrefix+'.scene-data');
 	var scene = loader.parse( sceneData );
-	var mirrorObject = null;
 
 	// parse scene children
 	var parse = function(object) {
@@ -449,10 +432,6 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 				if(object.material) {
 					object.material.shading = THREE.FlatShading;
 				}
-
-				if(objectData.mirror === true) {
-					mirrorObject = object;
-				}
 			}
 		}
   };
@@ -462,8 +441,7 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 	});
 
   return {
-  	scene: scene,
-  	mirrorObject: mirrorObject
+  	scene: scene
   };
 };
 

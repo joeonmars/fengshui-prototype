@@ -31,7 +31,7 @@
 		<script src="assets/js/thirdparty/createjs/preloadjs-0.4.1.min.js"></script>
 		<script src="assets/js/thirdparty/greensock/TweenMax.min.js"></script>
 		<script src="assets/js/thirdparty/stats.min.js"></script>
-		<script src="assets/js/thirdparty/threejs/build/three.min.js"></script>
+		<script src="assets/js/thirdparty/threejs/build/three67.min.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/EffectComposer.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/RenderPass.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/ShaderPass.js"></script>

@@ -54,7 +54,7 @@ feng.fx.PathTrack.prototype.getControlMeshes = function(){
 	var meshes = [];
 
 	goog.array.forEach(this.children, function(child) {
-		if(child.geometry instanceof THREE.CubeGeometry) {
+		if(child.geometry instanceof THREE.BoxGeometry) {
 			meshes.push(child);
 		}
 	});
@@ -83,7 +83,7 @@ feng.fx.PathTrack.prototype.getEstimatedDistanceBetweenU = function(u1, u2){
 feng.fx.PathTrack.prototype.getCameraAt = function(u){
 
 	var tube = this.tubeGeometry;
-	var pos = tube.path.getPointAt( u );
+	var pos = this.spline.getPointAt( u );
 
 	// interpolation
 	var segments = tube.tangents.length;
@@ -97,7 +97,7 @@ feng.fx.PathTrack.prototype.getCameraAt = function(u){
 		binormal.subVectors( tube.binormals[ pickNext ], tube.binormals[ pick ] );
 		binormal.multiplyScalar( picku - pick ).add( tube.binormals[ pick ] );
 
-		var dir = tube.path.getTangentAt( u );
+		var dir = this.spline.getTangentAt( u );
 
 		var normal = this._normal;
 		normal.copy( binormal ).cross( dir );
@@ -107,7 +107,7 @@ feng.fx.PathTrack.prototype.getCameraAt = function(u){
 
 		this._pathCamera.position.copy( pos );
 
-		var lookAt = tube.path.getPointAt( ( u + 30 / tube.path.getLength() ) % 1 );
+		var lookAt = this.spline.getPointAt( ( u + 30 / this.spline.getLength() ) % 1 );
 		lookAt.copy( pos ).add( dir );
 
 		this._pathCamera.matrix.lookAt(pos, lookAt, this._up);
@@ -193,7 +193,7 @@ feng.fx.PathTrack.prototype.updateTrack = function(){
 
   // create cubes for dragging
   goog.array.forEach(this.controlPoints, function(coordinate, index) {
-  	var geometry = new THREE.CubeGeometry(6, 6, 6);
+  	var geometry = new THREE.BoxGeometry(6, 6, 6);
   	var cube = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
   		transparent: true,
   		opacity: .2,
