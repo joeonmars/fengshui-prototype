@@ -115,7 +115,7 @@ feng.controllers.view3d.CameraController.prototype.getCameraHelper = function( n
 
 
 feng.controllers.view3d.CameraController.prototype.setCamera = function( val ){
-
+  
   this.activeCamera = goog.isString(val) ? this.getCamera( val ) : val;
 
   this.dispatchEvent({

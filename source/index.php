@@ -35,11 +35,12 @@
 		<script src="assets/js/thirdparty/threejs-utils/EffectComposer.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/RenderPass.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/ShaderPass.js"></script>
-		<script src="assets/js/thirdparty/threejs-utils/BloomPass.js"></script>
+		<script src="assets/js/thirdparty/threejs-utils/TexturePass.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/MaskPass.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/CopyShader.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/FXAAShader.js"></script>
-		<script src="assets/js/thirdparty/threejs-utils/ConvolutionShader.js"></script>
+		<script src="assets/js/thirdparty/threejs-utils/TriangleBlurShader.js"></script>
+		<script src="assets/js/thirdparty/threejs-utils/BrightnessContrastShader.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/OrbitControls.js"></script>
 		<script src="assets/js/thirdparty/pathfinding-browser.min.js"></script>
 		<script src="assets/js/thirdparty/Box2dWeb-2.1.a.3.min.js"></script>

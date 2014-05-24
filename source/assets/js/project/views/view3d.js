@@ -10,8 +10,7 @@ goog.require('feng.controllers.view3d.ModeController');
 goog.require('feng.controllers.view3d.View3DController');
 goog.require('feng.fx.EnergyFlow');
 goog.require('feng.fx.TextureAnimator');
-goog.require('feng.fx.PostProcessing');
-goog.require('feng.fx.Mirror');
+goog.require('feng.fx.Renderer');
 goog.require('feng.models.Preload');
 goog.require('feng.models.View3D');
 goog.require('feng.models.Accessories');
@@ -36,10 +35,12 @@ feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eve
 
   this.setParentEventTarget( view3dController );
 
-  this.domElement = null;
   this.containerElement = containerElement;
   this.uiElement = uiElement;
-  
+ 
+  this.domElement = goog.dom.createDom('canvas');
+  goog.dom.appendChild( this.containerElement, this.domElement );
+
   this.eventMediator = eventMediator;
 
   this.cameraController = null;
@@ -58,7 +59,6 @@ feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eve
 	this.collidables = [];
 
 	this._renderer = null;
-	this._post = null;
 
 	this._eventHandler = new goog.events.EventHandler(this);
 };
@@ -70,23 +70,13 @@ feng.views.View3D.prototype.init = function(){
 	this.cameraController = new feng.controllers.view3d.CameraController(this);
 	this.modeController = new feng.controllers.view3d.ModeController(this);
 
-	var viewSize = this.getViewSize();
-
-	this._renderer = new THREE.WebGLRenderer();
-	this._renderer.shadowMapEnabled = true;
-	this._renderer.shadowMapType = THREE.PCFSoftShadowMap;
-	this._renderer.setClearColor(0xffffff, 1);
-	this._renderer.setSize( viewSize.width, viewSize.height );
-	
-	this.domElement = this._renderer.domElement;
-
-	goog.dom.appendChild( this.containerElement, this.domElement );
-
 	this.initScene();
 
-	this._post = new feng.fx.PostProcessing(this._renderer, {
-		enableBloom: false
-	});
+	this._renderer = new feng.fx.Renderer(this.domElement, this.scene, this.cameraController.activeCamera);
+	this._renderer.removePass(this._renderer._blurTexturePass);
+
+	var viewSize = this.getViewSize();
+	this._renderer.setSize( viewSize.width, viewSize.height );
 
 	this.hide();
 };
@@ -152,16 +142,13 @@ feng.views.View3D.prototype.getCollidableBoxes = function(excludes){
 feng.views.View3D.prototype.activate = function(){
  
  	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
-
- 	this._post.activate();
+ 	this._eventHandler.listen(this.cameraController, feng.events.EventType.CHANGE, this.onCameraChange, false, this);
 };
  
  
 feng.views.View3D.prototype.deactivate = function(){
  
 	this._eventHandler.removeAll();
-
-	this._post.deactivate();
 };
 
 
@@ -232,7 +219,7 @@ feng.views.View3D.prototype.fadeOut = function(){
 
 feng.views.View3D.prototype.render = function() {
 	
-	this._post.render(this.scene, this.cameraController.activeCamera);
+	this._renderer.render();
 };
 
 
@@ -336,6 +323,12 @@ feng.views.View3D.prototype.onAnimationFrame = function(now){
   feng.views.View3D.STATS.update();
 
   this.render();
+};
+
+
+feng.views.View3D.prototype.onCameraChange = function(e){
+
+	this._renderer.setCamera( e.camera );
 };
 
 
