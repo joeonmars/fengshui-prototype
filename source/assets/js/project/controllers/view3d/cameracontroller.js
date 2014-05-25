@@ -17,8 +17,8 @@ feng.controllers.view3d.CameraController = function(view3d){
   this._view3d = view3d;
   this._scene = null;
 
-  this._cameras = [];
-  this._cameraHelpers = [];
+  this.cameras = [];
+  this.cameraHelpers = [];
 
   this._eventHandler = new goog.events.EventHandler(this);
 };
@@ -52,12 +52,12 @@ feng.controllers.view3d.CameraController.prototype.addCamera = function( name, f
   var camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
   camera.name = name;
   this._scene.add(camera);
-  this._cameras.push(camera);
+  this.cameras.push(camera);
 
 	var cameraHelper = new THREE.CameraHelper( camera );
   cameraHelper.name = name + '-helper';
   this._scene.add(cameraHelper);
-  this._cameraHelpers.push(cameraHelper);
+  this.cameraHelpers.push(cameraHelper);
 
   this.dispatchEvent({
     type: feng.events.EventType.ADD,
@@ -74,12 +74,12 @@ feng.controllers.view3d.CameraController.prototype.removeCamera = function( name
   if(!camera) return;
 
   camera.parent.remove( camera );
-  goog.array.remove(this._cameras, camera);
+  goog.array.remove(this.cameras, camera);
 
 	var cameraHelper = this.getCameraHelper(name);
 
 	cameraHelper.parent.remove( cameraHelper );
-  goog.array.remove(this._cameraHelpers, cameraHelper);
+  goog.array.remove(this.cameraHelpers, cameraHelper);
 
   this.dispatchEvent({
     type: feng.events.EventType.REMOVE,
@@ -90,13 +90,13 @@ feng.controllers.view3d.CameraController.prototype.removeCamera = function( name
 
 feng.controllers.view3d.CameraController.prototype.getCameras = function(){
 
-  return this._cameras;
+  return this.cameras;
 };
 
 
 feng.controllers.view3d.CameraController.prototype.getCamera = function( name ){
 
-  var camera = goog.array.find(this._cameras, function(camera) {
+  var camera = goog.array.find(this.cameras, function(camera) {
     return camera.name === name;
   });
 
@@ -106,7 +106,7 @@ feng.controllers.view3d.CameraController.prototype.getCamera = function( name ){
 
 feng.controllers.view3d.CameraController.prototype.getCameraHelper = function( name ){
 
-  var cameraHelper = goog.array.find(this._cameraHelpers, function(cameraHelper) {
+  var cameraHelper = goog.array.find(this.cameraHelpers, function(cameraHelper) {
     return cameraHelper.name === (name + '-helper');
   });
 
@@ -115,7 +115,7 @@ feng.controllers.view3d.CameraController.prototype.getCameraHelper = function( n
 
 
 feng.controllers.view3d.CameraController.prototype.setCamera = function( val ){
-  
+
   this.activeCamera = goog.isString(val) ? this.getCamera( val ) : val;
 
   this.dispatchEvent({

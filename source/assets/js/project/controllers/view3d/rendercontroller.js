@@ -53,7 +53,7 @@ feng.controllers.view3d.RenderController.prototype.updateByMode = function(mode,
 			modeControl = this._view3d.modeController.getModeControl( nextMode );
 		}
 
-		this._maskedObject = modeControl._activeObject.object3d;
+		this._maskedObject = modeControl._activeObject;
 
 		if(!this._blurTweener.isActive() && this._blur < this._maxBlur) {
 			this._blurTweener.play();
@@ -89,10 +89,10 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRender = function() {
 
 	this._renderer.setBlur( this._blur, this._blur );
 
-	var brightness = this._blurTweener.progress() * -.05;
+	var brightness = this._blurTweener.progress() * -.02;
 	this._renderer.setBrightness( brightness );
 
-	var contrast = this._blurTweener.progress() * -.05;
+	var contrast = this._blurTweener.progress() * -.02;
 	this._renderer.setContrast( contrast );
 };
 
@@ -104,8 +104,10 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderBlur = function
 
 	goog.object.forEach(view3dObjects, function(view3dObject) {
 
-		view3dObject.object3d.visible = !(view3dObject.object3d === maskedObject);
+		view3dObject.show();
 	});
+
+	if(maskedObject) maskedObject.hide();
 };
 
 
@@ -118,6 +120,8 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderMask = function
 
 	goog.object.forEach(view3dObjects, function(view3dObject) {
 
-		view3dObject.object3d.visible = (view3dObject.object3d === maskedObject);
+		view3dObject.hide();
 	});
+
+	if(maskedObject) maskedObject.show();
 };

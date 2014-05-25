@@ -19,6 +19,7 @@ feng.views.debug.Camera = function(){
   this._rotationYInput = goog.dom.query('input[name="rotation-y"]', this.domElement)[0];
   this._rotationZInput = goog.dom.query('input[name="rotation-z"]', this.domElement)[0];
   this._degreesCheckbox = goog.dom.query('.degrees', this.domElement)[0];
+  this._helpersCheckbox = goog.dom.query('.helpers', this.domElement)[0];
   this._selectDom = goog.dom.query('select', this.domElement)[0];
   this._textarea = goog.dom.query('textarea', this.domElement)[0];
   this._visibleButton = goog.dom.query('.visible.button', this.domElement)[0];
@@ -42,6 +43,8 @@ feng.views.debug.Camera = function(){
   	this._eventHandler.listen(input, 'blur', this.onBlur, false, this);
   	this._eventHandler.listen(input, 'change', this.onInputChange, false, this);
   }, this);
+
+  this._eventHandler.listen(this._helpersCheckbox, 'change', this.onHelpersChange, false, this);
 
   this._cameraControllerEventHandler = new goog.events.EventHandler(this);
 
@@ -179,6 +182,10 @@ feng.views.debug.Camera.prototype.onClick = function(e){
 		var cameraHelper = this._cameraController.getCameraHelper( this._camera.name );
 		cameraHelper.visible = !cameraHelper.visible;
 
+		if(!this._helpersCheckbox.checked) {
+			cameraHelper.visible = false;
+		}
+
 		this.updateVisibleButton();
 		break;
 	};
@@ -194,6 +201,18 @@ feng.views.debug.Camera.prototype.onFocus = function(e){
 feng.views.debug.Camera.prototype.onBlur = function(e){
 
 	this._isInputFocused = false;
+};
+
+
+feng.views.debug.Camera.prototype.onHelpersChange = function(e){
+
+	var visible = e.currentTarget.checked;
+
+	goog.array.forEach(this._cameraController.cameraHelpers, function(cameraHelper) {
+		cameraHelper.visible = cameraHelper.visible ? visible : false;
+	});
+
+	this.updateVisibleButton();
 };
 
 

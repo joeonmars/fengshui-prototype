@@ -54,11 +54,15 @@ feng.views.view3dobject.View3DObject.prototype.getBoxBeforeRotation = function()
 
 feng.views.view3dobject.View3DObject.prototype.show = function(){
 
-  this.object3d.visible = true;
+  this.object3d.traverse(function(child) {
+    child.visible = true;
+  });
 };
 
 
 feng.views.view3dobject.View3DObject.prototype.hide = function(){
 
-  this.object3d.visible = false;
+  this.object3d.traverse(function(child) {
+    child.visible = false;
+  });
 };
