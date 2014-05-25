@@ -35,6 +35,7 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 
 	this._tweener = new TimelineMax({
 		onComplete: function() {
+
 			var ev = {
 				type: feng.events.EventType.CHANGE,
 				mode: nextMode

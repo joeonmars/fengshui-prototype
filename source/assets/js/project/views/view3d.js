@@ -8,6 +8,7 @@ goog.require('goog.events');
 goog.require('feng.controllers.view3d.CameraController');
 goog.require('feng.controllers.view3d.ModeController');
 goog.require('feng.controllers.view3d.View3DController');
+goog.require('feng.controllers.view3d.RenderController');
 goog.require('feng.fx.EnergyFlow');
 goog.require('feng.fx.TextureAnimator');
 goog.require('feng.fx.Renderer');
@@ -44,6 +45,7 @@ feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eve
   this.eventMediator = eventMediator;
 
   this.cameraController = null;
+  this.renderController = null;
 	this.modeController = null;
 
 	this.origin = new THREE.Vector3(0, feng.controllers.controls.Controls.Default.STANCE_HEIGHT, 400);
@@ -67,16 +69,20 @@ goog.inherits(feng.views.View3D, goog.events.EventTarget);
 
 feng.views.View3D.prototype.init = function(){
 
-	this.cameraController = new feng.controllers.view3d.CameraController(this);
-	this.modeController = new feng.controllers.view3d.ModeController(this);
-
 	this.initScene();
 
+	this.cameraController = new feng.controllers.view3d.CameraController(this);
+	this.cameraController.init( this.scene );
+
 	this._renderer = new feng.fx.Renderer(this.domElement, this.scene, this.cameraController.activeCamera);
-	this._renderer.removePass(this._renderer._blurTexturePass);
 
 	var viewSize = this.getViewSize();
 	this._renderer.setSize( viewSize.width, viewSize.height );
+
+	this.renderController = new feng.controllers.view3d.RenderController(this);
+
+	this.modeController = new feng.controllers.view3d.ModeController(this);
+	this.modeController.init();
 
 	this.hide();
 };
@@ -140,7 +146,7 @@ feng.views.View3D.prototype.getCollidableBoxes = function(excludes){
 
 
 feng.views.View3D.prototype.activate = function(){
- 
+
  	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
  	this._eventHandler.listen(this.cameraController, feng.events.EventType.CHANGE, this.onCameraChange, false, this);
 };
@@ -275,10 +281,12 @@ feng.views.View3D.prototype.initScene = function() {
 
 		}else {
 
-			// create view3d object
-			var view3dObject = new feng.views.view3dobject.View3DObject( object, objectData );
-			this.view3dObjects[ object.name ] = view3dObject;
+			if( !(object instanceof THREE.Light) && (object.parent instanceof THREE.Scene) ) {
 
+				// create view3d object
+				var view3dObject = new feng.views.view3dobject.View3DObject( object, objectData );
+				this.view3dObjects[ object.name ] = view3dObject;
+			}
 		}
 
 		// add collidables
@@ -307,12 +315,6 @@ feng.views.View3D.prototype.initScene = function() {
 		this.energyFlow = new feng.fx.EnergyFlow( controlPoints, this.id, this.sectionId );
 		this.scene.add( this.energyFlow );
 	}
-
-	// init camera controller
-	this.cameraController.init( this.scene );
-
-	// init mode controller
-	this.modeController.init();
 };
 
 

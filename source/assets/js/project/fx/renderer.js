@@ -23,6 +23,11 @@ feng.fx.Renderer = function(canvas, scene, camera){
 	this._renderer.shadowMapEnabled = true;
 	this._renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
+	// callbacks
+	this.onBeforeRender = null;
+	this.onBeforeRenderBlur = null;
+	this.onBeforeRenderMask = null;
+
 	// postprocessing
 
 	// create passes
@@ -72,6 +77,7 @@ feng.fx.Renderer = function(canvas, scene, camera){
 	this._blurComposer.addPass( this._blurYPass );
 
 	this._blurTexturePass = new THREE.TexturePass( this._blurComposer.renderTarget2 );
+	this._blurTexturePass.enabled = false;
 
 	// create output
 	var renderTarget = new THREE.WebGLRenderTarget( 1024, 1024, renderTargetParameters );
@@ -105,26 +111,6 @@ feng.fx.Renderer.prototype.getRenderer = function(){
 feng.fx.Renderer.prototype.getPassIndex = function( pass ){
 
 	return goog.array.indexOf(this._outputComposer.passes, pass);
-};
-
-
-feng.fx.Renderer.prototype.hasPass = function( pass ){
-
-	return goog.array.contains(this._outputComposer.passes, pass);
-};
-
-
-feng.fx.Renderer.prototype.addPass = function( passes, index ){
-
-	var passesToAdd = goog.isArray(passes) ? passes : [passes];
-
-	goog.array.insertArrayAt( this._outputComposer.passes, passesToAdd, index );
-};
-
-
-feng.fx.Renderer.prototype.removePass = function( pass ){
-
-	goog.array.remove( this._outputComposer.passes, pass );
 };
 
 
@@ -170,16 +156,12 @@ feng.fx.Renderer.prototype.setSize = function( width, height ){
 
 feng.fx.Renderer.prototype.render = function(){
 
-	if(this.hasPass( this._blurTexturePass )) {
+	if(this.onBeforeRender) this.onBeforeRender();
 
-		//this.beforeRenderBlur();
-		this._blurComposer.render();
-	}
+	if(this.onBeforeRenderBlur) this.onBeforeRenderBlur();
+	this._blurComposer.render();
 
-	if(this.hasPass( this._maskPass )) {
-
-		//this.beforeRenderMask();
-	}
+	if(this.onBeforeRenderMask) this.onBeforeRenderMask();
 
 	this._renderComposer.render();
 

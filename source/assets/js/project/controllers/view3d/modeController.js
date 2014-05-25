@@ -24,6 +24,7 @@ feng.controllers.view3d.ModeController = function( view3d ){
 
   this._view3d = view3d;
   this._cameraController = this._view3d.cameraController;
+  this._renderController = this._view3d.renderController;
 
   this._browseControls = null;
   this._flowControls = null;
@@ -274,6 +275,9 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 		default:
 			break;
 	}
+
+	// update renderer
+	this._renderController.updateByMode(this._mode, e.nextMode);
 };
 
 
