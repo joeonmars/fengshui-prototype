@@ -6,7 +6,6 @@ goog.require('feng.controllers.controls.Controls');
 goog.require('feng.views.sections.controls.ObjectSelector');
 goog.require('feng.utils.ThreeUtils');
 goog.require('feng.utils.Randomizer');
-goog.require('feng.utils.MultiLinearInterpolator');
 
 /**
  * @constructor
@@ -32,50 +31,8 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 
 	this._maxRotationX = THREE.Math.degToRad(40);
 	this._minRotationX = THREE.Math.degToRad(-40);
-
-	var randomXNumbers = feng.utils.Randomizer.getRandomNumbers(6, 10);
-	randomXNumbers.unshift(0);
-	randomXNumbers.push(0);
-	goog.array.forEach(randomXNumbers, function(number, index) {
-		if(index % 2 === 0) randomXNumbers[index] *= -1;
-	});
-
-	var randomYNumbers = feng.utils.Randomizer.getRandomNumbers(1, 10);
-	randomYNumbers.unshift(0);
-	randomYNumbers.push(0);
-	goog.array.forEach(randomYNumbers, function(number, index) {
-		if(index % 2 === 0) randomYNumbers[index] *= -1;
-	});
-
-	this._randomXInterpolator = new feng.utils.MultiLinearInterpolator(randomXNumbers, 8000);
-	this._randomYInterpolator = new feng.utils.MultiLinearInterpolator(randomYNumbers, 10000);
 };
 goog.inherits(feng.controllers.controls.BrowseControls, feng.controllers.controls.Controls);
-
-
-feng.controllers.controls.BrowseControls.prototype.getRotation = function () {
-
-	var rx = this._targetRotationX + this._camera.rotation.x;
-	var ry = this._targetRotationY + this._camera.rotation.y;
-	var rz = 0;
-	var rotation = new THREE.Euler( rx, ry, rz, 'YXZ' );
-	return rotation;
-};
-
-
-feng.controllers.controls.BrowseControls.prototype.setRotation = function (x, y, z) {
-
-	goog.base(this, 'setRotation', x, y, z);
-
-	if(x instanceof THREE.Euler) {
-		var rotation = x;
-		this._targetRotationX = rotation.x;
-		this._targetRotationY = rotation.y;
-	}else {
-		this._targetRotationX = x;
-		this._targetRotationY = y;
-	}
-};
 
 
 feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mouseEventToTrigger ) {
@@ -97,15 +54,12 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 			this.onMouseDown( mouseEventToTrigger );
 		}
 
+		this._targetRotationY = this._yawObject.rotation.y;
+		this._targetRotationX = this._pitchObject.rotation.x;
+
 	}else  {
 
-		// reset clock, thus set camera natural movement's playhead to 0
-		this._clock.startTime = 0;
-		this._clock.oldTime = 0;
-		this._clock.elapsedTime = 0;
-
 		this._eventMediator.unlisten(this, feng.events.EventType.UPDATE);
-
 	}
 
 	if(this._isEnabled) {
@@ -122,22 +76,11 @@ feng.controllers.controls.BrowseControls.prototype.update = function () {
 
 	goog.base(this, 'update');
 
-	var elapsed = this._clock.getElapsedTime();
-
 	var PI_2 = Math.PI / 2;
 
 	this._yawObject.rotation.y += (this._targetRotationY - this._yawObject.rotation.y) * .1;
 	this._pitchObject.rotation.x += (this._targetRotationX - this._pitchObject.rotation.x) * .1;
 	this._pitchObject.rotation.x = Math.max( - PI_2, Math.min( PI_2, this._pitchObject.rotation.x ) );
-
-	// random rotating motion
-	this._randomXInterpolator.update( elapsed * 1000 );
-	this._randomYInterpolator.update( elapsed * 1000 );
-
-	var cameraRotateX = this._randomXInterpolator.getValue() * .04;
-	var cameraRotateY = this._randomYInterpolator.getValue() * .04;
-	this._camera.rotation.x = cameraRotateX;
-	this._camera.rotation.y = cameraRotateY;
 
 	//
 	this.dispatchEvent({

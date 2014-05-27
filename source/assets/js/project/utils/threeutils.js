@@ -118,6 +118,7 @@ feng.utils.ThreeUtils.getShortestRotation = function( from, to ) {
 		to.x = calculate(from.x, to.x);
 		to.y = calculate(from.y, to.y);
 		to.z = calculate(from.z, to.z);
+		
 	}else {
 
 		to = calculate(from, to);
