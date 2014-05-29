@@ -194,9 +194,8 @@ feng.controllers.view3d.PathfindingController.prototype.findPath = function( sta
 
 	var path = finder.findPath(startTile[0], startTile[1], endTile[0], endTile[1], grid);
 
-	// convert path coordinates from grid to 3d world
-	var smoothPath = PF.Util.smoothenPath(grid, path);
-	var coordinates = goog.array.map(smoothPath, function(coordinate) {
+	// extract points from grid
+	var coordinates = goog.array.map(path, function(coordinate) {
 		var x = coordinate[0] * tileSize + tileSize/2 + gridMinX;
 		var y = 0;
 		var z = coordinate[1] * tileSize + tileSize/2 + gridMinZ;
@@ -209,6 +208,10 @@ feng.controllers.view3d.PathfindingController.prototype.findPath = function( sta
 	var view = feng.views.debug.Debugger.getInstance().pathfindingView;
 	view.update(matrix, gridWidth, gridHeight, numCols, numRows, tileSize, path);
 
-	//
+	// return smoothened coordinates
+	var spline = new THREE.SplineCurve3( coordinates );
+	var numPoints = Math.floor( spline.getLength() / 50 );
+	var coordinates = spline.getSpacedPoints( numPoints );
+
 	return coordinates;
 };

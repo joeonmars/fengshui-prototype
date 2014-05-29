@@ -124,3 +124,17 @@ feng.controllers.controls.WalkControls.prototype.onPathComplete = function ( gat
 		mode: nextMode
 	});
 };
+
+
+feng.controllers.controls.WalkControls.prototype.onMouseDown = function ( e ) {
+
+	goog.base(this, 'onMouseDown', e);
+
+	this._tweener.kill();
+
+	this.dispatchEvent({
+		type: feng.events.EventType.CHANGE,
+		mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
+		eventToTrigger: e
+	});
+};
