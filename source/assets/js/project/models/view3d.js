@@ -16,7 +16,12 @@ feng.models.View3D.Data = {
 				interactions: [
 					"move",
 					"rotate"
-				]
+				],
+				camera: {
+					position: new THREE.Vector3(80, 90, 17),
+					rotation: new THREE.Euler(-0.53, -0.40, 0.00, 'YXZ'),
+					fov: 40
+				}
 			},
 			'cabinet': {
 				class: "holder",

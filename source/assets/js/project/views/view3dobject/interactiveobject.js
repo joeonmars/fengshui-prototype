@@ -12,7 +12,10 @@ feng.views.view3dobject.InteractiveObject = function( object3d, data ){
 
   this.object3d.interactiveObject = this;
   this.interactions = this.data.interactions || [];
-  this.physical = true;
+  this.isPhysical = true;
+
+  this.isSpecialCameraEnabled = data.camera ? true : false;
+  this.specialCameraSettings = data.camera || {};
 };
 goog.inherits(feng.views.view3dobject.InteractiveObject, feng.views.view3dobject.View3DObject);
 
@@ -20,6 +23,19 @@ goog.inherits(feng.views.view3dobject.InteractiveObject, feng.views.view3dobject
 feng.views.view3dobject.InteractiveObject.prototype.hasInteraction = function( interaction ){
 
 	return goog.array.contains(this.interactions, interaction);
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.enableSpecialCamera = function( position, rotation, fov ){
+
+  this.isSpecialCameraEnabled = position ? true : false;
+
+  if(this.isSpecialCameraEnabled) {
+
+    this.specialCameraSettings.position = position;
+    this.specialCameraSettings.rotation = rotation;
+    this.specialCameraSettings.fov = fov;
+  }
 };
 
 

@@ -17,7 +17,7 @@ feng.views.view3dobject.AccessoryObject = function( accessories, holder, default
 
   goog.base(this, object3d, data);
 
-  this.physical = false;
+  this.isPhysical = false;
 
   this.object3d.name = 'accessory-' + goog.now();
   this.object3d.interactiveObject = null;

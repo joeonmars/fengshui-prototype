@@ -29,7 +29,7 @@ feng.controllers.controls.InteractionResolver.prototype.resolve = function( obje
 
 	this._object = object;
 
-	var physical = this._object.physical;
+	var isPhysical = this._object.isPhysical;
 	var object3d = this._object.object3d;
 
 	var type = feng.views.view3dobject.InteractiveObject.Interaction;
@@ -38,7 +38,7 @@ feng.controllers.controls.InteractionResolver.prototype.resolve = function( obje
 
 		case type.MOVE:
 
-			if(physical) {
+			if(isPhysical) {
 				var worldId = options.worldId;
 				var worldWidth = options.worldWidth;
 				var worldHeight = options.worldHeight;
@@ -53,7 +53,7 @@ feng.controllers.controls.InteractionResolver.prototype.resolve = function( obje
 
 		case type.ROTATE:
 
-			if(physical) {
+			if(isPhysical) {
 				var worldWidth = options.worldWidth;
 				var worldHeight = options.worldHeight;
 				var collidableBoxes = options.collidableBoxes;

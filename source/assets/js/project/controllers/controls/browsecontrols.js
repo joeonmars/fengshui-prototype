@@ -105,7 +105,12 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 
 	if ( intersects.length > 0 ) {
 
-		console.log('clicked on ' + intersects[0].object.name);
+		var intersectPosition = intersects[0].point.clone();
+		intersectPosition.y = intersectPosition.y < 10 ? this.getPosition().y : intersectPosition.y;
+
+		var objectName = intersects[0].object.name;
+
+		console.log( 'clicked on ' + objectName);
 
 		this.dispatchEvent({
 			type: feng.events.EventType.CHANGE,
@@ -114,7 +119,7 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 			toPosition: intersects[0].point,
 			toRotation: this.getRotation(),
 			toFov: this.getFov(),
-			intersectPosition: intersects[0].point
+			intersectPosition: intersectPosition
 		});
 	}
 };
@@ -173,7 +178,12 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelected = function (
 	var y = ( size.height - h ) / 2;
 	var viewportBox = new goog.math.Box(y, x + w, y + h, x);
 
-	var shouldTransition = !viewportBox.contains( object2dCoord );
+	// get special camera settings from object
+	var specialCameraSettings = e.object.isSpecialCameraEnabled ? e.object.specialCameraSettings : null;
+	console.log( 'specialCameraSettings: ', specialCameraSettings );
+
+	//
+	var shouldTransition = !viewportBox.contains( object2dCoord ) || specialCameraSettings;
 
 	if(shouldTransition) {
 
@@ -181,9 +191,12 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelected = function (
 			type: feng.events.EventType.CHANGE,
 			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
 			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-			toPosition: this.getPosition(),
+			toPosition: specialCameraSettings ? specialCameraSettings.position : this.getPosition(),
+			toRotation: specialCameraSettings ? specialCameraSettings.rotation : this.getRotation(),
+			toFov: specialCameraSettings ? specialCameraSettings.fov : this.getFov(),
 			object: e.object
 		});
+
 	}else {
 
 		this.dispatchEvent({

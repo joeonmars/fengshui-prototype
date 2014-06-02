@@ -94,11 +94,11 @@ feng.controllers.controls.CloseUpControls.prototype.update = function() {
 feng.controllers.controls.CloseUpControls.prototype.onManipulate = function ( e ) {
 
 	var interaction = feng.views.view3dobject.InteractiveObject.Interaction;
-	var physical = this._activeObject.physical;
+	var isPhysical = this._activeObject.isPhysical;
 	var shouldGoDesignMode = false;
 
 	if(e.interaction === interaction.MOVE) shouldGoDesignMode = true;
-	if(physical && e.interaction === interaction.ROTATE) shouldGoDesignMode = true;
+	if(isPhysical && e.interaction === interaction.ROTATE) shouldGoDesignMode = true;
 
 	if(shouldGoDesignMode) {
 
