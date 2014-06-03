@@ -71,7 +71,7 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 		},
 		onUpdateScope: this
 	});
-
+	
 	var fovTweener = TweenMax.to(prop, dur, {
 		fov: toFov,
 		ease: Quad.easeInOut,

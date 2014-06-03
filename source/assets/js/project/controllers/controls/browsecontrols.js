@@ -82,6 +82,19 @@ feng.controllers.controls.BrowseControls.prototype.update = function () {
 	this._pitchObject.rotation.x += (this._targetRotationX - this._pitchObject.rotation.x) * .1;
 	this._pitchObject.rotation.x = Math.max( - PI_2, Math.min( PI_2, this._pitchObject.rotation.x ) );
 
+	var fov = this.getFov();
+	var defaultFov = feng.controllers.controls.Controls.Default.FOV;
+
+	if(fov !== defaultFov) {
+
+		fov += (defaultFov - fov) * .05;
+		this.setFov( fov );
+
+		if(goog.math.nearlyEquals(fov, defaultFov, .1)) {
+			this.setFov( defaultFov );
+		}
+	}
+
 	//
 	this.dispatchEvent({
 		type: feng.events.EventType.UPDATE,

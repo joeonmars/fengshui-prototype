@@ -27,7 +27,7 @@ feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement,
 goog.inherits(feng.controllers.controls.CloseUpControls, feng.controllers.controls.Controls);
 
 
-feng.controllers.controls.CloseUpControls.prototype.setCamera = function( position, object ) {
+feng.controllers.controls.CloseUpControls.prototype.setCamera = function( position, fov, object ) {
 
 	// get camera angle looking at the object
 	var object3d = object.object3d;
@@ -40,6 +40,7 @@ feng.controllers.controls.CloseUpControls.prototype.setCamera = function( positi
 	// apply
 	this.setPosition( position );
 	this.setRotation( rotation );
+	this.setFov( fov );
 
 	this._activeObject = object;
 };

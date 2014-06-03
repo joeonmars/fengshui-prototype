@@ -231,8 +231,9 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 		var shouldUpdateTo;
 
 		switch(nextControl) {
+			
 			case this._closeUpControls:
-			this._closeUpControls.setCamera( toPosition, e.object );
+			this._closeUpControls.setCamera( toPosition, toFov, e.object );
 			shouldUpdateTo = true;
 			break;
 
