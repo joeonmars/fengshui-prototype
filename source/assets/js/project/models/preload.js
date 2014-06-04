@@ -20,7 +20,9 @@ feng.models.Preload = function(){
 			'rubberplant-data': 'json/elements/rubberplant.json',
 			'rubberplant-texture': 'images/texture/rubberplant.png',
 			'cactus-data': 'json/elements/cactus.json',
-			'cactus-texture': 'images/texture/cactus.png'
+			'cactus-texture': 'images/texture/cactus.png',
+			'lotus-data': 'json/elements/lotus.json',
+			'lotus-texture': 'images/texture/lotus.png'
 		},
 		'studio': {
 			'interior1': {

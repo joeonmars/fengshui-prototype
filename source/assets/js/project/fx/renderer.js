@@ -60,8 +60,10 @@ feng.fx.Renderer = function(canvas, scene, camera){
 		stencilBuffer: true
 	};
 
+	var res = (window.screen.width < 1280) ? feng.fx.Renderer.Resolution['480p'] : feng.fx.Renderer.Resolution['720p'];
+
 	// create default render texture pass
-	var renderTarget = new THREE.WebGLRenderTarget( 1024, 1024, renderTargetParameters );
+	var renderTarget = new THREE.WebGLRenderTarget( res.width, res.height, renderTargetParameters );
 
 	this._renderComposer = new THREE.EffectComposer( this._renderer, renderTarget );
 	this._renderComposer.addPass( this._renderPass );
@@ -80,7 +82,7 @@ feng.fx.Renderer = function(canvas, scene, camera){
 	this._blurTexturePass.enabled = false;
 
 	// create output
-	var renderTarget = new THREE.WebGLRenderTarget( 1024, 1024, renderTargetParameters );
+	var renderTarget = new THREE.WebGLRenderTarget( res.width, res.height, renderTargetParameters );
 
 	this._outputComposer = new THREE.EffectComposer( this._renderer, renderTarget );
 
@@ -166,4 +168,10 @@ feng.fx.Renderer.prototype.render = function(){
 	this._renderComposer.render();
 
 	this._outputComposer.render();
+};
+
+
+feng.fx.Renderer.Resolution = {
+	'720p': new goog.math.Size(1280, 720),
+	'480p': new goog.math.Size(640, 480)
 };
