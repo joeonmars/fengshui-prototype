@@ -4,7 +4,7 @@ goog.addDependency('../../../../project/apps/demo.js', ['feng.apps.Demo'], ['fen
 goog.addDependency('../../../../project/apps/main.js', ['feng.apps.Main'], ['feng.templates.main', 'goog.dom', 'goog.fx']);
 goog.addDependency('../../../../project/apps/pathedit.js', ['feng.apps.PathEdit'], ['feng.fx.EnergyFlow', 'feng.fx.PathTrack', 'feng.models.Preload', 'feng.templates.main', 'feng.views.Preloader', 'feng.views.View3D', 'feng.views.debug.Debugger', 'goog.dom', 'goog.events.KeyHandler', 'goog.events.MouseWheelHandler', 'goog.fx.anim']);
 goog.addDependency('../../../../project/controllers/controls/browsecontrols.js', ['feng.controllers.controls.BrowseControls'], ['feng.controllers.controls.Controls', 'feng.utils.Randomizer', 'feng.utils.ThreeUtils', 'feng.views.sections.controls.ObjectSelector', 'goog.events', 'goog.math.Box']);
-goog.addDependency('../../../../project/controllers/controls/closeupcontrols.js', ['feng.controllers.controls.CloseUpControls'], ['feng.controllers.controls.Controls', 'feng.controllers.controls.InteractionResolver', 'feng.views.sections.controls.Manipulator', 'goog.events', 'goog.math']);
+goog.addDependency('../../../../project/controllers/controls/closeupcontrols.js', ['feng.controllers.controls.CloseUpControls'], ['feng.controllers.controls.Controls', 'feng.controllers.controls.InteractionResolver', 'feng.fx.WrapLayout', 'feng.views.sections.controls.Manipulator', 'goog.events', 'goog.math']);
 goog.addDependency('../../../../project/controllers/controls/controls.js', ['feng.controllers.controls.Controls'], ['goog.events', 'goog.events.EventHandler', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/controllers/controls/designcontrols.js', ['feng.controllers.controls.DesignControls'], ['feng.controllers.controls.Controls', 'feng.controllers.controls.InteractionResolver', 'feng.utils.ThreeUtils', 'feng.views.sections.controls.Manipulator', 'feng.views.sections.controls.ZoomSlider', 'goog.fx.anim.Animated', 'goog.math']);
 goog.addDependency('../../../../project/controllers/controls/flowcontrols.js', ['feng.controllers.controls.FlowControls'], ['feng.controllers.controls.Controls', 'feng.fx.PathTrack', 'feng.utils.ThreeUtils', 'goog.events', 'goog.math']);
@@ -25,10 +25,10 @@ goog.addDependency('../../../../project/events/eventmediator.js', ['feng.events.
 goog.addDependency('../../../../project/events/eventtype.js', ['feng.events'], []);
 goog.addDependency('../../../../project/feng.js', ['feng'], ['feng.apps.Demo', 'feng.apps.Main', 'feng.apps.PathEdit', 'goog.Uri']);
 goog.addDependency('../../../../project/fx/enegyflow.js', ['feng.fx.EnergyFlow'], ['feng.fx.PathTrack', 'feng.models.achievements.Achievements']);
-goog.addDependency('../../../../project/fx/mirror.js', ['feng.fx.Mirror'], []);
 goog.addDependency('../../../../project/fx/pathtrack.js', ['feng.fx.PathTrack'], ['feng.utils.Randomizer']);
 goog.addDependency('../../../../project/fx/renderer.js', ['feng.fx.Renderer'], ['goog.array']);
 goog.addDependency('../../../../project/fx/textureanimator.js', ['feng.fx.TextureAnimator'], ['goog.events.EventTarget']);
+goog.addDependency('../../../../project/fx/wraplayout.js', ['feng.fx.WrapLayout'], ['feng.utils.ThreeUtils', 'goog.events.EventTarget', 'goog.math.Box']);
 goog.addDependency('../../../../project/models/accessories.js', ['feng.models.Accessories'], ['feng.models.Preload']);
 goog.addDependency('../../../../project/models/achievements/achievements.js', ['feng.models.achievements.Achievements'], ['feng.models.achievements.Tip']);
 goog.addDependency('../../../../project/models/achievements/tip.js', ['feng.models.achievements.Tip'], ['feng.models.achievements.Achievements']);

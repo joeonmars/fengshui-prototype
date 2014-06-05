@@ -5,6 +5,7 @@ goog.require('goog.math');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.views.sections.controls.Manipulator');
 goog.require('feng.controllers.controls.InteractionResolver');
+goog.require('feng.fx.WrapLayout');
 
 
 /**
@@ -23,6 +24,19 @@ feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement,
   this._interactionResolver = feng.controllers.controls.InteractionResolver.getInstance();
 
   this._tempPosition = new THREE.Vector3();
+
+  this._wrapLayout = new feng.fx.WrapLayout;
+  var block = this._wrapLayout.addBlock(null, 'left');
+  goog.dom.appendChild(this._view3d.captionsElement, block.element);
+
+  var block = this._wrapLayout.addBlock(null, 'right', new goog.math.Size(100, 400));
+  goog.dom.appendChild(this._view3d.captionsElement, block.element);
+
+  var block = this._wrapLayout.addBlock(null, 'top', new goog.math.Size(500, 50));
+  goog.dom.appendChild(this._view3d.captionsElement, block.element);
+
+  var block = this._wrapLayout.addBlock(null, 'bottom', new goog.math.Size(500, 50));
+  goog.dom.appendChild(this._view3d.captionsElement, block.element);
 };
 goog.inherits(feng.controllers.controls.CloseUpControls, feng.controllers.controls.Controls);
 
@@ -62,6 +76,9 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 
 		this._manipulator.show();
 		this._manipulator.activate( this._activeObject.interactions );
+
+	//
+	this._wrapLayout.update( this._activeObject.object3d, this._camera, this._view3d.getViewSize() );
 
 	}else  {
 
@@ -161,4 +178,11 @@ feng.controllers.controls.CloseUpControls.prototype.onInteractionEnd = function(
 	if(e.interaction === 'close') {
 		this.close();
 	}
+};
+
+feng.controllers.controls.CloseUpControls.prototype.onResize = function ( e ) {
+
+	goog.base(this, 'onResize', e);
+
+	this._wrapLayout.update( this._activeObject.object3d, this._camera, this._view3d.getViewSize() );
 };

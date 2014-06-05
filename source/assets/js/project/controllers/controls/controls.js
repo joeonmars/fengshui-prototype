@@ -154,6 +154,7 @@ feng.controllers.controls.Controls.prototype.enable = function( enable ) {
 
 		this._eventHandler.listen(this._domElement, 'click', this.onClick, false, this);
 		this._eventHandler.listen(this._domElement, 'mousedown', this.onMouseDown, false, this);
+		this._eventHandler.listen(window, 'resize', this.onResize, false, this);
 
 		this._clock.start();
 		goog.fx.anim.registerAnimation(this);
@@ -214,6 +215,11 @@ feng.controllers.controls.Controls.prototype.onMouseUp = function ( e ) {
 
 
 feng.controllers.controls.Controls.prototype.onMouseMove = function ( e ) {
+
+};
+
+
+feng.controllers.controls.Controls.prototype.onResize = function ( e ) {
 
 };
 

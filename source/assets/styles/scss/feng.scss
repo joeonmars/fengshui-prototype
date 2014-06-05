@@ -164,6 +164,13 @@
 					}
 				}
 			}
+
+			>.captions{
+				@include absoluteTopLeft;
+				width: 0;
+				height: 0;
+				z-index: 3;
+			}
 		}
 
 		>.sceneContainer{

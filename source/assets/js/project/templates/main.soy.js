@@ -16,7 +16,7 @@ goog.require('feng.templates.debug');
  * @notypecheck
  */
 feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
-  return '<div class="section episode" id="' + opt_data.id + '"><div class="preloader"></div><div class="sceneUI"><div class="controls">' + feng.templates.controls.Compass(null) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.Manipulator(null) + feng.templates.controls.ProgressBar(opt_data) + '</div></div><div class="sceneContainer"></div></div>';
+  return '<div class="section episode" id="' + opt_data.id + '"><div class="preloader"></div><div class="sceneUI"><div class="controls">' + feng.templates.controls.Compass(null) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.Manipulator(null) + feng.templates.controls.ProgressBar(opt_data) + '</div><div class="captions"></div></div><div class="sceneContainer"></div></div>';
 };
 
 

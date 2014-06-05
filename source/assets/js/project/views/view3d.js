@@ -38,6 +38,7 @@ feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eve
 
   this.containerElement = containerElement;
   this.uiElement = uiElement;
+  this.captionsElement = goog.dom.getElementByClass('captions', this.uiElement);
  
   this.domElement = goog.dom.createDom('canvas');
   goog.dom.appendChild( this.containerElement, this.domElement );
