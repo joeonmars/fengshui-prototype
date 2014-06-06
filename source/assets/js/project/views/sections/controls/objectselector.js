@@ -112,16 +112,15 @@ feng.views.sections.controls.ObjectSelector.prototype.doSelect = function () {
 
 	this._selectedObject = this._downObject;
 
-	this.dispatchEvent({
-		type: feng.events.EventType.CHANGE,
-		object: this._selectedObject
-	});
+	this._callbacks['onComplete']( this._selectedObject );
 };
 
 
 feng.views.sections.controls.ObjectSelector.prototype.cancelSelect = function () {
 
 	goog.style.setStyle(this.domElement, 'visibility', 'hidden');
+
+	this._callbacks['onCancel']();
 };
 
 
@@ -132,10 +131,7 @@ feng.views.sections.controls.ObjectSelector.prototype.startProgress = function (
 	this._startTime = goog.now();
 	goog.fx.anim.registerAnimation( this );
 
-	this.dispatchEvent({
-		type: feng.events.EventType.START,
-		object: this._downObject
-	});
+	this._callbacks['onStart']( this._downObject );
 };
 
 
@@ -196,4 +192,6 @@ feng.views.sections.controls.ObjectSelector.prototype.onAnimationFrame = functio
 
 		this.doSelect();
 	}
+
+	this._callbacks['onProgress']( progress );
 };

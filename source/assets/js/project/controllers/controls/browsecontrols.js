@@ -22,7 +22,14 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 	var objectSelectorEl = goog.dom.getElementByClass('objectSelector', uiElement);
 	var renderEl = this._view3d.domElement;
 	var interactiveObjects = this._view3d.interactiveObjects;
-	this._objectSelector = new feng.views.sections.controls.ObjectSelector( interactiveObjects, this._camera, objectSelectorEl, renderEl );
+	var callbacks = {
+		'onStart': goog.bind(this.onObjectSelectStart, this),
+		'onCancel': goog.bind(this.onObjectSelectCancel, this),
+		'onComplete': goog.bind(this.onObjectSelectComplete, this),
+		'onProgress': goog.bind(this.onObjectSelectProgress, this),
+	};
+
+	this._objectSelector = new feng.views.sections.controls.ObjectSelector( interactiveObjects, this._camera, objectSelectorEl, renderEl, callbacks );
 
 	this._lastMouseX = 0;
 	this._lastMouseY = 0;
@@ -40,9 +47,6 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 	goog.base(this, 'enable', enable);
 
 	if(this._isEnabled) {
-
-		this._eventHandler.listen(this._objectSelector, feng.events.EventType.START, this.onObjectSelectStart, false, this);
-		this._eventHandler.listen(this._objectSelector, feng.events.EventType.CHANGE, this.onObjectSelected, false, this);
 
 		this._eventHandler.listen(this._eventMediator.getEventTarget(), feng.events.EventType.UPDATE, this.onMediatorEvent, false, this);
 		this._eventMediator.listen(this, feng.events.EventType.UPDATE);
@@ -169,20 +173,30 @@ feng.controllers.controls.BrowseControls.prototype.onMouseMove = function ( e ) 
 };
 
 
-feng.controllers.controls.BrowseControls.prototype.onObjectSelectStart = function ( e ) {
+feng.controllers.controls.BrowseControls.prototype.onObjectSelectCancel = function () {
 
-	this._shouldIgnoreClick = true;
 };
 
 
-feng.controllers.controls.BrowseControls.prototype.onObjectSelected = function ( e ) {
+feng.controllers.controls.BrowseControls.prototype.onObjectSelectStart = function ( object ) {
+
+};
+
+
+feng.controllers.controls.BrowseControls.prototype.onObjectSelectProgress = function ( progress ) {
+
+	
+};
+
+
+feng.controllers.controls.BrowseControls.prototype.onObjectSelectComplete = function ( object ) {
 
 	console.log('Object selected!');
 
 	var cameraSettings;
 
 	// get special camera settings from object
-	cameraSettings = e.object.isSpecialCameraEnabled ? e.object.specialCameraSettings : null;
+	cameraSettings = object.isSpecialCameraEnabled ? object.specialCameraSettings : null;
 	console.log( 'specialCameraSettings: ', cameraSettings );
 
 	// otherwise focus on the center of object
@@ -190,8 +204,8 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelected = function (
 
 		// get camera angle looking at the object's center
 		var position = this.getPosition();
-		var object3d = e.object.object3d;
-		var objectCenter = e.object.getCenter();
+		var object3d = object.object3d;
+		var objectCenter = object.getCenter();
 
 		var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
 		var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, objectCenter);
@@ -199,7 +213,7 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelected = function (
 
 		var distance = position.distanceTo( objectCenter );
 
-		var height = e.object.getHeight() * 1.5;
+		var height = object.getHeight() * 1.5;
 
 		var fov = 2 * Math.atan( height / ( 2 * distance ) ) * ( 180 / Math.PI );
 
@@ -218,9 +232,9 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelected = function (
 		toPosition: cameraSettings.position,
 		toRotation: cameraSettings.rotation,
 		toFov: cameraSettings.fov,
-		object: e.object,
-		isSpecial: e.object.isSpecialCameraEnabled
-	});
+		object: object,
+		isSpecial: object.isSpecialCameraEnabled
+	});	
 };
 
 
