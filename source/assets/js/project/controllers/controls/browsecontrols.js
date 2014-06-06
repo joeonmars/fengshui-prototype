@@ -31,8 +31,6 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 
 	this._maxRotationX = THREE.Math.degToRad(40);
 	this._minRotationX = THREE.Math.degToRad(-40);
-
-	this._raycaster = new THREE.Raycaster();
 };
 goog.inherits(feng.controllers.controls.BrowseControls, feng.controllers.controls.Controls);
 
@@ -199,22 +197,8 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelected = function (
 		var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, objectCenter);
 		rotation.setFromQuaternion( quaternion );
 
-		// find distance between camera and the nearest face from camera to object
-		var dir = new THREE.Vector3();
-		dir.subVectors( objectCenter, position ).normalize();
+		var distance = position.distanceTo( objectCenter );
 
-		//test
-		//http://stemkoski.github.io/Three.js/Helpers.html
-//var hex = 0xff4400;
-
-//var arrowHelper = new THREE.ArrowHelper( dir, position, 100, hex );
-//this._view3d.scene.add( arrowHelper );
-		//
-
-		this._raycaster.set( position, dir );
-		var intersect = this._raycaster.intersectObject( object3d, true )[0];
-
-		var distance = intersect.distance;
 		var height = e.object.getHeight() * 1.5;
 
 		var fov = 2 * Math.atan( height / ( 2 * distance ) ) * ( 180 / Math.PI );
