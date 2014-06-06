@@ -8,7 +8,7 @@ goog.require('feng.views.sections.controls.Controls');
 /**
  * @constructor
  */
-feng.views.sections.controls.ObjectSelector = function(objects, camera, domElement, renderElement){
+feng.views.sections.controls.ObjectSelector = function(objects, camera, domElement, renderElement, callbacks){
 
   goog.base(this, domElement);
 
@@ -23,6 +23,13 @@ feng.views.sections.controls.ObjectSelector = function(objects, camera, domEleme
   this._isEnabled = false;
   this._startTime = 0;
   this._duration = 600;
+
+  this._callbacks = {
+  	'onProgress': callbacks['onProgress'] || goog.nullFunction,
+  	'onStart': callbacks['onStart'] || goog.nullFunction,
+  	'onCancel': callbacks['onCancel'] || goog.nullFunction,
+  	'onComplete': callbacks['onComplete'] || goog.nullFunction
+  };
 
   // a delay to kick off the progress, to differentiate the mouse behavior between a fast click and object selecting
   this._delay = new goog.async.Delay(this.startProgress, 250, this);
