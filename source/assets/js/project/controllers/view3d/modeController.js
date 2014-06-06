@@ -201,7 +201,7 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	var fromFov = e.fromFov || oldControl.getFov();
 
 	var toPosition = e.toPosition;
-	var toRotation = feng.utils.ThreeUtils.getShortestRotation( fromRotation, toRotation );
+	var toRotation = e.toRotation;
 	var toFov = e.toFov;
 
 	this.control.setPosition( fromPosition );
@@ -233,7 +233,7 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 		switch(nextControl) {
 			
 			case this._closeUpControls:
-			this._closeUpControls.setCamera( toPosition, toFov, e.object );
+			this._closeUpControls.setCamera( toPosition, toRotation, toFov, e.object );
 			shouldUpdateTo = true;
 			break;
 

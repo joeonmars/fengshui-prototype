@@ -41,17 +41,8 @@ feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement,
 goog.inherits(feng.controllers.controls.CloseUpControls, feng.controllers.controls.Controls);
 
 
-feng.controllers.controls.CloseUpControls.prototype.setCamera = function( position, fov, object ) {
-
-	// get camera angle looking at the object
-	var object3d = object.object3d;
-	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
-	var lookAtPosition = feng.utils.ThreeUtils.getWorldPosition( object3d );
-	var up = new THREE.Vector3(0, 1, 0);
-	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, lookAtPosition, up);
-	rotation.setFromQuaternion( quaternion );
-
-	// apply
+feng.controllers.controls.CloseUpControls.prototype.setCamera = function( position, rotation, fov, object ) {
+	
 	this.setPosition( position );
 	this.setRotation( rotation );
 	this.setFov( fov );

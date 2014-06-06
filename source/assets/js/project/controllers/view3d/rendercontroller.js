@@ -89,10 +89,10 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRender = function() {
 
 	this._renderer.setBlur( this._blur, this._blur );
 
-	var brightness = this._blurTweener.progress() * -.02;
+	var brightness = this._blurTweener.progress() * .5;
 	this._renderer.setBrightness( brightness );
 
-	var contrast = this._blurTweener.progress() * -.02;
+	var contrast = this._blurTweener.progress() * -.5;
 	this._renderer.setContrast( contrast );
 };
 

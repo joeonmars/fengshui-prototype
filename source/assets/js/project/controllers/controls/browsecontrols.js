@@ -31,6 +31,8 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 
 	this._maxRotationX = THREE.Math.degToRad(40);
 	this._minRotationX = THREE.Math.degToRad(-40);
+
+	this._raycaster = new THREE.Raycaster();
 };
 goog.inherits(feng.controllers.controls.BrowseControls, feng.controllers.controls.Controls);
 
@@ -179,46 +181,62 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelected = function (
 
 	console.log('Object selected!');
 
-	var position = feng.utils.ThreeUtils.getWorldPosition( e.object.object3d );
-	var camera = this.getCamera();
-	var size = this._view3d.getViewSize();
-	var object2dCoord = feng.utils.ThreeUtils.get2DCoordinates(position, camera, size);
-
-	var scale = 2 / 3;
-	var w = size.width * scale;
-	var h = size.height * scale;
-	var x = ( size.width - w ) / 2;
-	var y = ( size.height - h ) / 2;
-	var viewportBox = new goog.math.Box(y, x + w, y + h, x);
+	var cameraSettings;
 
 	// get special camera settings from object
-	var specialCameraSettings = e.object.isSpecialCameraEnabled ? e.object.specialCameraSettings : null;
-	console.log( 'specialCameraSettings: ', specialCameraSettings );
+	cameraSettings = e.object.isSpecialCameraEnabled ? e.object.specialCameraSettings : null;
+	console.log( 'specialCameraSettings: ', cameraSettings );
+
+	// otherwise focus on the center of object
+	if(!cameraSettings) {
+
+		// get camera angle looking at the object's center
+		var position = this.getPosition();
+		var object3d = e.object.object3d;
+		var objectCenter = e.object.getCenter();
+
+		var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
+		var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, objectCenter);
+		rotation.setFromQuaternion( quaternion );
+
+		// find distance between camera and the nearest face from camera to object
+		var dir = new THREE.Vector3();
+		dir.subVectors( objectCenter, position ).normalize();
+
+		//test
+		//http://stemkoski.github.io/Three.js/Helpers.html
+//var hex = 0xff4400;
+
+//var arrowHelper = new THREE.ArrowHelper( dir, position, 100, hex );
+//this._view3d.scene.add( arrowHelper );
+		//
+
+		this._raycaster.set( position, dir );
+		var intersect = this._raycaster.intersectObject( object3d, true )[0];
+
+		var distance = intersect.distance;
+		var height = e.object.getHeight() * 1.5;
+
+		var fov = 2 * Math.atan( height / ( 2 * distance ) ) * ( 180 / Math.PI );
+
+		cameraSettings = {
+			position: position,
+			rotation: rotation,
+			fov: fov
+		};
+	}
 
 	//
-	var shouldTransition = !viewportBox.contains( object2dCoord ) || specialCameraSettings;
-
-	if(shouldTransition) {
-
-		this.dispatchEvent({
-			type: feng.events.EventType.CHANGE,
-			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-			toPosition: specialCameraSettings ? specialCameraSettings.position : this.getPosition(),
-			toRotation: specialCameraSettings ? specialCameraSettings.rotation : this.getRotation(),
-			toFov: specialCameraSettings ? specialCameraSettings.fov : this.getFov(),
-			object: e.object
-		});
-
-	}else {
-
-		this.dispatchEvent({
-			type: feng.events.EventType.CHANGE,
-			mode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-			toPosition: this.getPosition(),
-			object: e.object
-		});
-	}
+	this.dispatchEvent({
+		type: feng.events.EventType.CHANGE,
+		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+		nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
+		toPosition: cameraSettings.position,
+		toRotation: cameraSettings.rotation,
+		toFov: cameraSettings.fov,
+		object: e.object,
+		isSpecial: e.object.isSpecialCameraEnabled
+	});
 };
 
 
