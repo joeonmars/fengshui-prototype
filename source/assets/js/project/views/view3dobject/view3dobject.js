@@ -69,12 +69,21 @@ feng.views.view3dobject.View3DObject.prototype.getCenter = function(){
 };
 
 
-feng.views.view3dobject.View3DObject.prototype.getHeight = function(){
+feng.views.view3dobject.View3DObject.prototype.getBoundingBoxParameters = function(){
 
   var box3 = this.getBoundingBox();
-  var height = Math.abs(box3.max.y - box3.min.y);
+  
+  return {
+    width: Math.abs(box3.max.x - box3.min.x),
+    height: Math.abs(box3.max.y - box3.min.y),
+    length: Math.abs(box3.max.z - box3.min.z)
+  };
+};
 
-  return height;
+
+feng.views.view3dobject.View3DObject.prototype.getHeight = function(){
+
+  return this.getBoundingBoxParameters.height;
 };
 
 

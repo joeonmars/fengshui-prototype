@@ -193,5 +193,5 @@ feng.views.sections.controls.ObjectSelector.prototype.onAnimationFrame = functio
 		this.doSelect();
 	}
 
-	this._callbacks['onProgress']( progress );
+	this._callbacks['onProgress']( this._downObject, progress );
 };

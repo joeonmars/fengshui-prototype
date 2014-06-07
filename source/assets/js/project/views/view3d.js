@@ -15,6 +15,7 @@ goog.require('feng.fx.Renderer');
 goog.require('feng.models.Preload');
 goog.require('feng.models.View3D');
 goog.require('feng.models.Accessories');
+goog.require('feng.views.View3DHud');
 goog.require('feng.views.view3dobject.View3DObject');
 goog.require('feng.views.view3dobject.InteractiveObject');
 goog.require('feng.views.view3dobject.HolderObject');
@@ -40,6 +41,8 @@ feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eve
   this.uiElement = uiElement;
   this.captionsElement = goog.dom.getElementByClass('captions', this.uiElement);
  
+  this.hud = null;
+
   this.domElement = goog.dom.createDom('canvas');
   goog.dom.appendChild( this.containerElement, this.domElement );
 
@@ -60,6 +63,8 @@ feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eve
 	this.accessories = [];
 	this.editables = [];
 	this.collidables = [];
+
+	this.viewSize = new goog.math.Size(0, 0);
 
 	this._renderer = null;
 
@@ -85,13 +90,21 @@ feng.views.View3D.prototype.init = function(){
 	this.modeController = new feng.controllers.view3d.ModeController(this);
 	this.modeController.init();
 
+	this.hud = new feng.views.View3DHud( this );
+
 	this.hide();
 };
 
 
 feng.views.View3D.prototype.getViewSize = function(){
 
-	return goog.style.getSize(this.containerElement);
+	if(this.viewSize.isEmpty()) {
+		var viewSize = goog.style.getSize(this.containerElement);
+		this.viewSize.width = viewSize.width;
+		this.viewSize.height = viewSize.height;
+	}
+
+	return this.viewSize;
 };
 
 
@@ -321,7 +334,7 @@ feng.views.View3D.prototype.initScene = function() {
 
 feng.views.View3D.prototype.onAnimationFrame = function(now){
 
-  this.render();
+	this.render();
 };
 
 
@@ -333,11 +346,13 @@ feng.views.View3D.prototype.onCameraChange = function(e){
 
 feng.views.View3D.prototype.onResize = function(e){
 
-	var viewSize = this.getViewSize();
+	var viewSize = goog.style.getSize(this.containerElement);
+	this.viewSize.width = viewSize.width;
+	this.viewSize.height = viewSize.height;
 
-	this.cameraController.onResize( viewSize.aspectRatio() );
+	this.cameraController.onResize( this.viewSize.aspectRatio() );
 
-	this._renderer.setSize( viewSize.width, viewSize.height );
+	this._renderer.setSize( this.viewSize.width, this.viewSize.height );
 
 	this.render();
 };

@@ -148,4 +148,91 @@ feng.utils.ThreeUtils.lerpBetween = function( a, b, x ) {
 };
 
 
+feng.utils.ThreeUtils.getRectangleFromBox3 = function( box3, camera, rendererSize, opt_box ) {
+
+	var vertices3D = [];
+	var vertices2D = [];
+
+	for(var i = 0; i < 8; i ++) {
+
+	  vertices3D.push( new THREE.Vector3() );
+
+	  vertices2D.push({
+	  	x: 0,
+	  	y: 0
+	  });
+	}
+
+	return( function( box3, camera, rendererSize, opt_box ) {
+
+		var box2 = opt_box || new goog.math.Box(0 ,0 ,0, 0);
+
+		// extract all vertices of box3
+		var max = box3.max;
+		var min = box3.min;
+
+		vertices3D[ 0 ].set( max.x, max.y, max.z );
+		vertices3D[ 1 ].set( min.x, max.y, max.z );
+		vertices3D[ 2 ].set( min.x, min.y, max.z );
+		vertices3D[ 3 ].set( max.x, min.y, max.z );
+		vertices3D[ 4 ].set( max.x, max.y, min.z );
+		vertices3D[ 5 ].set( min.x, max.y, min.z );
+		vertices3D[ 6 ].set( min.x, min.y, min.z );
+		vertices3D[ 7 ].set( max.x, min.y, min.z );
+
+		// convert vertices to 2d coordinates
+		goog.array.forEach(vertices2D, function(vertex2D, index) {
+
+			var vertex3D = vertices3D[ index ];
+			var coord = feng.utils.ThreeUtils.get2DCoordinates( vertex3D, camera, rendererSize );
+			vertex2D.x = coord.x;
+			vertex2D.y = coord.y;
+		});
+
+		box2.top = Math.min(
+			vertices2D[0].y,
+			vertices2D[1].y,
+			vertices2D[2].y,
+			vertices2D[3].y,
+			vertices2D[4].y,
+			vertices2D[5].y,
+			vertices2D[6].y,
+			vertices2D[7].y);
+
+		box2.bottom = Math.max(
+			vertices2D[0].y,
+			vertices2D[1].y,
+			vertices2D[2].y,
+			vertices2D[3].y,
+			vertices2D[4].y,
+			vertices2D[5].y,
+			vertices2D[6].y,
+			vertices2D[7].y);
+
+		box2.left = Math.min(
+			vertices2D[0].x,
+			vertices2D[1].x,
+			vertices2D[2].x,
+			vertices2D[3].x,
+			vertices2D[4].x,
+			vertices2D[5].x,
+			vertices2D[6].x,
+			vertices2D[7].x);
+
+		box2.right = Math.max(
+			vertices2D[0].x,
+			vertices2D[1].x,
+			vertices2D[2].x,
+			vertices2D[3].x,
+			vertices2D[4].x,
+			vertices2D[5].x,
+			vertices2D[6].x,
+			vertices2D[7].x);
+
+		return box2;
+		
+	})( box3, camera, rendererSize, opt_box );
+};
+
+
 feng.utils.ThreeUtils.projector = new THREE.Projector();

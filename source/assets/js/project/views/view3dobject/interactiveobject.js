@@ -16,6 +16,8 @@ feng.views.view3dobject.InteractiveObject = function( object3d, data ){
 
   this.isSpecialCameraEnabled = data.camera ? true : false;
   this.specialCameraSettings = data.camera || {};
+
+  this._screenBox = new goog.math.Box(0, 0, 0, 0);
 };
 goog.inherits(feng.views.view3dobject.InteractiveObject, feng.views.view3dobject.View3DObject);
 
@@ -36,6 +38,16 @@ feng.views.view3dobject.InteractiveObject.prototype.enableSpecialCamera = functi
     this.specialCameraSettings.rotation = rotation;
     this.specialCameraSettings.fov = fov;
   }
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.updateScreenBox = function( camera, rendererSize ){
+
+  var box3 = this.getBoundingBox();
+
+  this._screenBox = feng.utils.ThreeUtils.getRectangleFromBox3( box3, camera, rendererSize, this._screenBox );
+
+  return this._screenBox;
 };
 
 

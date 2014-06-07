@@ -180,12 +180,12 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelectCancel = functi
 
 feng.controllers.controls.BrowseControls.prototype.onObjectSelectStart = function ( object ) {
 
+	this._view3d.hud.objectBox.activate( object );
 };
 
 
-feng.controllers.controls.BrowseControls.prototype.onObjectSelectProgress = function ( progress ) {
+feng.controllers.controls.BrowseControls.prototype.onObjectSelectProgress = function ( object, progress ) {
 
-	
 };
 
 

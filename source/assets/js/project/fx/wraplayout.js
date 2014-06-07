@@ -110,69 +110,8 @@ feng.fx.WrapLayout.prototype.update = function ( object3d, camera, rendererSize 
 	// calculate object3d bounding box
 	this._object3DBox.setFromObject( object3d );
 
-	// extract all vertices of box
-	var max = this._object3DBox.max;
-	var min = this._object3DBox.min;
-
-	this._vertices3D[ 0 ].set( max.x, max.y, max.z );
-	this._vertices3D[ 1 ].set( min.x, max.y, max.z );
-	this._vertices3D[ 2 ].set( min.x, min.y, max.z );
-	this._vertices3D[ 3 ].set( max.x, min.y, max.z );
-	this._vertices3D[ 4 ].set( max.x, max.y, min.z );
-	this._vertices3D[ 5 ].set( min.x, max.y, min.z );
-	this._vertices3D[ 6 ].set( min.x, min.y, min.z );
-	this._vertices3D[ 7 ].set( max.x, min.y, min.z );
-
-	// convert vertices to 2d coordinates
-	goog.array.forEach(this._vertices2D, function(vertex2D, index) {
-
-		var vertex3D = this._vertices3D[ index ];
-		var coord = feng.utils.ThreeUtils.get2DCoordinates( vertex3D, camera, rendererSize );
-		vertex2D.x = coord.x;
-		vertex2D.y = coord.y;
-
-	}, this);
-
-	this._object2DBox.top = Math.min(
-		this._vertices2D[0].y,
-		this._vertices2D[1].y,
-		this._vertices2D[2].y,
-		this._vertices2D[3].y,
-		this._vertices2D[4].y,
-		this._vertices2D[5].y,
-		this._vertices2D[6].y,
-		this._vertices2D[7].y);
-
-	this._object2DBox.bottom = Math.max(
-		this._vertices2D[0].y,
-		this._vertices2D[1].y,
-		this._vertices2D[2].y,
-		this._vertices2D[3].y,
-		this._vertices2D[4].y,
-		this._vertices2D[5].y,
-		this._vertices2D[6].y,
-		this._vertices2D[7].y);
-
-	this._object2DBox.left = Math.min(
-		this._vertices2D[0].x,
-		this._vertices2D[1].x,
-		this._vertices2D[2].x,
-		this._vertices2D[3].x,
-		this._vertices2D[4].x,
-		this._vertices2D[5].x,
-		this._vertices2D[6].x,
-		this._vertices2D[7].x);
-
-	this._object2DBox.right = Math.max(
-		this._vertices2D[0].x,
-		this._vertices2D[1].x,
-		this._vertices2D[2].x,
-		this._vertices2D[3].x,
-		this._vertices2D[4].x,
-		this._vertices2D[5].x,
-		this._vertices2D[6].x,
-		this._vertices2D[7].x);
-
+	this._object2DBox = feng.utils.ThreeUtils.getRectangleFromBox3( this._object3DBox, camera, rendererSize, this._object2DBox );
+	
 	// calculate block position
 	goog.array.forEach(this._blocks, function(block) {
 		this.calculateBlockPosition( block, rendererSize );
