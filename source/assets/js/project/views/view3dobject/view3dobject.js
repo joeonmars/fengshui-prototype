@@ -83,7 +83,7 @@ feng.views.view3dobject.View3DObject.prototype.getBoundingBoxParameters = functi
 
 feng.views.view3dobject.View3DObject.prototype.getHeight = function(){
 
-  return this.getBoundingBoxParameters.height;
+  return this.getBoundingBoxParameters().height;
 };
 
 

@@ -41,7 +41,7 @@ goog.inherits(feng.views.sections.controls.ObjectSelector, feng.views.sections.c
 feng.views.sections.controls.ObjectSelector.prototype.update = function (objects, camera, callbacks) {
 
 	this._selectableObjects = goog.object.getValues(objects);
-	
+
 	this._camera = camera;
 
 	this._callbacks = {
@@ -104,6 +104,8 @@ feng.views.sections.controls.ObjectSelector.prototype.animateIn = function () {
 		'scale': 1,
 		'ease': Back.easeOut
 	});
+
+	feng.utils.Utils.setCursor('initial', this._renderElement);
 };
 
 
@@ -116,6 +118,8 @@ feng.views.sections.controls.ObjectSelector.prototype.animateOut = function () {
 		'onComplete': this.hide,
 		'onCompleteScope': this
 	});
+
+	feng.utils.Utils.setCursor(null, this._renderElement);
 };
 
 

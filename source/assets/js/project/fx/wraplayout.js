@@ -15,18 +15,7 @@ feng.fx.WrapLayout = function(){
   this._object2DBox = new goog.math.Box(0, 0, 0, 0);
   this._object3DBox = new THREE.Box3();
 
-  this._vertices2D = [];
-  this._vertices3D = [];
-
-  for(var i = 0; i < 8; i ++) {
-
-  	this._vertices3D.push( new THREE.Vector3() );
-
-  	this._vertices2D.push({
-  		x: 0,
-  		y: 0
-  	});
-  }
+  this._minMargin = 20;
 
   this._blocks = [];
 };
@@ -70,23 +59,23 @@ feng.fx.WrapLayout.prototype.calculateBlockPosition = function (block, rendererS
 
 	switch(block.alignment) {
 		case feng.fx.WrapLayout.Alignment.TOP:
-		blockX = Math.max(0, rendererSize.width / 2 - block.width / 2);
-		blockY = Math.max(0, this._object2DBox.top / 2 - block.height / 2);
+		blockX = Math.max(this._minMargin, rendererSize.width / 2 - block.width / 2);
+		blockY = Math.max(this._minMargin, this._object2DBox.top / 2 - block.height / 2);
 		break;
 
 		case feng.fx.WrapLayout.Alignment.BOTTOM:
-		blockX = Math.max(0, rendererSize.width / 2 - block.width / 2);
-		blockY = Math.min(rendererSize.height - block.height, this._object2DBox.bottom + (rendererSize.height - this._object2DBox.bottom) / 2 - block.height / 2);
+		blockX = Math.max(this._minMargin, rendererSize.width / 2 - block.width / 2);
+		blockY = Math.min(rendererSize.height - block.height - this._minMargin, this._object2DBox.bottom + (rendererSize.height - this._object2DBox.bottom) / 2 - block.height / 2);
 		break;
 
 		case feng.fx.WrapLayout.Alignment.LEFT:
-		blockX = Math.max(0, this._object2DBox.left / 2 - block.width / 2);
-		blockY = Math.max(0, rendererSize.height / 2 - block.height / 2);
+		blockX = Math.max(this._minMargin, this._object2DBox.left / 2 - block.width / 2);
+		blockY = Math.max(this._minMargin, rendererSize.height / 2 - block.height / 2);
 		break;
 
 		case feng.fx.WrapLayout.Alignment.RIGHT:
-		blockX = Math.min(rendererSize.width - block.width, this._object2DBox.right + (rendererSize.width - this._object2DBox.right) / 2 - block.width / 2);
-		blockY = Math.max(0, rendererSize.height / 2 - block.height / 2);
+		blockX = Math.min(rendererSize.width - block.width - this._minMargin, this._object2DBox.right + (rendererSize.width - this._object2DBox.right) / 2 - block.width / 2);
+		blockY = Math.max(this._minMargin, rendererSize.height / 2 - block.height / 2);
 		break;
 	}
 

@@ -1,5 +1,6 @@
 goog.provide('feng.utils.Utils');
 
+goog.require('goog.style');
 
 
 /**
@@ -16,4 +17,11 @@ feng.utils.Utils.setValueByKeys = function(key, val, obj) {
     obj = obj[ka.shift()];
     feng.utils.Utils.setValueByKeys(ka.join("."),val,obj);
   }    
+};
+
+
+feng.utils.Utils.setCursor = function(cursor, element) {
+
+  var el = element || document.body;
+  goog.style.setStyle(el, 'cursor', cursor);
 };

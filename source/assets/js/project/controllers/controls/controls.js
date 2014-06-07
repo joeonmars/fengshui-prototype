@@ -159,6 +159,8 @@ feng.controllers.controls.Controls.prototype.enable = function( enable ) {
 		this._clock.start();
 		goog.fx.anim.registerAnimation(this);
 
+		goog.dom.classes.add(this._view3d.domElement, 'grab');
+
 	}else {
 
 		this._eventHandler.removeAll();
@@ -166,6 +168,8 @@ feng.controllers.controls.Controls.prototype.enable = function( enable ) {
 		this._clock.stop();
 		goog.fx.anim.unregisterAnimation(this);
 
+		goog.dom.classes.remove(this._view3d.domElement, 'grab');
+		goog.dom.classes.remove(this._view3d.domElement, 'grabbing');
 	}
 };
 
@@ -211,11 +215,14 @@ feng.controllers.controls.Controls.prototype.onMouseUp = function ( e ) {
 
 	this._eventHandler.unlisten(this._domElement, 'mousemove', this.onMouseMove, false, this);
 	this._eventHandler.unlisten(document, 'mouseup', this.onMouseUp, false, this);
+
+	goog.dom.classes.remove(this._view3d.domElement, 'grabbing');
 };
 
 
 feng.controllers.controls.Controls.prototype.onMouseMove = function ( e ) {
 
+	goog.dom.classes.add(this._view3d.domElement, 'grabbing');
 };
 
 

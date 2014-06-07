@@ -1,0 +1,22 @@
+{namespace feng.templates.captions autoescape="false"}
+
+
+/**
+ * View3D Captions
+ * @param type the caption type
+ */
+{template .Caption}
+{if $type == 'select_color'}
+	<div class="left"></div>
+	<div class="right"></div>
+{/if}
+
+{if $type == 'change_object'}
+	<div class="top"></div>
+	<div class="right"></div>
+{/if}
+
+{if $type == 'advice'}
+	<div class="right"></div>
+{/if}
+{/template}
