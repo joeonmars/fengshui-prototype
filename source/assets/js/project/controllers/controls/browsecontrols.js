@@ -3,7 +3,6 @@ goog.provide('feng.controllers.controls.BrowseControls');
 goog.require('goog.events');
 goog.require('goog.math.Box');
 goog.require('feng.controllers.controls.Controls');
-goog.require('feng.views.sections.controls.ObjectSelector');
 goog.require('feng.utils.ThreeUtils');
 goog.require('feng.utils.Randomizer');
 
@@ -19,8 +18,6 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 
 	this._shouldIgnoreClick = false;
 
-	var objectSelectorEl = goog.dom.getElementByClass('objectSelector', uiElement);
-	var renderEl = this._view3d.domElement;
 	var interactiveObjects = this._view3d.interactiveObjects;
 	var callbacks = {
 		'onStart': goog.bind(this.onObjectSelectStart, this),
@@ -29,7 +26,8 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 		'onProgress': goog.bind(this.onObjectSelectProgress, this),
 	};
 
-	this._objectSelector = new feng.views.sections.controls.ObjectSelector( interactiveObjects, this._camera, objectSelectorEl, renderEl, callbacks );
+	this._objectSelector = this._view3d.hud.objectSelector;
+	this._objectSelector.update( interactiveObjects, this._camera, callbacks );
 
 	this._lastMouseX = 0;
 	this._lastMouseY = 0;
@@ -67,10 +65,8 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 	}
 
 	if(this._isEnabled) {
-		this._objectSelector.show();
 		this._objectSelector.activate();
 	}else {
-		this._objectSelector.hide();
 		this._objectSelector.deactivate();
 	}
 };
@@ -175,6 +171,7 @@ feng.controllers.controls.BrowseControls.prototype.onMouseMove = function ( e ) 
 
 feng.controllers.controls.BrowseControls.prototype.onObjectSelectCancel = function () {
 
+	this._view3d.hud.objectBox.deactivate();
 };
 
 

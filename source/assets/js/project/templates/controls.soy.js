@@ -47,7 +47,7 @@ feng.templates.controls.ObjectSelector = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.controls.ObjectBox = function(opt_data, opt_ignored) {
-  return '<div class="objectBox"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+  return '<div class="objectBox"><div class="dot"><div class="icon"></div></div><div class="dot"><div class="icon"></div></div><div class="dot"><div class="icon"></div></div><div class="dot"><div class="icon"></div></div></div>';
 };
 
 

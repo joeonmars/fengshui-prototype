@@ -20,9 +20,70 @@ feng.views.sections.controls.ObjectBox = function( domElement, cameraController,
 
   this._object = null;
 
+  this._timeline = new TimelineMax({
+  	'paused': true,
+  	'onReverseComplete': this.onReverseComplete,
+  	'onReverseCompleteScope': this
+  });
+
+  var tweeners = goog.array.map(this._dotEls, function(el, index) {
+
+		var iconEl = goog.dom.query('.icon', el)[0];
+
+		var x, y;
+
+		switch(index) {
+			case 0:
+			x = 20;
+			y = 0;
+			break;
+
+			case 1:
+			x = 0;
+			y = 20;
+			break;
+
+			case 2:
+			x = -20;
+			y = 0;
+			break;
+
+			case 3:
+			x = 0;
+			y = -20;
+			break;
+		}
+
+		var tweener = TweenMax.fromTo(iconEl, .25, {
+			'opacity': 0,
+			'x': x,
+			'y': y
+		}, {
+			'opacity': 1,
+			'x': 0,
+			'y': 0
+		});
+
+		return tweener;
+	});
+
+  this._timeline.add( tweeners, '+=0', 'start', .05 );
+
   this.hide();
 };
 goog.inherits(feng.views.sections.controls.ObjectBox, feng.views.sections.controls.Controls);
+
+
+feng.views.sections.controls.ObjectBox.prototype.setObject = function ( object ) {
+
+	if(this._object === object) {
+		return;
+	}
+
+	this._object = object;
+
+	this._timeline.restart();
+};
 
 
 feng.views.sections.controls.ObjectBox.prototype.activate = function ( object ) {
@@ -31,7 +92,7 @@ feng.views.sections.controls.ObjectBox.prototype.activate = function ( object ) 
 
 	this.show();
 
-	this._object = object;
+	this.setObject( object );
 
 	goog.fx.anim.registerAnimation( this );
 };
@@ -41,9 +102,9 @@ feng.views.sections.controls.ObjectBox.prototype.deactivate = function () {
 
 	goog.base(this, 'deactivate');
 
-	this.hide();
-
 	this._object = null;
+
+	this._timeline.reverse();
 
 	goog.fx.anim.unregisterAnimation( this );
 };
@@ -63,11 +124,11 @@ feng.views.sections.controls.ObjectBox.prototype.onAnimationFrame = function ( n
 	var width = this._box.right - this._box.left;
 	var height = this._box.bottom - this._box.top;
 
-	var dot1x = width / 2;
-	var dot1y = 0;
+	var dot1x = 0;
+	var dot1y = height / 2;
 
-	var dot2x = 0;
-	var dot2y = height / 2;
+	var dot2x = width / 2;
+	var dot2y = 0;
 
 	var dot3x = width;
 	var dot3y = height / 2;
@@ -81,4 +142,10 @@ feng.views.sections.controls.ObjectBox.prototype.onAnimationFrame = function ( n
 	goog.style.setStyle( this._dotEls[3], 'transform', 'translate(' + dot4x + 'px,' + dot4y + 'px)' );
 
 	goog.style.setStyle( this.domElement, 'transform', 'translate(' + this._box.left + 'px,' + this._box.top + 'px)' );
+};
+
+
+feng.views.sections.controls.ObjectBox.prototype.onReverseComplete = function () {
+
+	this.hide();
 };

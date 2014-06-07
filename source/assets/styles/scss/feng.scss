@@ -120,14 +120,15 @@
 
 				>.objectSelector{
 					position: absolute;
-					width: 100px;
-					height: 8px;
-					background: #888;
+					margin-left: -28px;
+					margin-top: -28px;
+					@include retina-ui("circle-dot");
+					overflow: visible;
 
 					>.fill{
-						width: 0%;
-						height: 100%;
-						background: blue;
+						position: relative;
+						left: -2px;
+						top: -2px;
 					}
 				}
 
@@ -138,13 +139,12 @@
 
 					>.dot{
 						position: absolute;
-						width: 12px;
-						height: 12px;
-						margin-left: -6px;
-						margin-top: -6px;
-						border-radius: 50%;
-						background: white;
-						@include single-box-shadow(rgba(0, 0, 0, .4), 1px, 1px, 2px, false, false);
+						margin-left: -8px;
+						margin-top: -8px;
+
+						>.icon{
+							@include retina-icon("objectboxdot");
+						}
 					}
 				}
 

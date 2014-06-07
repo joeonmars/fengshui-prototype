@@ -85,12 +85,12 @@ feng.views.View3D.prototype.init = function(){
 	var viewSize = this.getViewSize();
 	this._renderer.setSize( viewSize.width, viewSize.height );
 
+	this.hud = new feng.views.View3DHud( this );
+	
 	this.renderController = new feng.controllers.view3d.RenderController(this);
 
 	this.modeController = new feng.controllers.view3d.ModeController(this);
 	this.modeController.init();
-
-	this.hud = new feng.views.View3DHud( this );
 
 	this.hide();
 };

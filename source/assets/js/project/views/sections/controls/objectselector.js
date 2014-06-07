@@ -2,13 +2,14 @@ goog.provide('feng.views.sections.controls.ObjectSelector');
 
 goog.require('goog.events');
 goog.require('goog.async.Delay');
+goog.require('feng.fx.AnimatedSprite');
 goog.require('feng.views.sections.controls.Controls');
 
 
 /**
  * @constructor
  */
-feng.views.sections.controls.ObjectSelector = function(objects, camera, domElement, renderElement, callbacks){
+feng.views.sections.controls.ObjectSelector = function(domElement, renderElement){
 
   goog.base(this, domElement);
 
@@ -16,36 +17,39 @@ feng.views.sections.controls.ObjectSelector = function(objects, camera, domEleme
   this._camera = null;
   this._renderElement = renderElement;
   this._domElement = domElement;
-  this._fillElement = goog.dom.getElementByClass('fill', this._domElement);
+  this._fillEl = goog.dom.getElementByClass('fill', this._domElement);
+
+  var img = feng.models.Preload.getInstance().getAsset('global.circular-fill');
+  this._fillSprite = new feng.fx.AnimatedSprite(this._fillEl, img, 16, 2, 31);
 
   this._selectedObject = null;
   this._downObject = null;
   this._isEnabled = false;
   this._startTime = 0;
-  this._duration = 600;
+  this._duration = 800;
 
-  this._callbacks = {
-  	'onProgress': callbacks['onProgress'] || goog.nullFunction,
-  	'onStart': callbacks['onStart'] || goog.nullFunction,
-  	'onCancel': callbacks['onCancel'] || goog.nullFunction,
-  	'onComplete': callbacks['onComplete'] || goog.nullFunction
-  };
+  this._callbacks = {};
 
   // a delay to kick off the progress, to differentiate the mouse behavior between a fast click and object selecting
-  this._delay = new goog.async.Delay(this.startProgress, 250, this);
-
-	this.update( objects, camera, domElement );
+  this._delay = new goog.async.Delay(this.startSelect, 250, this);
 
 	this.hide();
 };
 goog.inherits(feng.views.sections.controls.ObjectSelector, feng.views.sections.controls.Controls);
 
 
-feng.views.sections.controls.ObjectSelector.prototype.update = function (objects, camera, domElement) {
+feng.views.sections.controls.ObjectSelector.prototype.update = function (objects, camera, callbacks) {
 
 	this._selectableObjects = goog.object.getValues(objects);
+	
 	this._camera = camera;
-	this._domElement = domElement;
+
+	this._callbacks = {
+	  	'onProgress': callbacks['onProgress'] || goog.nullFunction,
+	  	'onStart': callbacks['onStart'] || goog.nullFunction,
+	  	'onCancel': callbacks['onCancel'] || goog.nullFunction,
+	  	'onComplete': callbacks['onComplete'] || goog.nullFunction
+	  };
 };
 
 
@@ -82,11 +86,36 @@ feng.views.sections.controls.ObjectSelector.prototype.setPosition = function (x,
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.show = function () {
+feng.views.sections.controls.ObjectSelector.prototype.animateIn = function () {
 
-	goog.base(this, 'show');
+	TweenMax.fromTo(this.domElement, .25, {
+		'scale': 0,
+		'opacity': 0,
+	}, {
+		'scale': 1,
+		'opacity': 1,
+		'ease': Expo.easeOut
+	});
 
-	goog.style.setStyle(this.domElement, 'visibility', 'hidden');
+	TweenMax.fromTo(this._fillEl, .4, {
+		'scale': 0
+	}, {
+		'delay': .1,
+		'scale': 1,
+		'ease': Back.easeOut
+	});
+};
+
+
+feng.views.sections.controls.ObjectSelector.prototype.animateOut = function () {
+
+	TweenMax.to(this.domElement, .25, {
+		'scale': .5,
+		'opacity': 0,
+		'ease': Expo.easeOut,
+		'onComplete': this.hide,
+		'onCompleteScope': this
+	});
 };
 
 
@@ -112,21 +141,24 @@ feng.views.sections.controls.ObjectSelector.prototype.doSelect = function () {
 
 	this._selectedObject = this._downObject;
 
+	this.animateOut();
+
 	this._callbacks['onComplete']( this._selectedObject );
 };
 
 
 feng.views.sections.controls.ObjectSelector.prototype.cancelSelect = function () {
 
-	goog.style.setStyle(this.domElement, 'visibility', 'hidden');
+	this.animateOut();
 
 	this._callbacks['onCancel']();
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.startProgress = function () {
+feng.views.sections.controls.ObjectSelector.prototype.startSelect = function () {
 
-	goog.style.setStyle(this.domElement, 'visibility', null);
+	this.show();
+	this.animateIn();
 
 	this._startTime = goog.now();
 	goog.fx.anim.registerAnimation( this );
@@ -181,7 +213,7 @@ feng.views.sections.controls.ObjectSelector.prototype.onAnimationFrame = functio
 	var progress = Math.min(1, (now - this._startTime) / this._duration);
 	//console.log('object select progress: ' + progress);
 
-	goog.style.setStyle(this._fillElement, 'width', progress * 100 + '%');
+	this._fillSprite.setProgress( progress );
 
 	if(progress === 1) {
 
