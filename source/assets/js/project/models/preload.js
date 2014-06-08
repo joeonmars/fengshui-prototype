@@ -11,7 +11,9 @@ feng.models.Preload = function(){
 
 	this._assets = {
 		'global': {
-			'circular-fill': 'images/circular-fill.png'
+			'circular-fill': 'images/circular-fill.png',
+			'cube-browse': 'images/cube-browse.png',
+			'cube-design': 'images/cube-design.png'
 		},
 		'homepage': {
 

@@ -13,6 +13,7 @@ feng.controllers.controls.TransitionControls = function(camera, view3d, domEleme
   goog.base(this, camera, view3d, domElement);
 
   this._tweener = null;
+  this._eventMediator = this._view3d.eventMediator;
 };
 goog.inherits(feng.controllers.controls.TransitionControls, feng.controllers.controls.Controls);
 
@@ -83,4 +84,25 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 	});
 
 	this._tweener.add([positionTweener, rotationTweener, fovTweener], 0, 'start');
+
+	// dispatch mediator event
+	this.dispatchEvent({
+		type: feng.events.EventType.UPDATE,
+		mode: nextMode
+	});
+};
+
+
+feng.controllers.controls.TransitionControls.prototype.enable = function( enable ) {
+
+	goog.base(this, 'enable', enable);
+
+	if(this._isEnabled) {
+
+		this._eventMediator.listen(this, feng.events.EventType.UPDATE);
+
+	}else  {
+
+		this._eventMediator.unlisten(this, feng.events.EventType.UPDATE);
+	}
 };

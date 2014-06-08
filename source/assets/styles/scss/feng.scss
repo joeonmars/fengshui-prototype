@@ -24,50 +24,69 @@
 
 			>.controls{
 				@include absoluteTopLeft;
-				width: 100%;
-				height: 0;
 				z-index: 2;
 
 				>.compass{
-					@include absoluteTopRight;
-					width: 80px;
-					height: 80px;
-					margin: 40px;
-					background-color: #888;
-					@include border-radius(50%);
+					$circle_size: 126px;
+					$cube_size: 80px;
 
-					>.directions{
-						width: 100%;
-						height: 100%;
+					@include absoluteTopLeft;
+					width: $circle_size;
+					height: $circle_size;
+
+					&:hover, &.grabbing{
+						>.circle{
+							>.outline{
+								@include scale(1);
+								opacity: 1;
+							}
+						}
+					}
+
+					&.design{
+						>.cube{
+							.design{
+								opacity: 1 !important;
+							}
+						}
+					}
+
+					>.circle{
+						@include absoluteTopLeft;
+
+						>.solid{
+							@include absoluteTopLeft;
+							@include retina-ui("cube-circle");
+						}
+
+						>.outline{
+							@include absoluteTopLeft;
+							@include retina-ui("cube-circle-hover");
+							@include transition(transform .2s ease-in-out, opacity .35s ease-in-out);
+							@include scale(0.95);
+							opacity: 0;
+						}
+					}
+
+					>.cube{
+						position: absolute;
+						width: $cube_size;
+						height: $cube_size;
+						left: ($circle_size - $cube_size) / 2;
+						top: ($circle_size - $cube_size) / 2;
+						@include border-radius(50%);
+						overflow: hidden;
 
 						>div{
-							position: absolute;
-							width: 20px;
-							height: 20px;
-							font-size: 12px;
-							line-height: 20px;
-							text-align: center;
-							outline: 1px solid gray;
-							@include user-select(none);
+							@include absoluteTopLeft;
 
-							&.n{
-								top: 20px * .5;
-								left: (80px - 20px) * .5;
-							}
+							>div{
+								@include absoluteTopLeft;
 
-							&.s{
-								bottom: 20px * .5;
-								left: (80px - 20px) * .5;
-							}
-
-							&.w{
-								top: (80px - 20px) * .5;
-								left: 20px * .5;
-							}
-
-							&.e{
-								top: (80px - 20px) * .5;
-								right: 20px * .5;
+								&.design{
+									opacity: 0;
+									@include single-transition( opacity, .5s );
+								}
 							}
 						}
 					}
@@ -77,6 +96,8 @@
 					position: absolute;
 
 					>ul{
+						white-space: nowrap;
+
 						>li{
 							display: inline-block;
 							margin: 10px;

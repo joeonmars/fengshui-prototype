@@ -242,9 +242,8 @@ feng.controllers.controls.BrowseControls.prototype.onMediatorEvent = function(e)
 		case feng.events.EventType.UPDATE:
 
 		if(e.target instanceof feng.views.sections.controls.Compass) {
-			var rad = THREE.Math.degToRad( e.angle );
-			this.setYaw( rad );
-			this._targetRotationY = rad;
+			this.setYaw( e.rotation );
+			this._targetRotationY = e.rotation;
 		}
 
 		break;

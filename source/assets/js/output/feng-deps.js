@@ -52,7 +52,7 @@ goog.addDependency('../../../../project/views/debug/manipulate.js', ['feng.views
 goog.addDependency('../../../../project/views/debug/pathfinding.js', ['feng.views.debug.Pathfinding'], ['feng.templates.debug', 'feng.views.debug.DebugView']);
 goog.addDependency('../../../../project/views/debug/pathtrack.js', ['feng.views.debug.PathTrack'], ['feng.templates.debug', 'feng.views.debug.DebugView']);
 goog.addDependency('../../../../project/views/preloader.js', ['feng.views.Preloader'], ['feng.events', 'feng.models.Preload', 'goog.events.EventTarget']);
-goog.addDependency('../../../../project/views/sections/controls/compass.js', ['feng.views.sections.controls.Compass'], ['feng.events', 'feng.views.sections.controls.Controls', 'goog.dom', 'goog.dom.query']);
+goog.addDependency('../../../../project/views/sections/controls/compass.js', ['feng.views.sections.controls.Compass'], ['feng.events', 'feng.fx.AnimatedSprite', 'feng.views.sections.controls.Controls', 'goog.dom', 'goog.fx.Dragger']);
 goog.addDependency('../../../../project/views/sections/controls/controls.js', ['feng.views.sections.controls.Controls'], ['goog.events.EventHandler', 'goog.events.EventTarget', 'goog.style']);
 goog.addDependency('../../../../project/views/sections/controls/manipulator.js', ['feng.views.sections.controls.Manipulator'], ['feng.events', 'feng.views.sections.controls.Controls', 'goog.dom', 'goog.dom.query']);
 goog.addDependency('../../../../project/views/sections/controls/objectbox.js', ['feng.views.sections.controls.ObjectBox'], ['feng.views.sections.controls.Controls', 'goog.events']);

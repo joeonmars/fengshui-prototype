@@ -14,7 +14,7 @@ goog.require('soydata');
  * @notypecheck
  */
 feng.templates.controls.Compass = function(opt_data, opt_ignored) {
-  return '<div class="compass grab"><div class="directions"><div class="n">N</div><div class="s">S</div><div class="w">W</div><div class="e">E</div></div></div>';
+  return '<div class="compass grab"><div class="circle"><div class="outline"></div><div class="solid"></div></div><div class="cube"><div><div class="browse"></div><div class="design"></div></div></div></div>';
 };
 
 

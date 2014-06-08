@@ -113,7 +113,7 @@ feng.controllers.controls.DesignControls.prototype.update = function () {
 	//
 	this.dispatchEvent({
 		type: feng.events.EventType.UPDATE,
-		rotationY: this.getYaw()
+		rotationY: -this.getYaw()
 	});
 
 	//
@@ -189,11 +189,9 @@ feng.controllers.controls.DesignControls.prototype.onMediatorEvent = function(e)
 
 		if(e.target instanceof feng.views.sections.controls.Compass) {
 
-			var radians = THREE.Math.degToRad( e.angle%360 );
-
 			var cameraHeight = this.getPosition().y;
-			var posX = cameraHeight * Math.sin( radians );
-			var posZ = cameraHeight * Math.cos( radians );
+			var posX = cameraHeight * Math.sin( -e.rotation );
+			var posZ = cameraHeight * Math.cos( -e.rotation );
 			var posY = cameraHeight;
 
 			this.setPosition( posX, posY, posZ );
