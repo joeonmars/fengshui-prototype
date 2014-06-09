@@ -17,17 +17,43 @@ feng.controllers.controls.WalkControls = function(camera, view3d, domElement){
 	this._pathTrack = null;
 
 	this._cameraRotation = new THREE.Euler(0, 0, 0, 'YXZ');
+
+	this._gateway = null;
 };
 goog.inherits(feng.controllers.controls.WalkControls, feng.controllers.controls.Controls);
 
 
+feng.controllers.controls.WalkControls.prototype.enable = function( enable ) {
+
+	goog.base(this, 'enable', enable);
+
+	if(this._isEnabled) {
+
+
+	}else  {
+
+		if(this._gateway) {
+			this._gateway.close();
+			this._gateway = null;
+		}
+	}	
+};
+
+
 feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition, toPosition, intersectPosition, gateway, nextMode ) {
 
+	if(gateway) {
+		this._gateway = gateway;
+		this._gateway.open();
+	}
+
+	//
 	var pathfinder = feng.controllers.view3d.PathfindingController.getInstance();
 
 	var start = fromPosition;
 	var end = toPosition;
 	var collidableBoxes = this._view3d.getCollidableBoxes();
+	
 	var coordinates = pathfinder.findPath( start, end, collidableBoxes, this._scene );
 	
 	if(!coordinates) {
@@ -49,7 +75,8 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 	var distanceT = Math.max(0, distance / length);
 	
 	// adult walking speed is 1.564 meter per second
-	var duration = distance * 2 / (1.564 * 100);
+	var speed = 1.564 * 100 * (gateway ? 2 : 1);
+	var duration = distance / (speed / 2);
 
 	var footstepLength = 20;
 	var footsteps = Math.floor(distance / footstepLength);
@@ -108,9 +135,7 @@ feng.controllers.controls.WalkControls.prototype.onPathProgress = function ( pro
 feng.controllers.controls.WalkControls.prototype.onPathComplete = function ( gateway, nextMode ) {
 
 	if(gateway) {
-		// if event has gateway object, animate the gateway and fade out view3d
-		gateway.open();
-
+		// if event has gateway object, fade out view3d
 		this._view3d.dispatchEvent({
 			type: feng.events.EventType.CHANGE,
 			sectionId: this._view3d.sectionId,
