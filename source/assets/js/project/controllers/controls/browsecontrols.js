@@ -189,11 +189,28 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelectProgress = func
 feng.controllers.controls.BrowseControls.prototype.onObjectSelectComplete = function ( object ) {
 
 	console.log('Object selected!');
+	
+	// check if it should open and head to the door directly
+	var isGatewayObject = (object instanceof feng.views.view3dobject.GatewayObject);
+	
+	if(isGatewayObject) {
 
-	var cameraSettings;
+		var center = object.getCenter();
+		
+		this.dispatchEvent({
+			type: feng.events.EventType.CHANGE,
+			mode: feng.controllers.view3d.ModeController.Mode.WALK,
+			nextMode: null,
+			gateway: object,
+			toPosition: center,
+			intersectPosition: center
+		});
+
+		return;
+	}
 
 	// get special camera settings from object
-	cameraSettings = object.isSpecialCameraEnabled ? object.specialCameraSettings : null;
+	var cameraSettings = object.isSpecialCameraEnabled ? object.specialCameraSettings : null;
 	console.log( 'specialCameraSettings: ', cameraSettings );
 
 	// otherwise focus on the center of object
@@ -229,8 +246,7 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelectComplete = func
 		toPosition: cameraSettings.position,
 		toRotation: cameraSettings.rotation,
 		toFov: cameraSettings.fov,
-		object: object,
-		isSpecial: object.isSpecialCameraEnabled
+		object: object
 	});	
 };
 

@@ -109,7 +109,7 @@ feng.controllers.controls.WalkControls.prototype.onPathComplete = function ( gat
 
 	if(gateway) {
 		// if event has gateway object, animate the gateway and fade out view3d
-		gateway.enter();
+		gateway.open();
 
 		this._view3d.dispatchEvent({
 			type: feng.events.EventType.CHANGE,
