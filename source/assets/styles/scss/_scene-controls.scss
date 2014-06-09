@@ -1,0 +1,176 @@
+>.compass{
+	$circle_size: 126px;
+	$cube_size: 80px;
+
+	@include absoluteTopLeft;
+	width: $circle_size;
+	height: $circle_size;
+
+	&:hover, &.grabbing{
+		>.circle{
+			>.outline{
+				@include scale(1);
+				opacity: 1;
+			}
+		}
+	}
+
+	&.design{
+		>.cube{
+			.design{
+				opacity: 1 !important;
+			}
+		}
+	}
+
+	>.circle{
+		@include absoluteTopLeft;
+
+		>.solid{
+			@include absoluteTopLeft;
+			@include retina-ui("cube-circle");
+		}
+
+		>.outline{
+			@include absoluteTopLeft;
+			@include retina-ui("cube-circle-hover");
+			@include transition(transform .2s ease-in-out, opacity .35s ease-in-out);
+			@include scale(0.95);
+			opacity: 0;
+		}
+	}
+
+	>.cube{
+		position: absolute;
+		width: $cube_size;
+		height: $cube_size;
+		left: ($circle_size - $cube_size) / 2;
+		top: ($circle_size - $cube_size) / 2;
+		@include border-radius(50%);
+		overflow: hidden;
+
+		>div{
+			@include absoluteTopLeft;
+
+			>div{
+				@include absoluteTopLeft;
+
+				&.design{
+					opacity: 0;
+					@include single-transition( opacity, .5s );
+				}
+			}
+		}
+	}
+}
+
+>.manipulator{
+	position: absolute;
+
+	>ul{
+		white-space: nowrap;
+
+		>li{
+			display: inline-block;
+			margin: 10px;
+			@extend .button;
+
+			&:after{
+				display: block;
+				color: red;
+				font-size: 30px;
+				line-height: 50px;
+				width: 50px;
+				height: 50px;
+				background: #ddd;
+			}
+
+			&.move{
+				@include font-awesome("fa-arrows");
+			}
+
+			&.rotate{
+				@include font-awesome("fa-refresh");
+			}
+
+			&.enter{
+				@include font-awesome("fa-key");
+			}
+
+			&.place{
+				@include font-awesome("fa-exchange");
+			}
+
+			&.change_accessory{
+				@include font-awesome("fa-coffee");
+			}
+
+			&.close{
+				@include font-awesome("fa-times-circle");
+			}
+		}
+	}
+}
+
+>.objectSelector{
+	position: absolute;
+	margin-left: -28px;
+	margin-top: -28px;
+	@include retina-ui("circle-dot");
+	overflow: visible;
+
+	>.fill{
+		position: relative;
+		left: -2px;
+		top: -2px;
+	}
+}
+
+>.objectBox{
+	position: absolute;
+	width: 0;
+	height: 0;
+
+	>.dot{
+		position: absolute;
+		margin-left: -8px;
+		margin-top: -8px;
+
+		>.icon{
+			@include retina-icon("objectboxdot");
+		}
+	}
+}
+
+>.progressBar{
+	position: absolute;
+	width: 100%;
+	height: 0;
+	@include user-select(none);
+
+	>.inner{
+		margin: 0 auto;
+		width: 800px;
+		height: 100px;
+		//outline: 1px solid #ddd;
+
+		>.tips{
+			position: absolute;
+			z-index: 1;
+
+			>li{
+				position: absolute;
+				width: 40px;
+				height: 40px;
+				margin-left: -20px;
+				margin-top: -20px;
+				background: #888;
+				cursor: pointer;
+				font-size: 10px;
+				line-height: 40px;
+				text-align: center;
+				@include border-radius(50%);
+			}
+		}
+	}
+}

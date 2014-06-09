@@ -20,3 +20,26 @@
 	<div class="right"></div>
 {/if}
 {/template}
+
+
+/**
+ * picture Selector
+ * @param pictures the picture collections
+ */
+{template .PictureSelector}
+<div class="pictureSelector">
+	<div class="pictureView">
+		<ul>
+		{foreach $picture in $pictures}
+			<li>
+				<img src="{$picture.src}" alt="{$picture.description}" draggable="false" data-id="{index($picture)}">
+			</li>
+		{/foreach}
+		</ul>
+	</div>
+	<aside>
+		<div class="prev button"></div>
+		<div class="next button"></div>
+	</aside>
+</div>
+{/template}
