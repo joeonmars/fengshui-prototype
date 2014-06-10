@@ -1,52 +1,61 @@
 {namespace feng.templates.captions autoescape="false"}
 
-
 /**
- * View3D Captions
- * @param type the caption type
- * @param? pictures pictures required by PictureSelector
+ * Advice caption
  */
-{template .Caption}
-{if $type == 'change_color'}
-	<div class="left"></div>
-	<div class="right"></div>
-{/if}
+{template .AdviceCaption}
 
-{if $type == 'change_object'}
-	<div class="top"></div>
 	<div class="right"></div>
-{/if}
 
-{if $type == 'change_picture'}
-	<div class="right">
-		{call .PictureSelector data="$pictures"}{/call}
-	</div>
-{/if}
-
-{if $type == 'advice'}
-	<div class="right"></div>
-{/if}
 {/template}
 
 
 /**
- * picture Selector
- * @param pictures the picture collections
+ * Change color caption
  */
-{template .PictureSelector}
-<div class="pictureSelector">
-	<div class="pictureView">
-		<ul>
-		{foreach $picture in $pictures}
-			<li>
-				<img src="{$picture.src}" alt="{$picture.description}" draggable="false" data-id="{index($picture)}">
-			</li>
-		{/foreach}
-		</ul>
+{template .ChangeColorCaption}
+
+	<div class="left"></div>
+	<div class="right"></div>
+
+{/template}
+
+
+/**
+ * Change object caption
+ */
+{template .ChangeObjectCaption}
+
+	<div class="top"></div>
+	<div class="right"></div>
+
+{/template}
+
+
+/**
+ * Change picture caption
+ * @param pictures pictures
+ */
+{template .ChangePictureCaption}
+
+	<div class="right">
+
+		<div class="pictureSelector">
+			<div class="pictureView">
+				<ul>
+				{foreach $picture in $pictures}
+					<li>
+						<img src="{$picture.src}" alt="{$picture.description}" draggable="false" data-id="{index($picture)}">
+					</li>
+				{/foreach}
+				</ul>
+			</div>
+			<aside>
+				<div class="prev button"></div>
+				<div class="next button"></div>
+			</aside>
+		</div>
+
 	</div>
-	<aside>
-		<div class="prev button"></div>
-		<div class="next button"></div>
-	</aside>
-</div>
+
 {/template}

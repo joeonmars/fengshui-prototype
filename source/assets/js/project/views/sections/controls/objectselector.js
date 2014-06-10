@@ -143,7 +143,7 @@ feng.views.sections.controls.ObjectSelector.prototype.deactivate = function() {
 
 feng.views.sections.controls.ObjectSelector.prototype.doSelect = function () {
 
-	this._selectedObject = this._downObject;
+	this._selectedObject = feng.views.sections.controls.ObjectSelector.findObjectDelegation( this._downObject );
 
 	this.animateOut();
 
@@ -230,4 +230,14 @@ feng.views.sections.controls.ObjectSelector.prototype.onAnimationFrame = functio
 	}
 
 	this._callbacks['onProgress']( this._downObject, progress );
+};
+
+
+feng.views.sections.controls.ObjectSelector.findObjectDelegation = function( object ) {
+
+	if(object instanceof feng.views.view3dobject.entities.PictureFrame) {
+		return object.object3d.parent.interactiveObject;
+	}
+
+	return object;
 };

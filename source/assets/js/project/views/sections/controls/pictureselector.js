@@ -64,6 +64,8 @@ feng.views.sections.controls.PictureSelector = function(pictures){
 		var row = Math.floor(index / this._cols);
 		position.x = col * this._liSize.width;
 		position.y = row * this._liSize.height;
+
+		goog.style.setSize( this._liEls[index], this._liSize );
 	}, this);
 
 	var imgEls = goog.dom.query('img', this._ulEl);

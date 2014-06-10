@@ -53,6 +53,63 @@ feng.models.View3D.Data = {
 				collidable: true,
 				viewid: "interior2",
 				gatewayid: "door"
+			},
+			'picture': {
+				class: 'picturedisplay',
+				interactions: [
+					'change_picture'
+				],
+				tipInteraction: 'change_picture',
+				camera: {
+					position: new THREE.Vector3(57.56, 90.49, -16.61),
+					rotation: new THREE.Euler(-0.24, -1.68, 0.00, 'YXZ'),
+					fov: 40
+				},
+				pictures: [
+					{
+						id: 'studio.interior1.pictures.1',
+						description: 'This is a dummy picture. Its name is picture 1.'
+					},
+					{
+						id: 'studio.interior1.pictures.2',
+						description: 'This is a dummy picture. Its name is picture 2.'
+					},
+					{
+						id: 'studio.interior1.pictures.3',
+						description: 'This is a dummy picture. Its name is picture 3.'
+					},
+					{
+						id: 'studio.interior1.pictures.4',
+						description: 'This is a dummy picture. Its name is picture 4.'
+					},
+					{
+						id: 'studio.interior1.pictures.5',
+						description: 'This is a dummy picture. Its name is picture 5.'
+					},
+					{
+						id: 'studio.interior1.pictures.6',
+						description: 'This is a dummy picture. Its name is picture 6.'
+					},
+					{
+						id: 'studio.interior1.pictures.7',
+						description: 'This is a dummy picture. Its name is picture 7.'
+					},
+					{
+						id: 'studio.interior1.pictures.8',
+						description: 'This is a dummy picture. Its name is picture 8.'
+					},
+					{
+						id: 'studio.interior1.pictures.9',
+						description: 'This is a dummy picture. Its name is picture 9.'
+					},
+					{
+						id: 'studio.interior1.pictures.10',
+						description: 'This is a dummy picture. Its name is picture 10.'
+					}
+				]
+			},
+			'frame': {
+				class: 'pictureframe'
 			}
 		},
 		'interior2': {
@@ -101,7 +158,7 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.bathtub-texture"
 			},
 			'closet-door-mirror': {
-				mirror: true
+
 			},
 			'closet-door': {
 				texture: "studio.bathroom.closet-door-texture"

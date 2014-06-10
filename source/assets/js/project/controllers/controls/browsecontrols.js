@@ -188,7 +188,7 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelectProgress = func
 
 feng.controllers.controls.BrowseControls.prototype.onObjectSelectComplete = function ( object ) {
 
-	console.log('Object selected!');
+	console.log('Object selected: ' + object.object3d.name);
 	
 	// check if it should open and head to the door directly
 	var isGatewayObject = (object instanceof feng.views.view3dobject.GatewayObject);
