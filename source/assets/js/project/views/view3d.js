@@ -213,7 +213,7 @@ feng.views.View3D.prototype.hide = function(){
 
 
 feng.views.View3D.prototype.fadeIn = function(){
-	
+
 	if(!this.isShown) {
 		this.show();
 	}
@@ -223,6 +223,10 @@ feng.views.View3D.prototype.fadeIn = function(){
  		'opacity': 1,
  		'clearProps': 'all'
  	});
+
+	this.dispatchEvent({
+		type: feng.events.EventType.ANIMATE_IN
+	});
 
  	tweener.eventCallback("onComplete", goog.bind(function() {
  		this.dispatchEvent({
@@ -237,6 +241,10 @@ feng.views.View3D.prototype.fadeOut = function(){
  	var tweener = TweenMax.to(this.domElement, 1, {
  		'opacity': 0
  	});
+
+	this.dispatchEvent({
+		type: feng.events.EventType.ANIMATE_OUT
+	});
 
  	tweener.eventCallback("onComplete", goog.bind(function() {
  		this.hide();

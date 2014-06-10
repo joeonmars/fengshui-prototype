@@ -19,6 +19,8 @@ feng.controllers.view3d.View3DController = function(){
   this._eventHandler.listen(this, feng.events.EventType.SHOW, this.onShowView3D, false, this);
   this._eventHandler.listen(this, feng.events.EventType.HIDE, this.onHideView3D, false, this);
   this._eventHandler.listen(this, feng.events.EventType.CHANGE, this.onChangeView3D, false, this);
+  this._eventHandler.listen(this, feng.events.EventType.ANIMATE_IN, this.onAnimateInView3D, false, this);
+  this._eventHandler.listen(this, feng.events.EventType.ANIMATE_OUT, this.onAnimateOutView3D, false, this);
   this._eventHandler.listen(this, feng.events.EventType.ANIMATED_IN, this.onAnimatedInView3D, false, this);
   this._eventHandler.listen(this, feng.events.EventType.ANIMATED_OUT, this.onAnimatedOutView3D, false, this);
 };
@@ -98,14 +100,23 @@ feng.controllers.view3d.View3DController.prototype.onChangeView3D = function(e){
 };
 
 
+feng.controllers.view3d.View3DController.prototype.onAnimateInView3D = function(e){
+
+};
+
+
+feng.controllers.view3d.View3DController.prototype.onAnimateOutView3D = function(e){
+
+	e.target.deactivate();
+};
+
+
 feng.controllers.view3d.View3DController.prototype.onAnimatedInView3D = function(e){
 
 };
 
 
 feng.controllers.view3d.View3DController.prototype.onAnimatedOutView3D = function(e){
-
-	e.target.deactivate();
 
 	if(this._view3dToFadeIn) {
 		this._view3dToFadeIn.fadeIn();
