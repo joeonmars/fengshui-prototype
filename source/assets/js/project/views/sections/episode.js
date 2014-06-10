@@ -129,9 +129,16 @@ feng.views.sections.Episode.prototype.onLoadComplete = function(e){
 		}, this);
 
 		this._view3d = this._view3ds[0];
-		this._view3d.fadeIn();
 
 		this.showView();
 		this.activateView();
 	}
+};
+
+
+feng.views.sections.Episode.prototype.onLoadAnimationComplete = function(e){
+
+	goog.base(this, 'onLoadAnimationComplete', e);
+
+	this._view3d.fadeIn();
 };

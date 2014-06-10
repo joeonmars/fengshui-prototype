@@ -86,7 +86,7 @@ feng.views.sections.Section.prototype.activate = function(){
 	this._eventHandler.listen(this, feng.events.EventType.START, this.onLoadStart, false, this);
 	this._eventHandler.listen(this, feng.events.EventType.PROGRESS, this.onLoadProgress, false, this);
 	this._eventHandler.listen(this, feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this);
-	this._eventHandler.listen(this, feng.events.EventType.COMPLETE, this.onPreloaderComplete, false, this);
+	this._eventHandler.listen(this, feng.events.EventType.COMPLETE, this.onLoadAnimationComplete, false, this);
 };
 
 
@@ -181,12 +181,12 @@ feng.views.sections.Section.prototype.onLoadProgress = function(e){
 
 
 feng.views.sections.Section.prototype.onLoadComplete = function(e){
-
+	
 };
 
 
-feng.views.sections.Section.prototype.onPreloaderComplete = function(e){
-
+feng.views.sections.Section.prototype.onLoadAnimationComplete = function(e){
+	
 	this._eventHandler.unlisten(this, feng.events.EventType.START, this.onLoadStart, false, this);
 	this._eventHandler.unlisten(this, feng.events.EventType.PROGRESS, this.onLoadProgress, false, this);
 	this._eventHandler.unlisten(this, feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this);

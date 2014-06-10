@@ -32,6 +32,8 @@ feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eve
   this.id = viewId;
   this.sectionId = sectionId;
 
+  this.isShown = true;
+
   var view3dController = feng.controllers.view3d.View3DController.getInstance();
   view3dController.registerView3D( this );
 
@@ -163,52 +165,64 @@ feng.views.View3D.prototype.activate = function(){
 
  	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
  	this._eventHandler.listen(this.cameraController, feng.events.EventType.CHANGE, this.onCameraChange, false, this);
+
+ 	goog.fx.anim.registerAnimation(this);
 };
  
  
 feng.views.View3D.prototype.deactivate = function(){
  
 	this._eventHandler.removeAll();
+
+	goog.fx.anim.unregisterAnimation(this);
 };
 
 
 feng.views.View3D.prototype.show = function(){
  
-	goog.style.showElement(this.domElement, true);
+	if(this.isShown) return;
+	else this.isShown = true;
+
+	TweenMax.set(this.domElement, {
+		'opacity': 0,
+		'display': 'block'
+	});
 
  	this.onResize();
 
 	this.dispatchEvent({
-    type: feng.events.EventType.SHOW
+		type: feng.events.EventType.SHOW
   });
-
-	goog.fx.anim.registerAnimation(this);
 };
 
  
 feng.views.View3D.prototype.hide = function(){
  
- 	goog.style.showElement(this.domElement, false);
+	if(!this.isShown) return;
+	else this.isShown = false;
 
- 	goog.fx.anim.unregisterAnimation(this);
+	TweenMax.set(this.domElement, {
+		'opacity': 0,
+		'display': 'none'
+	});
 
 	this.dispatchEvent({
-    type: feng.events.EventType.HIDE
+		type: feng.events.EventType.HIDE
   });
 };
 
 
 feng.views.View3D.prototype.fadeIn = function(){
- 
- 	var tweener = TweenMax.fromTo(this.domElement, .5, {
- 		opacity: 0
- 	}, {
- 		opacity: 1
- 	});
+	
+	if(!this.isShown) {
+		this.show();
+	}
 
- 	tweener.eventCallback("onStart", goog.bind(function() {
- 		this.show();
- 	}, this));
+ 	var tweener = TweenMax.to(this.domElement, 1, {
+ 		'delay': 1,
+ 		'opacity': 1,
+ 		'clearProps': 'all'
+ 	});
 
  	tweener.eventCallback("onComplete", goog.bind(function() {
  		this.dispatchEvent({
@@ -220,10 +234,8 @@ feng.views.View3D.prototype.fadeIn = function(){
 
 feng.views.View3D.prototype.fadeOut = function(){
  
- 	var tweener = TweenMax.fromTo(this.domElement, .5, {
- 		opacity: 1
- 	}, {
- 		opacity: 0
+ 	var tweener = TweenMax.to(this.domElement, 1, {
+ 		'opacity': 0
  	});
 
  	tweener.eventCallback("onComplete", goog.bind(function() {

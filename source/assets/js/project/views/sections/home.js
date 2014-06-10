@@ -15,7 +15,7 @@ feng.views.sections.Home = function(){
 	var domElement = goog.dom.getElement('home');
   goog.base(this, domElement);
 
-  this.assetKeys = [this.id, 'accessories'];
+  this.assetKeys = [this.id, 'accessories', 'global'];
 };
 goog.inherits(feng.views.sections.Home, feng.views.sections.Section);
 
@@ -58,9 +58,9 @@ feng.views.sections.Home.prototype.onLoadComplete = function(e){
 };
 
 
-feng.views.sections.Home.prototype.onPreloaderComplete = function(e){
+feng.views.sections.Home.prototype.onLoadAnimationComplete = function(e){
 
-	goog.base(this, 'onPreloaderComplete', e);
+	goog.base(this, 'onLoadAnimationComplete', e);
 	
 	var navigationController = feng.controllers.NavigationController.getInstance();
 	navigationController.setToken('studio');

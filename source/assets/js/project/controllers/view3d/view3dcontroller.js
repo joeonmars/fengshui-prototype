@@ -49,6 +49,7 @@ feng.controllers.view3d.View3DController.prototype.onShowView3D = function(e){
 	console.log('Show View3D: ', e.target.id);
 
 	this.view3d = e.target;
+	this.view3d.activate();
 
 	var position = this.view3d.origin;
 	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
@@ -56,12 +57,27 @@ feng.controllers.view3d.View3DController.prototype.onShowView3D = function(e){
   var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, lookAtPosition);
   rotation.setFromQuaternion( quaternion );
 
+  // set initial mode
+  
 	this.view3d.modeController.setMode({
 		mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
 		fromPosition: position,
 		fromRotation: rotation,
 		fromFov: 40
 	});
+	
+// test
+/*
+	var activeObject = this.view3d.getInteractiveObject('sofa');
+	var cameraSettings = activeObject.specialCameraSettings;
+
+	var closeupControl = this.view3d.modeController.getModeControl('close_up');
+	closeupControl.setCamera( cameraSettings.position, cameraSettings.rotation, cameraSettings.fov, activeObject );
+
+	this.view3d.modeController.setMode({
+		type: feng.events.EventType.CHANGE,
+		mode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP
+	});*/
 };
 
 
@@ -84,8 +100,6 @@ feng.controllers.view3d.View3DController.prototype.onChangeView3D = function(e){
 
 feng.controllers.view3d.View3DController.prototype.onAnimatedInView3D = function(e){
 
-	this.view3d = e.target;
-	this.view3d.activate();
 };
 
 
