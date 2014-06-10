@@ -47,7 +47,7 @@ feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
-  var output = '<div class="right"><div class="pictureSelector"><div class="pictureView"><ul>';
+  var output = '<img class="dragger" draggable="false"><div class="right"><div class="pictureSelector"><div class="pictureView"><ul>';
   var pictureList10 = opt_data.pictures;
   var pictureListLen10 = pictureList10.length;
   for (var pictureIndex10 = 0; pictureIndex10 < pictureListLen10; pictureIndex10++) {

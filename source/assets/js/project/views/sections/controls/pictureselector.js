@@ -1,40 +1,28 @@
 goog.provide('feng.views.sections.controls.PictureSelector');
 
 goog.require('goog.events');
-goog.require('feng.fx.Dragger');
+goog.require('goog.fx.Dragger');
 goog.require('feng.views.sections.controls.Controls');
 
 
 /**
  * @constructor
  */
-feng.views.sections.controls.PictureSelector = function(pictures){
-
-	var domElement = null;
+feng.views.sections.controls.PictureSelector = function(domElement, pictures){
 
   goog.base(this, domElement);
 
-  // look up parent as the placeholder for image dragger
-  var parent = this.domElement.parentNode;
-
-  while(!goog.dom.classes.has(parent, 'captionView')) {
-  	parent = parent.parentNode;
-  }
-
-  this._captionViewEl = parent;
-
   // create dragger for dragging images from list or object3d
-  this._dragger = new goog.fx.Dragger( this._captionViewEl );
+  this._dragger = new goog.fx.Dragger( document.body );
   this._dragger.setHysteresis( 2 );
   this._dragger.defaultAction = goog.bind(this.onDrag, this);
 
   this._prevButtonEl = goog.dom.getElementByClass('prev', this.domElement);
   this._nextButtonEl = goog.dom.getElementByClass('next', this.domElement);
  
- 	this._ulEl = goog.dom.query('ul', this.domElement);
-  this._liEls = goog.dom.getChildren( this._ulEl );
+  this._liEls = goog.dom.query('li', this.domElement);
 
-  this._imgEl = null;
+  this._imgEl = goog.dom.getElementByClass('dragger', this.domElement.parentNode.parentNode);
 
   this._dragId = 0;
   this._pageId = 0;
@@ -48,7 +36,8 @@ feng.views.sections.controls.PictureSelector = function(pictures){
 
   this._cols = 2;
   this._rows = this._numPictures / this._cols;
-  this._liSize = new goog.math.Size( 350 / this._cols, 200 / this._rows );
+
+  this._liSize = new goog.math.Size( 350 / 2, 200 / 2 );
 
   this._liPositions = [];
 	for(var i = 0; i < this._numPictures; i++) {
@@ -68,7 +57,7 @@ feng.views.sections.controls.PictureSelector = function(pictures){
 		goog.style.setSize( this._liEls[index], this._liSize );
 	}, this);
 
-	var imgEls = goog.dom.query('img', this._ulEl);
+	var imgEls = goog.dom.query('img', this.domElement);
 
 	this._imageSizes = goog.array.map(imgEls, function(img) {
 		var size = new goog.math.Size(img.naturalWidth, img.naturalHeight);
@@ -84,12 +73,15 @@ feng.views.sections.controls.PictureSelector = function(pictures){
 		var position = {
 			x: (this._liSize.width - size.width) / 2,
 			y: (this._liSize.height - size.height) / 2
-		}
+		};
 
-		goog.style.setPosition(img, position);
+		goog.style.setPosition(img, position.x, position.y);
 
 		return position;
 	}, this);
+
+	//
+	this.updateLayout();
 };
 goog.inherits(feng.views.sections.controls.PictureSelector, feng.views.sections.controls.Controls);
 
@@ -149,31 +141,70 @@ feng.views.sections.controls.PictureSelector.prototype.nextPage = function() {
 
 
 feng.views.sections.controls.PictureSelector.prototype.hitTestFrameObjects = function() {
-
+/*
 	var boxInScreen = goog.style.getBounds( this._imgEl );
 	var resultObject = goog.array.find(this._frameObjects, function(object) {
 		return true;
 	});
 
-	return resultObject;
+	return resultObject;*/
 };
 
 
 feng.views.sections.controls.PictureSelector.prototype.updateLayout = function(){
 
+	var i = 0;
 
+	goog.array.forEach(this._liPositions, function(position, index) {
+
+		if(goog.array.contains(this._blankIds, index)) return;
+
+		var col = i % this._cols;
+		var row = Math.floor(i / this._cols);
+		position.x = col * this._liSize.width;
+		position.y = row * this._liSize.height;
+
+		i ++;
+
+	}, this);
+
+	goog.array.forEach(this._liEls, function(liEl, index) {
+
+		var shouldShow = !goog.array.contains(this._blankIds, index);
+		var position = this._liPositions[ index ];
+
+		goog.style.setStyle(liEl, {
+			'transform': 'translate(' + position.x + 'px,' + position.y + 'px)',
+			'display': shouldShow ? 'block' : 'none'
+		});
+
+	}, this);
 };
 
 
 feng.views.sections.controls.PictureSelector.prototype.onDragStart = function(e) {
 
-	this._imgEl = e.target;
+	var target = e.browserEvent.target;
+	var dragId = parseInt( target.getAttribute('data-id') );
 
-	this._dragId = parseInt( this._imgEl.getAttribute('data-id') );
-	this._blankIds.push( this._dragId );
-	goog.dom.appendChild(this._captionViewEl, this._imgEl);
+	this._dragId = dragId;
+	this._blankIds.push( dragId );
 
-	//goog.style.setPosition(this._imgEl, this._dragger.startX, this._dragger.startY);
+	var targetPagePosition = goog.style.getPageOffset(target);
+	var offsetX = targetPagePosition.x - this._dragger.clientX;
+	var offsetY = targetPagePosition.y - this._dragger.clientY;
+
+	offsetX = target.naturalWidth * (offsetX / target.width);
+	offsetY = target.naturalHeight * (offsetY / target.height);
+
+	this._imgEl.src = target.src;
+
+	goog.style.setStyle(this._imgEl, {
+		'margin-left': offsetX + 'px',
+		'margin-top': offsetY + 'px'
+	});
+
+	goog.style.setPosition(this._imgEl, this._dragger.startX, this._dragger.startY);
 
 	this.updateLayout();
 
@@ -188,21 +219,21 @@ feng.views.sections.controls.PictureSelector.prototype.onDragEnd = function(e) {
 
 	if(!object) {
 		goog.array.remove(this._blankIds, this._dragId);
-		goog.dom.appendChild( this._liEls[this._dragId], this._imgEl );
-		goog.style.setSize(this._imgEl, this._imageSizes[this._dragId]);
 	}
 
 	this.updateLayout();
 
-	this._imgEl = null;
+	this._imgEl.src = '';
 };
 
 
 feng.views.sections.controls.PictureSelector.prototype.onDrag = function(x, y) {
 
-	if(!this._imgEl) return;
+	if(this._imgEl.src === '') return;
 
 	var object = this.hitTestFrameObjects();
+
+	goog.style.setPosition(this._imgEl, this._dragger.clientX, this._dragger.clientY);
 };
 
 
