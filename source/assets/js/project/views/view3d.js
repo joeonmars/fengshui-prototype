@@ -21,6 +21,7 @@ goog.require('feng.views.view3dobject.InteractiveObject');
 goog.require('feng.views.view3dobject.HolderObject');
 goog.require('feng.views.view3dobject.GatewayObject');
 goog.require('feng.views.view3dobject.AccessoryObject');
+goog.require('feng.views.view3dobject.TipObject');
 
 /**
  * @constructor
@@ -270,10 +271,9 @@ feng.views.View3D.prototype.initScene = function() {
 	 * Classes to be created by external json data
 	 */
 	var objectClass = {
+		'tip': feng.views.view3dobject.TipObject,
 	  'holder': feng.views.view3dobject.HolderObject,
-	  'gateway': feng.views.view3dobject.GatewayObject,
-		'door': 'feng.views.view3dobject.Door',
-		'wallpaper': 'feng.views.view3dobject.Wallpaper'
+	  'gateway': feng.views.view3dobject.GatewayObject
 	};
 
 	// parse scene objects

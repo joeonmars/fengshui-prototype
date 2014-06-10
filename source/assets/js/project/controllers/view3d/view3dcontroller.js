@@ -60,7 +60,6 @@ feng.controllers.view3d.View3DController.prototype.onShowView3D = function(e){
   rotation.setFromQuaternion( quaternion );
 
   // set initial mode
-  
 	this.view3d.modeController.setMode({
 		mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
 		fromPosition: position,
@@ -68,18 +67,24 @@ feng.controllers.view3d.View3DController.prototype.onShowView3D = function(e){
 		fromFov: 40
 	});
 	
-// test
-/*
-	var activeObject = this.view3d.getInteractiveObject('sofa');
-	var cameraSettings = activeObject.specialCameraSettings;
+	// test mode
+	if(feng.utils.Utils.hasQuery('interaction', 'true')) {
 
-	var closeupControl = this.view3d.modeController.getModeControl('close_up');
-	closeupControl.setCamera( cameraSettings.position, cameraSettings.rotation, cameraSettings.fov, activeObject );
+		var objectName = feng.utils.Utils.getQuery('object');
 
-	this.view3d.modeController.setMode({
-		type: feng.events.EventType.CHANGE,
-		mode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP
-	});*/
+		var object = this.view3d.getInteractiveObject( objectName );
+		var cameraSettings = object.specialCameraSettings;
+
+		this.view3d.modeController.onModeChange({
+			type: feng.events.EventType.CHANGE,
+			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
+			toPosition: cameraSettings.position,
+			toRotation: cameraSettings.rotation,
+			toFov: cameraSettings.fov,
+			object: object
+		});
+	}
 };
 
 

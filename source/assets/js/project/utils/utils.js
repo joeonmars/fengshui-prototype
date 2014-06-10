@@ -1,6 +1,7 @@
 goog.provide('feng.utils.Utils');
 
 goog.require('goog.style');
+goog.require('goog.Uri');
 
 
 /**
@@ -24,4 +25,22 @@ feng.utils.Utils.setCursor = function(cursor, element) {
 
   var el = element || document.body;
   goog.style.setStyle(el, 'cursor', cursor);
+};
+
+
+feng.utils.Utils.getQuery = function(key) {
+
+  var uri = new goog.Uri( window.location.href );
+  var queryData = uri.getQueryData();
+
+  return queryData.get(key);
+};
+
+
+feng.utils.Utils.hasQuery = function(key, value) {
+
+  var uri = new goog.Uri( window.location.href );
+  var queryData = uri.getQueryData();
+
+  return (goog.isString(value) ? (queryData.get(key) === value) : queryData.hasQuery(key));
 };

@@ -26,7 +26,7 @@ feng.views.View3DCaption = function( object, type, cameraController, renderSize 
   soy.renderElement(this.domElement, feng.templates.captions.Caption, {type: type});
 
   switch(type) {
-    case types.SELECT_COLOR:
+    case types.CHANGE_COLOR:
     var leftEl = goog.dom.getElementByClass('left', this.domElement);
     var rightEl = goog.dom.getElementByClass('right', this.domElement);
     this._wrapLayout.addBlock( leftEl, alignment.LEFT, new goog.math.Size(200, 400) );
@@ -37,6 +37,11 @@ feng.views.View3DCaption = function( object, type, cameraController, renderSize 
     var topEl = goog.dom.getElementByClass('top', this.domElement);
     var rightEl = goog.dom.getElementByClass('right', this.domElement);
     this._wrapLayout.addBlock( topEl, alignment.TOP, new goog.math.Size(800, 60) );
+    this._wrapLayout.addBlock( rightEl, alignment.RIGHT, new goog.math.Size(400, 400) );
+    break;
+
+    case types.CHANGE_PICTURE:
+    var rightEl = goog.dom.getElementByClass('right', this.domElement);
     this._wrapLayout.addBlock( rightEl, alignment.RIGHT, new goog.math.Size(400, 400) );
     break;
 
@@ -83,7 +88,8 @@ feng.views.View3DCaption.prototype.onAnimationFrame = function( now ) {
 
 
 feng.views.View3DCaption.Type = {
-  SELECT_COLOR: 'select_color',
+  CHANGE_COLOR: 'change_color',
+  CHANGE_PICTURE: 'change_picture',
   CHANGE_OBJECT: 'change_object',
   ADVICE: 'advice'
 };

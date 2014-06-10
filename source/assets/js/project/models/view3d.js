@@ -12,11 +12,13 @@ feng.models.View3D.Data = {
 				collidable: true
 			},
 			'sofa': {
+				class: "tip",
 				collidable: true,
 				interactions: [
 					"move",
 					"rotate"
 				],
+				tipInteraction: "change_picture",
 				camera: {
 					position: new THREE.Vector3(80, 90, 17),
 					rotation: new THREE.Euler(-0.53, -0.40, 0.00, 'YXZ'),

@@ -55,9 +55,10 @@ feng.views.view3dobject.InteractiveObject.prototype.updateScreenBox = function( 
  * Interactions
  */
 feng.views.view3dobject.InteractiveObject.Interaction = {
-	MOVE: 'move',
-	ROTATE: 'rotate',
+  MOVE: 'move',
+  ROTATE: 'rotate',
   PLACE: 'place',
+  CHANGE_PICTURE: 'change_picture',
   CHANGE_ACCESSORY: 'change_accessory',
   ENTER: 'enter'
 };
