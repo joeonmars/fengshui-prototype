@@ -12,6 +12,8 @@ feng.views.view3dobject.View3DObject = function( object3d, data ){
   goog.base(this);
 
   this.object3d = object3d;
+  this.object3d.userData = data;
+
   this.data = data;
 
   this._boundingBox = new THREE.Box3();

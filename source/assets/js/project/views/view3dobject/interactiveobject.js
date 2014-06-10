@@ -28,6 +28,16 @@ feng.views.view3dobject.InteractiveObject.prototype.hasInteraction = function( i
 };
 
 
+feng.views.view3dobject.InteractiveObject.prototype.activate = function(){
+
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.deactivate = function(){
+
+};
+
+
 feng.views.view3dobject.InteractiveObject.prototype.enableSpecialCamera = function( position, rotation, fov ){
 
   this.isSpecialCameraEnabled = position ? true : false;

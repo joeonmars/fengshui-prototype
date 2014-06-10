@@ -14,7 +14,7 @@ goog.require('soydata');
  * @notypecheck
  */
 feng.templates.captions.Caption = function(opt_data, opt_ignored) {
-  return ((opt_data.type == 'change_color') ? '<div class="left"></div><div class="right"></div>' : '') + ((opt_data.type == 'change_object') ? '<div class="top"></div><div class="right"></div>' : '') + ((opt_data.type == 'change_picture') ? '<div class="right"></div>' : '') + ((opt_data.type == 'advice') ? '<div class="right"></div>' : '');
+  return ((opt_data.type == 'change_color') ? '<div class="left"></div><div class="right"></div>' : '') + ((opt_data.type == 'change_object') ? '<div class="top"></div><div class="right"></div>' : '') + ((opt_data.type == 'change_picture') ? '<div class="right">' + feng.templates.captions.PictureSelector(opt_data.pictures) + '</div>' : '') + ((opt_data.type == 'advice') ? '<div class="right"></div>' : '');
 };
 
 
@@ -26,11 +26,11 @@ feng.templates.captions.Caption = function(opt_data, opt_ignored) {
  */
 feng.templates.captions.PictureSelector = function(opt_data, opt_ignored) {
   var output = '<div class="pictureSelector"><div class="pictureView"><ul>';
-  var pictureList17 = opt_data.pictures;
-  var pictureListLen17 = pictureList17.length;
-  for (var pictureIndex17 = 0; pictureIndex17 < pictureListLen17; pictureIndex17++) {
-    var pictureData17 = pictureList17[pictureIndex17];
-    output += '<li><img src="' + pictureData17.src + '" alt="' + pictureData17.description + '" draggable="false" data-id="' + pictureIndex17 + '"></li>';
+  var pictureList19 = opt_data.pictures;
+  var pictureListLen19 = pictureList19.length;
+  for (var pictureIndex19 = 0; pictureIndex19 < pictureListLen19; pictureIndex19++) {
+    var pictureData19 = pictureList19[pictureIndex19];
+    output += '<li><img src="' + pictureData19.src + '" alt="' + pictureData19.description + '" draggable="false" data-id="' + pictureIndex19 + '"></li>';
   }
   output += '</ul></div><aside><div class="prev button"></div><div class="next button"></div></aside></div>';
   return output;

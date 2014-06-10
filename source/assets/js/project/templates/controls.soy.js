@@ -59,11 +59,11 @@ feng.templates.controls.ObjectBox = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var output = '<div class="progressBar"><div class="inner"><ul class="tips">';
-  var tipList38 = opt_data.tips;
-  var tipListLen38 = tipList38.length;
-  for (var tipIndex38 = 0; tipIndex38 < tipListLen38; tipIndex38++) {
-    var tipData38 = tipList38[tipIndex38];
-    output += '<li class="tip ' + ((tipData38.unlocked != true) ? 'locked' : '') + '" data-tip-id="' + tipData38.id + '" data-view-id="' + tipData38.viewId + '" data-section-id="' + tipData38.sectionId + '">' + tipData38.id + '</li>';
+  var tipList40 = opt_data.tips;
+  var tipListLen40 = tipList40.length;
+  for (var tipIndex40 = 0; tipIndex40 < tipListLen40; tipIndex40++) {
+    var tipData40 = tipList40[tipIndex40];
+    output += '<li class="tip ' + ((tipData40.unlocked != true) ? 'locked' : '') + '" data-tip-id="' + tipData40.id + '" data-view-id="' + tipData40.viewId + '" data-section-id="' + tipData40.sectionId + '">' + tipData40.id + '</li>';
   }
   output += '</ul></div></div>';
   return output;

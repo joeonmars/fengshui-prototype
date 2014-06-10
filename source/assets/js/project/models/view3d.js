@@ -18,7 +18,7 @@ feng.models.View3D.Data = {
 					"move",
 					"rotate"
 				],
-				tipInteraction: "change_picture",
+				tipInteraction: "change_color",
 				camera: {
 					position: new THREE.Vector3(80, 90, 17),
 					rotation: new THREE.Euler(-0.53, -0.40, 0.00, 'YXZ'),
@@ -28,7 +28,7 @@ feng.models.View3D.Data = {
 			'cabinet': {
 				class: "holder",
 				collidable: true,
-				texture: "cabinet-texture",
+				texture: "studio.interior1.cabinet-texture",
 				interactions: [
 					"move",
 					"rotate"
@@ -37,7 +37,7 @@ feng.models.View3D.Data = {
 			'bed': {
 				class: "holder",
 				collidable: true,
-				texture: "bed-texture",
+				texture: "studio.interior1.bed-texture",
 				interactions: [
 					"move",
 					"rotate"
@@ -66,8 +66,9 @@ feng.models.View3D.Data = {
 				gatewayid: "door"
 			},
 			'pc': {
+				class: "computer",
 				collidable: true,
-				texture: "pc-texture",
+				texture: "studio.interior2.pc-texture",
 				interactions: [
 					"move",
 					"rotate"
@@ -75,7 +76,7 @@ feng.models.View3D.Data = {
 			},
 			'screen': {
 				texture: {
-					texture: "screensaver-texture",
+					defaultTexture: "studio.interior2.screensaver-texture",
 					htiles: 45,
 					vtiles: 1,
 					ntiles: 45,
@@ -83,12 +84,12 @@ feng.models.View3D.Data = {
 				}
 			},
 			'cactus': {
-				texture: "cactus-texture"
+				texture: "studio.interior2.cactus-texture"
 			}
 		},
 		'bathroom': {
 			'wall': {
-				texture: "wall-texture"
+				texture: "studio.bathroom.wall-texture"
 			},
 			'door': {
 				class: "gateway",
@@ -97,31 +98,31 @@ feng.models.View3D.Data = {
 				gatewayid: "door"
 			},
 			'bathtub': {
-				texture: "bathtub-texture"
+				texture: "studio.bathroom.bathtub-texture"
 			},
 			'closet-door-mirror': {
 				mirror: true
 			},
 			'closet-door': {
-				texture: "closet-door-texture"
+				texture: "studio.bathroom.closet-door-texture"
 			},
 			'closet': {
-				texture: "closet-texture"
+				texture: "studio.bathroom.closet-texture"
 			},
 			'lamp': {
-				texture: "lamp-texture"
+				texture: "studio.bathroom.lamp-texture"
 			},
 			'shelf': {
-				texture: "shelf-texture"
+				texture: "studio.bathroom.shelf-texture"
 			},
 			'toilet': {
-				texture: "toilet-texture"
+				texture: "studio.bathroom.toilet-texture"
 			},
 			'towel': {
-				texture: "towel-texture"
+				texture: "studio.bathroom.towel-texture"
 			},
 			'washer': {
-				texture: "washer-texture"
+				texture: "studio.bathroom.washer-texture"
 			}
 		}
 	}

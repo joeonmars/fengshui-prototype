@@ -4,6 +4,7 @@
 /**
  * View3D Captions
  * @param type the caption type
+ * @param? pictures pictures required by PictureSelector
  */
 {template .Caption}
 {if $type == 'change_color'}
@@ -17,7 +18,9 @@
 {/if}
 
 {if $type == 'change_picture'}
-	<div class="right"></div>
+	<div class="right">
+		{call .PictureSelector data="$pictures"}{/call}
+	</div>
 {/if}
 
 {if $type == 'advice'}

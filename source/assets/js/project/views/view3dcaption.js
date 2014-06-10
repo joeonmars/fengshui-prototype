@@ -23,8 +23,31 @@ feng.views.View3DCaption = function( object, type, cameraController, renderSize 
   var alignment = feng.fx.WrapLayout.Alignment;
 
   this.domElement = goog.dom.createDom('div', 'captionView');
-  soy.renderElement(this.domElement, feng.templates.captions.Caption, {type: type});
 
+  // make template data
+  var templateData = {
+    type: type
+  };
+  
+  switch(type) {
+    case types.CHANGE_COLOR:
+    break;
+
+    case types.CHANGE_OBJECT:
+    break;
+
+    case types.CHANGE_PICTURE:
+    templateData.pictures = this._object.pictures
+    break;
+
+    case types.ADVICE:
+    break;
+  }
+
+  // render HTML template
+  soy.renderElement(this.domElement, feng.templates.captions.Caption, templateData);
+
+  // make wrap layout
   switch(type) {
     case types.CHANGE_COLOR:
     var leftEl = goog.dom.getElementByClass('left', this.domElement);

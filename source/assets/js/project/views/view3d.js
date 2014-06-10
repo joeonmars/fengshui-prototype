@@ -10,7 +10,6 @@ goog.require('feng.controllers.view3d.ModeController');
 goog.require('feng.controllers.view3d.View3DController');
 goog.require('feng.controllers.view3d.RenderController');
 goog.require('feng.fx.EnergyFlow');
-goog.require('feng.fx.TextureAnimator');
 goog.require('feng.fx.Renderer');
 goog.require('feng.models.Preload');
 goog.require('feng.models.View3D');
@@ -22,6 +21,10 @@ goog.require('feng.views.view3dobject.HolderObject');
 goog.require('feng.views.view3dobject.GatewayObject');
 goog.require('feng.views.view3dobject.AccessoryObject');
 goog.require('feng.views.view3dobject.TipObject');
+goog.require('feng.views.view3dobject.entities.Computer');
+goog.require('feng.views.view3dobject.entities.PictureDisplay');
+goog.require('feng.views.view3dobject.entities.PictureFrame');
+
 
 /**
  * @constructor
@@ -129,6 +132,20 @@ feng.views.View3D.prototype.getInteractiveObject = function( name ){
 };
 
 
+feng.views.View3D.prototype.getObjectsByClass = function( objectClass ){
+
+	var result = [];
+
+	goog.object.forEach(this.view3dObjects, function(object, name) {
+		if(object instanceof objectClass) {
+			result.push( object );
+		}
+	});
+
+	return result;
+};
+
+
 feng.views.View3D.prototype.getCollidables = function(excludes){
 
 	excludes = goog.isArray(excludes) ? excludes : [excludes];
@@ -167,6 +184,10 @@ feng.views.View3D.prototype.activate = function(){
  	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
  	this._eventHandler.listen(this.cameraController, feng.events.EventType.CHANGE, this.onCameraChange, false, this);
 
+ 	goog.object.forEach(this.interactiveObjects, function(interactiveObject) {
+ 		interactiveObject.activate();
+ 	});
+
  	goog.fx.anim.registerAnimation(this);
 };
  
@@ -174,6 +195,10 @@ feng.views.View3D.prototype.activate = function(){
 feng.views.View3D.prototype.deactivate = function(){
  
 	this._eventHandler.removeAll();
+
+ 	goog.object.forEach(this.interactiveObjects, function(interactiveObject) {
+ 		interactiveObject.deactivate();
+ 	});
 
 	goog.fx.anim.unregisterAnimation(this);
 };
@@ -273,7 +298,10 @@ feng.views.View3D.prototype.initScene = function() {
 	var objectClass = {
 		'tip': feng.views.view3dobject.TipObject,
 	  'holder': feng.views.view3dobject.HolderObject,
-	  'gateway': feng.views.view3dobject.GatewayObject
+	  'gateway': feng.views.view3dobject.GatewayObject,
+	  'picturedisplay': feng.views.view3dobject.entities.PictureDisplay,
+	  'pictureframe': feng.views.view3dobject.entities.PictureFrame,
+	  'computer': feng.views.view3dobject.entities.Computer
 	};
 
 	// parse scene objects
@@ -315,7 +343,7 @@ feng.views.View3D.prototype.initScene = function() {
 
 		}else {
 
-			if( !(object instanceof THREE.Light) && (object.parent instanceof THREE.Scene) ) {
+			if( !(object instanceof THREE.Light) ) {
 
 				// create view3d object
 				var view3dObject = new feng.views.view3dobject.View3DObject( object, objectData );
@@ -338,6 +366,23 @@ feng.views.View3D.prototype.initScene = function() {
 
 	goog.array.forEach(this.scene.children, function(child) {
 		feng.views.View3D.parseChildren(child, parse);
+	});
+
+	// register picture frames to picture display
+	var pictureDisplays = this.getObjectsByClass( feng.views.view3dobject.entities.PictureDisplay );
+	var objects = this.interactiveObjects;
+
+	goog.array.forEach( pictureDisplays, function( pictureDisplay ) {
+		goog.array.forEach(pictureDisplay.pictureFrameNames, function(pictureFrameName) {
+			pictureDisplay.registerPictureFrame( objects[ pictureFrameName ] );
+		});
+	});
+
+	// init computer
+	var computers = this.getObjectsByClass( feng.views.view3dobject.entities.Computer );
+
+	goog.array.forEach( computers, function( computer ) {
+		computer.init();
 	});
 
 	// init energyflow
@@ -398,8 +443,7 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 
 	// get scene data
 	var preloadModel = feng.models.Preload.getInstance();
-	var sceneDataPrefix = sectionId+'.'+sceneId;
-	var sceneData = preloadModel.getAsset(sceneDataPrefix+'.scene-data');
+	var sceneData = preloadModel.getAsset(sectionId+'.'+sceneId+'.scene-data');
 	var scene = loader.parse( sceneData );
 
 	// parse scene children
@@ -413,27 +457,8 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 
 			if(goog.isString(textureData)) {
 
-				// if texture data is image
-				var textureSrc = preloadModel.getAsset(sceneDataPrefix+'.'+textureData).src;
+				var textureSrc = preloadModel.getAsset( textureData ).src;
 			  object.material.map = THREE.ImageUtils.loadTexture( textureSrc );
-
-			}else if(goog.isObject(textureData)) {
-
-				// if texture data is animated spritesheet
-				var textureSrc = preloadModel.getAsset(sceneDataPrefix+'.'+textureData.texture).src;
-				object.material.map = THREE.ImageUtils.loadTexture( textureSrc );
-				object.material.color.setRGB(1, 1, 1);
-
-				// create texture animator
-				var texture = object.material.map;
-				var htiles = textureData.htiles;
-				var vtiles = textureData.vtiles;
-				var ntiles = textureData.ntiles;
-				var duration = textureData.duration;
-				var textureAnimator = new feng.fx.TextureAnimator(texture, htiles, vtiles, ntiles, duration);
-				textureData.animator = textureAnimator;
-				textureAnimator.start();
-
 			}
 
 			if(object instanceof THREE.DirectionalLight) {
