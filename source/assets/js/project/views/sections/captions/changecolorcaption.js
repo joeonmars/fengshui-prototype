@@ -8,7 +8,7 @@ goog.require('feng.views.View3DCaption');
 /**
  * @constructor
  */
-feng.views.sections.captions.ChangeColorCaption = function( object, cameraController, renderSize ){
+feng.views.sections.captions.ChangeColorCaption = function( object, cameraController, renderSize, controls, hud ){
 
   this._template = feng.templates.captions.ChangeColorCaption;
 
@@ -16,7 +16,7 @@ feng.views.sections.captions.ChangeColorCaption = function( object, cameraContro
   	
   };
 
-  goog.base(this, object, cameraController, renderSize);
+  goog.base(this, object, cameraController, renderSize, controls, hud);
 
   var leftEl = goog.dom.getElementByClass('left', this.domElement);
   var rightEl = goog.dom.getElementByClass('right', this.domElement);

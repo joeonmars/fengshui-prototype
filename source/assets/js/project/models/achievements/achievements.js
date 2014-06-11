@@ -27,10 +27,11 @@ feng.models.achievements.Achievements = function(){
 
       ],
       'interior1': [
-        new feng.models.achievements.Tip('bed', 'interior1', 'studio'),
+        new feng.models.achievements.Tip('sofa', 'interior1', 'studio'),
+        new feng.models.achievements.Tip('picture', 'interior1', 'studio')
       ],
       'interior2': [
-        new feng.models.achievements.Tip('rubberplant', 'interior2', 'studio'),
+        new feng.models.achievements.Tip('computer', 'interior2', 'studio'),
       ]
     },
 

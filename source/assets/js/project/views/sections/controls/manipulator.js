@@ -98,9 +98,6 @@ feng.views.sections.controls.Manipulator.prototype.onClick = function(e){
  		case interaction.ROTATE:
  			break;
 
-    case interaction.ENTER:
-      break;
-
  		case interaction.CLOSE:
  			break;
  	}

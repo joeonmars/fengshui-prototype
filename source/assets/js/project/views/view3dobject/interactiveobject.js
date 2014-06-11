@@ -1,5 +1,6 @@
 goog.provide('feng.views.view3dobject.InteractiveObject');
 
+goog.require('goog.events.EventHandler');
 goog.require('feng.views.view3dobject.View3DObject');
 
 /**
@@ -13,11 +14,12 @@ feng.views.view3dobject.InteractiveObject = function( object3d, data ){
   this.object3d.interactiveObject = this;
   this.interactions = this.data.interactions || [];
   this.isPhysical = true;
+  this.screenBox = new goog.math.Box(0, 0, 0, 0);
 
   this.isSpecialCameraEnabled = data.camera ? true : false;
   this.specialCameraSettings = data.camera || {};
 
-  this._screenBox = new goog.math.Box(0, 0, 0, 0);
+  this._interactionHandler = new goog.events.EventHandler(this);
 };
 goog.inherits(feng.views.view3dobject.InteractiveObject, feng.views.view3dobject.View3DObject);
 
@@ -38,6 +40,17 @@ feng.views.view3dobject.InteractiveObject.prototype.deactivate = function(){
 };
 
 
+feng.views.view3dobject.InteractiveObject.prototype.startInteraction = function(){
+
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.stopInteraction = function(){
+
+  this._interactionHandler.removeAll();
+};
+
+
 feng.views.view3dobject.InteractiveObject.prototype.enableSpecialCamera = function( position, rotation, fov ){
 
   this.isSpecialCameraEnabled = position ? true : false;
@@ -55,9 +68,9 @@ feng.views.view3dobject.InteractiveObject.prototype.updateScreenBox = function( 
 
   var box3 = this.getBoundingBox();
 
-  this._screenBox = feng.utils.ThreeUtils.getRectangleFromBox3( box3, camera, rendererSize, this._screenBox );
+  this.screenBox = feng.utils.ThreeUtils.getRectangleFromBox3( box3, camera, rendererSize, this.screenBox );
 
-  return this._screenBox;
+  return this.screenBox;
 };
 
 
@@ -69,6 +82,5 @@ feng.views.view3dobject.InteractiveObject.Interaction = {
   ROTATE: 'rotate',
   PLACE: 'place',
   CHANGE_PICTURE: 'change_picture',
-  CHANGE_ACCESSORY: 'change_accessory',
-  ENTER: 'enter'
+  CHANGE_ACCESSORY: 'change_accessory'
 };

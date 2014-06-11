@@ -6,13 +6,15 @@ goog.require('feng.fx.WrapLayout');
 /**
  * @constructor
  */
-feng.views.View3DCaption = function( object, cameraController, renderSize ){
+feng.views.View3DCaption = function( object, cameraController, renderSize, controls, hud ){
 
   goog.base(this);
 
   this._object = object;
   this._cameraController = cameraController;
   this._renderSize = renderSize;
+  this._controls = controls;
+  this._hud = hud;
   this._wrapLayout = new feng.fx.WrapLayout;
 
   this.allowUpdate = true;

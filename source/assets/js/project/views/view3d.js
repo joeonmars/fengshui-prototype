@@ -368,16 +368,6 @@ feng.views.View3D.prototype.initScene = function() {
 		feng.views.View3D.parseChildren(child, parse);
 	});
 
-	// register picture frames to picture display
-	var pictureDisplays = this.getObjectsByClass( feng.views.view3dobject.entities.PictureDisplay );
-	var objects = this.interactiveObjects;
-
-	goog.array.forEach( pictureDisplays, function( pictureDisplay ) {
-		goog.array.forEach(pictureDisplay.pictureFrameNames, function(pictureFrameName) {
-			pictureDisplay.registerPictureFrame( objects[ pictureFrameName ] );
-		});
-	});
-
 	// init computer
 	var computers = this.getObjectsByClass( feng.views.view3dobject.entities.Computer );
 

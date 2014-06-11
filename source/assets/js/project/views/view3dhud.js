@@ -35,7 +35,7 @@ feng.views.View3DHud = function( view3d ){
 goog.inherits(feng.views.View3DHud, goog.events.EventTarget);
 
 
-feng.views.View3DHud.prototype.getCaption = function( object, type ) {
+feng.views.View3DHud.prototype.getCaption = function( object, controls, type ) {
 
 	var key = goog.getUid(object) + '-' + type;
 
@@ -63,7 +63,7 @@ feng.views.View3DHud.prototype.getCaption = function( object, type ) {
     break;
   }
 
-	var caption = new captionClass( object, this._cameraController, this._viewSize );
+	var caption = new captionClass( object, this._cameraController, this._viewSize, controls, this );
 	this._captions[ key ] = caption;
 
 	goog.dom.appendChild( this._captionContainerEl, caption.domElement );

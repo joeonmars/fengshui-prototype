@@ -8,6 +8,7 @@
 		vertical-align: top;
 		width: 312px;
 		height: 236px;
+		padding: 10px 0;
 		overflow: hidden;
 
 		>ul{
@@ -18,7 +19,7 @@
 				position: absolute;
 
 				&.transition{
-					@include transition(transform .5s, opacity .5s ease-in-out);
+					@include transition(transform .5s);
 				}
 
 				&.inactive{
@@ -43,6 +44,7 @@
 		>.prev{
 			width: 46px;
 			height: 46px;
+			margin-top: 10px;
 			border: 1px solid #ddd;
 		}
 

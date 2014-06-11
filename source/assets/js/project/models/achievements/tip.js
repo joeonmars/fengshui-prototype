@@ -1,11 +1,15 @@
 goog.provide('feng.models.achievements.Tip');
 
+goog.require('goog.events.EventTarget');
+goog.require('feng.events');
 goog.require('feng.models.achievements.Achievements');
 
 /**
  * @constructor
  */
 feng.models.achievements.Tip = function( tipId, viewId, sectionId ){
+
+  goog.base(this);
 
   this.id = tipId;
   this.viewId = viewId;
@@ -18,6 +22,7 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId ){
 
   this._requiredTipId = null;
 };
+goog.inherits(feng.models.achievements.Tip, goog.events.EventTarget);
 
 
 feng.models.achievements.Tip.prototype.getView3dObject = function() {
@@ -54,6 +59,14 @@ feng.models.achievements.Tip.prototype.unlock = function() {
   }else {
 
     this.unlocked = true;
+  }
+
+  if(this.unlocked) {
+    
+    this.dispatchEvent({
+      type: feng.events.EventType.UNLOCK,
+      tip: this
+    });
   }
 
   return this.unlocked;

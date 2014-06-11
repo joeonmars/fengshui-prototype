@@ -9,7 +9,7 @@ goog.require('feng.views.sections.controls.PictureSelector');
 /**
  * @constructor
  */
-feng.views.sections.captions.ChangePictureCaption = function( object, cameraController, renderSize ){
+feng.views.sections.captions.ChangePictureCaption = function( object, cameraController, renderSize, controls, hud ){
 
   this._template = feng.templates.captions.ChangePictureCaption;
 
@@ -17,7 +17,7 @@ feng.views.sections.captions.ChangePictureCaption = function( object, cameraCont
     pictures: object.pictures
   };
 
-  goog.base(this, object, cameraController, renderSize);
+  goog.base(this, object, cameraController, renderSize, controls, hud);
 
   var rightEl = goog.dom.getElementByClass('right', this.domElement);
   this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT, new goog.math.Size(400, 430) );

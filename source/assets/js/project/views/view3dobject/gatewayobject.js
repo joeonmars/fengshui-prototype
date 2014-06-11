@@ -10,11 +10,6 @@ feng.views.view3dobject.GatewayObject = function( object3d, data ){
 
   goog.base(this, object3d, data);
 
-	var enter = feng.views.view3dobject.InteractiveObject.Interaction.ENTER;
-	if(!goog.array.contains(this.interactions, enter)) {
-		this.interactions.push(enter);
-	}
-
   this.viewId = this.data.viewid;
   this.gatewayId = this.data.gatewayid;
 

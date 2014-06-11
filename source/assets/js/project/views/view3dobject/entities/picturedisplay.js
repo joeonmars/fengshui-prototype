@@ -22,19 +22,37 @@ feng.views.view3dobject.entities.PictureDisplay = function( object3d, data ){
     };
   });
 
-  // collect picture frame names for picture frame registration
-  this.pictureFrameNames = goog.array.map(this.object3d.children, function(child) {
-  	return child.name;
-  });
-
-  //
-  this._pictureFrames = [];
+  this._pictureFrames = null;
 };
 goog.inherits(feng.views.view3dobject.entities.PictureDisplay, feng.views.view3dobject.TipObject);
 
 
-feng.views.view3dobject.entities.PictureDisplay.prototype.registerPictureFrame = function( pictureFrame ) {
+feng.views.view3dobject.entities.PictureDisplay.prototype.getPictureFrames = function() {
 
-	this._pictureFrames.push( pictureFrame );
-	pictureFrame.setParentEventTarget( this );
+  this._pictureFrames = this._pictureFrames || goog.array.map(this.object3d.children, function(child) {
+    return child.interactiveObject;
+  });
+
+  return this._pictureFrames;
+};
+
+
+feng.views.view3dobject.entities.PictureDisplay.prototype.startInteraction = function() {
+
+  goog.base(this, 'startInteraction');
+
+  this._interactionHandler.listen(this, feng.events.EventType.DRAG, this.onPictureDrag, false, this);
+  this._interactionHandler.listen(window, 'resize', this.onResize, false, this);
+};
+
+
+feng.views.view3dobject.entities.PictureDisplay.prototype.onPictureDrag = function(e) {
+
+  console.log(e);
+};
+
+
+feng.views.view3dobject.entities.PictureDisplay.prototype.onResize = function(e) {
+
+  
 };

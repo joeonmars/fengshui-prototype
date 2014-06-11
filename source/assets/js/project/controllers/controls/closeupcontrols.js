@@ -56,7 +56,7 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 
 		// test...
 		var type = this._activeObject.tipInteraction || 'change_object';
-		var caption = this._view3d.hud.getCaption( this._activeObject, type );
+		var caption = this._view3d.hud.getCaption( this._activeObject, this, type );
 		caption.show();
 
 	}else  {
@@ -66,7 +66,7 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 
 		// test...
 		var type = this._activeObject.tipInteraction || 'change_object';
-		var caption = this._view3d.hud.getCaption( this._activeObject, type );
+		var caption = this._view3d.hud.getCaption( this._activeObject, this, type );
 		caption.hide();
 	}
 };

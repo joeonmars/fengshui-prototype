@@ -32,7 +32,7 @@ goog.addDependency('../../../../project/fx/textureanimator.js', ['feng.fx.Textur
 goog.addDependency('../../../../project/fx/wraplayout.js', ['feng.fx.WrapLayout'], ['feng.utils.ThreeUtils', 'goog.events.EventTarget', 'goog.math.Box']);
 goog.addDependency('../../../../project/models/accessories.js', ['feng.models.Accessories'], ['feng.models.Preload']);
 goog.addDependency('../../../../project/models/achievements/achievements.js', ['feng.models.achievements.Achievements'], ['feng.models.achievements.Tip']);
-goog.addDependency('../../../../project/models/achievements/tip.js', ['feng.models.achievements.Tip'], ['feng.models.achievements.Achievements']);
+goog.addDependency('../../../../project/models/achievements/tip.js', ['feng.models.achievements.Tip'], ['feng.events', 'feng.models.achievements.Achievements', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/models/preload.js', ['feng.models.Preload'], ['feng.utils.Utils', 'goog.object']);
 goog.addDependency('../../../../project/models/view3d.js', ['feng.models.View3D'], []);
 goog.addDependency('../../../../project/templates/captions.soy.js', ['feng.templates.captions'], ['soy', 'soydata']);
@@ -77,6 +77,6 @@ goog.addDependency('../../../../project/views/view3dobject/entities/picturedispl
 goog.addDependency('../../../../project/views/view3dobject/entities/pictureframe.js', ['feng.views.view3dobject.entities.PictureFrame'], ['feng.views.view3dobject.InteractiveObject']);
 goog.addDependency('../../../../project/views/view3dobject/gatewayobject.js', ['feng.views.view3dobject.GatewayObject'], ['feng.views.view3dobject.InteractiveObject']);
 goog.addDependency('../../../../project/views/view3dobject/holderobject.js', ['feng.views.view3dobject.HolderObject'], ['feng.views.view3dobject.InteractiveObject']);
-goog.addDependency('../../../../project/views/view3dobject/interactiveobject.js', ['feng.views.view3dobject.InteractiveObject'], ['feng.views.view3dobject.View3DObject']);
-goog.addDependency('../../../../project/views/view3dobject/tipobject.js', ['feng.views.view3dobject.TipObject'], ['feng.views.view3dobject.InteractiveObject']);
+goog.addDependency('../../../../project/views/view3dobject/interactiveobject.js', ['feng.views.view3dobject.InteractiveObject'], ['feng.views.view3dobject.View3DObject', 'goog.events.EventHandler']);
+goog.addDependency('../../../../project/views/view3dobject/tipobject.js', ['feng.views.view3dobject.TipObject'], ['feng.models.achievements.Achievements', 'feng.views.view3dobject.InteractiveObject']);
 goog.addDependency('../../../../project/views/view3dobject/view3dobject.js', ['feng.views.view3dobject.View3DObject'], ['goog.events.EventTarget', 'goog.math.Box']);

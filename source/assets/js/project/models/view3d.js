@@ -19,6 +19,7 @@ feng.models.View3D.Data = {
 					"rotate"
 				],
 				tipInteraction: "change_color",
+				tipKey: 'studio.interior1.sofa',
 				camera: {
 					position: new THREE.Vector3(80, 90, 17),
 					rotation: new THREE.Euler(-0.53, -0.40, 0.00, 'YXZ'),
@@ -60,6 +61,7 @@ feng.models.View3D.Data = {
 					'change_picture'
 				],
 				tipInteraction: 'change_picture',
+				tipKey: 'studio.interior1.picture',
 				camera: {
 					position: new THREE.Vector3(57.56, 90.49, -16.61),
 					rotation: new THREE.Euler(-0.24, -1.68, 0.00, 'YXZ'),
@@ -129,7 +131,8 @@ feng.models.View3D.Data = {
 				interactions: [
 					"move",
 					"rotate"
-				]
+				],
+				tipKey: 'studio.interior2.computer'
 			},
 			'screen': {
 				texture: {
