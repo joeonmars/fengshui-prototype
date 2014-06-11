@@ -20,7 +20,7 @@ feng.views.sections.captions.ChangePictureCaption = function( object, cameraCont
   goog.base(this, object, cameraController, renderSize);
 
   var rightEl = goog.dom.getElementByClass('right', this.domElement);
-  this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT, new goog.math.Size(400, 400) );
+  this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT, new goog.math.Size(400, 430) );
 
   var pictureSelectorEl = goog.dom.getElementByClass('pictureSelector', this.domElement);
   this._pictureSelector = new feng.views.sections.controls.PictureSelector( pictureSelectorEl, object.pictures );

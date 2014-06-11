@@ -20,8 +20,8 @@ feng.views.sections.captions.ChangeColorCaption = function( object, cameraContro
 
   var leftEl = goog.dom.getElementByClass('left', this.domElement);
   var rightEl = goog.dom.getElementByClass('right', this.domElement);
-  this._wrapLayout.addBlock( leftEl, feng.fx.WrapLayout.Alignment.LEFT, new goog.math.Size(200, 400) );
-  this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT, new goog.math.Size(400, 400) );
+  this._wrapLayout.addBlock( leftEl, feng.fx.WrapLayout.Alignment.LEFT, new goog.math.Size(200, 430) );
+  this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT, new goog.math.Size(400, 430) );
 };
 goog.inherits(feng.views.sections.captions.ChangeColorCaption, feng.views.View3DCaption);
 

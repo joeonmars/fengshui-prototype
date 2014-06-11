@@ -19,7 +19,7 @@ feng.views.sections.captions.AdviceCaption = function( object, cameraController,
   goog.base(this, object, cameraController, renderSize);
 
   var rightEl = goog.dom.getElementByClass('right', this.domElement);
-  this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT, new goog.math.Size(400, 400) );
+  this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT, new goog.math.Size(400, 430) );
 };
 goog.inherits(feng.views.sections.captions.AdviceCaption, feng.views.View3DCaption);
 

@@ -1,12 +1,13 @@
 .pictureSelector{
+	position: relative;
 	width: 400px;
-	height: 200px;
+	height: 236px;
 
 	>.pictureView{
 		display: inline-block;
 		vertical-align: top;
-		width: 350px;
-		height: 100%;
+		width: 312px;
+		height: 236px;
 		overflow: hidden;
 
 		>ul{
@@ -16,35 +17,57 @@
 			>li{
 				position: absolute;
 
+				&.transition{
+					@include transition(transform .5s, opacity .5s ease-in-out);
+				}
+
 				&.inactive{
 					
 				}
 
 				>img{
-					position: absolute;
+					width: 100%;
+					height: 100%;
+					border: 6px solid #fff;
+					@include box-sizing(border-box);
 				}
 			}
 		}
 	}
 
 	>aside{
-		display: inline-block;
-		vertical-align: top;
+		position: absolute;
+		top: 0;
+		right: 0;
 
 		>.prev{
-			width: 50px;
-			height: 50px;
+			width: 46px;
+			height: 46px;
+			border: 1px solid #ddd;
 		}
 
 		>.next{
-			width: 50px;
-			height: 50px;
-			margin-top: 10px;
+			width: 46px;
+			height: 46px;
+			margin-top: 20px;
+			border: 1px solid #ddd;
 		}
 	}
 }
 
->.dragger{
-	position: absolute;
+.draggerContainer{
+	@include absoluteTopLeft;
+	width: 0;
+	height: 0;
 	z-index: 10;
+	@include perspective(4000px);
+	@include transform-style(preserve-3d);
+
+	>.dragger{
+		position: absolute;
+		border: 6px solid #fff;
+		@include box-sizing(border-box);
+		@include single-box-shadow(rgba(0, 0, 0, .14), 2px, 2px, 4px);
+		@include transition(opacity .4s);
+	}
 }

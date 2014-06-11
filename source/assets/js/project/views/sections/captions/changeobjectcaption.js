@@ -21,7 +21,7 @@ feng.views.sections.captions.ChangeObjectCaption = function( object, cameraContr
   var topEl = goog.dom.getElementByClass('top', this.domElement);
   var rightEl = goog.dom.getElementByClass('right', this.domElement);
   this._wrapLayout.addBlock( topEl, feng.fx.WrapLayout.Alignment.TOP, new goog.math.Size(800, 60) );
-  this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT, new goog.math.Size(400, 400) );
+  this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT, new goog.math.Size(400, 430) );
 };
 goog.inherits(feng.views.sections.captions.ChangeObjectCaption, feng.views.View3DCaption);
 
