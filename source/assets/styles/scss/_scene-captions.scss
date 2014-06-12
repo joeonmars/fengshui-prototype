@@ -18,10 +18,6 @@
 			>li{
 				position: absolute;
 
-				&.transition{
-					@include transition(transform .5s);
-				}
-
 				&.inactive{
 					
 				}
