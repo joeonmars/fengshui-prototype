@@ -171,7 +171,7 @@ feng.controllers.controls.DesignControls.prototype.onClickView = function(e){
 		e.clientY,
 		this._view3d.editables,
 		this._camera,
-		this._view3d.domElement);
+		this._view3d.getViewSize());
 
 	if(intersects.length === 0) {
 		return false;

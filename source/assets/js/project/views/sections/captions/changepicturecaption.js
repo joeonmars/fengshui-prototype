@@ -23,7 +23,7 @@ feng.views.sections.captions.ChangePictureCaption = function( object, cameraCont
   this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT, new goog.math.Size(400, 430) );
 
   var pictureSelectorEl = goog.dom.getElementByClass('pictureSelector', this.domElement);
-  this._pictureSelector = new feng.views.sections.controls.PictureSelector( pictureSelectorEl, object.pictures );
+  this._pictureSelector = new feng.views.sections.controls.PictureSelector( pictureSelectorEl, object );
 };
 goog.inherits(feng.views.sections.captions.ChangePictureCaption, feng.views.View3DCaption);
 

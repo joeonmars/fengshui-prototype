@@ -114,7 +114,7 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 		clickableObjects.push( object.object3d );
 	});
 	
-	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, clickableObjects, this._camera, this._domElement );
+	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, clickableObjects, this._camera, this._view3d.getViewSize() );
 
 	if ( intersects.length > 0 ) {
 

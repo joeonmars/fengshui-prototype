@@ -9,12 +9,13 @@ goog.require('feng.views.sections.controls.Controls');
 /**
  * @constructor
  */
-feng.views.sections.controls.ObjectSelector = function(domElement, renderElement){
+feng.views.sections.controls.ObjectSelector = function(domElement, renderElement, viewSize){
 
   goog.base(this, domElement);
 
   this._selectableObjects = null;
   this._camera = null;
+  this._viewSize = viewSize;
   this._renderElement = renderElement;
   this._domElement = domElement;
   this._fillEl = goog.dom.getElementByClass('fill', this._domElement);
@@ -177,7 +178,7 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e
 
 	var meshes = this.getHitTestMeshes()
 
-	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, meshes, this._camera, this._renderElement );
+	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, meshes, this._camera, this._viewSize );
 
 	if(intersects.length === 0) {
 		return false;

@@ -7,14 +7,11 @@ goog.require('feng.views.sections.controls.Controls');
 /**
  * @constructor
  */
-feng.views.sections.controls.ObjectBox = function( domElement, cameraController, viewSize ){
+feng.views.sections.controls.ObjectBox = function( domElement ){
 
   goog.base(this, domElement);
 
   this._dotEls = goog.dom.query('.dot', this.domElement);
-
-  this._cameraController = cameraController;
-  this._viewSize = viewSize;
 
   this._box = new goog.math.Box();
 
@@ -82,7 +79,8 @@ feng.views.sections.controls.ObjectBox.prototype.setObject = function ( object )
 
 	this._object = object;
 
-	this._timeline.restart();
+	if(object) this._timeline.restart();
+	else this._timeline.reverse();
 };
 
 
@@ -112,7 +110,9 @@ feng.views.sections.controls.ObjectBox.prototype.deactivate = function () {
 
 feng.views.sections.controls.ObjectBox.prototype.onAnimationFrame = function ( now ) {
 
-	var box = this._object.updateScreenBox( this._cameraController.activeCamera, this._viewSize );
+	if(!this._object) return;
+
+	var box = this._object.updateScreenBox();
 
 	// expand the original box by 10px
 	this._box.top = box.top;

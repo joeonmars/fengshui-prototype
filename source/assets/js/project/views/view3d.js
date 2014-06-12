@@ -321,13 +321,13 @@ feng.views.View3D.prototype.initScene = function() {
 		if(className) {
 
 			// create specific class object
-			var typedObject = new objectClass[className](object, objectData);
+			var typedObject = new objectClass[className](object, objectData, this);
 
 			this.interactiveObjects[ object.name ] = typedObject;
 			this.view3dObjects[ object.name ] = typedObject;
 
 			if(className === 'holder') {
-				var accessoryObject = new feng.views.view3dobject.AccessoryObject( this.accessories, typedObject, 'empty' );
+				var accessoryObject = new feng.views.view3dobject.AccessoryObject( this.accessories, typedObject, 'empty', this );
 
 				var objectName = accessoryObject.object3d.name;
 				this.interactiveObjects[ objectName ] = accessoryObject;
@@ -337,7 +337,7 @@ feng.views.View3D.prototype.initScene = function() {
 		}else if(interactions.length > 0) {
 
 			// create interactive object
-			var interactiveObject = new feng.views.view3dobject.InteractiveObject( object, objectData );
+			var interactiveObject = new feng.views.view3dobject.InteractiveObject( object, objectData, this);
 			this.interactiveObjects[ object.name ] = interactiveObject;
 			this.view3dObjects[ object.name ] = interactiveObject;
 
@@ -346,7 +346,7 @@ feng.views.View3D.prototype.initScene = function() {
 			if( !(object instanceof THREE.Light) ) {
 
 				// create view3d object
-				var view3dObject = new feng.views.view3dobject.View3DObject( object, objectData );
+				var view3dObject = new feng.views.view3dobject.View3DObject( object, objectData, this);
 				this.view3dObjects[ object.name ] = view3dObject;
 			}
 		}

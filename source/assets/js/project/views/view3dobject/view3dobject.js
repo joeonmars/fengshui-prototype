@@ -7,7 +7,7 @@ goog.require('goog.math.Box');
  * @constructor
  * A 3d object in view3d
  */
-feng.views.view3dobject.View3DObject = function( object3d, data ){
+feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
 
   goog.base(this);
 
@@ -16,6 +16,7 @@ feng.views.view3dobject.View3DObject = function( object3d, data ){
 
   this.data = data;
 
+  this._view3d = view3d;
   this._boundingBox = new THREE.Box3();
   this._center = new THREE.Vector3();
 };

@@ -24,11 +24,11 @@ feng.views.View3DHud = function( view3d ){
 
   // create hud elements
   var objectBoxEl = goog.dom.getElementByClass('objectBox', this.domElement);
-  this.objectBox = new feng.views.sections.controls.ObjectBox( objectBoxEl, this._cameraController, this._viewSize );
+  this.objectBox = new feng.views.sections.controls.ObjectBox( objectBoxEl );
 
   var objectSelectorEl = goog.dom.getElementByClass('objectSelector', this.domElement);
   var renderEl = view3d.domElement;
-  this.objectSelector = new feng.views.sections.controls.ObjectSelector( objectSelectorEl, renderEl );
+  this.objectSelector = new feng.views.sections.controls.ObjectSelector( objectSelectorEl, renderEl, this._viewSize );
 
   this._captions = {};
 };

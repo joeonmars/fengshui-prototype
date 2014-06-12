@@ -9,9 +9,9 @@ goog.require('feng.views.view3dobject.TipObject');
  * @constructor
  * A computer whose wallpaper can be changed
  */
-feng.views.view3dobject.entities.Computer = function( object3d, data ){
+feng.views.view3dobject.entities.Computer = function( object3d, data, view3d ){
 
-  goog.base(this, object3d, data);
+  goog.base(this, object3d, data, view3d);
 
   this._defaultTexture = null;
 

@@ -7,7 +7,7 @@ goog.require('feng.views.view3dobject.InteractiveObject');
  * @constructor
  * An interactive object that is placeable on other holder objects, and is changeable itself
  */
-feng.views.view3dobject.AccessoryObject = function( accessories, holder, defaultAccessory ){
+feng.views.view3dobject.AccessoryObject = function( accessories, holder, defaultAccessory, view3d ){
 
 	var object3d = new THREE.Object3D();
 
@@ -15,7 +15,7 @@ feng.views.view3dobject.AccessoryObject = function( accessories, holder, default
 		interactions: ['change_accessory', 'place', 'rotate']
 	};
 
-  goog.base(this, object3d, data);
+  goog.base(this, object3d, data, view3d);
 
   this.isPhysical = false;
 

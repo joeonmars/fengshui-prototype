@@ -8,7 +8,7 @@ goog.require('feng.views.sections.controls.Controls');
 /**
  * @constructor
  */
-feng.views.sections.controls.PictureSelector = function(domElement, pictures){
+feng.views.sections.controls.PictureSelector = function(domElement, object){
 
   goog.base(this, domElement);
 
@@ -28,8 +28,10 @@ feng.views.sections.controls.PictureSelector = function(domElement, pictures){
   this._dragId = 0;
   this._pageId = 0;
 
+  this._object = object;
+
   this._numPicturesOfPage = 4;
-  this._numPictures = pictures.length;
+  this._numPictures = this._object.pictures.length;
 
   this._pages = [];
 
@@ -39,9 +41,8 @@ feng.views.sections.controls.PictureSelector = function(domElement, pictures){
   this._animTimer = new goog.Timer(150);
   this._animIds = [];
 
-  this._mousePosition = {x: 0, y: 0};
-
-  this._lastMousePosition = {x: 0, y: 0};
+  this._mousePosition = new goog.math.Coordinate();
+  this._lastMousePosition = new goog.math.Coordinate();
 
   this._imageRotation = {x: 0, y: 0};
 
@@ -91,6 +92,8 @@ feng.views.sections.controls.PictureSelector.prototype.activate = function( fram
 	this.updateLayout( true );
 
 	this.gotoPage( 0 );
+
+	this._object.startInteraction();
 };
 
 
@@ -101,6 +104,8 @@ feng.views.sections.controls.PictureSelector.prototype.deactivate = function(){
 	this._dragger.setEnabled( false );
 
 	goog.fx.anim.unregisterAnimation( this );
+
+	this._object.stopInteraction();
 };
 
 
@@ -305,9 +310,18 @@ feng.views.sections.controls.PictureSelector.prototype.onDragEnd = function(e) {
 
 	this.updateLayout();
 
+	var textureImg = new Image;
+	textureImg.src = this._imgEl.src;
+
 	this._imgEl.src = '';
 
 	feng.utils.Utils.setCursor(null);
+
+	// dispatch a drag end event
+	this._object.dispatchEvent({
+		type: feng.events.EventType.DRAG_END,
+		img: textureImg
+	});
 };
 
 
@@ -317,7 +331,17 @@ feng.views.sections.controls.PictureSelector.prototype.onDrag = function(x, y) {
 
 	var object = this.hitTestFrameObjects();
 
-	goog.style.setPosition(this._imgEl, this._dragger.clientX, this._dragger.clientY);
+	goog.style.setPosition(this._imgEl, this._mousePosition);
+
+	// dispatch a drag event with global mouse position
+	this._object.dispatchEvent({
+		type: feng.events.EventType.DRAG,
+		mousePosition: this._mousePosition
+	});
+
+	// 
+	var opacity = (this._object.isIntersectedWithMouse ? .5 : 1);
+	goog.style.setOpacity(this._imgEl, opacity);
 };
 
 
@@ -359,13 +383,13 @@ feng.views.sections.controls.PictureSelector.prototype.onTick = function(e) {
 
 feng.views.sections.controls.PictureSelector.prototype.onAnimationFrame = function(now) {
 
+	this._lastMousePosition.x = this._mousePosition.x;
+	this._lastMousePosition.y = this._mousePosition.y;
+
+	this._mousePosition.x = this._dragger.clientX;
+	this._mousePosition.y = this._dragger.clientY;
+	
 	if(this._dragger.isDragging()) {
-
-		this._lastMousePosition.x = this._mousePosition.x;
-		this._lastMousePosition.y = this._mousePosition.y;
-
-		this._mousePosition.x = this._dragger.clientX;
-		this._mousePosition.y = this._dragger.clientY;
 
 		var mouseDeltaX = this._mousePosition.x - this._lastMousePosition.x;
 		var mouseDeltaY = this._mousePosition.y - this._lastMousePosition.y;

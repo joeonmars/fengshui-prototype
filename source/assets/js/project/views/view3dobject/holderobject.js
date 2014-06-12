@@ -6,9 +6,9 @@ goog.require('feng.views.view3dobject.InteractiveObject');
  * @constructor
  * An interactive object that can hold accessories
  */
-feng.views.view3dobject.HolderObject = function( object3d, data ){
+feng.views.view3dobject.HolderObject = function( object3d, data, view3d ){
 
-	goog.base(this, object3d, data);
+	goog.base(this, object3d, data, view3d);
 
 	var changeAccessory = feng.views.view3dobject.InteractiveObject.Interaction.CHANGE_ACCESSORY;
 	this.interactions.push(changeAccessory);

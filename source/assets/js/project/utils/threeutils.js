@@ -6,9 +6,7 @@ goog.require('goog.math');
 /**
  * @constructor
  */
-feng.utils.ThreeUtils.getObjectsBy2DPosition = function ( clientX, clientY, objects, camera, domElement ) {
-
-	var viewSize = goog.style.getSize(domElement);
+feng.utils.ThreeUtils.getObjectsBy2DPosition = function ( clientX, clientY, objects, camera, viewSize, recursive ) {
 
 	// get camera's world position
 	camera.updateMatrixWorld();
@@ -20,9 +18,10 @@ feng.utils.ThreeUtils.getObjectsBy2DPosition = function ( clientX, clientY, obje
 	var projector = feng.utils.ThreeUtils.projector;
 	projector.unprojectVector( vector, camera );
 
-	var raycaster = new THREE.Raycaster( position, vector.sub( position ).normalize() );
+	var raycaster = feng.utils.ThreeUtils.raycaster;
+	raycaster.set( position, vector.sub( position ).normalize() );
 
-	var intersects = raycaster.intersectObjects( objects );
+	var intersects = raycaster.intersectObjects( objects, recursive );
 
 	return intersects;
 };
@@ -236,3 +235,4 @@ feng.utils.ThreeUtils.getRectangleFromBox3 = function( box3, camera, rendererSiz
 
 
 feng.utils.ThreeUtils.projector = new THREE.Projector();
+feng.utils.ThreeUtils.raycaster = new THREE.Raycaster();

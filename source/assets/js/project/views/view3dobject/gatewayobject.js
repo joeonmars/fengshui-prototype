@@ -6,9 +6,9 @@ goog.require('feng.views.view3dobject.InteractiveObject');
  * @constructor
  * An interactive object that leads to another view3d
  */
-feng.views.view3dobject.GatewayObject = function( object3d, data ){
+feng.views.view3dobject.GatewayObject = function( object3d, data, view3d ){
 
-  goog.base(this, object3d, data);
+  goog.base(this, object3d, data, view3d);
 
   this.viewId = this.data.viewid;
   this.gatewayId = this.data.gatewayid;

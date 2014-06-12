@@ -7,9 +7,9 @@ goog.require('feng.views.view3dobject.View3DObject');
  * @constructor
  * A 3d object that can be interacted in view3d
  */
-feng.views.view3dobject.InteractiveObject = function( object3d, data ){
+feng.views.view3dobject.InteractiveObject = function( object3d, data, view3d ){
 
-  goog.base(this, object3d, data);
+  goog.base(this, object3d, data, view3d);
 
   this.object3d.interactiveObject = this;
   this.interactions = this.data.interactions || [];
@@ -64,11 +64,13 @@ feng.views.view3dobject.InteractiveObject.prototype.enableSpecialCamera = functi
 };
 
 
-feng.views.view3dobject.InteractiveObject.prototype.updateScreenBox = function( camera, rendererSize ){
+feng.views.view3dobject.InteractiveObject.prototype.updateScreenBox = function(){
 
   var box3 = this.getBoundingBox();
+  var camera = this._view3d.cameraController.activeCamera;
+  var viewSize = this._view3d.getViewSize();
 
-  this.screenBox = feng.utils.ThreeUtils.getRectangleFromBox3( box3, camera, rendererSize, this.screenBox );
+  this.screenBox = feng.utils.ThreeUtils.getRectangleFromBox3( box3, camera, viewSize, this.screenBox );
 
   return this.screenBox;
 };
