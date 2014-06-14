@@ -22,7 +22,7 @@ feng.views.view3dobject.entities.PictureDisplay = function( object3d, data, view
     };
   });
 
-  this.isIntersectedWithMouse = false;
+  this.hasIntersected = false;
 
   this._pictureFrames = null;
   this._pictureFrameObject3Ds = null;
@@ -72,9 +72,9 @@ feng.views.view3dobject.entities.PictureDisplay.prototype.onPictureDrag = functi
 
   var mouseIntersected = feng.utils.ThreeUtils.getObjectsBy2DPosition(x, y, objects, camera, viewSize);
 
-  this.isIntersectedWithMouse = (mouseIntersected.length > 0);
+  this.hasIntersected = (mouseIntersected.length > 0);
   
-  if(this.isIntersectedWithMouse) {
+  if(this.hasIntersected) {
 
     this._activePictureFrame = mouseIntersected[0].object.interactiveObject;
 
@@ -89,8 +89,22 @@ feng.views.view3dobject.entities.PictureDisplay.prototype.onPictureDrag = functi
 
 feng.views.view3dobject.entities.PictureDisplay.prototype.onPictureDragEnd = function(e) {
 
+  var idToReturn, idToUse;
+
   if(this._activePictureFrame) {
 
-    this._activePictureFrame.setPicture( e.img );
+    if( goog.isNumber(this._activePictureFrame.pictureId) ) {
+      idToReturn = this._activePictureFrame.pictureId;
+    }
+
+    idToUse = e.id;
+
+    this._activePictureFrame.setPicture( e.src, e.id, e.size );
   }
+
+  this.dispatchEvent({
+    type: feng.events.EventType.CHANGE,
+    idToUse: idToUse,
+    idToReturn: idToReturn
+  });
 };

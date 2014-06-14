@@ -35,7 +35,7 @@ feng.views.sections.controls.PictureSelector = function(domElement, object){
 
   this._pages = [];
 
-  this._blankIds = [];
+  this._usedIds = [];
   this._frameObjects = null;
 
   this._animTimer = new goog.Timer(150);
@@ -52,6 +52,7 @@ feng.views.sections.controls.PictureSelector = function(domElement, object){
   this._margin = 12;
   this._gridSize = new goog.math.Size( 312, 236 );
   this._liSize = new goog.math.Size( (this._gridSize.width - this._margin) / 2, (this._gridSize.height - this._margin) / 2 );
+  this._imageSize = new goog.math.Size( 0, 0 );
 
   this._liPositions = [];
 	for(var i = 0; i < this._numPictures; i++) {
@@ -84,6 +85,8 @@ feng.views.sections.controls.PictureSelector.prototype.activate = function( fram
 
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this );
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this );
+
+	this._eventHandler.listen( this._object, feng.events.EventType.CHANGE, this.onObjectChange, false, this );
 
 	this._dragger.setEnabled( true );
 
@@ -179,24 +182,13 @@ feng.views.sections.controls.PictureSelector.prototype.gotoPage = function( id )
 };
 
 
-feng.views.sections.controls.PictureSelector.prototype.hitTestFrameObjects = function() {
-/*
-	var boxInScreen = goog.style.getBounds( this._imgEl );
-	var resultObject = goog.array.find(this._frameObjects, function(object) {
-		return true;
-	});
-
-	return resultObject;*/
-};
-
-
 feng.views.sections.controls.PictureSelector.prototype.updateLayout = function( instant ){
 
 	var freeIds = [];
 
 	goog.array.forEach(this._liPositions, function(position, index) {
 
-		var isFree = !goog.array.contains(this._blankIds, index);
+		var isFree = !goog.array.contains(this._usedIds, index);
 		if(isFree) freeIds.push( index );
 
 	}, this);
@@ -245,7 +237,7 @@ feng.views.sections.controls.PictureSelector.prototype.updateLayout = function( 
 		var liEl = this._liEls[ index ];
 		var fromPosition = goog.style.getCssTranslation( liEl );
 
-		if( !goog.math.Coordinate.equals( fromPosition, toPosition ) && !goog.array.contains(this._blankIds, index) ) {
+		if( !goog.math.Coordinate.equals( fromPosition, toPosition ) && !goog.array.contains(this._usedIds, index) ) {
 			this._animIds.push( index );
 		}
 
@@ -273,7 +265,7 @@ feng.views.sections.controls.PictureSelector.prototype.onDragStart = function(e)
 	var dragId = parseInt( target.getAttribute('data-id') );
 
 	this._dragId = dragId;
-	this._blankIds.push( dragId );
+	this._usedIds.push( dragId );
 
 	var targetPagePosition = goog.style.getPageOffset(target);
 	var offsetX = targetPagePosition.x - this._dragger.clientX;
@@ -283,6 +275,7 @@ feng.views.sections.controls.PictureSelector.prototype.onDragStart = function(e)
 	offsetY = target.naturalHeight * (offsetY / target.height);
 
 	this._imgEl.src = target.src;
+	this._imgEl.setAttribute('data-id', target.getAttribute('data-id'));
 
 	goog.style.setStyle(this._imgEl, {
 		'margin-left': offsetX + 'px',
@@ -301,26 +294,23 @@ feng.views.sections.controls.PictureSelector.prototype.onDragStart = function(e)
 
 feng.views.sections.controls.PictureSelector.prototype.onDragEnd = function(e) {
 
-	// if not hit on any frame object, restore image back to the list
-	var object = this.hitTestFrameObjects();
+	var src = this._imgEl.src;
+	var id = parseInt( this._imgEl.getAttribute('data-id') );
 
-	if(!object) {
-		goog.array.remove(this._blankIds, this._dragId);
-	}
-
-	this.updateLayout();
-
-	var textureImg = new Image;
-	textureImg.src = this._imgEl.src;
+	this._imageSize.width = this._imgEl.naturalWidth;
+	this._imageSize.height = this._imgEl.naturalHeight;
 
 	this._imgEl.src = '';
+	this._imgEl.setAttribute('data-id', '');
 
 	feng.utils.Utils.setCursor(null);
 
 	// dispatch a drag end event
 	this._object.dispatchEvent({
 		type: feng.events.EventType.DRAG_END,
-		img: textureImg
+		src: src,
+		id: id,
+		size: this._imageSize
 	});
 };
 
@@ -328,8 +318,6 @@ feng.views.sections.controls.PictureSelector.prototype.onDragEnd = function(e) {
 feng.views.sections.controls.PictureSelector.prototype.onDrag = function(x, y) {
 
 	if(this._imgEl.src === '') return;
-
-	var object = this.hitTestFrameObjects();
 
 	goog.style.setPosition(this._imgEl, this._mousePosition);
 
@@ -340,8 +328,22 @@ feng.views.sections.controls.PictureSelector.prototype.onDrag = function(x, y) {
 	});
 
 	// 
-	var opacity = (this._object.isIntersectedWithMouse ? .5 : 1);
+	var opacity = (this._object.hasIntersected ? .5 : 1);
 	goog.style.setOpacity(this._imgEl, opacity);
+};
+
+
+feng.views.sections.controls.PictureSelector.prototype.onObjectChange = function(e) {
+
+	if(goog.isNumber(e.idToUse)) {
+		goog.array.insert(this._usedIds, e.idToUse);
+	}
+
+	if(goog.isNumber(e.idToReturn)) {
+		goog.array.remove(this._usedIds, e.idToReturn);
+	}
+
+	this.updateLayout();
 };
 
 

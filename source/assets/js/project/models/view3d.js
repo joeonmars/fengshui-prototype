@@ -19,12 +19,7 @@ feng.models.View3D.Data = {
 					"rotate"
 				],
 				tipInteraction: "change_color",
-				tipKey: 'studio.interior1.sofa',
-				camera: {
-					position: new THREE.Vector3(80, 90, 17),
-					rotation: new THREE.Euler(-0.53, -0.40, 0.00, 'YXZ'),
-					fov: 40
-				}
+				tipKey: 'studio.interior1.sofa'
 			},
 			'cabinet': {
 				class: "holder",
@@ -110,8 +105,13 @@ feng.models.View3D.Data = {
 					}
 				]
 			},
-			'frame': {
-				class: 'pictureframe'
+			'frame1': {
+				class: 'pictureframe',
+				defaultTexture: 'studio.interior1.default-picture'
+			},
+			'frame2': {
+				class: 'pictureframe',
+				defaultTexture: 'studio.interior1.default-picture'
 			}
 		},
 		'interior2': {

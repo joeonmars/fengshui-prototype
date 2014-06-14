@@ -32,6 +32,7 @@ feng.models.Preload = function(){
 				'energyflow-data': 'json/energyflow/energyflow-1.json',
 				'bed-texture': 'images/texture/bed.jpg',
 				'cabinet-texture': 'images/texture/cabinet.jpg',
+				'default-picture': 'images/texture/studio/pictures/0.jpg',
 				'pictures': {
 					'1': 'images/texture/studio/pictures/1.jpg',
 					'2': 'images/texture/studio/pictures/2.jpg',
