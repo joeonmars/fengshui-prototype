@@ -45,6 +45,8 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 
 	if(this._isEnabled) {
 
+		this._eventHandler.listen(this, feng.events.EventType.CLOSE, this.close, false, this);
+
 		this._eventHandler.listen(this._manipulator, feng.events.EventType.CLOSE, this.close, false, this);
 		this._eventHandler.listen(this._manipulator, feng.events.EventType.CHANGE, this.onManipulate, false, this);
 
@@ -57,6 +59,7 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 		// test...
 		var type = this._activeObject.tipInteraction || 'change_object';
 		var caption = this._view3d.hud.getCaption( this._activeObject, this, type );
+		caption.setParentEventTarget(this);
 		caption.show();
 
 	}else  {
@@ -67,6 +70,7 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 		// test...
 		var type = this._activeObject.tipInteraction || 'change_object';
 		var caption = this._view3d.hud.getCaption( this._activeObject, this, type );
+		caption.setParentEventTarget(this);
 		caption.hide();
 	}
 };
@@ -117,16 +121,6 @@ feng.controllers.controls.CloseUpControls.prototype.onManipulate = function ( e 
 
 	}
 	
-};
-
-
-feng.controllers.controls.CloseUpControls.prototype.onMouseDown = function ( e ) {
-
-	goog.base(this, 'onMouseDown', e);
-
-	this.close({
-		eventToTrigger: e
-	});
 };
 
 

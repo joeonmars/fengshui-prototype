@@ -18,6 +18,9 @@ feng.views.sections.captions.ChangePictureCaption = function( object, cameraCont
   };
 
   goog.base(this, object, cameraController, renderSize, controls, hud);
+  
+  var topEl = goog.dom.getElementByClass('top', this.domElement);
+  this._wrapLayout.addBlock( topEl, feng.fx.WrapLayout.Alignment.TOP, new goog.math.Size(500, 90) );
 
   var rightEl = goog.dom.getElementByClass('right', this.domElement);
   this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT, new goog.math.Size(400, 430) );

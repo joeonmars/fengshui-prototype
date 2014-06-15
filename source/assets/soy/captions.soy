@@ -1,11 +1,35 @@
 {namespace feng.templates.captions autoescape="false"}
 
 /**
+ * Base caption
+ @param classname the specific caption's class name
+ @param content the content HTML
+ */
+{template .Caption}
+<div class="captionView {$classname}">
+	<div class="close button"></div>
+	<div class="confirm button"></div>
+	{ $content }
+</div>
+{/template}
+
+
+/**
  * Advice caption
  */
 {template .AdviceCaption}
 
+{call .Caption}
+
+	{param classname: 'advice' /}
+
+	{param content}
+	
 	<div class="right"></div>
+
+	{/param}
+
+{/call}
 
 {/template}
 
@@ -15,8 +39,18 @@
  */
 {template .ChangeColorCaption}
 
+{call .Caption}
+
+	{param classname: 'changecolor' /}
+
+	{param content}
+
 	<div class="left"></div>
 	<div class="right"></div>
+
+	{/param}
+
+{/call}
 
 {/template}
 
@@ -26,8 +60,18 @@
  */
 {template .ChangeObjectCaption}
 
+{call .Caption}
+
+	{param classname: 'changeobject' /}
+
+	{param content}
+
 	<div class="top"></div>
 	<div class="right"></div>
+
+	{/param}
+
+{/call}
 
 {/template}
 
@@ -38,8 +82,19 @@
  */
 {template .ChangePictureCaption}
 
+{call .Caption}
+
+	{param classname: 'changepicture' /}
+
+	{param content}
+
 	<div class="draggerContainer">
 		<img class="dragger" draggable="false">
+	</div>
+
+	<div class="top">
+		<h1>Lorem Ipsum</h1>
+		<h2>LOREM IPSUM</h2>
 	</div>
 
 	<div class="right">
@@ -61,5 +116,24 @@
 		</div>
 
 	</div>
+
+	{/param}
+
+{/call}
+
+{/template}
+
+
+/**
+ * Float Text
+ * @param lines the lines of texts
+ */
+{template .FloatText}
+
+	<p class="floatText">
+	{foreach $line in $lines}
+		<span>{ $line }</span>
+	{/foreach}
+	</p>
 
 {/template}

@@ -102,6 +102,8 @@ feng.views.sections.controls.ProgressBar.prototype.show = function(){
 
 	this._startTime = goog.now();
 	goog.fx.anim.registerAnimation(this);
+
+  this.hide();
 };
 
 

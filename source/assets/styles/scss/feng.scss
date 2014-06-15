@@ -106,3 +106,19 @@
 	position: absolute;
 	top: 0;
 }
+
+.floatText{
+	margin: 200px;
+	width: 300px;
+	color: #6699FF;
+	@include rotateY(-8deg);
+	@include perspective(4000px);
+	@include transform-style(preserve-3d);
+	-webkit-font-smoothing: antialiased;
+
+	>span{
+		display: block;
+		line-height: 26px;
+		//outline: 1px solid red;
+	}
+}

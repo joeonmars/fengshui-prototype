@@ -1,5 +1,6 @@
 goog.provide('feng.views.View3DCaption');
 
+goog.require('goog.events.EventHandler');
 goog.require('feng.fx.WrapLayout');
 
 
@@ -19,13 +20,16 @@ feng.views.View3DCaption = function( object, cameraController, renderSize, contr
 
   this.allowUpdate = true;
 
-  this.domElement = goog.dom.createDom('div', 'captionView');
+  this._eventHandler = new goog.events.EventHandler(this);
 
   this._template = this._template || null;
   this._templateData = this._templateData || null;
 
   // render HTML template
-  soy.renderElement(this.domElement, this._template, this._templateData);
+  this.domElement = soy.renderAsFragment(this._template, this._templateData);
+
+  this._closeButtonEl = goog.dom.getElementByClass('close', this.domElement);
+  this._confirmButtonEl = goog.dom.getElementByClass('confirm', this.domElement);
 };
 goog.inherits(feng.views.View3DCaption, goog.events.EventTarget);
 
@@ -34,6 +38,11 @@ feng.views.View3DCaption.prototype.show = function() {
 
   goog.style.showElement( this.domElement, true );
 
+  this._eventHandler.listen( this._closeButtonEl, 'click', this.onClick, false, this );
+  this._eventHandler.listen( window, 'resize', this.onResize, false, this );
+
+  this.onResize();
+
   goog.fx.anim.registerAnimation( this );
 };
 
@@ -41,6 +50,8 @@ feng.views.View3DCaption.prototype.show = function() {
 feng.views.View3DCaption.prototype.hide = function() {
 
   goog.style.showElement( this.domElement, false );
+
+  this._eventHandler.removeAll();
 
   goog.fx.anim.unregisterAnimation( this );
 };
@@ -60,4 +71,26 @@ feng.views.View3DCaption.prototype.onAnimationFrame = function( now ) {
   if(!this.allowUpdate) return;
 
   this.update();
+};
+
+
+feng.views.View3DCaption.prototype.onClick = function( e ) {
+
+  switch(e.currentTarget) {
+    case this._closeButtonEl:
+    this.dispatchEvent({
+      type: feng.events.EventType.CLOSE
+    });
+    break;
+  }
+};
+
+
+feng.views.View3DCaption.prototype.onResize = function( e ) {
+
+  var confirmButtonSize = goog.style.getSize(this._confirmButtonEl);
+  var x = (this._renderSize.width - confirmButtonSize.width) / 2;
+  var y = this._renderSize.height - confirmButtonSize.height - 55;
+
+  goog.style.setPosition(this._confirmButtonEl, x, y);
 };

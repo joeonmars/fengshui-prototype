@@ -3,6 +3,7 @@ goog.provide('feng');
 goog.require('goog.Uri');
 goog.require('feng.apps.Main');
 goog.require('feng.apps.Demo');
+goog.require('feng.apps.Test');
 goog.require('feng.apps.PathEdit');
 
 
@@ -31,6 +32,10 @@ feng.init = function( config ) {
 
 		case 'pathedit':
 		feng.apps.PathEdit.getInstance();
+		break;
+
+		case 'test':
+		feng.apps.Test.getInstance();
 		break;
 	};
 };
