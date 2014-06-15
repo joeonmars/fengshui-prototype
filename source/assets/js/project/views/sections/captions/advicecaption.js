@@ -10,7 +10,7 @@ goog.require('feng.views.View3DCaption');
  */
 feng.views.sections.captions.AdviceCaption = function( object, cameraController, renderSize, controls, hud ){
 
-  this._template = feng.templates.captions.ChangeColorCaption;
+  this._template = feng.templates.captions.AdviceCaption;
 
   this._templateData = {
   	

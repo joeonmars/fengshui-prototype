@@ -78,7 +78,7 @@ feng.fx.WrapLayout.prototype.calculateBlockPosition = function (block, rendererS
 		blockY = Math.max(this._minMargin, rendererSize.height / 2 - block.height / 2);
 		break;
 	}
-
+	
 	block.box.top = blockY;
 	block.box.bottom = blockY + block.height;
 	block.box.left = blockX;

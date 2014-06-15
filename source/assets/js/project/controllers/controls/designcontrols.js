@@ -58,8 +58,7 @@ feng.controllers.controls.DesignControls.prototype.setCamera = function( fromPos
 	// get rotation looking at center
 	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
 	var lookAtPosition = new THREE.Vector3(0, 0, 0);
-	var up = new THREE.Vector3(0, 1, 0);
-	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, lookAtPosition, up);
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, lookAtPosition);
 	rotation.setFromQuaternion( quaternion );
 
 	// apply
@@ -128,21 +127,26 @@ feng.controllers.controls.DesignControls.prototype.update = function () {
 feng.controllers.controls.DesignControls.prototype.close = function () {
 
 	var closeUpControls = this._view3d.modeController.getModeControl(feng.controllers.view3d.ModeController.Mode.CLOSE_UP);
+	var closeUpCameraPosition = closeUpControls.getPosition();
 	var objectPosition = this._activeObject.object3d.position;
-	var currentPosition = this.getPosition();
 
-	var d = objectPosition.distanceTo( currentPosition );
-	var sine = (currentPosition.z - objectPosition.z) / d;
-	var rad = Math.asin( sine );
-	var x = objectPosition.x + Math.cos(rad) * 90;
-	var z = objectPosition.z + Math.sin(rad) * 90;
-	var toPosition = new THREE.Vector3(x, closeUpControls.getPosition().y, z);
+	var originalDistanceToObject = closeUpControls.distanceToObject;
+
+	var cameraPosition = new THREE.Vector3();
+	cameraPosition.subVectors( closeUpCameraPosition, objectPosition ).normalize().multiplyScalar( originalDistanceToObject );
+	cameraPosition = objectPosition.clone().add( cameraPosition );
+	cameraPosition.y = closeUpCameraPosition.y;
+
+	var cameraRotation = new THREE.Euler(0, 0, 0, 'YXZ');
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(cameraPosition, objectPosition);
+	cameraRotation.setFromQuaternion( quaternion );
 
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
 		nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-		toPosition: toPosition,
+		toPosition: cameraPosition,
+		toRotation: cameraRotation,
 		object: this._activeObject
 	});
 };

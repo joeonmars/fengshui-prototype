@@ -23,6 +23,8 @@ feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement,
   this._interactionResolver = feng.controllers.controls.InteractionResolver.getInstance();
 
   this._tempPosition = new THREE.Vector3();
+
+  this.distanceToObject = 0;
 };
 goog.inherits(feng.controllers.controls.CloseUpControls, feng.controllers.controls.Controls);
 
@@ -55,6 +57,8 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 
 		this._manipulator.show();
 		this._manipulator.activate( this._activeObject.interactions );
+
+		this.distanceToObject = this.getPosition().distanceTo( this._activeObject.object3d.position );
 
 		// test...
 		var type = this._activeObject.tipInteraction || 'change_object';

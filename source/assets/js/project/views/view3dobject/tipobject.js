@@ -13,11 +13,19 @@ feng.views.view3dobject.TipObject = function( object3d, data, view3d ){
 
   this.tipInteraction = data.tipInteraction;
 
-  // get tip model
+  // get tip model and listen to unlock event
   var tipKeys = data.tipKey.split('.');
   var tipId = tipKeys[2];
   var viewId = tipKeys[1];
   var sectionId = tipKeys[0];
   this.tip = feng.models.achievements.Achievements.getInstance().getTip(tipId, viewId, sectionId);
+
+  goog.events.listenOnce(this.tip, feng.events.EventType.UNLOCK, this.onUnlock, false, this);
 };
 goog.inherits(feng.views.view3dobject.TipObject, feng.views.view3dobject.InteractiveObject);
+
+
+feng.views.view3dobject.TipObject.prototype.onUnlock = function(e){
+
+	console.log("UNLOCKED TIP OBJECT: ", this);
+};

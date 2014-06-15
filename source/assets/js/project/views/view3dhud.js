@@ -62,7 +62,7 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls, type ) {
     captionClass = feng.views.sections.captions.ChangePictureCaption;
     break;
   }
-
+  
 	var caption = new captionClass( object, this._cameraController, this._viewSize, controls, this );
 	this._captions[ key ] = caption;
 

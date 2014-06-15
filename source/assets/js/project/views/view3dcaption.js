@@ -39,6 +39,7 @@ feng.views.View3DCaption.prototype.show = function() {
   goog.style.showElement( this.domElement, true );
 
   this._eventHandler.listen( this._closeButtonEl, 'click', this.onClick, false, this );
+  this._eventHandler.listen( this._confirmButtonEl, 'click', this.onClick, false, this );
   this._eventHandler.listen( window, 'resize', this.onResize, false, this );
 
   this.onResize();
@@ -81,6 +82,10 @@ feng.views.View3DCaption.prototype.onClick = function( e ) {
     this.dispatchEvent({
       type: feng.events.EventType.CLOSE
     });
+    break;
+
+    case this._confirmButtonEl:
+    this._object.tip.unlock();
     break;
   }
 };
