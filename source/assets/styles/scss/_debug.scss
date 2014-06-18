@@ -170,6 +170,12 @@ $debug_border_style:  2px outset #d6d3ce;
 				margin: 10px;
 				cursor: pointer;
 
+				&.unlocked{
+					>.icon{
+						background: #66FF66;
+					}
+				}
+
 				&.clicked{
 					>.icon{
 						border: 2px solid #555;
