@@ -16,7 +16,7 @@
 	overflow: hidden;
 
 	&.episode{
-		>.sceneUI{
+		>.hud{
 			@include absoluteTopLeft;
 			width: 100%;
 			height: 0;

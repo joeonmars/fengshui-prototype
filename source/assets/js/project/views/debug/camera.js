@@ -91,11 +91,10 @@ feng.views.debug.Camera.prototype.updateVisibleButton = function(){
 };
 
 
-feng.views.debug.Camera.prototype.onView3DShow = function(e){
+feng.views.debug.Camera.prototype.onView3DShow = function(view3d){
 
-  goog.base(this, 'onView3DShow', e);
+  goog.base(this, 'onView3DShow', view3d);
 
-  var view3d = e.target;
   this._cameraController = view3d.cameraController;
   this._modeController = view3d.modeController;
 
@@ -112,11 +111,10 @@ feng.views.debug.Camera.prototype.onView3DShow = function(e){
 };
 
 
-feng.views.debug.Camera.prototype.onView3DHide = function(e){
+feng.views.debug.Camera.prototype.onView3DHide = function(view3d){
 
-  goog.base(this, 'onView3DHide', e);
+  goog.base(this, 'onView3DHide', view3d);
 
-  var view3d = e.target;
   this._cameraController = view3d.cameraController;
 
 	var cameras = view3d.cameraController.getCameras();

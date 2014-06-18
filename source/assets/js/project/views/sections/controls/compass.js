@@ -10,7 +10,7 @@ goog.require('feng.views.sections.controls.Controls');
 /**
  * @constructor
  */
-feng.views.sections.controls.Compass = function(domElement, eventMediator){
+feng.views.sections.controls.Compass = function(domElement){
 	
   goog.base(this, domElement);
 
@@ -29,8 +29,6 @@ feng.views.sections.controls.Compass = function(domElement, eventMediator){
   this._dragger.defaultAction = goog.bind(this.onDrag, this);
 
   this._rotation = 0;
-
-  this._eventMediator = eventMediator;
 };
 goog.inherits(feng.views.sections.controls.Compass, feng.views.sections.controls.Controls);
 
@@ -40,11 +38,7 @@ feng.views.sections.controls.Compass.prototype.activate = function(){
 	goog.base(this, 'activate');
 
 	this._eventHandler.listen(this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
-  	this._eventHandler.listen(this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
-
-  this._eventHandler.listen(this._eventMediator.getEventTarget(), feng.events.EventType.UPDATE, this.onMediatorEvent, false, this);
-
-  this._eventMediator.listen(this, feng.events.EventType.UPDATE);
+  this._eventHandler.listen(this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
 
   this._dragger.setEnabled( true );
 };
@@ -53,8 +47,6 @@ feng.views.sections.controls.Compass.prototype.activate = function(){
 feng.views.sections.controls.Compass.prototype.deactivate = function(){
 
   goog.base(this, 'deactivate');
-
-  this._eventMediator.unlisten(this, feng.events.EventType.UPDATE);
 
   this._dragger.setEnabled( false );
 };
@@ -93,6 +85,8 @@ feng.views.sections.controls.Compass.prototype.setProgress = function(fractionOf
 
 
 feng.views.sections.controls.Compass.prototype.setRotation = function(rotation){
+
+	if(this._dragger.isDragging()) return;
 
 	this._rotation = rotation;
 	this.setProgress( this._rotation / Math.PI );
@@ -138,25 +132,9 @@ feng.views.sections.controls.Compass.prototype.onResize = function(e){
 
 feng.views.sections.controls.Compass.prototype.onMediatorEvent = function(e){
 
-	var isDragging = this._dragger.isDragging();
-
 	switch(e.type) {
 
 		case feng.events.EventType.UPDATE:
-
-		if(e.target instanceof feng.controllers.controls.BrowseControls) {
-
-			if(!isDragging) {
-				this.setRotation( e.rotationY );
-			}
-		}
-
-		if(e.target instanceof feng.controllers.controls.DesignControls) {
-
-			if(!isDragging) {
-				this.setRotation( e.rotationY );
-			}
-		}
 
 		if(e.target instanceof feng.controllers.controls.TransitionControls) {
 

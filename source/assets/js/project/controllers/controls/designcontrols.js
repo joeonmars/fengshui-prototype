@@ -18,7 +18,6 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement, 
   goog.base(this, camera, view3d, domElement);
 
   this._activeObject = null;
-  this._eventMediator = this._view3d.eventMediator;
 
   this._interactionResolver = feng.controllers.controls.InteractionResolver.getInstance();
 
@@ -76,10 +75,9 @@ feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 
 	if(this._isEnabled) {
 
-		this._eventHandler.listen(this._manipulator, feng.events.EventType.CHANGE, this.onManipulate, false, this);
-		this._eventHandler.listen(this._eventMediator.getEventTarget(), feng.events.EventType.UPDATE, this.onMediatorEvent, false, this);
-		this._eventMediator.listen(this, feng.events.EventType.UPDATE);
+		this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this);
 
+		this._eventHandler.listen(this._manipulator, feng.events.EventType.CHANGE, this.onManipulate, false, this);
 		this._eventHandler.listen(this._view3d.domElement, 'click', this.onClickView, false, this);
 
 		this._eventHandler.listen(this._interactionResolver, feng.events.EventType.START, this.onInteractionStart, false, this);
@@ -93,8 +91,6 @@ feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 		this.update();
 
 	}else  {
-
-		this._eventMediator.unlisten(this, feng.events.EventType.UPDATE);
 
 		this._zoomSlider.deactivate();
 		this._zoomSlider.hide();
@@ -185,32 +181,25 @@ feng.controllers.controls.DesignControls.prototype.onClickView = function(e){
 };
 
 
-feng.controllers.controls.DesignControls.prototype.onMediatorEvent = function(e){
+feng.controllers.controls.DesignControls.prototype.onUpdateHud = function(e){
 
-	switch(e.type) {
+	if(e.target instanceof feng.views.sections.controls.Compass) {
 
-		case feng.events.EventType.UPDATE:
+		var cameraHeight = this.getPosition().y;
+		var posX = cameraHeight * Math.sin( -e.rotation );
+		var posZ = cameraHeight * Math.cos( -e.rotation );
+		var posY = cameraHeight;
 
-		if(e.target instanceof feng.views.sections.controls.Compass) {
+		this.setPosition( posX, posY, posZ );
 
-			var cameraHeight = this.getPosition().y;
-			var posX = cameraHeight * Math.sin( -e.rotation );
-			var posZ = cameraHeight * Math.cos( -e.rotation );
-			var posY = cameraHeight;
+		// look at
+		var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
+		var centerPosition = new THREE.Vector3(0, 0, 0);
+		var position = centerPosition;
+		var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), position);
+		rotation.setFromQuaternion( quaternion );
 
-			this.setPosition( posX, posY, posZ );
-
-			// look at
-			var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
-			var centerPosition = new THREE.Vector3(0, 0, 0);
-			var position = centerPosition;
-			var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), position);
-			rotation.setFromQuaternion( quaternion );
-
-			this.setRotation( rotation );
-		}
-
-		break;
+		this.setRotation( rotation );
 	}
 };
 

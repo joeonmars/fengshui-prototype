@@ -8,6 +8,7 @@ goog.require('feng.events');
  * @constructor
  */
 feng.controllers.view3d.View3DController = function(){
+
   goog.base(this);
 
   this.view3d = null;
@@ -16,6 +17,12 @@ feng.controllers.view3d.View3DController = function(){
   this._view3dToFadeIn = null;
 
   this._eventHandler = new goog.events.EventHandler(this);
+};
+goog.inherits(feng.controllers.view3d.View3DController, goog.events.EventTarget);
+
+
+feng.controllers.view3d.View3DController.prototype.activate = function(){
+
   this._eventHandler.listen(this, feng.events.EventType.SHOW, this.onShowView3D, false, this);
   this._eventHandler.listen(this, feng.events.EventType.HIDE, this.onHideView3D, false, this);
   this._eventHandler.listen(this, feng.events.EventType.CHANGE, this.onChangeView3D, false, this);
@@ -24,13 +31,18 @@ feng.controllers.view3d.View3DController = function(){
   this._eventHandler.listen(this, feng.events.EventType.ANIMATED_IN, this.onAnimatedInView3D, false, this);
   this._eventHandler.listen(this, feng.events.EventType.ANIMATED_OUT, this.onAnimatedOutView3D, false, this);
 };
-goog.inherits(feng.controllers.view3d.View3DController, goog.events.EventTarget);
-goog.addSingletonGetter(feng.controllers.view3d.View3DController);
+
+
+feng.controllers.view3d.View3DController.prototype.deactivate = function(){
+
+  this._eventHandler.removeAll();
+};
 
 
 feng.controllers.view3d.View3DController.prototype.registerView3D = function( view3d ){
 
 	this._view3ds[ view3d.sectionId + '.' + view3d.id ] = view3d;
+	view3d.setParentEventTarget( this );
 };
 
 
@@ -43,6 +55,8 @@ feng.controllers.view3d.View3DController.prototype.getView3D = function( section
 feng.controllers.view3d.View3DController.prototype.onHideView3D = function(e){
 
 	console.log('Hide View3D: ', e.target.id);
+
+	feng.pubsub.publish( feng.PubSub.Topic.HIDE_VIEW3D, e.target );
 };
 
 
@@ -53,38 +67,7 @@ feng.controllers.view3d.View3DController.prototype.onShowView3D = function(e){
 	this.view3d = e.target;
 	this.view3d.activate();
 
-	var position = this.view3d.origin;
-	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
-  var lookAtPosition = new THREE.Vector3(0, feng.controllers.controls.Controls.Default.STANCE_HEIGHT, 0);
-  var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, lookAtPosition);
-  rotation.setFromQuaternion( quaternion );
-
-  // set initial mode
-	this.view3d.modeController.setMode({
-		mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
-		fromPosition: position,
-		fromRotation: rotation,
-		fromFov: 40
-	});
-	
-	// test mode
-	if(feng.utils.Utils.hasQuery('interaction', 'true')) {
-
-		var objectName = feng.utils.Utils.getQuery('object');
-
-		var object = this.view3d.getInteractiveObject( objectName );
-		var cameraSettings = object.specialCameraSettings;
-
-		this.view3d.modeController.onModeChange({
-			type: feng.events.EventType.CHANGE,
-			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-			toPosition: cameraSettings.position,
-			toRotation: cameraSettings.rotation,
-			toFov: cameraSettings.fov,
-			object: object
-		});
-	}
+	feng.pubsub.publish( feng.PubSub.Topic.SHOW_VIEW3D, e.target );
 };
 
 

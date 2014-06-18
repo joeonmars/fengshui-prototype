@@ -14,12 +14,9 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 
   goog.base(this, camera, view3d, domElement);
 
-  this._eventMediator = this._view3d.eventMediator;
-
 	this._shouldIgnoreClick = false;
 
-	var interactiveObjects = this._view3d.interactiveObjects;
-	var callbacks = {
+	this._objectSelectorCallbacks = {
 		'onStart': goog.bind(this.onObjectSelectStart, this),
 		'onCancel': goog.bind(this.onObjectSelectCancel, this),
 		'onComplete': goog.bind(this.onObjectSelectComplete, this),
@@ -27,7 +24,6 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 	};
 
 	this._objectSelector = this._view3d.hud.objectSelector;
-	this._objectSelector.update( interactiveObjects, this._camera, callbacks );
 
 	this._lastMouseX = 0;
 	this._lastMouseY = 0;
@@ -46,11 +42,7 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 
 	if(this._isEnabled) {
 
-		this._eventHandler.listen(this._eventMediator.getEventTarget(), feng.events.EventType.UPDATE, this.onMediatorEvent, false, this);
-		this._eventMediator.listen(this, feng.events.EventType.UPDATE);
-
-		this._eventHandler.listen(this._eventMediator.getEventTarget(), feng.events.EventType.CHANGE, this.onMediatorEvent, false, this);
-		this._eventMediator.listen(this, feng.events.EventType.CHANGE);
+		this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this);
 
 		if(mouseEventToTrigger) {
 			this.onMouseDown( mouseEventToTrigger );
@@ -59,14 +51,10 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 		this._targetRotationY = this._yawObject.rotation.y;
 		this._targetRotationX = this._pitchObject.rotation.x;
 
+		this._objectSelector.activate( this._objectSelectorCallbacks );
+
 	}else  {
 
-		this._eventMediator.unlisten(this, feng.events.EventType.UPDATE);
-	}
-
-	if(this._isEnabled) {
-		this._objectSelector.activate();
-	}else {
 		this._objectSelector.deactivate();
 	}
 };
@@ -251,30 +239,10 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelectComplete = func
 };
 
 
-feng.controllers.controls.BrowseControls.prototype.onMediatorEvent = function(e){
+feng.controllers.controls.BrowseControls.prototype.onUpdateHud = function(e){
 
-	switch(e.type) {
-
-		case feng.events.EventType.UPDATE:
-
-		if(e.target instanceof feng.views.sections.controls.Compass) {
-			this.setYaw( e.rotation );
-			this._targetRotationY = e.rotation;
-		}
-
-		break;
-
-		case feng.events.EventType.CHANGE:
-
-		if(e.target instanceof feng.views.sections.controls.ProgressBar) {
-			this.dispatchEvent({
-				type: feng.events.EventType.CHANGE,
-				mode: feng.controllers.view3d.ModeController.Mode.FLOW,
-				toPosition: this.getPosition(),
-				tip: e.tip
-			});
-		}
-
-		break;
+	if(e.target instanceof feng.views.sections.controls.Compass) {
+		this.setYaw( e.rotation );
+		this._targetRotationY = e.rotation;
 	}
 };

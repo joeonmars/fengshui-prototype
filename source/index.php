@@ -76,7 +76,8 @@
 				basePath: '<?php echo URLADDR; ?>',
 				assetsPath: '<?php echo URLADDR; ?>'+'assets/',
 				app: 'demo',//'pathedit',
-				debug: true
+				debug: true,
+				office: !true
 			};
 
 			feng.init( config );

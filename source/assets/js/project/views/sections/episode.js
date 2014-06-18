@@ -2,12 +2,11 @@ goog.provide('feng.views.sections.Episode');
 
 goog.require('goog.dom');
 goog.require('goog.events.EventTarget');
+goog.require('feng.controllers.view3d.View3DController');
 goog.require('feng.events');
-goog.require('feng.events.EventMediator');
 goog.require('feng.views.sections.Section');
 goog.require('feng.views.View3D');
-goog.require('feng.views.sections.controls.Compass');
-goog.require('feng.views.sections.controls.ProgressBar');
+goog.require('feng.views.View3DHud');
 
 
 /**
@@ -24,14 +23,10 @@ feng.views.sections.Episode = function(template, templateData){
 
   goog.base(this, domElement);
 
-  // for passing events sent between view3d and controls
-  this._eventMediator = new feng.events.EventMediator();
+  this._view3dController = new feng.controllers.view3d.View3DController;
 
-  var compassDom = goog.dom.getElementByClass('compass', this.domElement);
-  this._compass = new feng.views.sections.controls.Compass( compassDom, this._eventMediator );
-
-  var progressBarDom = goog.dom.getElementByClass('progressBar', this.domElement);
-  this._progressBar = new feng.views.sections.controls.ProgressBar( progressBarDom, this._eventMediator );
+  var hudEl = goog.dom.getElementByClass('hud', this.domElement);
+  this._hud = new feng.views.View3DHud( hudEl, this._view3dController );
 
   this._viewIds = [];
   this._view3ds = [];
@@ -58,8 +53,7 @@ feng.views.sections.Episode.prototype.showView = function(){
 
 	if(this._view3d) {
 		this._view3d.show();
-		this._compass.show();
-		this._progressBar.show();
+		this._hud.show();
 	}
 };
 
@@ -70,8 +64,7 @@ feng.views.sections.Episode.prototype.hide = function(){
 
 	if(this._view3d) {
 		this._view3d.hide();
-		this._compass.hide();
-		this._progressBar.hide();
+		this._hud.hide();
 	}
 };
 
@@ -79,6 +72,12 @@ feng.views.sections.Episode.prototype.hide = function(){
 feng.views.sections.Episode.prototype.activate = function(){
 
 	goog.base(this, 'activate');
+
+	this._view3dController.activate();
+
+	this._hud.activate();
+
+	goog.events.listen(this._view3dController, feng.events.EventType.SHOW, this.onShowView3D, false, this);
 
 	this.activateView();
 };
@@ -88,8 +87,6 @@ feng.views.sections.Episode.prototype.activateView = function(){
 
 	if(this._view3d) {
 		this._view3d.activate();
-		this._compass.activate();
-		this._progressBar.activate();
 	}
 };
 
@@ -98,12 +95,14 @@ feng.views.sections.Episode.prototype.deactivate = function(){
 
 	goog.base(this, 'deactivate');
 
-	this._eventMediator.unlistenAll();
+	this._view3dController.deactivate();
+
+	this._hud.deactivate();
+	
+	goog.events.unlisten(this._view3dController, feng.events.EventType.SHOW, this.onShowView3D, false, this);
 
 	if(this._view3d) {
 		this._view3d.deactivate();
-		this._compass.deactivate();
-		this._progressBar.deactivate();
 	}
 };
 
@@ -116,13 +115,14 @@ feng.views.sections.Episode.prototype.onLoadComplete = function(e){
 
 		// create view 3ds
 		var view3dContainerEl = goog.dom.getElementByClass('sceneContainer', this.domElement);
-		var uiEl = goog.dom.getElementByClass('sceneUI', this.domElement);
 
 		var sectionId = this.id;
 
 		this._view3ds = goog.array.map(this._viewIds, function(viewId) {
 
-			var view3d = new feng.views.View3D( sectionId, viewId, view3dContainerEl, uiEl, this._eventMediator );
+			var view3d = new feng.views.View3D( sectionId, viewId, view3dContainerEl, this._hud );
+			this._view3dController.registerView3D( view3d );
+
 			view3d.init();
 
 			return view3d;
@@ -141,4 +141,43 @@ feng.views.sections.Episode.prototype.onLoadAnimationComplete = function(e){
 	goog.base(this, 'onLoadAnimationComplete', e);
 
 	this._view3d.fadeIn();
+};
+
+
+feng.views.sections.Episode.prototype.onShowView3D = function(e){
+
+	var view3d = e.target;
+
+	var position = view3d.origin;
+	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
+  var lookAtPosition = new THREE.Vector3(0, feng.controllers.controls.Controls.Default.STANCE_HEIGHT, 0);
+  var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, lookAtPosition);
+  rotation.setFromQuaternion( quaternion );
+
+  // set initial mode
+	view3d.modeController.setMode({
+		mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
+		fromPosition: position,
+		fromRotation: rotation,
+		fromFov: 40
+	});
+	
+	// test mode
+	if(feng.utils.Utils.hasQuery('interaction', 'true')) {
+
+		var objectName = feng.utils.Utils.getQuery('object');
+
+		var object = view3d.getInteractiveObject( objectName );
+		var cameraSettings = object.specialCameraSettings;
+
+		view3d.modeController.onModeChange({
+			type: feng.events.EventType.CHANGE,
+			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
+			toPosition: cameraSettings.position,
+			toRotation: cameraSettings.rotation,
+			toFov: cameraSettings.fov,
+			object: object
+		});
+	}
 };

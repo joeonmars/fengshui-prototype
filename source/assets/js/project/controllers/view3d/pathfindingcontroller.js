@@ -205,8 +205,16 @@ feng.controllers.view3d.PathfindingController.prototype.findPath = function( sta
 	coordinates[0] = start.clone().setY( 0 );
 
 	// draw debug view
-	var view = feng.views.debug.Debugger.getInstance().pathfindingView;
-	view.update(matrix, gridWidth, gridHeight, numCols, numRows, tileSize, path);
+	this.dispatchEvent({
+		type: feng.events.EventType.UPDATE,
+		matrix: matrix,
+		gridWidth: gridWidth,
+		gridHeight: gridHeight,
+		numCols: numCols,
+		numRows: numRows,
+		tileSize: tileSize,
+		path: path
+	});
 
 	// return smoothened coordinates
 	var spline = new THREE.SplineCurve3( coordinates );

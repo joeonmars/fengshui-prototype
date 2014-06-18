@@ -8,11 +8,9 @@ goog.require('feng.views.sections.controls.Controls');
 /**
  * @constructor
  */
-feng.views.sections.controls.ProgressBar = function(domElement, eventMediator){
+feng.views.sections.controls.ProgressBar = function(domElement){
 
   goog.base(this, domElement);
-
-  this._eventMediator = eventMediator;
 
   this._innerEl = goog.dom.query('.inner', this.domElement)[0];
   this._tipEls = goog.dom.query('.tips > li', this.domElement);
@@ -81,9 +79,6 @@ goog.inherits(feng.views.sections.controls.ProgressBar, feng.views.sections.cont
 feng.views.sections.controls.ProgressBar.prototype.activate = function(){
 
 	goog.base(this, 'activate');
-
-	this._eventMediator.listen(this, feng.events.EventType.CHANGE);
-	//this._eventHandler.listen(this._eventMediator.getEventTarget(), feng.events.EventType.PROGRESS, this.onMediatorEvent, false, this);
 
 	goog.array.forEach(this._tipEls, function(tipEl) {
 		this._eventHandler.listen(tipEl, 'click', this.onClickTip, false, this);

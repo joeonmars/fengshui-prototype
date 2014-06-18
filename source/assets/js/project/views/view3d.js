@@ -7,14 +7,12 @@ goog.require('goog.events.EventHandler');
 goog.require('goog.events');
 goog.require('feng.controllers.view3d.CameraController');
 goog.require('feng.controllers.view3d.ModeController');
-goog.require('feng.controllers.view3d.View3DController');
 goog.require('feng.controllers.view3d.RenderController');
 goog.require('feng.fx.EnergyFlow');
 goog.require('feng.fx.Renderer');
 goog.require('feng.models.Preload');
 goog.require('feng.models.View3D');
 goog.require('feng.models.Accessories');
-goog.require('feng.views.View3DHud');
 goog.require('feng.views.view3dobject.View3DObject');
 goog.require('feng.views.view3dobject.InteractiveObject');
 goog.require('feng.views.view3dobject.HolderObject');
@@ -29,7 +27,7 @@ goog.require('feng.views.view3dobject.entities.PictureFrame');
 /**
  * @constructor
  */
-feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eventMediator){
+feng.views.View3D = function(sectionId, viewId, containerElement, hud){
 
   goog.base(this);
 
@@ -38,22 +36,13 @@ feng.views.View3D = function(sectionId, viewId, containerElement, uiElement, eve
 
   this.isShown = true;
 
-  var view3dController = feng.controllers.view3d.View3DController.getInstance();
-  view3dController.registerView3D( this );
-
-  this.setParentEventTarget( view3dController );
-
   this.containerElement = containerElement;
-  this.uiElement = uiElement;
-  this.captionsElement = goog.dom.getElementByClass('captions', this.uiElement);
- 
-  this.hud = null;
 
   this.domElement = goog.dom.createDom('canvas');
   goog.dom.appendChild( this.containerElement, this.domElement );
 
-  this.eventMediator = eventMediator;
-
+  this.hud = hud;
+  
   this.cameraController = null;
   this.renderController = null;
 	this.modeController = null;
@@ -90,8 +79,6 @@ feng.views.View3D.prototype.init = function(){
 
 	var viewSize = this.getViewSize();
 	this._renderer.setSize( viewSize.width, viewSize.height );
-
-	this.hud = new feng.views.View3DHud( this );
 	
 	this.renderController = new feng.controllers.view3d.RenderController(this);
 

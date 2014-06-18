@@ -1,5 +1,6 @@
 goog.provide('feng.views.debug.Pathfinding');
 
+goog.require('feng.controllers.view3d.PathfindingController');
 goog.require('feng.views.debug.DebugView');
 goog.require('feng.templates.debug');
 
@@ -8,6 +9,7 @@ goog.require('feng.templates.debug');
  * @constructor
  */
 feng.views.debug.Pathfinding = function(){
+
   goog.base(this, feng.templates.debug.PathfindingDebugView);
 
 	this._canvasContainerDom = goog.dom.getElementByClass('canvasContainer', this.domElement);
@@ -24,6 +26,9 @@ feng.views.debug.Pathfinding = function(){
   	end: '#33CCFF',
   	path: 'rgba(255, 255, 0, 0.6)'
   });
+
+	var pathfindingController = feng.controllers.view3d.PathfindingController.getInstance();
+	goog.events.listen( pathfindingController, feng.events.EventType.UPDATE, this.onPathfindingUpdate, false, this);
 
   this.hide();
 };
@@ -87,4 +92,10 @@ feng.views.debug.Pathfinding.prototype.update = function(matrix, gridWidth, grid
 
 	goog.dom.removeChildren( this._canvasContainerDom );
 	goog.dom.appendChild(this._canvasContainerDom, canvas);
+};
+
+
+feng.views.debug.Pathfinding.prototype.onPathfindingUpdate = function(e) {
+
+	this.update(e.matrix, e.gridWidth, e.gridHeight, e.numCols, e.numRows, e.tileSize, e.path);
 };

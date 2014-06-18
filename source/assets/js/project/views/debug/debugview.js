@@ -26,12 +26,11 @@ feng.views.debug.DebugView = function(template, templateData){
 	this._bodyDom = goog.dom.getElementByClass('body', this.domElement);
 	this._displayButton = goog.dom.query('.button.display', this.domElement)[0];
 
-	var view3dController = feng.controllers.view3d.View3DController.getInstance();
-
   this._eventHandler = new goog.events.EventHandler(this);
 	this._eventHandler.listen(this._displayButton, 'click', this.onClick, false, this);
-	this._eventHandler.listen(view3dController, feng.events.EventType.SHOW, this.onView3DShow, false, this);
-	this._eventHandler.listen(view3dController, feng.events.EventType.HIDE, this.onView3DHide, false, this);
+
+	feng.pubsub.subscribe(feng.PubSub.Topic.SHOW_VIEW3D, goog.bind(this.onView3DShow, this));
+	feng.pubsub.subscribe(feng.PubSub.Topic.HIDE_VIEW3D, goog.bind(this.onView3DHide, this));
 };
 goog.inherits(feng.views.debug.DebugView, goog.events.EventTarget);
 
@@ -50,12 +49,12 @@ feng.views.debug.DebugView.prototype.hide = function() {
 };
 
 
-feng.views.debug.DebugView.prototype.onView3DShow = function(e) {
+feng.views.debug.DebugView.prototype.onView3DShow = function(view3d) {
 
 };
 
 
-feng.views.debug.DebugView.prototype.onView3DHide = function(e) {
+feng.views.debug.DebugView.prototype.onView3DHide = function(view3d) {
 
 };
 
