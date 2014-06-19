@@ -53,12 +53,16 @@ a{
 }
 
 .grabbing{
-  cursor: url(../cursor/closedhand.cur) 4 4, move;
-  cursor: -webkit-grabbing;
-  cursor: -moz-grabbing;
-  cursor: -o-grabbing;
-  cursor: -ms-grabbing;
-  cursor: grabbing;
+  cursor: url(../cursor/closedhand.cur) 4 4, move !important;
+  cursor: -webkit-grabbing !important;
+  cursor: -moz-grabbing !important;
+  cursor: -o-grabbing !important;
+  cursor: -ms-grabbing !important;
+  cursor: grabbing !important;
+}
+
+.help{
+  cursor: help;
 }
 
 .button{

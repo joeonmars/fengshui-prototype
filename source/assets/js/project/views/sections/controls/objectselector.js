@@ -2,6 +2,7 @@ goog.provide('feng.views.sections.controls.ObjectSelector');
 
 goog.require('goog.events');
 goog.require('goog.async.Delay');
+goog.require('goog.async.Throttle');
 goog.require('feng.fx.AnimatedSprite');
 goog.require('feng.views.sections.controls.Controls');
 
@@ -32,12 +33,18 @@ feng.views.sections.controls.ObjectSelector = function(domElement){
   // a delay to kick off the progress, to differentiate the mouse behavior between a fast click and object selecting
   this._delay = new goog.async.Delay(this.startSelect, 250, this);
 
+  // a throttle to not let the object hover detection fire too often
+  this._mouseMoveThrottle = new goog.async.Throttle(this.doHoverDetection, 250, this);
+  this._mouseMovePosition = {x: 0, y: 0};
+
+  this._hitTestMeshes = [];
+
 	this.hide();
 };
 goog.inherits(feng.views.sections.controls.ObjectSelector, feng.views.sections.controls.Controls);
 
 
-feng.views.sections.controls.ObjectSelector.prototype.getHitTestMeshes = function () {
+feng.views.sections.controls.ObjectSelector.prototype.updateHitTestMeshes = function () {
 
 	var hitTestMeshes = [];
 
@@ -60,13 +67,45 @@ feng.views.sections.controls.ObjectSelector.prototype.getHitTestMeshes = functio
 		parseObject( object.object3d );
 	}, this);
 
-	return hitTestMeshes;
+	this._hitTestMeshes = hitTestMeshes;
+
+	return this._hitTestMeshes;
 };
 
 
 feng.views.sections.controls.ObjectSelector.prototype.setPosition = function (x, y) {
 
 	goog.style.setPosition(this.domElement, x, y);
+};
+
+
+feng.views.sections.controls.ObjectSelector.prototype.activate = function( callbacks ) {
+
+	goog.base(this, 'activate');
+	
+	this._selectableObjects = goog.object.getValues( this._view3d.interactiveObjects );
+	
+	this.updateHitTestMeshes();
+
+	this._callbacks = {
+	  	'onProgress': callbacks['onProgress'] || goog.nullFunction,
+	  	'onStart': callbacks['onStart'] || goog.nullFunction,
+	  	'onCancel': callbacks['onCancel'] || goog.nullFunction,
+	  	'onComplete': callbacks['onComplete'] || goog.nullFunction
+	  };
+
+	this._eventHandler.listen(this._renderEl, 'mousedown', this.onMouseDown, false, this);
+	this._eventHandler.listen(this._renderEl, 'mousemove', this.onMouseMove, false, this);
+};
+
+
+feng.views.sections.controls.ObjectSelector.prototype.deactivate = function() {
+
+	goog.base(this, 'deactivate');
+
+	this._delay.stop();
+
+	goog.fx.anim.unregisterAnimation( this );
 };
 
 
@@ -107,33 +146,6 @@ feng.views.sections.controls.ObjectSelector.prototype.animateOut = function () {
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.activate = function( callbacks ) {
-
-	goog.base(this, 'activate');
-	
-	this._selectableObjects = goog.object.getValues( this._view3d.interactiveObjects );
-
-	this._callbacks = {
-	  	'onProgress': callbacks['onProgress'] || goog.nullFunction,
-	  	'onStart': callbacks['onStart'] || goog.nullFunction,
-	  	'onCancel': callbacks['onCancel'] || goog.nullFunction,
-	  	'onComplete': callbacks['onComplete'] || goog.nullFunction
-	  };
-
-	this._eventHandler.listen(this._renderEl, 'mousedown', this.onMouseDown, false, this);
-};
-
-
-feng.views.sections.controls.ObjectSelector.prototype.deactivate = function() {
-
-	goog.base(this, 'deactivate');
-
-	this._delay.stop();
-
-	goog.fx.anim.unregisterAnimation( this );
-};
-
-
 feng.views.sections.controls.ObjectSelector.prototype.doSelect = function () {
 
 	this._selectedObject = feng.views.sections.controls.ObjectSelector.findObjectDelegation( this._downObject );
@@ -164,13 +176,22 @@ feng.views.sections.controls.ObjectSelector.prototype.startSelect = function () 
 };
 
 
+feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = function () {
+
+	var mouseX = this._mouseMovePosition.x;
+	var mouseY = this._mouseMovePosition.y;
+
+	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( mouseX, mouseY, this._hitTestMeshes, this._camera, this._viewSize );
+
+	goog.dom.classes.enable(this._renderEl, 'help', (intersects.length > 0));
+};
+
+
 feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e ) {
 
 	this._selectedObject = null;
 
-	var meshes = this.getHitTestMeshes();
-
-	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, meshes, this._camera, this._viewSize );
+	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, this._hitTestMeshes, this._camera, this._viewSize );
 
 	if(intersects.length === 0) {
 		return false;
@@ -179,20 +200,14 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e
 	this._downObject = intersects[0].object.interactiveObject;
 	this.setPosition( e.clientX, e.clientY );
 
-	this._eventHandler.listen(document, 'mousemove', this.onMouseMove, false, this);
-	this._eventHandler.listen(document, 'mouseup', this.onMouseUp, false, this);
+	this._eventHandler.listen(document, 'mousemove', this.onMouseDownCancel, false, this);
+	this._eventHandler.listen(document, 'mouseup', this.onMouseDownCancel, false, this);
 
 	this._delay.start();
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.onMouseMove = function ( e ) {
-
-	this.onMouseUp();
-};
-
-
-feng.views.sections.controls.ObjectSelector.prototype.onMouseUp = function ( e ) {
+feng.views.sections.controls.ObjectSelector.prototype.onMouseDownCancel = function ( e ) {
 
 	this._delay.stop();
 
@@ -202,6 +217,15 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseUp = function ( e )
 	goog.fx.anim.unregisterAnimation( this );
 
 	this.cancelSelect();
+};
+
+
+feng.views.sections.controls.ObjectSelector.prototype.onMouseMove = function ( e ) {
+
+	this._mouseMovePosition.x = e.clientX;
+	this._mouseMovePosition.y = e.clientY;
+
+	this._mouseMoveThrottle.fire();
 };
 
 
