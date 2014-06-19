@@ -7,6 +7,24 @@
 	height: 100%;
 }
 
+#main-options{
+	position: absolute;
+	z-index: 1;
+	left: 30px;
+	bottom: 40px;
+
+	>li{
+		margin-top: 15px;
+
+		>.button{
+			width: 32px;
+			height: 32px;
+			@include border-radius(50%);
+			border: 1px solid #000;
+		}
+	}
+}
+
 #main >.section{
 	position: absolute;
 	top: 0;

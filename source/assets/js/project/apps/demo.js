@@ -8,6 +8,7 @@ goog.require('feng.controllers.NavigationController');
 goog.require('feng.controllers.view3d.PathfindingController');
 goog.require('feng.controllers.SectionController');
 goog.require('feng.views.debug.Debugger');
+goog.require('feng.views.MainOptions');
 goog.require('feng.PubSub');
 
 
@@ -29,6 +30,8 @@ feng.apps.Demo = function() {
 
 	if(debug) feng.views.debug.Debugger.getInstance();
 	if(office) goog.style.setOpacity(document.body, .1);
+
+	var mainOptions = new feng.views.MainOptions;
 
 	var navigationController = feng.controllers.NavigationController.getInstance();
 	var sectionController = feng.controllers.SectionController.getInstance();

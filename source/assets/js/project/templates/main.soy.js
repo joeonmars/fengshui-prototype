@@ -27,7 +27,7 @@ feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.main.Main = function(opt_data, opt_ignored) {
-  return '<div id="main"><div class="section" id="home"><div class="preloader"><div class="fill"></div></div></div>' + ((opt_data.debug != false) ? feng.templates.debug.Debugger(null) : '') + '</div>';
+  return '<div id="main"><div class="section" id="home"><div class="preloader"><div class="fill"></div></div></div><ul id="main-options"><li class="howtoplay"><div class="button"></div></li><li class="fullscreen"><div class="button"></div></li><li class="sound"><div class="button"></div></li><li class="share"><div class="button"></div><div class="social-buttons"><a class="facebook"></a><a class="twitter"></a><a class="google"></a></div></li></ul>' + ((opt_data.debug != false) ? feng.templates.debug.Debugger(null) : '') + '</div>';
 };
 
 
