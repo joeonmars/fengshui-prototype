@@ -1,0 +1,407 @@
+{
+	"glossaries": {
+		"yinyang": {
+			"name": {
+				"en": "Opposites",
+				"zh": "Yin Yang"
+			},
+			"meanings": "In Chinese philosophy, yin and yang, which are often shortened to \"yin-yang\" or \"yin yang\", are concepts used to describe how apparently opposite or contrary forces are actually complementary, interconnected and interdependent in the natural world, and how they give rise to each other as they interrelate to one another. Many tangible dualities (such as light and dark, high and low, hot and cold, fire and water, life and death, male and female, sun and moon, and so on) are thought of as physical manifestations of the duality of yin and yang. This duality lies at the origins of many branches of classical Chinese science and philosophy, as well as being a primary guideline of traditional Chinese medicine,[1] and a central principle of different forms of Chinese martial arts and exercise, such as baguazhang, taijiquan (t'ai chi), and qigong (Chi Kung), as well as in the pages of the I Ching."
+		},
+		"chi": {
+			"name": {
+				"en": "Energy Flow",
+				"zh": "Chi"
+			},
+			"meanings": "In the physical sciences, an energy transfer or 'energy exchange' from one system to another is said to occur when an amount of energy crosses the boundary between them, thus increasing the energy content of one system while decreasing the energy content of the other system by the same amount."
+		},
+		"wuxing": {
+			"name": {
+				"en": "Five Elements",
+				"zh": "Wu Xing"
+			},
+			"meanings": "The Wu Xing, also known as the Five Elements, Five Phases, the Five Agents, the Five Movements, Five Processes, and the Five Steps/Stages, is a fivefold conceptual scheme that many traditional Chinese fields used to explain a wide array of phenomena, from cosmic cycles to the interaction between internal organs, and from the succession of political regimes to the properties of medicinal drugs."
+		},
+		"sha": {
+			"name": {
+				"en": "Bad Energy",
+				"zh": "Sha"
+			},
+			"meanings": "The Secure Hash Algorithm is a family of cryptographic hash functions published by the National Institute of Standards and Technology (NIST) as a U.S. Federal Information Processing Standard."
+		},
+		"ji": {
+			"name": {
+				"en": "Good Fortune",
+				"zh": "Ji"
+			},
+			"meanings": "Jí is the Mandarin pinyin romanization of the Chinese surname written in Chinese character. It is romanized as Chi in Wade–Giles, and Gat in Cantonese. Ji is the 195th most common surname in China, with a population of 490,000."
+		}
+	},
+	"chapters": {
+		
+	},
+	"tips": [
+		{
+			"id": "frame",
+			"section": "studio",
+			"view": "livingroom",
+			"interaction": "change_picture",
+			"unlocked": false,
+			"mandatory": true,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "chair",
+			"section": "studio",
+			"view": "livingroom",
+			"interaction": "move",
+			"unlocked": false,
+			"mandatory": false,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "lamp",
+			"section": "studio",
+			"view": "livingroom",
+			"interaction": "change_color",
+			"unlocked": false,
+			"mandatory": true,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "crystal",
+			"section": "studio",
+			"view": "livingroom",
+			"interaction": null,
+			"unlocked": true,
+			"mandatory": false,
+			"require": null,
+			"problem": null,
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "bed",
+			"section": "studio",
+			"view": "livingroom",
+			"interaction": "move",
+			"unlocked": false,
+			"mandatory": true,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "windows",
+			"section": "studio",
+			"view": "livingroom",
+			"interaction": "window",
+			"unlocked": false,
+			"mandatory": true,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "cactus",
+			"section": "studio",
+			"view": "livingroom",
+			"interaction": "change_object",
+			"unlocked": false,
+			"mandatory": true,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "lamp",
+			"section": "studio",
+			"view": "livingroom",
+			"interaction": "change_color",
+			"unlocked": false,
+			"mandatory": false,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "picturewall",
+			"section": "studio",
+			"view": "livingroom",
+			"interaction": "change_picture",
+			"unlocked": false,
+			"mandatory": false,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "sewingmachine",
+			"section": "studio",
+			"view": "livingroom",
+			"interaction": "add",
+			"unlocked": false,
+			"mandatory": true,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "seasoningboxes",
+			"section": "studio",
+			"view": "livingroom",
+			"interaction": null,
+			"unlocked": true,
+			"mandatory": false,
+			"require": null,
+			"problem": null,
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "refrigerator",
+			"section": "studio",
+			"view": "livingroom",
+			"interaction": "pick",
+			"unlocked": false,
+			"mandatory": true,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "basket",
+			"section": "studio",
+			"view": "livingroom",
+			"interaction": "put",
+			"unlocked": false,
+			"mandatory": true,
+			"require": "refrigerator",
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "cabinet",
+			"section": "studio",
+			"view": "livingroom",
+			"interaction": "change_color",
+			"unlocked": false,
+			"mandatory": false,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "cabinet",
+			"section": "studio",
+			"view": "bathroom",
+			"interaction": "arrangecabinet",
+			"unlocked": false,
+			"mandatory": true,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "glassbowl",
+			"section": "townhouse",
+			"view": "livingroom",
+			"interaction": "change_color",
+			"unlocked": false,
+			"mandatory": true,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "candle",
+			"section": "townhouse",
+			"view": "livingroom",
+			"interaction": "change_object",
+			"unlocked": false,
+			"mandatory": true,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "pictures",
+			"section": "townhouse",
+			"view": "livingroom",
+			"interaction": "change_object",
+			"unlocked": false,
+			"mandatory": false,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "cookingutensils",
+			"section": "townhouse",
+			"view": "livingroom",
+			"interaction": "pick",
+			"unlocked": false,
+			"mandatory": true,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "drawer",
+			"section": "townhouse",
+			"view": "livingroom",
+			"interaction": "put",
+			"unlocked": false,
+			"mandatory": true,
+			"require": "cookingutensils",
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "drawer",
+			"section": "townhouse",
+			"view": "livingroom",
+			"interaction": "put",
+			"unlocked": false,
+			"mandatory": true,
+			"require": "cookingutensils",
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "centerofstairs",
+			"section": "townhouse",
+			"view": "livingroom",
+			"interaction": "change_object",
+			"unlocked": false,
+			"mandatory": false,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "books",
+			"section": "townhouse",
+			"view": "livingroom",
+			"interaction": null,
+			"unlocked": true,
+			"mandatory": false,
+			"require": null,
+			"problem": null,
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "bear",
+			"section": "townhouse",
+			"view": "boysroom",
+			"interaction": "pick",
+			"unlocked": false,
+			"mandatory": true,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "bed",
+			"section": "townhouse",
+			"view": "boysroom",
+			"interaction": "put",
+			"unlocked": false,
+			"mandatory": true,
+			"require": "bear",
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "pc",
+			"section": "townhouse",
+			"view": "boysroom",
+			"interaction": "move",
+			"unlocked": false,
+			"mandatory": false,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "picture",
+			"section": "townhouse",
+			"view": "boysroom",
+			"interaction": "change_picture",
+			"unlocked": false,
+			"mandatory": false,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "wall",
+			"section": "townhouse",
+			"view": "boysroom",
+			"interaction": "change_color",
+			"unlocked": false,
+			"mandatory": false,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "chair",
+			"section": "townhouse",
+			"view": "homeoffice",
+			"interaction": "move",
+			"unlocked": false,
+			"mandatory": true,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "photos",
+			"section": "townhouse",
+			"view": "homeoffice",
+			"interaction": "change_picture",
+			"unlocked": false,
+			"mandatory": true,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "desk",
+			"section": "townhouse",
+			"view": "homeoffice",
+			"interaction": "move",
+			"unlocked": false,
+			"mandatory": true,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "flower",
+			"section": "townhouse",
+			"view": "homeoffice",
+			"interaction": "trim",
+			"unlocked": false,
+			"mandatory": false,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"chapter": "loremipsum"
+		},
+		{
+			"id": "mascot",
+			"section": "townhouse",
+			"view": "homeoffice",
+			"interaction": null,
+			"unlocked": false,
+			"mandatory": false,
+			"require": null,
+			"problem": null,
+			"chapter": "loremipsum"
+		}
+	]
+}
