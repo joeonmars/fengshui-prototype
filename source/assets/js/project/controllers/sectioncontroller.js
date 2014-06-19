@@ -17,7 +17,6 @@ feng.controllers.SectionController = function(){
   var homeSection = this.addSection('home');
 
   this._eventHandler = new goog.events.EventHandler(this);
-  this._eventHandler.listenOnce(homeSection, feng.events.EventType.LOAD_COMPLETE, this.init, false, this);
 };
 goog.inherits(feng.controllers.SectionController, goog.events.EventTarget);
 goog.addSingletonGetter(feng.controllers.SectionController);

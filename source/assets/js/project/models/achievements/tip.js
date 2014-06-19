@@ -7,7 +7,7 @@ goog.require('feng.models.achievements.Achievements');
 /**
  * @constructor
  */
-feng.models.achievements.Tip = function( tipId, viewId, sectionId ){
+feng.models.achievements.Tip = function( tipId, viewId, sectionId, isMandatory ){
 
   goog.base(this);
 
@@ -19,6 +19,7 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId ){
   this.sprite = '';
 
   this.unlocked = false;
+  this.isMandatory = isMandatory;
 
   this._requiredTipId = null;
 };

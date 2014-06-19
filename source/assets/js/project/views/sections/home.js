@@ -6,6 +6,7 @@ goog.require('goog.events.EventTarget');
 goog.require('feng.events');
 goog.require('feng.views.sections.Section');
 goog.require('feng.models.achievements.Achievements');
+goog.require('feng.controllers.SectionController');
 
 
 /**
@@ -63,6 +64,9 @@ feng.views.sections.Home.prototype.onLoadComplete = function(e){
 
 	var achievements = feng.models.achievements.Achievements.getInstance();
 	achievements.init( tipsData );
+
+	var sectionController = feng.controllers.SectionController.getInstance();
+	sectionController.init();
 
 	feng.pubsub.publish( feng.PubSub.Topic.MAIN_LOAD_COMPLETE, globalAssets );
 };

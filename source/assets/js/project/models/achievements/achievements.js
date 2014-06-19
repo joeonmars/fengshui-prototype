@@ -10,7 +10,6 @@ goog.require('feng.models.achievements.Tip');
 feng.models.achievements.Achievements = function(){
 
   this._sections = {
-
     /*
     'sectionId': {
       'viewId': [
@@ -30,11 +29,13 @@ feng.models.achievements.Achievements.prototype.init = function( tipsData ) {
     var viewId = tipData['view'];
     var sectionId = tipData['section'];
     var requireId = tipData['require'];
+    var isMandatory = tipData['mandatory'];
 
     this._sections[sectionId] = this._sections[sectionId] || {};
     this._sections[sectionId][viewId] = this._sections[sectionId][viewId] || [];
 
-    this._sections[sectionId][viewId].push( new feng.models.achievements.Tip( tipId, viewId, sectionId ).require( requireId )  );
+    var tip = new feng.models.achievements.Tip( tipId, viewId, sectionId, isMandatory ).require( requireId );
+    this._sections[sectionId][viewId].push( tip );
 
   }, this);
 };
@@ -51,19 +52,33 @@ feng.models.achievements.Achievements.prototype.getTip = function(tipId, viewId,
 };
 
 
-feng.models.achievements.Achievements.prototype.getTipsOfView = function(viewId, sectionId) {
+feng.models.achievements.Achievements.prototype.getTipsOfView = function(viewId, sectionId, onlyMandatory) {
 
-  return this._sections[ sectionId ][ viewId ];
+  var tips = this._sections[ sectionId ][ viewId ];
+
+  if(onlyMandatory) {
+    tips = goog.array.filter(tips, function(tip) {
+      return tip.isMandatory;
+    });
+  }
+
+  return tips;
 };
 
 
-feng.models.achievements.Achievements.prototype.getTipsOfSection = function(sectionId) {
+feng.models.achievements.Achievements.prototype.getTipsOfSection = function(sectionId, onlyMandatory) {
 
   var tips = [];
   var views = this._sections[ sectionId ];
   goog.object.forEach(views, function(viewTips) {
     goog.array.extend(tips, viewTips);
   });
+
+  if(onlyMandatory) {
+    tips = goog.array.filter(tips, function(tip) {
+      return tip.isMandatory;
+    });
+  }
 
   return tips;
 };

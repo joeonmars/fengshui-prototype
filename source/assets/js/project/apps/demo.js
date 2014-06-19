@@ -5,7 +5,6 @@ goog.require('goog.fx.anim');
 goog.require('goog.style');
 goog.require('feng.templates.main');
 goog.require('feng.controllers.NavigationController');
-goog.require('feng.controllers.view3d.PathfindingController');
 goog.require('feng.controllers.SectionController');
 goog.require('feng.views.debug.Debugger');
 goog.require('feng.views.MainOptions');
@@ -35,7 +34,6 @@ feng.apps.Demo = function() {
 
 	var navigationController = feng.controllers.NavigationController.getInstance();
 	var sectionController = feng.controllers.SectionController.getInstance();
-	var pathfindingController = feng.controllers.view3d.PathfindingController.getInstance();
 
 	feng.controllers.NavigationController.Implementation = feng.controllers.NavigationController.HASH;
 	navigationController.init();

@@ -67,10 +67,15 @@
 {template .ProgressBar}
 <div class="progressBar">
 	<div class="inner">
+		<div class="wave">
+			<canvas class="gray"></canvas>
+			<canvas class="blue"></canvas>
+		</div>
 		<ul class="tips">
 			{foreach $tip in $tips}
-				<li class="tip {if $tip.unlocked != true}locked{/if}" data-tip-id="{ $tip.id }" data-view-id="{ $tip.viewId }" data-section-id="{ $tip.sectionId }">
-				{ $tip.id }
+				<li class="tip" data-tip-id="{ $tip.id }" data-view-id="{ $tip.viewId }" data-section-id="{ $tip.sectionId }">
+					<div class="outline"></div>
+					<div class="dot"></div>
 				</li>
 			{/foreach}
 		</ul>
