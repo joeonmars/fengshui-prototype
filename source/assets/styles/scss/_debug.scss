@@ -27,7 +27,8 @@ $debug_border_style:  2px outset #d6d3ce;
 	position: fixed;
 	top: 0;
 	right: 0;
-	min-width: 300px;
+	min-width: 320px;
+	max-width: 640px;
 	z-index: 100;
 	font-family: $font_tahoma;
 
@@ -163,7 +164,8 @@ $debug_border_style:  2px outset #d6d3ce;
 
 		>ul{
 			width: 100%;
-			text-align: center;
+			max-height: 400px;
+			overflow: auto;
 
 			>li{
 				display: inline-block;

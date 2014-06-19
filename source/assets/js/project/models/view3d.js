@@ -4,7 +4,7 @@ goog.provide('feng.models.View3D');
 feng.models.View3D.Data = {
 
 	'studio': {
-		'interior1': {
+		'livingroom': {
 			'ground': {
 				receiveShadow: true
 			},
@@ -19,12 +19,12 @@ feng.models.View3D.Data = {
 					"rotate"
 				],
 				tipInteraction: "change_color",
-				tipKey: 'studio.interior1.sofa'
+				tipKey: 'studio.livingroom.chair'
 			},
 			'cabinet': {
 				class: "holder",
 				collidable: true,
-				texture: "studio.interior1.cabinet-texture",
+				texture: "studio.livingroom.cabinet-texture",
 				interactions: [
 					"move",
 					"rotate"
@@ -33,7 +33,7 @@ feng.models.View3D.Data = {
 			'bed': {
 				class: "holder",
 				collidable: true,
-				texture: "studio.interior1.bed-texture",
+				texture: "studio.livingroom.bed-texture",
 				interactions: [
 					"move",
 					"rotate"
@@ -56,7 +56,7 @@ feng.models.View3D.Data = {
 					'change_picture'
 				],
 				tipInteraction: 'change_picture',
-				tipKey: 'studio.interior1.picture',
+				tipKey: 'studio.livingroom.frame',
 				camera: {
 					position: new THREE.Vector3(57.56, 90.49, -16.61),
 					rotation: new THREE.Euler(-0.24, -1.68, 0.00, 'YXZ'),
@@ -64,54 +64,54 @@ feng.models.View3D.Data = {
 				},
 				pictures: [
 					{
-						id: 'studio.interior1.pictures.1',
+						id: 'studio.livingroom.pictures.1',
 						description: 'This is a dummy picture. Its name is picture 1.'
 					},
 					{
-						id: 'studio.interior1.pictures.2',
+						id: 'studio.livingroom.pictures.2',
 						description: 'This is a dummy picture. Its name is picture 2.'
 					},
 					{
-						id: 'studio.interior1.pictures.3',
+						id: 'studio.livingroom.pictures.3',
 						description: 'This is a dummy picture. Its name is picture 3.'
 					},
 					{
-						id: 'studio.interior1.pictures.4',
+						id: 'studio.livingroom.pictures.4',
 						description: 'This is a dummy picture. Its name is picture 4.'
 					},
 					{
-						id: 'studio.interior1.pictures.5',
+						id: 'studio.livingroom.pictures.5',
 						description: 'This is a dummy picture. Its name is picture 5.'
 					},
 					{
-						id: 'studio.interior1.pictures.6',
+						id: 'studio.livingroom.pictures.6',
 						description: 'This is a dummy picture. Its name is picture 6.'
 					},
 					{
-						id: 'studio.interior1.pictures.7',
+						id: 'studio.livingroom.pictures.7',
 						description: 'This is a dummy picture. Its name is picture 7.'
 					},
 					{
-						id: 'studio.interior1.pictures.8',
+						id: 'studio.livingroom.pictures.8',
 						description: 'This is a dummy picture. Its name is picture 8.'
 					},
 					{
-						id: 'studio.interior1.pictures.9',
+						id: 'studio.livingroom.pictures.9',
 						description: 'This is a dummy picture. Its name is picture 9.'
 					},
 					{
-						id: 'studio.interior1.pictures.10',
+						id: 'studio.livingroom.pictures.10',
 						description: 'This is a dummy picture. Its name is picture 10.'
 					}
 				]
 			},
 			'frame1': {
 				class: 'pictureframe',
-				defaultTexture: 'studio.interior1.default-picture'
+				defaultTexture: 'studio.livingroom.default-picture'
 			},
 			'frame2': {
 				class: 'pictureframe',
-				defaultTexture: 'studio.interior1.default-picture'
+				defaultTexture: 'studio.livingroom.default-picture'
 			}
 		},
 		'interior2': {
@@ -125,14 +125,12 @@ feng.models.View3D.Data = {
 				gatewayid: "door"
 			},
 			'pc': {
-				class: "computer",
 				collidable: true,
 				texture: "studio.interior2.pc-texture",
 				interactions: [
 					"move",
 					"rotate"
-				],
-				tipKey: 'studio.interior2.computer'
+				]
 			},
 			'screen': {
 				texture: {

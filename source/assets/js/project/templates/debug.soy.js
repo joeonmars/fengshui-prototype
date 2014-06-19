@@ -75,7 +75,7 @@ feng.templates.debug.AchievementsDebugView = function(opt_data, opt_ignored) {
   var tipListLen119 = tipList119.length;
   for (var tipIndex119 = 0; tipIndex119 < tipListLen119; tipIndex119++) {
     var tipData119 = tipList119[tipIndex119];
-    param117 += '<li data-tip-id="' + tipData119.id + '" data-view-id="' + tipData119.viewId + '" data-section-id="' + tipData119.sectionId + '"><div class="icon"></div><div class="caption"><p>' + tipData119.id + '</p><p>' + tipData119.viewId + '</p><p>' + tipData119.sectionId + '</p></div></li>';
+    param117 += '<li data-tip-id="' + tipData119.id + '" data-view-id="' + tipData119.view + '" data-section-id="' + tipData119.section + '"><div class="icon"></div><div class="caption"><p>' + tipData119.id + '</p><p>' + tipData119.view + '</p><p>' + tipData119.section + '</p></div></li>';
   }
   param117 += '</ul></div>';
   output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param117});

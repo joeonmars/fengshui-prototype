@@ -11,6 +11,7 @@ feng.models.Preload = function(){
 
 	this._assets = {
 		'global': {
+			'fengshui-data': 'json/fengshui.json',
 			'circular-fill': 'images/circular-fill.png',
 			'cube-browse': 'images/cube-browse.png',
 			'cube-design': 'images/cube-design.png'
@@ -27,7 +28,7 @@ feng.models.Preload = function(){
 			'lotus-texture': 'images/texture/lotus.png'
 		},
 		'studio': {
-			'interior1': {
+			'livingroom': {
 				'scene-data': 'json/scene-interior1.json',
 				'energyflow-data': 'json/energyflow/energyflow-1.json',
 				'bed-texture': 'images/texture/bed.jpg',

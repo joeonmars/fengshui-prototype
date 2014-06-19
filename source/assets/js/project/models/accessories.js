@@ -12,7 +12,7 @@ goog.addSingletonGetter(feng.models.Accessories);
 
 feng.models.Accessories.Data = {
 	'studio': {
-		'interior1': ['rubberplant', 'cactus', 'lotus'],
+		'livingroom': ['rubberplant', 'cactus', 'lotus'],
 		'interior2': [],
 		'bathroom': []
 	}

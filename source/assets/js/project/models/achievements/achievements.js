@@ -1,5 +1,7 @@
 goog.provide('feng.models.achievements.Achievements');
 
+goog.require('goog.array');
+goog.require('goog.object');
 goog.require('feng.models.achievements.Tip');
 
 /**
@@ -9,49 +11,33 @@ feng.models.achievements.Achievements = function(){
 
   this._sections = {
 
-    'twobedroom': {
-      'corridor': [
-
-      ],
-      'kitchen': [
-        new feng.models.achievements.Tip('refrigerator', 'kitchen', 'twobedroom'),
-        new feng.models.achievements.Tip('fruits', 'kitchen', 'twobedroom').require('refrigerator'),
-      ],
-      'bedroom': [
-
+    /*
+    'sectionId': {
+      'viewId': [
+        new feng.models.achievements.Tip('tipId', 'viewId', 'sectionId').require('requireId')
       ]
-    },
-
-    'studio': {
-      'corridor': [
-
-      ],
-      'interior1': [
-        new feng.models.achievements.Tip('sofa', 'interior1', 'studio'),
-        new feng.models.achievements.Tip('picture', 'interior1', 'studio')
-      ],
-      'interior2': [
-        new feng.models.achievements.Tip('computer', 'interior2', 'studio'),
-      ]
-    },
-
-    'townhouse': {
-      'yard': [
-
-      ],
-      'sittingroom': [
-        new feng.models.achievements.Tip('goldfish', 'sittingroom', 'townhouse'),
-      ],
-      'kidsroom': [
-
-      ],
-      'bedroom': [
-
-      ]
-    }
+    }*/
   };
 };
 goog.addSingletonGetter(feng.models.achievements.Achievements);
+
+
+feng.models.achievements.Achievements.prototype.init = function( tipsData ) {
+
+  goog.array.forEach(tipsData, function(tipData) {
+
+    var tipId = tipData['id'];
+    var viewId = tipData['view'];
+    var sectionId = tipData['section'];
+    var requireId = tipData['require'];
+
+    this._sections[sectionId] = this._sections[sectionId] || {};
+    this._sections[sectionId][viewId] = this._sections[sectionId][viewId] || [];
+
+    this._sections[sectionId][viewId].push( new feng.models.achievements.Tip( tipId, viewId, sectionId ).require( requireId )  );
+
+  }, this);
+};
 
 
 feng.models.achievements.Achievements.prototype.getTip = function(tipId, viewId, sectionId) {

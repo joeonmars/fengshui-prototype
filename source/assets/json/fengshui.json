@@ -261,17 +261,6 @@
 			"chapter": "loremipsum"
 		},
 		{
-			"id": "drawer",
-			"section": "townhouse",
-			"view": "livingroom",
-			"interaction": "put",
-			"unlocked": false,
-			"mandatory": true,
-			"require": "cookingutensils",
-			"problem": "Lorem Ipsum?",
-			"chapter": "loremipsum"
-		},
-		{
 			"id": "centerofstairs",
 			"section": "townhouse",
 			"view": "livingroom",

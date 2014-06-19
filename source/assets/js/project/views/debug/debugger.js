@@ -36,18 +36,27 @@ feng.views.debug.Debugger = function(){
 	if(feng.views.debug.Debugger.Options.PATHFINDING) {
 		this.pathfindingView = new feng.views.debug.Pathfinding();
 	}
-	if(feng.views.debug.Debugger.Options.ACHIEVEMENTS) {
-		this.achievementsView = new feng.views.debug.Achievements();
-	}
 	if(feng.views.debug.Debugger.Options.PATH_TRACK) {
 		this.pathTrackView = new feng.views.debug.PathTrack();
 	}
+
+	feng.pubsub.subscribeOnce( feng.PubSub.Topic.MAIN_LOAD_COMPLETE, this.init, this );
 
 	//
 	this.hide();
 };
 goog.inherits(feng.views.debug.Debugger, goog.events.EventTarget);
 goog.addSingletonGetter(feng.views.debug.Debugger);
+
+
+feng.views.debug.Debugger.prototype.init = function( globalAssets ) {
+	
+	var tipsData = globalAssets['fengshui-data']['tips'];
+
+	if(feng.views.debug.Debugger.Options.ACHIEVEMENTS) {
+		this.achievementsView = new feng.views.debug.Achievements( tipsData );
+	}
+};
 
 
 feng.views.debug.Debugger.prototype.show = function() {

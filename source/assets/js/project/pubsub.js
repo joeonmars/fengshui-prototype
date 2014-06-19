@@ -17,5 +17,6 @@ feng.PubSub.Topic = {
 	HIDE_VIEW3D: 'hide_view3d',
 	NAVIGATE: 'navigate',
 	SOUND_ON: 'sound_on',
-	SOUND_OFF: 'sound_off'
+	SOUND_OFF: 'sound_off',
+	MAIN_LOAD_COMPLETE: 'main_load_complete'
 };

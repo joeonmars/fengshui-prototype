@@ -9,14 +9,14 @@ goog.require('feng.models.achievements.Achievements');
 /**
  * @constructor
  */
-feng.views.debug.Achievements = function(){
+feng.views.debug.Achievements = function( tipsData ){
 
   this._achievementsModel = feng.models.achievements.Achievements.getInstance();
 
   var tips = this._achievementsModel.getAllTips();
 
   var templateData = {
-    tips: tips
+    tips: tipsData
   };
 
   goog.base(this, feng.templates.debug.AchievementsDebugView, templateData);

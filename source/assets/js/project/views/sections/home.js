@@ -5,6 +5,7 @@ goog.require('goog.dom.query');
 goog.require('goog.events.EventTarget');
 goog.require('feng.events');
 goog.require('feng.views.sections.Section');
+goog.require('feng.models.achievements.Achievements');
 
 
 /**
@@ -55,6 +56,15 @@ feng.views.sections.Home.prototype.onLoadProgress = function(e){
 
 feng.views.sections.Home.prototype.onLoadComplete = function(e){
 
+	// init modules reply on fengshui data
+	var globalAssets = e.target.model.getAsset('global');
+	var fsData = globalAssets['fengshui-data'];
+	var tipsData = fsData['tips'];
+
+	var achievements = feng.models.achievements.Achievements.getInstance();
+	achievements.init( tipsData );
+
+	feng.pubsub.publish( feng.PubSub.Topic.MAIN_LOAD_COMPLETE, globalAssets );
 };
 
 

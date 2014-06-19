@@ -105,12 +105,12 @@
 			<div class="tipsPanel">
 				<ul class="tips">
 					{foreach $tip in $tips}
-						<li data-tip-id="{ $tip.id }" data-view-id="{ $tip.viewId }" data-section-id="{ $tip.sectionId }">
+						<li data-tip-id="{ $tip.id }" data-view-id="{ $tip.view }" data-section-id="{ $tip.section }">
 							<div class="icon"></div>
 							<div class="caption">
 								<p>{ $tip.id }</p>
-								<p>{ $tip.viewId }</p>
-								<p>{ $tip.sectionId }</p>
+								<p>{ $tip.view }</p>
+								<p>{ $tip.section }</p>
 							</div>
 						</li>
 					{/foreach}

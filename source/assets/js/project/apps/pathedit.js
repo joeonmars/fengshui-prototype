@@ -22,7 +22,7 @@ feng.apps.PathEdit = function() {
 	this._preloader = new feng.views.Preloader(null, 250);
 
 	this._sceneKeys = [
-		'studio.interior1',
+		'studio.livingroom',
 		'studio.interior2',
 		'studio.bathroom'
 	];
