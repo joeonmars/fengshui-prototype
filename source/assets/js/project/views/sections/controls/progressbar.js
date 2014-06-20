@@ -31,7 +31,7 @@ feng.views.sections.controls.ProgressBar = function(domElement){
 
   // create sine waves on canvas
   var numWaves = this._tipEls.length - 1;
-  this._canvasWidth = 85 * numWaves;
+  this._canvasWidth = 75 * numWaves;
   this._canvasHeight = 30;
 
   var numWavePoints = 20;

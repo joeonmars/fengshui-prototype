@@ -17,10 +17,155 @@
 		margin-top: 15px;
 
 		>.button{
-			width: 32px;
-			height: 32px;
-			@include border-radius(50%);
-			border: 1px solid #000;
+			position: relative;
+			@include retina-ui("circle-small");
+			@include single-transition(opacity, .25s);
+			opacity: .67;
+
+			&:hover{
+				opacity: 1;
+
+				>.fill{
+					opacity: 1;
+				}
+
+				>.icon{
+					>div{
+						&:first-child{
+							opacity: 1;
+						}
+					}
+				}
+			}
+
+			>.fill{
+				@include absoluteTopLeft;
+				width: 26px;
+				height: 26px;
+				background-color: #3F3342;
+				@include border-radius(50%);
+				@include single-transition(opacity, .2s);
+				opacity: 0;
+			}
+
+			>.icon{
+				position: relative;
+
+				>div{
+					@include absoluteTopLeft;
+					@include single-transition(opacity, .2s);
+
+					&:first-child{
+						opacity: 0;
+					}
+				}
+			}
+		}
+
+		&.howtoplay{
+			.icon{
+				>div{
+					@include retina-icon("howtoplay");
+
+					&:first-child{
+						@include retina-icon("howtoplay-hover");
+						z-index: 1;
+					}
+				}
+			}
+		}
+
+		&.fullscreen{
+			.icon{
+				>div{
+					@include retina-icon("fullscreenin");
+
+					&:first-child{
+						@include retina-icon("fullscreenin-hover");
+						z-index: 1;
+					}
+				}
+			}
+		}
+
+		&.sound{
+			.icon{
+				>div{
+					@include retina-icon("soundoff");
+
+					&:first-child{
+						@include retina-icon("soundoff-hover");
+						z-index: 1;
+					}
+				}
+			}
+		}
+
+		&.share{
+			position: relative;
+
+			>.button{
+				z-index: 1;
+			}
+
+			.icon{
+				
+				>div{
+					@include retina-icon("social");
+
+					&:first-child{
+						@include retina-icon("social-hover");
+						z-index: 1;
+					}
+				}
+			}
+
+			>.slider{
+				position: absolute;
+				top: 0;
+				left: 13px;
+				width: 110px;
+				white-space: nowrap;
+				overflow: hidden;
+
+				&:after{
+					content: '';
+					display: inline-block;
+					vertical-align: top;
+					@include retina-ui("social-slider-end");
+				}
+
+				>.buttons{
+					display: inline-block;
+					vertical-align: top;
+					width: 80px !important;
+					padding-left: 15px;
+					@include retina-ui("social-slider-fill");
+
+					>a{
+						display: inline-block;
+						vertical-align: middle;
+						margin: 5px;
+						@include single-transition(opacity, .25s);
+
+						&:hover{
+							opacity: .6;
+						}
+
+						&.facebook{
+							@include retina-icon("facebook");
+						}
+
+						&.twitter{
+							@include retina-icon("twitter");
+						}
+
+						&.google{
+							@include retina-icon("google");
+						}
+					}
+				}
+			}
 		}
 	}
 }
