@@ -11,7 +11,7 @@ feng.fx.PathTrack = function(controlPoints, offset, isClosed, color){
   goog.base(this);
 
   this.controlPoints = null;
-  this._isClosed = false;
+  this.isClosed = false;
   this.spline = null;
 
   this.tubeGeometry = null;
@@ -30,6 +30,9 @@ feng.fx.PathTrack = function(controlPoints, offset, isClosed, color){
   this._up = new THREE.Vector3(0, 1, 0);
   this._offset = 0;
 
+  this._debugObject = new THREE.Object3D();
+  this.add( this._debugObject );
+
   this.create( controlPoints, offset, isClosed, color );
 };
 goog.inherits(feng.fx.PathTrack, THREE.Object3D);
@@ -38,8 +41,8 @@ goog.inherits(feng.fx.PathTrack, THREE.Object3D);
 feng.fx.PathTrack.prototype.create = function(controlPoints, offset, isClosed, color){
 
   this.controlPoints = controlPoints;
-  this._isClosed = isClosed;
-  this.spline = !this._isClosed ? new THREE.SplineCurve3(controlPoints) : new THREE.ClosedSplineCurve3(controlPoints);
+  this.isClosed = isClosed;
+  this.spline = !this.isClosed ? new THREE.SplineCurve3(controlPoints) : new THREE.ClosedSplineCurve3(controlPoints);
 
   this._material.color = color || '#000000';
 
@@ -53,7 +56,7 @@ feng.fx.PathTrack.prototype.getControlMeshes = function(){
 
 	var meshes = [];
 
-	goog.array.forEach(this.children, function(child) {
+	goog.array.forEach(this._debugObject.children, function(child) {
 		if(child.geometry instanceof THREE.BoxGeometry) {
 			meshes.push(child);
 		}
@@ -178,18 +181,18 @@ feng.fx.PathTrack.prototype.updateTrack = function(){
 
 	this.spline.updateArcLengths();
 
-	// remove children
-	goog.array.forEachRight(this.children, function(child) {
-		this.remove(child);
+	// remove debug object children
+	goog.array.forEachRight(this._debugObject.children, function(child) {
+		this._debugObject.remove(child);
 	}, this);
 
 	// create new segments
 	var segmentLength = 10;
 	this.segments = Math.floor(this.spline.getLength() / segmentLength);
 
-  this.tubeGeometry = new THREE.TubeGeometry(this.spline, this.segments, .5, 4, this._isClosed);
+  this.tubeGeometry = new THREE.TubeGeometry(this.spline, this.segments, .5, 4, this.isClosed);
   var tubeMesh = new THREE.Mesh( this.tubeGeometry, this._material );
-  this.add(tubeMesh);
+  this._debugObject.add(tubeMesh);
 
   // create cubes for dragging
   goog.array.forEach(this.controlPoints, function(coordinate, index) {
@@ -202,6 +205,6 @@ feng.fx.PathTrack.prototype.updateTrack = function(){
     cube.name = 'cube'+index;
     cube.userData.id = index;
     cube.position = coordinate;
-    this.add(cube);
+    this._debugObject.add(cube);
   }, this);
 };

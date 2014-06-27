@@ -10,7 +10,9 @@ goog.require('feng.fx.PathTrack');
 goog.require('feng.models.Preload');
 goog.require('feng.views.Preloader');
 goog.require('feng.views.View3D');
+goog.require('feng.views.book.Hanzi');
 goog.require('feng.views.debug.Debugger');
+goog.require('feng.PubSub');
 
 
 feng.apps.PathEdit = function() {
@@ -19,12 +21,22 @@ feng.apps.PathEdit = function() {
 
 	goog.fx.anim.setAnimationWindow(window);
 
+	feng.pubsub = feng.PubSub.getInstance();
+
 	this._preloader = new feng.views.Preloader(null, 250);
 
 	this._sceneKeys = [
 		'studio.livingroom',
 		'studio.interior2',
 		'studio.bathroom'
+	];
+
+	this._hanziKeys = [
+		'global.hanzi.chi',
+		'global.hanzi.ji',
+		'global.hanzi.sha',
+		'global.hanzi.wuxing',
+		'global.hanzi.yinyang'
 	];
 
 	this._scene = null;
@@ -93,12 +105,16 @@ feng.apps.PathEdit.prototype.init = function() {
 	this._controls.noZoom = true;
 	this._controls.noKeys = true;
 
-	this._preloader.load( this._sceneKeys );
+	var assetKeys = [];
+	goog.array.extend(assetKeys, this._sceneKeys, this._hanziKeys);
+
+	this._preloader.load( assetKeys );
 	goog.events.listenOnce(this._preloader, feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this);
 };
 
 
 feng.apps.PathEdit.prototype.getDefaultPathTrack = function() {
+
 	var pathTrack = goog.array.find(this._scene.children, function(child) {
   	return (child instanceof feng.fx.PathTrack);
   });
@@ -109,7 +125,8 @@ feng.apps.PathEdit.prototype.getDefaultPathTrack = function() {
 
 feng.apps.PathEdit.prototype.highlightControl = function() {
 
-	this._pathTrack.getObjectByName('cube'+goog.array.indexOf(this._pathTrack.controlPoints, this._controlPoint)).material.opacity = 1;
+	var cubeName = 'cube' + goog.array.indexOf(this._pathTrack.controlPoints, this._controlPoint);
+	this._pathTrack.getObjectByName(cubeName, true).material.opacity = 1;
 };
 
 
@@ -117,10 +134,14 @@ feng.apps.PathEdit.prototype.showObjects = function(shouldShow) {
 
 	this._isObjectsShown = shouldShow;
 
-	goog.array.forEach(this._scene.children, function(child) {
+	this._scene.traverse(function(child) {
 		if(!(child instanceof feng.fx.PathTrack)) {
 			child.visible = shouldShow;
 		}
+	});
+
+	this._pathTrack.traverse(function(child) {
+		child.visible = true;
 	});
 };
 
@@ -143,7 +164,7 @@ feng.apps.PathEdit.prototype.render = function() {
 
 feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 
-	this._scenes = goog.array.map(this._sceneKeys, function(sceneKey) {
+	var view3dScenes = goog.array.map(this._sceneKeys, function(sceneKey) {
 
 		var preloadModel = feng.models.Preload.getInstance();
 
@@ -162,11 +183,28 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 			new THREE.Vector3(-30, 50, -50),
 			new THREE.Vector3(-100, 50, -200)
 		];
-		var pathTrack = new feng.fx.EnergyFlow(coordinates);
+		var pathTrack = new feng.fx.EnergyFlow(coordinates, true);pathTrack.activate();
 		scene.add( pathTrack );
 
 		return scene;
 	}, this);
+
+	var hanziScenes = goog.array.map(['chi', 'ji', 'sha', 'wuxing', 'yinyang'], function(id) {
+
+		var scene = feng.views.book.Hanzi.constructScene(id).scene;
+
+		var coordinates = [
+			new THREE.Vector3(100, 40, 0),
+			new THREE.Vector3(-30, 50, -50),
+			new THREE.Vector3(-100, 50, -200)
+		];
+		var pathTrack = new feng.fx.EnergyFlow(coordinates, true);pathTrack.activate();
+		scene.add( pathTrack );
+
+		return scene;
+	});
+
+	goog.array.extend( this._scenes, view3dScenes, hanziScenes );
 
 	this._scene = this._scenes[0];
 	this._scene.add( this._editCamera );
@@ -291,8 +329,6 @@ feng.apps.PathEdit.prototype.onProgress = function(e) {
 
 	this._motionCamera.position.copy( pathCamera.position );
 	this._motionCamera.rotation.copy( pathCamera.rotation );
-
-	console.log( this._pathTrack.getTipIdsAndWeightOfProgress( e.progress ) );
 };
 
 
@@ -376,7 +412,7 @@ feng.apps.PathEdit.prototype.onMouseDown = function(e) {
   	if(intersect.object instanceof THREE.Mesh) {
 
   		this._intersect = intersect;
-  		this._pathTrack = this._intersect.object.parent;
+  		this._pathTrack = this._intersect.object.parent.parent;
 	  	this._controlPoint = this._intersect.object.position;
 
 	    this._offset.copy( this._intersect.point ).sub( this._controlPoint );

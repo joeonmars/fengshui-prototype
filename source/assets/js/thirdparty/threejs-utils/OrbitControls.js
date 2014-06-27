@@ -310,7 +310,6 @@ THREE.OrbitControls = function ( object, domElement ) {
 	function onMouseDown( event ) {
 
 		if ( scope.enabled === false ) return;
-		event.preventDefault();
 
 		if ( event.button === 0 ) {
 			if ( scope.noRotate === true ) return;

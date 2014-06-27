@@ -59,14 +59,6 @@ feng.views.sections.controls.Manipulator.prototype.activate = function( interact
 };
 
 
-feng.views.sections.controls.Manipulator.prototype.deactivate = function(){
-
-	goog.base(this, 'deactivate');
-
-  this._eventHandler.removeAll();
-};
-
-
 feng.views.sections.controls.Manipulator.prototype.update = function(x, y){
 
  	var domSize = goog.style.getSize(this.domElement);

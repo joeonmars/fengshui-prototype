@@ -14,7 +14,24 @@ feng.models.Preload = function(){
 			'fengshui-data': 'json/fengshui.json',
 			'circular-fill': 'images/circular-fill.png',
 			'cube-browse': 'images/cube-browse.png',
-			'cube-design': 'images/cube-design.png'
+			'cube-design': 'images/cube-design.png',
+			'hanzi': {
+				'chi': {
+					'scene': 'json/hanzi/chi.json'
+				},
+				'ji': {
+					'scene': 'json/hanzi/ji.json'
+				},
+				'sha': {
+					'scene': 'json/hanzi/sha.json'
+				},
+				'wuxing': {
+					'scene': 'json/hanzi/wuxing.json'
+				},
+				'yinyang': {
+					'scene': 'json/hanzi/yinyang.json'
+				}
+			}
 		},
 		'homepage': {
 
