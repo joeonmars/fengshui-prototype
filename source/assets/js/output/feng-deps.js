@@ -24,7 +24,7 @@ goog.addDependency('../../../../project/controllers/view3d/view3dcontroller.js',
 goog.addDependency('../../../../project/events/eventtype.js', ['feng.events'], []);
 goog.addDependency('../../../../project/feng.js', ['feng'], ['feng.apps.Demo', 'feng.apps.Main', 'feng.apps.PathEdit', 'feng.apps.Test', 'goog.Uri']);
 goog.addDependency('../../../../project/fx/animatedsprite.js', ['feng.fx.AnimatedSprite'], ['goog.math.Coordinate', 'goog.math.Size']);
-goog.addDependency('../../../../project/fx/enegyflow.js', ['feng.fx.EnergyFlow'], ['feng.fx.Leaf', 'feng.fx.PathTrack', 'feng.fx.Trail']);
+goog.addDependency('../../../../project/fx/energyflow.js', ['feng.fx.EnergyFlow'], ['feng.fx.Leaf', 'feng.fx.PathTrack', 'feng.fx.Trail']);
 goog.addDependency('../../../../project/fx/floattext.js', ['feng.fx.FloatText'], ['feng.templates.captions', 'goog.events.EventTarget', 'goog.string']);
 goog.addDependency('../../../../project/fx/leaf.js', ['feng.fx.Leaf'], ['feng.fx.Particle', 'goog.math']);
 goog.addDependency('../../../../project/fx/particle.js', ['feng.fx.Particle'], ['goog.math']);

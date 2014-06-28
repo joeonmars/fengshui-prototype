@@ -19,14 +19,11 @@ feng.fx.EnergyFlow = function(controlPoints, isClosed){
 
 	this._particles = [];
 
-	this._animTarget = new goog.events.EventTarget;
-	this._animTarget.onAnimationFrame = goog.bind(this.onAnimationFrame, this);
-
 	//
 	var offset = 0;
 	var color = '#48D1CC';
 
-  goog.base(this, controlPoints, offset, isClosed, color);
+	goog.base(this, controlPoints, offset, isClosed, color);
 };
 goog.inherits(feng.fx.EnergyFlow, feng.fx.PathTrack);
 
@@ -54,13 +51,13 @@ feng.fx.EnergyFlow.prototype.create = function(controlPoints, offset, isClosed, 
 
 feng.fx.EnergyFlow.prototype.activate = function(){
 
-	goog.fx.anim.registerAnimation( this._animTarget );
+	goog.fx.anim.registerAnimation( this );
 };
 
 
 feng.fx.EnergyFlow.prototype.deactivate = function(){
 
-	goog.fx.anim.unregisterAnimation( this._animTarget );
+	goog.fx.anim.unregisterAnimation( this );
 };
 
 

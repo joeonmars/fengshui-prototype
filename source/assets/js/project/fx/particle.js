@@ -11,7 +11,7 @@ feng.fx.Particle = function(timeOffset, pathTrack){
 	this._spline = pathTrack.spline;
 	this._isClosed = pathTrack.isClosed;
 
-	var radius = 50;
+	var radius = 20;
 	var offsetX = Math.round( goog.math.uniformRandom(-radius, radius) );
 	var offsetY = Math.round( goog.math.uniformRandom(-radius, radius) );
 	var offsetZ = Math.round( goog.math.uniformRandom(-radius, radius) );

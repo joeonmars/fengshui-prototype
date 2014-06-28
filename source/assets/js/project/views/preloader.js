@@ -18,6 +18,7 @@ feng.views.Preloader = function(domElement, duration){
   this._domElement = domElement;
 
   this._loader = new createjs.LoadQueue(true, feng.Config['assetsPath']);
+  createjs.LoadQueue.loadTimeout = 100000;
 
   var fps = 30;
   this._ticker = new goog.Timer(1000/fps);
@@ -90,7 +91,7 @@ feng.views.Preloader.prototype.onFileLoad = function(e){
 
 feng.views.Preloader.prototype.onComplete = function(e){
 
-	if(this._progress < 1) {
+	if(this._loader.loaded && this._loader.hasEventListener("complete")) {
 
 		console.log('preloader files load complete');
 
@@ -99,8 +100,9 @@ feng.views.Preloader.prototype.onComplete = function(e){
 		this.dispatchEvent({
 			type: feng.events.EventType.LOAD_COMPLETE
 		});
+	}
 
-	}else {
+	if(!this.isCompleted && this._progress === 1) {
 
 		console.log('preloader animation progress complete');
 
@@ -111,7 +113,6 @@ feng.views.Preloader.prototype.onComplete = function(e){
 		this.dispatchEvent({
 			type: feng.events.EventType.COMPLETE
 		});
-
 	}
 };
 
