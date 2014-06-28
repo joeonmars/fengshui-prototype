@@ -8,10 +8,12 @@ goog.require('feng.fx.Leaf');
 /**
  * @constructor
  */
-feng.fx.EnergyFlow = function(controlPoints, isClosed){
+feng.fx.EnergyFlow = function(controlPoints, isClosed, preset){
+
+	this._preset = preset || feng.fx.EnergyFlow.Preset.DEFAULT;
 
 	this._start = 0;
-	this._duration = 20000;
+	this._duration = this._preset.duration;
 	this._particles = [];
 	this._numTrails = 100;
 	this._numLeaves = 20;
@@ -21,7 +23,7 @@ feng.fx.EnergyFlow = function(controlPoints, isClosed){
 
 	//
 	var offset = 0;
-	var color = '#48D1CC';
+	var color = '#000000';
 
 	goog.base(this, controlPoints, offset, isClosed, color);
 };
@@ -39,7 +41,21 @@ feng.fx.EnergyFlow.prototype.create = function(controlPoints, offset, isClosed, 
 		var isLeaf = (i % (this._numParticles / this._numLeaves) === 0);
 		var timeOffset = i / this._numParticles;
 
-		var particle = (isLeaf ? new feng.fx.Leaf(timeOffset, this) : new feng.fx.Trail(timeOffset, this));
+		var particle = isLeaf ? new feng.fx.Leaf(
+			timeOffset,
+			this._preset.leaf,
+			this._preset.jiggleFrequency,
+			this._preset.maxJiggleAmount,
+			this)
+		:
+		new feng.fx.Trail(
+			timeOffset,
+			this._preset.color,
+			this._preset.length,
+			this._preset.jiggleFrequency,
+			this._preset.maxJiggleAmount,
+			this);
+
 		particle.setPosition( particle.getPosition() );
 
 		this.add( particle.object3d );
@@ -71,5 +87,49 @@ feng.fx.EnergyFlow.prototype.onAnimationFrame = function( now ){
 	var i, l = this._numParticles;
 	for(i = 0; i < l; i++) {
 		this._particles[i].update( u );
+	}
+};
+
+
+feng.fx.EnergyFlow.Preset = {
+	DEFAULT: {
+		leaf: null,
+		color: '#48D1CC',
+		duration: 20000,
+		length: 80,
+		jiggleFrequency: 2,
+		maxJiggleAmount: 4 
+	},
+	JI: {
+		leaf: 'ji',
+		color: '#25DDFF',
+		duration: 20000,
+		length: 80,
+		jiggleFrequency: 2,
+		maxJiggleAmount: 4 
+	},
+	SHA: {
+		leaf: 'sha',
+		color: '#E49230',
+		duration: 8000,
+		length: 20,
+		jiggleFrequency: 2,
+		maxJiggleAmount: 4 
+	},
+	YIN: {
+		leaf: 'yin',
+		color: '#00B936',
+		duration: 20000,
+		length: 60,
+		jiggleFrequency: 2,
+		maxJiggleAmount: 4 
+	},
+	YANG: {
+		leaf: 'yang',
+		color: '#EF3B00',
+		duration: 20000,
+		length: 60,
+		jiggleFrequency: 2,
+		maxJiggleAmount: 4 
 	}
 };

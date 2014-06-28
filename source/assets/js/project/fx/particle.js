@@ -6,12 +6,12 @@ goog.require('goog.math');
 /**
  * @constructor
  */
-feng.fx.Particle = function(timeOffset, pathTrack){
+feng.fx.Particle = function(timeOffset, jiggleFrequency, maxJiggleAmount, pathTrack){
 
 	this._spline = pathTrack.spline;
 	this._isClosed = pathTrack.isClosed;
 
-	var radius = 20;
+	var radius = 30;
 	var offsetX = Math.round( goog.math.uniformRandom(-radius, radius) );
 	var offsetY = Math.round( goog.math.uniformRandom(-radius, radius) );
 	var offsetZ = Math.round( goog.math.uniformRandom(-radius, radius) );
@@ -23,8 +23,8 @@ feng.fx.Particle = function(timeOffset, pathTrack){
 	this._lastTime = 0;
 
 	this._jiggle = new THREE.Vector3();
-	this._jiggleFrequency = 4;
-	this._maxJiggleAmount = 10;
+	this._jiggleFrequency = jiggleFrequency || 2;
+	this._maxJiggleAmount = maxJiggleAmount || 4;
 	
 	this._position = new THREE.Vector3();
 

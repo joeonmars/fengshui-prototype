@@ -80,7 +80,7 @@ feng.apps.PathEdit.prototype.init = function() {
 		canvas: canvas,
 		antialias: true
 	});
-	this._renderer.setClearColor(0xffffff, 1);
+	this._renderer.setClearColor(0xFFFDF1, 1);
 	this._renderer.setSize( window.innerWidth, window.innerHeight );
 
 	this._editCamera = new THREE.CombinedCamera( window.innerWidth, window.innerHeight, 45, 1, 10000, 1, 10000 );
@@ -106,7 +106,7 @@ feng.apps.PathEdit.prototype.init = function() {
 	this._controls.noKeys = true;
 
 	var assetKeys = [];
-	goog.array.extend(assetKeys, this._sceneKeys, this._hanziKeys);
+	goog.array.extend(assetKeys, this._sceneKeys, this._hanziKeys, 'global');
 
 	this._preloader.load( assetKeys );
 	goog.events.listenOnce(this._preloader, feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this);
@@ -183,7 +183,10 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 			new THREE.Vector3(-30, 50, -50),
 			new THREE.Vector3(-100, 50, -200)
 		];
-		var pathTrack = new feng.fx.EnergyFlow(coordinates, true);pathTrack.activate();
+
+		var pathTrack = new feng.fx.EnergyFlow(coordinates, true, feng.fx.EnergyFlow.Preset.JI);
+		pathTrack.activate();
+
 		scene.add( pathTrack );
 
 		return scene;
@@ -198,7 +201,10 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 			new THREE.Vector3(-30, 50, -50),
 			new THREE.Vector3(-100, 50, -200)
 		];
-		var pathTrack = new feng.fx.EnergyFlow(coordinates, true);pathTrack.activate();
+
+		var pathTrack = new feng.fx.EnergyFlow(coordinates, true, feng.fx.EnergyFlow.Preset.JI);
+		pathTrack.activate();
+
 		scene.add( pathTrack );
 
 		return scene;

@@ -15,6 +15,12 @@ feng.models.Preload = function(){
 			'circular-fill': 'images/circular-fill.png',
 			'cube-browse': 'images/cube-browse.png',
 			'cube-design': 'images/cube-design.png',
+			'leaf': {
+				'ji': 'images/texture/leaf/ji.png',
+				'sha': 'images/texture/leaf/sha.png',
+				'yin': 'images/texture/leaf/yin.png',
+				'yang': 'images/texture/leaf/yang.png'
+			},
 			'hanzi': {
 				'chi': {
 					'scene': 'json/hanzi/chi.json'

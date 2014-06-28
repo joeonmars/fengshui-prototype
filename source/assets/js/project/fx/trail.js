@@ -7,13 +7,15 @@ goog.require('feng.fx.Particle');
 /**
  * @constructor
  */
-feng.fx.Trail = function(timeOffset, pathTrack){
+feng.fx.Trail = function(timeOffset, color, length, jiggleFrequency, maxJiggleAmount, pathTrack){
 
-	this._numLineVertices = 40 + Math.round(Math.random()*40);
+	this._numLineVertices = length + Math.round(Math.random()*length);
 	this._geometry = new THREE.Geometry();
 
+	this._hsl = new THREE.Color( color ).getHSL();
+
 	//
-	goog.base(this, timeOffset, pathTrack);
+	goog.base(this, timeOffset, jiggleFrequency, maxJiggleAmount, pathTrack);
 };
 goog.inherits(feng.fx.Trail, feng.fx.Particle);
 
@@ -21,13 +23,13 @@ goog.inherits(feng.fx.Trail, feng.fx.Particle);
 feng.fx.Trail.prototype.create = function() {
 
 	var color = new THREE.Color();
-	var h = goog.math.uniformRandom(.55, .6);//Math.random() * 1;
+	var h = goog.math.uniformRandom(this._hsl.h - .02, this._hsl.h + .02);
 
 	for( var i = 0; i < this._numLineVertices; i++ ) {
 
 		this._geometry.vertices.push( i === 0 ? this._position : new THREE.Vector3() );
 		var ratio = i / (this._numLineVertices - 1);
-		var s = .5;
+		var s = this._hsl.s;
 		var l = Math.sin( ratio * Math.PI ) * .1;
 		color.setHSL(h, s, l);
 		this._geometry.colors.push( color.clone() );
