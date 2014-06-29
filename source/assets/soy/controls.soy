@@ -2,19 +2,84 @@
 
 
 /**
+ * Round Button
+ * @param? content content HTML
+ */
+{template .RoundButton}
+<div class="roundButton">
+	<div class="outline"></div>
+	<div class="circle">
+		{if $content}{ $content }{/if}
+	</div>
+</div>
+{/template}
+
+
+
+/**
  * Scene Compass
  */
 {template .Compass}
 <div class="compass grab">
-	<div class="circle">
-		<div class="outline"></div>
-		<div class="solid"></div>
-	</div>
-	<div class="cube">
-		<div>
-			<div class="browse"></div>
-			<div class="design"></div>
+	{call .RoundButton}
+	{param content}
+		<div class="cube">
+			<div>
+				<div class="browse"></div>
+				<div class="design"></div>
+			</div>
 		</div>
+	{/param}
+	{/call}
+</div>
+{/template}
+
+
+/**
+ * Reminder
+ * @param tips the tips holding reminders
+ */
+{template .Reminder}
+<div class="reminder">
+
+	<div class="avatar">
+		{call .RoundButton}{/call}
+	</div>
+
+	<div class="dialogue hint">
+		<div class="left">
+			<button></button>
+		</div>
+		<div class="middle">
+			<ul class="title">
+			{foreach $tip in $tips}
+				<li data-tip-id="{ $tip.id }">from { $tip.people }</li>
+			{/foreach}
+			</ul>
+
+			<ul class="paragraph">
+			{foreach $tip in $tips}
+				<li data-tip-id="{ $tip.id }">{ $tip.reminder }</li>
+			{/foreach}
+			</ul>
+		</div>
+		<div class="right">
+			<button></button>
+		</div>
+	</div>
+
+	<div class="dialogue response">
+		<ul class="title">
+		{foreach $tip in $tips}
+			<li data-tip-id="{ $tip.id }">appreciation from { $tip.people }</li>
+		{/foreach}
+		</ul>
+
+		<ul class="paragraph">
+		{foreach $tip in $tips}
+			<li data-tip-id="{ $tip.id }">{ $tip.response }</li>
+		{/foreach}
+		</ul>
 	</div>
 </div>
 {/template}
@@ -73,7 +138,7 @@
 		</div>
 		<ul class="tips">
 			{foreach $tip in $tips}
-				<li class="tip" data-tip-id="{ $tip.id }" data-view-id="{ $tip.viewId }" data-section-id="{ $tip.sectionId }">
+				<li class="tip" data-tip-id="{ $tip.id }">
 					<div class="outline"></div>
 					<div class="dot"></div>
 				</li>

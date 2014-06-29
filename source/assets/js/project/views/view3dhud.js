@@ -6,6 +6,7 @@ goog.require('feng.views.sections.controls.ObjectSelector');
 goog.require('feng.views.View3DCaption');
 goog.require('feng.views.sections.captions.AdviceCaption');
 goog.require('feng.views.sections.controls.Compass');
+goog.require('feng.views.sections.controls.Reminder');
 goog.require('feng.views.sections.controls.ProgressBar');
 goog.require('feng.views.sections.captions.ChangeColorCaption');
 goog.require('feng.views.sections.captions.ChangeObjectCaption');
@@ -15,7 +16,7 @@ goog.require('feng.views.sections.captions.ChangePictureCaption');
 /**
  * @constructor
  */
-feng.views.View3DHud = function( hudEl, view3dController ){
+feng.views.View3DHud = function( hudEl, view3dController, tips ){
 
   goog.base(this);
 
@@ -32,8 +33,12 @@ feng.views.View3DHud = function( hudEl, view3dController ){
   this.compass = new feng.views.sections.controls.Compass( compassEl );
   this.compass.setParentEventTarget( this );
 
+  var reminderEl = goog.dom.getElementByClass('reminder', this.domElement);
+  this.reminder = new feng.views.sections.controls.Reminder( reminderEl, tips );
+  this.reminder.setParentEventTarget( this );
+
   var progressBarEl = goog.dom.getElementByClass('progressBar', this.domElement);
-  this.progressBar = new feng.views.sections.controls.ProgressBar( progressBarEl );
+  this.progressBar = new feng.views.sections.controls.ProgressBar( progressBarEl, tips );
   this.progressBar.setParentEventTarget( this );
 
   var objectBoxEl = goog.dom.getElementByClass('objectBox', this.domElement);
@@ -65,6 +70,7 @@ feng.views.View3DHud.prototype.activate = function() {
   this._eventHandler.listen(this._view3dController, feng.events.EventType.SHOW, this.onShowView3D, false, this);
 
   this.compass.activate();
+  this.reminder.activate();
   this.progressBar.activate();
 };
 
@@ -74,6 +80,7 @@ feng.views.View3DHud.prototype.deactivate = function() {
   this._eventHandler.removeAll();
 
   this.compass.deactivate();
+  this.reminder.deactivate();
   this.progressBar.deactivate();
 };
 

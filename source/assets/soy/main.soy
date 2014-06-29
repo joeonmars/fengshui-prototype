@@ -13,6 +13,9 @@
 	<div class="hud">
 		<div class="controls">
 			{call feng.templates.controls.Compass}{/call}
+			{call feng.templates.controls.Reminder}
+				{param tips: $tips /}
+			{/call}
 			{call feng.templates.controls.ObjectSelector}{/call}
 			{call feng.templates.controls.ObjectBox}{/call}
 			{call feng.templates.controls.Manipulator}{/call}

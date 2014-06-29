@@ -26,7 +26,8 @@ feng.views.sections.Episode = function(template, templateData){
   this._view3dController = new feng.controllers.view3d.View3DController;
 
   var hudEl = goog.dom.getElementByClass('hud', this.domElement);
-  this._hud = new feng.views.View3DHud( hudEl, this._view3dController );
+  var tips = templateData.tips;
+  this._hud = new feng.views.View3DHud( hudEl, this._view3dController, tips );
 
   this._viewIds = [];
   this._view3ds = [];

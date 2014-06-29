@@ -13,6 +13,7 @@ feng.fx.EnergyFlow = function(controlPoints, isClosed, preset){
 	this._preset = preset || feng.fx.EnergyFlow.Preset.DEFAULT;
 
 	this._start = 0;
+	this._timeDiff = 0;
 	this._duration = this._preset.duration;
 	this._particles = [];
 	this._numTrails = 100;
@@ -68,26 +69,58 @@ feng.fx.EnergyFlow.prototype.create = function(controlPoints, offset, isClosed, 
 feng.fx.EnergyFlow.prototype.activate = function(){
 
 	goog.fx.anim.registerAnimation( this );
+
+	this._start = goog.now();
+
+	// update particles
+	var i, l = this._numParticles;
+	for(i = 0; i < l; i++) {
+		var particle = this._particles[i];
+		particle.update( 0 );
+		particle.setPosition( particle.getPosition() );
+	}
+
+	goog.events.listen(window, 'focus', this.onWindowFocus, false, this);
+	goog.events.listen(window, 'blur', this.onWindowBlur, false, this);
 };
 
 
 feng.fx.EnergyFlow.prototype.deactivate = function(){
 
 	goog.fx.anim.unregisterAnimation( this );
+
+	goog.events.unlisten(window, 'focus', this.onWindowFocus, false, this);
+	goog.events.unlisten(window, 'blur', this.onWindowBlur, false, this);
 };
 
 
 feng.fx.EnergyFlow.prototype.onAnimationFrame = function( now ){
 
 	// calculate u
-	var now = (goog.now() - this._start);
-	var u = ( now % this._duration ) / this._duration;
+	var diff = goog.now() - this._start;
+	var u = ( diff % this._duration ) / this._duration;
 
 	// update particles
 	var i, l = this._numParticles;
 	for(i = 0; i < l; i++) {
 		this._particles[i].update( u );
 	}
+};
+
+
+feng.fx.EnergyFlow.prototype.onWindowFocus = function( e ){
+
+	goog.fx.anim.registerAnimation( this );
+
+	this._start = goog.now() - this._timeDiff;
+};
+
+
+feng.fx.EnergyFlow.prototype.onWindowBlur = function( e ){
+
+	goog.fx.anim.unregisterAnimation( this );
+
+	this._timeDiff = goog.now() - this._start;
 };
 
 

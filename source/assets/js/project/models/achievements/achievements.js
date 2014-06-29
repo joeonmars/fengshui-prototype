@@ -25,16 +25,15 @@ feng.models.achievements.Achievements.prototype.init = function( tipsData ) {
 
   goog.array.forEach(tipsData, function(tipData) {
 
-    var tipId = tipData['id'];
     var viewId = tipData['view'];
     var sectionId = tipData['section'];
+    var tipId = tipData['id'];
     var requireId = tipData['require'];
-    var isMandatory = tipData['mandatory'];
 
     this._sections[sectionId] = this._sections[sectionId] || {};
     this._sections[sectionId][viewId] = this._sections[sectionId][viewId] || [];
 
-    var tip = new feng.models.achievements.Tip( tipId, viewId, sectionId, isMandatory ).require( requireId );
+    var tip = new feng.models.achievements.Tip( tipId, viewId, sectionId, tipData ).require( requireId );
     this._sections[sectionId][viewId].push( tip );
 
   }, this);

@@ -126,7 +126,7 @@ feng.views.sections.controls.Compass.prototype.onDrag = function(x, y){
 feng.views.sections.controls.Compass.prototype.onResize = function(e){
 
 	var viewportSize = goog.dom.getViewportSize();
-	goog.style.setPosition(this.domElement, viewportSize.width - 126 - 30, 30);
+	goog.style.setPosition(this.domElement, viewportSize.width - 120 - 30, 30);
 };
 
 

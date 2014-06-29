@@ -1,32 +1,22 @@
 goog.provide('feng.views.sections.controls.ProgressBar');
 
-goog.require('goog.events');
-goog.require('feng.models.achievements.Achievements');
 goog.require('feng.views.sections.controls.Controls');
 
 
 /**
  * @constructor
  */
-feng.views.sections.controls.ProgressBar = function(domElement){
+feng.views.sections.controls.ProgressBar = function(domElement, tips){
 
   goog.base(this, domElement);
 
   this._innerEl = goog.dom.query('.inner', this.domElement)[0];
   this._tipEls = goog.dom.query('.tips > li', this.domElement);
 
-  // fetch tip models
   this._tips = {};
   
-  var achievements = feng.models.achievements.Achievements.getInstance();
-
-  goog.array.forEach(this._tipEls, function(tipEl) {
-
-		var tipId = tipEl.getAttribute('data-tip-id');
-		var viewId = tipEl.getAttribute('data-view-id');
-		var sectionId = tipEl.getAttribute('data-section-id');
-		
-		this._tips[ tipId ] = achievements.getTip(tipId, viewId, sectionId);
+  goog.array.forEach(tips, function(tip) {
+		this._tips[ tip.id ] = tip;
   }, this);
 
   // create sine waves on canvas

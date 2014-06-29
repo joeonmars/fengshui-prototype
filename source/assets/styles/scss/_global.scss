@@ -15,6 +15,11 @@
 // --- Global vars ---
 $min_width: 1024px;
 $min_height: 640px;
+$green: #65BB99;
+$cream: #FFFDF1;
+$brown: #D9CBB5;
+$gray: #969696;
+
 
 html, body{
   position: absolute;
@@ -43,6 +48,20 @@ a{
   text-decoration: none;
 }
 
+button{
+  display: block;
+  border: none;
+  outline: none;
+  padding: 0;
+  background-color: transparent;
+  cursor: pointer;
+
+  &:active, &:focus{
+    outline: none;
+    border: none;
+  }
+}
+
 .grab {
   cursor: url(../cursor/openhand.cur) 4 4, move;
   cursor: -webkit-grab;
@@ -66,7 +85,7 @@ a{
 }
 
 .button{
-  @include user-select('none');
+  @include user-select(none);
   cursor: pointer;
   text-align: center;
 }
