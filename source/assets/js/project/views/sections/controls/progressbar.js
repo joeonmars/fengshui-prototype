@@ -119,6 +119,30 @@ feng.views.sections.controls.ProgressBar.prototype.onClickTip = function(e){
 };
 
 
+feng.views.sections.controls.ProgressBar.prototype.onModeChange = function(e){
+
+  goog.base(this, 'onModeChange', e);
+
+  switch(e.mode) {
+
+    case feng.controllers.view3d.ModeController.Mode.BROWSE:
+    case feng.controllers.view3d.ModeController.Mode.WALK:
+    if(!this._isActivated) {
+      goog.style.showElement(this.domElement, true);
+      this.activate();
+    }
+    break;
+
+    default:
+    if(this._isActivated) {
+      goog.style.showElement(this.domElement, false);
+      this.deactivate();
+    }
+    break;
+  }
+};
+
+
 feng.views.sections.controls.ProgressBar.prototype.onResize = function(e){
 
 	goog.base(this, 'onResize', e);

@@ -18,7 +18,6 @@ feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement,
 
   var manipulatorDom = goog.dom.getElementByClass('manipulator', uiElement);
   this._manipulator = new feng.views.sections.controls.Manipulator( manipulatorDom );
-  this._manipulator.setParentEventTarget( this );
 
   this._interactionResolver = feng.controllers.controls.InteractionResolver.getInstance();
 

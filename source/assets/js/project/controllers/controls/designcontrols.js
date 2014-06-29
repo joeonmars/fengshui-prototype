@@ -29,7 +29,6 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement, 
 
   var manipulatorDom = goog.dom.getElementByClass('manipulator', uiElement);
   this._manipulator = new feng.views.sections.controls.Manipulator( manipulatorDom );
-  this._manipulator.setParentEventTarget( this );
 
   var zoomSliderDom = goog.dom.createDom('div');
   this._zoomSlider = new feng.views.sections.controls.ZoomSlider( zoomSliderDom, this._view3d.domElement );

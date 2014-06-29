@@ -73,7 +73,7 @@ feng.views.sections.controls.Reminder.prototype.activate = function(){
 	this._eventHandler.listen(this._hintTimer, 'tick', this.onHintTick, false, this);
 
 	goog.array.forEach(this._tips, function(tip) {
-		this._eventHandler.listen(tip, feng.events.EventType.UNLOCK, this.onTipUnlock, false, this);
+		tip.listen(feng.events.EventType.UNLOCK, this.onTipUnlock, false, this);
 	}, this);
 
 	this._hintTimer.start();
@@ -358,6 +358,30 @@ feng.views.sections.controls.Reminder.prototype.onTipUnlock = function(e){
 	this.updateHints();
 
 	this.showResponse( tipId );
+};
+
+
+feng.views.sections.controls.Reminder.prototype.onModeChange = function(e){
+
+	goog.base(this, 'onModeChange', e);
+	
+	switch(e.mode) {
+
+		case feng.controllers.view3d.ModeController.Mode.BROWSE:
+		case feng.controllers.view3d.ModeController.Mode.WALK:
+		if(!this._isActivated) {
+			goog.style.showElement(this.domElement, true);
+			this.activate();
+		}
+		break;
+
+		default:
+		if(this._isActivated) {
+			goog.style.showElement(this.domElement, false);
+			this.deactivate();
+		}
+		break;
+	}
 };
 
 

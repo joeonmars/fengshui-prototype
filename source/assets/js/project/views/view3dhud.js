@@ -57,6 +57,7 @@ feng.views.View3DHud.prototype.setView3D = function( view3d ) {
   this._view3d = view3d;
 
   this.compass.setView3D( view3d );
+  this.reminder.setView3D( view3d );
   this.progressBar.setView3D( view3d );
   this.objectBox.setView3D( view3d );
   this.objectSelector.setView3D( view3d );

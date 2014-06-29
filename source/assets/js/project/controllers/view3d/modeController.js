@@ -150,7 +150,7 @@ feng.controllers.view3d.ModeController.prototype.createTransitionControls = func
 
 
 feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
-
+	
 	var oldMode = this._mode;
 	var newMode = e.mode;
 	var nextMode = e.nextMode;
@@ -166,7 +166,7 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	}
 
 	console.log('view3D mode changed from ' + oldMode + ' to ' + newMode);
-
+	
 	var oldControl = this.control;
 	var newControl = this.getModeControl( this._mode );
 	var nextControl = this.getModeControl( nextMode );

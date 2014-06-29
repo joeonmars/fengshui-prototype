@@ -130,25 +130,33 @@ feng.views.sections.controls.Compass.prototype.onResize = function(e){
 };
 
 
-feng.views.sections.controls.Compass.prototype.onMediatorEvent = function(e){
+feng.views.sections.controls.Compass.prototype.onModeChange = function(e){
 
-	switch(e.type) {
+  goog.base(this, 'onModeChange', e);
 
-		case feng.events.EventType.UPDATE:
+  if(e.mode === feng.controllers.view3d.ModeController.Mode.DESIGN) {
 
-		if(e.target instanceof feng.controllers.controls.TransitionControls) {
+  	goog.dom.classes.add(this.domElement, 'design');
 
-			if(e.mode === 'design') {
+  }else {
 
-				goog.dom.classes.add(this.domElement, 'design');
-				
-			}else {
-				goog.dom.classes.remove(this.domElement, 'design');
-			}
-		}
-		break;
+  	goog.dom.classes.remove(this.domElement, 'design');
+  }
+  
+  switch(e.mode) {
 
-		default:
-		break;
+    case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
+	if(this._isActivated) {
+		goog.style.showElement(this.domElement, false);
+		this.deactivate();
 	}
+    break;
+
+    default:
+    if(!this._isActivated) {
+		goog.style.showElement(this.domElement, true);
+		this.activate();
+    }
+    break;
+  }
 };
