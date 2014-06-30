@@ -13,6 +13,7 @@ feng.models.Preload = function(){
 		'global': {
 			'fengshui-data': 'json/fengshui.json',
 			'circular-fill': 'images/circular-fill.png',
+			'book': 'images/book.png',
 			'cube-browse': 'images/cube-browse.png',
 			'cube-design': 'images/cube-design.png',
 			'leaf': {

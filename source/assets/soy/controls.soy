@@ -36,6 +36,20 @@
 
 
 /**
+ * Book Button
+ */
+{template .Book}
+<div class="book">
+	{call .RoundButton}
+	{param content}
+		<div class="icon"></div>
+	{/param}
+	{/call}
+</div>
+{/template}
+
+
+/**
  * Reminder
  * @param tips the tips holding reminders
  */

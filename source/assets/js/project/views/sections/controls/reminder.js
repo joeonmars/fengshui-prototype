@@ -388,5 +388,5 @@ feng.views.sections.controls.Reminder.prototype.onModeChange = function(e){
 feng.views.sections.controls.Reminder.prototype.onResize = function(e){
 
 	var viewportSize = goog.dom.getViewportSize();
-	goog.style.setPosition(this.domElement, viewportSize.width - 75 - 30, viewportSize.height - 75 - 30);
+	goog.style.setPosition(this.domElement, viewportSize.width - 100 - 30, viewportSize.height - 100 - 30);
 };

@@ -40,7 +40,7 @@
 }
 
 >.compass{
-	$circle_size: 120px;
+	$circle_size: 100px;
 	$cube_size: 80px;
 	$border_size: 5px;
 
@@ -89,8 +89,29 @@
 	}
 }
 
+>.book{
+	$circle_size: 100px;
+	$book_size: 80px;
+	$border_size: 5px;
+
+	@include absoluteTopLeft;
+
+	>.roundButton{
+		cursor: pointer;
+		@include roundButton( $circle_size, $border_size );
+	}
+
+	.icon{
+		position: absolute;
+		width: $book_size;
+		height: $book_size;
+		left: ($circle_size - $border_size * 2 - $book_size) / 2;
+		top: ($circle_size - $border_size * 2 - $book_size) / 2;
+	}
+}
+
 >.reminder{
-	$circle_size: 75px;
+	$circle_size: 100px;
 	$border_size: 5px;
 
 	@include absoluteTopLeft;
