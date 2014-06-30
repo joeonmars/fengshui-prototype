@@ -39,6 +39,7 @@ goog.addDependency('../../../../project/models/achievements/tip.js', ['feng.mode
 goog.addDependency('../../../../project/models/preload.js', ['feng.models.Preload'], ['feng.utils.Utils', 'goog.object']);
 goog.addDependency('../../../../project/models/view3d.js', ['feng.models.View3D'], []);
 goog.addDependency('../../../../project/pubsub.js', ['feng.PubSub'], ['goog.pubsub.PubSub']);
+goog.addDependency('../../../../project/templates/book.soy.js', ['feng.templates.book'], ['soy', 'soydata']);
 goog.addDependency('../../../../project/templates/captions.soy.js', ['feng.templates.captions'], ['soy', 'soydata']);
 goog.addDependency('../../../../project/templates/controls.soy.js', ['feng.templates.controls'], ['soy', 'soydata']);
 goog.addDependency('../../../../project/templates/debug.soy.js', ['feng.templates.debug'], ['soy', 'soydata']);

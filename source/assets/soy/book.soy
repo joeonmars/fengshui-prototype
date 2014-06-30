@@ -1,0 +1,49 @@
+{namespace feng.templates.book autoescape="false"}
+
+/**
+ * Fengshui Book
+ @param tips all tips
+ */
+{template .Book}
+
+<div id="book">
+
+	<div class="shade"></div>
+
+	<div class="main">
+
+		<nav>
+			<button class="close"></button>
+			<button class="glossary"></button>
+			<button class="tips"></button>
+			<button class="help"></button>
+			<button class="about"></button>
+		</nav>
+
+		<div class="pages">
+			<section class="glossary">
+
+			</section>
+
+			<section class="tips">
+
+			{foreach $tip in $tips}
+			
+			{/foreach}
+
+			</section>
+
+			<section class="help">
+
+			</section>
+
+			<section class="about">
+
+			</section>
+		</div>
+
+	</div>
+
+</div>
+
+{/template}

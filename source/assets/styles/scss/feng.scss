@@ -14,9 +14,10 @@
 	bottom: 40px;
 
 	>li{
+		position: relative;
 		margin-top: 15px;
 
-		>.button{
+		>button{
 			position: relative;
 			@include retina-ui("circle-small");
 			@include single-transition(opacity, .25s);
@@ -49,7 +50,6 @@
 			}
 
 			>.icon{
-				position: relative;
 
 				>div{
 					@include absoluteTopLeft;
@@ -62,7 +62,7 @@
 			}
 		}
 
-		&.howtoplay{
+		>.howtoplay{
 			.icon{
 				>div{
 					@include retina-icon("howtoplay");
@@ -75,7 +75,7 @@
 			}
 		}
 
-		&.fullscreen{
+		>.fullscreen{
 			.icon{
 				>div{
 					@include retina-icon("fullscreenin");
@@ -88,7 +88,7 @@
 			}
 		}
 
-		&.sound{
+		>.sound{
 			.icon{
 				>div{
 					@include retina-icon("soundoff");
@@ -102,67 +102,98 @@
 		}
 
 		&.share{
-			position: relative;
 
-			>.button{
-				z-index: 1;
-			}
+			&:hover{
+				>button{
+					opacity: 1;
 
-			.icon{
-				
-				>div{
-					@include retina-icon("social");
+					>.fill{
+						opacity: 1;
+					}
 
-					&:first-child{
-						@include retina-icon("social-hover");
-						z-index: 1;
+					>.icon{
+						>div{
+							&:first-child{
+								opacity: 1;
+							}
+						}
+					}
+				}
+
+				>.slider{
+					opacity: 1;
+					
+					>.buttons{
+						opacity: 1;
+						width: 85px;
 					}
 				}
 			}
 
-			>.slider{
-				position: absolute;
-				top: 0;
-				left: 13px;
-				width: 110px;
-				white-space: nowrap;
-				overflow: hidden;
+			>button{
+				z-index: 1;
 
-				&:after{
-					content: '';
-					display: inline-block;
-					vertical-align: top;
-					@include retina-ui("social-slider-end");
+				.icon{
+					
+					>div{
+						@include retina-icon("social");
+
+						&:first-child{
+							@include retina-icon("social-hover");
+							z-index: 1;
+						}
+					}
 				}
+			}
+		}
 
-				>.buttons{
+		>.slider{
+			position: absolute;
+			top: 0;
+			left: 13px;
+			white-space: nowrap;
+			opacity: 0;
+			@include single-transition(opacity, .2s);
+
+			&:after{
+				content: '';
+				display: inline-block;
+				vertical-align: top;
+				@include retina-ui("social-slider-end");
+			}
+
+			>.buttons{
+				display: inline-block;
+				vertical-align: top;
+				overflow: hidden;
+				@include retina-ui("social-slider-fill");
+				@include single-transition(width, .2s);
+				width: 0;
+
+				>a{
 					display: inline-block;
-					vertical-align: top;
-					width: 80px !important;
-					padding-left: 15px;
-					@include retina-ui("social-slider-fill");
+					vertical-align: middle;
+					margin: 5px;
+					@include single-transition(opacity, .25s);
 
-					>a{
-						display: inline-block;
-						vertical-align: middle;
-						margin: 5px;
-						@include single-transition(opacity, .25s);
+					&:first-child{
+						margin-left: 15px;
+					}
 
-						&:hover{
-							opacity: .6;
-						}
+					&:hover{
+						opacity: .6;
+					}
 
-						&.facebook{
-							@include retina-icon("facebook");
-						}
+					&.facebook{
+						@include retina-icon("facebook");
+					}
 
-						&.twitter{
-							@include retina-icon("twitter");
-						}
+					&.twitter{
+						@include retina-icon("twitter");
+					}
 
-						&.google{
-							@include retina-icon("google");
-						}
+					&.google{
+						@include retina-icon("google");
 					}
 				}
 			}
