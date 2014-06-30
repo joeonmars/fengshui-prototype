@@ -20,8 +20,8 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId, data ){
   this.response = data['response'];
   this.people = data['people'];
 
-  this.image = '';
-  this.sprite = '';
+  this.image = new Image;
+  this.image.src = feng.Config['assetsPath'] + 'images/tip-icons/' + tipId + 'png';
 
   this.unlocked = false;
 

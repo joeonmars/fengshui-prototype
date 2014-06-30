@@ -2,6 +2,7 @@
 
 /**
  * Fengshui Book
+ @param glossary the glossary
  @param tips all tips
  */
 {template .Book}
@@ -21,15 +22,42 @@
 		</nav>
 
 		<div class="pages">
+
 			<section class="glossary">
+
+				{foreach $key in keys($glossary)}
+				<article class="{ $key }">
+					<h1>$glossary[$key].name.en<h1>
+					<h2>$glossary[$key].name.zh<h2>
+					<figure>
+						<canvas></canvas>
+					</figure>
+					<p>$glossary[$key].meanings<p>
+				</article>
+				{/foreach}
 
 			</section>
 
 			<section class="tips">
 
 			{foreach $tip in $tips}
-			
+			<ul>
+				<li class="{if $tip.unlocked == true}unlocked{/if}" data-tip-id="{ $tip.id }">
+					<figure>
+						<img src="{ $tip.image.src }" alt="{ $tip.name }">
+						<figcaption>
+							<h1>{ $tip.name }</h1>
+							<p>{ $tip.advice }</p>
+						</figcaption>
+					</figure>
+				</li>
+			</ul>
 			{/foreach}
+
+			<div class="scrubber">
+				<div class="handle"></div>
+				<canvas></canvas>
+			</div>
 
 			</section>
 
@@ -39,7 +67,41 @@
 
 			<section class="about">
 
+				<article class="aboutfengshui">
+					<h1>about fengshui</h1>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				</article>
+
+				<article class="aboutproject">
+					<h1>about fengshui-realtime</h1>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				</article>
+
+				<article class="credits">
+					<h1>credits</h1>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+					<ul>
+						<li>
+							<h1>UX & Visual Design<h1>
+							<p><a href="_blank">Yue Fan</a></p>
+						</li>
+						<li>
+							<h1>Web Development<h1>
+							<p><a href="_blank">Joe Zhou</a><a href="_blank">Yue Fan</a></p>
+						</li>
+						<li>
+							<h1>Special Thanks<h1>
+							<p>
+								<a href="_blank">Marla Schweppe<span>Her contributions...</span></a>
+								<a href="_blank">Chris Jackson<span>His contributions...</span></a>
+								<a href="_blank">Shaun Foster<span>His contributions...</span></a>
+							</p>
+						</li>
+					</ul>
+				</article>
+
 			</section>
+
 		</div>
 
 	</div>
