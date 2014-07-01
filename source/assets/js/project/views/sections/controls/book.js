@@ -5,6 +5,7 @@ goog.require('goog.fx.Dragger');
 goog.require('feng.events');
 goog.require('feng.fx.AnimatedSprite');
 goog.require('feng.views.sections.controls.Controls');
+goog.require('feng.views.book.Book');
 
 
 /**
@@ -41,6 +42,7 @@ feng.views.sections.controls.Book.prototype.activate = function(){
 
 	goog.base(this, 'activate');
 
+	this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
 	this._eventHandler.listen(this.domElement, 'mouseover', this.onMouseOver, false, this);
 	this._eventHandler.listen(this.domElement, 'mouseout', this.onMouseOut, false, this);
 };
@@ -55,6 +57,13 @@ feng.views.sections.controls.Book.prototype.onMouseOver = function(e){
 feng.views.sections.controls.Book.prototype.onMouseOut = function(e){
 
 	this._bookTweener.reverse();
+};
+
+
+feng.views.sections.controls.Book.prototype.onClick = function(e){
+
+	var book = feng.views.book.Book.getInstance();
+	book.animateIn();
 };
 
 
