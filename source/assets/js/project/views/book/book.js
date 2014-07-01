@@ -17,7 +17,7 @@ feng.views.book.Book = function() {
 		glossary: glossary
 	});
 
-	goog.style.showElement(this.domElement, false);
+	//goog.style.showElement(this.domElement, false);
 
 	goog.dom.appendChild(document.body, this.domElement);
 };

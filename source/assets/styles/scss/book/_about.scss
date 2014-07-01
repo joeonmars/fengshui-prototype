@@ -1,0 +1,14 @@
+>.wrapper{
+	margin: 0 auto;
+	min-width: 1024px;
+	max-width: 1280px;
+	text-align: center;
+
+	>article{
+		display: inline-block;
+		vertical-align: top;
+		width: 33%;
+		height: 100%;
+		text-align: left;
+	}
+}
