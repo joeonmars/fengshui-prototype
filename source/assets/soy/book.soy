@@ -27,12 +27,12 @@
 
 				{foreach $key in keys($glossary)}
 				<article class="{ $key }">
-					<h1>$glossary[$key].name.en<h1>
-					<h2>$glossary[$key].name.zh<h2>
+					<h1>{ $glossary[$key].name.en }<h1>
+					<h2>{ $glossary[$key].name.zh }<h2>
 					<figure>
 						<canvas></canvas>
 					</figure>
-					<p>$glossary[$key].meanings<p>
+					<p>{ $glossary[$key].meanings }<p>
 				</article>
 				{/foreach}
 

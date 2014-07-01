@@ -19,6 +19,8 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId, data ){
   this.reminder = data['reminder'];
   this.response = data['response'];
   this.people = data['people'];
+  this.name = data['name'];
+  this.advice = data['advice'];
 
   this.image = new Image;
   this.image.src = feng.Config['assetsPath'] + 'images/tip-icons/' + tipId + 'png';

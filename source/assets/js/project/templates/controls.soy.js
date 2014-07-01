@@ -49,32 +49,32 @@ feng.templates.controls.Book = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.Reminder = function(opt_data, opt_ignored) {
   var output = '<div class="reminder"><div class="avatar">' + feng.templates.controls.RoundButton(null) + '</div><div class="dialogue hint"><div class="left"><button></button></div><div class="middle"><ul class="title">';
-  var tipList96 = opt_data.tips;
-  var tipListLen96 = tipList96.length;
-  for (var tipIndex96 = 0; tipIndex96 < tipListLen96; tipIndex96++) {
-    var tipData96 = tipList96[tipIndex96];
-    output += '<li data-tip-id="' + tipData96.id + '">from ' + tipData96.people + '</li>';
+  var tipList102 = opt_data.tips;
+  var tipListLen102 = tipList102.length;
+  for (var tipIndex102 = 0; tipIndex102 < tipListLen102; tipIndex102++) {
+    var tipData102 = tipList102[tipIndex102];
+    output += '<li data-tip-id="' + tipData102.id + '">from ' + tipData102.people + '</li>';
   }
   output += '</ul><ul class="paragraph">';
-  var tipList104 = opt_data.tips;
-  var tipListLen104 = tipList104.length;
-  for (var tipIndex104 = 0; tipIndex104 < tipListLen104; tipIndex104++) {
-    var tipData104 = tipList104[tipIndex104];
-    output += '<li data-tip-id="' + tipData104.id + '">' + tipData104.reminder + '</li>';
+  var tipList110 = opt_data.tips;
+  var tipListLen110 = tipList110.length;
+  for (var tipIndex110 = 0; tipIndex110 < tipListLen110; tipIndex110++) {
+    var tipData110 = tipList110[tipIndex110];
+    output += '<li data-tip-id="' + tipData110.id + '">' + tipData110.reminder + '</li>';
   }
   output += '</ul></div><div class="right"><button></button></div></div><div class="dialogue response"><ul class="title">';
-  var tipList112 = opt_data.tips;
-  var tipListLen112 = tipList112.length;
-  for (var tipIndex112 = 0; tipIndex112 < tipListLen112; tipIndex112++) {
-    var tipData112 = tipList112[tipIndex112];
-    output += '<li data-tip-id="' + tipData112.id + '">appreciation from ' + tipData112.people + '</li>';
+  var tipList118 = opt_data.tips;
+  var tipListLen118 = tipList118.length;
+  for (var tipIndex118 = 0; tipIndex118 < tipListLen118; tipIndex118++) {
+    var tipData118 = tipList118[tipIndex118];
+    output += '<li data-tip-id="' + tipData118.id + '">appreciation from ' + tipData118.people + '</li>';
   }
   output += '</ul><ul class="paragraph">';
-  var tipList120 = opt_data.tips;
-  var tipListLen120 = tipList120.length;
-  for (var tipIndex120 = 0; tipIndex120 < tipListLen120; tipIndex120++) {
-    var tipData120 = tipList120[tipIndex120];
-    output += '<li data-tip-id="' + tipData120.id + '">' + tipData120.response + '</li>';
+  var tipList126 = opt_data.tips;
+  var tipListLen126 = tipList126.length;
+  for (var tipIndex126 = 0; tipIndex126 < tipListLen126; tipIndex126++) {
+    var tipData126 = tipList126[tipIndex126];
+    output += '<li data-tip-id="' + tipData126.id + '">' + tipData126.response + '</li>';
   }
   output += '</ul></div></div>';
   return output;
@@ -122,11 +122,11 @@ feng.templates.controls.ObjectBox = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var output = '<div class="progressBar"><div class="inner"><div class="wave"><canvas class="gray"></canvas><canvas class="blue"></canvas></div><ul class="tips">';
-  var tipList136 = opt_data.tips;
-  var tipListLen136 = tipList136.length;
-  for (var tipIndex136 = 0; tipIndex136 < tipListLen136; tipIndex136++) {
-    var tipData136 = tipList136[tipIndex136];
-    output += '<li class="tip" data-tip-id="' + tipData136.id + '"><div class="outline"></div><div class="dot"></div></li>';
+  var tipList142 = opt_data.tips;
+  var tipListLen142 = tipList142.length;
+  for (var tipIndex142 = 0; tipIndex142 < tipListLen142; tipIndex142++) {
+    var tipData142 = tipList142[tipIndex142];
+    output += '<li class="tip" data-tip-id="' + tipData142.id + '"><div class="outline"></div><div class="dot"></div></li>';
   }
   output += '</ul></div></div>';
   return output;
