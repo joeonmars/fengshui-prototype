@@ -13,6 +13,7 @@ goog.require('feng.fx.Renderer');
 goog.require('feng.models.Preload');
 goog.require('feng.models.View3D');
 goog.require('feng.models.Accessories');
+goog.require('feng.views.book.Book');
 goog.require('feng.views.view3dobject.View3DObject');
 goog.require('feng.views.view3dobject.InteractiveObject');
 goog.require('feng.views.view3dobject.HolderObject');
@@ -203,6 +204,10 @@ feng.views.View3D.prototype.show = function(){
 
  	this.onResize();
 
+ 	var book = feng.views.book.Book.getInstance();
+ 	book.listen(feng.events.EventType.OPEN, this.deactivate, false, this);
+ 	book.listen(feng.events.EventType.CLOSE, this.activate, false, this);
+
 	this.dispatchEvent({
 		type: feng.events.EventType.SHOW
   });
@@ -218,6 +223,10 @@ feng.views.View3D.prototype.hide = function(){
 		'opacity': 0,
 		'display': 'none'
 	});
+
+ 	var book = feng.views.book.Book.getInstance();
+ 	book.unlisten(feng.events.EventType.OPEN, this.deactivate, false, this);
+ 	book.unlisten(feng.events.EventType.CLOSE, this.activate, false, this);
 
 	this.dispatchEvent({
 		type: feng.events.EventType.HIDE

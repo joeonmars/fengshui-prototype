@@ -2,9 +2,13 @@ goog.provide('feng.views.book.Book');
 
 goog.require('goog.dom');
 goog.require('goog.events.EventHandler');
+goog.require('feng.events');
 goog.require('feng.models.achievements.Achievements');
 goog.require('feng.templates.book');
-goog.require('feng.views.book.pages.Page');
+goog.require('feng.views.book.pages.About');
+goog.require('feng.views.book.pages.Glossary');
+goog.require('feng.views.book.pages.Help');
+goog.require('feng.views.book.pages.Tips');
 
 
 feng.views.book.Book = function() {
@@ -32,8 +36,16 @@ feng.views.book.Book = function() {
 
 	var pageEls = goog.dom.query('.pages section', this.domElement);
 	
+	var pageClass = {
+		'about': feng.views.book.pages.About,
+		'glossary': feng.views.book.pages.Glossary,
+		'help': feng.views.book.pages.Help,
+		'tips': feng.views.book.pages.Tips
+	};
+
 	goog.array.forEach(pageEls, function(pageEl) {
-		var page = new feng.views.book.pages.Page( pageEl );
+		var id = pageEl.getAttribute('data-id');
+		var page = new pageClass[id]( pageEl );
 		page.animateOut( true );
 		this._pages[page.id] = page;
 	}, this);
@@ -93,6 +105,9 @@ feng.views.book.Book.prototype.animateIn = function() {
 	// animate in page
 	this._page.animateOut( true );
 	this._animateInPageDelay.start();
+
+	//
+	this.dispatchEvent( feng.events.EventType.OPEN );
 };
 
 
@@ -123,6 +138,9 @@ feng.views.book.Book.prototype.animateOut = function( instant ) {
 
 	// animate out page
 	this._animateInPageDelay.stop();
+
+	//
+	this.dispatchEvent( feng.events.EventType.CLOSE );
 };
 
 
@@ -145,10 +163,10 @@ feng.views.book.Book.prototype.onClickNavButton = function( e ) {
 		break;
 
 		default:
-		if(!this._page.isTweening()) {
-			this.gotoPage( id );
-		}else {
+		if(this._page.isTweening() || id === this._page.id) {
 			return false;
+		}else {
+			this.gotoPage( id );
 		}
 		break;
 	}

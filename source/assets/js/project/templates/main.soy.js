@@ -26,6 +26,28 @@ feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
  * @return {string}
  * @notypecheck
  */
+feng.templates.main.SceneSelection = function(opt_data, opt_ignored) {
+  return '<div id="scene-selection"><div class="scene studio"><div class="shade"></div><div class="people"></div><div class="prompt"></div></div><div class="scene townhouse"><div class="shade"></div><div class="people"></div><div class="prompt"></div></div><div class="ui">' + feng.templates.main.Logo(null) + '</div></div>';
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.main.Logo = function(opt_data, opt_ignored) {
+  return '<div class="logo"><div class="graph"><div class="outline"></div><div class="needle"></div></div><div class="text"><h1><span>Fengshui</span><span>Real-time</span></h1></div></div>';
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
 feng.templates.main.Main = function(opt_data, opt_ignored) {
   return '<div id="main"><div class="section" id="home"><div class="preloader"><div class="fill"></div></div></div><ul id="main-options"><li><button class="howtoplay"><div class="fill"></div><div class="icon"><div></div><div></div></div></button></li><li><button class="fullscreen"><div class="fill"></div><div class="icon"><div></div><div></div></div></button></li><li><button class="sound"><div class="fill"></div><div class="icon"><div></div><div></div></div></button></li><li class="share"><button><div class="fill"></div><div class="icon"><div></div><div></div></div></button><div class="slider"><div class="buttons"><a class="facebook"></a><a class="twitter"></a><a class="google"></a></div></div></li></ul>' + ((opt_data.debug != false) ? feng.templates.debug.Debugger(null) : '') + '</div>';
 };

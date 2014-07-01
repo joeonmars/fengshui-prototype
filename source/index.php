@@ -44,7 +44,6 @@
 		<script src="assets/js/thirdparty/pathfinding-browser.min.js"></script>
 		<script src="assets/js/thirdparty/Box2dWeb-2.1.a.3.min.js"></script>
 		<script src="assets/js/thirdparty/perlin.js"></script>
-		<script src="assets/js/thirdparty/snap.svg-min.js"></script>
 
 		<!-- project js -->
 		<?php

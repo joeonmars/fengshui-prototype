@@ -2,7 +2,6 @@ goog.provide('feng.views.book.pages.Page');
 
 goog.require('goog.dom');
 goog.require('goog.events.EventHandler');
-goog.require('goog.math.Size');
 
 
 feng.views.book.pages.Page = function( domElement ) {

@@ -34,6 +34,47 @@
 
 
 /**
+ * Scene Selection
+ */
+{template .SceneSelection}
+<div id="scene-selection">
+	<div class="scene studio">
+		<div class="shade"></div>
+		<div class="people"></div>
+		<div class="prompt"></div>
+	</div>
+	<div class="scene townhouse">
+		<div class="shade"></div>
+		<div class="people"></div>
+		<div class="prompt"></div>
+	</div>
+	<div class="ui">
+		{call .Logo}{/call}
+	</div>
+</div>
+{/template}
+
+
+/**
+ * Fengshui Realtime Logo
+ */
+{template .Logo}
+<div class="logo">
+	<div class="graph">
+		<div class="outline"></div>
+		<div class="needle"></div>
+	</div>
+	<div class="text">
+		<h1>
+			<span>Fengshui</span>
+			<span>Real-time</span>
+		</h1>
+	</div>
+</div>
+{/template}
+
+
+/**
  * Main App
  * @param debug if has debugger
  */
