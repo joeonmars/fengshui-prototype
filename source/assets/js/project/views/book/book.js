@@ -4,6 +4,7 @@ goog.require('goog.dom');
 goog.require('goog.events.EventHandler');
 goog.require('feng.models.achievements.Achievements');
 goog.require('feng.templates.book');
+goog.require('feng.views.book.pages.Page');
 
 
 feng.views.book.Book = function() {
@@ -26,6 +27,24 @@ feng.views.book.Book = function() {
 
 	this._navButtons = goog.dom.query('nav button', this.domElement);
 
+	// create pages from elements
+	this._pages = {};
+
+	var pageEls = goog.dom.query('.pages section', this.domElement);
+	
+	goog.array.forEach(pageEls, function(pageEl) {
+		var page = new feng.views.book.pages.Page( pageEl );
+		page.animateOut( true );
+		this._pages[page.id] = page;
+	}, this);
+
+	this._page = this._pages['glossary'];
+
+	this._animateInPageDelay = new goog.async.Delay(goog.bind(function() {
+		this._page.animateIn();
+	}, this), 800, this);
+
+	//
 	this._eventHandler = new goog.events.EventHandler( this );
 
 	this.animateOut( true );
@@ -50,13 +69,13 @@ feng.views.book.Book.prototype.deactivate = function() {
 };
 
 
-feng.views.book.Book.prototype.animateIn = function( instant ) {
+feng.views.book.Book.prototype.animateIn = function() {
 
 	this.activate();
 
 	goog.style.showElement(this.domElement, true);
 
-	var duration = instant ? 0 : 1;
+	var duration = 1;
 
 	TweenMax.to(this._shadeEl, duration, {
 		'opacity': .8,
@@ -66,9 +85,14 @@ feng.views.book.Book.prototype.animateIn = function( instant ) {
 	TweenMax.to(this._mainEl, duration, {
 		'y': 0,
 		'rotationX': 0,
+		'rotationY': 0,
 		'transformPerspective': 600,
 		'ease': Power3.easeInOut
 	});
+
+	// animate in page
+	this._page.animateOut( true );
+	this._animateInPageDelay.start();
 };
 
 
@@ -80,7 +104,7 @@ feng.views.book.Book.prototype.animateOut = function( instant ) {
 
 	TweenMax.to(this._shadeEl, duration, {
 		'opacity': 0,
-		'ease': Power4.easeInOut
+		'ease': Power3.easeInOut
 	});
 
 	var mainHeight = goog.style.getSize(this._containerEl).height * 1.2;
@@ -88,37 +112,44 @@ feng.views.book.Book.prototype.animateOut = function( instant ) {
 	TweenMax.to(this._mainEl, duration, {
 		'y': mainHeight,
 		'rotationX': 15,
+		'rotationY': -5,
 		'transformPerspective': 600,
-		'ease': Power4.easeInOut,
+		'ease': Power3.easeInOut,
 		'onComplete': function() {
 			goog.style.showElement(this.domElement, false);
 		},
 		'onCompleteScope': this
 	});
+
+	// animate out page
+	this._animateInPageDelay.stop();
+};
+
+
+feng.views.book.Book.prototype.gotoPage = function( id ) {
+
+	var lastPage = this._page;
+	lastPage.animateOut();
+
+	this._page = this._pages[ id ];
+	this._page.animateIn();
 };
 
 
 feng.views.book.Book.prototype.onClickNavButton = function( e ) {
 
-	switch(e.currentTarget.getAttribute('data-id')) {
+	var id = e.currentTarget.getAttribute('data-id');
+	switch(id) {
 		case 'close':
 		this.animateOut();
 		break;
 
-		case 'glossary':
-
-		break;
-
-		case 'tips':
-
-		break;
-
-		case 'help':
-
-		break;
-
-		case 'about':
-
+		default:
+		if(!this._page.isTweening()) {
+			this.gotoPage( id );
+		}else {
+			return false;
+		}
 		break;
 	}
 };
