@@ -26,8 +26,6 @@ feng.views.book.pages.Page.prototype.isTweening = function() {
 feng.views.book.pages.Page.prototype.activate = function() {
 
 	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
-
-	this.onResize();
 };
 
 
@@ -41,12 +39,17 @@ feng.views.book.pages.Page.prototype.animateIn = function() {
 
 	this.activate();
 
+	TweenMax.set(this.domElement, {
+		'display': 'block'
+	});
+
+	this.onResize();
+
 	var duration = .8;
 
 	this._tweener = TweenMax.fromTo(this.domElement, duration, {
 		'clip': 'rect(0px, ' + this._containerSize.width + 'px, ' + this._containerSize.height + 'px, ' + this._containerSize.width + 'px)'
 	}, {
-		'display': 'block',
 		'clip': 'rect(0px, ' + this._containerSize.width + 'px, ' + this._containerSize.height + 'px, 0px)',
 		'ease': Strong.easeInOut
 	});

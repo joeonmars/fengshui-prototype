@@ -30,6 +30,9 @@
 		<script src="assets/js/thirdparty/createjs/easeljs-0.7.1.min.js"></script>
 		<script src="assets/js/thirdparty/createjs/preloadjs-0.4.1.min.js"></script>
 		<script src="assets/js/thirdparty/greensock/TweenMax.min.js"></script>
+		<script src="assets/js/thirdparty/greensock/utils/Draggable.min.js"></script>
+		<script src="assets/js/thirdparty/greensock/plugins/ScrollToPlugin.min.js"></script>
+		<script src="assets/js/thirdparty/greensock/plugins/ThrowPropsPlugin.min.js"></script>
 		<script src="assets/js/thirdparty/threejs/build/three67.min.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/EffectComposer.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/RenderPass.js"></script>

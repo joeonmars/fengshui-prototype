@@ -52,28 +52,38 @@
 
 					<div class="wrapper">
 
+						<div class="line"></div>
+
 						<div class="scroller">
 							<div class="inner">
 								<ul>
 									{foreach $tip in $tips}
-									<li class="{if $tip.unlocked == true}unlocked{/if}" data-tip-id="{ $tip.id }">
+									<li class="tip {if $tip.unlocked == true}unlocked{else}locked{/if}" data-tip-id="{ $tip.id }">
 										<figure>
-											<img src="{ $tip.image.src }" alt="{ $tip.name }">
+											<img src="{ $tip.image.src }">
 											<figcaption>
-												<h1>{ $tip.name }</h1>
+												<h1>
+													{ $tip.name }
+													<div class="share">
+														<div class="icon"></div>
+														<ul class="slider">
+															<li><a href="#" class="facebook"></a></li>
+															<li><a href="#" class="twitter"></a></li>
+															<li><a href="#" class="google"></a></li>
+														</ul>
+													</div>
+												</h1>
 												<p>{ $tip.advice }</p>
 											</figcaption>
 										</figure>
 									</li>
 									{/foreach}
 								</ul>
-								<div class="line"></div>
 							</div>
 						</div>
 
 						<div class="scrubber">
 							<div class="handle"></div>
-							<canvas></canvas>
 						</div>
 
 					</div>
