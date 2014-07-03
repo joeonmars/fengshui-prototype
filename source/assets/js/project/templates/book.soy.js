@@ -21,7 +21,7 @@ feng.templates.book.Book = function(opt_data, opt_ignored) {
     var keyData4 = keyList4[keyIndex4];
     output += '<article class="' + keyData4 + '"><h1>' + opt_data.glossary[keyData4].name.en + '</h1><h2>' + opt_data.glossary[keyData4].name.zh + '</h2><figure><canvas></canvas></figure><p>' + opt_data.glossary[keyData4].meanings + '</p></article>';
   }
-  output += '</div></div></div></section><section class="tips" data-id="tips"><div class="shade"></div><div class="wrapper"><div class="line"></div><div class="scroller"><div class="inner"><ul>';
+  output += '</div></div><div class="scrubber"><div class="handle"></div></div></div></section><section class="tips" data-id="tips"><div class="shade"></div><div class="wrapper"><div class="line"></div><div class="scroller"><div class="inner"><ul>';
   var tipList16 = opt_data.tips;
   var tipListLen16 = tipList16.length;
   for (var tipIndex16 = 0; tipIndex16 < tipListLen16; tipIndex16++) {

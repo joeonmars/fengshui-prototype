@@ -1,6 +1,8 @@
 >.scroller{
+	position: relative;
+	overflow: hidden !important;
 
-	>.inner{
+	.inner{
 		position: relative;
 		white-space: nowrap;
 		
@@ -11,5 +13,21 @@
 			height: 500px;
 			white-space: normal;
 		}
+	}
+}
+
+>.scrubber{
+	position: absolute;
+	left: 50%;
+	bottom: 50px;
+	margin-left: -100px;
+	width: 200px;
+	height: 20px;
+	background: $yellow;
+
+	>.handle{
+		position: relative;
+		height: 100%;
+		background: $red;
 	}
 }
