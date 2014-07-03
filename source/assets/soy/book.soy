@@ -60,7 +60,7 @@
 									{foreach $tip in $tips}
 									<li class="tip {if $tip.unlocked == true}unlocked{else}locked{/if}" data-tip-id="{ $tip.id }">
 										<figure>
-											<img src="{ $tip.image.src }">
+											<canvas></canvas>
 											<figcaption>
 												<h1>
 													{ $tip.name }

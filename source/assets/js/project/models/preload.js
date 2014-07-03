@@ -12,6 +12,8 @@ feng.models.Preload = function(){
 	this._assets = {
 		'global': {
 			'fengshui-data': 'json/fengshui.json',
+			'tip-icons-data': 'json/tip-icons.json',
+			'tip-icons': 'images/tip-icons.png',
 			'circular-fill': 'images/circular-fill.png',
 			'book': 'images/book.png',
 			'cube-browse': 'images/cube-browse.png',

@@ -2,6 +2,7 @@ goog.provide('feng.models.achievements.Tip');
 
 goog.require('goog.events.EventTarget');
 goog.require('feng.events');
+goog.require('feng.models.Preload');
 goog.require('feng.models.achievements.Achievements');
 
 /**
@@ -22,8 +23,7 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId, data ){
   this.name = data['name'];
   this.advice = data['advice'];
 
-  this.image = new Image;
-  this.image.src = feng.Config['assetsPath'] + 'images/tip-icons/' + tipId + 'png';
+  this.iconId = data['icon'];
 
   this.unlocked = false;
 
@@ -77,4 +77,36 @@ feng.models.achievements.Tip.prototype.unlock = function() {
   }
 
   return this.unlocked;
+};
+
+
+feng.models.achievements.Tip.prototype.getIcon = function(size, color, canvas) {
+
+  // refer to http://jsfiddle.net/salt/Qxu56/
+
+  var preload = feng.models.Preload.getInstance();
+
+  var tipIconsImg = preload.getAsset('global.tip-icons');
+  
+  var tipIconData = preload.getAsset('global.tip-icons-data')['frames'][this.iconId + '.png']['frame'];
+  var sourceIconX = tipIconData['x'];
+  var sourceIconY = tipIconData['y'];
+  var sourceIconW = tipIconData['w'];
+  var sourceIconH = tipIconData['h'];
+
+  var size = size || 32;
+  var color = color || '#ffffff';
+  var canvas = canvas || goog.dom.createDom('canvas');
+  canvas.width = size;
+  canvas.height = size;
+
+  var canvasCtx = canvas.getContext('2d');
+
+  canvasCtx.fillStyle = color;
+  canvasCtx.fillRect( 0, 0, size, size );
+
+  canvasCtx.globalCompositeOperation = 'destination-atop';
+  canvasCtx.drawImage( tipIconsImg, sourceIconX, sourceIconY, sourceIconW, sourceIconH, 0, 0, size, size );
+
+  return canvas;
 };

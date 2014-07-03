@@ -19,9 +19,9 @@
 					position: absolute;
 					height: 100%;
 
-					>img{
-						width: 40px;
-						height: 40px;
+					>canvas{
+						position: absolute;
+						display: block;
 					}
 
 					>figcaption{
@@ -286,6 +286,11 @@
 
 					&.unlocked1{
 						>figure{
+							>canvas{
+								top: 84px;
+								left: 13px;
+							}
+
 							>figcaption{
 								top: 5px;
 								left: 93px;
@@ -295,6 +300,11 @@
 
 					&.unlocked2{
 						>figure{
+							>canvas{
+								top: 84px;
+								left: 27px;
+							}
+
 							>figcaption{
 								top: 5px;
 								left: 108px;
@@ -317,6 +327,11 @@
 
 					&.unlocked1{
 						>figure{
+							>canvas{
+								top: 82px;
+								left: 13px;
+							}
+
 							>figcaption{
 								bottom: 0;
 								left: 95px;
@@ -326,6 +341,11 @@
 
 					&.unlocked2{
 						>figure{
+							>canvas{
+								top: 82px;
+								left: 27px;
+							}
+
 							>figcaption{
 								bottom: 0;
 								left: 108px;

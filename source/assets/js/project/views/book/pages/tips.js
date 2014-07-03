@@ -19,7 +19,11 @@ feng.views.book.pages.Tips = function( domElement ) {
 	var achievements = feng.models.achievements.Achievements.getInstance();
   this._tips = achievements.getAllTips();
 
-  goog.array.forEach(this._tips, function(tip) {
+  goog.array.forEach(this._tips, function(tip, index) {
+
+  	var iconCanvas = goog.dom.query('canvas', this._tipEls[index])[0];
+  	iconCanvas = tip.getIcon(40, '#FFFDF1', iconCanvas);
+
     tip.listenOnce(feng.events.EventType.UNLOCK, this.onUnlock, false, this);
   }, this);
 
