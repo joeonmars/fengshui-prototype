@@ -1,7 +1,9 @@
 >.scroller{
 	position: relative;
 	width: 100%;
-	height: 500px;
+	height: 460px;
+	top: 50%;
+	margin-top: -230px;
 	font-size: 0;
 	overflow: hidden !important;
 
@@ -11,56 +13,325 @@
 		>ul{
 			>.tip{
 				position: absolute;
-				background: rgba(0, 0, 0, .05);
-				font-size: 13px;
+				//background: rgba(0, 0, 0, .05);
 
 				>figure{
+					position: absolute;
+					height: 100%;
+
 					>img{
 						width: 40px;
 						height: 40px;
-						padding: 12px;
-						@include border-radius(50%);
 					}
-				}
 
-				&.red{
-					>figure{
-						>img{
-							background-color: $red;
+					>figcaption{
+						position: absolute;
+
+						>h1{
+							font-size: 20px;
+							text-transform: uppercase;
+							font-family: $font_marineup_light;
+							white-space: nowrap;
+
+							>.share{
+								position: relative;
+								display: inline-block;
+								vertical-align: top;
+								margin-left: 10px;
+
+								>.icon{
+									display: inline-block;
+									@include single-transition(opacity, .4s);
+									opacity: 1;
+								}
+
+								>.slider{
+									display: inline-block;
+									@include transition(opacity .4s, transform .4s);
+									opacity: 0;
+									@include translateX(-4px);
+
+									>li{
+										display: inline-block;
+										vertical-align: top;
+										margin: 0 4px;
+
+										>a{
+											display: block;
+											@include single-transition(opacity, .4s);
+											opacity: .25;
+
+											&:hover{
+												opacity: 1;
+											}
+										}
+									}
+								}
+
+								&:hover{
+									>.icon{
+										opacity: .25;
+									}
+
+									>.slider{
+										opacity: 1;
+										@include translateX(0px);
+									}
+								}
+							}
+						}
+
+						>p{
+							font-size: 13px;
+							letter-spacing: 0.2px;
+							line-height: 20px;
+							margin: 2px 0;
+							color: $gray;
+							width: 227px;
+							font-family: $font_marineup_light;
 						}
 					}
 				}
 
-				&.black{
-					>figure{
-						>img{
-							background-color: $black;
+				&.unlocked{
+					&.red{
+						>figure{
+							>figcaption{
+								>h1{
+									color: $red;
+
+									>.share{
+										>.icon{
+											@include retina-icon("tip-share-red");
+										}
+										>.slider{
+											.facebook{
+												@include retina-icon("tip-facebook-red");
+											}
+
+											.twitter{
+												@include retina-icon("tip-twitter-red");
+											}
+
+											.google{
+												@include retina-icon("tip-google-red");
+											}
+										}
+									}
+								}
+							}
+						}
+
+						&.up{
+							&.unlocked1{
+								&:before{
+									@include retina-ui("tip-up-1-red");
+								}
+							}
+							&.unlocked2{
+								&:before{
+									@include retina-ui("tip-up-2-red");
+								}
+							}
+						}
+
+						&.down{
+							&.unlocked1{
+								&:before{
+									@include retina-ui("tip-down-1-red");
+								}
+							}
+							&.unlocked2{
+								&:before{
+									@include retina-ui("tip-down-2-red");
+								}
+							}
 						}
 					}
-				}
 
-				&.yellow{
-					>figure{
-						>img{
-							background-color: $yellow;
+					&.black{
+						>figure{
+							>figcaption{
+								>h1{
+									color: $black;
+
+									>.share{
+										>.icon{
+											@include retina-icon("tip-share-black");
+										}
+										>.slider{
+											.facebook{
+												@include retina-icon("tip-facebook-black");
+											}
+
+											.twitter{
+												@include retina-icon("tip-twitter-black");
+											}
+
+											.google{
+												@include retina-icon("tip-google-black");
+											}
+										}
+									}
+								}
+							}
+						}
+
+						&.up{
+							&.unlocked1{
+								&:before{
+									@include retina-ui("tip-up-1-black");
+								}
+							}
+							&.unlocked2{
+								&:before{
+									@include retina-ui("tip-up-2-black");
+								}
+							}
+						}
+
+						&.down{
+							&.unlocked1{
+								&:before{
+									@include retina-ui("tip-down-1-black");
+								}
+							}
+							&.unlocked2{
+								&:before{
+									@include retina-ui("tip-down-2-black");
+								}
+							}
+						}
+					}
+
+					&.yellow{
+						>figure{
+							>figcaption{
+								>h1{
+									color: $yellow;
+
+									>.share{
+										>.icon{
+											@include retina-icon("tip-share-yellow");
+										}
+										>.slider{
+											.facebook{
+												@include retina-icon("tip-facebook-yellow");
+											}
+
+											.twitter{
+												@include retina-icon("tip-twitter-yellow");
+											}
+
+											.google{
+												@include retina-icon("tip-google-yellow");
+											}
+										}
+									}
+								}
+							}
+						}
+
+						&.up{
+							&.unlocked1{
+								&:before{
+									@include retina-ui("tip-up-1-yellow");
+								}
+							}
+							&.unlocked2{
+								&:before{
+									@include retina-ui("tip-up-2-yellow");
+								}
+							}
+						}
+
+						&.down{
+							&.unlocked1{
+								&:before{
+									@include retina-ui("tip-down-1-yellow");
+								}
+							}
+							&.unlocked2{
+								&:before{
+									@include retina-ui("tip-down-2-yellow");
+								}
+							}
 						}
 					}
 				}
 
 				&.locked{
 					>figure{
-						>img{
-							background-color: $brown;
+						display: none;
+					}
+				}
+
+				&:before{
+					content: "";
+					position: absolute;
+					display: block;
+				}
+
+				&.up{
+					&:before{
+						top: 7px;
+					}
+
+					&.locked{
+						&:before{
+							left: 16px;
+							@include retina-ui("tip-up-locked");
+						}
+					}
+
+					&.unlocked1{
+						>figure{
+							>figcaption{
+								top: 5px;
+								left: 93px;
+							}
+						}
+					}
+
+					&.unlocked2{
+						>figure{
+							>figcaption{
+								top: 5px;
+								left: 108px;
+							}
 						}
 					}
 				}
 
-				&.up{
-
-				}
-
 				&.down{
+					&:before{
+						top: -6px;
+					}
 
+					&.locked{
+						&:before{
+							left: 16px;
+							@include retina-ui("tip-down-locked");
+						}
+					}
+
+					&.unlocked1{
+						>figure{
+							>figcaption{
+								bottom: 0;
+								left: 95px;
+							}
+						}
+					}
+
+					&.unlocked2{
+						>figure{
+							>figcaption{
+								bottom: 0;
+								left: 108px;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -88,6 +359,7 @@
 	position: absolute;
 	width: 100%;
 	height: 1px;
-	top: 250px;
+	top: 50%;
+	margin-top: -12px;
 	background-color: $brown;
 }

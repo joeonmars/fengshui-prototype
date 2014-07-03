@@ -58,17 +58,17 @@ feng.views.book.pages.Tips = function( domElement ) {
   this._unlockedBlockTypes = [
   	{
   		classname: 'unlocked1',
-  		size: new goog.math.Size(360, 200)
+  		size: new goog.math.Size(360, 206)
   	},
   	{
   		classname: 'unlocked2',
-  		size: new goog.math.Size(375, 200)
+  		size: new goog.math.Size(375, 206)
   	}
   ];
 
   this._lockedBlockType = {
   		classname: 'locked',
-  		size: new goog.math.Size(104, 200)
+  		size: new goog.math.Size(104, 206)
   };
 
   this._colors = ['red', 'black', 'yellow'];
@@ -81,12 +81,22 @@ goog.inherits(feng.views.book.pages.Tips, feng.views.book.pages.Page);
 feng.views.book.pages.Tips.prototype.updateLayout = function() {
 
 	var i, l = this._tips.length;
+	var odd = 0, even = 0;
+	var margin = 400;
+
 	this._scrollWidth = 0;
 
 	for(i = 0; i < l; i ++) {
 		var tip = this._tips[i];
 		var unlocked = (Math.random() < .5);//tip.unlocked
-		var unlockedBlockType = this._unlockedBlockTypes[i%2];
+
+		if(i%2 === 0) {
+			even ++;
+		}else {
+			odd ++;
+		}
+
+		var unlockedBlockType = (i%2 === 0) ? this._unlockedBlockTypes[even%2] : this._unlockedBlockTypes[(1 - odd%2)];
 		var blockType = unlocked ? unlockedBlockType : this._lockedBlockType;
 		var size = blockType.size;
 		var classname = blockType.classname;
@@ -97,7 +107,7 @@ feng.views.book.pages.Tips.prototype.updateLayout = function() {
 		var lastBlockOfSameRow = this._blocks[i-2];
 		var lastBlockOfDiffRow = this._blocks[i-1];
 
-		var x = 0;
+		var x = margin;
 
 		if(lastBlockOfDiffRow) {
 			var isLockedType = (lastBlockOfDiffRow.right - lastBlockOfDiffRow.left === this._lockedBlockType.size.width);
@@ -116,13 +126,13 @@ feng.views.book.pages.Tips.prototype.updateLayout = function() {
 		block.top = y;
 		block.bottom = y + size.height;
 		block.left = x;
-		block.right = x + size.width;
+		block.right = x + size.width + ((i === l-1) ? margin : 0);
 
 		this._scrollWidth = Math.max( block.right, this._scrollWidth );
 
 		var tipEl = this._tipEls[i];
 		goog.style.setStyle(tipEl, {
-			'width': size.width + 'px',
+			'width': (block.right - block.left) + 'px',
 			'height': size.height + 'px',
 			'top': block.top + 'px',
 			'left': block.left + 'px'
@@ -133,6 +143,7 @@ feng.views.book.pages.Tips.prototype.updateLayout = function() {
 
 		if(unlocked) {
 			goog.dom.classes.addRemove(tipEl, 'locked', 'unlocked');
+			goog.dom.classes.add(tipEl, unlockedBlockType.classname);
 		}
 
 		if(isUp) {
