@@ -40,5 +40,38 @@ feng.init = function( config ) {
 	};
 };
 
+
+feng.Color = {
+	/**
+	 * @expose
+	 */
+	GREEN: '#65BB99',
+	/**
+	 * @expose
+	 */
+	CREAM: '#FFFDF1',
+	/**
+	 * @expose
+	 */
+	BROWN: '#D9CBB5',
+	/**
+	 * @expose
+	 */
+	GRAY: '#969696',
+	/**
+	 * @expose
+	 */
+	RED: '#e2443a',
+		/**
+	 * @expose
+	 */
+	YELLOW: '#e3cc76',
+	/**
+	 * @expose
+	 */
+	BLACK: '#3d3e39'
+};
+
+
 goog.exportProperty(window, 'feng', feng);
 goog.exportProperty(feng, 'init', feng.init);

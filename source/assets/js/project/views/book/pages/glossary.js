@@ -4,11 +4,19 @@ goog.require('goog.events.MouseWheelHandler');
 goog.require('goog.math.Rect');
 goog.require('goog.fx.Dragger');
 goog.require('feng.views.book.pages.Page');
+goog.require('feng.views.book.Hanzi');
 
 
 feng.views.book.pages.Glossary = function( domElement ) {
 
 	goog.base(this, domElement);
+
+	// create hanzi canvas
+	var canvasEls = goog.dom.query('article canvas', this.domElement);
+	this._hanzis = goog.array.map( canvasEls, function(canvasEl) {
+		var hanzi = new feng.views.book.Hanzi( canvasEl );
+		return hanzi;
+	});
 
 	// for scrolling
   this._scrollerEl = goog.dom.getElementByClass('scroller', this.domElement);
@@ -23,7 +31,7 @@ feng.views.book.pages.Glossary = function( domElement ) {
     'dragResistance': 0.5,
     'cursor': 'default',
     'throwProps': true,
-		'onThrowUpdate': onDraggableUpdate,
+	'onThrowUpdate': onDraggableUpdate,
     'onDrag': onDraggableUpdate
   });
 
@@ -47,6 +55,10 @@ feng.views.book.pages.Glossary.prototype.activate = function() {
 	this._eventHandler.listen( this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this);
 
 	this._draggable.enable();
+
+	goog.array.forEach(this._hanzis, function(hanzi) {
+		hanzi.activate();
+	});
 };
 
 
@@ -55,6 +67,10 @@ feng.views.book.pages.Glossary.prototype.deactivate = function() {
 	goog.base(this, 'deactivate');
 
 	this._draggable.disable();
+
+	goog.array.forEach(this._hanzis, function(hanzi) {
+		hanzi.deactivate();
+	});
 };
 
 
@@ -74,7 +90,7 @@ feng.views.book.pages.Glossary.prototype.scrollTo = function( toScrollLeft ) {
 
 	var fromScrollLeft = this._scrollerEl.scrollLeft;
 
-	var scrollDistance = this._availableScrollWidth / 10;
+	var scrollDistance = 500;
 
 	var duration = goog.math.lerp(.2, .8, Math.abs(toScrollLeft - fromScrollLeft) / scrollDistance);
 
@@ -87,12 +103,6 @@ feng.views.book.pages.Glossary.prototype.scrollTo = function( toScrollLeft ) {
 		'onUpdate': this.onDraggableUpdate,
 		'onUpdateScope': this
 	});
-};
-
-
-feng.views.book.pages.Glossary.prototype.onResize = function( e ) {
-
-	goog.base(this, 'onResize', e);
 };
 
 
@@ -119,7 +129,7 @@ feng.views.book.pages.Glossary.prototype.onMouseWheel = function( e ) {
 
 	var fromScrollLeft = this._scrollerEl.scrollLeft;
 
-	var scrollDistance = this._availableScrollWidth / 10;
+	var scrollDistance = 500;
 
 	var toScrollLeft = fromScrollLeft + ((e.deltaY > 0) ? 1 : -1) * Math.max(50, scrollDistance);
 	toScrollLeft = Math.max(0, Math.min(toScrollLeft, this._availableScrollWidth));

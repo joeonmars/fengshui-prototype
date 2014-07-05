@@ -82,13 +82,13 @@ feng.models.achievements.Tip.prototype.unlock = function() {
 
 feng.models.achievements.Tip.prototype.getIcon = function(size, color, canvas) {
 
-  // refer to http://jsfiddle.net/salt/Qxu56/
-
   var preload = feng.models.Preload.getInstance();
 
   var tipIconsImg = preload.getAsset('global.tip-icons');
   
-  var tipIconData = preload.getAsset('global.tip-icons-data')['frames'][this.iconId + '.png']['frame'];
+  var iconId = this.unlocked ? this.iconId : 'lock';
+
+  var tipIconData = preload.getAsset('global.tip-icons-data')['frames'][iconId + '.png']['frame'];
   var sourceIconX = tipIconData['x'];
   var sourceIconY = tipIconData['y'];
   var sourceIconW = tipIconData['w'];
@@ -101,7 +101,6 @@ feng.models.achievements.Tip.prototype.getIcon = function(size, color, canvas) {
   canvas.height = size;
 
   var canvasCtx = canvas.getContext('2d');
-
   canvasCtx.fillStyle = color;
   canvasCtx.fillRect( 0, 0, size, size );
 

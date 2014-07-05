@@ -1,17 +1,85 @@
 >.scroller{
 	position: relative;
+	top: 50%;
+	margin-top: -280px;
+	width: 100%;
 	overflow: hidden !important;
 
 	.inner{
 		position: relative;
 		white-space: nowrap;
-		
+		margin: 0 auto;
+		width: 400px * 5;
+
 		>article{
 			display: inline-block;
 			vertical-align: top;
 			width: 400px;
-			height: 500px;
+			height: 560px;
 			white-space: normal;
+			border-left: 1px solid $brown;
+			padding: 0 14px;
+			@include box-sizing(border-box);
+
+			>h1{
+				font-size: 16px;
+				font-family: $font_marineup_light;
+			}
+
+			>h2{
+				font-size: 13px;
+				font-family: $font_marineup_light;
+				line-height: 20px;
+			}
+
+			>figure{
+				width: 100%;
+				height: 285px;
+
+				>canvas{
+					display: block;
+					margin: 0 auto;
+				}
+			}
+
+			>p{
+				font-size: 13px;
+				font-family: $font_marine_light;
+				letter-spacing: 0.2px;
+				line-height: 20px;
+				color: $gray;
+
+				&:before{
+					content: "";
+					margin-bottom: 10px;
+					display: block;
+					width: 100%;
+					height: 12px;
+					background-color: $brown;
+				}
+			}
+
+			&:first-child{
+				border-left: none;
+			}
+
+			&.red{
+				>h1, >h2{
+					color: $red;
+				}
+			}
+
+			&.yellow{
+				>h1, >h2{
+					color: $yellow;
+				}
+			}
+
+			&.black{
+				>h1, >h2{
+					color: $black;
+				}
+			}
 		}
 	}
 }

@@ -32,14 +32,28 @@
 						<div class="scroller">
 							<div class="inner">
 								{foreach $key in keys($glossary)}
-								<article class="{ $key }">
-									<h1>{ $glossary[$key].name.en }</h1>
-									<h2>{ $glossary[$key].name.zh }</h2>
-									<figure>
-										<canvas></canvas>
-									</figure>
-									<p>{ $glossary[$key].meanings }</p>
-								</article>
+
+								{switch index($key) % 3}
+								  {case 0}
+								    {call .GlossaryArticle}
+								    	{param id: $key /}
+								    	{param glossary: $glossary[$key] /}
+								    	{param color: 'red' /}
+								    {/call}
+								  {case 1}
+								    {call .GlossaryArticle}
+								    	{param id: $key /}
+								    	{param glossary: $glossary[$key] /}
+								    	{param color: 'yellow' /}
+								    {/call}
+								  {case 2}
+								    {call .GlossaryArticle}
+								    	{param id: $key /}
+								    	{param glossary: $glossary[$key] /}
+								    	{param color: 'black' /}
+								    {/call}
+								{/switch}
+
 								{/foreach}
 							</div>
 						</div>
@@ -111,44 +125,93 @@
 					
 					<div class="wrapper">
 
-						<div class="inner">
-							<article class="aboutfengshui">
-								<h1>about fengshui</h1>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-							</article>
+						<div class="scroller">
+							<div class="inner">
+								<article class="aboutfengshui">
+									<h1>about <br> fengshui</h1>
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+								</article>
 
-							<article class="aboutproject">
-								<h1>about fengshui-realtime</h1>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-							</article>
+								<article class="aboutproject">
+									<h1>the making of <br> fengshui realtime</h1>
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+									<ul>
+										<li>
+											<a href="http://www.blender.org/" target="_blank">Blender</a>
+											<p>3D modeling & texturing</p>
+										</li>
+										<li>
+											<a href="http://bohemiancoding.com/sketch/" target="_blank">Sketch App</a>
+											<p>UX & Graphic Design</p>
+										</li>
+										<li>
+											<a href="http://www.codeandweb.com/texturepacker" target="_blank">TexturePacker</a>
+											<p>easy spritesheet generation</p>
+										</li>
+										<li>
+											<a href="http://compass-style.org/" target="_blank">Compass & SASS</a>
+											<p>CSS authoring framework</p>
+										</li>
+										<li>
+											<a href="https://developers.google.com/closure/" target="_blank">Closure Tools</a>
+											<p>JavaScript development / HTML templates</p>
+										</li>
+										<li>
+											<a href="http://threejs.org/" target="_blank">Three.JS</a>
+											<p>library for programming 3D in browser</p>
+										</li>
+										<li>
+											<a href="http://www.greensock.com/gsap-js/" target="_blank">GSAP</a>
+											<p>JavaScript animation engine</p>
+										</li>
+										<li>
+											<a href="https://github.com/goldfire/howler.js" target="_blank">Howler.JS</a>
+											<p>Modern web audio JavaScript library</p>
+										</li>
+									</ul>
+								</article>
 
-							<article class="credits">
-								<h1>credits</h1>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-								<ul>
-									<li>
-										<h1>UX & Visual Design<h1>
-										<p><a href="_blank">Yue Fan</a></p>
-									</li>
-									<li>
-										<h1>Web Development<h1>
-										<p><a href="_blank">Joe Zhou</a><a href="_blank">Yue Fan</a></p>
-									</li>
-									<li>
-										<h1>Special Thanks<h1>
-										<p>
-											<a href="_blank">Marla Schweppe</a>
-											<span>Her contributions...</span>
-											<a href="_blank">Chris Jackson</a>
-											<span>His contributions...</span>
-											<a href="_blank">Shaun Foster</a>
-											<span>His contributions...</span>
-										</p>
-									</li>
-								</ul>
-							</article>
+								<article class="credits">
+									<h1>credits</h1>
+									<ul>
+										<li>
+											<h1>Yue Fan (Grace)</h1>
+											<p>UX & Graphic Design / Web Development</p>
+											<a href="http://www.graceux.com" target="_blank">GraceUX.com</a>
+										</li>
+										<li>
+											<h1>Joe Zhou</h1>
+											<p>Web Development</p>
+											<a href="http://www.joeonmars.com" target="_blank">joeonmars.com</a>
+										</li>
+										<li>
+											<h1>Hsin-Lei Chen</h1>
+											<p>Sound Design</p>
+											<a href="http://www.hsinlei.com" target="_blank">HsinLei.com</a>
+										</li>
+										<li>
+											<h1>Marla Schweppe</h1>
+											<p>Chief Advisor, Thesis Committee</p>
+											<a href="http://cias.rit.edu/faculty-staff/145" target="_blank">Rochester Institute of Technology</a>
+										</li>
+										<li>
+											<h1>Chris Jackson</h1>
+											<p>Thesis Committee</p>
+											<a href="http://cias.rit.edu/faculty-staff/148" target="_blank">Rochester Institute of Technology</a>
+										</li>
+										<li>
+											<h1>Shaun Foster</h1>
+											<p>Thesis Committee</p>
+											<a href="http://cias.rit.edu/faculty-staff/146" target="_blank">Rochester Institute of Technology</a>
+										</li>
+									</ul>
+								</article>
+							</div>
+						</div>	
+
+						<div class="scrubber">
+							<div class="handle"></div>
 						</div>
-
 					</div>
 
 				</section>
@@ -158,5 +221,25 @@
 	</div>
 
 </div>
+
+{/template}
+
+
+/**
+ * Glossary Article
+ @param id the glossary id
+ @param glossary the glossary
+ @param color the color classname
+ */
+{template .GlossaryArticle}
+
+<article class="{ $id } { $color }">
+	<h1>{ $glossary.name.en }</h1>
+	<h2>{ $glossary.name.zh }</h2>
+	<figure>
+		<canvas data-id="{ $id }" data-color="{ $color }"></canvas>
+	</figure>
+	<p>{ $glossary.meanings }</p>
+</article>
 
 {/template}

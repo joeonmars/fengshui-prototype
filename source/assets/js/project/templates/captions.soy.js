@@ -58,15 +58,15 @@ feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
-  var param56 = '<div class="draggerContainer"><img class="dragger" draggable="false"></div><div class="top"><h1>Lorem Ipsum</h1><h2>LOREM IPSUM</h2></div><div class="right"><div class="pictureSelector"><div class="pictureView"><ul>';
-  var pictureList58 = opt_data.pictures;
-  var pictureListLen58 = pictureList58.length;
-  for (var pictureIndex58 = 0; pictureIndex58 < pictureListLen58; pictureIndex58++) {
-    var pictureData58 = pictureList58[pictureIndex58];
-    param56 += '<li><img src="' + pictureData58.src + '" alt="' + pictureData58.description + '" draggable="false" data-id="' + pictureIndex58 + '"></li>';
+  var param79 = '<div class="draggerContainer"><img class="dragger" draggable="false"></div><div class="top"><h1>Lorem Ipsum</h1><h2>LOREM IPSUM</h2></div><div class="right"><div class="pictureSelector"><div class="pictureView"><ul>';
+  var pictureList81 = opt_data.pictures;
+  var pictureListLen81 = pictureList81.length;
+  for (var pictureIndex81 = 0; pictureIndex81 < pictureListLen81; pictureIndex81++) {
+    var pictureData81 = pictureList81[pictureIndex81];
+    param79 += '<li><img src="' + pictureData81.src + '" alt="' + pictureData81.description + '" draggable="false" data-id="' + pictureIndex81 + '"></li>';
   }
-  param56 += '</ul></div><aside><div class="prev button"></div><div class="next button"></div></aside></div></div>';
-  var output = feng.templates.captions.Caption({classname: 'changepicture', content: param56});
+  param79 += '</ul></div><aside><div class="prev button"></div><div class="next button"></div></aside></div></div>';
+  var output = feng.templates.captions.Caption({classname: 'changepicture', content: param79});
   return output;
 };
 
@@ -79,11 +79,11 @@ feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
  */
 feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
   var output = '<p class="floatText">';
-  var lineList71 = opt_data.lines;
-  var lineListLen71 = lineList71.length;
-  for (var lineIndex71 = 0; lineIndex71 < lineListLen71; lineIndex71++) {
-    var lineData71 = lineList71[lineIndex71];
-    output += '<span>' + lineData71 + '</span>';
+  var lineList94 = opt_data.lines;
+  var lineListLen94 = lineList94.length;
+  for (var lineIndex94 = 0; lineIndex94 < lineListLen94; lineIndex94++) {
+    var lineData94 = lineList94[lineIndex94];
+    output += '<span>' + lineData94 + '</span>';
   }
   output += '</p>';
   return output;

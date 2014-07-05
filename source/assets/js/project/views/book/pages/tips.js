@@ -21,6 +21,9 @@ feng.views.book.pages.Tips = function( domElement ) {
 
   goog.array.forEach(this._tips, function(tip, index) {
 
+  	// test...
+  	tip.unlocked = (Math.random() < .5);
+
   	var iconCanvas = goog.dom.query('canvas', this._tipEls[index])[0];
   	iconCanvas = tip.getIcon(40, '#FFFDF1', iconCanvas);
 
@@ -91,8 +94,9 @@ feng.views.book.pages.Tips.prototype.updateLayout = function() {
 	this._scrollWidth = 0;
 
 	for(i = 0; i < l; i ++) {
+
 		var tip = this._tips[i];
-		var unlocked = (Math.random() < .5);//tip.unlocked
+		var unlocked = tip.unlocked;
 
 		if(i%2 === 0) {
 			even ++;
@@ -196,7 +200,7 @@ feng.views.book.pages.Tips.prototype.scrollTo = function( toScrollLeft ) {
 
 	var fromScrollLeft = this._scrollerEl.scrollLeft;
 
-	var scrollDistance = this._availableScrollWidth / 10;
+	var scrollDistance = 500;
 
 	var duration = goog.math.lerp(.2, .8, Math.abs(toScrollLeft - fromScrollLeft) / scrollDistance);
 
@@ -241,7 +245,7 @@ feng.views.book.pages.Tips.prototype.onMouseWheel = function( e ) {
 
 	var fromScrollLeft = this._scrollerEl.scrollLeft;
 
-	var scrollDistance = this._availableScrollWidth / 10;
+	var scrollDistance = 500;
 
 	var toScrollLeft = fromScrollLeft + ((e.deltaY > 0) ? 1 : -1) * Math.max(50, scrollDistance);
 	toScrollLeft = Math.max(0, Math.min(toScrollLeft, this._availableScrollWidth));

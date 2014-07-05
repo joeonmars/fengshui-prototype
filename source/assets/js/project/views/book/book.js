@@ -2,6 +2,7 @@ goog.provide('feng.views.book.Book');
 
 goog.require('goog.dom');
 goog.require('goog.events.EventHandler');
+goog.require('goog.object');
 goog.require('feng.events');
 goog.require('feng.models.achievements.Achievements');
 goog.require('feng.templates.book');
@@ -29,7 +30,16 @@ feng.views.book.Book = function() {
 	this._mainEl = goog.dom.getElementByClass('main', this.domElement);
 	this._shadeEl = goog.dom.getElementByClass('shade', this.domElement);
 
-	this._navButtons = goog.dom.query('nav button', this.domElement);
+	this._navButtons = {};
+
+	var navButtons = goog.dom.query('nav button', this.domElement);
+
+	goog.array.forEach(navButtons, function(navButton) {
+		this._navButtons[ navButton.getAttribute('data-id') ] = navButton;
+	}, this);
+
+	this._activeButton = this._navButtons['glossary'];
+	goog.dom.classes.add(this._activeButton, 'active');
 
 	// create pages from elements
 	this._pages = {};
@@ -69,7 +79,7 @@ goog.addSingletonGetter(feng.views.book.Book);
 
 feng.views.book.Book.prototype.activate = function() {
 
-	goog.array.forEach(this._navButtons, function(navButton) {
+	goog.object.forEach(this._navButtons, function(navButton) {
 		this._eventHandler.listen( navButton, 'click', this.onClickNavButton, false, this );
 	}, this);
 };
@@ -145,6 +155,13 @@ feng.views.book.Book.prototype.animateOut = function( instant ) {
 
 
 feng.views.book.Book.prototype.gotoPage = function( id ) {
+
+	if(this._activeButton) {
+		goog.dom.classes.remove(this._activeButton, 'active');
+	}
+
+	this._activeButton = this._navButtons[ id ];
+	goog.dom.classes.add(this._activeButton, 'active');
 
 	var lastPage = this._page;
 	lastPage.animateOut();

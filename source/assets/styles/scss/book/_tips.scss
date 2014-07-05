@@ -29,7 +29,6 @@
 
 						>h1{
 							font-size: 20px;
-							text-transform: uppercase;
 							font-family: $font_marineup_light;
 							white-space: nowrap;
 
@@ -262,7 +261,14 @@
 
 				&.locked{
 					>figure{
-						display: none;
+						>canvas{
+							top: 83px;
+							left: 31px;
+						}
+
+						>figcaption{
+							display: none;
+						}
 					}
 				}
 

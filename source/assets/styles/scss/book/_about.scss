@@ -1,14 +1,184 @@
->.inner{
-	margin: 0 auto;
-	min-width: 960px;
-	max-width: 1280px;
-	text-align: center;
+>.scroller{
+	position: relative;
+	top: 50%;
+	margin-top: -280px;
+	width: 100%;
+	overflow: hidden !important;
 
-	>article{
-		display: inline-block;
-		vertical-align: top;
-		width: 33%;
+	.inner{
+		position: relative;
+		white-space: nowrap;
+		margin: 0 auto;
+		width: 325px + 650px + 650px;
+
+		>article{
+			position: relative;
+			display: inline-block;
+			vertical-align: top;
+			height: 560px;
+			white-space: normal;
+			border-left: 1px solid $brown;
+			padding: 0 14px;
+			@include box-sizing(border-box);
+
+			>h1{
+				font-size: 20px;
+				font-family: $font_marineup_light;
+				line-height: 24px;
+
+				&:before{
+					content: "";
+					margin-bottom: 10px;
+					display: block;
+					width: 100%;
+					height: 12px;
+					background-color: $brown;
+				}
+			}
+
+			>p{
+				margin-top: 54px;
+				font-size: 13px;
+				font-family: $font_marine_light;
+				letter-spacing: 0.2px;
+				line-height: 20px;
+				color: $gray;
+			}
+
+			&:first-child{
+				border-left: none;
+			}
+
+			&.aboutfengshui{
+				width: 325px;
+
+				>h1{
+					color: $red;
+				}
+			}
+
+			&.aboutproject{
+				width: 650px;
+
+				>h1{
+					color: $yellow;
+				}
+
+				>p{
+					@include column-count(2);
+					@include column-gap(30px);
+				}
+
+				>ul{
+					position: absolute;
+					left: 0;
+					top: 275px;
+
+					>li{
+						display: inline-block;
+						vertical-align: top;
+						margin-bottom: 35px;
+						width: 50%;
+						padding-left: 14px;
+						@include box-sizing(border-box);
+
+						>a{
+							font-size: 16px;
+							font-family: $font_marineup;
+							color: $yellow;
+							text-transform: uppercase;
+
+							&:hover{
+								color: $green;
+							}
+						}
+
+						>p{
+							font-size: 13px;
+							font-family: $font_marineup_light;
+							color: $gray;
+							text-transform: uppercase;
+							line-height: 30px;
+						}
+					}
+				}
+			}
+
+			&.credits{
+				width: 650px;
+
+				>h1{
+					color: $black;
+				}
+
+				>ul{
+					position: absolute;
+					left: 0;
+					top: 275px;
+
+					>li{
+						display: inline-block;
+						vertical-align: top;
+						margin-bottom: 50px;
+						width: 50%;
+						padding-left: 14px;
+						@include box-sizing(border-box);
+
+						>h1{
+							font-size: 16px;
+							font-family: $font_marineup;
+							color: $black;
+							text-transform: uppercase;
+						}
+
+						>p{
+							font-size: 13px;
+							font-family: $font_marineup_light;
+							color: $gray;
+							text-transform: uppercase;
+							line-height: 30px;
+						}
+
+						>a{
+							position: relative;
+							font-size: 13px;
+							font-family: $font_marineup_light;
+							color: $gray;
+							top: -5px;
+
+							&:hover{
+								color: $green;
+							}
+						}
+
+						&:first-child{
+							&:before{
+								content: "";
+								position: absolute;
+								top: -50px;
+								display: block;
+								@include retina-ui("graceux");
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+>.scrubber{
+	position: absolute;
+	left: 50%;
+	bottom: 50px;
+	margin-left: -100px;
+	width: 200px;
+	height: 20px;
+	background: $yellow;
+
+	>.handle{
+		position: relative;
 		height: 100%;
-		text-align: left;
+		background: $red;
 	}
 }

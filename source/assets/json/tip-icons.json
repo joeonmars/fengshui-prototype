@@ -26,7 +26,7 @@
 },
 "cactus.png":
 {
-	"frame": {"x":2,"y":132,"w":128,"h":128},
+	"frame": {"x":392,"y":2,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -34,7 +34,7 @@
 },
 "candle.png":
 {
-	"frame": {"x":132,"y":132,"w":128,"h":128},
+	"frame": {"x":522,"y":2,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -42,7 +42,7 @@
 },
 "chair.png":
 {
-	"frame": {"x":262,"y":132,"w":128,"h":128},
+	"frame": {"x":652,"y":2,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -50,15 +50,15 @@
 },
 "computer.png":
 {
-	"frame": {"x":2,"y":262,"w":128,"h":128},
+	"frame": {"x":2,"y":132,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
 	"sourceSize": {"w":128,"h":128}
 },
-"cookingtensils.png":
+"cookingutensils.png":
 {
-	"frame": {"x":132,"y":262,"w":128,"h":128},
+	"frame": {"x":132,"y":132,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -66,7 +66,7 @@
 },
 "crystal.png":
 {
-	"frame": {"x":262,"y":262,"w":128,"h":128},
+	"frame": {"x":262,"y":132,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -74,7 +74,7 @@
 },
 "desk.png":
 {
-	"frame": {"x":2,"y":392,"w":128,"h":128},
+	"frame": {"x":392,"y":132,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -82,7 +82,7 @@
 },
 "flowers.png":
 {
-	"frame": {"x":132,"y":392,"w":128,"h":128},
+	"frame": {"x":522,"y":132,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -90,7 +90,7 @@
 },
 "fruits.png":
 {
-	"frame": {"x":262,"y":392,"w":128,"h":128},
+	"frame": {"x":652,"y":132,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -98,7 +98,7 @@
 },
 "goldfish.png":
 {
-	"frame": {"x":2,"y":522,"w":128,"h":128},
+	"frame": {"x":2,"y":262,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -106,7 +106,15 @@
 },
 "lamp.png":
 {
-	"frame": {"x":132,"y":522,"w":128,"h":128},
+	"frame": {"x":132,"y":262,"w":128,"h":128},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
+	"sourceSize": {"w":128,"h":128}
+},
+"lock.png":
+{
+	"frame": {"x":262,"y":262,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -114,7 +122,7 @@
 },
 "mascot.png":
 {
-	"frame": {"x":262,"y":522,"w":128,"h":128},
+	"frame": {"x":392,"y":262,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -122,7 +130,7 @@
 },
 "paint.png":
 {
-	"frame": {"x":2,"y":652,"w":128,"h":128},
+	"frame": {"x":522,"y":262,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -130,7 +138,7 @@
 },
 "pictures.png":
 {
-	"frame": {"x":132,"y":652,"w":128,"h":128},
+	"frame": {"x":652,"y":262,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -138,7 +146,7 @@
 },
 "seasoningboxes.png":
 {
-	"frame": {"x":262,"y":652,"w":128,"h":128},
+	"frame": {"x":2,"y":392,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -146,7 +154,7 @@
 },
 "sewingmachine.png":
 {
-	"frame": {"x":2,"y":782,"w":128,"h":128},
+	"frame": {"x":132,"y":392,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -154,7 +162,7 @@
 },
 "stairs.png":
 {
-	"frame": {"x":132,"y":782,"w":128,"h":128},
+	"frame": {"x":262,"y":392,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -162,19 +170,19 @@
 },
 "window.png":
 {
-	"frame": {"x":262,"y":782,"w":128,"h":128},
+	"frame": {"x":392,"y":392,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
 	"sourceSize": {"w":128,"h":128}
 }},
 "meta": {
-	"app": "http://www.texturepacker.com",
+	"app": "http://www.codeandweb.com/texturepacker ",
 	"version": "1.0",
 	"image": "tip-icons.png",
 	"format": "RGBA8888",
-	"size": {"w":392,"h":912},
+	"size": {"w":782,"h":522},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:a118e11e9b52cfe30a7ae23c42e10d83$"
+	"smartupdate": "$TexturePacker:SmartUpdate:3eade940233a7b309541f73b90701211:06314cb4c0d86f50d51b5d5792d182bc:b47418a60ba21e5deffa4215e7307c75$"
 }
 }
