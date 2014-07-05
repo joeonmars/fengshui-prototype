@@ -3,6 +3,7 @@ goog.provide('feng.views.book.pages.Glossary');
 goog.require('goog.events.MouseWheelHandler');
 goog.require('goog.math.Rect');
 goog.require('goog.fx.Dragger');
+goog.require('goog.Timer');
 goog.require('feng.views.book.pages.Page');
 goog.require('feng.views.book.Hanzi');
 
@@ -10,13 +11,6 @@ goog.require('feng.views.book.Hanzi');
 feng.views.book.pages.Glossary = function( domElement ) {
 
 	goog.base(this, domElement);
-
-	// create hanzi canvas
-	var canvasEls = goog.dom.query('article canvas', this.domElement);
-	this._hanzis = goog.array.map( canvasEls, function(canvasEl) {
-		var hanzi = new feng.views.book.Hanzi( canvasEl );
-		return hanzi;
-	});
 
 	// for scrolling
   this._scrollerEl = goog.dom.getElementByClass('scroller', this.domElement);
@@ -43,6 +37,17 @@ feng.views.book.pages.Glossary = function( domElement ) {
 
   this._scrubberDraggerLimits = new goog.math.Rect(0, 0, 0, 0);
   this._scrubberDragger = new goog.fx.Dragger(this._handleEl, null, this._scrubberDraggerLimits);
+
+	// create hanzi canvas
+	var canvasEls = goog.dom.query('article canvas', this.domElement);
+	this._hanzis = goog.array.map( canvasEls, function(canvasEl) {
+		var hanzi = new feng.views.book.Hanzi( canvasEl );
+		return hanzi;
+	});
+
+	// set timer to play hanzi in sequence
+	this._timer = new goog.Timer(4000);
+	this._hanziIndex = 0;
 };
 goog.inherits(feng.views.book.pages.Glossary, feng.views.book.pages.Page);
 
@@ -53,12 +58,13 @@ feng.views.book.pages.Glossary.prototype.activate = function() {
 
 	this._eventHandler.listen( this._scrubberDragger, goog.fx.Dragger.EventType.DRAG, this.onDragScrubber, false, this );
 	this._eventHandler.listen( this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this);
+	this._eventHandler.listen( this._timer, goog.Timer.TICK, this.onTick, false, this );
+
+	this._timer.start();
 
 	this._draggable.enable();
 
-	goog.array.forEach(this._hanzis, function(hanzi) {
-		hanzi.activate();
-	});
+	this._hanzis[ this._hanziIndex ].animateIn();
 };
 
 
@@ -66,10 +72,12 @@ feng.views.book.pages.Glossary.prototype.deactivate = function() {
 
 	goog.base(this, 'deactivate');
 
+	this._timer.stop();
+
 	this._draggable.disable();
 
 	goog.array.forEach(this._hanzis, function(hanzi) {
-		hanzi.deactivate();
+		hanzi.animateOut();
 	});
 };
 
@@ -135,6 +143,19 @@ feng.views.book.pages.Glossary.prototype.onMouseWheel = function( e ) {
 	toScrollLeft = Math.max(0, Math.min(toScrollLeft, this._availableScrollWidth));
 
 	this.scrollTo( toScrollLeft );
+};
+
+
+feng.views.book.pages.Glossary.prototype.onTick = function( e ) {
+
+	this._hanzis[ this._hanziIndex ].animateOut();
+
+	this._hanziIndex ++;
+	if(this._hanziIndex > this._hanzis.length - 1) {
+		this._hanziIndex = 0;
+	}
+
+	this._hanzis[ this._hanziIndex ].animateIn();
 };
 
 

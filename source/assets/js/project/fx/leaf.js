@@ -7,9 +7,11 @@ goog.require('feng.fx.Particle');
 /**
  * @constructor
  */
-feng.fx.Leaf = function(timeOffset, leaf, jiggleFrequency, maxJiggleAmount, pathTrack){
+feng.fx.Leaf = function(timeOffset, leaf, minSize, maxSize, jiggleFrequency, maxJiggleAmount, pathTrack){
 
-	this._size = Math.round( goog.math.uniformRandom(2, 4) );
+	var minSize = minSize || 2;
+	var maxSize = minSize + 2;
+	this._size = Math.round( goog.math.uniformRandom(minSize, maxSize) );
 	this._leaf = leaf;
 
 	this._rotationVelocityX = goog.math.uniformRandom(0.02, 0.04);

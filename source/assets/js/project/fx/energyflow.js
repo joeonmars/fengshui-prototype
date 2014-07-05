@@ -8,7 +8,7 @@ goog.require('feng.fx.Leaf');
 /**
  * @constructor
  */
-feng.fx.EnergyFlow = function(controlPoints, isClosed, preset){
+feng.fx.EnergyFlow = function(controlPoints, isClosed, preset, debug){
 
 	this._preset = preset || feng.fx.EnergyFlow.Preset.DEFAULT;
 
@@ -16,8 +16,8 @@ feng.fx.EnergyFlow = function(controlPoints, isClosed, preset){
 	this._timeDiff = 0;
 	this._duration = this._preset.duration;
 	this._particles = [];
-	this._numTrails = 100;
-	this._numLeaves = 20;
+	this._numTrails = this._preset.numTrails;
+	this._numLeaves = this._preset.numLeaves;
 	this._numParticles = this._numTrails + this._numLeaves;
 
 	this._particles = [];
@@ -26,7 +26,7 @@ feng.fx.EnergyFlow = function(controlPoints, isClosed, preset){
 	var offset = 0;
 	var color = '#000000';
 
-	goog.base(this, controlPoints, offset, isClosed, color);
+	goog.base(this, controlPoints, offset, isClosed, color, debug);
 };
 goog.inherits(feng.fx.EnergyFlow, feng.fx.PathTrack);
 
@@ -45,6 +45,8 @@ feng.fx.EnergyFlow.prototype.create = function(controlPoints, offset, isClosed, 
 		var particle = isLeaf ? new feng.fx.Leaf(
 			timeOffset,
 			this._preset.leaf,
+			this._preset.leafMinSize,
+			this._preset.leafMaxSize,
 			this._preset.jiggleFrequency,
 			this._preset.maxJiggleAmount,
 			this)
@@ -94,6 +96,40 @@ feng.fx.EnergyFlow.prototype.deactivate = function(){
 };
 
 
+feng.fx.EnergyFlow.prototype.fadeIn = function( duration ){
+
+	this.activate();
+
+	var materials = goog.array.map(this.children, function(child) {
+		return child.material;
+	});
+
+	var duration = goog.isNumber(duration) ? duration : .5;
+
+	TweenMax.fromTo(materials, duration, {
+		'opacity': 0
+	}, {
+		'opacity': 1
+	});
+};
+
+
+feng.fx.EnergyFlow.prototype.fadeOut = function( duration ){
+
+	var materials = goog.array.map(this.children, function(child) {
+		return child.material;
+	});
+
+	var duration = goog.isNumber(duration) ? duration : .5;
+
+	TweenMax.to(materials, duration, {
+		'opacity': 0,
+		'onComplete': this.deactivate,
+		'onCompleteScope': this
+	});
+};
+
+
 feng.fx.EnergyFlow.prototype.onAnimationFrame = function( now ){
 
 	// calculate u
@@ -126,7 +162,11 @@ feng.fx.EnergyFlow.prototype.onWindowBlur = function( e ){
 
 feng.fx.EnergyFlow.Preset = {
 	DEFAULT: {
+		numTrails: 100,
+		numLeaves: 20,
 		leaf: null,
+		leafMinSize: 0,
+		leafMaxSize: 0,
 		color: '#48D1CC',
 		duration: 20000,
 		length: 80,
@@ -134,7 +174,11 @@ feng.fx.EnergyFlow.Preset = {
 		maxJiggleAmount: 4 
 	},
 	JI: {
+		numTrails: 100,
+		numLeaves: 20,
 		leaf: 'ji',
+		leafMinSize: 2,
+		leafMaxSize: 4,
 		color: '#25DDFF',
 		duration: 20000,
 		length: 80,
@@ -142,7 +186,11 @@ feng.fx.EnergyFlow.Preset = {
 		maxJiggleAmount: 4 
 	},
 	SHA: {
+		numTrails: 100,
+		numLeaves: 20,
 		leaf: 'sha',
+		leafMinSize: 2,
+		leafMaxSize: 4,
 		color: '#E49230',
 		duration: 8000,
 		length: 20,
@@ -150,7 +198,11 @@ feng.fx.EnergyFlow.Preset = {
 		maxJiggleAmount: 4 
 	},
 	YIN: {
+		numTrails: 100,
+		numLeaves: 20,
 		leaf: 'yin',
+		leafMinSize: 2,
+		leafMaxSize: 4,
 		color: '#00B936',
 		duration: 20000,
 		length: 60,
@@ -158,10 +210,26 @@ feng.fx.EnergyFlow.Preset = {
 		maxJiggleAmount: 4 
 	},
 	YANG: {
+		numTrails: 100,
+		numLeaves: 20,
 		leaf: 'yang',
+		leafMinSize: 2,
+		leafMaxSize: 4,
 		color: '#EF3B00',
 		duration: 20000,
 		length: 60,
+		jiggleFrequency: 2,
+		maxJiggleAmount: 4 
+	},
+	HANZI_CHI: {
+		numTrails: 50,
+		numLeaves: 10,
+		leaf: 'ji',
+		leafMinSize: 6,
+		leafMaxSize: 12,
+		color: '#48D1CC',
+		duration: 20000,
+		length: 40,
 		jiggleFrequency: 2,
 		maxJiggleAmount: 4 
 	}
