@@ -21,8 +21,9 @@ feng.views.book.pages.Tips = function( domElement ) {
 
   goog.array.forEach(this._tips, function(tip, index) {
 
-  	// test...
-  	tip.unlocked = (Math.random() < .5);
+  	// test storage...
+  	//tip.unlocked = (Math.random() < .5);
+  	//if(tip.unlocked) feng.storageController.onTipUnlocked( tip.id );
 
   	var iconCanvas = goog.dom.query('canvas', this._tipEls[index])[0];
   	iconCanvas = tip.getIcon(40, '#FFFDF1', iconCanvas);
@@ -217,6 +218,9 @@ feng.views.book.pages.Tips.prototype.scrollTo = function( toScrollLeft ) {
 
 
 feng.views.book.pages.Tips.prototype.onUnlock = function( e ) {
+
+	var iconCanvas = goog.dom.query('li[data-tip-id="' + e.tip.id + '"] canvas', this._scrollerEl)[0];
+  	iconCanvas = tip.getIcon(40, '#FFFDF1', iconCanvas);
 
 	this.updateLayout();
 };

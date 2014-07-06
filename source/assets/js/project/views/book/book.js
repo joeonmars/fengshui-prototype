@@ -71,7 +71,7 @@ feng.views.book.Book = function() {
 
 	this.animateOut( true );
 
-	this.animateIn();
+	//this.animateIn();
 };
 goog.inherits(feng.views.book.Book, goog.events.EventTarget);
 goog.addSingletonGetter(feng.views.book.Book);
@@ -88,6 +88,8 @@ feng.views.book.Book.prototype.activate = function() {
 feng.views.book.Book.prototype.deactivate = function() {
 
 	this._eventHandler.removeAll();
+
+	this._page.deactivate();
 };
 
 

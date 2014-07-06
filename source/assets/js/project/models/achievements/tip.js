@@ -25,7 +25,7 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId, data ){
 
   this.iconId = data['icon'];
 
-  this.unlocked = false;
+  this.unlocked = feng.storageController.isTipUnlocked( this.id );
 
   this._requiredTipId = null;
 };

@@ -6,6 +6,7 @@ goog.require('goog.style');
 goog.require('feng.templates.main');
 goog.require('feng.controllers.NavigationController');
 goog.require('feng.controllers.SectionController');
+goog.require('feng.controllers.StorageController');
 goog.require('feng.views.debug.Debugger');
 goog.require('feng.views.MainOptions');
 goog.require('feng.PubSub');
@@ -34,6 +35,8 @@ feng.apps.Demo = function() {
 
 	var navigationController = feng.controllers.NavigationController.getInstance();
 	var sectionController = feng.controllers.SectionController.getInstance();
+
+	feng.storageController = feng.controllers.StorageController.getInstance();
 
 	feng.controllers.NavigationController.Implementation = feng.controllers.NavigationController.HASH;
 	navigationController.init();
