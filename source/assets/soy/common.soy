@@ -1,0 +1,48 @@
+{namespace feng.templates.common autoescape="false"}
+
+
+/**
+ * Disc Element
+ @param content the content HTML
+ */
+{template .Disc}
+
+<div class="disc">
+	<div class="outer"></div>
+	<div class="inner">
+	{ $content }
+	</div>
+</div>
+
+{/template}
+
+
+/**
+ * Primary Button
+ @param? href the href of <a> tag
+ @param? icon the icon classname
+ @param text the button text
+ */
+{template .PrimaryButton}
+
+{if $href}
+
+<a class="primary-button" href="{ $href }">
+	{if $icon}
+		<div class="icon { $icon }"></div>
+	{/if}
+	{ $text }
+</a>
+
+{else}
+
+<button class="primary-button">
+	{if $icon}
+		<div class="icon { $icon }"></div>
+	{/if}
+	{ $text }
+</button>
+
+{/if}
+
+{/template}

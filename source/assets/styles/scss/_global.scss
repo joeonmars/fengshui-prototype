@@ -23,6 +23,19 @@ $red: #e2443a;
 $yellow: #e3cc76;
 $black: #3d3e39;
 
+$easeInOutCirc: cubic-bezier(0.785, 0.135, 0.150, 0.860);
+$easeInOutSine: cubic-bezier(0.445, 0.050, 0.550, 0.950);
+$easeInOutQuad: cubic-bezier(0.455, 0.030, 0.515, 0.955);
+$easeInOutCubic: cubic-bezier(0.645, 0.045, 0.355, 1.000);
+$easeInOutQuart: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+$easeInOutQuint: cubic-bezier(0.860, 0.000, 0.070, 1.000);
+$easeInOutExpo: cubic-bezier(1.000, 0.000, 0.000, 1.000);
+$easeOutQuad: cubic-bezier(0.250, 0.460, 0.450, 0.940);
+$easeOutCubic: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+$easeOutQuart: cubic-bezier(0.165, 0.840, 0.440, 1.000);
+$easeOutQuint: cubic-bezier(0.230, 1.000, 0.320, 1.000);
+$easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+
 
 html, body{
   position: absolute;
@@ -97,6 +110,47 @@ button{
   text-align: center;
 }
 
+.primary-button{
+  @extend .button;
+  position: relative;
+  display: block;
+  font-family: $font_marineup_light;
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 12px 16px;
+  color: $green;
+  overflow: hidden;
+  border: 2px solid $green;
+  @include border-radius( 40px );
+  @include box-sizing( border-box );
+  @include transition( color .4s $easeInOutCirc, background-color .2s, text-indent .25s );
+
+  >.icon{
+    position: absolute;
+    color: $cream;
+    line-height: 18px;
+    text-indent: 0;
+    @include translateY( -18px - 12px );
+    @include single-transition( transform, .25s );
+
+    &.yes{
+      @include font-awesome( "fa-check" );
+    }
+  }
+
+  &:hover{
+    color: $cream;
+    background-color: $green;
+    text-indent: 18px;
+
+    >.icon{
+      @include translateY( 0px );
+    }
+  }
+}
+
+
 @mixin absoluteTopLeft() {
   position: absolute;
   top: 0;
@@ -107,4 +161,31 @@ button{
   position: absolute;
   top: 0;
   right: 0;
+}
+
+@mixin disc($size) {
+  position: absolute;
+  width: 0;
+  height: 0;
+
+  >.outer{
+    position: absolute;
+    left: - $size / 2;
+    top: - $size / 2;
+    width: $size;
+    height: $size;
+    background-color: rgba(255, 255, 255, .5);
+    @include border-radius(50%);
+  }
+
+  >.inner{
+    position: absolute;
+    left: - ($size - 10px) / 2;
+    top: - ($size - 10px) / 2;
+    width: $size - 10px;
+    height: $size - 10px;
+    background-color: #fff;
+    @include border-radius(50%);
+    @include single-box-shadow(rgba(0, 0, 0, .14), 1px, 1px, 2px);
+  }
 }

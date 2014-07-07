@@ -37,20 +37,48 @@
  * Scene Selection
  */
 {template .SceneSelection}
-<div id="scene-selection">
+<div class="scene-selection">
+
 	<div class="scene studio">
-		<div class="shade"></div>
-		<div class="people"></div>
-		<div class="prompt"></div>
+		<div class="background"></div>
+		<div class="overlay">
+			<div class="prompt">
+				{call feng.templates.common.Disc}
+					{param content}
+						{call feng.templates.common.PrimaryButton}
+							{param href: '#' /}
+							{param icon: 'yes' /}
+							{param text: 'start' /}
+						{/call}
+					{/param}
+				{/call}
+			</div>
+			<div class="people"></div>
+		</div>
 	</div>
+
 	<div class="scene townhouse">
-		<div class="shade"></div>
-		<div class="people"></div>
-		<div class="prompt"></div>
+		<div class="background"></div>
+		<div class="overlay">
+			<div class="prompt">
+				{call feng.templates.common.Disc}
+					{param content}
+						{call feng.templates.common.PrimaryButton}
+							{param href: '#' /}
+							{param icon: 'yes' /}
+							{param text: 'start' /}
+						{/call}
+					{/param}
+				{/call}
+			</div>
+			<div class="people"></div>
+		</div>
 	</div>
+
 	<div class="ui">
 		{call .Logo}{/call}
 	</div>
+
 </div>
 {/template}
 
@@ -84,6 +112,7 @@
 		<div class="preloader">
 			<div class="fill"></div>
 		</div>
+		{call .SceneSelection}{/call}
 	</div>
 
 	<ul id="main-options">

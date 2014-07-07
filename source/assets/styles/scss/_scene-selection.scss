@@ -1,0 +1,72 @@
+.scene-selection{
+	width: 100%;
+	height: 100%;
+
+	>.scene{
+		position: relative;
+		display: inline-block;
+		vertical-align: top;
+		width: 50%;
+		height: 100%;
+		background-color: #000;
+		overflow: hidden;
+		@include single-transition(width, .5s, $easeInOutSine);
+
+		>.background{
+			@include absoluteTopLeft;
+			width: 100%;
+			height: 100%;
+			background-position: center center;
+			background-size: cover;
+			opacity: .5;
+			@include single-transition(opacity, .5s, $easeInOutSine);
+		}
+
+		>.overlay{
+			position: absolute;
+			top: 0;
+			left: 50%;
+			margin-top: 0;
+			margin-left: -400px;
+			width: 800px;
+			height: 100%;
+			overflow: hidden;
+
+			>.prompt{
+				@include absoluteTopLeft;
+				top: 50%;
+				left: 50%;
+
+				>.disc{
+					@include disc( 360px );
+
+					>.inner{
+						text-align: center;
+
+						>.primary-button{
+							margin: 0 auto;
+							width: 130px;
+						}
+					}
+				}
+			}
+
+			>.people{
+
+			}
+		}
+
+		&.studio{
+			>.background{
+				background-image: image-url('scene-studio.jpg');
+			}
+		}
+
+		&.townhouse{
+			>.background{
+				background-image: image-url('scene-townhouse.jpg');
+			}
+		}
+
+	}
+}

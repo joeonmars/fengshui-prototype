@@ -5,6 +5,7 @@ goog.provide('feng.templates.main');
 
 goog.require('soy');
 goog.require('soydata');
+goog.require('feng.templates.common');
 goog.require('feng.templates.controls');
 goog.require('feng.templates.debug');
 
@@ -27,7 +28,7 @@ feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.main.SceneSelection = function(opt_data, opt_ignored) {
-  return '<div id="scene-selection"><div class="scene studio"><div class="shade"></div><div class="people"></div><div class="prompt"></div></div><div class="scene townhouse"><div class="shade"></div><div class="people"></div><div class="prompt"></div></div><div class="ui">' + feng.templates.main.Logo(null) + '</div></div>';
+  return '<div class="scene-selection"><div class="scene studio"><div class="background"></div><div class="overlay"><div class="prompt">' + feng.templates.common.Disc({content: feng.templates.common.PrimaryButton({href: '#', icon: 'yes', text: 'start'})}) + '</div><div class="people"></div></div></div><div class="scene townhouse"><div class="background"></div><div class="overlay"><div class="prompt">' + feng.templates.common.Disc({content: feng.templates.common.PrimaryButton({href: '#', icon: 'yes', text: 'start'})}) + '</div><div class="people"></div></div></div><div class="ui">' + feng.templates.main.Logo(null) + '</div></div>';
 };
 
 
@@ -49,7 +50,7 @@ feng.templates.main.Logo = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.main.Main = function(opt_data, opt_ignored) {
-  return '<div id="main"><div class="section" id="home"><div class="preloader"><div class="fill"></div></div></div><ul id="main-options"><li><button class="howtoplay"><div class="fill"></div><div class="icon"><div></div><div></div></div></button></li><li><button class="fullscreen"><div class="fill"></div><div class="icon"><div></div><div></div></div></button></li><li><button class="sound"><div class="fill"></div><div class="icon"><div></div><div></div></div></button></li><li class="share"><button><div class="fill"></div><div class="icon"><div></div><div></div></div></button><div class="slider"><div class="buttons"><a class="facebook"></a><a class="twitter"></a><a class="google"></a></div></div></li></ul>' + ((opt_data.debug != false) ? feng.templates.debug.Debugger(null) : '') + '</div>';
+  return '<div id="main"><div class="section" id="home"><div class="preloader"><div class="fill"></div></div>' + feng.templates.main.SceneSelection(null) + '</div><ul id="main-options"><li><button class="howtoplay"><div class="fill"></div><div class="icon"><div></div><div></div></div></button></li><li><button class="fullscreen"><div class="fill"></div><div class="icon"><div></div><div></div></div></button></li><li><button class="sound"><div class="fill"></div><div class="icon"><div></div><div></div></div></button></li><li class="share"><button><div class="fill"></div><div class="icon"><div></div><div></div></div></button><div class="slider"><div class="buttons"><a class="facebook"></a><a class="twitter"></a><a class="google"></a></div></div></li></ul>' + ((opt_data.debug != false) ? feng.templates.debug.Debugger(null) : '') + '</div>';
 };
 
 
