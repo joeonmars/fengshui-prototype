@@ -46,23 +46,40 @@
 
 								>.slider{
 									display: inline-block;
-									@include transition(opacity .4s, transform .4s);
 									opacity: 0;
+									@include transition(opacity .4s, transform .4s);
 									@include translateX(-4px);
 
 									>li{
 										display: inline-block;
 										vertical-align: top;
-										margin: 0 4px;
+										margin: 0 5px;
 
 										>a{
 											display: block;
 											@include single-transition(opacity, .4s);
+											font-size: 18px;
 											opacity: .25;
+
+											&.facebook{
+												@include font-awesome("fa-facebook");
+											}
+
+											&.twitter{
+												@include font-awesome("fa-twitter");
+											}
+
+											&.google{
+												@include font-awesome("fa-google-plus");
+											}
 
 											&:hover{
 												opacity: 1;
 											}
+										}
+
+										&:first-child{
+											margin-left: 10px;
 										}
 									}
 								}
@@ -103,18 +120,8 @@
 										>.icon{
 											@include retina-icon("tip-share-red");
 										}
-										>.slider{
-											.facebook{
-												@include retina-icon("tip-facebook-red");
-											}
-
-											.twitter{
-												@include retina-icon("tip-twitter-red");
-											}
-
-											.google{
-												@include retina-icon("tip-google-red");
-											}
+										a{
+											color: $red;
 										}
 									}
 								}
@@ -158,18 +165,8 @@
 										>.icon{
 											@include retina-icon("tip-share-black");
 										}
-										>.slider{
-											.facebook{
-												@include retina-icon("tip-facebook-black");
-											}
-
-											.twitter{
-												@include retina-icon("tip-twitter-black");
-											}
-
-											.google{
-												@include retina-icon("tip-google-black");
-											}
+										a{
+											color: $black;
 										}
 									}
 								}
@@ -213,18 +210,8 @@
 										>.icon{
 											@include retina-icon("tip-share-yellow");
 										}
-										>.slider{
-											.facebook{
-												@include retina-icon("tip-facebook-yellow");
-											}
-
-											.twitter{
-												@include retina-icon("tip-twitter-yellow");
-											}
-
-											.google{
-												@include retina-icon("tip-google-yellow");
-											}
+										a{
+											color: $yellow;
 										}
 									}
 								}

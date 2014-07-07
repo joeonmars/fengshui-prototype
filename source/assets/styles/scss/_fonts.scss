@@ -757,6 +757,8 @@ $font_system: $font_marineup, Helvetica, Arial, sans-serif;
 		$unicode: "\f195";
 	} @else if $class == "fa-plus-square-o" {
 		$unicode: "\f196";
+	} @else if $class == "fa-share-alt" {
+		$unicode: "\f1e0";
 	}
 
 	&:after{
