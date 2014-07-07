@@ -20,7 +20,6 @@ feng.views.book.Hanzi = function(canvas) {
 		canvas: canvas,
 		antialias: true
 	});
-
 	this._renderer.setClearColor( feng.Color.CREAM, 1 );
 	this._renderer.gammaInput = true;
 	this._renderer.gammaOutput = true;
@@ -34,8 +33,6 @@ feng.views.book.Hanzi = function(canvas) {
 	this._type.material.color.set( this._color );
 
 	// add energy flow
-	this._energyFlow = null;
-
 	var hanziPreset = feng.views.book.Hanzi.Preset[ this.id ];
 
 	var controlPoints = goog.array.map(hanziPreset.points, function(point) {
@@ -62,9 +59,7 @@ feng.views.book.Hanzi.prototype.animateIn = function( duration ) {
 
 	var duration = goog.isNumber( duration ) ? duration : 2;
 
-	if(this._energyFlow) {
-		this._energyFlow.fadeIn( duration );
-	}
+	this._energyFlow.fadeIn( duration );
 
 	TweenMax.to(this._type.rotation, duration, {
 		'y': THREE.Math.degToRad( -30 ),
@@ -77,9 +72,7 @@ feng.views.book.Hanzi.prototype.animateOut = function( duration ) {
 
 	var duration = goog.isNumber( duration ) ? duration : 2;
 
-	if(this._energyFlow) {
-		this._energyFlow.fadeOut( duration );
-	}
+	this._energyFlow.fadeOut( duration );
 
 	TweenMax.to(this._type.rotation, duration, {
 		'y': 0,

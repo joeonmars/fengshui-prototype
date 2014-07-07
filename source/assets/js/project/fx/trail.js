@@ -7,12 +7,14 @@ goog.require('feng.fx.Particle');
 /**
  * @constructor
  */
-feng.fx.Trail = function(timeOffset, color, length, jiggleFrequency, maxJiggleAmount, pathTrack){
+feng.fx.Trail = function(timeOffset, color, length, blendMode, jiggleFrequency, maxJiggleAmount, pathTrack){
 
 	this._numLineVertices = length + Math.round(Math.random()*length);
 	this._geometry = new THREE.Geometry();
 
 	this._hsl = new THREE.Color( color ).getHSL();
+
+	this._blendMode = blendMode || THREE.AdditiveBlending;
 
 	//
 	goog.base(this, timeOffset, jiggleFrequency, maxJiggleAmount, pathTrack);
@@ -28,15 +30,22 @@ feng.fx.Trail.prototype.create = function() {
 	for( var i = 0; i < this._numLineVertices; i++ ) {
 
 		this._geometry.vertices.push( i === 0 ? this._position : new THREE.Vector3() );
+		
 		var ratio = i / (this._numLineVertices - 1);
 		var s = this._hsl.s;
 		var l = Math.sin( ratio * Math.PI ) * .1;
+
+		if(this._blendMode === THREE.MultiplyBlending) {
+			l = 1 - l;
+		}
+
 		color.setHSL(h, s, l);
+
 		this._geometry.colors.push( color.clone() );
 	}
 
 	var material = new THREE.LineBasicMaterial({
-		blending: THREE.AdditiveBlending,
+		blending: this._blendMode,
 		vertexColors: THREE.VertexColors,
 		transparent: true,
 		linewidth: 4,

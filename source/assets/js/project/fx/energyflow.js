@@ -55,6 +55,7 @@ feng.fx.EnergyFlow.prototype.create = function(controlPoints, offset, isClosed, 
 			timeOffset,
 			this._preset.color,
 			this._preset.length,
+			this._preset.blendMode,
 			this._preset.jiggleFrequency,
 			this._preset.maxJiggleAmount,
 			this);
@@ -170,6 +171,7 @@ feng.fx.EnergyFlow.Preset = {
 		color: '#48D1CC',
 		duration: 20000,
 		length: 80,
+		blendMode: THREE.AdditiveBlending,
 		jiggleFrequency: 2,
 		maxJiggleAmount: 4 
 	},
@@ -182,6 +184,7 @@ feng.fx.EnergyFlow.Preset = {
 		color: '#25DDFF',
 		duration: 20000,
 		length: 80,
+		blendMode: THREE.AdditiveBlending,
 		jiggleFrequency: 2,
 		maxJiggleAmount: 4 
 	},
@@ -194,6 +197,7 @@ feng.fx.EnergyFlow.Preset = {
 		color: '#E49230',
 		duration: 8000,
 		length: 20,
+		blendMode: THREE.AdditiveBlending,
 		jiggleFrequency: 2,
 		maxJiggleAmount: 4 
 	},
@@ -206,6 +210,7 @@ feng.fx.EnergyFlow.Preset = {
 		color: '#00B936',
 		duration: 20000,
 		length: 60,
+		blendMode: THREE.AdditiveBlending,
 		jiggleFrequency: 2,
 		maxJiggleAmount: 4 
 	},
@@ -218,6 +223,7 @@ feng.fx.EnergyFlow.Preset = {
 		color: '#EF3B00',
 		duration: 20000,
 		length: 60,
+		blendMode: THREE.AdditiveBlending,
 		jiggleFrequency: 2,
 		maxJiggleAmount: 4 
 	},
@@ -229,7 +235,8 @@ feng.fx.EnergyFlow.Preset = {
 		leafMaxSize: 12,
 		color: '#48D1CC',
 		duration: 20000,
-		length: 40,
+		length: 80,
+		blendMode: THREE.MultiplyBlending,
 		jiggleFrequency: 2,
 		maxJiggleAmount: 4 
 	}
