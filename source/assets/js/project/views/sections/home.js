@@ -83,8 +83,8 @@ feng.views.sections.Home.prototype.onLoadAnimationComplete = function(e){
 
 	goog.base(this, 'onLoadAnimationComplete', e);
 	
-	//this._sceneSelection.activate();
+	this._sceneSelection.activate();
 
-	var navigationController = feng.controllers.NavigationController.getInstance();
-	navigationController.setToken('studio');
+	//var navigationController = feng.controllers.NavigationController.getInstance();
+	//navigationController.setToken('studio');
 };

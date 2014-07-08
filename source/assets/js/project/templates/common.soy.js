@@ -14,7 +14,7 @@ goog.require('soydata');
  * @notypecheck
  */
 feng.templates.common.Disc = function(opt_data, opt_ignored) {
-  return '<div class="disc"><div class="outer"></div><div class="inner">' + opt_data.content + '</div></div>';
+  return '<div class="disc"><div class="outer"></div><div class="inner"><div class="content">' + opt_data.content + '</div></div></div>';
 };
 
 
