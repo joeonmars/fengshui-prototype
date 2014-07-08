@@ -34,10 +34,10 @@
 
 
 /**
- * Scene Selection
+ * Episode Selection
  */
-{template .SceneSelection}
-<div class="scene-selection">
+{template .EpisodeSelection}
+<div class="episode-selection">
 
 	<div class="scene studio">
 		<div class="shade"></div>
@@ -89,29 +89,20 @@
 		</div>
 	</div>
 
-	<div class="ui">
-		{call .Logo}{/call}
+	<div class="prompt">
+		{call feng.templates.common.Disc}
+			{param content}
+				{call feng.templates.common.FengshuiLogo}
+					{param noText: true /}
+				{/call}
+			{/param}
+		{/call}
+
+		{call feng.templates.common.FengshuiLogo}
+			{param noText: true /}
+		{/call}
 	</div>
 
-</div>
-{/template}
-
-
-/**
- * Fengshui Realtime Logo
- */
-{template .Logo}
-<div class="logo">
-	<div class="graph">
-		<div class="outline"></div>
-		<div class="needle"></div>
-	</div>
-	<div class="text">
-		<h1>
-			<span>Fengshui</span>
-			<span>Real-time</span>
-		</h1>
-	</div>
 </div>
 {/template}
 
@@ -123,10 +114,26 @@
 {template .Main}
 <div id="main">
 	<div class="section" id="home">
-		<div class="preloader">
-			<div class="fill"></div>
+
+		<div class="inner">
+			<section id="main-preloader">
+				{call feng.templates.common.FengshuiLogo}
+					{param noText: true /}
+				{/call}
+
+				<div class="preloader">
+					<div class="fill"></div>
+				</div>
+			</section>
+
+			<section id="main-intro">
+			</section>
+
+			<section id="main-episode-selection">
+				{call .EpisodeSelection}{/call}
+			</section>
 		</div>
-		{call .SceneSelection}{/call}
+
 	</div>
 
 	<ul id="main-options">

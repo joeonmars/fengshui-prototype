@@ -8,7 +8,7 @@ goog.require('feng.views.sections.Section');
 goog.require('feng.models.achievements.Achievements');
 goog.require('feng.controllers.SectionController');
 goog.require('feng.views.book.Book');
-goog.require('feng.views.SceneSelection');
+goog.require('feng.views.EpisodeSelection');
 
 
 /**
@@ -21,8 +21,8 @@ feng.views.sections.Home = function(){
 
   this.assetKeys = [this.id, 'accessories', 'global'];
 
-  var sceneSelectionEl = goog.dom.getElementByClass( 'scene-selection', this.domElement );
-  this._sceneSelection = new feng.views.SceneSelection( sceneSelectionEl );
+  var episodeSelectionEl = goog.dom.getElementByClass( 'episode-selection', this.domElement );
+  this._episodeSelection = new feng.views.EpisodeSelection( episodeSelectionEl );
 };
 goog.inherits(feng.views.sections.Home, feng.views.sections.Section);
 
@@ -83,7 +83,7 @@ feng.views.sections.Home.prototype.onLoadAnimationComplete = function(e){
 
 	goog.base(this, 'onLoadAnimationComplete', e);
 	
-	this._sceneSelection.activate();
+	this._episodeSelection.activate();
 
 	//var navigationController = feng.controllers.NavigationController.getInstance();
 	//navigationController.setToken('studio');

@@ -1,4 +1,4 @@
-goog.provide('feng.views.SceneSelection');
+goog.provide('feng.views.EpisodeSelection');
 
 goog.require('goog.dom');
 goog.require('goog.dom.classes');
@@ -8,7 +8,7 @@ goog.require('goog.dom.query');
 /**
  * @constructor
  */
-feng.views.SceneSelection = function(domElement){
+feng.views.EpisodeSelection = function(domElement){
 
   goog.base(this);
 
@@ -159,6 +159,8 @@ feng.views.SceneSelection = function(domElement){
   //
   this._promptAnimateInDelay = 0;
 
+  this._promptEl = goog.dom.query('> .prompt', this.domElement)[0];
+
   this._studioBackgroundEl = goog.dom.getElementByClass('shade', this._studioEl);
   this._townhouseBackgroundEl = goog.dom.getElementByClass('shade', this._townhouseEl);
 
@@ -174,10 +176,10 @@ feng.views.SceneSelection = function(domElement){
 	goog.style.setStyle( this._studioBackgroundEl, 'opacity', .5 );
 	goog.style.setStyle( this._townhouseBackgroundEl, 'opacity', .5 );
 };
-goog.inherits(feng.views.SceneSelection, goog.events.EventTarget);
+goog.inherits(feng.views.EpisodeSelection, goog.events.EventTarget);
 
 
-feng.views.SceneSelection.prototype.activate = function(){
+feng.views.EpisodeSelection.prototype.activate = function(){
 
 	this._eventHandler.listen( this._studioEl, 'mouseover', this.onMouseOver, false, this );
 	this._eventHandler.listen( this._townhouseEl, 'mouseover', this.onMouseOver, false, this );
@@ -186,7 +188,7 @@ feng.views.SceneSelection.prototype.activate = function(){
 };
 
 
-feng.views.SceneSelection.prototype.deactivate = function(){
+feng.views.EpisodeSelection.prototype.deactivate = function(){
 
 	this._eventHandler.removeAll();
 
@@ -194,10 +196,12 @@ feng.views.SceneSelection.prototype.deactivate = function(){
 };
 
 
-feng.views.SceneSelection.prototype.updateSceneStatus = function(){
+feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
 
 	goog.style.setStyle( this._studioEl, 'width', this._studioRatio * 100 + '%' );
 	goog.style.setStyle( this._townhouseEl, 'width', this._townhouseRatio * 100 + '%' );
+
+	goog.style.setStyle( this._promptEl, 'left', this._studioRatio * 100 + '%' );
 
 	goog.Timer.clear( this._promptAnimateInDelay );
 
@@ -262,7 +266,7 @@ feng.views.SceneSelection.prototype.updateSceneStatus = function(){
 };
 
 
-feng.views.SceneSelection.prototype.onMouseOver = function(e){
+feng.views.EpisodeSelection.prototype.onMouseOver = function(e){
 
 	if(e.currentTarget === this._hoveredSceneEl) return false;
 	else this._hoveredSceneEl = e.currentTarget;
@@ -284,9 +288,9 @@ feng.views.SceneSelection.prototype.onMouseOver = function(e){
 };
 
 
-feng.views.SceneSelection.prototype.onMouseOut = function(e){
+feng.views.EpisodeSelection.prototype.onMouseOut = function(e){
 
-  if(!e.relatedTarget) {
+  if(!e.relatedTarget || !goog.dom.contains(this.domElement, e.relatedTarget)) {
 
   	this._hoveredSceneEl = null;
   	this._studioRatio = .5;

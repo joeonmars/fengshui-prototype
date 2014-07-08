@@ -48,3 +48,25 @@
 {/if}
 
 {/template}
+
+
+/**
+ * Fengshui Logo
+ * @param? noText whether excludes logo text
+ */
+{template .FengshuiLogo}
+
+<div class="fengshui-logo">
+	<div class="symbol">
+		<div class="compass"></div>
+		<div class="frame"></div>
+	</div>
+	{if $noText != true}
+	<h1>
+		<div class="line1">FENGSHUI</div>
+		<div class="line2">REALTIME</div>
+	</h1>
+	{/if}
+</div>
+
+{/template}
