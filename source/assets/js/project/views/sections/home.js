@@ -9,6 +9,9 @@ goog.require('feng.models.achievements.Achievements');
 goog.require('feng.controllers.SectionController');
 goog.require('feng.views.book.Book');
 goog.require('feng.views.EpisodeSelection');
+goog.require('feng.views.sections.home.PreloadScreen');
+goog.require('feng.views.sections.home.IntroScreen');
+goog.require('feng.views.sections.home.EpisodeScreen');
 
 
 /**
