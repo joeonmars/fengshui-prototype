@@ -3,6 +3,7 @@ goog.provide('feng.views.EpisodeSelection');
 goog.require('goog.dom');
 goog.require('goog.dom.classes');
 goog.require('goog.dom.query');
+goog.require('feng.views.Logo');
 
 
 /**
@@ -13,6 +14,14 @@ feng.views.EpisodeSelection = function(domElement){
   goog.base(this);
 
   this.domElement = domElement;
+
+	this._promptEl = goog.dom.query('> .prompt', this.domElement)[0];
+
+	var promptSmallLogoEl = goog.dom.query('.disc .fengshui-logo', this._promptEl)[0];
+	this._promptSmallLogo = new feng.views.Logo( promptSmallLogoEl );
+
+	var promptLargeLogoEl = goog.dom.query('> .fengshui-logo', this._promptEl)[0];
+	this._promptLargeLogo = new feng.views.Logo( promptLargeLogoEl );
 
   this._studioEl = goog.dom.getElementByClass('studio', this.domElement);
   this._townhouseEl = goog.dom.getElementByClass('townhouse', this.domElement);

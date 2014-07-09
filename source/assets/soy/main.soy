@@ -95,6 +95,12 @@
 				{call feng.templates.common.FengshuiLogo}
 					{param noText: true /}
 				{/call}
+				<h1><a href="#glossary/about">FENGSHUI</a> HELP<br>NEEDED!</h1>
+				<h2>
+					<div class="arrow left"></div>
+					CHOOSE ONE
+					<div class="arrow right"></div>
+				</h2>
 			{/param}
 		{/call}
 
@@ -117,16 +123,24 @@
 
 		<div class="inner">
 			<section id="main-preloader">
-				{call feng.templates.common.FengshuiLogo}
-					{param noText: true /}
+
+				{call feng.templates.common.Disc}
+					{param content}
+						{call feng.templates.common.FengshuiLogo}{/call}
+						<div class="bar">
+							<div class="fill"></div>
+						</div>
+						<p class="counter">00</p>
+					{/param}
 				{/call}
 
-				<div class="preloader">
-					<div class="fill"></div>
-				</div>
 			</section>
 
 			<section id="main-intro">
+				{call feng.templates.common.PrimaryButton}
+					{param icon: 'yes' /}
+					{param text: 'continue' /}
+				{/call}
 			</section>
 
 			<section id="main-episode-selection">
@@ -181,11 +195,12 @@
 			</div>
 		</li>
 	</ul>
-
-	{if $debug != false}
-		{call feng.templates.debug.Debugger}{/call}
-	{/if}
 </div>
+
+{if $debug != false}
+{call feng.templates.debug.Debugger}{/call}
+{/if}
+
 {/template}
 
 

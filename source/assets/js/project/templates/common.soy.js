@@ -37,5 +37,5 @@ feng.templates.common.PrimaryButton = function(opt_data, opt_ignored) {
  */
 feng.templates.common.FengshuiLogo = function(opt_data, opt_ignored) {
   opt_data = opt_data || {};
-  return '<div class="fengshui-logo"><div class="symbol"><div class="compass"></div><div class="frame"></div></div>' + ((opt_data.noText != true) ? '<h1><div class="line1">FENGSHUI</div><div class="line2">REALTIME</div></h1>' : '') + '</div>';
+  return '<div class="fengshui-logo"><div class="symbol"><div class="needle"></div><div class="frame"></div></div>' + ((opt_data.noText != true) ? '<h1><div class="line1">FENGSHUI</div><div class="line2">REALTIME</div></h1>' : '') + '</div>';
 };

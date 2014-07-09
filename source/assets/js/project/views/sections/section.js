@@ -13,6 +13,7 @@ goog.require('feng.views.Preloader');
  * @constructor
  */
 feng.views.sections.Section = function(domElement){
+	
   goog.base(this);
 
   this.domElement = domElement;

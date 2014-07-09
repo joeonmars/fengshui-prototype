@@ -14,6 +14,8 @@ feng.models.Preload = function(){
 			'fengshui-data': 'json/fengshui.json',
 			'tip-icons-data': 'json/tip-icons.json',
 			'tip-icons': 'images/tip-icons.png',
+			'scene-studio': 'images/scene-studio.jpg',
+			'scene-townhouse': 'images/scene-townhouse.jpg',
 			'circular-fill': 'images/circular-fill.png',
 			'book': 'images/book.png',
 			'cube-browse': 'images/cube-browse.png',

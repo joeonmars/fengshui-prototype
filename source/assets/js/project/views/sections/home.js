@@ -1,14 +1,12 @@
 goog.provide('feng.views.sections.Home');
 
 goog.require('goog.dom');
-goog.require('goog.dom.query');
 goog.require('goog.events.EventTarget');
 goog.require('feng.events');
 goog.require('feng.views.sections.Section');
 goog.require('feng.models.achievements.Achievements');
 goog.require('feng.controllers.SectionController');
 goog.require('feng.views.book.Book');
-goog.require('feng.views.EpisodeSelection');
 goog.require('feng.views.sections.home.PreloadScreen');
 goog.require('feng.views.sections.home.IntroScreen');
 goog.require('feng.views.sections.home.EpisodeScreen');
@@ -24,8 +22,16 @@ feng.views.sections.Home = function(){
 
   this.assetKeys = [this.id, 'accessories', 'global'];
 
-  var episodeSelectionEl = goog.dom.getElementByClass( 'episode-selection', this.domElement );
-  this._episodeSelection = new feng.views.EpisodeSelection( episodeSelectionEl );
+  var preloadScreenEl = goog.dom.getElement('main-preloader');
+  this._preloadScreen = new feng.views.sections.home.PreloadScreen( preloadScreenEl );
+
+  var introEl = goog.dom.getElement('main-intro');
+  this._introScreen = new feng.views.sections.home.IntroScreen( introEl );
+  this._introScreen.hide();
+
+  var episodeScreenEl = goog.dom.getElement('main-episode-selection');
+  this._episodeScreen = new feng.views.sections.home.EpisodeScreen( episodeScreenEl );
+  this._episodeScreen.hide();
 };
 goog.inherits(feng.views.sections.Home, feng.views.sections.Section);
 
@@ -39,12 +45,35 @@ feng.views.sections.Home.prototype.init = function(){
 feng.views.sections.Home.prototype.activate = function(){
 
 	goog.base(this, 'activate');
+
+	this._eventHandler.listen( this._preloadScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
+	this._eventHandler.listen( this._introScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
+	this._eventHandler.listen( this._episodeScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
 };
 
 
 feng.views.sections.Home.prototype.onAnimatedIn = function(e){
 
 	goog.base(this, 'onAnimatedIn', e);
+};
+
+
+feng.views.sections.Home.prototype.onScreenClose = function(e){
+
+	switch( e.target ) {
+		case this._preloadScreen:
+
+		break;
+
+		case this._introScreen:
+		this._introScreen.animateOut();
+		this._episodeScreen.animateIn();
+		break;
+
+		case this._episodeScreen:
+
+		break;
+	}
 };
 
 
@@ -58,8 +87,7 @@ feng.views.sections.Home.prototype.onLoadProgress = function(e){
 
 	goog.base(this, 'onLoadProgress', e);
 
-	var fillDom = goog.dom.query('.fill', this._preloaderDom)[0];
-	goog.style.setStyle( fillDom, 'width', e.progress * 100 + '%' );
+	this._preloadScreen.setProgress( e.progress );
 };
 
 
@@ -85,8 +113,9 @@ feng.views.sections.Home.prototype.onLoadComplete = function(e){
 feng.views.sections.Home.prototype.onLoadAnimationComplete = function(e){
 
 	goog.base(this, 'onLoadAnimationComplete', e);
-	
-	this._episodeSelection.activate();
+
+	this._introScreen.animateIn();
+	this._preloadScreen.animateOut();
 
 	//var navigationController = feng.controllers.NavigationController.getInstance();
 	//navigationController.setToken('studio');
