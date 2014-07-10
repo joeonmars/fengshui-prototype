@@ -3,6 +3,7 @@ goog.provide('feng.views.EpisodeSelection');
 goog.require('goog.dom');
 goog.require('goog.dom.classes');
 goog.require('goog.dom.query');
+goog.require('goog.testing.events');
 goog.require('feng.views.Logo');
 
 
@@ -172,6 +173,9 @@ feng.views.EpisodeSelection = function(domElement){
   this._activationDelay = 0;
   this._episodePromptAnimateInDelay = 0;
 
+  this._isAnimatedToMessage = false;
+	this._isAnimatedToCompass = false;
+
   this._promptEl = goog.dom.query('> .prompt', this.domElement)[0];
 
   this._studioBackgroundEl = goog.dom.getElementByClass('shade', this._studioEl);
@@ -194,6 +198,7 @@ goog.inherits(feng.views.EpisodeSelection, goog.events.EventTarget);
 
 feng.views.EpisodeSelection.prototype.activate = function(){
 
+	this._eventHandler.listenOnce( this.domElement, 'mousemove', this.onMouseMoveOnce, false, this );
 	this._eventHandler.listen( this._studioEl, 'mouseover', this.onMouseOver, false, this );
 	this._eventHandler.listen( this._townhouseEl, 'mouseover', this.onMouseOver, false, this );
 	this._eventHandler.listen( this._studioEl, 'mouseout', this.onMouseOut, false, this );
@@ -229,6 +234,9 @@ feng.views.EpisodeSelection.prototype.animateIn = function(){
 		'alpha': 0
 	});
 
+  this._isAnimatedToMessage = false;
+	this._isAnimatedToCompass = false;
+
 	this.animatePromptToMessage();
 
 	this._activationDelay = goog.Timer.callOnce(this.activate, 2000, this);
@@ -241,6 +249,11 @@ feng.views.EpisodeSelection.prototype.animateOut = function(){
 
 
 feng.views.EpisodeSelection.prototype.animatePromptToMessage = function(){
+
+	this._isAnimatedToCompass = false;
+
+	if(this._isAnimatedToMessage) return;
+	else this._isAnimatedToMessage = true;
 
 	TweenMax.to(this._promptOuterDiscEl, 1, {
 		'scale': 1,
@@ -266,6 +279,11 @@ feng.views.EpisodeSelection.prototype.animatePromptToMessage = function(){
 
 
 feng.views.EpisodeSelection.prototype.animatePromptToCompass = function(){
+
+	this._isAnimatedToMessage = false;
+
+	if(this._isAnimatedToCompass) return;
+	else this._isAnimatedToCompass = true;
 
 	TweenMax.to(this._promptInnerDiscEl, 1, {
 		'scale': .48,
@@ -399,5 +417,18 @@ feng.views.EpisodeSelection.prototype.onMouseOut = function(e){
   	this._studioRatio = .5;
 		this._townhouseRatio = .5;
 		this.updateSceneStatus();
+  }
+};
+
+
+feng.views.EpisodeSelection.prototype.onMouseMoveOnce = function(e){
+
+  if(goog.dom.contains(this._studioEl, e.target)) {
+
+  	goog.testing.events.fireMouseOverEvent( this._studioEl );
+
+  }else if(goog.dom.contains(this._townhouseEl, e.target)) {
+
+  	goog.testing.events.fireMouseOverEvent( this._townhouseEl );
   }
 };
