@@ -62,7 +62,8 @@ feng.views.sections.Home.prototype.onScreenClose = function(e){
 
 	switch( e.target ) {
 		case this._preloadScreen:
-
+		this._preloadScreen.animateOut();
+		this._introScreen.animateIn();
 		break;
 
 		case this._introScreen:
@@ -71,7 +72,8 @@ feng.views.sections.Home.prototype.onScreenClose = function(e){
 		break;
 
 		case this._episodeScreen:
-
+		this._episodeScreen.animateOut();
+		this._introScreen.animateIn();
 		break;
 	}
 };
@@ -114,8 +116,7 @@ feng.views.sections.Home.prototype.onLoadAnimationComplete = function(e){
 
 	goog.base(this, 'onLoadAnimationComplete', e);
 
-	this._introScreen.animateIn();
-	this._preloadScreen.animateOut();
+	this._preloadScreen.onLoadAnimationComplete();
 
 	//var navigationController = feng.controllers.NavigationController.getInstance();
 	//navigationController.setToken('studio');

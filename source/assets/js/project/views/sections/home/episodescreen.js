@@ -21,7 +21,7 @@ feng.views.sections.home.EpisodeScreen.prototype.activate = function() {
 
 	goog.base(this, 'activate');
 
-	this._episodeSelection.activate();
+	//this._episodeSelection.activate();
 };
 
 
@@ -29,7 +29,7 @@ feng.views.sections.home.EpisodeScreen.prototype.deactivate = function() {
 
 	goog.base(this, 'deactivate');
 
-	this._episodeSelection.deactivate();
+	//this._episodeSelection.deactivate();
 };
 
 
@@ -39,4 +39,6 @@ feng.views.sections.home.EpisodeScreen.prototype.animateIn = function() {
 	goog.base(this, 'animateIn');
 
 	this.activate();
+
+	this._episodeSelection.animateIn();
 };

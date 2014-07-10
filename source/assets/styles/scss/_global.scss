@@ -130,11 +130,6 @@ body{
     background-color: transparent;
     cursor: pointer;
     @include appearance(none);
-
-    &:active, &:focus{
-      outline: none;
-      border: none;
-    }
   }
 
   .grab {

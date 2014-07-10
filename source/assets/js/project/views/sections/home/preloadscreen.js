@@ -1,5 +1,6 @@
 goog.provide('feng.views.sections.home.PreloadScreen');
 
+goog.require('goog.Timer');
 goog.require('feng.views.sections.home.Screen');
 goog.require('feng.views.Logo');
 
@@ -41,4 +42,12 @@ feng.views.sections.home.PreloadScreen.prototype.animateOut = function() {
 		'onComplete': this.hide,
 		'onCompleteScope': this
 	});
+};
+
+
+feng.views.sections.home.PreloadScreen.prototype.onLoadAnimationComplete = function(e){
+
+	goog.Timer.callOnce(function() {
+		this.dispatchEvent( feng.events.EventType.CLOSE );
+	}, 2000, this);
 };

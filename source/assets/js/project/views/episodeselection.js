@@ -16,6 +16,9 @@ feng.views.EpisodeSelection = function(domElement){
   this.domElement = domElement;
 
 	this._promptEl = goog.dom.query('> .prompt', this.domElement)[0];
+  this._promptInnerDiscEl = goog.dom.getElementByClass('inner', this._promptEl);
+  this._promptOuterDiscEl = goog.dom.getElementByClass('outer', this._promptEl);
+  this._promptContentEl = goog.dom.getElementByClass('content', this._promptEl);
 
 	var promptSmallLogoEl = goog.dom.query('.disc .fengshui-logo', this._promptEl)[0];
 	this._promptSmallLogo = new feng.views.Logo( promptSmallLogoEl );
@@ -166,7 +169,8 @@ feng.views.EpisodeSelection = function(domElement){
   };
 
   //
-  this._promptAnimateInDelay = 0;
+  this._activationDelay = 0;
+  this._episodePromptAnimateInDelay = 0;
 
   this._promptEl = goog.dom.query('> .prompt', this.domElement)[0];
 
@@ -201,7 +205,88 @@ feng.views.EpisodeSelection.prototype.deactivate = function(){
 
 	this._eventHandler.removeAll();
 
-	goog.Timer.clear( this._promptAnimateInDelay );
+	goog.Timer.clear( this._activationDelay );
+	goog.Timer.clear( this._episodePromptAnimateInDelay );
+};
+
+
+feng.views.EpisodeSelection.prototype.animateIn = function(){
+
+	TweenMax.set(this._promptOuterDiscEl, {
+		'scale': 0
+	});
+
+	TweenMax.set(this._promptInnerDiscEl, {
+		'scale': 0
+	});
+
+	TweenMax.set(this._promptContentEl, {
+		'autoAlpha': 0
+	});
+
+	TweenMax.set(this._promptLargeLogo.domElement, {
+		'display': 'none',
+		'alpha': 0
+	});
+
+	this.animatePromptToMessage();
+
+	this._activationDelay = goog.Timer.callOnce(this.activate, 2000, this);
+};
+
+
+feng.views.EpisodeSelection.prototype.animateOut = function(){
+
+};
+
+
+feng.views.EpisodeSelection.prototype.animatePromptToMessage = function(){
+
+	TweenMax.to(this._promptOuterDiscEl, 1, {
+		'scale': 1,
+		'ease': Power4.easeInOut
+	});
+
+	TweenMax.to(this._promptInnerDiscEl, 1, {
+		'delay': .1,
+		'scale': 1,
+		'ease': Power4.easeInOut
+	});
+
+	TweenMax.to(this._promptContentEl, .5, {
+		'delay': .1,
+		'autoAlpha': 1
+	});
+
+	TweenMax.to(this._promptLargeLogo.domElement, .5, {
+		'display': 'none',
+		'alpha': 0
+	});
+};
+
+
+feng.views.EpisodeSelection.prototype.animatePromptToCompass = function(){
+
+	TweenMax.to(this._promptInnerDiscEl, 1, {
+		'scale': .48,
+		'ease': Power4.easeInOut
+	});
+
+	TweenMax.to(this._promptOuterDiscEl, 1, {
+		'delay': .1,
+		'scale': .5,
+		'ease': Power4.easeInOut
+	});
+
+	TweenMax.to(this._promptContentEl, .5, {
+		'autoAlpha': 0
+	});
+
+	TweenMax.to(this._promptLargeLogo.domElement, .5, {
+		'delay': .1,
+		'display': 'block',
+		'alpha': 1
+	});
 };
 
 
@@ -212,7 +297,7 @@ feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
 
 	goog.style.setStyle( this._promptEl, 'left', this._studioRatio * 100 + '%' );
 
-	goog.Timer.clear( this._promptAnimateInDelay );
+	goog.Timer.clear( this._episodePromptAnimateInDelay );
 
 	var studioOpacity, townhouseOpacity;
 	var innersToAnimateOut = [];
@@ -224,12 +309,15 @@ feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
 		townhouseOpacity = .7;
 
 		var promptTweener = this._studioPromptAnimateInTweener;
-		this._promptAnimateInDelay = goog.Timer.callOnce(promptTweener.restart, 400, promptTweener);
+		this._episodePromptAnimateInDelay = goog.Timer.callOnce(promptTweener.restart, 400, promptTweener);
 
 		this._townhousePromptAnimateInTweener.pause();
 
 		innersToAnimateOut.push( this._townhousePromptInnerDiscEl );
 	  outersToAnimateOut.push( this._townhousePromptOuterDiscEl );
+
+	  this.animatePromptToCompass();
+	  this._promptLargeLogo.rotateNeedleTo( -45 );
 
 	}else if(this._studioRatio < this._townhouseRatio) {
 
@@ -237,12 +325,15 @@ feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
 		townhouseOpacity = 0;
 
 		var promptTweener = this._townhousePromptAnimateInTweener;
-		this._promptAnimateInDelay = goog.Timer.callOnce(promptTweener.restart, 400, promptTweener);
+		this._episodePromptAnimateInDelay = goog.Timer.callOnce(promptTweener.restart, 400, promptTweener);
 
 		this._studioPromptAnimateInTweener.pause();
 
 		innersToAnimateOut.push( this._studioPromptInnerDiscEl );
 	  outersToAnimateOut.push( this._studioPromptOuterDiscEl );
+
+	  this.animatePromptToCompass();
+	  this._promptLargeLogo.rotateNeedleTo( 45 );
 
 	}else {
 
@@ -256,6 +347,9 @@ feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
 		innersToAnimateOut.push( this._townhousePromptInnerDiscEl );
 		outersToAnimateOut.push( this._studioPromptOuterDiscEl );
 	  outersToAnimateOut.push( this._townhousePromptOuterDiscEl );
+
+	  this.animatePromptToMessage();
+	  this._promptLargeLogo.rotateNeedleTo( 0 );
 	}
 
   TweenMax.to(innersToAnimateOut, 1, {
