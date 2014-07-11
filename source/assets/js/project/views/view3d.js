@@ -93,7 +93,7 @@ feng.views.View3D.prototype.init = function(){
 feng.views.View3D.prototype.getViewSize = function(){
 
 	if(this.viewSize.isEmpty()) {
-		var viewSize = goog.style.getSize(this.containerElement);
+		var viewSize = goog.dom.getViewportSize();
 		this.viewSize.width = viewSize.width;
 		this.viewSize.height = viewSize.height;
 	}
@@ -397,7 +397,7 @@ feng.views.View3D.prototype.onCameraChange = function(e){
 
 feng.views.View3D.prototype.onResize = function(e){
 
-	var viewSize = goog.style.getSize(this.containerElement);
+	var viewSize = goog.dom.getViewportSize();
 	this.viewSize.width = viewSize.width;
 	this.viewSize.height = viewSize.height;
 

@@ -42,34 +42,6 @@ feng.views.sections.Episode.prototype.init = function(){
 };
 
 
-feng.views.sections.Episode.prototype.show = function(){
-
-	goog.base(this, 'show');
-
-	this.showView();
-};
-
-
-feng.views.sections.Episode.prototype.showView = function(){
-
-	if(this._view3d) {
-		this._view3d.show();
-		this._hud.show();
-	}
-};
-
-
-feng.views.sections.Episode.prototype.hide = function(){
-
-	goog.base(this, 'hide');
-
-	if(this._view3d) {
-		this._view3d.hide();
-		this._hud.hide();
-	}
-};
-
-
 feng.views.sections.Episode.prototype.activate = function(){
 
 	goog.base(this, 'activate');
@@ -78,7 +50,7 @@ feng.views.sections.Episode.prototype.activate = function(){
 
 	this._hud.activate();
 
-	goog.events.listen(this._view3dController, feng.events.EventType.SHOW, this.onShowView3D, false, this);
+	this._view3dController.listen(feng.events.EventType.SHOW, this.onShowView3D, false, this);
 
 	this.activateView();
 };
@@ -100,11 +72,19 @@ feng.views.sections.Episode.prototype.deactivate = function(){
 
 	this._hud.deactivate();
 	
-	goog.events.unlisten(this._view3dController, feng.events.EventType.SHOW, this.onShowView3D, false, this);
+	this._view3dController.unlisten(feng.events.EventType.SHOW, this.onShowView3D, false, this);
 
 	if(this._view3d) {
 		this._view3d.deactivate();
 	}
+};
+
+
+feng.views.sections.Episode.prototype.animateIn = function(){
+
+	goog.base(this, 'animateIn');
+
+	this._view3d.fadeIn();
 };
 
 
@@ -131,17 +111,8 @@ feng.views.sections.Episode.prototype.onLoadComplete = function(e){
 
 		this._view3d = this._view3ds[0];
 
-		this.showView();
 		this.activateView();
 	}
-};
-
-
-feng.views.sections.Episode.prototype.onLoadAnimationComplete = function(e){
-
-	goog.base(this, 'onLoadAnimationComplete', e);
-
-	this._view3d.fadeIn();
 };
 
 

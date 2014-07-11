@@ -35,6 +35,12 @@ feng.controllers.SectionController.prototype.init = function(){
 };
 
 
+feng.controllers.SectionController.prototype.hasSection = function(id){
+  
+  return goog.isDefAndNotNull( this._sections[id] );
+};
+
+
 feng.controllers.SectionController.prototype.getSection = function(id){
   
   return this._sections[id];

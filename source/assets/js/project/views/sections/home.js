@@ -49,6 +49,17 @@ feng.views.sections.Home.prototype.activate = function(){
 	this._eventHandler.listen( this._preloadScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
 	this._eventHandler.listen( this._introScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
 	this._eventHandler.listen( this._episodeScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
+	this._eventHandler.listen( this._episodeScreen, feng.events.EventType.COMPLETE, this.onEpisodeLoadComplete, false, this );
+};
+
+
+feng.views.sections.Home.prototype.deactivate = function(){
+
+	goog.base(this, 'deactivate');
+
+	this._preloadScreen.deactivate();
+	this._introScreen.deactivate();
+	this._episodeScreen.deactivate();
 };
 
 
@@ -81,7 +92,9 @@ feng.views.sections.Home.prototype.onScreenClose = function(e){
 
 feng.views.sections.Home.prototype.onLoadStart = function(e){
 
+	goog.base(this, 'onLoadStart', e);
 
+	this.animateIn();
 };
 
 
@@ -94,6 +107,8 @@ feng.views.sections.Home.prototype.onLoadProgress = function(e){
 
 
 feng.views.sections.Home.prototype.onLoadComplete = function(e){
+
+	goog.base(this, 'onLoadComplete', e);
 
 	// init modules reply on fengshui data
 	var globalAssets = e.target.model.getAsset('global');
@@ -118,6 +133,13 @@ feng.views.sections.Home.prototype.onLoadAnimationComplete = function(e){
 
 	this._preloadScreen.onLoadAnimationComplete();
 
-	//var navigationController = feng.controllers.NavigationController.getInstance();
-	//navigationController.setToken('studio');
+	//feng.navigationController.setToken('studio');
+};
+
+
+feng.views.sections.Home.prototype.onEpisodeLoadComplete = function(e){
+
+	this.animateOut();
+
+	e.episode.animateIn();
 };

@@ -203,6 +203,10 @@ feng.views.EpisodeSelection.prototype.activate = function(){
 	this._eventHandler.listen( this._townhouseEl, 'mouseover', this.onMouseOver, false, this );
 	this._eventHandler.listen( this._studioEl, 'mouseout', this.onMouseOut, false, this );
 	this._eventHandler.listen( this._townhouseEl, 'mouseout', this.onMouseOut, false, this );
+
+	feng.sectionController.listen( feng.events.EventType.START, this.onLoadStart, false, this );
+	feng.sectionController.listen( feng.events.EventType.PROGRESS, this.onLoadProgress, false, this );
+	feng.sectionController.listen( feng.events.EventType.COMPLETE, this.onLoadComplete, false, this );
 };
 
 
@@ -256,6 +260,7 @@ feng.views.EpisodeSelection.prototype.animateIn = function(){
 
 feng.views.EpisodeSelection.prototype.animateOut = function(){
 
+	this.deactivate();
 };
 
 
@@ -442,4 +447,60 @@ feng.views.EpisodeSelection.prototype.onMouseMoveOnce = function(e){
 
   	goog.testing.events.fireMouseOverEvent( this._townhouseEl );
   }
+};
+
+
+feng.views.EpisodeSelection.prototype.onLoadStart = function(e){
+
+	var episode = e.target.getParentEventTarget();
+	console.log(episode.id + ': load start');
+
+	this.deactivate();
+
+	TweenMax.to(this._promptInnerDiscEl, 1, {
+		'scale': 0,
+		'ease': Power4.easeInOut
+	});
+
+	TweenMax.to(this._promptOuterDiscEl, 1, {
+		'delay': .1,
+		'scale': 0,
+		'ease': Power4.easeInOut
+	});
+
+	if(episode.id === 'studio') {
+
+		goog.style.setStyle( this._studioEl, 'width', '100%' );
+		goog.style.setStyle( this._townhouseEl, 'width', '0%' );
+		goog.style.setStyle( this._promptEl, 'left', '100%' );
+
+	}else if(episode.id === 'townhouse') {
+
+		goog.style.setStyle( this._studioEl, 'width', '0%' );
+		goog.style.setStyle( this._townhouseEl, 'width', '100%' );
+		goog.style.setStyle( this._promptEl, 'left', '0%' );
+	}
+};
+
+
+feng.views.EpisodeSelection.prototype.onLoadProgress = function(e){
+
+  var episode = e.target.getParentEventTarget();
+	console.log(episode.id + ': load progress ' + e.progress);
+};
+
+
+feng.views.EpisodeSelection.prototype.onLoadComplete = function(e){
+
+	var episode = e.target.getParentEventTarget();
+	console.log(episode.id + ': load complete');
+
+	feng.sectionController.unlisten( feng.events.EventType.START, this.onLoadStart, false, this );
+	feng.sectionController.unlisten( feng.events.EventType.PROGRESS, this.onLoadProgress, false, this );
+	feng.sectionController.unlisten( feng.events.EventType.COMPLETE, this.onLoadComplete, false, this );
+
+	this.dispatchEvent({
+		type: feng.events.EventType.COMPLETE,
+		episode: episode
+	});
 };

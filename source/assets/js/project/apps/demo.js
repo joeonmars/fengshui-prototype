@@ -31,16 +31,16 @@ feng.apps.Demo = function() {
 	if(debug) feng.views.debug.Debugger.getInstance();
 	if(office) goog.style.setOpacity(document.body, .1);
 
-	var mainOptions = new feng.views.MainOptions;
+	feng.mainOptions = new feng.views.MainOptions;
 
-	var navigationController = feng.controllers.NavigationController.getInstance();
-	var sectionController = feng.controllers.SectionController.getInstance();
+	feng.navigationController = feng.controllers.NavigationController.getInstance();
+	feng.sectionController = feng.controllers.SectionController.getInstance();
 
 	feng.storageController = feng.controllers.StorageController.getInstance();
 
 	feng.controllers.NavigationController.Implementation = feng.controllers.NavigationController.HASH;
-	navigationController.init();
-	navigationController.setToken('home');
+	feng.navigationController.init();
+	feng.navigationController.setToken('home');
 };
 goog.inherits(feng.apps.Demo, goog.events.EventTarget);
 goog.addSingletonGetter(feng.apps.Demo);

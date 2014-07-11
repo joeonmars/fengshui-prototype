@@ -69,8 +69,8 @@ feng.views.Preloader.prototype.load = function( keys ){
 
 feng.views.Preloader.prototype.onLoadStart = function(e){
 
-	console.log('load start');
-
+	console.log('preloader loads start');
+	
 	this.dispatchEvent({
 		type: feng.events.EventType.START
 	});
