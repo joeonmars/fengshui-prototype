@@ -8,10 +8,14 @@
  */
 {template .EpisodeSection}
 <div class="section episode" id="{ $id }">
-	<div class="preloader">
-	</div>
 	<div class="hud">
+		<div class="overlays">
+			<div class="episode-selection-overlay">
+				{call .EpisodeSelection}{/call}
+			</div>
+		</div>
 		<div class="controls">
+			{call feng.templates.controls.EpisodeButton}{/call}
 			{call feng.templates.controls.Compass}{/call}
 			{call feng.templates.controls.Book}{/call}
 			{call feng.templates.controls.Reminder}

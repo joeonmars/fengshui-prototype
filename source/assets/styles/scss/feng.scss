@@ -216,11 +216,19 @@ body{
 	overflow: hidden;
 
 	&.episode{
+
 		>.hud{
 			@include absoluteTopLeft;
 			width: 100%;
 			height: 0;
 			@include user-select(none);
+
+			>.overlays{
+				@include absoluteTopLeft;
+				z-index: 1;
+				
+				@import "scene-overlays";
+			}
 
 			>.controls{
 				@include absoluteTopLeft;

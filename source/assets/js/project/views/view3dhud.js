@@ -4,14 +4,16 @@ goog.require('goog.events.EventHandler');
 goog.require('feng.views.sections.controls.ObjectBox');
 goog.require('feng.views.sections.controls.ObjectSelector');
 goog.require('feng.views.View3DCaption');
-goog.require('feng.views.sections.captions.AdviceCaption');
+goog.require('feng.views.sections.controls.EpisodeButton');
 goog.require('feng.views.sections.controls.Compass');
 goog.require('feng.views.sections.controls.Book');
 goog.require('feng.views.sections.controls.Reminder');
 goog.require('feng.views.sections.controls.ProgressBar');
+goog.require('feng.views.sections.captions.AdviceCaption');
 goog.require('feng.views.sections.captions.ChangeColorCaption');
 goog.require('feng.views.sections.captions.ChangeObjectCaption');
 goog.require('feng.views.sections.captions.ChangePictureCaption');
+goog.require('feng.views.sections.overlays.EpisodeSelectionOverlay');
 
 
 /**
@@ -29,7 +31,17 @@ feng.views.View3DHud = function( hudEl, view3dController, tips ){
 
   this._eventHandler = new goog.events.EventHandler(this);
 
-  // create hud elements
+  // create a captions collection
+  this._captions = {};
+
+  // create overlays
+  var episodeSelectionOverlayEl = goog.dom.getElementByClass('episode-selection-overlay', this.domElement);
+  this.episodeSelectionOverlay = new feng.views.sections.overlays.EpisodeSelectionOverlay( episodeSelectionOverlayEl );
+
+  // create controls
+  var episodeButtonEl = goog.dom.getElementByClass('episode-button', this.domElement);
+  this.episodeButton = new feng.views.sections.controls.EpisodeButton( episodeButtonEl, this.episodeSelectionOverlay );
+
   var compassEl = goog.dom.getElementByClass('compass', this.domElement);
   this.compass = new feng.views.sections.controls.Compass( compassEl );
   this.compass.setParentEventTarget( this );
@@ -51,8 +63,6 @@ feng.views.View3DHud = function( hudEl, view3dController, tips ){
 
   var objectSelectorEl = goog.dom.getElementByClass('objectSelector', this.domElement);
   this.objectSelector = new feng.views.sections.controls.ObjectSelector( objectSelectorEl );
-
-  this._captions = {};
 };
 goog.inherits(feng.views.View3DHud, goog.events.EventTarget);
 
@@ -61,6 +71,7 @@ feng.views.View3DHud.prototype.setView3D = function( view3d ) {
 
   this._view3d = view3d;
 
+  this.episodeButton.setView3D( view3d );
   this.compass.setView3D( view3d );
   this.book.setView3D( view3d );
   this.reminder.setView3D( view3d );
@@ -76,6 +87,7 @@ feng.views.View3DHud.prototype.activate = function() {
 
   this._eventHandler.listen(this._view3dController, feng.events.EventType.SHOW, this.onShowView3D, false, this);
 
+  this.episodeButton.activate();
   this.compass.activate();
   this.book.activate();
   this.reminder.activate();
@@ -87,6 +99,7 @@ feng.views.View3DHud.prototype.deactivate = function() {
 
   this._eventHandler.removeAll();
 
+  this.episodeButton.deactivate();
   this.compass.deactivate();
   this.book.deactivate();
   this.reminder.deactivate();

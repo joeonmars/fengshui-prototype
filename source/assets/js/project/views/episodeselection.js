@@ -22,10 +22,12 @@ feng.views.EpisodeSelection = function(domElement){
   this._promptContentEl = goog.dom.getElementByClass('content', this._promptEl);
 
 	var promptSmallLogoEl = goog.dom.query('.disc .fengshui-logo', this._promptEl)[0];
-	this._promptSmallLogo = new feng.views.Logo( promptSmallLogoEl );
+	var promptSmallLogoSize = new goog.math.Size(38, 38);
+	this._promptSmallLogo = new feng.views.Logo( promptSmallLogoEl, promptSmallLogoSize );
 
 	var promptLargeLogoEl = goog.dom.query('> .fengshui-logo', this._promptEl)[0];
-	this._promptLargeLogo = new feng.views.Logo( promptLargeLogoEl );
+	var promptLargeLogoSize = new goog.math.Size(100, 100);
+	this._promptLargeLogo = new feng.views.Logo( promptLargeLogoEl, promptLargeLogoSize );
 
   this._studioEl = goog.dom.getElementByClass('studio', this.domElement);
   this._townhouseEl = goog.dom.getElementByClass('townhouse', this.domElement);
@@ -188,10 +190,8 @@ feng.views.EpisodeSelection = function(domElement){
 
   this._eventHandler = new goog.events.EventHandler(this);
 
-	goog.style.setStyle( this._studioEl, 'width', '50%' );
-	goog.style.setStyle( this._townhouseEl, 'width', '50%' );
-	goog.style.setStyle( this._studioBackgroundEl, 'opacity', .5 );
-	goog.style.setStyle( this._townhouseBackgroundEl, 'opacity', .5 );
+	//
+	this.reset();
 };
 goog.inherits(feng.views.EpisodeSelection, goog.events.EventTarget);
 
@@ -215,7 +215,12 @@ feng.views.EpisodeSelection.prototype.deactivate = function(){
 };
 
 
-feng.views.EpisodeSelection.prototype.animateIn = function(){
+feng.views.EpisodeSelection.prototype.reset = function(){
+
+	goog.style.setStyle( this._studioEl, 'width', '50%' );
+	goog.style.setStyle( this._townhouseEl, 'width', '50%' );
+	goog.style.setStyle( this._studioBackgroundEl, 'opacity', .5 );
+	goog.style.setStyle( this._townhouseBackgroundEl, 'opacity', .5 );
 
 	TweenMax.set(this._promptOuterDiscEl, {
 		'scale': 0
@@ -234,8 +239,14 @@ feng.views.EpisodeSelection.prototype.animateIn = function(){
 		'alpha': 0
 	});
 
-  this._isAnimatedToMessage = false;
+  	this._isAnimatedToMessage = false;
 	this._isAnimatedToCompass = false;
+};
+
+
+feng.views.EpisodeSelection.prototype.animateIn = function(){
+
+	this.reset();
 
 	this.animatePromptToMessage();
 
@@ -286,13 +297,13 @@ feng.views.EpisodeSelection.prototype.animatePromptToCompass = function(){
 	else this._isAnimatedToCompass = true;
 
 	TweenMax.to(this._promptInnerDiscEl, 1, {
-		'scale': .48,
+		'scale': .43,
 		'ease': Power4.easeInOut
 	});
 
 	TweenMax.to(this._promptOuterDiscEl, 1, {
 		'delay': .1,
-		'scale': .5,
+		'scale': .45,
 		'ease': Power4.easeInOut
 	});
 

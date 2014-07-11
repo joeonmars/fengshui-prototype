@@ -17,7 +17,7 @@ goog.require('feng.templates.debug');
  * @notypecheck
  */
 feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
-  return '<div class="section episode" id="' + opt_data.id + '"><div class="preloader"></div><div class="hud"><div class="controls">' + feng.templates.controls.Compass(null) + feng.templates.controls.Book(null) + feng.templates.controls.Reminder(opt_data) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.ObjectBox(null) + feng.templates.controls.Manipulator(null) + feng.templates.controls.ProgressBar(opt_data) + '</div><div class="captions"></div></div><div class="sceneContainer"></div></div>';
+  return '<div class="section episode" id="' + opt_data.id + '"><div class="hud"><div class="overlays"><div class="episode-selection-overlay">' + feng.templates.main.EpisodeSelection(null) + '</div></div><div class="controls">' + feng.templates.controls.EpisodeButton(null) + feng.templates.controls.Compass(null) + feng.templates.controls.Book(null) + feng.templates.controls.Reminder(opt_data) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.ObjectBox(null) + feng.templates.controls.Manipulator(null) + feng.templates.controls.ProgressBar(opt_data) + '</div><div class="captions"></div></div><div class="sceneContainer"></div></div>';
 };
 
 
