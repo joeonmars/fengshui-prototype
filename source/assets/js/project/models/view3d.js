@@ -183,6 +183,46 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.washer-texture"
 			}
 		}
+	},
+	'townhouse': {
+		'livingroom': {
+			'ground': {
+				receiveShadow: true
+			},
+			'wall':	{
+				collidable: true
+			},
+			'cabinet': {
+				collidable: true,
+				texture: "townhouse.livingroom.cabinet-texture"
+			},
+			'bed': {
+				collidable: true,
+				texture: "townhouse.livingroom.bed-texture"
+			}
+		},
+		'interior2': {
+			'ground': {
+				receiveShadow: true
+			},
+			'door': {
+				class: "gateway",
+				collidable: true,
+				viewid: "bathroom",
+				gatewayid: "door"
+			}
+		},
+		'bathroom': {
+			'wall': {
+				texture: "townhouse.bathroom.wall-texture"
+			},
+			'door': {
+				class: "gateway",
+				collidable: true,
+				viewid: "interior2",
+				gatewayid: "door"
+			}
+		}
 	}
 };
 

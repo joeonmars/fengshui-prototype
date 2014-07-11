@@ -95,6 +95,47 @@ feng.models.Preload = function(){
 				'wall-texture': 'images/texture/studio/bathroom/wall.jpg',
 				'washer-texture': 'images/texture/studio/bathroom/washer.jpg'
 			}
+		},
+		'townhouse': {
+			'livingroom': {
+				'scene-data': 'json/scene-interior1.json',
+				'energyflow-data': 'json/energyflow/energyflow-1.json',
+				'bed-texture': 'images/texture/bed.jpg',
+				'cabinet-texture': 'images/texture/cabinet.jpg',
+				'default-picture': 'images/texture/studio/pictures/0.jpg',
+				'pictures': {
+					'1': 'images/texture/studio/pictures/1.jpg',
+					'2': 'images/texture/studio/pictures/2.jpg',
+					'3': 'images/texture/studio/pictures/3.jpg',
+					'4': 'images/texture/studio/pictures/4.jpg',
+					'5': 'images/texture/studio/pictures/5.jpg',
+					'6': 'images/texture/studio/pictures/6.jpg',
+					'7': 'images/texture/studio/pictures/7.jpg',
+					'8': 'images/texture/studio/pictures/8.jpg',
+					'9': 'images/texture/studio/pictures/9.jpg',
+					'10': 'images/texture/studio/pictures/10.jpg'
+				}
+			},
+			'interior2': {
+				'scene-data': 'json/scene-interior2.json',
+				'energyflow-data': 'json/energyflow/energyflow-2.json',
+				'pc-texture': 'images/texture/pc.jpg',
+				'screensaver-texture': 'images/texture/spritesheet/screensaver.png',
+				'cactus-texture': 'images/texture/cactus.png',
+			},
+			'bathroom': {
+				'scene-data': 'json/bathroom.json',
+				'energyflow-data': 'json/energyflow/energyflow-3.json',
+				'bathtub-texture': 'images/texture/studio/bathroom/bathtub.png',
+				'closet-door-texture': 'images/texture/studio/bathroom/closet-door.png',
+				'closet-texture': 'images/texture/studio/bathroom/closet.jpg',
+				'lamp-texture': 'images/texture/studio/bathroom/lamp.png',
+				'shelf-texture': 'images/texture/studio/bathroom/shelf.png',
+				'toilet-texture': 'images/texture/studio/bathroom/toilet.png',
+				'towel-texture': 'images/texture/studio/bathroom/towel.png',
+				'wall-texture': 'images/texture/studio/bathroom/wall.jpg',
+				'washer-texture': 'images/texture/studio/bathroom/washer.jpg'
+			}
 		}
 	};
 };
