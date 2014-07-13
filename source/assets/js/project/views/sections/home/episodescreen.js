@@ -55,5 +55,7 @@ feng.views.sections.home.EpisodeScreen.prototype.animateOut = function() {
 
 feng.views.sections.home.EpisodeScreen.prototype.onLoadComplete = function(e) {
 
+	this._episodeSelection.animateOutOnComplete( e.episode.id );
+
 	this.dispatchEvent( e );
 };

@@ -34,8 +34,19 @@ feng.views.popups.Tutorial.prototype.activate = function(){
 
 feng.views.popups.Tutorial.prototype.showLoader = function(){
 
-	goog.style.showElement(this._loaderEl, true);
-	goog.style.showElement(this._skipButton, false);
+	TweenMax.fromTo(this._loaderEl, .25, {
+		'opacity': 0,
+		'y': 20,
+	}, {
+		'opacity': 1,
+		'y': 0,
+		'display': 'block',
+		'ease': Strong.easeInOut
+	});
+
+	TweenMax.set(this._skipButton, {
+		'display': 'none'
+	});
 };
 
 

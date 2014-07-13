@@ -32,17 +32,9 @@ feng.views.EpisodeSelectionOverlay.prototype.activate = function(){
 
 	goog.base(this, 'activate');
 
-	goog.events.listen( this.domElement, 'click', this.onClick, false, this );
-	feng.sectionController.listen( feng.events.EventType.START, this.onLoadStart, false, this );
-};
-
-
-feng.views.EpisodeSelectionOverlay.prototype.deactivate = function(){
-
-	goog.base(this, 'deactivate');
-
-	goog.events.unlisten( this.domElement, 'click', this.onClick, false, this );
-	feng.sectionController.unlisten( feng.events.EventType.START, this.onLoadStart, false, this );
+	this._eventHandler.listen( this.domElement, 'click', this.onClick, false, this );
+	this._eventHandler.listen( this._episodeSelection, feng.events.EventType.COMPLETE, this.onComplete, false, this );
+	this._eventHandler.listen( feng.sectionController, feng.events.EventType.START, this.onLoadStart, false, this );
 };
 
 
@@ -86,25 +78,41 @@ feng.views.EpisodeSelectionOverlay.prototype.animateIn = function(){
 };
 
 
-feng.views.EpisodeSelectionOverlay.prototype.animateOut = function(){
+feng.views.EpisodeSelectionOverlay.prototype.animateOut = function( episodeId ){
 
-	var midY = this._clipRect.top + (this._clipRect.bottom - this._clipRect.top) / 2;
+	this.deactivate();
 
-	TweenMax.to(this._episodeSelection.domElement, .6, {
-		'opacity': 0,
-		'clip': 'rect(' + midY + 'px, ' + this._clipRect.right + 'px, ' + midY + 'px, ' + this._clipRect.left + 'px)',
-		'ease': Strong.easeInOut
-	});
+	if(episodeId) {
+		
+		this._episodeSelection.animateOutOnComplete( episodeId );
 
-	TweenMax.to(this.domElement, .8, {
-		'delay': .5,
-		'opacity': 0,
-		'ease': Power2.easeOut,
-		'onComplete': this.hide,
-		'onCompleteScope': this
-	});
+		TweenMax.to(this.domElement, .5, {
+			'opacity': 0,
+			'ease': Power2.easeOut,
+			'onComplete': this.hide,
+			'onCompleteScope': this
+		});
 
-	this._episodeSelection.animateOut();
+	}else {
+
+		this._episodeSelection.animateOut();
+
+		var midY = this._clipRect.top + (this._clipRect.bottom - this._clipRect.top) / 2;
+
+		TweenMax.to(this._episodeSelection.domElement, .6, {
+			'opacity': 0,
+			'clip': 'rect(' + midY + 'px, ' + this._clipRect.right + 'px, ' + midY + 'px, ' + this._clipRect.left + 'px)',
+			'ease': Strong.easeInOut
+		});
+
+		TweenMax.to(this.domElement, .8, {
+			'delay': .5,
+			'opacity': 0,
+			'ease': Power2.easeOut,
+			'onComplete': this.hide,
+			'onCompleteScope': this
+		});
+	}
 };
 
 
@@ -126,7 +134,6 @@ feng.views.EpisodeSelectionOverlay.prototype.onClick = function(e){
 
 	if(!goog.dom.contains(this._episodeSelection.domElement, e.target)) {
 
-		goog.events.unlisten( this.domElement, 'click', this.onClick, false, this );
 		this.animateOut();
 	}
 };
@@ -141,6 +148,14 @@ feng.views.EpisodeSelectionOverlay.prototype.onLoadStart = function(e){
 	});
 
 	goog.style.showElement(this._button, false);
+};
+
+
+feng.views.EpisodeSelectionOverlay.prototype.onComplete = function(e){
+
+	var episodeId = e.episode.id;
+
+	this.animateOut( episodeId );
 };
 
 

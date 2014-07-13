@@ -140,6 +140,4 @@ feng.views.sections.Home.prototype.onLoadAnimationComplete = function(e){
 feng.views.sections.Home.prototype.onEpisodeLoadComplete = function(e){
 
 	this.animateOut();
-
-	e.episode.animateIn();
 };

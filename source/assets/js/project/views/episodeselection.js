@@ -199,6 +199,9 @@ feng.views.EpisodeSelection.prototype.init = function(){
 
   this._hoveredSceneEl = null;
 
+  this._episode = null;
+  this._oldEpisode = null;
+
   this._eventHandler = new goog.events.EventHandler(this);
 
 	//
@@ -508,8 +511,10 @@ feng.views.EpisodeSelection.prototype.onMouseMoveOnce = function(e){
 
 feng.views.EpisodeSelection.prototype.onLoadStart = function(e){
 
-	var episode = e.target.getParentEventTarget();
-	console.log(episode.id + ': load start');
+	this._oldEpisode = this._episode;
+
+	this._episode = e.target.getParentEventTarget();
+	console.log(this._episode.id + ': load start');
 
 	this.deactivate();
 
@@ -532,7 +537,7 @@ feng.views.EpisodeSelection.prototype.onLoadStart = function(e){
 	feng.tutorial.showLoader();
 	feng.tutorial.animateIn();
 
-	if(episode.id === 'studio') {
+	if(this._episode.id === 'studio') {
 
 		goog.style.setStyle( this._studioEl, 'width', '100%' );
 		goog.style.setStyle( this._townhouseEl, 'width', '0%' );
@@ -544,7 +549,7 @@ feng.views.EpisodeSelection.prototype.onLoadStart = function(e){
 
 		goog.dom.appendChild( this._studioEl, feng.tutorial.domElement );
 
-	}else if(episode.id === 'townhouse') {
+	}else if(this._episode.id === 'townhouse') {
 
 		goog.style.setStyle( this._studioEl, 'width', '0%' );
 		goog.style.setStyle( this._townhouseEl, 'width', '100%' );
@@ -561,8 +566,7 @@ feng.views.EpisodeSelection.prototype.onLoadStart = function(e){
 
 feng.views.EpisodeSelection.prototype.onLoadProgress = function(e){
 
-  //var episode = e.target.getParentEventTarget();
-  //console.log(episode.id + ': load progress ' + e.progress);
+  //console.log(this._episode.id + ': load progress ' + e.progress);
 
   feng.tutorial.setProgress( e.progress );
 };
@@ -570,8 +574,12 @@ feng.views.EpisodeSelection.prototype.onLoadProgress = function(e){
 
 feng.views.EpisodeSelection.prototype.onLoadComplete = function(e){
 
-	var episode = e.target.getParentEventTarget();
-	console.log(episode.id + ': load complete');
+	console.log(this._episode.id + ': load complete');
+
+	if(this._oldEpisode) {
+		this._oldEpisode.hide();
+		this._oldEpisode = null;
+	}
 
 	feng.sectionController.unlisten( feng.events.EventType.START, this.onLoadStart, false, this );
 	feng.sectionController.unlisten( feng.events.EventType.PROGRESS, this.onLoadProgress, false, this );
@@ -581,11 +589,11 @@ feng.views.EpisodeSelection.prototype.onLoadComplete = function(e){
 
 	feng.tutorial.listenOnce( feng.events.EventType.CLOSE, function(e) {
 
-		this.animateOutOnComplete( episode.id );
-
+		this._episode.animateIn();
+		
 		this.dispatchEvent({
 			type: feng.events.EventType.COMPLETE,
-			episode: episode
+			episode: this._episode
 		});
 
 	}, false, this );
