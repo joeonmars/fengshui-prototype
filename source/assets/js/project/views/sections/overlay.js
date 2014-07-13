@@ -1,4 +1,4 @@
-goog.provide('feng.views.sections.overlays.Overlay');
+goog.provide('feng.views.Overlay');
 
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventHandler');
@@ -7,7 +7,7 @@ goog.require('goog.events.EventHandler');
 /**
  * @constructor
  */
-feng.views.sections.overlays.Overlay = function(domElement, canHalt){
+feng.views.Overlay = function(domElement, canHalt){
 	
   goog.base(this);
 
@@ -21,22 +21,22 @@ feng.views.sections.overlays.Overlay = function(domElement, canHalt){
 
   this.hide( false );
 };
-goog.inherits(feng.views.sections.overlays.Overlay, goog.events.EventTarget);
+goog.inherits(feng.views.Overlay, goog.events.EventTarget);
 
 
-feng.views.sections.overlays.Overlay.prototype.activate = function(){
+feng.views.Overlay.prototype.activate = function(){
 
 	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
 };
 
 
-feng.views.sections.overlays.Overlay.prototype.deactivate = function(){
+feng.views.Overlay.prototype.deactivate = function(){
 
 	this._eventHandler.removeAll();
 };
 
 
-feng.views.sections.overlays.Overlay.prototype.show = function( shouldDispatch ){
+feng.views.Overlay.prototype.show = function( shouldDispatch ){
 
 	this.isShown = true;
 
@@ -58,7 +58,7 @@ feng.views.sections.overlays.Overlay.prototype.show = function( shouldDispatch )
 };
 
 
-feng.views.sections.overlays.Overlay.prototype.hide = function( shouldDispatch ){
+feng.views.Overlay.prototype.hide = function( shouldDispatch ){
 
 	this.isShown = false;
 	
@@ -78,19 +78,19 @@ feng.views.sections.overlays.Overlay.prototype.hide = function( shouldDispatch )
 };
 
 
-feng.views.sections.overlays.Overlay.prototype.animateIn = function(){
+feng.views.Overlay.prototype.animateIn = function(){
 
 	this.show( true );
 };
 
 
-feng.views.sections.overlays.Overlay.prototype.animateOut = function(){
+feng.views.Overlay.prototype.animateOut = function(){
 
 	this.hide( true );
 };
 
 
-feng.views.sections.overlays.Overlay.prototype.onResize = function(e){
+feng.views.Overlay.prototype.onResize = function(e){
 
 
 };

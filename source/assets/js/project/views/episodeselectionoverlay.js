@@ -1,29 +1,34 @@
-goog.provide('feng.views.sections.overlays.EpisodeSelectionOverlay');
+goog.provide('feng.views.EpisodeSelectionOverlay');
 
+goog.require('goog.dom');
 goog.require('goog.math.Box');
-goog.require('feng.views.sections.overlays.Overlay');
-goog.require('feng.views.EpisodeSelection');
+goog.require('goog.style');
+goog.require('feng.views.Overlay');
 
 
 /**
  * @constructor
  */
-feng.views.sections.overlays.EpisodeSelectionOverlay = function(domElement){
-	
+feng.views.EpisodeSelectionOverlay = function(){
+
+	var domElement = goog.dom.getElement('episode-selection-overlay');	
 	var canHalt = true;
 
   goog.base(this, domElement, canHalt);
 
-	var episodeSelectionEl = goog.dom.getElementByClass( 'episode-selection', this.domElement );
-	this._episodeSelection = new feng.views.EpisodeSelection( episodeSelectionEl );
+	this._episodeSelection = feng.episodeSelection;
 
   this._size = null;
   this._clipRect = new goog.math.Box();
+
+  this._button = goog.dom.getElement('episode-button');
+  goog.events.listen(this._button, 'click', this.onClick, false, this);
 };
-goog.inherits(feng.views.sections.overlays.EpisodeSelectionOverlay, feng.views.sections.overlays.Overlay);
+goog.inherits(feng.views.EpisodeSelectionOverlay, feng.views.Overlay);
+goog.addSingletonGetter(feng.views.EpisodeSelectionOverlay);
 
 
-feng.views.sections.overlays.EpisodeSelectionOverlay.prototype.activate = function(){
+feng.views.EpisodeSelectionOverlay.prototype.activate = function(){
 
 	goog.base(this, 'activate');
 
@@ -32,7 +37,7 @@ feng.views.sections.overlays.EpisodeSelectionOverlay.prototype.activate = functi
 };
 
 
-feng.views.sections.overlays.EpisodeSelectionOverlay.prototype.deactivate = function(){
+feng.views.EpisodeSelectionOverlay.prototype.deactivate = function(){
 
 	goog.base(this, 'deactivate');
 
@@ -41,7 +46,16 @@ feng.views.sections.overlays.EpisodeSelectionOverlay.prototype.deactivate = func
 };
 
 
-feng.views.sections.overlays.EpisodeSelectionOverlay.prototype.animateIn = function(){
+feng.views.EpisodeSelectionOverlay.prototype.show = function( shouldDispatch ){
+
+	goog.base(this, 'show', shouldDispatch);
+	
+	this._episodeSelection.reset();
+	goog.dom.appendChild(this.domElement, this._episodeSelection.domElement);
+};
+
+
+feng.views.EpisodeSelectionOverlay.prototype.animateIn = function(){
 
 	goog.base(this, 'animateIn');
 
@@ -72,7 +86,7 @@ feng.views.sections.overlays.EpisodeSelectionOverlay.prototype.animateIn = funct
 };
 
 
-feng.views.sections.overlays.EpisodeSelectionOverlay.prototype.animateOut = function(){
+feng.views.EpisodeSelectionOverlay.prototype.animateOut = function(){
 
 	var midY = this._clipRect.top + (this._clipRect.bottom - this._clipRect.top) / 2;
 
@@ -94,7 +108,21 @@ feng.views.sections.overlays.EpisodeSelectionOverlay.prototype.animateOut = func
 };
 
 
-feng.views.sections.overlays.EpisodeSelectionOverlay.prototype.onClick = function(e){
+feng.views.EpisodeSelectionOverlay.prototype.onClick = function(e){
+
+	if(e.currentTarget === this._button) {
+
+		if(this.isShown) {
+
+			this.animateOut();
+
+		}else {
+
+			this.animateIn();
+		}
+
+		return true;
+	}
 
 	if(!goog.dom.contains(this._episodeSelection.domElement, e.target)) {
 
@@ -104,22 +132,23 @@ feng.views.sections.overlays.EpisodeSelectionOverlay.prototype.onClick = functio
 };
 
 
-feng.views.sections.overlays.EpisodeSelectionOverlay.prototype.onLoadStart = function(e){
+feng.views.EpisodeSelectionOverlay.prototype.onLoadStart = function(e){
 
 	TweenMax.to(this._episodeSelection.domElement, .6, {
 		'clip': 'rect(' + 0 + 'px, ' + this._clipRect.right + 'px, ' + this._clipRect.bottom + 'px, ' + 0 + 'px)',
 		'clearProps': 'all',
 		'ease': Strong.easeInOut
 	});
+
+	goog.style.showElement(this._button, false);
 };
 
 
-feng.views.sections.overlays.EpisodeSelectionOverlay.prototype.onResize = function(e){
+feng.views.EpisodeSelectionOverlay.prototype.onResize = function(e){
 
 	goog.base(this, 'onResize', e);
 
-	this._size = goog.dom.getViewportSize();
-	goog.style.setSize( this.domElement, this._size );
+	this._size = goog.style.getSize( this.domElement );
 
 	var rectHeight = 500;
 	this._clipRect.top = this._size.height / 2 - rectHeight / 2;

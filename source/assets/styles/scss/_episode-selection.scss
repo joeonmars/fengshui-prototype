@@ -8,10 +8,16 @@
 		vertical-align: top;
 		width: 50%;
 		height: 100%;
-		background-position: center center;
-		background-size: cover;
 		overflow: hidden;
 		@include single-transition(width, .5s, $easeInOutSine);
+
+		>.background{
+			@include absoluteTopLeft;
+			width: 100%;
+			height: 100%;
+			background-position: center center;
+			background-size: cover;
+		}
 
 		>.shade{
 			@include absoluteTopLeft;
@@ -102,11 +108,15 @@
 		}
 
 		&.studio{
-			background-image: image-url('scene-studio.jpg');
+			>.background{
+				background-image: image-url('scene-studio.jpg');
+			}
 		}
 
 		&.townhouse{
-			background-image: image-url('scene-townhouse.jpg');
+			>.background{
+				background-image: image-url('scene-townhouse.jpg');
+			}
 		}
 
 	}

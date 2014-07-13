@@ -1,7 +1,6 @@
 goog.provide('feng.views.sections.home.EpisodeScreen');
 
 goog.require('feng.views.sections.home.Screen');
-goog.require('feng.views.EpisodeSelection');
 
 
 /**
@@ -11,8 +10,8 @@ feng.views.sections.home.EpisodeScreen = function(domElement){
 
 	goog.base(this, domElement);
 
-	var episodeSelectionEl = goog.dom.getElementByClass( 'episode-selection', this.domElement );
-	this._episodeSelection = new feng.views.EpisodeSelection( episodeSelectionEl );
+	this._episodeSelection = feng.episodeSelection;
+	goog.dom.appendChild( this.domElement, this._episodeSelection.domElement );
 };
 goog.inherits(feng.views.sections.home.EpisodeScreen, feng.views.sections.home.Screen);
 

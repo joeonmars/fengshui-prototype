@@ -10,12 +10,8 @@
 <div class="section episode" id="{ $id }">
 	<div class="hud">
 		<div class="overlays">
-			<div class="episode-selection-overlay">
-				{call .EpisodeSelection}{/call}
-			</div>
 		</div>
 		<div class="controls">
-			{call feng.templates.controls.EpisodeButton}{/call}
 			{call feng.templates.controls.Compass}{/call}
 			{call feng.templates.controls.Book}{/call}
 			{call feng.templates.controls.Reminder}
@@ -44,6 +40,7 @@
 <div class="episode-selection">
 
 	<div class="scene studio">
+		<div class="background"></div>
 		<div class="shade"></div>
 		<div class="overlay">
 			<div class="prompt">
@@ -69,6 +66,7 @@
 	</div>
 
 	<div class="scene townhouse">
+		<div class="background"></div>
 		<div class="shade"></div>
 		<div class="overlay">
 			<div class="prompt">
@@ -148,11 +146,14 @@
 			</section>
 
 			<section id="main-episode-selection">
-				{call .EpisodeSelection}{/call}
 			</section>
 		</div>
-
 	</div>
+
+	<div id="episode-selection-overlay">
+	</div>
+
+	<button id="episode-button"></button>
 
 	<ul id="main-options">
 		<li>

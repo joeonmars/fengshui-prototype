@@ -3,6 +3,7 @@
 @import "path-edit";
 @import "book/book";
 @import "home";
+@import "episode-selection";
 
 body{
 	overflow: hidden;
@@ -15,7 +16,7 @@ body{
 
 #main-options{
 	position: absolute;
-	z-index: 1;
+	z-index: 2;
 	left: 30px;
 	bottom: 40px;
 
@@ -207,13 +208,34 @@ body{
 	}
 }
 
-#main >.section{
+#episode-selection-overlay{
+	@include absoluteTopLeft;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, .8);
+	z-index: 1;
+
+	>.episode-selection{
+		position: absolute;
+	}
+}
+
+#main >#episode-button{
 	position: absolute;
-	top: 0;
-	left: 0;
+	top: 40px;
+	left: 30px;
+	width: 64px;
+	height: 64px;
+	border: 1px solid $black;
+	z-index: 10;
+}
+
+#main >.section{
+	@include absoluteTopLeft;
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
+	z-index: 0;
 
 	&.episode{
 
@@ -288,8 +310,6 @@ body{
 			}
 		}
 	}
-
-	@import "episode-selection";
 }
 
 #home{

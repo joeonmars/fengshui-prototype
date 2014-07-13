@@ -10,11 +10,19 @@ goog.require('feng.views.Logo');
 /**
  * @constructor
  */
-feng.views.EpisodeSelection = function(domElement){
+feng.views.EpisodeSelection = function(){
 
   goog.base(this);
 
-  this.domElement = domElement;
+  this.domElement = soy.renderAsFragment(feng.templates.main.EpisodeSelection);
+
+  feng.pubsub.subscribeOnce( feng.PubSub.Topic.MAIN_LOAD_COMPLETE, this.init, this );
+};
+goog.inherits(feng.views.EpisodeSelection, goog.events.EventTarget);
+goog.addSingletonGetter(feng.views.EpisodeSelection);
+
+
+feng.views.EpisodeSelection.prototype.init = function(){
 
 	this._promptEl = goog.dom.query('> .prompt', this.domElement)[0];
   this._promptInnerDiscEl = goog.dom.getElementByClass('inner', this._promptEl);
@@ -31,6 +39,14 @@ feng.views.EpisodeSelection = function(domElement){
 
   this._studioEl = goog.dom.getElementByClass('studio', this.domElement);
   this._townhouseEl = goog.dom.getElementByClass('townhouse', this.domElement);
+
+  this._studioBackgroundEl = goog.dom.getElementByClass('background', this._studioEl);
+  this._townhouseBackgroundEl = goog.dom.getElementByClass('background', this._townhouseEl);
+
+  this._studioShadeEl = goog.dom.getElementByClass('shade', this._studioEl);
+  this._townhouseShadeEl = goog.dom.getElementByClass('shade', this._townhouseEl);
+
+  this._promptEl = goog.dom.query('> .prompt', this.domElement)[0];
 
   this._studioPromptEl = goog.dom.getElementByClass('prompt', this._studioEl);
   this._townhousePromptEl = goog.dom.getElementByClass('prompt', this._townhouseEl);
@@ -178,11 +194,6 @@ feng.views.EpisodeSelection = function(domElement){
   this._isAnimatedToMessage = false;
 	this._isAnimatedToCompass = false;
 
-  this._promptEl = goog.dom.query('> .prompt', this.domElement)[0];
-
-  this._studioBackgroundEl = goog.dom.getElementByClass('shade', this._studioEl);
-  this._townhouseBackgroundEl = goog.dom.getElementByClass('shade', this._townhouseEl);
-
   this._studioRatio = .5;
   this._townhouseRatio = .5;
 
@@ -193,7 +204,6 @@ feng.views.EpisodeSelection = function(domElement){
 	//
 	this.reset();
 };
-goog.inherits(feng.views.EpisodeSelection, goog.events.EventTarget);
 
 
 feng.views.EpisodeSelection.prototype.activate = function(){
@@ -221,10 +231,33 @@ feng.views.EpisodeSelection.prototype.deactivate = function(){
 
 feng.views.EpisodeSelection.prototype.reset = function(){
 
+	goog.dom.removeNode( feng.tutorial.domElement );
+
 	goog.style.setStyle( this._studioEl, 'width', '50%' );
 	goog.style.setStyle( this._townhouseEl, 'width', '50%' );
-	goog.style.setStyle( this._studioBackgroundEl, 'opacity', .5 );
-	goog.style.setStyle( this._townhouseBackgroundEl, 'opacity', .5 );
+	goog.style.setStyle( this._studioShadeEl, 'opacity', .5 );
+	goog.style.setStyle( this._townhouseShadeEl, 'opacity', .5 );
+	goog.style.setStyle( this._promptEl, 'left', '50%' );
+
+	TweenMax.set(this._studioPromptInnerDiscEl, {
+  	'scale': 0,
+  	'autoAlpha': 0
+  });
+
+	TweenMax.set(this._studioPromptOuterDiscEl, {
+  	'scale': 0,
+  	'autoAlpha': 0
+  });
+
+	TweenMax.set(this._townhousePromptInnerDiscEl, {
+  	'scale': 0,
+  	'autoAlpha': 0
+  });
+
+	TweenMax.set(this._townhousePromptOuterDiscEl, {
+  	'scale': 0,
+  	'autoAlpha': 0
+  });
 
 	TweenMax.set(this._studioPromptEl, {
 		'display': 'block'
@@ -251,8 +284,9 @@ feng.views.EpisodeSelection.prototype.reset = function(){
 		'alpha': 0
 	});
 
-  	this._isAnimatedToMessage = false;
+  this._isAnimatedToMessage = false;
 	this._isAnimatedToCompass = false;
+	this._hoveredSceneEl = null;
 };
 
 
@@ -269,6 +303,20 @@ feng.views.EpisodeSelection.prototype.animateIn = function(){
 feng.views.EpisodeSelection.prototype.animateOut = function(){
 
 	this.deactivate();
+};
+
+
+feng.views.EpisodeSelection.prototype.animateOutOnComplete = function( episodeId ){
+
+	this.deactivate();
+
+	var backgroundEl = (episodeId === 'studio') ? this._studioBackgroundEl : this._townhouseBackgroundEl;
+
+	TweenMax.to(backgroundEl, .5, {
+		'scale': 1.2,
+		'clearProps': 'all',
+		'ease': Strong.easeInOut
+	});
 };
 
 
@@ -406,8 +454,8 @@ feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
   	'ease': Power4.easeInOut
   });
 
-	goog.style.setStyle( this._studioBackgroundEl, 'opacity', studioOpacity );
-	goog.style.setStyle( this._townhouseBackgroundEl, 'opacity', townhouseOpacity );
+	goog.style.setStyle( this._studioShadeEl, 'opacity', studioOpacity );
+	goog.style.setStyle( this._townhouseShadeEl, 'opacity', townhouseOpacity );
 };
 
 
@@ -532,6 +580,8 @@ feng.views.EpisodeSelection.prototype.onLoadComplete = function(e){
 	feng.tutorial.showSkipButton();
 
 	feng.tutorial.listenOnce( feng.events.EventType.CLOSE, function(e) {
+
+		this.animateOutOnComplete( episode.id );
 
 		this.dispatchEvent({
 			type: feng.events.EventType.COMPLETE,
