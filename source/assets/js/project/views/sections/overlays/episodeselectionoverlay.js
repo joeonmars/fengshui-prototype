@@ -27,7 +27,8 @@ feng.views.sections.overlays.EpisodeSelectionOverlay.prototype.activate = functi
 
 	goog.base(this, 'activate');
 
-	goog.events.listenOnce( this.domElement, 'click', this.onClick, false, this );
+	goog.events.listen( this.domElement, 'click', this.onClick, false, this );
+	feng.sectionController.listen( feng.events.EventType.START, this.onLoadStart, false, this );
 };
 
 
@@ -36,6 +37,7 @@ feng.views.sections.overlays.EpisodeSelectionOverlay.prototype.deactivate = func
 	goog.base(this, 'deactivate');
 
 	goog.events.unlisten( this.domElement, 'click', this.onClick, false, this );
+	feng.sectionController.unlisten( feng.events.EventType.START, this.onLoadStart, false, this );
 };
 
 
@@ -94,7 +96,21 @@ feng.views.sections.overlays.EpisodeSelectionOverlay.prototype.animateOut = func
 
 feng.views.sections.overlays.EpisodeSelectionOverlay.prototype.onClick = function(e){
 
-	this.animateOut();
+	if(!goog.dom.contains(this._episodeSelection.domElement, e.target)) {
+
+		goog.events.unlisten( this.domElement, 'click', this.onClick, false, this );
+		this.animateOut();
+	}
+};
+
+
+feng.views.sections.overlays.EpisodeSelectionOverlay.prototype.onLoadStart = function(e){
+
+	TweenMax.to(this._episodeSelection.domElement, .6, {
+		'clip': 'rect(' + 0 + 'px, ' + this._clipRect.right + 'px, ' + this._clipRect.bottom + 'px, ' + 0 + 'px)',
+		'clearProps': 'all',
+		'ease': Strong.easeInOut
+	});
 };
 
 

@@ -9,6 +9,7 @@ goog.require('feng.controllers.SectionController');
 goog.require('feng.controllers.StorageController');
 goog.require('feng.views.debug.Debugger');
 goog.require('feng.views.MainOptions');
+goog.require('feng.views.popups.Tutorial');
 goog.require('feng.PubSub');
 
 
@@ -32,6 +33,8 @@ feng.apps.Demo = function() {
 	if(office) goog.style.setOpacity(document.body, .1);
 
 	feng.mainOptions = new feng.views.MainOptions;
+
+	feng.tutorial = feng.views.popups.Tutorial.getInstance();
 
 	feng.navigationController = feng.controllers.NavigationController.getInstance();
 	feng.sectionController = feng.controllers.SectionController.getInstance();

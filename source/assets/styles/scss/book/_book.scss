@@ -48,6 +48,13 @@
 			}
 		}
 
+		>.close-button{
+			position: absolute;
+			top: 20px;
+			right: 20px;
+			z-index: 2;
+		}
+
 		>.pages{
 			position: relative;
 			width: 100%;
@@ -86,12 +93,6 @@
 				&.tips{
 					>.wrapper{
 						@import "book/tips";
-					}
-				}
-
-				&.help{
-					>.wrapper{
-						@import "book/help";
 					}
 				}
 

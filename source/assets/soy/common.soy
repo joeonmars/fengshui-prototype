@@ -21,6 +21,7 @@
 
 /**
  * Primary Button
+ @param? classname the button classname
  @param? href the href of <a> tag
  @param? icon the icon classname
  @param text the button text
@@ -29,7 +30,7 @@
 
 {if $href}
 
-<a class="primary-button" href="{ $href }">
+<a class="primary-button { $classname }" href="{ $href }">
 	{if $icon}
 		<div class="icon { $icon }"></div>
 	{/if}
@@ -38,7 +39,7 @@
 
 {else}
 
-<button class="primary-button">
+<button class="primary-button { $classname }">
 	{if $icon}
 		<div class="icon { $icon }"></div>
 	{/if}
@@ -46,6 +47,22 @@
 </button>
 
 {/if}
+
+{/template}
+
+
+/**
+ * Close Button
+ */
+{template .CloseButton}
+
+<button class="close-button">
+	<div class="circle"></div>
+	<div class="icon">
+		<div></div>
+		<div class="lighter"></div>
+	</div>
+</button>
 
 {/template}
 
@@ -68,5 +85,58 @@
 	</h1>
 	{/if}
 </div>
+
+{/template}
+
+
+/**
+ * popup
+ * @param? classname the classname of the popup
+ * @param content the content HTML in popup
+ */
+{template .Popup}
+
+<div class="popup { $classname }">
+	{call .CloseButton}{/call}
+	<div class="content">
+	{ $content }
+	</div>
+</div>
+
+{/template}
+
+
+/**
+ * Tutorial popup
+ */
+{template .TutorialPopup}
+
+{call .Popup}
+	{param classname: 'tutorial' /}
+	{param content}
+		<h1>how to play</h1>
+		<div class="line"></div>
+		<div class="carousel">
+			<ul>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+		<div>
+			<div class="loader">
+				<div class="bar">
+					<div class="fill"></div>
+				</div>
+				<p class="counter">00</p>
+			</div>
+			{call .PrimaryButton}
+				{param classname: 'skip' /}
+				{param icon: 'skip' /}
+				{param text: 'skip' /}
+			{/call}
+		</div>
+	{/param}
+{/call}
 
 {/template}

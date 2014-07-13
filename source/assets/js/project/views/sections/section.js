@@ -34,7 +34,7 @@ feng.views.sections.Section = function(domElement){
   this.assetKeys = [this.id];
 
   this._preloaderDom = goog.dom.query('.preloader', this.domElement)[0];
-  this._preloader = new feng.views.Preloader( this._preloaderDom );
+  this._preloader = new feng.views.Preloader( this._preloaderDom, 2000 );
   this._preloader.setParentEventTarget(this);
 
   // permanent events

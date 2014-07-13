@@ -30,12 +30,17 @@ feng.views.book.Book = function() {
 	this._mainEl = goog.dom.getElementByClass('main', this.domElement);
 	this._shadeEl = goog.dom.getElementByClass('shade', this.domElement);
 
+	this._closeButton = goog.dom.getElementByClass('close-button', this.domElement);
+
 	this._navButtons = {};
 
 	var navButtons = goog.dom.query('nav button', this.domElement);
 
 	goog.array.forEach(navButtons, function(navButton) {
-		this._navButtons[ navButton.getAttribute('data-id') ] = navButton;
+		var id = navButton.getAttribute('data-id');
+		if(id) {
+			this._navButtons[ id ] = navButton;
+		}
 	}, this);
 
 	this._activeButton = this._navButtons['glossary'];
@@ -82,6 +87,8 @@ feng.views.book.Book.prototype.activate = function() {
 	goog.object.forEach(this._navButtons, function(navButton) {
 		this._eventHandler.listen( navButton, 'click', this.onClickNavButton, false, this );
 	}, this);
+
+	this._eventHandler.listen( this._closeButton, 'click', this.animateOut, false, this );
 };
 
 
@@ -127,7 +134,7 @@ feng.views.book.Book.prototype.animateOut = function( instant ) {
 
 	this.deactivate();
 
-	var duration = instant ? 0 : 1;
+	var duration = (instant === true) ? 0 : 1;
 
 	TweenMax.to(this._shadeEl, duration, {
 		'opacity': 0,
@@ -176,17 +183,10 @@ feng.views.book.Book.prototype.gotoPage = function( id ) {
 feng.views.book.Book.prototype.onClickNavButton = function( e ) {
 
 	var id = e.currentTarget.getAttribute('data-id');
-	switch(id) {
-		case 'close':
-		this.animateOut();
-		break;
 
-		default:
-		if(this._page.isTweening() || id === this._page.id) {
-			return false;
-		}else {
-			this.gotoPage( id );
-		}
-		break;
+	if(this._page.isTweening() || id === this._page.id) {
+		return false;
+	}else {
+		this.gotoPage( id );
 	}
 };

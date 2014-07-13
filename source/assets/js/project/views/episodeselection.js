@@ -226,6 +226,14 @@ feng.views.EpisodeSelection.prototype.reset = function(){
 	goog.style.setStyle( this._studioBackgroundEl, 'opacity', .5 );
 	goog.style.setStyle( this._townhouseBackgroundEl, 'opacity', .5 );
 
+	TweenMax.set(this._studioPromptEl, {
+		'display': 'block'
+	});
+
+	TweenMax.set(this._townhousePromptEl, {
+		'display': 'block'
+	});
+
 	TweenMax.set(this._promptOuterDiscEl, {
 		'scale': 0
 	});
@@ -468,25 +476,47 @@ feng.views.EpisodeSelection.prototype.onLoadStart = function(e){
 		'ease': Power4.easeInOut
 	});
 
+	TweenMax.to(this._promptLargeLogo.domElement, .5, {
+		'display': 'none',
+		'alpha': 0
+	});
+
+	feng.tutorial.showLoader();
+	feng.tutorial.animateIn();
+
 	if(episode.id === 'studio') {
 
 		goog.style.setStyle( this._studioEl, 'width', '100%' );
 		goog.style.setStyle( this._townhouseEl, 'width', '0%' );
 		goog.style.setStyle( this._promptEl, 'left', '100%' );
 
+		TweenMax.set(this._studioPromptEl, {
+			'display': 'none'
+		});
+
+		goog.dom.appendChild( this._studioEl, feng.tutorial.domElement );
+
 	}else if(episode.id === 'townhouse') {
 
 		goog.style.setStyle( this._studioEl, 'width', '0%' );
 		goog.style.setStyle( this._townhouseEl, 'width', '100%' );
 		goog.style.setStyle( this._promptEl, 'left', '0%' );
+
+		TweenMax.set(this._townhousePromptEl, {
+			'display': 'none'
+		});
+
+		goog.dom.appendChild( this._townhouseEl, feng.tutorial.domElement );
 	}
 };
 
 
 feng.views.EpisodeSelection.prototype.onLoadProgress = function(e){
 
-  var episode = e.target.getParentEventTarget();
-	console.log(episode.id + ': load progress ' + e.progress);
+  //var episode = e.target.getParentEventTarget();
+  //console.log(episode.id + ': load progress ' + e.progress);
+
+  feng.tutorial.setProgress( e.progress );
 };
 
 
@@ -499,8 +529,14 @@ feng.views.EpisodeSelection.prototype.onLoadComplete = function(e){
 	feng.sectionController.unlisten( feng.events.EventType.PROGRESS, this.onLoadProgress, false, this );
 	feng.sectionController.unlisten( feng.events.EventType.COMPLETE, this.onLoadComplete, false, this );
 
-	this.dispatchEvent({
-		type: feng.events.EventType.COMPLETE,
-		episode: episode
-	});
+	feng.tutorial.showSkipButton();
+
+	feng.tutorial.listenOnce( feng.events.EventType.CLOSE, function(e) {
+
+		this.dispatchEvent({
+			type: feng.events.EventType.COMPLETE,
+			episode: episode
+		});
+
+	}, false, this );
 };
