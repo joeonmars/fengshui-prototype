@@ -30,5 +30,7 @@ feng.events.EventType = {
 	ANIMATED_OUT: 'animated_out',
 	UNLOCK: 'unlock',
 	DRAG: 'drag',
-	DRAG_END: 'drag_end'
+	DRAG_END: 'drag_end',
+	MUTE: 'mute',
+	UNMUTE: 'unmute'
 };

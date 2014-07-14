@@ -4,7 +4,6 @@ goog.require('goog.dom');
 goog.require('goog.dom.classes');
 goog.require('goog.dom.query');
 goog.require('goog.events');
-goog.require('goog.dom.fullscreen');
 
 
 /**
@@ -17,22 +16,23 @@ feng.views.MainOptions = function(){
   this.domElement = goog.dom.getElement('main-options');
 
   this._howtoplayButton = goog.dom.query('.howtoplay', this.domElement)[0];
-  this._fullscreenButton = goog.dom.query('.fullscreen', this.domElement)[0];
   this._soundButton = goog.dom.query('.sound', this.domElement)[0];
   this._facebookButton = goog.dom.query('.facebook', this.domElement)[0];
   this._twitterButton = goog.dom.query('.twitter', this.domElement)[0];
   this._googleButton = goog.dom.query('.google', this.domElement)[0];
 
-  if(!goog.dom.fullscreen.isSupported()) {
-  	goog.style.showElement(this._fullscreenButton.parentNode, false);
+  if( !feng.storageController.isSoundEnabled() ) {
+  	goog.dom.classes.add( this._soundButton, 'mute' );
   }
 
   goog.events.listen(this._howtoplayButton, 'click', this.onClick, false, this);
-  goog.events.listen(this._fullscreenButton, 'click', this.onClick, false, this);
   goog.events.listen(this._soundButton, 'click', this.onClick, false, this);
   goog.events.listen(this._facebookButton, 'click', this.onClick, false, this);
   goog.events.listen(this._twitterButton, 'click', this.onClick, false, this);
   goog.events.listen(this._googleButton, 'click', this.onClick, false, this);
+
+  feng.soundController.listen( feng.events.EventType.MUTE, this.onMute, false, this);
+  feng.soundController.listen( feng.events.EventType.UNMUTE, this.onUnmute, false, this);
 };
 goog.inherits(feng.views.MainOptions, goog.events.EventTarget);
 
@@ -44,20 +44,8 @@ feng.views.MainOptions.prototype.onClick = function(e){
 
 		break;
 
-		case this._fullscreenButton:
-
-		if(goog.dom.fullscreen.isFullScreen()) {
-
-			goog.dom.fullscreen.exitFullScreen();
-
-		}else {
-
-			goog.dom.fullscreen.requestFullScreen( document.body );
-		}
-		break;
-
 		case this._soundButton:
-
+		feng.soundController.toggle();
 		break;
 
 		case this._facebookButton:
@@ -66,4 +54,16 @@ feng.views.MainOptions.prototype.onClick = function(e){
 
 		break;
 	}
+};
+
+
+feng.views.MainOptions.prototype.onMute = function(e){
+
+	goog.dom.classes.add( this._soundButton, 'mute' );
+};
+
+
+feng.views.MainOptions.prototype.onUnmute = function(e){
+
+	goog.dom.classes.remove( this._soundButton, 'mute' );
 };

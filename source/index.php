@@ -27,7 +27,7 @@
 
 	<body>
 		<!-- third-party -->
-		<script src="assets/js/thirdparty/createjs/easeljs-0.7.1.min.js"></script>
+		<script src="assets/js/thirdparty/howler.min.js"></script>
 		<script src="assets/js/thirdparty/createjs/preloadjs-0.4.1.min.js"></script>
 		<script src="assets/js/thirdparty/greensock/TweenMax.min.js"></script>
 		<script src="assets/js/thirdparty/greensock/utils/Draggable.min.js"></script>
