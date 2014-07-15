@@ -6,7 +6,7 @@
 		>h1{
 			padding: 12px 0;
 			font-size: 20px;
-			color: $green;
+			color: $darkblue;
 			line-height: 20px;
 			letter-spacing: 2px;
 			text-align: center;
@@ -16,7 +16,7 @@
 			margin: 0 auto;
 			width: 180px;
 			height: 1px;
-			background-color: $green;
+			background-color: $darkblue;
 			opacity: .2;
 		}
 
@@ -39,14 +39,14 @@
 					margin: 0 auto;
 					width: 0;
 					height: 100%;
-					background-color: $green;
+					background-color: $darkblue;
 				}
 			}
 
 			>.counter{
 				font-family: $font_marineup_light;
 				font-size: 18px;
-				color: $green;
+				color: $darkblue;
 				line-height: 18px;
 				letter-spacing: 2px;
 

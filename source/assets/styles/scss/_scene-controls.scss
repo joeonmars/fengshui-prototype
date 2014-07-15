@@ -18,7 +18,7 @@
 		left: 0;
 		width: $size;
 		height: $size;
-		border: $border_size solid $green;
+		border: $border_size solid $darkblue;
 		@include border-radius(50%);
 		@include box-sizing(border-box);
 		@include transition(transform .2s ease-in-out, opacity .35s ease-in-out);
@@ -164,7 +164,7 @@
 
 			>li{
 				@include absoluteTopLeft;
-				color: $green;
+				color: $darkblue;
 				font-family: $font_marineup;
 				letter-spacing: 2px;
 				font-size: 14px;

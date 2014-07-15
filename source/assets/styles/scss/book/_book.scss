@@ -17,7 +17,7 @@
 		height: 100%;
 		padding: 10px 0;
 		@include box-sizing(border-box);
-		background-color: $green;
+		background-color: $darkblue;
 
 		>nav{
 			position: absolute;
@@ -33,13 +33,13 @@
 				font-size: 16px;
 				letter-spacing: 2px;
 				text-align: center;
-				color: $green;
+				color: $darkblue;
 				font-family: $font_marineup;
 
 				&.active{
 					@include border-radius(40px);
 					color: $cream;
-					background-color: $green;
+					background-color: $darkblue;
 				}
 
 				&.tab{

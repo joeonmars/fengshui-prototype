@@ -15,7 +15,7 @@
 // --- Global vars ---
 $min_width: 1024px;
 $min_height: 640px;
-$green: #65BB99;
+$darkblue: #1D435D;
 $cream: #FFFDF1;
 $brown: #D9CBB5;
 $gray: #969696;
@@ -167,7 +167,7 @@ body{
       display: block;
       width: 100%;
       height: 6px;
-      background-color: $green;
+      background-color: $darkblue;
       @include border-top-left-radius(3px);
       @include border-top-right-radius(3px);
     }
@@ -202,9 +202,9 @@ body{
     letter-spacing: 2px;
     text-transform: uppercase;
     padding: 9px 20px;
-    color: $green;
+    color: $darkblue;
     overflow: hidden;
-    border: 2px solid $green;
+    border: 2px solid $darkblue;
     @include border-radius( 40px );
     @include box-sizing( border-box );
     @include transition( color .4s $easeInOutCirc, background-color .2s, text-indent .25s );
@@ -228,7 +228,7 @@ body{
 
     &:hover{
       color: $cream;
-      background-color: $green;
+      background-color: $darkblue;
       text-indent: 18px;
 
       >.icon{
