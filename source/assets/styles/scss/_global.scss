@@ -87,7 +87,7 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
 }
 
 @mixin chromeOSPointerCursor() {
-  cursor: url(../cursor/pointer.cur) 20 9, pointer !important;
+  cursor: url(../cursor/pointer.cur) 20 9, pointer;
 }
 
 @mixin chromeOSGrabCursor() {
@@ -128,10 +128,6 @@ body{
 
 #main{
   @include chromeOSDefaultCursor;
-
-  *{
-    cursor: inherit;  
-  }
 
   h1, h2, h3, h4, h5, h6{
     font-family: $font_marineup_light;
@@ -206,14 +202,7 @@ body{
     @import "popup";
   }
 
-  .button{
-    @include user-select(none);
-    cursor: pointer;
-    text-align: center;
-  }
-
   .primary-button{
-    @extend .button;
     position: relative;
     display: block;
     font-family: $font_marineup_light;

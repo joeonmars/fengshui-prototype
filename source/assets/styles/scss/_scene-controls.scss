@@ -249,7 +249,6 @@
 		>li{
 			display: inline-block;
 			margin: 10px;
-			@extend .button;
 
 			&:after{
 				display: block;
