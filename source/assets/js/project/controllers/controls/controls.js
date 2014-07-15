@@ -32,6 +32,7 @@ feng.controllers.controls.Controls = function(camera, view3d, domElement){
 	this._yawObject = new THREE.Object3D();
 	this._yawObject.add( this._pitchObject );
 
+	this._mainEl = goog.dom.getElement('main');
 	this._domElement = domElement;
 
 	this._scene.add( this.getObject() );
@@ -169,7 +170,7 @@ feng.controllers.controls.Controls.prototype.enable = function( enable ) {
 		goog.fx.anim.unregisterAnimation(this);
 
 		goog.dom.classes.remove(this._view3d.domElement, 'grab');
-		goog.dom.classes.remove(this._view3d.domElement, 'grabbing');
+		goog.dom.classes.remove(this._mainEl, 'grabbing');
 	}
 };
 
@@ -216,13 +217,13 @@ feng.controllers.controls.Controls.prototype.onMouseUp = function ( e ) {
 	this._eventHandler.unlisten(this._domElement, 'mousemove', this.onMouseMove, false, this);
 	this._eventHandler.unlisten(document, 'mouseup', this.onMouseUp, false, this);
 
-	goog.dom.classes.remove(this._view3d.domElement, 'grabbing');
+	goog.dom.classes.remove(this._mainEl, 'grabbing');
 };
 
 
 feng.controllers.controls.Controls.prototype.onMouseMove = function ( e ) {
 
-	goog.dom.classes.add(this._view3d.domElement, 'grabbing');
+	goog.dom.classes.add(this._mainEl, 'grabbing');
 };
 
 

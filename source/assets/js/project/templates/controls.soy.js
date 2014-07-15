@@ -15,7 +15,7 @@ goog.require('soydata');
  */
 feng.templates.controls.RoundButton = function(opt_data, opt_ignored) {
   opt_data = opt_data || {};
-  return '<div class="roundButton"><div class="outline"></div><div class="circle">' + ((opt_data.content) ? opt_data.content : '') + '</div></div>';
+  return '<button class="roundButton"><div class="outline"></div><div class="circle">' + ((opt_data.content) ? opt_data.content : '') + '</div></button>';
 };
 
 

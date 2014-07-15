@@ -82,6 +82,26 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   }
 }
 
+@mixin chromeOSDefaultCursor() {
+  cursor: url(../cursor/default.cur) 8 8, default;
+}
+
+@mixin chromeOSPointerCursor() {
+  cursor: url(../cursor/pointer.cur) 20 9, pointer !important;
+}
+
+@mixin chromeOSGrabCursor() {
+  cursor: url(../cursor/grab.cur) 28 28, -webkit-grab;
+}
+
+@mixin chromeOSGrabbingCursor() {
+  cursor: url(../cursor/grabbing.cur) 28 28, -webkit-grabbing !important;
+}
+
+@mixin chromeOSHelpCursor() {
+  cursor: url(../cursor/help.cur) 8 8, help;
+}
+
 
 html, body{
   position: absolute;
@@ -107,9 +127,10 @@ body{
 }
 
 #main{
+  @include chromeOSDefaultCursor;
 
-  a{
-    text-decoration: none;
+  *{
+    cursor: inherit;  
   }
 
   h1, h2, h3, h4, h5, h6{
@@ -121,6 +142,11 @@ body{
     font-family: $font_marine_light;
   }
 
+  a{
+    text-decoration: none;
+    @include chromeOSPointerCursor;
+  }
+
   button{
     display: block;
     border: none;
@@ -128,30 +154,24 @@ body{
     margin: 0;
     padding: 0;
     background-color: transparent;
-    cursor: pointer;
     @include appearance(none);
+    @include chromeOSPointerCursor;
   }
 
-  .grab {
-    cursor: url(../cursor/openhand.cur) 4 4, move;
-    cursor: -webkit-grab;
-    cursor: -moz-grab;
-    cursor: -o-grab;
-    cursor: -ms-grab;
-    cursor: grab;
+  &.grab, .grab {
+    @include chromeOSGrabCursor;
   }
 
-  .grabbing{
-    cursor: url(../cursor/closedhand.cur) 4 4, move !important;
-    cursor: -webkit-grabbing !important;
-    cursor: -moz-grabbing !important;
-    cursor: -o-grabbing !important;
-    cursor: -ms-grabbing !important;
-    cursor: grabbing !important;
+  &.grabbing, .grabbing{
+    @include chromeOSGrabbingCursor;
+
+    *{
+      @include chromeOSGrabbingCursor;
+    }
   }
 
-  .help{
-    cursor: help;
+  &.help, .help{
+    @include chromeOSHelpCursor;
   }
 
   .popup{

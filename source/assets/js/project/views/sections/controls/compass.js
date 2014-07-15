@@ -14,6 +14,7 @@ feng.views.sections.controls.Compass = function(domElement){
 	
   goog.base(this, domElement);
 
+  this._mainEl = goog.dom.getElement('main');
   this._cubeEl = goog.dom.getElementByClass('cube', this.domElement);
   
   var browseEl = goog.dom.getElementByClass('browse', this.domElement);
@@ -95,15 +96,13 @@ feng.views.sections.controls.Compass.prototype.setRotation = function(rotation){
 
 feng.views.sections.controls.Compass.prototype.onDragStart = function(e){
 
-	goog.dom.classes.add(this.domElement, 'grabbing');
-	goog.dom.classes.add(document.body, 'grabbing');
+	goog.dom.classes.add(this._mainEl, 'grabbing');
 };
 
 
 feng.views.sections.controls.Compass.prototype.onDragEnd = function(e){
 
-	goog.dom.classes.remove(this.domElement, 'grabbing');
-	goog.dom.classes.remove(document.body, 'grabbing');
+	goog.dom.classes.remove(this._mainEl, 'grabbing');
 
 	this._rotation = this.calculateRotation();
 };
