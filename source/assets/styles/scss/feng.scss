@@ -26,107 +26,49 @@ body{
 
 		>button{
 			position: relative;
-			@include retina-ui("circle-small");
-			@include single-transition(opacity, .25s);
+			width: 26px;
+			height: 26px;
+			border: 1px solid $black;
+			background-color: transparent;
+			text-align: center;
+			font-size: 15px;
+			line-height: 1;
+			color: $black;
+			@include box-sizing(border-box);
+			@include border-radius(50%);
+			@include transition(opacity .25s, background-color .25s, color .2s);
 			opacity: .67;
+			-webkit-font-smoothing: antialiased;
 
 			&:hover{
 				opacity: 1;
-
-				>.fill{
-					opacity: 1;
-				}
-
-				>.icon{
-					>div{
-						&:first-child{
-							opacity: 1;
-						}
-					}
-				}
-			}
-
-			>.fill{
-				@include absoluteTopLeft;
-				width: 26px;
-				height: 26px;
-				background-color: #3F3342;
-				@include border-radius(50%);
-				@include single-transition(opacity, .2s);
-				opacity: 0;
-			}
-
-			>.icon{
-
-				>div{
-					@include absoluteTopLeft;
-					@include single-transition(opacity, .2s);
-
-					&:first-child{
-						opacity: 0;
-					}
-				}
+				background-color: $black;
+				color: $cream;
 			}
 		}
 
 		>.howtoplay{
-			.icon{
-				>div{
-					@include retina-icon("howtoplay");
-
-					&:first-child{
-						@include retina-icon("howtoplay-hover");
-						z-index: 1;
-					}
-				}
-			}
-		}
-
-		>.fullscreen{
-			.icon{
-				>div{
-					@include retina-icon("fullscreenin");
-
-					&:first-child{
-						@include retina-icon("fullscreenin-hover");
-						z-index: 1;
-					}
-				}
-			}
+			@include font-awesome("fa-info");
 		}
 
 		>.sound{
-			.icon{
-				>div{
-					@include retina-icon("soundoff");
+			@include font-awesome("fa-volume-off");
 
-					&:first-child{
-						@include retina-icon("soundoff-hover");
-						z-index: 1;
-					}
-				}
+			&.mute{
+				@include font-awesome("fa-volume-up");
 			}
 		}
 
 		&.share{
 
 			&:hover{
+
 				>button{
 					opacity: 1;
-
-					>.fill{
-						opacity: 1;
-					}
-
-					>.icon{
-						>div{
-							&:first-child{
-								opacity: 1;
-							}
-						}
-					}
+					background-color: $black;
+					color: $cream;
 				}
-
+				
 				>.slider{
 					opacity: 1;
 
@@ -139,18 +81,7 @@ body{
 
 			>button{
 				z-index: 1;
-
-				.icon{
-					
-					>div{
-						@include retina-icon("social");
-
-						&:first-child{
-							@include retina-icon("social-hover");
-							z-index: 1;
-						}
-					}
-				}
+				@include font-awesome("fa-share");
 			}
 		}
 
@@ -180,7 +111,11 @@ body{
 				>a{
 					display: inline-block;
 					vertical-align: middle;
-					margin: 5px;
+					width: 16px;
+					line-height: 28px;
+					text-align: center;
+					margin: 0 5px;
+					color: $black;
 					@include single-transition(opacity, .25s);
 
 					&:first-child{
@@ -192,15 +127,15 @@ body{
 					}
 
 					&.facebook{
-						@include retina-icon("facebook");
+						@include font-awesome("fa-facebook");
 					}
 
 					&.twitter{
-						@include retina-icon("twitter");
+						@include font-awesome("fa-twitter");
 					}
 
 					&.google{
-						@include retina-icon("google");
+						@include font-awesome("fa-google-plus");
 					}
 				}
 			}
