@@ -21,6 +21,7 @@
 		}
 
 		>.carousel{
+			position: relative;
 			width: 100%;
 			height: 295px;
 			margin: 10px auto;
@@ -58,23 +59,31 @@
 				}
 			}
 
-			>.navigator{
+			>aside{
+				display: table;
 				position: absolute;
-				top: 50%;
+				height: 100%;
+				top: 0;
 				right: 10px;
 
-				>li{
-					margin: 20px 0;
+				>.navigator{
+					height: 100%;
+					display: table-cell;
+					vertical-align: middle;
 
-					>button{
-						width: 14px;
-						height: 14px;
-						@include border-radius(50%);
-						background-color: $brown;
-						@include single-transition(background-color, .25s);
+					>li{
+						margin: 20px 0;
 
-						&.active{
-							background-color: $darkblue;
+						>button{
+							width: 14px;
+							height: 14px;
+							@include border-radius(50%);
+							background-color: $brown;
+							@include single-transition(background-color, .25s);
+
+							&.active{
+								background-color: $darkblue;
+							}
 						}
 					}
 				}
