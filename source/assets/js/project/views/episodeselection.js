@@ -535,6 +535,7 @@ feng.views.EpisodeSelection.prototype.onLoadStart = function(e){
 	});
 
 	feng.tutorial.showLoader();
+	feng.tutorial.enableAutoPlay( true );
 	feng.tutorial.animateIn();
 
 	if(this._episode.id === 'studio') {

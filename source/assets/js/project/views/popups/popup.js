@@ -16,6 +16,8 @@ feng.views.popups.Popup = function(domElement){
 
   this._closeButton = goog.dom.getElementByClass('close-button', this.domElement);
 
+  this._isShown = false;
+
   this._eventHandler = new goog.events.EventHandler(this);
 };
 goog.inherits(feng.views.popups.Popup, goog.events.EventTarget);
@@ -23,7 +25,7 @@ goog.inherits(feng.views.popups.Popup, goog.events.EventTarget);
 
 feng.views.popups.Popup.prototype.activate = function() {
 
-	this._eventHandler.listen(document, 'click', this.onClick, false, this);
+	this._eventHandler.listen(document, 'click', this.onClickDocument, false, this);
 };
 
 
@@ -40,6 +42,8 @@ feng.views.popups.Popup.prototype.hideCloseButton = function() {
 
 
 feng.views.popups.Popup.prototype.animateIn = function() {
+
+	this._isShown = true;
 
 	TweenMax.set(this.domElement, {
 		'display': 'block',
@@ -68,8 +72,15 @@ feng.views.popups.Popup.prototype.animateOut = function() {
 		'y': 50,
 		'ease': Strong.easeInOut,
 		'onComplete': function() {
+			this._isShown = false;
 			this.dispatchEvent( feng.events.EventType.CLOSE );
 		},
 		'onCompleteScope': this
 	});
+};
+
+
+feng.views.popups.Popup.prototype.onClickDocument = function(e) {
+
+	
 };

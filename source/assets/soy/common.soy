@@ -108,6 +108,7 @@
 
 /**
  * Tutorial popup
+ * @param assetsPath the assets path
  */
 {template .TutorialPopup}
 
@@ -120,15 +121,24 @@
 
 			<ul class="steps">
 				<li>
-					<video></video>
+					<video preload="none">
+						<source src="{$assetsPath}video/tutorial-1.mp4" type="video/mp4">
+					    <source src="{$assetsPath}video/tutorial-1.ogg" type="video/ogg">
+					</video>
 					<p>Drag and click to move around.</p>
 				</li>
 				<li>
-					<video></video>
+					<video preload="none">
+						<source src="{$assetsPath}video/tutorial-2.mp4" type="video/mp4">
+					    <source src="{$assetsPath}video/tutorial-2.ogg" type="video/ogg">
+					</video>
 					<p>Press and hold an item to investigate it.</p>
 				</li>
 				<li>
-					<video></video>
+					<video preload="none">
+						<source src="{$assetsPath}video/tutorial-3.mp4" type="video/mp4">
+					    <source src="{$assetsPath}video/tutorial-3.ogg" type="video/ogg">
+					</video>
 					<p>Click the top of the cube to view from above.</p>
 				</li>
 			</ul>

@@ -34,14 +34,15 @@
 				>li{
 					position: absolute;
 					top: 50%;
-					left: 50%;
-					margin: -125px -200px;
-					width: 400px;
-					height: 250px;
+					margin: -135px 0;
+					width: 100%;
+					height: 270px;
 
 					>video{
-						width: 100%;
-						height: 230px;
+						display: block;
+						margin: 0 auto;
+						width: 350px;
+						height: 220px;
 						background-color: black;
 					}
 
@@ -49,9 +50,9 @@
 						position: absolute;
 						bottom: 0;
 						width: 100%;
-						height: 20px;
-						font-size: 14px;
-						line-height: 20px;
+						height: 50px;
+						font-size: 16px;
+						line-height: 50px;
 						text-align: center;
 						letter-spacing: 1px;
 						color: $gray;
@@ -64,7 +65,7 @@
 				position: absolute;
 				height: 100%;
 				top: 0;
-				right: 10px;
+				right: 0;
 
 				>.navigator{
 					height: 100%;
@@ -72,11 +73,11 @@
 					vertical-align: middle;
 
 					>li{
-						margin: 20px 0;
+						margin: 23px 0;
 
 						>button{
-							width: 14px;
-							height: 14px;
+							width: 10px;
+							height: 10px;
 							@include border-radius(50%);
 							background-color: $brown;
 							@include single-transition(background-color, .25s);
