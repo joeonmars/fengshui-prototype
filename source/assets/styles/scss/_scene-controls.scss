@@ -316,8 +316,6 @@
 >.progressBar{
 	position: absolute;
 	padding: 14px 50px;
-	@include border-radius(8px);
-	background-color: rgba(255, 255, 255, .67);
 
 	>.inner{
 		position: relative;
@@ -338,21 +336,45 @@
 				position: absolute;
 				width: 26px;
 				height: 26px;
-				margin: -13px;
 
 				>.dot{
-					position: absolute;
-					@include border-radius(50%);
-					top: (26px - 10px) / 2;
-					left: (26px - 10px) / 2;
-					width: 10px;
-					height: 10px;
-					background: #888;
+					position: relative;
+					top: -5px;
+					left: -5px;
+
+					>.inner{
+						@include absoluteTopLeft;
+						width: 10px;
+						height: 10px;
+						background: #888;
+						@include border-radius(50%);
+					}
+
+					>.outer{
+						@include absoluteTopLeft;
+					}
 				}
 
-				>.outline{
-					@include absoluteTopLeft;
+				>.dialog{
+					position: absolute;
+					top: -140px;
+					left: -40px;
+					width: 80px;
+					height: 120px;
+					background: $gray;
+
+					>.icon{
+						display: block;
+						margin: 0 auto;
+					}
+
+					>a{
+						display: inline-block;
+						vertical-align: top;
+						width: 50%;
+					}
 				}
+
 			}
 		}
 	}

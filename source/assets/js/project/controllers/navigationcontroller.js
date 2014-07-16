@@ -121,3 +121,15 @@ feng.controllers.NavigationController.prototype.onNavigate = function(e){
 feng.controllers.NavigationController.HASH = 'hash';
 feng.controllers.NavigationController.HISTORY_API = 'history_api';
 feng.controllers.NavigationController.Implementation = (goog.history.Html5History.isSupported() ? feng.controllers.NavigationController.HISTORY_API : feng.controllers.NavigationController.HASH);
+
+feng.controllers.NavigationController.Token = {
+	HOME: '#/home',
+	STUDIO: '#/studio',
+	TOWNHOUSE: '#/townhouse',
+	BOOK: '#/book',
+	GLOSSARY: '#/book/glossary',
+	TIPS: '#/book/tips',
+	ABOUT: '#/book/about',
+	GO_TIP: '#/gotip/{tipId}',
+	READ_TIP: '#/book/tips/{tipId}'
+};

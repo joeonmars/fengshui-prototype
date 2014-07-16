@@ -4,6 +4,7 @@ goog.require('goog.events.EventTarget');
 goog.require('feng.events');
 goog.require('feng.models.Preload');
 goog.require('feng.models.achievements.Achievements');
+goog.require('feng.controllers.NavigationController');
 
 /**
  * @constructor
@@ -24,6 +25,8 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId, data ){
   this.advice = data['advice'];
 
   this.iconId = data['icon'];
+  this.goTipToken = feng.controllers.NavigationController.Token.GO_TIP.replace('{tipId}', this.id);
+  this.readTipToken = feng.controllers.NavigationController.Token.READ_TIP.replace('{tipId}', this.id);
 
   this.unlocked = feng.storageController.isTipUnlocked( this.id );
 

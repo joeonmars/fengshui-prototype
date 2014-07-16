@@ -152,8 +152,15 @@
 		<ul class="tips">
 			{foreach $tip in $tips}
 				<li class="tip" data-tip-id="{ $tip.id }">
-					<div class="outline"></div>
-					<div class="dot"></div>
+					<div class="dot">
+						<div class="outer"></div>
+						<div class="inner"></div>
+					</div>
+					<div class="dialog">
+						<canvas class="icon"></canvas>
+						<a href="{ $tip.goTipToken }"><span>read</span></a>
+						<a href="{ $tip.readTipToken }"><span>go</span></a>
+					</div>
 				</li>
 			{/foreach}
 		</ul>

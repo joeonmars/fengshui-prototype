@@ -12,6 +12,13 @@ feng.views.sections.controls.ProgressBar = function(domElement, tips){
 
   this._innerEl = goog.dom.query('.inner', this.domElement)[0];
   this._tipEls = goog.dom.query('.tips > li', this.domElement);
+  this._dialogEls = goog.dom.query('.tips .dialog', this.domElement);
+
+  goog.array.forEach(this._dialogEls, function(dialogEl) {
+    TweenMax.set(dialogEl, {
+      'display': 'none'
+    });
+  });
 
   this._tips = {};
   
@@ -84,7 +91,8 @@ feng.views.sections.controls.ProgressBar.prototype.activate = function(){
 	goog.base(this, 'activate');
 
 	goog.array.forEach(this._tipEls, function(tipEl) {
-		this._eventHandler.listen(tipEl, 'click', this.onClickTip, false, this);
+		this._eventHandler.listen(tipEl, 'mouseover', this.onMouseOverTip, false, this);
+    this._eventHandler.listen(tipEl, 'mouseout', this.onMouseOutTip, false, this);
 	}, this);
 };
 
@@ -107,15 +115,38 @@ feng.views.sections.controls.ProgressBar.prototype.setProgress = function( progr
 };
 
 
-feng.views.sections.controls.ProgressBar.prototype.onClickTip = function(e){
+feng.views.sections.controls.ProgressBar.prototype.onMouseOverTip = function(e){
 
-	var tipId = e.currentTarget.getAttribute('data-tip-id');
-	var tip = this._tips[tipId];
-	
-	this.dispatchEvent({
-		type: feng.events.EventType.CHANGE,
-		tip: tip
-	});
+  if(e.relatedTarget && goog.dom.contains(e.currentTarget, e.relatedTarget)) return false;
+
+  var tipIndex = goog.array.indexOf( this._tipEls, e.currentTarget );
+  var dialogEl = this._dialogEls[ tipIndex ];
+
+  TweenMax.fromTo(dialogEl, .25, {
+    'opacity': 0,
+    'y': 20
+  }, {
+    'opacity': 1,
+    'y': 0,
+    'display': 'block',
+    'ease': Cubic.easeInOut
+  });
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.onMouseOutTip = function(e){
+
+  if(e.relatedTarget && goog.dom.contains(e.currentTarget, e.relatedTarget)) return false;
+
+  var tipIndex = goog.array.indexOf( this._tipEls, e.currentTarget );
+  var dialogEl = this._dialogEls[ tipIndex ];
+
+  TweenMax.to(dialogEl, .25, {
+    'opacity': 0,
+    'y': 20,
+    'display': 'none',
+    'ease': Cubic.easeInOut
+  });
 };
 
 

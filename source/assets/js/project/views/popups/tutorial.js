@@ -263,7 +263,7 @@ feng.views.popups.Tutorial.prototype.onVideoEnded = function(e){
 
 		this._loopCount ++;
 
-		if(this._loopCount < 1) {
+		if(this._loopCount < 2) {
 
 			e.currentTarget.play();
 

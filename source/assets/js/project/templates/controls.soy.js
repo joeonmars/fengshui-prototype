@@ -126,7 +126,7 @@ feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var tipListLen234 = tipList234.length;
   for (var tipIndex234 = 0; tipIndex234 < tipListLen234; tipIndex234++) {
     var tipData234 = tipList234[tipIndex234];
-    output += '<li class="tip" data-tip-id="' + tipData234.id + '"><div class="outline"></div><div class="dot"></div></li>';
+    output += '<li class="tip" data-tip-id="' + tipData234.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><canvas class="icon"></canvas><a href="' + tipData234.goTipToken + '"><span>read</span></a><a href="' + tipData234.readTipToken + '"><span>go</span></a></div></li>';
   }
   output += '</ul></div></div>';
   return output;

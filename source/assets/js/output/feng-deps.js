@@ -37,7 +37,7 @@ goog.addDependency('../../../../project/fx/trail.js', ['feng.fx.Trail'], ['feng.
 goog.addDependency('../../../../project/fx/wraplayout.js', ['feng.fx.WrapLayout'], ['feng.utils.ThreeUtils', 'goog.events.EventTarget', 'goog.math.Box']);
 goog.addDependency('../../../../project/models/accessories.js', ['feng.models.Accessories'], ['feng.models.Preload']);
 goog.addDependency('../../../../project/models/achievements/achievements.js', ['feng.models.achievements.Achievements'], ['feng.models.achievements.Tip', 'goog.array', 'goog.object']);
-goog.addDependency('../../../../project/models/achievements/tip.js', ['feng.models.achievements.Tip'], ['feng.events', 'feng.models.Preload', 'feng.models.achievements.Achievements', 'goog.events.EventTarget']);
+goog.addDependency('../../../../project/models/achievements/tip.js', ['feng.models.achievements.Tip'], ['feng.controllers.NavigationController', 'feng.events', 'feng.models.Preload', 'feng.models.achievements.Achievements', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/models/preload.js', ['feng.models.Preload'], ['feng.utils.Utils', 'goog.object']);
 goog.addDependency('../../../../project/models/view3d.js', ['feng.models.View3D'], []);
 goog.addDependency('../../../../project/pubsub.js', ['feng.PubSub'], ['goog.pubsub.PubSub']);
