@@ -38,7 +38,6 @@ feng.apps.Demo = function() {
 	feng.storageController = feng.controllers.StorageController.getInstance();
 
 	feng.soundController = feng.controllers.SoundController.getInstance();
-	feng.soundController.load();
 	
 	feng.mainOptions = new feng.views.MainOptions;
 

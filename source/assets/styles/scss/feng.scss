@@ -52,10 +52,10 @@ body{
 		}
 
 		>.sound{
-			@include font-awesome("fa-volume-off");
+			@include font-awesome("fa-volume-up");
 
 			&.mute{
-				@include font-awesome("fa-volume-up");
+				@include font-awesome("fa-volume-off");
 			}
 		}
 

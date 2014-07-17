@@ -82,9 +82,23 @@ feng.views.sections.Episode.prototype.deactivate = function(){
 
 feng.views.sections.Episode.prototype.animateIn = function(){
 
-	goog.base(this, 'animateIn');
+	var shouldDo = goog.base(this, 'animateIn');
 
+	if(!shouldDo) return false;
+	
 	this._view3d.fadeIn();
+
+	feng.soundController.playMix( this.id );
+};
+
+
+feng.views.sections.Episode.prototype.animateOut = function(){
+
+	var shouldDo = goog.base(this, 'animateOut');
+
+	if(!shouldDo) return false;
+
+	feng.soundController.stopMix( this.id );
 };
 
 

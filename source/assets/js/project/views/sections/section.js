@@ -114,7 +114,7 @@ feng.views.sections.Section.prototype.setAnimations = function(){
 
 feng.views.sections.Section.prototype.animateIn = function(){
 
-	if(this.isShown()) return;
+	if(this.isShown()) return false;
 
 	this.show();
 	this.activate();
@@ -123,12 +123,14 @@ feng.views.sections.Section.prototype.animateIn = function(){
 	this.dispatchEvent({
 		type: feng.events.EventType.ANIMATE_IN
 	});
+
+	return true;
 };
 
 
 feng.views.sections.Section.prototype.animateOut = function(){
 
-	if(!this.isShown()) return;
+	if(!this.isShown()) return false;
 
 	this.deactivate();
 	this._animateOutTweener.restart();
@@ -136,6 +138,8 @@ feng.views.sections.Section.prototype.animateOut = function(){
 	this.dispatchEvent({
 		type: feng.events.EventType.ANIMATE_OUT
 	});
+
+	return true;
 };
 
 
