@@ -121,12 +121,12 @@ feng.templates.controls.ObjectBox = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
-  var output = '<div class="progressBar"><div class="inner"><div class="wave"><canvas class="gray"></canvas><canvas class="blue"></canvas></div><ul class="tips">';
+  var output = '<div class="progressBar"><div class="inner"><div class="wave"><canvas class="gray"></canvas><canvas class="fill"></canvas></div><ul class="tips">';
   var tipList234 = opt_data.tips;
   var tipListLen234 = tipList234.length;
   for (var tipIndex234 = 0; tipIndex234 < tipListLen234; tipIndex234++) {
     var tipData234 = tipList234[tipIndex234];
-    output += '<li class="tip" data-tip-id="' + tipData234.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><canvas class="icon"></canvas><a href="' + tipData234.goTipToken + '"><span>read</span></a><a href="' + tipData234.readTipToken + '"><span>go</span></a></div></li>';
+    output += '<li class="tip" data-tip-id="' + tipData234.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><div class="content"><canvas data-tip-id="' + tipData234.id + '" data-view-id="' + tipData234.viewId + '" data-section-id="' + tipData234.sectionId + '"></canvas><a href="' + tipData234.goTipToken + '"><span class="icon"></span>GO</a></div></div></li>';
   }
   output += '</ul></div></div>';
   return output;

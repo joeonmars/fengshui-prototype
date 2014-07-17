@@ -70,15 +70,15 @@ feng.templates.debug.PathfindingDebugView = function(opt_data, opt_ignored) {
  */
 feng.templates.debug.AchievementsDebugView = function(opt_data, opt_ignored) {
   var output = '\t';
-  var param288 = '<div class="tipsPanel"><ul class="tips">';
-  var tipList290 = opt_data.tips;
-  var tipListLen290 = tipList290.length;
-  for (var tipIndex290 = 0; tipIndex290 < tipListLen290; tipIndex290++) {
-    var tipData290 = tipList290[tipIndex290];
-    param288 += '<li data-tip-id="' + tipData290.id + '" data-view-id="' + tipData290.view + '" data-section-id="' + tipData290.section + '"><div class="icon"></div><div class="caption"><p>' + tipData290.id + '</p><p>' + tipData290.view + '</p><p>' + tipData290.section + '</p></div></li>';
+  var param292 = '<div class="tipsPanel"><ul class="tips">';
+  var tipList294 = opt_data.tips;
+  var tipListLen294 = tipList294.length;
+  for (var tipIndex294 = 0; tipIndex294 < tipListLen294; tipIndex294++) {
+    var tipData294 = tipList294[tipIndex294];
+    param292 += '<li data-tip-id="' + tipData294.id + '" data-view-id="' + tipData294.view + '" data-section-id="' + tipData294.section + '"><div class="icon"></div><div class="caption"><p>' + tipData294.id + '</p><p>' + tipData294.view + '</p><p>' + tipData294.section + '</p></div></li>';
   }
-  param288 += '</ul></div>';
-  output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param288});
+  param292 += '</ul></div>';
+  output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param292});
   return output;
 };
 

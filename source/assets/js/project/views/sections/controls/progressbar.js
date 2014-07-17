@@ -1,6 +1,7 @@
 goog.provide('feng.views.sections.controls.ProgressBar');
 
 goog.require('feng.views.sections.controls.Controls');
+goog.require('feng.models.achievements.Achievements');
 
 
 /**
@@ -12,9 +13,22 @@ feng.views.sections.controls.ProgressBar = function(domElement, tips){
 
   this._innerEl = goog.dom.query('.inner', this.domElement)[0];
   this._tipEls = goog.dom.query('.tips > li', this.domElement);
+  this._dotEls = goog.dom.query('.tips .dot', this.domElement);
   this._dialogEls = goog.dom.query('.tips .dialog', this.domElement);
 
+  var achievements = feng.models.achievements.Achievements.getInstance();
+
   goog.array.forEach(this._dialogEls, function(dialogEl) {
+
+    var iconCanvas = goog.dom.query('canvas', dialogEl)[0];
+
+    var tipId = iconCanvas.getAttribute('data-tip-id');
+    var viewId = iconCanvas.getAttribute('data-view-id');
+    var sectionId = iconCanvas.getAttribute('data-section-id');
+    var tip = achievements.getTip( tipId, viewId, sectionId );
+
+    iconCanvas = tip.getIcon(50, feng.Color.BROWN, iconCanvas, true);
+
     TweenMax.set(dialogEl, {
       'display': 'none'
     });
@@ -28,7 +42,7 @@ feng.views.sections.controls.ProgressBar = function(domElement, tips){
 
   // create sine waves on canvas
   var numWaves = this._tipEls.length - 1;
-  this._canvasWidth = 75 * numWaves;
+  this._canvasWidth = 60 * numWaves;
   this._canvasHeight = 30;
 
   var numWavePoints = 20;
@@ -41,19 +55,19 @@ feng.views.sections.controls.ProgressBar = function(domElement, tips){
   this._grayCanvas.width = this._canvasWidth;
   this._grayCanvas.height = this._canvasHeight;
 
-  this._blueCanvas = goog.dom.query('canvas.blue', this.domElement)[0];
-  this._blueCanvas.width = this._canvasWidth;
-  this._blueCanvas.height = this._canvasHeight;
+  this._fillCanvas = goog.dom.query('canvas.fill', this.domElement)[0];
+  this._fillCanvas.width = this._canvasWidth;
+  this._fillCanvas.height = this._canvasHeight;
 
   var grayCtx = this._grayCanvas.getContext('2d');
-  grayCtx.strokeStyle = 'rgba(0, 0, 0, 0.25)';
-  grayCtx.lineWidth = 1;
+  grayCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+  grayCtx.lineWidth = 4;
   grayCtx.beginPath();
 
-  var blueCtx = this._blueCanvas.getContext('2d');
-  blueCtx.strokeStyle = '#76caec';
-  blueCtx.lineWidth = 3;
-  blueCtx.beginPath();
+  var fillCtx = this._fillCanvas.getContext('2d');
+  fillCtx.strokeStyle = '#ffffff';
+  fillCtx.lineWidth = 4;
+  fillCtx.beginPath();
 
   var halfHeight = this._canvasHeight / 2;
 
@@ -64,15 +78,15 @@ feng.views.sections.controls.ProgressBar = function(domElement, tips){
 
     if(i === 0) {
       grayCtx.moveTo(x, y);
-      blueCtx.moveTo(x, y);
+      fillCtx.moveTo(x, y);
     }else {
       grayCtx.lineTo(x, y);
-      blueCtx.lineTo(x, y);
+      fillCtx.lineTo(x, y);
     }
   }
 
   grayCtx.stroke();
-  blueCtx.stroke();
+  fillCtx.stroke();
 
   goog.array.forEach(this._tipEls, function(tipEl, index) {
     var x = index * this._canvasWidth / numWaves;
@@ -90,8 +104,11 @@ feng.views.sections.controls.ProgressBar.prototype.activate = function(){
 
 	goog.base(this, 'activate');
 
+  goog.array.forEach(this._dotEls, function(dotEl) {
+    this._eventHandler.listen(dotEl, 'mouseover', this.onMouseOverTip, false, this);
+  }, this);
+
 	goog.array.forEach(this._tipEls, function(tipEl) {
-		this._eventHandler.listen(tipEl, 'mouseover', this.onMouseOverTip, false, this);
     this._eventHandler.listen(tipEl, 'mouseout', this.onMouseOutTip, false, this);
 	}, this);
 };
@@ -111,16 +128,18 @@ feng.views.sections.controls.ProgressBar.prototype.hide = function(){
 
 feng.views.sections.controls.ProgressBar.prototype.setProgress = function( progress ){
 
-  goog.style.setStyle(this._blueCanvas, 'clip', 'rect(0px,' + this._canvasWidth * progress + 'px,30px,0px)');
+  goog.style.setStyle(this._fillCanvas, 'clip', 'rect(0px,' + this._canvasWidth * progress + 'px,30px,0px)');
 };
 
 
 feng.views.sections.controls.ProgressBar.prototype.onMouseOverTip = function(e){
 
-  if(e.relatedTarget && goog.dom.contains(e.currentTarget, e.relatedTarget)) return false;
+  var dotIndex = goog.array.indexOf( this._dotEls, e.currentTarget );
+  var tipEl = this._tipEls[ dotIndex ];
 
-  var tipIndex = goog.array.indexOf( this._tipEls, e.currentTarget );
-  var dialogEl = this._dialogEls[ tipIndex ];
+  if(e.relatedTarget && goog.dom.contains(tipEl, e.relatedTarget)) return false;
+
+  var dialogEl = this._dialogEls[ dotIndex ];
 
   TweenMax.fromTo(dialogEl, .25, {
     'opacity': 0,

@@ -45,7 +45,7 @@ feng.Color = {
 	/**
 	 * @expose
 	 */
-	GREEN: '#65BB99',
+	DARK_BLUE: '#1D435D',
 	/**
 	 * @expose
 	 */

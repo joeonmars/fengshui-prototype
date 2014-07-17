@@ -147,7 +147,7 @@
 	<div class="inner">
 		<div class="wave">
 			<canvas class="gray"></canvas>
-			<canvas class="blue"></canvas>
+			<canvas class="fill"></canvas>
 		</div>
 		<ul class="tips">
 			{foreach $tip in $tips}
@@ -157,9 +157,10 @@
 						<div class="inner"></div>
 					</div>
 					<div class="dialog">
-						<canvas class="icon"></canvas>
-						<a href="{ $tip.goTipToken }"><span>read</span></a>
-						<a href="{ $tip.readTipToken }"><span>go</span></a>
+						<div class="content">
+							<canvas data-tip-id="{ $tip.id }" data-view-id="{ $tip.viewId }" data-section-id="{ $tip.sectionId }"></canvas>
+							<a href="{ $tip.goTipToken }"><span class="icon"></span>GO</a>
+						</div>
 					</div>
 				</li>
 			{/foreach}
