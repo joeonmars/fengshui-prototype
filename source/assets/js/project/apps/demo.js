@@ -45,15 +45,17 @@ feng.apps.Demo = function() {
 
 	feng.tutorial = feng.views.popups.Tutorial.getInstance();
 
+	feng.controllers.NavigationController.Implementation = feng.controllers.NavigationController.HASH;
 	feng.navigationController = feng.controllers.NavigationController.getInstance();
 
 	feng.sectionController = feng.controllers.SectionController.getInstance();
 
 	feng.episodeSelectionOverlay = feng.views.EpisodeSelectionOverlay.getInstance();
 
-	feng.controllers.NavigationController.Implementation = feng.controllers.NavigationController.HASH;
+	feng.initialToken = feng.navigationController.getTokenArray();
+	
 	feng.navigationController.init();
-	feng.navigationController.setToken('home');
+	feng.navigationController.replaceToken( feng.controllers.NavigationController.Token.HOME );
 };
 goog.inherits(feng.apps.Demo, goog.events.EventTarget);
 goog.addSingletonGetter(feng.apps.Demo);

@@ -36,6 +36,7 @@
 
 /**
  * Episode Selection
+ * @param token the navigation token collection
  */
 {template .EpisodeSelection}
 <div class="episode-selection">
@@ -55,7 +56,7 @@
 						<p>Ollie is a fashion designer.<br>She lives in a small studio in<br>the noisy downtown area.<br>Give her some Fengshui tips!</p>
 						
 						{call feng.templates.common.PrimaryButton}
-							{param href: '#studio' /}
+							{param href: $token.STUDIO /}
 							{param icon: 'yes' /}
 							{param text: 'start' /}
 						{/call}
@@ -81,7 +82,7 @@
 						<p>Joanna lives in a Townhouse,<br>She was married with<br>a preschool kid<br>both living at home.</p>
 						
 						{call feng.templates.common.PrimaryButton}
-							{param href: '#townhouse' /}
+							{param href: $token.TOWNHOUSE /}
 							{param icon: 'yes' /}
 							{param text: 'start' /}
 						{/call}

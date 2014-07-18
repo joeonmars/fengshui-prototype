@@ -14,7 +14,11 @@ feng.views.EpisodeSelection = function(){
 
   goog.base(this);
 
-  this.domElement = soy.renderAsFragment(feng.templates.main.EpisodeSelection);
+  var templateData = {
+  	token: feng.controllers.NavigationController.Token
+  };
+
+  this.domElement = soy.renderAsFragment(feng.templates.main.EpisodeSelection, templateData);
 
   feng.pubsub.subscribeOnce( feng.PubSub.Topic.MAIN_LOAD_COMPLETE, this.init, this );
 };

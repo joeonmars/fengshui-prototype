@@ -14,19 +14,6 @@ feng.controllers.NavigationController = function(){
   goog.base(this);
 
   // a toggle of whether to use history API
-  this._useHistoryAPI = null;
-
-  // the current token
-  this._token = null;
-
-  // the history object
-  this._navHistory = null;
-};
-goog.inherits(feng.controllers.NavigationController, goog.events.EventTarget);
-goog.addSingletonGetter(feng.controllers.NavigationController);
-
-
-feng.controllers.NavigationController.prototype.init = function(){
   this._useHistoryAPI = (feng.controllers.NavigationController.Implementation === feng.controllers.NavigationController.HISTORY_API);
 
   if(this._useHistoryAPI) {
@@ -43,6 +30,12 @@ feng.controllers.NavigationController.prototype.init = function(){
   this._token = null;
 
   goog.events.listen(this._navHistory, goog.history.EventType.NAVIGATE, this.onNavigate, false, this);
+};
+goog.inherits(feng.controllers.NavigationController, goog.events.EventTarget);
+goog.addSingletonGetter(feng.controllers.NavigationController);
+
+
+feng.controllers.NavigationController.prototype.init = function(){
 
   this._navHistory.setEnabled(true);
 };
@@ -50,19 +43,20 @@ feng.controllers.NavigationController.prototype.init = function(){
 
 feng.controllers.NavigationController.prototype.setToken = function(token, title){
 
+	var token = token.replace('#', '');
 	this._navHistory.setToken(token, title);
 };
 
 
 feng.controllers.NavigationController.prototype.getTokenString = function(){
 
-	return this._token;
+	return this._token || this._navHistory.getToken();
 };
 
 
 feng.controllers.NavigationController.prototype.getTokenArray = function(){
 
-	var tokens = this._token.split('/');
+	var tokens = (this._token || this._navHistory.getToken()).split('/');
 
 	if(tokens.length > 0) {
 		if(tokens[0] === '') tokens.shift();
@@ -76,6 +70,7 @@ feng.controllers.NavigationController.prototype.getTokenArray = function(){
 
 feng.controllers.NavigationController.prototype.replaceToken = function(token, title){
 
+	var token = token.replace('#', '');
 	this._navHistory.replaceToken(token ,title);
 };
 
@@ -130,6 +125,7 @@ feng.controllers.NavigationController.Token = {
 	GLOSSARY: '#/book/glossary',
 	TIPS: '#/book/tips',
 	ABOUT: '#/book/about',
-	GO_TIP: '#/gotip/{tipId}',
+	GO_TIP: '#/{sectionId}/{viewId}/{tipId}',
+	TEST_TIP: '#/testtip/{sectionId}/{viewId}/{tipId}',
 	READ_TIP: '#/book/tips/{tipId}'
 };

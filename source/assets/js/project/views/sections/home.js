@@ -74,7 +74,32 @@ feng.views.sections.Home.prototype.onScreenClose = function(e){
 	switch( e.target ) {
 		case this._preloadScreen:
 		this._preloadScreen.animateOut();
-		this._introScreen.animateIn();
+
+		// for test tip
+		var testTipPattern = feng.controllers.NavigationController.Token.TEST_TIP;
+
+		if(feng.initialToken.length === 4 && goog.string.startsWith(testTipPattern.replace('#/', ''), feng.initialToken[0])) {
+
+			var sectionId = feng.initialToken[1];
+			var viewId = feng.initialToken[2];
+			var tipId = feng.initialToken[3];
+
+			var testTipToken = testTipPattern.replace('{sectionId}', sectionId).replace('{viewId}', viewId).replace('{tipId}', tipId);
+
+			console.log('parsed test tip token: ' + testTipToken);
+
+			this._episodeScreen.animateIn();
+			feng.episodeSelection.activate();
+
+			//feng.navigationController.setToken( feng.controllers.NavigationController.Token.STUDIO );
+			feng.navigationController.setToken( feng.controllers.NavigationController.Token.STUDIO );
+		
+		}
+		// animate in intro
+		else {
+
+			this._introScreen.animateIn();
+		}
 		break;
 
 		case this._introScreen:
@@ -132,8 +157,6 @@ feng.views.sections.Home.prototype.onLoadAnimationComplete = function(e){
 	goog.base(this, 'onLoadAnimationComplete', e);
 
 	this._preloadScreen.onLoadAnimationComplete();
-
-	//feng.navigationController.setToken('studio');
 };
 
 
