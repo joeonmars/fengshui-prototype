@@ -28,30 +28,21 @@
 
 			>.steps{
 				position: relative;
-				width: 100%;
-				height: 100%;
+				margin: 0 auto;
+				width: 350px;
 
 				>li{
-					position: absolute;
-					top: 50%;
-					margin: -135px 0;
-					width: 100%;
-					height: 270px;
+					@include absoluteTopLeft;
 
 					>video{
 						display: block;
-						margin: 0 auto;
-						width: 350px;
-						height: 220px;
+						width: 100%;
 						background-color: black;
 					}
 
 					>p{
-						position: absolute;
-						bottom: 0;
 						width: 100%;
-						height: 50px;
-						font-size: 16px;
+						font-size: 15px;
 						line-height: 50px;
 						text-align: center;
 						letter-spacing: 1px;
@@ -65,7 +56,7 @@
 				position: absolute;
 				height: 100%;
 				top: 0;
-				right: 0;
+				right: 15px;
 
 				>.navigator{
 					height: 100%;

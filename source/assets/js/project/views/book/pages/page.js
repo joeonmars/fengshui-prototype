@@ -63,6 +63,8 @@ feng.views.book.pages.Page.prototype.animateIn = function() {
 		'force3D': 'auto',
 		'ease': Strong.easeInOut
 	});
+
+	feng.soundController.playSfx('page-flip');
 };
 
 

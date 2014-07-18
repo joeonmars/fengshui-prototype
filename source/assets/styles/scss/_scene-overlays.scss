@@ -1,0 +1,24 @@
+>.tutorial-overlay{
+	@include absoluteTopLeft;
+	background-color: rgba(0, 0, 0, .65);
+
+	>.tutorial{
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		margin-left: -300px;
+		margin-top: -225px;
+
+		.steps{
+			width: 470px !important;
+		}
+
+		.loader{
+			display: none !important;
+		}
+
+		.skip{
+			display: none !important;
+		}
+	}
+}

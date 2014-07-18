@@ -3,6 +3,7 @@ goog.provide('feng.controllers.SoundController');
 goog.require('goog.events.EventTarget');
 goog.require('goog.object');
 goog.require('goog.Timer');
+goog.require('goog.labs.dom.PageVisibilityMonitor');
 goog.require('feng.events');
 
 
@@ -46,6 +47,10 @@ feng.controllers.SoundController = function(){
   this._data[ feng.controllers.SoundController.SoundType.SFX ] = {
     'click': {
       urls: urls('sfx/click'),
+      onload: onSoundLoad
+    },
+    'page-flip': {
+      urls: urls('sfx/page-flip'),
       onload: onSoundLoad
     }
   };
@@ -131,9 +136,9 @@ feng.controllers.SoundController = function(){
       timer: new goog.Timer(25000),
       sounds: [
         this.getAmbient('studio'),
-        this.getLoop('trees'),
-        this.getAmbient('studio'),
         this.getLoop('optimize-loop-1'),
+        this.getAmbient('studio'),
+        this.getLoop('trees'),
         this.getAmbient('studio'),
         this.getLoop('serendipity'),
         this.getAmbient('studio'),
@@ -149,9 +154,9 @@ feng.controllers.SoundController = function(){
       timer: new goog.Timer(25000),
       sounds: [
         this.getAmbient('townhouse'),
-        this.getLoop('trees'),
-        this.getAmbient('townhouse'),
         this.getLoop('optimize-loop-1'),
+        this.getAmbient('townhouse'),
+        this.getLoop('trees'),
         this.getAmbient('townhouse'),
         this.getLoop('serendipity'),
         this.getAmbient('townhouse'),
@@ -176,6 +181,13 @@ feng.controllers.SoundController = function(){
   }else {
     this.mute();
   }
+
+  // page visibility events
+  var pageVisibilityMonitor = new goog.labs.dom.PageVisibilityMonitor;
+  if( pageVisibilityMonitor.isSupported() ) {
+    var eventType = pageVisibilityMonitor.getBrowserEventType_();
+    goog.events.listen(pageVisibilityMonitor, eventType, this.onPageVisible);
+  }
 };
 goog.inherits(feng.controllers.SoundController, goog.events.EventTarget);
 goog.addSingletonGetter(feng.controllers.SoundController);
@@ -193,6 +205,8 @@ feng.controllers.SoundController.prototype.mute = function(){
 
   this._isMuted = true;
 
+  feng.storageController.onSoundEnabled( false );
+
   this.dispatchEvent( feng.events.EventType.MUTE );
 };
 
@@ -202,6 +216,8 @@ feng.controllers.SoundController.prototype.unmute = function(){
   Howler.unmute();
 
   this._isMuted = false;
+
+  feng.storageController.onSoundEnabled( true );
 
   this.dispatchEvent( feng.events.EventType.UNMUTE );
 };
@@ -403,7 +419,7 @@ feng.controllers.SoundController.prototype.onMixTick = function( e ){
 
   if(lastSound.soundType === feng.controllers.SoundController.SoundType.AMBIENT) {
 
-    this.fadeAmbient( lastSound.soundId, null, .2, 10 );
+    this.fadeAmbient( lastSound.soundId, null, .4, 10 );
 
   }else if(lastSound.soundType === feng.controllers.SoundController.SoundType.LOOP) {
 
@@ -424,7 +440,7 @@ feng.controllers.SoundController.prototype.onMixTick = function( e ){
 
   }else if(nextSound.soundType === feng.controllers.SoundController.SoundType.LOOP) {
 
-    this.fadeLoop( nextSound.soundId, 0, .8, 10 );
+    this.fadeLoop( nextSound.soundId, 0, .5, 10 );
   }
 };
 
@@ -444,6 +460,25 @@ feng.controllers.SoundController.prototype.onLoadComplete = function(){
   this._isLoaded = true;
 
   console.log('all sounds loaded: ', this._sounds);
+};
+
+
+feng.controllers.SoundController.prototype.onPageVisible = function(e){
+
+  if(e.hidden) {
+
+    if(!Howler._muted) {
+
+      Howler.volume( 0 );
+    }
+
+  }else {
+
+    if(!Howler._muted) {
+
+      Howler.volume( 1 );
+    }
+  }
 };
 
 

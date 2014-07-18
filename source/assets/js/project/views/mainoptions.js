@@ -22,7 +22,7 @@ feng.views.MainOptions = function(){
   this._googleButton = goog.dom.query('.google', this.domElement)[0];
 
   if( !feng.storageController.isSoundEnabled() ) {
-  	goog.dom.classes.add( this._soundButton, 'mute' );
+  	this.onMute();
   }
 
   goog.events.listen(this._howtoplayButton, 'click', this.onClick, false, this);
@@ -41,7 +41,7 @@ feng.views.MainOptions.prototype.onClick = function(e){
 
 	switch(e.currentTarget) {
 		case this._howtoplayButton:
-
+    feng.tutorial.toggle();
 		break;
 
 		case this._soundButton:

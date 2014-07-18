@@ -25,6 +25,7 @@ goog.inherits(feng.views.popups.Popup, goog.events.EventTarget);
 
 feng.views.popups.Popup.prototype.activate = function() {
 
+	this._eventHandler.listen(this._closeButton, 'click', this.animateOut, false, this);
 	this._eventHandler.listen(document, 'click', this.onClickDocument, false, this);
 };
 
@@ -32,6 +33,19 @@ feng.views.popups.Popup.prototype.activate = function() {
 feng.views.popups.Popup.prototype.deactivate = function() {
 
 	this._eventHandler.removeAll();
+};
+
+
+feng.views.popups.Popup.prototype.toggle = function() {
+
+	if(!this._isShown) this.animateIn();
+	else this.animateOut();
+};
+
+
+feng.views.popups.Popup.prototype.showCloseButton = function() {
+
+	goog.style.showElement(this._closeButton, true);
 };
 
 
@@ -59,6 +73,8 @@ feng.views.popups.Popup.prototype.animateIn = function() {
 		'onComplete': this.activate,
 		'onCompleteScope': this
 	});
+
+	this.dispatchEvent( feng.events.EventType.ANIMATE_IN );
 };
 
 
@@ -77,6 +93,8 @@ feng.views.popups.Popup.prototype.animateOut = function() {
 		},
 		'onCompleteScope': this
 	});
+
+	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
 };
 
 

@@ -12,6 +12,7 @@ goog.require('feng.views.sections.captions.AdviceCaption');
 goog.require('feng.views.sections.captions.ChangeColorCaption');
 goog.require('feng.views.sections.captions.ChangeObjectCaption');
 goog.require('feng.views.sections.captions.ChangePictureCaption');
+goog.require('feng.views.sections.overlays.TutorialOverlay');
 
 
 /**
@@ -33,6 +34,8 @@ feng.views.View3DHud = function( hudEl, view3dController, tips ){
   this._captions = {};
 
   // create overlays
+  var tutorialOverlayEl = goog.dom.getElementByClass('tutorial-overlay', this.domElement);
+  this.tutorialOverlay = new feng.views.sections.overlays.TutorialOverlay( tutorialOverlayEl );
 
   // create controls
   var compassEl = goog.dom.getElementByClass('compass', this.domElement);
@@ -79,10 +82,15 @@ feng.views.View3DHud.prototype.activate = function() {
 
   this._eventHandler.listen(this._view3dController, feng.events.EventType.SHOW, this.onShowView3D, false, this);
 
+  feng.tutorial.listen(feng.events.EventType.ANIMATE_IN, this.tutorialOverlay.animateIn, false, this.tutorialOverlay);
+  feng.tutorial.listen(feng.events.EventType.ANIMATE_OUT, this.tutorialOverlay.animateOut, false, this.tutorialOverlay);
+
   this.compass.activate();
   this.book.activate();
   this.reminder.activate();
   this.progressBar.activate();
+
+  this.tutorialOverlay.activate();
 };
 
 
@@ -90,10 +98,15 @@ feng.views.View3DHud.prototype.deactivate = function() {
 
   this._eventHandler.removeAll();
 
+  feng.tutorial.unlisten(feng.events.EventType.ANIMATE_IN, this.tutorialOverlay.animateIn, false, this.tutorialOverlay);
+  feng.tutorial.unlisten(feng.events.EventType.ANIMATE_OUT, this.tutorialOverlay.animateOut, false, this.tutorialOverlay);
+
   this.compass.deactivate();
   this.book.deactivate();
   this.reminder.deactivate();
   this.progressBar.deactivate();
+
+  this.tutorialOverlay.deactivate();
 };
 
 

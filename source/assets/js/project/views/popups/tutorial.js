@@ -48,8 +48,6 @@ feng.views.popups.Tutorial = function(){
 	this._counterEl = goog.dom.getElementByClass('counter', this.domElement);
 
 	this._skipButton = goog.dom.getElementByClass('skip', this.domElement);
-
-	this.hideCloseButton();
 };
 goog.inherits(feng.views.popups.Tutorial, feng.views.popups.Popup);
 goog.addSingletonGetter(feng.views.popups.Tutorial);

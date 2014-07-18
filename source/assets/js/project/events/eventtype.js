@@ -24,6 +24,7 @@ feng.events.EventType = {
 	HIDE: 'hide',
 	OPEN: 'open',
 	CLOSE: 'close',
+	TOGGLE: 'toggle',
 	ANIMATE_IN: 'animate_in',
 	ANIMATE_OUT: 'animate_out',
 	ANIMATED_IN: 'animated_in',
