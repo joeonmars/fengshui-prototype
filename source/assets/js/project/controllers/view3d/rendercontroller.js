@@ -104,10 +104,10 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderBlur = function
 
 	goog.object.forEach(view3dObjects, function(view3dObject) {
 
-		view3dObject.show();
+		view3dObject.enableRender();
 	});
 
-	if(maskedObject) maskedObject.hide();
+	if(maskedObject) maskedObject.disableRender();
 };
 
 
@@ -120,8 +120,11 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderMask = function
 
 	goog.object.forEach(view3dObjects, function(view3dObject) {
 
-		view3dObject.hide();
+		view3dObject.disableRender();
 	});
 
-	if(maskedObject) maskedObject.show();
+	if(maskedObject) {
+		
+		maskedObject.enableRender();
+	}
 };

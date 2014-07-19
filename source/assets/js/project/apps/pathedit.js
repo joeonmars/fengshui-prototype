@@ -125,8 +125,12 @@ feng.apps.PathEdit.prototype.getDefaultPathTrack = function() {
 
 feng.apps.PathEdit.prototype.highlightControl = function() {
 
-	var cubeName = 'cube' + goog.array.indexOf(this._pathTrack.controlPoints, this._controlPoint);
-	this._pathTrack.getObjectByName(cubeName, true).material.opacity = 1;
+	var pointIndex = goog.array.indexOf(this._pathTrack.controlPoints, this._controlPoint);
+
+	var cubeName = 'cube' + pointIndex;
+
+	var cube = this._pathTrack.getControlCubeByName(cubeName);
+	cube.material.opacity = 1;
 };
 
 
@@ -134,14 +138,10 @@ feng.apps.PathEdit.prototype.showObjects = function(shouldShow) {
 
 	this._isObjectsShown = shouldShow;
 
-	this._scene.traverse(function(child) {
+	goog.array.forEach(this._scene.children, function(child) {
 		if(!(child instanceof feng.fx.PathTrack)) {
 			child.visible = shouldShow;
 		}
-	});
-
-	this._pathTrack.traverse(function(child) {
-		child.visible = true;
 	});
 };
 
@@ -419,7 +419,7 @@ feng.apps.PathEdit.prototype.onMouseDown = function(e) {
 
   		this._intersect = intersect;
   		this._pathTrack = this._intersect.object.parent.parent;
-	  	this._controlPoint = this._intersect.object.position;
+	  	this._controlPoint = this._intersect.object.userData.position;
 
 	    this._offset.copy( this._intersect.point ).sub( this._controlPoint );
 

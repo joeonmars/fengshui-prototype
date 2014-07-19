@@ -140,8 +140,8 @@ feng.controllers.controls.Controls.prototype.reset = function () {
 	this._pitchObject.position.set(0, 0, 0);
 	this._pitchObject.rotation.set(0, 0, 0);
 	
-	this._yawObject.position = this._originalPosition;
-	this._yawObject.rotation = this._originalRotation;
+	this._yawObject.position.copy( this._originalPosition );
+	this._yawObject.rotation.copy( this._originalRotation );
 };
 
 

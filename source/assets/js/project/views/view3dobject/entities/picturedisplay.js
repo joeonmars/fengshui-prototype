@@ -31,6 +31,18 @@ feng.views.view3dobject.entities.PictureDisplay = function( object3d, data, view
 goog.inherits(feng.views.view3dobject.entities.PictureDisplay, feng.views.view3dobject.TipObject);
 
 
+feng.views.view3dobject.entities.PictureDisplay.prototype.enableRender = function(){
+
+  goog.base(this, 'enableRender');
+
+  var pictureFrames = this.getPictureFrames();
+
+  goog.array.forEach(pictureFrames, function(pictureFrame) {
+    pictureFrame.enableRender();
+  });
+};
+
+
 feng.views.view3dobject.entities.PictureDisplay.prototype.getPictureFrames = function() {
 
   this._pictureFrames = this._pictureFrames || goog.array.map(this.object3d.children, function(child) {

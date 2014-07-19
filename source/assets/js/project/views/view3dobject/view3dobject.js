@@ -12,8 +12,9 @@ feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
   goog.base(this);
 
   this.object3d = object3d;
-  this.object3d.userData = data;
+  this.object3d.userData = data; 
 
+  this.name = object3d.name;
   this.data = data;
 
   this._view3d = view3d;
@@ -90,17 +91,24 @@ feng.views.view3dobject.View3DObject.prototype.getHeight = function(){
 };
 
 
-feng.views.view3dobject.View3DObject.prototype.show = function(){
+feng.views.view3dobject.View3DObject.prototype.enableRender = function(){
 
-  this.object3d.traverse(function(child) {
-    child.visible = true;
-  });
+  // itself and its parent should be all renderable
+  var object3d = this.object3d;
+
+  while(object3d && !(object3d instanceof THREE.Scene)) {
+    object3d.visible = true;
+    object3d = object3d.parent;
+  }
+
+  //console.log("SHOW:", this.object3d.name);
 };
 
 
-feng.views.view3dobject.View3DObject.prototype.hide = function(){
+feng.views.view3dobject.View3DObject.prototype.disableRender = function(){
 
-  this.object3d.traverse(function(child) {
-    child.visible = false;
-  });
+  // its children should not be renderable
+  this.object3d.visible = false;
+
+  //console.log("HIDE:", this.object3d.name);
 };

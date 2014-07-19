@@ -72,6 +72,12 @@ feng.fx.PathTrack.prototype.getControlMeshes = function(){
 };
 
 
+feng.fx.PathTrack.prototype.getControlCubeByName = function(name){
+
+	return this._debugObject.getObjectByName( name );
+};
+
+
 feng.fx.PathTrack.prototype.getSpacedPoints = function(){
 
 	return this.spline.getSpacedPoints( this.segments );
@@ -123,7 +129,7 @@ feng.fx.PathTrack.prototype.getCameraAt = function(u){
 		this._pathCamera.rotation.setFromRotationMatrix( this._pathCamera.matrix, this._pathCamera.rotation.order );
 
 		var euler = new THREE.Euler(0, 0, 0, 'YXZ').setFromQuaternion( this._pathCamera.quaternion );
-		this._pathCamera.rotation = euler;
+		this._pathCamera.rotation.copy( euler );
 	}
 
 	return this._pathCamera;
@@ -159,7 +165,7 @@ feng.fx.PathTrack.prototype.addControlPoint = function(val){
 
 	this.updateTrack();
 
-	return this.getObjectByName('cube'+(id+1));
+	return this.getControlCubeByName('cube'+(id+1));
 };
 
 
@@ -210,7 +216,8 @@ feng.fx.PathTrack.prototype.updateTrack = function(){
     }));
     cube.name = 'cube'+index;
     cube.userData.id = index;
-    cube.position = coordinate;
+    cube.userData.position = coordinate;
+    cube.position.copy( coordinate );
     this._debugObject.add(cube);
   }, this);
 };

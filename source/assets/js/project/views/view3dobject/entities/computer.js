@@ -45,6 +45,14 @@ feng.views.view3dobject.entities.Computer.prototype.init = function() {
 };
 
 
+feng.views.view3dobject.entities.Computer.prototype.enableRender = function(){
+
+  goog.base(this, 'enableRender');
+
+  this._screenObject.visible = true;
+};
+
+
 feng.views.view3dobject.entities.Computer.prototype.activate = function(){
 
   goog.base(this, 'activate');

@@ -39,7 +39,6 @@ feng.fx.Leaf.prototype.create = function() {
 	});
 
 	var leaf = new THREE.Mesh( geometry, material );
-	leaf.position = this._position;
 
 	return leaf;
 };
@@ -49,6 +48,8 @@ feng.fx.Leaf.prototype.update = function( u ) {
 
 	goog.base(this, 'update', u);
 	
+	this.object3d.position.copy( this._position );
+
 	this.object3d.rotation.x += this._rotationVelocityX;
 	this.object3d.rotation.y += this._rotationVelocityY;
 };

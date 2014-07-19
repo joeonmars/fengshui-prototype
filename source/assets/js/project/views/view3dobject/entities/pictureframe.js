@@ -24,6 +24,14 @@ feng.views.view3dobject.entities.PictureFrame = function( object3d, data, view3d
 goog.inherits(feng.views.view3dobject.entities.PictureFrame, feng.views.view3dobject.InteractiveObject);
 
 
+feng.views.view3dobject.entities.PictureFrame.prototype.enableRender = function(){
+
+  goog.base(this, 'enableRender');
+
+  this._plane.visible = true;
+};
+
+
 feng.views.view3dobject.entities.PictureFrame.prototype.setPicture = function( src, id, size ){
 
 	this.pictureId = id;

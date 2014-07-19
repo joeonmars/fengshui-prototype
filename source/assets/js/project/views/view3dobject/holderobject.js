@@ -20,6 +20,14 @@ feng.views.view3dobject.HolderObject = function( object3d, data, view3d ){
 goog.inherits(feng.views.view3dobject.HolderObject, feng.views.view3dobject.InteractiveObject);
 
 
+feng.views.view3dobject.HolderObject.prototype.enableRender = function(){
+
+	goog.base(this, 'enableRender');
+
+	if(this.accessory) this.accessory.enableRender();
+};
+
+
 feng.views.view3dobject.HolderObject.prototype.updateAccessory = function( accessory ){
 
 	this.accessory = accessory;

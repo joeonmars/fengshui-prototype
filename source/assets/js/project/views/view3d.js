@@ -210,7 +210,7 @@ feng.views.View3D.prototype.show = function(){
 
 	this.dispatchEvent({
 		type: feng.events.EventType.SHOW
-  });
+	});
 };
 
  
@@ -230,7 +230,7 @@ feng.views.View3D.prototype.hide = function(){
 
 	this.dispatchEvent({
 		type: feng.events.EventType.HIDE
-  });
+	});
 };
 
 
@@ -293,11 +293,11 @@ feng.views.View3D.prototype.initScene = function() {
 	 */
 	var objectClass = {
 		'tip': feng.views.view3dobject.TipObject,
-	  'holder': feng.views.view3dobject.HolderObject,
-	  'gateway': feng.views.view3dobject.GatewayObject,
-	  'picturedisplay': feng.views.view3dobject.entities.PictureDisplay,
-	  'pictureframe': feng.views.view3dobject.entities.PictureFrame,
-	  'computer': feng.views.view3dobject.entities.Computer
+		'holder': feng.views.view3dobject.HolderObject,
+		'gateway': feng.views.view3dobject.GatewayObject,
+		'picturedisplay': feng.views.view3dobject.entities.PictureDisplay,
+		'pictureframe': feng.views.view3dobject.entities.PictureFrame,
+		'computer': feng.views.view3dobject.entities.Computer
 	};
 
 	// parse scene objects
@@ -444,7 +444,8 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 			if(goog.isString(textureData)) {
 
 				var textureSrc = preloadModel.getAsset( textureData ).src;
-			  object.material.map = THREE.ImageUtils.loadTexture( textureSrc );
+			  	var texture = THREE.ImageUtils.loadTexture( textureSrc );
+			  	object.material.map = texture;
 			}
 
 			if(object instanceof THREE.DirectionalLight) {

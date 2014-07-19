@@ -33,7 +33,10 @@
 		<script src="assets/js/thirdparty/greensock/utils/Draggable.min.js"></script>
 		<script src="assets/js/thirdparty/greensock/plugins/ScrollToPlugin.min.js"></script>
 		<script src="assets/js/thirdparty/greensock/plugins/ThrowPropsPlugin.min.js"></script>
-		<script src="assets/js/thirdparty/threejs/build/three67.min.js"></script>
+		
+		<script src="assets/js/thirdparty/threejs/build/three68.min.js"></script>
+
+		<script src="assets/js/thirdparty/threejs-utils/CombinedCamera.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/EffectComposer.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/RenderPass.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/ShaderPass.js"></script>
@@ -79,7 +82,7 @@
 				assetsPath: '<?php echo URLADDR; ?>'+'assets/',
 				app: 'demo',//'pathedit',
 				debug: true,
-				office: true
+				office: !true
 			};
 
 			feng.init( config );
