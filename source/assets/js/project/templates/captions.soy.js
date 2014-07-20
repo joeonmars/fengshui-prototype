@@ -5,6 +5,7 @@ goog.provide('feng.templates.captions');
 
 goog.require('soy');
 goog.require('soydata');
+goog.require('feng.templates.controls');
 
 
 /**
@@ -58,14 +59,14 @@ feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
-  var param81 = '<div class="draggerContainer"><img class="dragger" draggable="false"></div><div class="top"><h1>Lorem Ipsum</h1><h2>LOREM IPSUM</h2></div><div class="right"><div class="pictureSelector"><div class="pictureView"><ul>';
-  var pictureList83 = opt_data.pictures;
-  var pictureListLen83 = pictureList83.length;
-  for (var pictureIndex83 = 0; pictureIndex83 < pictureListLen83; pictureIndex83++) {
-    var pictureData83 = pictureList83[pictureIndex83];
-    param81 += '<li><img src="' + pictureData83.src + '" alt="' + pictureData83.description + '" draggable="false" data-id="' + pictureIndex83 + '"></li>';
+  var param81 = '<div class="draggerContainer"><img class="dragger" draggable="false"></div><div class="right"><h1>Lorem Ipsum</h1><h2>LOREM IPSUM</h2></div><div class="bottom"><div class="pictureSelector">' + feng.templates.controls.RoundButton({content: '<div class="icon"></div>', classname: 'prev'}) + '<div class="pictureView"><div class="carousel"><ul>';
+  var pictureList88 = opt_data.pictures;
+  var pictureListLen88 = pictureList88.length;
+  for (var pictureIndex88 = 0; pictureIndex88 < pictureListLen88; pictureIndex88++) {
+    var pictureData88 = pictureList88[pictureIndex88];
+    param81 += '<li><div class="thumbnail" style="background-image: url(' + pictureData88.src + ')" data-id="' + pictureIndex88 + '"></li>';
   }
-  param81 += '</ul></div><aside><div class="prev button"></div><div class="next button"></div></aside></div></div>';
+  param81 += '</ul></div></div>' + feng.templates.controls.RoundButton({content: '<div class="icon"></div>', classname: 'next'}) + '</div></div>';
   var output = feng.templates.captions.Caption({classname: 'changepicture', content: param81});
   return output;
 };
@@ -79,11 +80,11 @@ feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
  */
 feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
   var output = '<p class="floatText">';
-  var lineList96 = opt_data.lines;
-  var lineListLen96 = lineList96.length;
-  for (var lineIndex96 = 0; lineIndex96 < lineListLen96; lineIndex96++) {
-    var lineData96 = lineList96[lineIndex96];
-    output += '<span>' + lineData96 + '</span>';
+  var lineList104 = opt_data.lines;
+  var lineListLen104 = lineList104.length;
+  for (var lineIndex104 = 0; lineIndex104 < lineListLen104; lineIndex104++) {
+    var lineData104 = lineList104[lineIndex104];
+    output += '<span>' + lineData104 + '</span>';
   }
   output += '</p>';
   return output;

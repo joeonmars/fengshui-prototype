@@ -1,7 +1,6 @@
 goog.provide('feng.fx.WrapLayout');
 
 goog.require('goog.math.Box');
-goog.require('goog.events.EventTarget');
 goog.require('feng.utils.ThreeUtils');
 
 
@@ -10,8 +9,6 @@ goog.require('feng.utils.ThreeUtils');
  */
 feng.fx.WrapLayout = function(){
 
-  goog.base(this);
-
   this._object2DBox = new goog.math.Box(0, 0, 0, 0);
   this._object3DBox = new THREE.Box3();
 
@@ -19,12 +16,9 @@ feng.fx.WrapLayout = function(){
 
   this._blocks = [];
 };
-goog.inherits(feng.fx.WrapLayout, goog.events.EventTarget);
 
 
-feng.fx.WrapLayout.prototype.addBlock = function (element, alignment, size) {
-
-	size = size || new goog.math.Size(400, 400);
+feng.fx.WrapLayout.prototype.addBlock = function (element, alignment) {
 
 	if(!element) {
 		
@@ -32,12 +26,12 @@ feng.fx.WrapLayout.prototype.addBlock = function (element, alignment, size) {
 
 		goog.style.setStyle( element, {
 			'position': 'absolute',
-			'width': size.width + 'px',
-			'height': size.height + 'px',
 			'outline': '1px solid blue',
 			'background-color': 'rgba(255, 255, 255, .5)'
 		});
 	}
+
+	var size = goog.style.getSize(element);
 
 	var block = {
 		element: element,
@@ -48,6 +42,17 @@ feng.fx.WrapLayout.prototype.addBlock = function (element, alignment, size) {
 	};
 
 	this._blocks.push( block );
+
+	return block;
+};
+
+
+feng.fx.WrapLayout.prototype.updateBlockSize = function (block) {
+
+	var size = goog.style.getSize( block.element );
+
+	block.width = size.width;
+	block.height = size.height;
 
 	return block;
 };

@@ -34,7 +34,7 @@ goog.addDependency('../../../../project/fx/pathtrack.js', ['feng.fx.PathTrack'],
 goog.addDependency('../../../../project/fx/renderer.js', ['feng.fx.Renderer'], ['goog.array']);
 goog.addDependency('../../../../project/fx/textureanimator.js', ['feng.fx.TextureAnimator'], ['goog.events.EventTarget']);
 goog.addDependency('../../../../project/fx/trail.js', ['feng.fx.Trail'], ['feng.fx.Particle', 'goog.math']);
-goog.addDependency('../../../../project/fx/wraplayout.js', ['feng.fx.WrapLayout'], ['feng.utils.ThreeUtils', 'goog.events.EventTarget', 'goog.math.Box']);
+goog.addDependency('../../../../project/fx/wraplayout.js', ['feng.fx.WrapLayout'], ['feng.utils.ThreeUtils', 'goog.math.Box']);
 goog.addDependency('../../../../project/models/accessories.js', ['feng.models.Accessories'], ['feng.models.Preload']);
 goog.addDependency('../../../../project/models/achievements/achievements.js', ['feng.models.achievements.Achievements'], ['feng.models.achievements.Tip', 'goog.array', 'goog.object']);
 goog.addDependency('../../../../project/models/achievements/tip.js', ['feng.models.achievements.Tip'], ['feng.controllers.NavigationController', 'feng.events', 'feng.models.Preload', 'feng.models.achievements.Achievements', 'goog.events.EventTarget']);
@@ -42,7 +42,7 @@ goog.addDependency('../../../../project/models/preload.js', ['feng.models.Preloa
 goog.addDependency('../../../../project/models/view3d.js', ['feng.models.View3D'], []);
 goog.addDependency('../../../../project/pubsub.js', ['feng.PubSub'], ['goog.pubsub.PubSub']);
 goog.addDependency('../../../../project/templates/book.soy.js', ['feng.templates.book'], ['feng.templates.common', 'soy', 'soydata']);
-goog.addDependency('../../../../project/templates/captions.soy.js', ['feng.templates.captions'], ['soy', 'soydata']);
+goog.addDependency('../../../../project/templates/captions.soy.js', ['feng.templates.captions'], ['feng.templates.controls', 'soy', 'soydata']);
 goog.addDependency('../../../../project/templates/common.soy.js', ['feng.templates.common'], ['soy', 'soydata']);
 goog.addDependency('../../../../project/templates/controls.soy.js', ['feng.templates.controls'], ['soy', 'soydata']);
 goog.addDependency('../../../../project/templates/debug.soy.js', ['feng.templates.debug'], ['soy', 'soydata']);

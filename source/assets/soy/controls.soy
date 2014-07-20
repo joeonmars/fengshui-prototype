@@ -4,9 +4,10 @@
 /**
  * Round Button
  * @param? content content HTML
+ * @param? classname button classname
  */
 {template .RoundButton}
-<button class="roundButton">
+<button class="roundButton {$classname}">
 	<div class="outline"></div>
 	<div class="circle">
 		{if $content}{ $content }{/if}

@@ -45,7 +45,7 @@ feng.views.sections.controls.PictureSelector = function(domElement, object){
   this._lastMousePosition = new goog.math.Coordinate();
 
   this._imageRotation = {x: 0, y: 0};
-
+/*
   this._cols = 2;
   this._rows = this._numPictures / this._cols;
 
@@ -67,7 +67,7 @@ feng.views.sections.controls.PictureSelector = function(domElement, object){
 		});
 	}, this);
 
-	this._pageTweener = new TimelineMax();
+	this._pageTweener = new TimelineMax();*/
 };
 goog.inherits(feng.views.sections.controls.PictureSelector, feng.views.sections.controls.Controls);
 
@@ -92,11 +92,11 @@ feng.views.sections.controls.PictureSelector.prototype.activate = function( fram
 
 	goog.fx.anim.registerAnimation( this );
 
-	this.updateLayout( true );
+	//this.updateLayout( true );
 
-	this.gotoPage( 0 );
+	//this.gotoPage( 0 );
 
-	this._object.startInteraction();
+	//this._object.startInteraction();
 };
 
 

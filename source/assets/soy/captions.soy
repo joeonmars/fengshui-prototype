@@ -92,27 +92,37 @@
 		<img class="dragger" draggable="false">
 	</div>
 
-	<div class="top">
+	<div class="right">
 		<h1>Lorem Ipsum</h1>
 		<h2>LOREM IPSUM</h2>
 	</div>
 
-	<div class="right">
+	<div class="bottom">
 
 		<div class="pictureSelector">
+			{call feng.templates.controls.RoundButton}
+			{param content}
+				<div class="icon"></div>
+			{/param}
+			{param classname: 'prev'/}
+			{/call}
 			<div class="pictureView">
-				<ul>
-				{foreach $picture in $pictures}
-					<li>
-						<img src="{$picture.src}" alt="{$picture.description}" draggable="false" data-id="{index($picture)}">
-					</li>
-				{/foreach}
-				</ul>
+				<div class="carousel">
+					<ul>
+					{foreach $picture in $pictures}
+						<li>
+							<div class="thumbnail" style="background-image: url({$picture.src})" data-id="{index($picture)}">
+						</li>
+					{/foreach}
+					</ul>
+				</div>
 			</div>
-			<aside>
-				<div class="prev button"></div>
-				<div class="next button"></div>
-			</aside>
+			{call feng.templates.controls.RoundButton}
+			{param content}
+				<div class="icon"></div>
+			{/param}
+			{param classname: 'next'/}
+			{/call}
 		</div>
 
 	</div>

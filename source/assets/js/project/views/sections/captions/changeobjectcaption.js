@@ -20,8 +20,8 @@ feng.views.sections.captions.ChangeObjectCaption = function( object, cameraContr
 
   var topEl = goog.dom.getElementByClass('top', this.domElement);
   var rightEl = goog.dom.getElementByClass('right', this.domElement);
-  this._wrapLayout.addBlock( topEl, feng.fx.WrapLayout.Alignment.TOP, new goog.math.Size(800, 60) );
-  this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT, new goog.math.Size(400, 430) );
+  this._topBlock = this._wrapLayout.addBlock( topEl, feng.fx.WrapLayout.Alignment.TOP );
+  this._rightBlock = this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT );
 };
 goog.inherits(feng.views.sections.captions.ChangeObjectCaption, feng.views.View3DCaption);
 
@@ -35,4 +35,13 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.show = function() {
 feng.views.sections.captions.ChangeObjectCaption.prototype.hide = function() {
 
   goog.base(this, 'hide');
+};
+
+
+feng.views.sections.captions.ChangeObjectCaption.prototype.onResize = function(e) {
+
+  goog.base(this, 'onResize', e);
+
+  this._wrapLayout.updateBlockSize( this._rightBlock );
+  this._wrapLayout.updateBlockSize( this._topBlock );
 };

@@ -82,6 +82,47 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   }
 }
 
+@mixin roundButton($size, $border_size:5px){
+  position: relative;
+  width: $size;
+  height: $size;
+  background-color: rgba(255, 255, 255, .5);
+  @include border-radius(50%);
+
+  &:hover{
+    >.outline{
+      @include scale(1);
+      opacity: 1;
+    }
+  }
+
+  >.outline{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: $size;
+    height: $size;
+    border: $border_size solid $darkblue;
+    @include border-radius(50%);
+    @include box-sizing(border-box);
+    @include transition(transform .2s ease-in-out, opacity .35s ease-in-out);
+    @include scale(0.95);
+    opacity: 0;
+  }
+
+  >.circle{
+    position: absolute;
+    top: $border_size;
+    left: $border_size;
+    width: $size - $border_size * 2;
+    height: $size - $border_size * 2;
+    background-color: #fff;
+    overflow: hidden;
+    @include border-radius(50%);
+    @include single-box-shadow(rgba(0, 0, 0, .14), 1px, 1px, 2px);
+  }
+}
+
 @mixin popup($padding, $box-shadow: none, $color: $darkblue) {
   padding: $padding;
   @include border-radius(3px);

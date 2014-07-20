@@ -20,8 +20,8 @@ feng.views.sections.captions.ChangeColorCaption = function( object, cameraContro
 
   var leftEl = goog.dom.getElementByClass('left', this.domElement);
   var rightEl = goog.dom.getElementByClass('right', this.domElement);
-  this._wrapLayout.addBlock( leftEl, feng.fx.WrapLayout.Alignment.LEFT, new goog.math.Size(200, 430) );
-  this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT, new goog.math.Size(400, 430) );
+  this._leftBlock = this._wrapLayout.addBlock( leftEl, feng.fx.WrapLayout.Alignment.LEFT );
+  this._rightBlock = this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT );
 };
 goog.inherits(feng.views.sections.captions.ChangeColorCaption, feng.views.View3DCaption);
 
@@ -35,4 +35,13 @@ feng.views.sections.captions.ChangeColorCaption.prototype.show = function() {
 feng.views.sections.captions.ChangeColorCaption.prototype.hide = function() {
 
   goog.base(this, 'hide');
+};
+
+
+feng.views.sections.captions.ChangeColorCaption.prototype.onResize = function(e) {
+
+  goog.base(this, 'onResize', e);
+
+  this._wrapLayout.updateBlockSize( this._rightBlock );
+  this._wrapLayout.updateBlockSize( this._leftBlock );
 };
