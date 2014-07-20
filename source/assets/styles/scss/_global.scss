@@ -96,6 +96,16 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
     }
   }
 
+  &.disabled{
+    pointer-events: none;
+    opacity: .5;
+
+    >.outline{
+      @include scale(0);
+      opacity: 0;
+    }
+  }
+
   >.outline{
     position: absolute;
     top: 0;

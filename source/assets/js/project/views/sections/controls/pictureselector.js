@@ -8,7 +8,7 @@ goog.require('feng.views.sections.controls.Controls');
 /**
  * @constructor
  */
-feng.views.sections.controls.PictureSelector = function(domElement, object){
+feng.views.sections.controls.PictureSelector = function(domElement, pictureDisplay){
 
   goog.base(this, domElement);
 
@@ -17,68 +17,40 @@ feng.views.sections.controls.PictureSelector = function(domElement, object){
   this._dragger.setHysteresis( 2 );
   this._dragger.defaultAction = goog.bind(this.onDrag, this);
 
-  this._prevButtonEl = goog.dom.getElementByClass('prev', this.domElement);
-  this._nextButtonEl = goog.dom.getElementByClass('next', this.domElement);
- 
- 	this._ulEl = goog.dom.query('ul', this.domElement)[0];
-  this._liEls = goog.dom.query('li', this._ulEl);
+	this._prevButtonEl = goog.dom.getElementByClass('prev', this.domElement);
+	this._nextButtonEl = goog.dom.getElementByClass('next', this.domElement);
+
+	this._scrollerEl = goog.dom.query('ul', this.domElement)[0];
+	this._liEls = goog.dom.query('li', this._scrollerEl);
 
   this._imgEl = goog.dom.getElementByClass('dragger', this.domElement.parentNode.parentNode);
 
   this._dragId = 0;
   this._pageId = 0;
 
-  this._object = object;
+  this._pictureDisplay = pictureDisplay;
 
   this._numPicturesOfPage = 4;
-  this._numPictures = this._object.pictures.length;
+  this._numPictures = this._pictureDisplay.pictures.length;
+	this._numPages = 0;
 
   this._pages = [];
 
   this._usedIds = [];
-  this._frameObjects = null;
-
-  this._animTimer = new goog.Timer(150);
-  this._animIds = [];
 
   this._mousePosition = new goog.math.Coordinate();
   this._lastMousePosition = new goog.math.Coordinate();
 
   this._imageRotation = {x: 0, y: 0};
-/*
-  this._cols = 2;
-  this._rows = this._numPictures / this._cols;
 
-  this._margin = 12;
-  this._gridSize = new goog.math.Size( 312, 236 );
-  this._liSize = new goog.math.Size( (this._gridSize.width - this._margin) / 2, (this._gridSize.height - this._margin) / 2 );
   this._imageSize = new goog.math.Size( 0, 0 );
-
-  this._liPositions = [];
-	for(var i = 0; i < this._numPictures; i++) {
-		this._liPositions.push({x: 0, y: 0});
-	}
-
-	goog.array.forEach(this._liEls, function(liEl, index) {
-		goog.style.setStyle(liEl, {
-			'width': this._liSize.width + 'px',
-			'height': this._liSize.height + 'px',
-			'z-index': this._numPictures - 1 - index
-		});
-	}, this);
-
-	this._pageTweener = new TimelineMax();*/
 };
 goog.inherits(feng.views.sections.controls.PictureSelector, feng.views.sections.controls.Controls);
 
 
-feng.views.sections.controls.PictureSelector.prototype.activate = function( frameObjects ){
+feng.views.sections.controls.PictureSelector.prototype.activate = function(){
 
 	goog.base(this, 'activate');
-
-	this._frameObjects = frameObjects;
-
-	this._eventHandler.listen( this._animTimer, goog.Timer.TICK, this.onTick, false, this );
 
 	this._eventHandler.listen( this._prevButtonEl, 'click', this.onClick, false, this );
 	this._eventHandler.listen( this._nextButtonEl, 'click', this.onClick, false, this );
@@ -86,17 +58,17 @@ feng.views.sections.controls.PictureSelector.prototype.activate = function( fram
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this );
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this );
 
-	this._eventHandler.listen( this._object, feng.events.EventType.CHANGE, this.onObjectChange, false, this );
+	this._eventHandler.listen( this._pictureDisplay, feng.events.EventType.CHANGE, this.onObjectChange, false, this );
 
 	this._dragger.setEnabled( true );
 
 	goog.fx.anim.registerAnimation( this );
 
-	//this.updateLayout( true );
+	this.updateLayout( true );
 
-	//this.gotoPage( 0 );
+	this.gotoPage( 0 );
 
-	//this._object.startInteraction();
+	this._pictureDisplay.startInteraction();
 };
 
 
@@ -108,153 +80,83 @@ feng.views.sections.controls.PictureSelector.prototype.deactivate = function(){
 
 	goog.fx.anim.unregisterAnimation( this );
 
-	this._object.stopInteraction();
+	this._pictureDisplay.stopInteraction();
+};
+
+
+feng.views.sections.controls.PictureSelector.prototype.getImgById = function( id ) {
+
+	return this._pictureDisplay.pictures[id].img;
 };
 
 
 feng.views.sections.controls.PictureSelector.prototype.prevPage = function() {
 
 	var minPageId = 0;
+	var pageId = Math.max(minPageId, this._pageId - 1);
 
-	if(this._pageId > minPageId) {
-		this.gotoPage( Math.max(minPageId, this._pageId - 1) );
-	}
+	this.gotoPage( pageId );
 };
 
 
 feng.views.sections.controls.PictureSelector.prototype.nextPage = function() {
 
-	var maxPageId = this._pages.length - 1;
+	var maxPageId = this._numPages - 1;
+	var pageId = Math.min(maxPageId, this._pageId + 1);
 
-	if(this._pageId < maxPageId) {
-		this.gotoPage( Math.min(maxPageId, this._pageId + 1) );
-	}
+	this.gotoPage( pageId );
 };
 
 
 feng.views.sections.controls.PictureSelector.prototype.gotoPage = function( id ) {
 
-	var oldPageId = this._pageId;
-	var newPageId = id;
-
-	this._pageId = newPageId;
+	this._pageId = id;
 
 	var minPageId = 0;
-	var maxPageId = this._pages.length - 1;
+	var maxPageId = this._numPages - 1;
 
-	goog.dom.classes.enable(this._prevButtonEl, 'inactive', (newPageId === minPageId));
-	goog.dom.classes.enable(this._nextButtonEl, 'inactive', (newPageId === maxPageId));
+	var isFirstPage = (this._pageId === minPageId);
+	var isLastPage = (this._pageId === maxPageId);
+
+	goog.dom.classes.enable(this._prevButtonEl, 'disabled', isFirstPage);
+	goog.dom.classes.enable(this._nextButtonEl, 'disabled', isLastPage);
 
 	// animate page transition
-	this._pageTweener.clear();
+	var scrollLeft = goog.style.getSize( this._scrollerEl ).width * this._pageId;
 
-	var oldPageTweeners = goog.array.map(this._pages[oldPageId], function(id) {
-		return TweenMax.fromTo(this._liEls[id], .2, {
-			'opacity': 1,
-			'top': 0,
-		}, {
-			'opacity': 0,
-			'top': ((newPageId > oldPageId) ? -10 : 10) + 'px',
-			'clearProps': 'top',
-			'ease': Strong.easeOut
-		});
-	}, this);
+	if(isLastPage) scrollLeft = 'max';
 
-	this._pageTweener.add(oldPageTweeners, '+=0', 'start', .05);
-
-	this._pageTweener.add(TweenMax.to(this._ulEl, .05, {
-		'y': - newPageId * (this._gridSize.height + this._margin)
-	}), '+=0');
-
-	var newPageTweeners = goog.array.map(this._pages[newPageId], function(id) {
-		return TweenMax.fromTo(this._liEls[id], .2, {
-			'opacity': 0,
-			'top': ((newPageId > oldPageId) ? 10 : -10) + 'px'
-		}, {
-			'opacity': 1,
-			'top': 0,
-			'clearProps': 'top',
-			'ease': Strong.easeOut
-		});
-	}, this);
-
-	this._pageTweener.add(newPageTweeners, '+=0', 'start', .05);
+	TweenMax.to(this._scrollerEl, .4, {
+		'scrollTo': {
+			'x': scrollLeft
+		},
+		'ease': Quad.easeOut
+	});
 };
 
 
 feng.views.sections.controls.PictureSelector.prototype.updateLayout = function( instant ){
 
-	var freeIds = [];
+	var numUnused = 0;
 
-	goog.array.forEach(this._liPositions, function(position, index) {
+	goog.array.forEach(this._liEls, function(liEl) {
 
-		var isFree = !goog.array.contains(this._usedIds, index);
-		if(isFree) freeIds.push( index );
+		var id = parseInt( liEl.getAttribute('data-id') );
+		var isUsed = goog.array.contains(this._usedIds, id);
 
-	}, this);
+		goog.dom.classes.enable( liEl, 'used', isUsed );
 
-	// calculate pages
-	this._pages = [];
-
-	var i, l = freeIds.length / this._numPicturesOfPage;
-
-	for(i = 0; i < l; i++) {
-		var start = i * this._numPicturesOfPage;
-		var end = start + this._numPicturesOfPage;
-		var pageIds = freeIds.slice(start, end);
-		this._pages.push( pageIds );
-	}
-
-	// reposition free li elements
-	goog.array.forEach(freeIds, function(freeId, index) {
-
-		var position = this._liPositions[ freeId ];
-
-		var col = index % this._cols;
-		var row = Math.floor(index / this._cols);
-		position.x = col * this._liSize.width + col * this._margin;
-		position.y = row * this._liSize.height + row * this._margin;
+		if(!isUsed) numUnused ++;
 
 	}, this);
 
-	//
-	goog.array.forEach(this._liEls, function(liEl, index) {
+	this._numPages = Math.ceil( numUnused / this._numPicturesOfPage );
 
-		var visible = goog.array.contains( freeIds, index );
+	var newPageId = Math.max(0, Math.min(this._pageId, this._numPages - 1));
 
-		goog.style.setStyle(liEl, {
-			'display': (visible ? 'block' : 'none')
-		});
-
-	}, this);
-
-	//
-	this._animIds = [];
-
-	//
-	goog.array.forEach(this._liPositions, function(toPosition, index) {
-
-		var liEl = this._liEls[ index ];
-		var fromPosition = goog.style.getCssTranslation( liEl );
-
-		if( !goog.math.Coordinate.equals( fromPosition, toPosition ) && !goog.array.contains(this._usedIds, index) ) {
-			this._animIds.push( index );
-		}
-
-	}, this);
-
-	if(instant) {
-
-		this._animTimer.stop();
-
-		var i, l = this._animIds.length;
-		for(var i = 0; i < l; i++) {
-			this.onTick();
-		}
-
-	}else {
-
-		this._animTimer.start();
+	if(this._pageId !== newPageId) {
+		this._pageId = newPageId;
+		this.gotoPage( this._pageId );
 	}
 };
 
@@ -262,20 +164,31 @@ feng.views.sections.controls.PictureSelector.prototype.updateLayout = function( 
 feng.views.sections.controls.PictureSelector.prototype.onDragStart = function(e) {
 
 	var target = e.browserEvent.target;
-	var dragId = parseInt( target.getAttribute('data-id') );
+
+	// return if drag not started on a thumbnail
+	if(!goog.dom.classes.has(target, 'thumbnail')) {
+		return false;
+	}
+
+	// drag on thumbnail
+	var thumb = target;
+	var dragId = parseInt( thumb.getAttribute('data-id') );
+	var img = this.getImgById( dragId );
 
 	this._dragId = dragId;
 	this._usedIds.push( dragId );
 
-	var targetPagePosition = goog.style.getPageOffset(target);
-	var offsetX = targetPagePosition.x - this._dragger.clientX;
-	var offsetY = targetPagePosition.y - this._dragger.clientY;
+	var thumbPagePosition = goog.style.getPageOffset( thumb );
+	var offsetX = thumbPagePosition.x - this._dragger.clientX;
+	var offsetY = thumbPagePosition.y - this._dragger.clientY;
 
-	offsetX = target.naturalWidth * (offsetX / target.width);
-	offsetY = target.naturalHeight * (offsetY / target.height);
+	var thumbSize = goog.style.getSize( thumb );
 
-	this._imgEl.src = target.src;
-	this._imgEl.setAttribute('data-id', target.getAttribute('data-id'));
+	offsetX = img.naturalWidth * (offsetX / thumbSize.width);
+	offsetY = img.naturalHeight * (offsetY / thumbSize.height);
+
+	this._imgEl.src = img.src;
+	this._imgEl.setAttribute('data-id', thumb.getAttribute('data-id'));
 
 	goog.style.setStyle(this._imgEl, {
 		'margin-left': offsetX + 'px',
@@ -306,7 +219,7 @@ feng.views.sections.controls.PictureSelector.prototype.onDragEnd = function(e) {
 	feng.utils.Utils.setCursor(null);
 
 	// dispatch a drag end event
-	this._object.dispatchEvent({
+	this._pictureDisplay.dispatchEvent({
 		type: feng.events.EventType.DRAG_END,
 		src: src,
 		id: id,
@@ -322,13 +235,13 @@ feng.views.sections.controls.PictureSelector.prototype.onDrag = function(x, y) {
 	goog.style.setPosition(this._imgEl, this._mousePosition);
 
 	// dispatch a drag event with global mouse position
-	this._object.dispatchEvent({
+	this._pictureDisplay.dispatchEvent({
 		type: feng.events.EventType.DRAG,
 		mousePosition: this._mousePosition
 	});
 
 	// 
-	var opacity = (this._object.hasIntersected ? .5 : 1);
+	var opacity = (this._pictureDisplay.hasIntersected ? .5 : 1);
 	goog.style.setOpacity(this._imgEl, opacity);
 };
 
@@ -349,8 +262,6 @@ feng.views.sections.controls.PictureSelector.prototype.onObjectChange = function
 
 feng.views.sections.controls.PictureSelector.prototype.onClick = function(e) {
 
-	if(this._pageTweener.isActive()) return false;
-
 	switch(e.currentTarget) {
 		case this._prevButtonEl:
 		this.prevPage();
@@ -359,26 +270,6 @@ feng.views.sections.controls.PictureSelector.prototype.onClick = function(e) {
 		case this._nextButtonEl:
 		this.nextPage();
 		break;
-	}
-};
-
-
-feng.views.sections.controls.PictureSelector.prototype.onTick = function(e) {
-
-	var animId = this._animIds.shift();
-
-	var liEl = this._liEls[ animId ];
-	var position = this._liPositions[ animId ];
-	var inCurrentPage = goog.array.contains( this._pages[this._pageId], animId );
-
-	TweenMax.to(liEl, .5, {
-		'x': position.x,
-		'y': position.y,
-		'ease': Quint.easeOut
-	});
-
-	if(this._animIds.length === 0) {
-		this._animTimer.stop();
 	}
 };
 
@@ -406,4 +297,12 @@ feng.views.sections.controls.PictureSelector.prototype.onAnimationFrame = functi
 			'transform': 'rotateX(' + this._imageRotation.x + 'deg) rotateY(' + this._imageRotation.y + 'deg)'
 		});
 	}
+};
+
+
+feng.views.sections.controls.PictureSelector.prototype.onResize = function ( e ) {
+
+	goog.base(this, 'onResize', e);
+
+	this.gotoPage( this._pageId );
 };

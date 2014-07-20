@@ -16,8 +16,14 @@ feng.views.view3dobject.entities.PictureDisplay = function( object3d, data, view
   var preload = feng.models.Preload.getInstance();
 
   this.pictures = goog.array.map(data.pictures, function(picture) {
+
+    var src = preload.getAsset( picture.id ).src;
+    var img = new Image();
+    img.src = src;
+
     return {
-      src: preload.getAsset( picture.id ).src,
+      img: img,
+      src: src,
       description: picture.description
     };
   });
@@ -112,6 +118,10 @@ feng.views.view3dobject.entities.PictureDisplay.prototype.onPictureDragEnd = fun
     idToUse = e.id;
 
     this._activePictureFrame.setPicture( e.src, e.id, e.size );
+  
+  }else {
+
+    idToReturn = e.id;
   }
 
   this.dispatchEvent({

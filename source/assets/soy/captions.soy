@@ -110,7 +110,7 @@
 				<div class="carousel">
 					<ul>
 					{foreach $picture in $pictures}
-						<li>
+						<li data-id="{index($picture)}">
 							<div class="thumbnail" style="background-image: url({$picture.src})" data-id="{index($picture)}">
 						</li>
 					{/foreach}

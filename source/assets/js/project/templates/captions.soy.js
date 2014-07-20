@@ -64,7 +64,7 @@ feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
   var pictureListLen88 = pictureList88.length;
   for (var pictureIndex88 = 0; pictureIndex88 < pictureListLen88; pictureIndex88++) {
     var pictureData88 = pictureList88[pictureIndex88];
-    param81 += '<li><div class="thumbnail" style="background-image: url(' + pictureData88.src + ')" data-id="' + pictureIndex88 + '"></li>';
+    param81 += '<li data-id="' + pictureIndex88 + '"><div class="thumbnail" style="background-image: url(' + pictureData88.src + ')" data-id="' + pictureIndex88 + '"></li>';
   }
   param81 += '</ul></div></div>' + feng.templates.controls.RoundButton({content: '<div class="icon"></div>', classname: 'next'}) + '</div></div>';
   var output = feng.templates.captions.Caption({classname: 'changepicture', content: param81});
@@ -80,11 +80,11 @@ feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
  */
 feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
   var output = '<p class="floatText">';
-  var lineList104 = opt_data.lines;
-  var lineListLen104 = lineList104.length;
-  for (var lineIndex104 = 0; lineIndex104 < lineListLen104; lineIndex104++) {
-    var lineData104 = lineList104[lineIndex104];
-    output += '<span>' + lineData104 + '</span>';
+  var lineList106 = opt_data.lines;
+  var lineListLen106 = lineList106.length;
+  for (var lineIndex106 = 0; lineIndex106 < lineListLen106; lineIndex106++) {
+    var lineData106 = lineList106[lineIndex106];
+    output += '<span>' + lineData106 + '</span>';
   }
   output += '</p>';
   return output;
