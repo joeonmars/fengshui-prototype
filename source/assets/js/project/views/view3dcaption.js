@@ -28,8 +28,8 @@ feng.views.View3DCaption = function( object, cameraController, renderSize, contr
   // render HTML template
   this.domElement = soy.renderAsFragment(this._template, this._templateData);
 
-  this._closeButtonEl = goog.dom.getElementByClass('close', this.domElement);
-  this._confirmButtonEl = goog.dom.getElementByClass('confirm', this.domElement);
+  this._closeButton = goog.dom.getElementByClass('close-button', this.domElement);
+  this._changeButton = goog.dom.getElementByClass('change', this.domElement);
 };
 goog.inherits(feng.views.View3DCaption, goog.events.EventTarget);
 
@@ -38,8 +38,8 @@ feng.views.View3DCaption.prototype.show = function() {
 
   goog.style.showElement( this.domElement, true );
 
-  this._eventHandler.listen( this._closeButtonEl, 'click', this.onClick, false, this );
-  this._eventHandler.listen( this._confirmButtonEl, 'click', this.onClick, false, this );
+  this._eventHandler.listen( this._closeButton, 'click', this.onClick, false, this );
+  this._eventHandler.listen( this._changeButton, 'click', this.onClick, false, this );
   this._eventHandler.listen( window, 'resize', this.onResize, false, this );
 
   this.onResize();
@@ -78,13 +78,13 @@ feng.views.View3DCaption.prototype.onAnimationFrame = function( now ) {
 feng.views.View3DCaption.prototype.onClick = function( e ) {
 
   switch(e.currentTarget) {
-    case this._closeButtonEl:
+    case this._closeButton:
     this.dispatchEvent({
       type: feng.events.EventType.CLOSE
     });
     break;
 
-    case this._confirmButtonEl:
+    case this._changeButton:
     this._object.tip.unlock();
     break;
   }
@@ -93,9 +93,5 @@ feng.views.View3DCaption.prototype.onClick = function( e ) {
 
 feng.views.View3DCaption.prototype.onResize = function( e ) {
 
-  var confirmButtonSize = goog.style.getSize(this._confirmButtonEl);
-  var x = (this._renderSize.width - confirmButtonSize.width) / 2;
-  var y = this._renderSize.height - confirmButtonSize.height - 55;
-
-  goog.style.setPosition(this._confirmButtonEl, x, y);
+  
 };

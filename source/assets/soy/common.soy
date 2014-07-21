@@ -96,7 +96,7 @@
  */
 {template .Popup}
 
-<div class="popup { $classname }">
+<div class="popup {if $classname}{ $classname }{/if}">
 	{call .CloseButton}{/call}
 	<div class="content">
 	{ $content }

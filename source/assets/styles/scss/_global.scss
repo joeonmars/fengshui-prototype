@@ -199,18 +199,27 @@ html, body{
 body{
   min-width: $min-width;
   min-height: $min-height;
+  font-size: 62.5%;
 }
 
 #main{
   @include chromeOSDefaultCursor;
-
+  
   h1, h2, h3, h4, h5, h6{
     font-family: $font_marineup_light;
     text-transform: uppercase;
+    -webkit-font-smoothing: antialiased;
   }
 
   p{
     font-family: $font_marine_light;
+    letter-spacing: 0.05em;
+  }
+
+  q{
+    font-family: $font_marine_light;
+    font-style: italic;
+    letter-spacing: 0.05em;
   }
 
   a{
@@ -282,6 +291,10 @@ body{
       @include single-transition( transform, .25s );
 
       &.yes{
+        @include font-awesome( "fa-check" );
+      }
+
+      &.change{
         @include font-awesome( "fa-check" );
       }
 

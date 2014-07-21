@@ -59,7 +59,7 @@ feng.templates.common.FengshuiLogo = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.common.Popup = function(opt_data, opt_ignored) {
-  return '<div class="popup ' + opt_data.classname + '">' + feng.templates.common.CloseButton(null) + '<div class="content">' + opt_data.content + '</div></div>';
+  return '<div class="popup ' + ((opt_data.classname) ? opt_data.classname : '') + '">' + feng.templates.common.CloseButton(null) + '<div class="content">' + opt_data.content + '</div></div>';
 };
 
 

@@ -10,7 +10,58 @@
 <div class="section episode" id="{ $id }">
 	<div class="hud">
 		<div class="overlays">
+
 			<div class="tutorial-overlay"></div>
+
+			<div class="opening-overlay" style="display:none">
+			{call feng.templates.common.Popup}
+				{param content}
+					<h1></h1>
+					<div class="line"></div>
+					<p></p>
+					{call feng.templates.common.PrimaryButton}
+						{param icon: 'yes' /}
+						{param text: 'got it' /}
+					{/call}
+					<div class="character"></div>
+				{/param}
+			{/call}
+			</div>
+
+			<div class="continue-overlay" style="display:none">
+			{call feng.templates.common.Popup}
+				{param content}
+					<h1></h1>
+					<div class="line"></div>
+					<p></p>
+					{call feng.templates.common.PrimaryButton}
+						{param icon: 'yes' /}
+						{param text: 'continue exploring' /}
+					{/call}
+					{call feng.templates.common.PrimaryButton}
+						{param icon: 'yes' /}
+						{param text: 'visit another residence' /}
+					{/call}
+					<div class="character"></div>
+				{/param}
+			{/call}
+			</div>
+
+			<div class="ending-overlay" style="display:none">
+			{call feng.templates.common.Popup}
+				{param content}
+					<h1></h1>
+					<div class="line"></div>
+					<p></p>
+					{call feng.templates.common.PrimaryButton}
+						{param icon: 'yes' /}
+						{param text: 'ok' /}
+					{/call}
+					<div class="character"></div>
+				{/param}
+			{/call}
+			</div>
+
 		</div>
 		<div class="controls">
 			{call feng.templates.controls.Compass}{/call}

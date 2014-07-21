@@ -42,7 +42,7 @@ goog.addDependency('../../../../project/models/preload.js', ['feng.models.Preloa
 goog.addDependency('../../../../project/models/view3d.js', ['feng.models.View3D'], []);
 goog.addDependency('../../../../project/pubsub.js', ['feng.PubSub'], ['goog.pubsub.PubSub']);
 goog.addDependency('../../../../project/templates/book.soy.js', ['feng.templates.book'], ['feng.templates.common', 'soy', 'soydata']);
-goog.addDependency('../../../../project/templates/captions.soy.js', ['feng.templates.captions'], ['feng.templates.controls', 'soy', 'soydata']);
+goog.addDependency('../../../../project/templates/captions.soy.js', ['feng.templates.captions'], ['feng.templates.common', 'feng.templates.controls', 'soy', 'soydata']);
 goog.addDependency('../../../../project/templates/common.soy.js', ['feng.templates.common'], ['soy', 'soydata']);
 goog.addDependency('../../../../project/templates/controls.soy.js', ['feng.templates.controls'], ['soy', 'soydata']);
 goog.addDependency('../../../../project/templates/debug.soy.js', ['feng.templates.debug'], ['soy', 'soydata']);

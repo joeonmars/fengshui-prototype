@@ -207,25 +207,14 @@ body{
 
 					>div{
 						position: absolute;
-						outline: 1px solid blue;
+						//outline: 1px solid blue;
 
 						&.intersected{
 							background: rgba(255, 255, 255, .6);
 						}
 
-						&.left{
-							width: 200px;
-							height: 430px;
-						}
-
-						&.right{
-							width: 400px;
-							height: 430px;
-						}
-
-						&.top{
-							width: 800px;
-							height: 60px;
+						@media only screen and (max-width : 1080px)  {
+							font-size: .8em;
 						}
 					}
 

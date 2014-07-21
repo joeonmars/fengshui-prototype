@@ -7,8 +7,6 @@
  */
 {template .Caption}
 <div class="captionView {$classname}">
-	<div class="close button"></div>
-	<div class="confirm button"></div>
 	{ $content }
 </div>
 {/template}
@@ -79,6 +77,7 @@
 /**
  * Change picture caption
  * @param pictures pictures
+ * @param tip the tip
  */
 {template .ChangePictureCaption}
 
@@ -93,8 +92,19 @@
 	</div>
 
 	<div class="right">
-		<h1>Lorem Ipsum</h1>
-		<h2>LOREM IPSUM</h2>
+	{call feng.templates.common.Popup}
+		{param content}
+			<h1>{ $tip.name }</h1>
+			<h2>{ $tip.advice }</h2>
+			<q>"{ $tip.quote }"</q>
+			<p>{ $tip.description }</p>
+			{call feng.templates.common.PrimaryButton}
+				{param icon: 'change' /}
+				{param classname: 'change' /}
+				{param text: 'change' /}
+			{/call}
+		{/param}
+	{/call}
 	</div>
 
 	<div class="bottom">

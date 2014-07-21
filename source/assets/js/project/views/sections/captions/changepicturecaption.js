@@ -14,7 +14,8 @@ feng.views.sections.captions.ChangePictureCaption = function( object, cameraCont
   this._template = feng.templates.captions.ChangePictureCaption;
 
   this._templateData = {
-    pictures: object.pictures
+    pictures: object.pictures,
+    tip: object.tip
   };
 
   goog.base(this, object, cameraController, renderSize, controls, hud);
