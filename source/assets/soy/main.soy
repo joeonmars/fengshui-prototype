@@ -13,13 +13,15 @@
 
 			<div class="tutorial-overlay"></div>
 
-			<div class="opening-overlay" style="display:none">
+			<div class="opening-overlay">
 			{call feng.templates.common.Popup}
+				{param classname: 'opening' /}
 				{param content}
 					<h1></h1>
 					<div class="line"></div>
 					<p></p>
 					{call feng.templates.common.PrimaryButton}
+						{param classname: 'ok' /}
 						{param icon: 'yes' /}
 						{param text: 'got it' /}
 					{/call}
@@ -28,34 +30,22 @@
 			{/call}
 			</div>
 
-			<div class="continue-overlay" style="display:none">
+			<div class="ending-overlay">
 			{call feng.templates.common.Popup}
+				{param classname: 'ending' /}
 				{param content}
 					<h1></h1>
 					<div class="line"></div>
 					<p></p>
 					{call feng.templates.common.PrimaryButton}
+						{param classname: 'continue' /}
 						{param icon: 'yes' /}
-						{param text: 'continue exploring' /}
+						{param text: 'continue investigating' /}
 					{/call}
 					{call feng.templates.common.PrimaryButton}
+						{param classname: 'visit' /}
 						{param icon: 'yes' /}
 						{param text: 'visit another residence' /}
-					{/call}
-					<div class="character"></div>
-				{/param}
-			{/call}
-			</div>
-
-			<div class="ending-overlay" style="display:none">
-			{call feng.templates.common.Popup}
-				{param content}
-					<h1></h1>
-					<div class="line"></div>
-					<p></p>
-					{call feng.templates.common.PrimaryButton}
-						{param icon: 'yes' /}
-						{param text: 'ok' /}
 					{/call}
 					<div class="character"></div>
 				{/param}

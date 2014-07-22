@@ -1,6 +1,5 @@
 goog.provide('feng.views.View3DHud');
 
-goog.require('goog.events.EventHandler');
 goog.require('feng.views.sections.controls.ObjectBox');
 goog.require('feng.views.sections.controls.ObjectSelector');
 goog.require('feng.views.View3DCaption');
@@ -13,6 +12,8 @@ goog.require('feng.views.sections.captions.ChangeColorCaption');
 goog.require('feng.views.sections.captions.ChangeObjectCaption');
 goog.require('feng.views.sections.captions.ChangePictureCaption');
 goog.require('feng.views.sections.overlays.TutorialOverlay');
+goog.require('feng.views.sections.overlays.OpeningOverlay');
+goog.require('feng.views.sections.overlays.EndingOverlay');
 
 
 /**
@@ -28,14 +29,18 @@ feng.views.View3DHud = function( hudEl, view3dController, tips ){
   this._view3d = null;
   this._view3dController = view3dController;
 
-  this._eventHandler = new goog.events.EventHandler(this);
-
   // create a captions collection
   this._captions = {};
 
   // create overlays
   var tutorialOverlayEl = goog.dom.getElementByClass('tutorial-overlay', this.domElement);
   this.tutorialOverlay = new feng.views.sections.overlays.TutorialOverlay( tutorialOverlayEl );
+
+  var openingOverlayEl = goog.dom.getElementByClass('opening-overlay', this.domElement);
+  this.openingOverlay = new feng.views.sections.overlays.OpeningOverlay( openingOverlayEl );
+
+  var endingOverlayEl = goog.dom.getElementByClass('ending-overlay', this.domElement);
+  this.endingOverlay = new feng.views.sections.overlays.EndingOverlay( endingOverlayEl );
 
   // create controls
   var compassEl = goog.dom.getElementByClass('compass', this.domElement);
@@ -74,13 +79,18 @@ feng.views.View3DHud.prototype.setView3D = function( view3d ) {
   this.objectBox.setView3D( view3d );
   this.objectSelector.setView3D( view3d );
 
-  this._eventHandler.listen(this._view3d.modeController, feng.events.EventType.UPDATE, this.onUpdateView3D, false, this);
+  this._view3d.modeController.listen(feng.events.EventType.UPDATE, this.onUpdateView3D, false, this);
 };
 
 
 feng.views.View3DHud.prototype.activate = function() {
 
-  this._eventHandler.listen(this._view3dController, feng.events.EventType.SHOW, this.onShowView3D, false, this);
+  if(this._view3d) {
+    this._view3d.modeController.listen(feng.events.EventType.UPDATE, this.onUpdateView3D, false, this);
+  }
+
+  this._view3dController.listen(feng.events.EventType.SHOW, this.onShowView3D, false, this);
+  this._view3dController.listen(feng.events.EventType.ANIMATED_IN, this.onAnimatedInView3D, false, this);
 
   feng.tutorial.listen(feng.events.EventType.ANIMATE_IN, this.tutorialOverlay.animateIn, false, this.tutorialOverlay);
   feng.tutorial.listen(feng.events.EventType.ANIMATE_OUT, this.tutorialOverlay.animateOut, false, this.tutorialOverlay);
@@ -96,7 +106,12 @@ feng.views.View3DHud.prototype.activate = function() {
 
 feng.views.View3DHud.prototype.deactivate = function() {
 
-  this._eventHandler.removeAll();
+  if(this._view3d) {
+    this._view3d.modeController.unlisten(feng.events.EventType.UPDATE, this.onUpdateView3D, false, this);
+  }
+
+  this._view3dController.unlisten(feng.events.EventType.SHOW, this.onShowView3D, false, this);
+  this._view3dController.unlisten(feng.events.EventType.ANIMATED_IN, this.onAnimatedInView3D, false, this);
 
   feng.tutorial.unlisten(feng.events.EventType.ANIMATE_IN, this.tutorialOverlay.animateIn, false, this.tutorialOverlay);
   feng.tutorial.unlisten(feng.events.EventType.ANIMATE_OUT, this.tutorialOverlay.animateOut, false, this.tutorialOverlay);
@@ -167,6 +182,17 @@ feng.views.View3DHud.prototype.onShowView3D = function( e ) {
   var view3d = e.target;
 
   this.setView3D( view3d );
+};
+
+
+feng.views.View3DHud.prototype.onAnimatedInView3D = function( e ) {
+
+  var view3d = e.target;
+  var viewId = view3d.id;
+  var sectionId = view3d.sectionId;
+
+  this.openingOverlay.updateContent( sectionId, viewId );
+  this.openingOverlay.animateIn();
 };
 
 
