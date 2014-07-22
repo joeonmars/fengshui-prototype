@@ -671,6 +671,10 @@
 					"paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque viverra, sapien varius pellentesque commodo."
 				}
 			}
+		},
+		"finale": {
+			"title": "Congratulations!",
+			"paragraph": "Hi you did great there! Now that you have completed all tasks. It's time to take a rest."
 		}
 	}
 }

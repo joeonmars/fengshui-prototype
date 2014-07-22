@@ -17,9 +17,13 @@ feng.views.sections.overlays.EndingOverlay = function(domElement){
   goog.base(this, domElement, canHalt);
 
   var popupEl = goog.dom.getElementByClass('popup', this.domElement);
-  this._popup = new feng.views.popups.Popup( domElement );
+  this._popup = new feng.views.popups.Popup( popupEl );
 
   this._character = '';
+
+  this._sectionId = null;
+  this._isFinished = null;
+  this._shownOnce = {};
 
   this._preload = feng.models.Preload.getInstance();
 };
@@ -28,6 +32,9 @@ goog.addSingletonGetter(feng.views.sections.overlays.EndingOverlay);
 
 
 feng.views.sections.overlays.EndingOverlay.prototype.updateContent = function( sectionId, isFinished ){
+
+	this._sectionId = sectionId;
+	this._isFinished = isFinished;
 
 	var copy = this._preload.getAsset('global.fengshui-data')['dialog']['ending'][sectionId];
 	copy = isFinished ? copy['finished'] : copy['unfinished'];
@@ -50,6 +57,20 @@ feng.views.sections.overlays.EndingOverlay.prototype.updateContent = function( s
 
 feng.views.sections.overlays.EndingOverlay.prototype.animateIn = function(){
 
+	var shouldAnimateIn;
+
+	if(!this._shownOnce[this._sectionId]) {
+	
+		shouldAnimateIn = true;
+	
+	}else {
+
+		if(this._isFinished) shouldAnimateIn = (this._shownOnce[this._sectionId].finished !== true);
+		else shouldAnimateIn = (this._shownOnce[this._sectionId].unfinished !== true);
+	}
+
+	if(!shouldAnimateIn) return false;
+
 	goog.base(this, 'animateIn');
 
 	TweenMax.fromTo(this.domElement, .8, {
@@ -58,6 +79,16 @@ feng.views.sections.overlays.EndingOverlay.prototype.animateIn = function(){
 		'opacity': 1,
 		'ease': Strong.easeInOut
 	});
+
+	this._popup.animateIn();
+
+	this._shownOnce[this._sectionId] = this._shownOnce[this._sectionId] || {};
+
+	if(this._isFinished === false) {
+		this._shownOnce[this._sectionId].unfinished = true;
+	}else {
+		this._shownOnce[this._sectionId].finished = true;
+	}
 };
 
 
@@ -71,6 +102,8 @@ feng.views.sections.overlays.EndingOverlay.prototype.animateOut = function(){
 		'onCompleteParams': [ true ],
 		'onCompleteScope': this
 	});
+
+	this._popup.animateOut();
 };
 
 

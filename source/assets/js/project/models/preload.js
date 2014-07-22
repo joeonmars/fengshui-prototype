@@ -44,7 +44,10 @@ feng.models.Preload = function(){
 				}
 			}
 		},
-		'homepage': {
+		'home': {
+
+		},
+		'outro': {
 
 		},
 		'accessories': {

@@ -244,9 +244,12 @@ body{
 	@import "home";
 }
 
-#stats{
-	position: absolute;
-	top: 0;
+#outro{
+	padding: 10px 0;
+	@include box-sizing(border-box);
+	background-color: $darkblue;
+	
+	@import "outro";
 }
 
 .floatText{

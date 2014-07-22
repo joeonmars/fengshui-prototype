@@ -8,7 +8,9 @@
  */
 {template .EpisodeSection}
 <div class="section episode" id="{ $id }">
+
 	<div class="hud">
+
 		<div class="overlays">
 
 			<div class="tutorial-overlay"></div>
@@ -52,7 +54,24 @@
 			{/call}
 			</div>
 
+			<div class="finale-overlay">
+			{call feng.templates.common.Popup}
+				{param classname: 'finale' /}
+				{param content}
+					<h1></h1>
+					<div class="line"></div>
+					<p></p>
+					{call feng.templates.common.PrimaryButton}
+						{param classname: 'ok' /}
+						{param icon: 'yes' /}
+						{param text: 'done' /}
+					{/call}
+				{/param}
+			{/call}
+			</div>
+
 		</div>
+
 		<div class="controls">
 			{call feng.templates.controls.Compass}{/call}
 			{call feng.templates.controls.Book}{/call}
@@ -66,11 +85,15 @@
 				{param tips: $tips /}
 			{/call}
 		</div>
+
 		<div class="captions">
 		</div>
+
 	</div>
+
 	<div class="sceneContainer">
 	</div>
+
 </div>
 {/template}
 
@@ -191,6 +214,9 @@
 			<section id="main-episode-selection">
 			</section>
 		</div>
+	</div>
+
+	<div class="section" id="outro">
 	</div>
 
 	<div id="episode-selection-overlay">

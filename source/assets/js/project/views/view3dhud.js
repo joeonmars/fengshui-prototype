@@ -14,6 +14,7 @@ goog.require('feng.views.sections.captions.ChangePictureCaption');
 goog.require('feng.views.sections.overlays.TutorialOverlay');
 goog.require('feng.views.sections.overlays.OpeningOverlay');
 goog.require('feng.views.sections.overlays.EndingOverlay');
+goog.require('feng.views.sections.overlays.FinaleOverlay');
 
 
 /**
@@ -41,6 +42,9 @@ feng.views.View3DHud = function( hudEl, view3dController, tips ){
 
   var endingOverlayEl = goog.dom.getElementByClass('ending-overlay', this.domElement);
   this.endingOverlay = new feng.views.sections.overlays.EndingOverlay( endingOverlayEl );
+
+  var finaleOverlayEl = goog.dom.getElementByClass('finale-overlay', this.domElement);
+  this.finaleOverlay = new feng.views.sections.overlays.FinaleOverlay( finaleOverlayEl );
 
   // create controls
   var compassEl = goog.dom.getElementByClass('compass', this.domElement);

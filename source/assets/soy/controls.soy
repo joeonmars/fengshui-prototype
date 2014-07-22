@@ -67,7 +67,7 @@
 		<div class="middle">
 			<ul class="title">
 			{foreach $tip in $tips}
-				<li data-tip-id="{ $tip.id }">from { $tip.people }</li>
+				<li data-tip-id="{ $tip.id }">from { $tip.character }</li>
 			{/foreach}
 			</ul>
 
@@ -85,7 +85,7 @@
 	<div class="dialogue response">
 		<ul class="title">
 		{foreach $tip in $tips}
-			<li data-tip-id="{ $tip.id }">appreciation from { $tip.people }</li>
+			<li data-tip-id="{ $tip.id }">appreciation from { $tip.character }</li>
 		{/foreach}
 		</ul>
 

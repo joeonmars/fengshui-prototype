@@ -17,9 +17,15 @@ feng.views.sections.overlays.OpeningOverlay = function(domElement){
   goog.base(this, domElement, canHalt);
 
   var popupEl = goog.dom.getElementByClass('popup', this.domElement);
-  this._popup = new feng.views.popups.Popup( domElement );
+  this._popup = new feng.views.popups.Popup( popupEl );
+
+  this._okButton = goog.dom.getElementByClass('ok', popupEl);
 
   this._character = '';
+
+  this._sectionId = null;
+  this._viewId = null;
+  this._shownOnce = {};
 
   this._preload = feng.models.Preload.getInstance();
 };
@@ -27,7 +33,18 @@ goog.inherits(feng.views.sections.overlays.OpeningOverlay, feng.views.Overlay);
 goog.addSingletonGetter(feng.views.sections.overlays.OpeningOverlay);
 
 
+feng.views.sections.overlays.OpeningOverlay.prototype.activate = function(){
+
+	goog.base(this, 'activate');
+
+	this._eventHandler.listen(this._okButton, 'click', this.animateOut, false, this);
+};
+
+
 feng.views.sections.overlays.OpeningOverlay.prototype.updateContent = function( sectionId, viewId ){
+
+	this._sectionId = sectionId;
+	this._viewId = viewId;
 
 	var copy = this._preload.getAsset('global.fengshui-data')['dialog']['opening'][sectionId][viewId];
 
@@ -49,6 +66,20 @@ feng.views.sections.overlays.OpeningOverlay.prototype.updateContent = function( 
 
 feng.views.sections.overlays.OpeningOverlay.prototype.animateIn = function(){
 
+	var shouldAnimateIn;
+
+	if( !this._shownOnce[this._sectionId] ) {
+
+		shouldAnimateIn = true;
+
+	}else {
+
+		if( this._shownOnce[this._sectionId][this._viewId] !== true ) shouldAnimateIn = true;
+		else shouldAnimateIn = false;
+	}
+
+	if(!shouldAnimateIn) return false;
+
 	goog.base(this, 'animateIn');
 
 	TweenMax.fromTo(this.domElement, .8, {
@@ -57,6 +88,11 @@ feng.views.sections.overlays.OpeningOverlay.prototype.animateIn = function(){
 		'opacity': 1,
 		'ease': Strong.easeInOut
 	});
+
+	this._popup.animateIn();
+
+	this._shownOnce[this._sectionId] = this._shownOnce[this._sectionId] || {};
+	this._shownOnce[this._sectionId][this._viewId] = true;
 };
 
 
@@ -70,6 +106,8 @@ feng.views.sections.overlays.OpeningOverlay.prototype.animateOut = function(){
 		'onCompleteParams': [ true ],
 		'onCompleteScope': this
 	});
+
+	this._popup.animateOut();
 };
 
 

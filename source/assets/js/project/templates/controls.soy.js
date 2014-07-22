@@ -53,7 +53,7 @@ feng.templates.controls.Reminder = function(opt_data, opt_ignored) {
   var tipListLen224 = tipList224.length;
   for (var tipIndex224 = 0; tipIndex224 < tipListLen224; tipIndex224++) {
     var tipData224 = tipList224[tipIndex224];
-    output += '<li data-tip-id="' + tipData224.id + '">from ' + tipData224.people + '</li>';
+    output += '<li data-tip-id="' + tipData224.id + '">from ' + tipData224.character + '</li>';
   }
   output += '</ul><ul class="paragraph">';
   var tipList232 = opt_data.tips;
@@ -67,7 +67,7 @@ feng.templates.controls.Reminder = function(opt_data, opt_ignored) {
   var tipListLen240 = tipList240.length;
   for (var tipIndex240 = 0; tipIndex240 < tipListLen240; tipIndex240++) {
     var tipData240 = tipList240[tipIndex240];
-    output += '<li data-tip-id="' + tipData240.id + '">appreciation from ' + tipData240.people + '</li>';
+    output += '<li data-tip-id="' + tipData240.id + '">appreciation from ' + tipData240.character + '</li>';
   }
   output += '</ul><ul class="paragraph">';
   var tipList248 = opt_data.tips;
