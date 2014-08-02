@@ -2,7 +2,6 @@ goog.provide('feng.controllers.view3d.PathfindingController');
 
 goog.require('goog.array');
 goog.require('goog.events.EventTarget');
-goog.require('goog.events');
 goog.require('goog.math.Box');
 goog.require('feng.views.debug.Pathfinding');
 
@@ -13,12 +12,41 @@ feng.controllers.view3d.PathfindingController = function(){
 
   goog.base(this);
 
+  // matrix pool
+  this._matrixData = {
+  	/*
+	{
+		matrix: matrix,
+		gridWidth: gridWidth,
+		gridHeight: gridHeight,
+		gridMinX: Number,
+		gridMaxX: Number,
+		gridMinZ: Number,
+		gridMaxZ: Number,
+		tileSize: tileSize,
+		numCols: numCols,
+		numRows: numRows
+	}
+  	*/
+  };
 };
 goog.inherits(feng.controllers.view3d.PathfindingController, goog.events.EventTarget);
 goog.addSingletonGetter(feng.controllers.view3d.PathfindingController);
 
 
-feng.controllers.view3d.PathfindingController.prototype.generateMatrix = function( start, end, collidableBoxes, scene, minTilesInRowOrCol ) {
+feng.controllers.view3d.PathfindingController.prototype.getMatrixData = function( matrixId, collidableBoxes, scene, minTilesInRowOrCol ) {
+
+	var matrixData = this._matrixData[ matrixId ];
+
+	if(!matrixData) {
+		matrixData = this.generateMatrix( matrixId, start, end, collidableBoxes, scene, minTilesInRowOrCol );
+	}
+
+	return matrixData;
+};
+
+
+feng.controllers.view3d.PathfindingController.prototype.generateMatrix = function( matrixId, collidableBoxes, scene, minTilesInRowOrCol ) {
 
 	var gridMinX = 0, gridMinZ = 0;
 	var gridMaxX = 0, gridMaxZ = 0;
@@ -35,17 +63,17 @@ feng.controllers.view3d.PathfindingController.prototype.generateMatrix = functio
 		  var maxX = box.max.x;
 		  var maxZ = box.max.z;
 
-		  gridMinX = Math.min(gridMinX, minX, start.x, end.x);
-		  gridMinZ = Math.min(gridMinZ, minZ, start.z, end.z);
-		  gridMaxX = Math.max(gridMaxX, maxX, start.x, end.x);
-		  gridMaxZ = Math.max(gridMaxZ, maxZ, start.z, end.z);
+		  gridMinX = Math.min(gridMinX, minX);
+		  gridMinZ = Math.min(gridMinZ, minZ);
+		  gridMaxX = Math.max(gridMaxX, maxX);
+		  gridMaxZ = Math.max(gridMaxZ, maxZ);
 		}
 	});
 
 	var gridWidth = Math.abs(gridMaxX - gridMinX);
 	var gridHeight = Math.abs(gridMaxZ - gridMinZ);
 
-	var minTilesInRowOrCol = minTilesInRowOrCol || 20;
+	var minTilesInRowOrCol = minTilesInRowOrCol || 40;
 	var tileSize = (gridWidth > gridHeight) ? (gridWidth / minTilesInRowOrCol) : (gridHeight / minTilesInRowOrCol);
 
 	gridWidth += tileSize;
@@ -80,6 +108,53 @@ feng.controllers.view3d.PathfindingController.prototype.generateMatrix = functio
 		matrix.push(rowData);
 	}
 
+	// cache the matrix by Id
+	var matrixData = {
+		matrix: matrix,
+		gridWidth: gridWidth,
+		gridHeight: gridHeight,
+		gridMinX: gridMinX,
+		gridMaxX: gridMaxX,
+		gridMinZ: gridMinZ,
+		gridMaxZ: gridMaxZ,
+		tileSize: tileSize,
+		numCols: numCols,
+		numRows: numRows
+	};
+
+	this._matrixData[ matrixId ] = matrixData;
+
+	return matrixData;
+};
+
+
+feng.controllers.view3d.PathfindingController.prototype.getTileByPosition = function( position, matrixData ) {
+
+	var gridMinX = matrixData.gridMinX;
+	var gridMinZ = matrixData.gridMinZ;
+	var tileSize = matrixData.tileSize;
+
+	var tileCol = Math.floor(Math.abs(position.x - gridMinX) / tileSize);
+	var tileRow = Math.floor(Math.abs(position.z - gridMinZ) / tileSize);
+	var tile = [ tileCol, tileRow ];
+
+	return tile;
+};
+
+
+feng.controllers.view3d.PathfindingController.prototype.resolveMatrix = function( matrixData, start, end ) {
+
+	var matrix = matrixData.matrix;
+	var gridWidth = matrixData.gridWidth;
+	var gridHeight = matrixData.gridHeight;
+	var gridMinX = matrixData.gridMinX;
+	var gridMaxX = matrixData.gridMaxX;
+	var gridMinZ = matrixData.gridMinZ;
+	var gridMaxZ = matrixData.gridMaxZ;
+	var tileSize = matrixData.tileSize;
+	var numCols = matrixData.numCols;
+	var numRows = matrixData.numRows;
+
 	var startTileCol = Math.floor(Math.abs(start.x - gridMinX) / tileSize);
 	var startTileRow = Math.floor(Math.abs(start.z - gridMinZ) / tileSize);
 	var startTile = [ startTileCol, startTileRow ];
@@ -110,7 +185,9 @@ feng.controllers.view3d.PathfindingController.prototype.generateMatrix = functio
 };
 
 
-feng.controllers.view3d.PathfindingController.prototype.getClosestWalkableTile = function( matrix, tile ) {
+feng.controllers.view3d.PathfindingController.prototype.getClosestWalkableTile = function( tile, matrixData ) {
+
+	var matrix = matrixData.matrix;
 
 	var shortestDistance = Number.MAX_VALUE;
 	var closestWalkableTile = null;
@@ -144,10 +221,27 @@ feng.controllers.view3d.PathfindingController.prototype.getClosestWalkableTile =
 };
 
 
-feng.controllers.view3d.PathfindingController.prototype.findPath = function( start, end, collidableBoxes, scene, minTilesInRowOrCol ) {
+feng.controllers.view3d.PathfindingController.prototype.getClosestWalkableTilePosition = function( tile, matrixData ) {
+
+	var gridMinX = matrixData.gridMinX;
+	var gridMinZ = matrixData.gridMinZ;
+	var tileSize = matrixData.tileSize;
+
+	var tile = this.getClosestWalkableTile( tile, matrixData );
+
+	var x = tile[0] * tileSize + tileSize/2 + gridMinX;
+	var y = 0;
+	var z = tile[1] * tileSize + tileSize/2 + gridMinZ;
+
+	return new THREE.Vector3(x, y, z);
+};
+
+
+feng.controllers.view3d.PathfindingController.prototype.findPath = function( matrixId, start, end ) {
 
 	// get matrix
-	var matrixResult = this.generateMatrix( start, end, collidableBoxes, scene, minTilesInRowOrCol );
+	var matrixData = this.getMatrixData( matrixId );
+	var matrixResult = this.resolveMatrix( matrixData, start, end );
 
 	var matrix = matrixResult.matrix;
 	var gridMinX = matrixResult.gridMinX;
@@ -165,11 +259,11 @@ feng.controllers.view3d.PathfindingController.prototype.findPath = function( sta
 	// get closest tile to the end tile if it's non-walkable
 	if(endTileType === 1) {
 
-		var closetWalkableTile = this.getClosestWalkableTile(matrix, endTile);
+		var closestWalkableTile = this.getClosestWalkableTile( endTile, matrixData );
 
 		if(endTile) {
 			console.log( 'find closest non-walkable tile: ', endTile );
-			endTile = closetWalkableTile;
+			endTile = closestWalkableTile;
 		}else {
 			console.log( 'could not find closest non-walkable tile around: ', endTile);
 			return null;

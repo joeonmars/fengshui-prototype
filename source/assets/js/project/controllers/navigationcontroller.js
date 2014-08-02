@@ -43,8 +43,26 @@ feng.controllers.NavigationController.prototype.init = function(){
 
 feng.controllers.NavigationController.prototype.setToken = function(token, title){
 
-	var token = token.replace('#', '');
+	var token = goog.isArray(token) ? this.getTokenFromArray( token ) : token;
+	token = token.replace('#', '');
+	
 	this._navHistory.setToken(token, title);
+};
+
+
+feng.controllers.NavigationController.prototype.replaceToken = function(token, title){
+
+	var token = goog.isArray(token) ? this.getTokenFromArray( token ) : token;
+	token = token.replace('#', '');
+
+	this._navHistory.replaceToken(token ,title);
+};
+
+
+feng.controllers.NavigationController.prototype.getTokenFromArray = function(tokens){
+
+  var token = tokens.join('/');
+  return token;
 };
 
 
@@ -65,13 +83,6 @@ feng.controllers.NavigationController.prototype.getTokenArray = function(){
 	}
 
 	return tokens;
-};
-
-
-feng.controllers.NavigationController.prototype.replaceToken = function(token, title){
-
-	var token = token.replace('#', '');
-	this._navHistory.replaceToken(token ,title);
 };
 
 

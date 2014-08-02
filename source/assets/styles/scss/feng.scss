@@ -19,6 +19,7 @@ body{
 	z-index: 2;
 	left: 30px;
 	bottom: 40px;
+	@include user-select(none);
 
 	>li{
 		position: relative;

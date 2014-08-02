@@ -233,6 +233,6 @@ feng.controllers.controls.Controls.prototype.onResize = function ( e ) {
 
 
 feng.controllers.controls.Controls.Default = {
-	STANCE_HEIGHT: 90, // as 180cm..
+	STANCE_HEIGHT: (170 - 10) / 2, // eyes height (10cm) of 170cm..
 	FOV: 40
 };

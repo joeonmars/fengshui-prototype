@@ -85,6 +85,9 @@ feng.models.Preload = function(){
 				'screensaver-texture': 'images/texture/spritesheet/screensaver.png',
 				'cactus-texture': 'images/texture/cactus.png',
 			},
+			'interior3': {
+				'scene-data': 'json/studio-livingroom.json'
+			},
 			'bathroom': {
 				'scene-data': 'json/bathroom.json',
 				'energyflow-data': 'json/energyflow/energyflow-3.json',

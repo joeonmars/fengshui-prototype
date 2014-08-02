@@ -1,10 +1,11 @@
 goog.provide('feng.views.view3dobject.StairsObject');
 
-goog.require('feng.views.view3dobject.InteractiveObject');
+goog.require('goog.fx.easing');
+goog.require('feng.views.view3dobject.View3DObject');
 
 /**
  * @constructor
- * An interactive object that leads between lower floor to upper floor
+ * A view3d object that leads between lower floor to upper floor
  * Structure illustrated as below
  * 
  * ☻ 'upper'
@@ -21,21 +22,71 @@ feng.views.view3dobject.StairsObject = function( object3d, data, view3d ){
 
   goog.base(this, object3d, data, view3d);
 
+};
+goog.inherits(feng.views.view3dobject.StairsObject, feng.views.view3dobject.View3DObject);
+
+
+feng.views.view3dobject.StairsObject.prototype.init = function() {
+
   // lower / upper global position in view3d
   this.lowerPosition = feng.utils.ThreeUtils.getWorldPosition( this.object3d.getObjectByName('lower') );
   this.upperPosition = feng.utils.ThreeUtils.getWorldPosition( this.object3d.getObjectByName('upper') );
 
+  // adjust the lower / upper position within grid
+  var pathfinder = feng.controllers.view3d.PathfindingController.getInstance();
+
+  var matrixId = 'test-matrix';
+  var collidableBoxes = this._view3d.getCollidableBoxes();
+  var matrixData = pathfinder.generateMatrix( matrixId, collidableBoxes, this._view3d.scene );
+
+  var lowerTile = pathfinder.getTileByPosition( this.lowerPosition, matrixData );
+  var lowerTilePosition = pathfinder.getClosestWalkableTilePosition( lowerTile, matrixData );
+
+  this.lowerPosition.copy( lowerTilePosition );
+
+  /* ----- upper position WIP ----- */
+
   // distance of walk
   this.distance = this.lowerPosition.distanceTo( this.upperPosition );
 
-  // time duration of walk, in milliseconds
-  this.duration = this.distance / (0.48 * 100 / 2) * 1000;
+  // time duration of walk, in seconds
+  this.duration = this.distance / (0.48 * 100 / 2);
 
   // number of steps
   var stepLength = Math.sqrt( Math.pow(0.2 * 100, 2) + Math.pow(0.2 * 100, 2) );
-  this.numSteps = this.distance / stepLength;
+  this.numSteps = Math.round( this.distance / stepLength );
+
+  // lerped position
+  this._lerpedPosition = new THREE.Vector3();
+  this._stepStart = new THREE.Vector3();
+  this._stepEnd = new THREE.Vector3();
+
+  // test..
+  /*
+  console.log(this.duration, this.numSteps, this.distance);
+
+  var geometry = new THREE.BoxGeometry( 10, 10, 10 );
+  var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+  var mesh = new THREE.Mesh( geometry, material );
+  this._view3d.scene.add( mesh );
+
+  var obj = {
+    t: 0
+  };
+
+  TweenMax.fromTo(obj, this.duration, {
+    t: 0
+  }, {
+    t: 1,
+    ease: Linear.easeNone,
+    repeat: -1,
+    onUpdate: function() {
+      mesh.position.copy( this.getPositionByT( obj.t ) );
+    },
+    onUpdateScope: this
+  });
+  */
 };
-goog.inherits(feng.views.view3dobject.StairsObject, feng.views.view3dobject.InteractiveObject);
 
 
 feng.views.view3dobject.StairsObject.prototype.getPositionByT = function(t, descending) {
@@ -50,12 +101,15 @@ feng.views.view3dobject.StairsObject.prototype.getPositionByT = function(t, desc
   var endT = endSegment * stepL;
   var startT = startSegment * stepL;
 
-  var stepT = (t - stepStartT) / (endT - startT);
+  this._stepStart.copy( start ).lerp( end, startT );
+  this._stepEnd.copy( start ).lerp( end, endT );
 
   // for easing functions, https://gist.github.com/gre/1650294
-  stepT = Math.pow(stepT, 2);
+  var stepT = (t - startT) / (endT - startT);
+  stepT = goog.fx.easing.inAndOut( stepT );
 
-  var position = start.lerp(end, stepT);
+  var position = this._lerpedPosition.copy( this._stepStart ).lerp( this._stepEnd, stepT );
+  position.y += feng.controllers.controls.Controls.Default.STANCE_HEIGHT;
 
   return position;
 };

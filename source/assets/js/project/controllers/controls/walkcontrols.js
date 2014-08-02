@@ -40,7 +40,12 @@ feng.controllers.controls.WalkControls.prototype.enable = function( enable ) {
 };
 
 
-feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition, toPosition, intersectPosition, gateway, nextMode ) {
+feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition, toPosition, ev, nextMode ) {
+
+	var intersectPosition = ev.intersectPosition;
+	var viewDistance = (ev.viewDistance >= 0) ? ev.viewDistance : 50;
+	var gateway = ev.gateway;
+	var stairs = ev.stairs;
 
 	if(gateway) {
 		this._gateway = gateway;
@@ -50,11 +55,14 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 	//
 	var pathfinder = feng.controllers.view3d.PathfindingController.getInstance();
 
+	var matrixId = 'test-matrix';
 	var start = fromPosition;
 	var end = toPosition;
 	var collidableBoxes = this._view3d.getCollidableBoxes();
+
+	pathfinder.generateMatrix( matrixId, collidableBoxes, this._scene );
 	
-	var coordinates = pathfinder.findPath( start, end, collidableBoxes, this._scene );
+	var coordinates = pathfinder.findPath( matrixId, start, end );
 	
 	if(!coordinates) {
 
@@ -71,7 +79,7 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 	this._scene.add( this._pathTrack );
 
 	var length = this._pathTrack.spline.getLength();
-	var distance = length - 90;
+	var distance = length - viewDistance;
 	var distanceT = Math.max(0, distance / length);
 	
 	// adult walking speed is 1.564 meter per second
@@ -98,7 +106,7 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
     onUpdateParams: [prop],
     onUpdateScope: this,
     onComplete: this.onPathComplete,
-    onCompleteParams: [gateway, nextMode],
+    onCompleteParams: [gateway, stairs, nextMode],
     onCompleteScope: this
   });
 };
@@ -132,7 +140,7 @@ feng.controllers.controls.WalkControls.prototype.onPathProgress = function ( pro
 };
 
 
-feng.controllers.controls.WalkControls.prototype.onPathComplete = function ( gateway, nextMode ) {
+feng.controllers.controls.WalkControls.prototype.onPathComplete = function ( gateway, stairs, nextMode ) {
 
 	if(gateway) {
 		// if event has gateway object, fade out view3d
@@ -146,7 +154,8 @@ feng.controllers.controls.WalkControls.prototype.onPathComplete = function ( gat
 
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
-		mode: nextMode
+		mode: nextMode,
+		stairs: stairs
 	});
 };
 

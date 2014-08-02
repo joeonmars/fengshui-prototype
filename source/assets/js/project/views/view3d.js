@@ -18,6 +18,7 @@ goog.require('feng.views.view3dobject.View3DObject');
 goog.require('feng.views.view3dobject.InteractiveObject');
 goog.require('feng.views.view3dobject.HolderObject');
 goog.require('feng.views.view3dobject.GatewayObject');
+goog.require('feng.views.view3dobject.StairsObject');
 goog.require('feng.views.view3dobject.AccessoryObject');
 goog.require('feng.views.view3dobject.TipObject');
 goog.require('feng.views.view3dobject.entities.Computer');
@@ -48,7 +49,7 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud){
   this.renderController = null;
 	this.modeController = null;
 
-	this.origin = new THREE.Vector3(0, feng.controllers.controls.Controls.Default.STANCE_HEIGHT, 400);
+	this.origin = new THREE.Vector3(0, feng.controllers.controls.Controls.Default.STANCE_HEIGHT, 200);
 
 	this.scene = null;
 	this.energyFlow = null;
@@ -295,6 +296,7 @@ feng.views.View3D.prototype.initScene = function() {
 		'tip': feng.views.view3dobject.TipObject,
 		'holder': feng.views.view3dobject.HolderObject,
 		'gateway': feng.views.view3dobject.GatewayObject,
+		'stairs': feng.views.view3dobject.StairsObject,
 		'picturedisplay': feng.views.view3dobject.entities.PictureDisplay,
 		'pictureframe': feng.views.view3dobject.entities.PictureFrame,
 		'computer': feng.views.view3dobject.entities.Computer
@@ -319,10 +321,15 @@ feng.views.View3D.prototype.initScene = function() {
 			// create specific class object
 			var typedObject = new objectClass[className](object, objectData, this);
 
-			this.interactiveObjects[ object.name ] = typedObject;
+			if(typedObject instanceof feng.views.view3dobject.InteractiveObject) {
+
+				this.interactiveObjects[ object.name ] = typedObject;
+			}
+			
 			this.view3dObjects[ object.name ] = typedObject;
 
 			if(className === 'holder') {
+
 				var accessoryObject = new feng.views.view3dobject.AccessoryObject( this.accessories, typedObject, 'empty', this );
 
 				var objectName = accessoryObject.object3d.name;
@@ -367,8 +374,15 @@ feng.views.View3D.prototype.initScene = function() {
 	// init computer
 	var computers = this.getObjectsByClass( feng.views.view3dobject.entities.Computer );
 
-	goog.array.forEach( computers, function( computer ) {
-		computer.init();
+	goog.array.forEach( computers, function( obj ) {
+		obj.init();
+	});
+
+	// init stairs
+	var stairs = this.getObjectsByClass( feng.views.view3dobject.StairsObject );
+
+	goog.array.forEach( stairs, function( obj ) {
+		obj.init();
 	});
 
 	// init energyflow

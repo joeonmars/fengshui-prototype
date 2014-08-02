@@ -12,7 +12,8 @@ feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
   goog.base(this);
 
   this.object3d = object3d;
-  this.object3d.userData = data; 
+  this.object3d.userData = data;
+  this.object3d.view3dObject = this;
 
   this.name = object3d.name;
   this.data = data;

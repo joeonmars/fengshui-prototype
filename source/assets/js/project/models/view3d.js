@@ -50,6 +50,10 @@ feng.models.View3D.Data = {
 				viewid: "interior2",
 				gatewayid: "door"
 			},
+			'stairsway': {
+				class: "stairs",
+				collidable: true
+			},
 			'picture': {
 				class: 'picturedisplay',
 				interactions: [
@@ -145,7 +149,10 @@ feng.models.View3D.Data = {
 				texture: "studio.interior2.cactus-texture"
 			}
 		},
-		'bathroom': {
+		'interior3': {
+
+		},
+		'bathroom': {/*
 			'wall': {
 				texture: "studio.bathroom.wall-texture"
 			},
@@ -181,7 +188,7 @@ feng.models.View3D.Data = {
 			},
 			'washer': {
 				texture: "studio.bathroom.washer-texture"
-			}
+			}*/
 		}
 	},
 	'townhouse': {

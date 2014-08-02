@@ -45,7 +45,7 @@ goog.inherits(feng.views.sections.controls.ObjectSelector, feng.views.sections.c
 
 
 feng.views.sections.controls.ObjectSelector.prototype.updateHitTestMeshes = function () {
-
+	
 	var hitTestMeshes = [];
 
 	var parseObject = function(object) {

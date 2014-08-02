@@ -91,9 +91,7 @@ feng.views.sections.Home.prototype.onScreenClose = function(e){
 			this._episodeScreen.animateIn();
 			feng.episodeSelection.activate();
 
-			//feng.navigationController.setToken( feng.controllers.NavigationController.Token.STUDIO );
 			feng.navigationController.setToken( feng.controllers.NavigationController.Token.STUDIO );
-		
 		}
 		// animate in intro
 		else {
