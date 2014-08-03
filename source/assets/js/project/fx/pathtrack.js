@@ -18,9 +18,9 @@ feng.fx.PathTrack = function(controlPoints, offset, isClosed, color, debug){
   this.segments = null;
 
   this._material = new THREE.MeshBasicMaterial({
-		opacity: 0.4,
-		transparent: true,
-		wireframe: true
+	opacity: 0.4,
+	transparent: true,
+	wireframe: true
   });
 
   // a dummy camera for calculating the position/rotation on spline
@@ -106,7 +106,7 @@ feng.fx.PathTrack.prototype.getCameraAt = function(u){
 	var pick = Math.floor( picku );
 	var pickNext = ( pick + 1 ) % segments;
 
-	if(picku <= segments-1) {
+	if(picku <= segments - 1) {
 
 		var binormal = this._binormal;
 		binormal.subVectors( tube.binormals[ pickNext ], tube.binormals[ pick ] );
@@ -130,6 +130,11 @@ feng.fx.PathTrack.prototype.getCameraAt = function(u){
 
 		var euler = new THREE.Euler(0, 0, 0, 'YXZ').setFromQuaternion( this._pathCamera.quaternion );
 		this._pathCamera.rotation.copy( euler );
+
+	}else {
+
+		// make sure to reach the last position when u = 1
+		this._pathCamera.position.copy( this.spline.getPointAt(1) );
 	}
 
 	return this._pathCamera;
@@ -199,7 +204,7 @@ feng.fx.PathTrack.prototype.updateTrack = function(){
 	}, this);
 
 	// create new segments
-	var segmentLength = 10;
+	var segmentLength = 5;
 	this.segments = Math.floor(this.spline.getLength() / segmentLength);
 
   this.tubeGeometry = new THREE.TubeGeometry(this.spline, this.segments, .5, 4, this.isClosed);

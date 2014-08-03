@@ -41,6 +41,8 @@ feng.controllers.controls.ClimbControls.prototype.start = function ( ev ) {
 		onCompleteParams: [gateway, nextMode],
 		onCompleteScope: this
 	});
+
+	this.onClimbUpdate( prop );console.log(this.getPosition())
 };
 
 

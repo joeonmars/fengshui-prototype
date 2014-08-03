@@ -40,7 +40,9 @@ feng.views.view3dobject.StairsObject.prototype.init = function() {
   var matrixData = pathfinder.generateMatrix( matrixId, collidableBoxes, this._view3d.scene );
 
   var lowerTile = pathfinder.getTileByPosition( this.lowerPosition, matrixData );
-  var lowerTilePosition = pathfinder.getClosestWalkableTilePosition( lowerTile, matrixData );
+  lowerTile = pathfinder.getClosestWalkableTile( lowerTile, matrixData );
+  
+  var lowerTilePosition = pathfinder.getTilePosition( lowerTile, matrixData );
 
   this.lowerPosition.copy( lowerTilePosition );
 

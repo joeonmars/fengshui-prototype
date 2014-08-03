@@ -155,17 +155,9 @@ feng.controllers.view3d.PathfindingController.prototype.resolveMatrix = function
 	var numCols = matrixData.numCols;
 	var numRows = matrixData.numRows;
 
-	var startTileCol = Math.floor(Math.abs(start.x - gridMinX) / tileSize);
-	var startTileRow = Math.floor(Math.abs(start.z - gridMinZ) / tileSize);
-	var startTile = [ startTileCol, startTileRow ];
-
-	var endTileCol = Math.floor(Math.abs(end.x - gridMinX) / tileSize);
-	var endTileRow = Math.floor(Math.abs(end.z - gridMinZ) / tileSize);
-	var endTile = [ endTileCol, endTileRow ];
-
-	var startTileType = matrix[startTileRow][startTileCol];
-	var endTileType = matrix[endTileRow][endTileCol];
-
+	var startTile = this.getTileByPosition( start, matrixData );
+	var endTile = this.getTileByPosition( end, matrixData );
+	
 	var result = {
 		matrix: matrix,
 		gridMinX: gridMinX,
@@ -176,9 +168,7 @@ feng.controllers.view3d.PathfindingController.prototype.resolveMatrix = function
 		numCols: numCols,
 		tileSize: tileSize,
 		startTile: startTile,
-		endTile: endTile,
-		startTileType: startTileType,
-		endTileType: endTileType
+		endTile: endTile
 	};
 
 	return result;
@@ -189,6 +179,14 @@ feng.controllers.view3d.PathfindingController.prototype.getClosestWalkableTile =
 
 	var matrix = matrixData.matrix;
 
+	// return this tile if is walkable
+	var tileType = matrix[ tile[1] ][ tile[0] ];
+
+	if(tileType === 0) {
+		return tile;
+	}
+
+	// otherwise find the closest
 	var shortestDistance = Number.MAX_VALUE;
 	var closestWalkableTile = null;
 
@@ -221,19 +219,25 @@ feng.controllers.view3d.PathfindingController.prototype.getClosestWalkableTile =
 };
 
 
-feng.controllers.view3d.PathfindingController.prototype.getClosestWalkableTilePosition = function( tile, matrixData ) {
+feng.controllers.view3d.PathfindingController.prototype.getTilePosition = function( tile, matrixData ) {
 
 	var gridMinX = matrixData.gridMinX;
 	var gridMinZ = matrixData.gridMinZ;
 	var tileSize = matrixData.tileSize;
-
-	var tile = this.getClosestWalkableTile( tile, matrixData );
 
 	var x = tile[0] * tileSize + tileSize/2 + gridMinX;
 	var y = 0;
 	var z = tile[1] * tileSize + tileSize/2 + gridMinZ;
 
 	return new THREE.Vector3(x, y, z);
+};
+
+
+feng.controllers.view3d.PathfindingController.prototype.getClosestWalkableTilePosition = function( tile, matrixData ) {
+
+	var tile = this.getClosestWalkableTile( tile, matrixData );
+
+	return this.getTilePosition( tile, matrixData );
 };
 
 
@@ -253,22 +257,15 @@ feng.controllers.view3d.PathfindingController.prototype.findPath = function( mat
 	var tileSize = matrixResult.tileSize;
 	var startTile = matrixResult.startTile;
 	var endTile = matrixResult.endTile;
-	var startTileType = matrixResult.startTileType;
-	var endTileType = matrixResult.endTileType;
 
 	// get closest tile to the end tile if it's non-walkable
-	if(endTileType === 1) {
+	endTile = this.getClosestWalkableTile( endTile, matrixData );
 
-		var closestWalkableTile = this.getClosestWalkableTile( endTile, matrixData );
-
-		if(endTile) {
-			console.log( 'find closest non-walkable tile: ', endTile );
-			endTile = closestWalkableTile;
-		}else {
-			console.log( 'could not find closest non-walkable tile around: ', endTile);
-			return null;
-		}
-		
+	if(endTile) {
+		console.log( 'found closest non-walkable tile: ', endTile );
+	}else {
+		console.log( 'could not find closest non-walkable tile around: ', endTile);
+		return null;
 	}
 
 	if(goog.array.equals(startTile, endTile)) {

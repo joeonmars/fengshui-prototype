@@ -104,6 +104,7 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 	});
 	
 	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, clickableObjects, this._camera, this._view3d.getViewSize() );
+	var intersectPosition = intersects[0].point.clone();
 
 	if ( intersects.length > 0 ) {
 
@@ -122,7 +123,7 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 				toPosition: toPosition,
 				toRotation: this.getRotation(),
 				toFov: this.getFov(),
-				intersectPosition: toPosition,
+				intersectPosition: intersectPosition,
 				stairs: stairsObject,
 				viewDistance: 0
 			});
@@ -131,7 +132,6 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 		}
 
 		// otherwise walk to the object
-		var intersectPosition = intersects[0].point.clone();
 		intersectPosition.y = intersectPosition.y < 10 ? this.getPosition().y : intersectPosition.y;
 
 		var objectName = intersects[0].object.name;

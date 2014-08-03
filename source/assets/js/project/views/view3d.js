@@ -392,7 +392,7 @@ feng.views.View3D.prototype.initScene = function() {
 	if(energyFlowData) {
 		var controlPoints = energyFlowData['controlPoints'];
 		this.energyFlow = new feng.fx.EnergyFlow( controlPoints, this.id, this.sectionId );
-		this.scene.add( this.energyFlow );
+		//this.scene.add( this.energyFlow );
 	}
 };
 

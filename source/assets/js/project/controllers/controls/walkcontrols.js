@@ -61,7 +61,7 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 	var collidableBoxes = this._view3d.getCollidableBoxes();
 
 	pathfinder.generateMatrix( matrixId, collidableBoxes, this._scene );
-	
+
 	var coordinates = pathfinder.findPath( matrixId, start, end );
 	
 	if(!coordinates) {
@@ -75,7 +75,7 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 		this._scene.remove( this._pathTrack );
 	}
 
-	this._pathTrack = new feng.fx.PathTrack( coordinates, 40, 0 );
+	this._pathTrack = new feng.fx.PathTrack( coordinates, 0 );
 	this._scene.add( this._pathTrack );
 
 	var length = this._pathTrack.spline.getLength();
@@ -92,11 +92,11 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 	var fromRotation = this.getRotation().clone();
 
 	var prop = {
-    u: 0,
-    footstep: 0,
-    toPosition: intersectPosition,
-    fromRotation: fromRotation
-  };
+		u: 0,
+		footstep: 0,
+		toPosition: intersectPosition,
+		fromRotation: fromRotation
+	};
 
   this._tweener = TweenMax.to(prop, duration, {
     u: distanceT,
