@@ -49,7 +49,7 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud){
   this.renderController = null;
 	this.modeController = null;
 
-	this.origin = new THREE.Vector3(0, feng.controllers.controls.Controls.Default.STANCE_HEIGHT, 200);
+	this.origin = new THREE.Vector3(0, feng.controllers.controls.Controls.Default.STANCE_HEIGHT, 0);
 
 	this.scene = null;
 	this.energyFlow = null;
@@ -479,8 +479,8 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 			}
 
 			if(object instanceof THREE.Mesh) {
-				object.castShadow = true;
-				object.receiveShadow = objectData.receiveShadow;
+				object.castShadow = objectData.castShadow || false;
+				object.receiveShadow = objectData.receiveShadow || false;
 
 				if(object.material) {
 					object.material.shading = THREE.FlatShading;

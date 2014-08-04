@@ -150,7 +150,93 @@ feng.models.View3D.Data = {
 			}
 		},
 		'interior3': {
-
+			'wall':	{
+				texture: "studio.interior3.wall-texture"
+			},
+			'floor': {
+				receiveShadow: true,
+				texture: "studio.interior3.floor-texture"
+			},
+			'kitchen-cabinets':	{
+				collidable: true,
+				texture: "studio.interior3.kitchen-cabinets-texture"
+			},
+			'sofabed':	{
+				collidable: true,
+				texture: "studio.interior3.sofabed-texture"
+			},
+			'sofabed-cabinet':	{
+				collidable: true,
+				texture: "studio.interior3.sofabed-cabinet-texture"
+			},
+			'kitchen-storage':	{
+				collidable: true,
+				texture: "studio.interior3.kitchen-storage-texture"
+			},
+			'coffee-pot':	{
+				texture: "studio.interior3.coffee-pot-texture"
+			},
+			'round-lamp':	{
+				texture: "studio.interior3.round-lamp-texture"
+			},
+			'reading-lamp':	{
+				texture: "studio.interior3.reading-lamp-texture"
+			},
+			'ventilator':	{
+				texture: "studio.interior3.ventilator-texture"
+			},
+			'microwave':	{
+				texture: "studio.interior3.microwave-texture"
+			},
+			'fruitplate':	{
+				texture: "studio.interior3.fruitplate-texture"
+			},
+			'dining-table':	{
+				collidable: true,
+				texture: "studio.interior3.dining-table-texture"
+			},
+			'dining-chair':	{
+				collidable: true,
+				castShadow: true,
+				texture: "studio.interior3.dining-chair-texture"
+			},
+			'window-books':	{
+				texture: "studio.interior3.window-books-texture"
+			},
+			'clockset':	{
+				texture: "studio.interior3.clockset-texture"
+			},
+			'bed-shelf':	{
+				texture: "studio.interior3.bed-shelf-texture"
+			},
+			'tv-table':	{
+				collidable: true,
+				texture: "studio.interior3.tv-table-texture"
+			},
+			'tv':	{
+				texture: "studio.interior3.tv-texture"
+			},
+			'sofa':	{
+				collidable: true,
+				texture: "studio.interior3.sofa-texture"
+			},
+			'book-shelf':	{
+				collidable: true,
+				texture: "studio.interior3.book-shelf-texture"
+			},
+			'kitchen-shelf':	{
+				texture: "studio.interior3.kitchen-shelf-texture"
+			},
+			'nightstand':	{
+				collidable: true,
+				texture: "studio.interior3.nightstand-texture"
+			},
+			'sewingmachine':	{
+				texture: "studio.interior3.sewingmachine-texture"
+			},
+			'sewingmachine-cover':	{
+				texture: "studio.interior3.sewingmachine-cover-texture"
+			}
 		},
 		'bathroom': {/*
 			'wall': {
