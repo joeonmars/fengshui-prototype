@@ -103,9 +103,26 @@ feng.views.View3D.prototype.getViewSize = function(){
 };
 
 
-feng.views.View3D.prototype.getGround = function(){
+feng.views.View3D.prototype.getObjectsOfFloor = function( floorIndex ){
 
-	return this.scene.getObjectByName('ground');
+	var hasFloorIndex = goog.isNumber( floorIndex );
+
+	var floor = hasFloorIndex ? this.scene.getObjectByName('floor-' + floorIndex) : this.scene.getObjectByName('floor');
+	var upperFloor = this.scene.getObjectByName('floor-' + (floorIndex+1));
+
+	var minY = floor.position.y;
+	var maxY = upperFloor ? upperFloor.position.y : Number.MAX_VALUE;
+
+	var objects = [];
+	
+	// find objects between this floor and its upper floor, if exists
+	this.scene.traverse(function(obj){
+		if(obj.position.y < maxY && obj.position.y >= minY) {
+			objects.push( obj );
+		}
+	});
+
+	return objects;
 };
 
 

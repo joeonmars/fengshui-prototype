@@ -236,6 +236,9 @@ feng.models.View3D.Data = {
 			},
 			'sewingmachine-cover':	{
 				texture: "studio.interior3.sewingmachine-cover-texture"
+			},
+			'boxes':	{
+				texture: "studio.interior3.boxes-texture"
 			}
 		},
 		'bathroom': {/*

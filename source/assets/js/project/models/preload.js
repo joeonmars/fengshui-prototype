@@ -111,7 +111,8 @@ feng.models.Preload = function(){
 				'coffee-pot-texture': 'images/texture/studio/livingroom/coffee-pot.png',
 				'ventilator-texture': 'images/texture/studio/livingroom/ventilator.png',
 				'round-lamp-texture': 'images/texture/studio/livingroom/round-lamp.png',
-				'reading-lamp-texture': 'images/texture/studio/livingroom/reading-lamp.png'
+				'reading-lamp-texture': 'images/texture/studio/livingroom/reading-lamp.png',
+				'boxes-texture': 'images/texture/studio/livingroom/boxes.png'
 			},
 			'bathroom': {
 				'scene-data': 'json/bathroom.json',

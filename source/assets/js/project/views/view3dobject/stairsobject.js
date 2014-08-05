@@ -37,7 +37,9 @@ feng.views.view3dobject.StairsObject.prototype.init = function() {
 
   var matrixId = 'test-matrix';
   var collidableBoxes = this._view3d.getCollidableBoxes();
-  var matrixData = pathfinder.generateMatrix( matrixId, collidableBoxes, this._view3d.scene );
+  var floorObjects = this._view3d.getObjectsOfFloor();
+  
+  var matrixData = pathfinder.generateMatrix( matrixId, collidableBoxes, floorObjects );
 
   var lowerTile = pathfinder.getTileByPosition( this.lowerPosition, matrixData );
   lowerTile = pathfinder.getClosestWalkableTile( lowerTile, matrixData );

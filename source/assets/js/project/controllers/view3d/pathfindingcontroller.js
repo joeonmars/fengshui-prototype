@@ -34,39 +34,41 @@ goog.inherits(feng.controllers.view3d.PathfindingController, goog.events.EventTa
 goog.addSingletonGetter(feng.controllers.view3d.PathfindingController);
 
 
-feng.controllers.view3d.PathfindingController.prototype.getMatrixData = function( matrixId, collidableBoxes, scene, minTilesInRowOrCol ) {
+feng.controllers.view3d.PathfindingController.prototype.getMatrixData = function( matrixId, collidableBoxes, objects, minTilesInRowOrCol ) {
 
 	var matrixData = this._matrixData[ matrixId ];
 
 	if(!matrixData) {
-		matrixData = this.generateMatrix( matrixId, start, end, collidableBoxes, scene, minTilesInRowOrCol );
+		matrixData = this.generateMatrix( matrixId, start, end, collidableBoxes, objects, minTilesInRowOrCol );
 	}
 
 	return matrixData;
 };
 
 
-feng.controllers.view3d.PathfindingController.prototype.generateMatrix = function( matrixId, collidableBoxes, scene, minTilesInRowOrCol ) {
+feng.controllers.view3d.PathfindingController.prototype.generateMatrix = function( matrixId, collidableBoxes, objects, minTilesInRowOrCol ) {
 
 	var gridMinX = 0, gridMinZ = 0;
 	var gridMaxX = 0, gridMaxZ = 0;
 
-	scene.traverse(function(child) {
-		if(child instanceof THREE.Mesh) {
-			var mesh = child;
-		  var box = new THREE.Box3().setFromObject( mesh );
+	goog.array.forEach(objects, function(obj) {
+
+		if(obj instanceof THREE.Mesh) {
 			
+			var mesh = obj;
+			var box = new THREE.Box3().setFromObject( mesh );
+
 			//console.log(mesh.name + ' bounding box: ', box);
 
-		  var minX = box.min.x;
-		  var minZ = box.min.z;
-		  var maxX = box.max.x;
-		  var maxZ = box.max.z;
+			var minX = box.min.x;
+			var minZ = box.min.z;
+			var maxX = box.max.x;
+			var maxZ = box.max.z;
 
-		  gridMinX = Math.min(gridMinX, minX);
-		  gridMinZ = Math.min(gridMinZ, minZ);
-		  gridMaxX = Math.max(gridMaxX, maxX);
-		  gridMaxZ = Math.max(gridMaxZ, maxZ);
+			gridMinX = Math.min(gridMinX, minX);
+			gridMinZ = Math.min(gridMinZ, minZ);
+			gridMaxX = Math.max(gridMaxX, maxX);
+			gridMaxZ = Math.max(gridMaxZ, maxZ);
 		}
 	});
 

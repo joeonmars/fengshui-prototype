@@ -59,8 +59,9 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 	var start = fromPosition;
 	var end = toPosition;
 	var collidableBoxes = this._view3d.getCollidableBoxes();
+	var floorObjects = this._view3d.getObjectsOfFloor();
 
-	pathfinder.generateMatrix( matrixId, collidableBoxes, this._scene );
+	pathfinder.generateMatrix( matrixId, collidableBoxes, floorObjects );
 
 	var coordinates = pathfinder.findPath( matrixId, start, end );
 	
