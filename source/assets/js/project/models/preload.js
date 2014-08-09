@@ -89,6 +89,8 @@ feng.models.Preload = function(){
 				'scene-data': 'json/studio-livingroom.json',
 				'floor-texture': 'images/texture/studio/livingroom/floor.png',
 				'wall-texture': 'images/texture/studio/livingroom/wall.png',
+				'ceiling-texture': 'images/texture/studio/livingroom/ceiling.png',
+				'shoestorage-texture': 'images/texture/studio/livingroom/shoestorage.png',
 				'sofabed-cabinet-texture': 'images/texture/studio/livingroom/sofabed-cabinet.png',
 				'kitchen-cabinets-texture': 'images/texture/studio/livingroom/kitchen-cabinets.png',
 				'kitchen-storage-texture': 'images/texture/studio/livingroom/kitchen-storage.png',
@@ -112,7 +114,8 @@ feng.models.Preload = function(){
 				'ventilator-texture': 'images/texture/studio/livingroom/ventilator.png',
 				'round-lamp-texture': 'images/texture/studio/livingroom/round-lamp.png',
 				'reading-lamp-texture': 'images/texture/studio/livingroom/reading-lamp.png',
-				'boxes-texture': 'images/texture/studio/livingroom/boxes.png'
+				'boxes-texture': 'images/texture/studio/livingroom/boxes.png',
+				'shoestorage-texture': 'images/texture/studio/livingroom/shoestorage.png'
 			},
 			'bathroom': {
 				'scene-data': 'json/bathroom.json',

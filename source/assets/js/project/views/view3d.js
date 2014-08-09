@@ -306,6 +306,38 @@ feng.views.View3D.prototype.initScene = function() {
 	var constructed = feng.views.View3D.constructScene(this.sectionId, this.id);
 	this.scene = constructed.scene;
 
+	// add fog to scene for fading 45 deg ground plane
+	this.scene.fog = new THREE.FogExp2( 0x8d867a, 0.0008 );
+
+	// add design mode ground plane
+	var size = 128;
+	var canvas = goog.dom.createDom('canvas');
+	canvas.width = size;
+	canvas.height = size;
+	var ctx = canvas.getContext("2d");
+	ctx.fillStyle = "#e4e4d8";
+	ctx.fillRect(0, 0, size, size);
+	ctx.strokeStyle = "#b8b2a6";
+	ctx.strokeRect(0, 0, size, size);
+
+	var texture = new THREE.Texture( canvas );
+	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(5000, 5000);
+    texture.needsUpdate = true;
+
+	var planeGeometry = new THREE.PlaneGeometry( 100000, 100000, 1, 1 );
+	var planeMaterial = new THREE.MeshBasicMaterial( {
+		map: texture,
+		transparent: true
+	} );
+
+	var designPlane = new THREE.Mesh( planeGeometry, planeMaterial );
+	designPlane.name = 'design-plane';
+	designPlane.rotation.x = -Math.PI/2;
+	designPlane.position.y = -10;
+
+	this.scene.add( designPlane );
+
 	/*
 	 * Classes to be created by external json data
 	 */
@@ -411,6 +443,9 @@ feng.views.View3D.prototype.initScene = function() {
 		this.energyFlow = new feng.fx.EnergyFlow( controlPoints, this.id, this.sectionId );
 		//this.scene.add( this.energyFlow );
 	}
+
+	// init design plane
+	this.view3dObjects['design-plane'].remove();
 };
 
 
@@ -473,7 +508,6 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 			var textureData = objectData.texture;
 
 			if(goog.isString(textureData)) {
-
 				var textureSrc = preloadModel.getAsset( textureData ).src;
 			  	var texture = THREE.ImageUtils.loadTexture( textureSrc );
 			  	object.material.map = texture;
@@ -501,6 +535,7 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 
 				if(object.material) {
 					object.material.shading = THREE.FlatShading;
+					object.material.fog = false;
 				}
 			}
 		}

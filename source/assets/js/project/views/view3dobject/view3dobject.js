@@ -92,6 +92,18 @@ feng.views.view3dobject.View3DObject.prototype.getHeight = function(){
 };
 
 
+feng.views.view3dobject.View3DObject.prototype.add = function(){
+
+  this._view3d.scene.add( this.object3d );
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.remove = function(){
+
+  this._view3d.scene.remove( this.object3d );
+};
+
+
 feng.views.view3dobject.View3DObject.prototype.enableRender = function(){
 
   // itself and its parent should be all renderable

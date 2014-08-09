@@ -84,6 +84,32 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 
 	this._tweener.add([positionTweener, rotationTweener, fovTweener], 0, 'start');
 
+	// toggle ground plane
+	var designPlane = this._view3d.view3dObjects['design-plane'];
+
+	if(nextMode === feng.controllers.view3d.ModeController.Mode.DESIGN) {
+
+		designPlane.add();
+
+		TweenMax.fromTo(designPlane.object3d.material, 1, {
+			opacity: 0
+		}, {
+			opacity: 1
+		});
+
+	}else {
+
+		TweenMax.fromTo(designPlane.object3d.material, 1, {
+			opacity: 1
+		}, {
+			opacity: 0,
+			onComplete: function() {
+				designPlane.remove();
+			}
+		});
+	}
+
+	//
 	this.dispatchEvent({
 		type: feng.events.EventType.UPDATE,
 		mode: nextMode

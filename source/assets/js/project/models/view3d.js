@@ -153,6 +153,9 @@ feng.models.View3D.Data = {
 			'wall':	{
 				texture: "studio.interior3.wall-texture"
 			},
+			'ceiling':	{
+				texture: "studio.interior3.ceiling-texture"
+			},
 			'floor': {
 				receiveShadow: true,
 				texture: "studio.interior3.floor-texture"
@@ -239,6 +242,10 @@ feng.models.View3D.Data = {
 			},
 			'boxes':	{
 				texture: "studio.interior3.boxes-texture"
+			},
+			'shoestorage':	{
+				collidable: true,
+				texture: "studio.interior3.shoestorage-texture"
 			}
 		},
 		'bathroom': {/*
