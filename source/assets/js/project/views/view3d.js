@@ -508,8 +508,30 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 			var textureData = objectData.texture;
 
 			if(goog.isString(textureData)) {
-				var textureSrc = preloadModel.getAsset( textureData ).src;
-			  	var texture = THREE.ImageUtils.loadTexture( textureSrc );
+
+					var textureAsset = preloadModel.getAsset( textureData );
+					var texture;
+
+					if(textureAsset.src) {
+
+						texture = THREE.ImageUtils.loadTexture( textureAsset.src );
+
+					}else {
+
+						var ddsLoader = new THREE.DDSLoader();           
+            var dds = ddsLoader.parse( textureAsset );
+
+            texture = new THREE.CompressedTexture();
+            texture.image = [];
+            texture.flipY = false;
+            texture.generateMipmaps = false;
+            texture.image.width = dds.width;
+            texture.image.height = dds.height;
+            texture.mipmaps = dds.mipmaps;
+            texture.format = dds.format;
+            texture.needsUpdate = true;
+					}
+
 			  	object.material.map = texture;
 			}
 
