@@ -19,6 +19,7 @@ feng.views.view3dobject.GatewayObject = function( object3d, data, view3d ){
   var origin = new THREE.Vector3();
   origin.subVectors( this.object3d.parent.position, this.getCenter() ).normalize().multiplyScalar(25);
   origin = this.getCenter().clone().add( origin );
+  origin.y = feng.controllers.controls.Controls.Default.STANCE_HEIGHT;
 
   this.origin = origin;
 };

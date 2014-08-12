@@ -150,6 +150,16 @@ feng.models.View3D.Data = {
 			}
 		},
 		'interior3': {
+			'studio-door': {
+				class: "gateway",
+				viewid: "interior2",
+				gatewayid: "door"
+			},
+			'bathroom-door': {
+				class: "gateway",
+				viewid: "interior2",
+				gatewayid: "door"
+			},
 			'wall':	{
 				texture: "studio.interior3.wall-texture"
 			},
@@ -201,7 +211,14 @@ feng.models.View3D.Data = {
 			'dining-chair':	{
 				collidable: true,
 				castShadow: true,
-				texture: "studio.interior3.dining-chair-texture"
+				texture: "studio.interior3.dining-chair-texture",
+				class: "tip",
+				interactions: [
+					"move",
+					"rotate"
+				],
+				tipInteraction: "change_color",
+				tipKey: 'studio.livingroom.chair'
 			},
 			'window-books':	{
 				texture: "studio.interior3.window-books-texture"
