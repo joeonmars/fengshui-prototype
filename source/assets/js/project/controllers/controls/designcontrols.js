@@ -46,7 +46,7 @@ feng.controllers.controls.DesignControls.prototype.setCamera = function( fromPos
 	rotation.setFromQuaternion( quaternion );
 
 	// get position by camera angle
-	var cameraHeight = 400;
+	var cameraHeight = 1000;
 	var x = cameraHeight * Math.sin( rotation.y );
 	var z = cameraHeight * Math.cos( rotation.y );
 	var y = cameraHeight;
@@ -142,6 +142,7 @@ feng.controllers.controls.DesignControls.prototype.close = function () {
 		nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
 		toPosition: cameraPosition,
 		toRotation: cameraRotation,
+		toFov: feng.controllers.controls.Controls.Default.FOV,
 		object: this._activeObject
 	});
 };
