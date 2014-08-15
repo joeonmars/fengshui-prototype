@@ -448,12 +448,8 @@
 		},
 		{
 			"uuid": "1D704FD3-DDB0-4634-8637-26F6C554E6F4",
-			"type": "MeshPhongMaterial",
-			"color": 16777215,
-			"ambient": 16777215,
-			"emissive": 16777215,
-			"specular": 16777215,
-			"shininess": 0,
+			"type": "MeshBasicMaterial",
+			"color": 12566208,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
@@ -575,213 +571,259 @@
 			"wireframe": false
 		},
 		{
-			"uuid": "4F773910-F249-43D7-BE9E-09B07EDF0707",
-			"type": "MeshBasicMaterial",
+			"uuid": "4FBB1FD5-CBAB-4B16-8C8C-5ABF208225DE",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16777215,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
 			"uuid": "FB53D69A-1A6E-4EFA-B36E-B205EB2F08C8",
-			"type": "MeshPhongMaterial",
-			"color": 0,
+			"type": "MeshLambertMaterial",
+			"color": 16777215,
 			"ambient": 16777215,
-			"emissive": 16777215,
-			"specular": 0,
-			"shininess": 30,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "BF0F9FA6-BE46-4B1B-BFAF-DEFE8D1D31D9",
-			"type": "MeshBasicMaterial",
+			"uuid": "95229948-39D2-4D7F-AFA9-7295FEEDFD1E",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16777215,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "9666FE4D-EA6E-4421-A223-ABB4BDDB862F",
-			"type": "MeshBasicMaterial",
+			"uuid": "9FD78A4C-809C-4461-9DD5-5518E792E489",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16777215,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "57EC0C86-ED56-4FC0-A065-C741F389E732",
-			"type": "MeshBasicMaterial",
+			"uuid": "22C8C6BF-2E39-414C-BF6C-94203B410256",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16777215,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "FDE2348A-E6A5-4689-A8D2-8FF73096FC24",
-			"type": "MeshBasicMaterial",
+			"uuid": "19E9A002-2245-421C-B3C6-4EDFF9EC9956",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16777215,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "98CEF18A-CFA9-4072-A6A5-C8546A3CBB96",
-			"type": "MeshBasicMaterial",
+			"uuid": "C7CB726D-EB26-4502-9720-CA57E23EF9AA",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16777215,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "24E9D70E-48A4-4005-A01C-0AA92D80F0C6",
-			"type": "MeshBasicMaterial",
+			"uuid": "7257F7C6-5696-46F3-B90B-5A1D6EACD6D9",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16777215,
+			"emissive": 0,
 			"side": 2,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "BEC40EF7-A0AC-48F4-B7FE-198C6C65B8C0",
-			"type": "MeshBasicMaterial",
+			"uuid": "878A1298-D848-4C9F-8D5D-54691F4C057D",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16777215,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "A8790763-15D9-4AE5-923B-02D8FCC88396",
-			"type": "MeshBasicMaterial",
+			"uuid": "60A4B0C2-41FD-46E5-AEA8-2E22F8BF6275",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16777215,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "177E7316-5438-40CB-BFEB-B477D6BBC114",
-			"type": "MeshBasicMaterial",
+			"uuid": "5DB60939-9F3A-43C3-B1F9-77365024BD37",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16777215,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "5DEF6CAF-283A-4560-9E56-B64CA06BC6BB",
-			"type": "MeshBasicMaterial",
+			"uuid": "9F2F407B-1AA5-4B28-A5B3-1CB6CC8B3FC2",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16777215,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "8B2B11E6-7971-4876-A6D1-B9F4BAEE0DD4",
-			"type": "MeshBasicMaterial",
-			"color": 16777215,
+			"uuid": "7644247A-3890-4956-8CBE-6B76EB4A5D35",
+			"type": "MeshLambertMaterial",
+			"color": 16580095,
+			"ambient": 16711167,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "03F14CFF-43ED-425A-AE6F-3F09C1A6D8DD",
-			"type": "MeshBasicMaterial",
+			"uuid": "FCD5237E-CD5B-41B5-AB09-C927BB6A1569",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16711167,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "07099DF3-4DC0-442D-81A2-D13DAC322F20",
-			"type": "MeshBasicMaterial",
+			"uuid": "CBDD407F-0450-422A-82BA-A77ADDA9EFC7",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16711167,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "771A8034-440B-486F-9550-715DD2E71397",
-			"type": "MeshBasicMaterial",
+			"uuid": "EDB0C075-500C-4930-882D-CAC53893C275",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16711167,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "1585004D-632A-4A62-9E70-9FD97FC1F224",
-			"type": "MeshBasicMaterial",
+			"uuid": "32EF94E1-A26A-4759-A3FB-5F89ACFE5F95",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16711167,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "874E36AB-2DD3-4F3C-A6CD-482432BB721A",
-			"type": "MeshBasicMaterial",
+			"uuid": "433A3864-783D-4709-9C6E-5259C12481C8",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16711167,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "A5864A11-78E3-4981-8ED2-99B1CFBEC87C",
-			"type": "MeshBasicMaterial",
+			"uuid": "7E4C6F48-24F0-4D44-AED0-ECA1C11C44F0",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16711167,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "D550B9FB-A854-40C3-8AC1-16042A9DB885",
-			"type": "MeshBasicMaterial",
+			"uuid": "923178DE-9399-4C70-A337-E87012EAD688",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16711167,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "67634FF2-66F8-4630-A664-5D666F2754AB",
-			"type": "MeshBasicMaterial",
+			"uuid": "556EC3FF-0CBB-495B-A3A6-C42E363BF34A",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16711167,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "61B3ACD8-FE47-49C9-9EDC-026D0E7014F8",
-			"type": "MeshBasicMaterial",
+			"uuid": "215B3BA2-39C8-47CE-8A34-C0419E55A9D2",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16777215,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "CAE2A4AF-D6D1-4DBE-8D57-4F10E30F88BB",
-			"type": "MeshBasicMaterial",
+			"uuid": "458B0DBC-38B4-4B45-9B2F-B3C3C18B1E41",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16777215,
+			"emissive": 0,
 			"side": 2,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "68D16B56-3333-4AF7-9C41-82E2AE59A338",
-			"type": "MeshBasicMaterial",
+			"uuid": "40DB4C07-9F7B-42A5-A42F-DA9C5256B70F",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16777215,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		},
 		{
-			"uuid": "A3522C34-359C-4A8C-8D08-69DF9E222240",
-			"type": "MeshBasicMaterial",
+			"uuid": "08CF757E-E403-4EEC-B29E-2E242B625FEB",
+			"type": "MeshLambertMaterial",
 			"color": 16777215,
+			"ambient": 16777215,
+			"emissive": 0,
 			"opacity": 1,
 			"transparent": false,
 			"wireframe": false
 		}],
 	"object": {
-		"uuid": "679E3191-7634-4C54-902D-4FD674949CEC",
+		"uuid": "E7CCEC60-7CD1-4330-93B5-8D515ACA21D0",
 		"name": "studio-livingroom",
 		"type": "Scene",
 		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
@@ -824,7 +866,17 @@
 				"type": "Mesh",
 				"geometry": "CA8A6238-D9E5-4AA2-B605-5482D555C35A",
 				"material": "1D704FD3-DDB0-4634-8637-26F6C554E6F4",
-				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,52.449073791503906,31.644956588745117,-146.49826049804688,1]
+				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,52.449073791503906,31.644956588745117,-146.49826049804688,1],
+				"children": [
+					{
+						"uuid": "7EC3B154-B175-4465-B318-A4D668A5DF25",
+						"name": "light",
+						"type": "PointLight",
+						"color": 16693409,
+						"intensity": 5,
+						"distance": 80,
+						"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,5,0,1]
+					}]
 			},
 			{
 				"uuid": "89A9A9B6-0CBB-45A0-80FB-27FBA10AC57B",
@@ -928,7 +980,7 @@
 				"name": "wall",
 				"type": "Mesh",
 				"geometry": "FB22AA36-963E-4E15-8DC4-CD4945752886",
-				"material": "4F773910-F249-43D7-BE9E-09B07EDF0707",
+				"material": "4FBB1FD5-CBAB-4B16-8C8C-5ABF208225DE",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -944,7 +996,7 @@
 				"name": "kitchen-cabinets",
 				"type": "Mesh",
 				"geometry": "8EE9F789-5A5C-4B3F-B0A7-7D7A44B3C467",
-				"material": "BF0F9FA6-BE46-4B1B-BFAF-DEFE8D1D31D9",
+				"material": "95229948-39D2-4D7F-AFA9-7295FEEDFD1E",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -952,7 +1004,7 @@
 				"name": "dining-table",
 				"type": "Mesh",
 				"geometry": "7A70D6EF-22CF-40DC-9C6A-5E91317BF7C3",
-				"material": "9666FE4D-EA6E-4421-A223-ABB4BDDB862F",
+				"material": "9FD78A4C-809C-4461-9DD5-5518E792E489",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -960,7 +1012,7 @@
 				"name": "kitchen-storage",
 				"type": "Mesh",
 				"geometry": "44B8E6E0-E28A-4E52-BA92-C362D355201C",
-				"material": "57EC0C86-ED56-4FC0-A065-C741F389E732",
+				"material": "22C8C6BF-2E39-414C-BF6C-94203B410256",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -968,7 +1020,7 @@
 				"name": "ventilator",
 				"type": "Mesh",
 				"geometry": "1B12D6E3-078A-4B3B-A8E5-784411C9E118",
-				"material": "FDE2348A-E6A5-4689-A8D2-8FF73096FC24",
+				"material": "19E9A002-2245-421C-B3C6-4EDFF9EC9956",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -976,7 +1028,7 @@
 				"name": "sofabed-cabinet",
 				"type": "Mesh",
 				"geometry": "9D8165DD-A97A-4EF7-B52A-D3755E35A343",
-				"material": "98CEF18A-CFA9-4072-A6A5-C8546A3CBB96",
+				"material": "C7CB726D-EB26-4502-9720-CA57E23EF9AA",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -984,7 +1036,7 @@
 				"name": "window-books",
 				"type": "Mesh",
 				"geometry": "3C360400-D14F-46D8-9A72-6C3690115ECA",
-				"material": "24E9D70E-48A4-4005-A01C-0AA92D80F0C6",
+				"material": "7257F7C6-5696-46F3-B90B-5A1D6EACD6D9",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -992,7 +1044,7 @@
 				"name": "bed-shelf",
 				"type": "Mesh",
 				"geometry": "803E8CF3-F790-4C2F-A366-27F1E512740E",
-				"material": "BEC40EF7-A0AC-48F4-B7FE-198C6C65B8C0",
+				"material": "878A1298-D848-4C9F-8D5D-54691F4C057D",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -1000,7 +1052,7 @@
 				"name": "tv-table",
 				"type": "Mesh",
 				"geometry": "0AB3989E-B255-4739-B597-78D66FC0BACF",
-				"material": "A8790763-15D9-4AE5-923B-02D8FCC88396",
+				"material": "60A4B0C2-41FD-46E5-AEA8-2E22F8BF6275",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -1008,7 +1060,7 @@
 				"name": "tv",
 				"type": "Mesh",
 				"geometry": "6181D5D8-0DE6-412D-B66A-0BFE1C4D5F2F",
-				"material": "177E7316-5438-40CB-BFEB-B477D6BBC114",
+				"material": "5DB60939-9F3A-43C3-B1F9-77365024BD37",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -1016,7 +1068,7 @@
 				"name": "sofa",
 				"type": "Mesh",
 				"geometry": "33BB8F35-3DF0-4B4F-89C4-06D614E17AA1",
-				"material": "5DEF6CAF-283A-4560-9E56-B64CA06BC6BB",
+				"material": "9F2F407B-1AA5-4B28-A5B3-1CB6CC8B3FC2",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -1024,7 +1076,7 @@
 				"name": "book-shelf",
 				"type": "Mesh",
 				"geometry": "19375F2E-6398-414B-AE12-47009A9F3721",
-				"material": "8B2B11E6-7971-4876-A6D1-B9F4BAEE0DD4",
+				"material": "7644247A-3890-4956-8CBE-6B76EB4A5D35",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -1032,7 +1084,7 @@
 				"name": "bed",
 				"type": "Mesh",
 				"geometry": "13C997CF-9A95-42E1-AD09-A722DDB03213",
-				"material": "03F14CFF-43ED-425A-AE6F-3F09C1A6D8DD",
+				"material": "FCD5237E-CD5B-41B5-AB09-C927BB6A1569",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -1040,7 +1092,7 @@
 				"name": "nightstand",
 				"type": "Mesh",
 				"geometry": "14FBB3E2-AAEB-4F9C-90DF-595BA0F2323C",
-				"material": "07099DF3-4DC0-442D-81A2-D13DAC322F20",
+				"material": "CBDD407F-0450-422A-82BA-A77ADDA9EFC7",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -1048,7 +1100,7 @@
 				"name": "kitchen-shelf",
 				"type": "Mesh",
 				"geometry": "77BABA47-EFAB-4D69-BEBB-1EE0F41FB459",
-				"material": "771A8034-440B-486F-9550-715DD2E71397",
+				"material": "EDB0C075-500C-4930-882D-CAC53893C275",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -1056,7 +1108,7 @@
 				"name": "bed-cabinet",
 				"type": "Mesh",
 				"geometry": "28F56FDB-9C7F-4AD2-BE5C-301626D1FEF2",
-				"material": "1585004D-632A-4A62-9E70-9FD97FC1F224",
+				"material": "32EF94E1-A26A-4759-A3FB-5F89ACFE5F95",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -1064,7 +1116,7 @@
 				"name": "sofabed",
 				"type": "Mesh",
 				"geometry": "C1CC00B9-F02F-43CB-A3CF-0FF0C9051019",
-				"material": "874E36AB-2DD3-4F3C-A6CD-482432BB721A",
+				"material": "433A3864-783D-4709-9C6E-5259C12481C8",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -1072,7 +1124,7 @@
 				"name": "dining-chair",
 				"type": "Mesh",
 				"geometry": "DA1BC0E8-0F27-489A-A41F-62E2C2CF81BB",
-				"material": "A5864A11-78E3-4981-8ED2-99B1CFBEC87C",
+				"material": "7E4C6F48-24F0-4D44-AED0-ECA1C11C44F0",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,-47.689998626708984,0,-54.869998931884766,1]
 			},
 			{
@@ -1080,7 +1132,7 @@
 				"name": "sewingmachine",
 				"type": "Mesh",
 				"geometry": "D6873CA1-4164-4CBB-B739-39D2D04EDD21",
-				"material": "D550B9FB-A854-40C3-8AC1-16042A9DB885",
+				"material": "923178DE-9399-4C70-A337-E87012EAD688",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,-15.180000305175781,35.29999923706055,-67.0999984741211,1],
 				"children": [
 					{
@@ -1088,7 +1140,7 @@
 						"name": "sewingmachine-cover",
 						"type": "Mesh",
 						"geometry": "3E269200-E9F8-4299-BF4F-5A38659CB29B",
-						"material": "67634FF2-66F8-4630-A664-5D666F2754AB",
+						"material": "556EC3FF-0CBB-495B-A3A6-C42E363BF34A",
 						"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 					}]
 			},
@@ -1097,7 +1149,7 @@
 				"name": "reading-lamp",
 				"type": "Mesh",
 				"geometry": "96AE5F9D-E714-42BF-8700-9230C2ABF2B7",
-				"material": "61B3ACD8-FE47-49C9-9EDC-026D0E7014F8",
+				"material": "215B3BA2-39C8-47CE-8A34-C0419E55A9D2",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -1105,7 +1157,7 @@
 				"name": "shoestorage",
 				"type": "Mesh",
 				"geometry": "A94007EE-BBF6-4395-8A88-E8F56B855B15",
-				"material": "CAE2A4AF-D6D1-4DBE-8D57-4F10E30F88BB",
+				"material": "458B0DBC-38B4-4B45-9B2F-B3C3C18B1E41",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -1113,7 +1165,7 @@
 				"name": "boxes",
 				"type": "Mesh",
 				"geometry": "23646FB7-5656-4049-95DB-83B9A0267606",
-				"material": "68D16B56-3333-4AF7-9C41-82E2AE59A338",
+				"material": "40DB4C07-9F7B-42A5-A42F-DA9C5256B70F",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			},
 			{
@@ -1121,7 +1173,7 @@
 				"name": "ceiling",
 				"type": "Mesh",
 				"geometry": "7D413489-2621-4E84-AE01-BEFB322242F2",
-				"material": "A3522C34-359C-4A8C-8D08-69DF9E222240",
+				"material": "08CF757E-E403-4EEC-B29E-2E242B625FEB",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 			}]
 	}

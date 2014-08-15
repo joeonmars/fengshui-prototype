@@ -190,6 +190,13 @@ feng.models.View3D.Data = {
 				texture: "studio.interior3.coffee-pot-texture"
 			},
 			'round-lamp':	{
+				class: 'lamp',
+				interactions: [
+					"move",
+					"rotate"
+				],
+				tipInteraction: "change_color",
+				tipKey: 'studio.livingroom.chair',
 				texture: "studio.interior3.round-lamp-texture"
 			},
 			'reading-lamp':	{

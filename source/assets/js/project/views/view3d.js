@@ -21,6 +21,7 @@ goog.require('feng.views.view3dobject.GatewayObject');
 goog.require('feng.views.view3dobject.StairsObject');
 goog.require('feng.views.view3dobject.AccessoryObject');
 goog.require('feng.views.view3dobject.TipObject');
+goog.require('feng.views.view3dobject.entities.Lamp');
 goog.require('feng.views.view3dobject.entities.Computer');
 goog.require('feng.views.view3dobject.entities.PictureDisplay');
 goog.require('feng.views.view3dobject.entities.PictureFrame');
@@ -348,7 +349,8 @@ feng.views.View3D.prototype.initScene = function() {
 		'stairs': feng.views.view3dobject.StairsObject,
 		'picturedisplay': feng.views.view3dobject.entities.PictureDisplay,
 		'pictureframe': feng.views.view3dobject.entities.PictureFrame,
-		'computer': feng.views.view3dobject.entities.Computer
+		'computer': feng.views.view3dobject.entities.Computer,
+		'lamp': feng.views.view3dobject.entities.Lamp
 	};
 
 	// parse scene objects
