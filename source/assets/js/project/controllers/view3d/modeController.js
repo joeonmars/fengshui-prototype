@@ -22,6 +22,8 @@ feng.controllers.view3d.ModeController = function( view3d ){
 
   this._eventHandler = new goog.events.EventHandler(this);
 
+  this.control = null;
+
   this._view3d = view3d;
   this._cameraController = this._view3d.cameraController;
   this._renderController = this._view3d.renderController;
@@ -32,7 +34,6 @@ feng.controllers.view3d.ModeController = function( view3d ){
   this._climbControls = null;
   this._transitionControls = null;
 
-  this._control = null;
   this._mode = null;
 
   this._modeControls = {};
@@ -59,6 +60,8 @@ feng.controllers.view3d.ModeController.prototype.init = function(){
   this._modeControls[feng.controllers.view3d.ModeController.Mode.TRANSITION] = this._transitionControls;
 
   //
+  this.control = this._browseControls;
+
   this._eventHandler.listen(this, feng.events.EventType.CHANGE, this.onModeChange, false, this);
 };
 

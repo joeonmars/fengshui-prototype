@@ -16,6 +16,7 @@ goog.require('feng.models.Accessories');
 goog.require('feng.views.book.Book');
 goog.require('feng.views.view3dobject.View3DObject');
 goog.require('feng.views.view3dobject.InteractiveObject');
+goog.require('feng.views.view3dobject.Arms');
 goog.require('feng.views.view3dobject.HolderObject');
 goog.require('feng.views.view3dobject.GatewayObject');
 goog.require('feng.views.view3dobject.StairsObject');
@@ -54,6 +55,7 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud){
 
 	this.scene = null;
 	this.energyFlow = null;
+	this.arms = null;
 
 	this.view3dObjects = {};
 	this.interactiveObjects = {};
@@ -448,10 +450,17 @@ feng.views.View3D.prototype.initScene = function() {
 
 	// init design plane
 	this.view3dObjects['design-plane'].remove();
+
+	// init arms
+	this.arms = new feng.views.view3dobject.Arms( this );
+	this.interactiveObjects[ this.arms.name ] = this.arms;
 };
 
 
 feng.views.View3D.prototype.onAnimationFrame = function(now){
+
+	var control = this.modeController.control;
+	this.arms.update( control.getPosition(), control.getRotation() );
 
 	this.render();
 };
