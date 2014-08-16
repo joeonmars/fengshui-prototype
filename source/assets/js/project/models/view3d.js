@@ -195,8 +195,14 @@ feng.models.View3D.Data = {
 					"move",
 					"rotate"
 				],
+				colors: [
+					"pink",
+					"yellow",
+					"white",
+					"orange"
+				],
 				tipInteraction: "change_color",
-				tipKey: 'studio.livingroom.chair',
+				tipKey: 'studio.livingroom.lamp',
 				texture: "studio.interior3.round-lamp-texture"
 			},
 			'reading-lamp':	{

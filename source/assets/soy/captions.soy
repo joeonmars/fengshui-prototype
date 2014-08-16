@@ -33,27 +33,6 @@
 
 
 /**
- * Change color caption
- */
-{template .ChangeColorCaption}
-
-{call .Caption}
-
-	{param classname: 'changecolor' /}
-
-	{param content}
-
-	<div class="left"></div>
-	<div class="right"></div>
-
-	{/param}
-
-{/call}
-
-{/template}
-
-
-/**
  * Change object caption
  */
 {template .ChangeObjectCaption}
@@ -133,6 +112,60 @@
 			{/param}
 			{param classname: 'next'/}
 			{/call}
+		</div>
+
+	</div>
+
+	{/param}
+
+{/call}
+
+{/template}
+
+
+/**
+ * Change color caption
+ * @param colors colors
+ * @param tip the tip
+ */
+{template .ChangeColorCaption}
+
+{call .Caption}
+
+	{param classname: 'changecolor' /}
+
+	{param content}
+
+	<div class="right">
+	{call feng.templates.common.Popup}
+		{param content}
+			<h1>{ $tip.name }</h1>
+			<h2>{ $tip.advice }</h2>
+			<q>"{ $tip.quote }"</q>
+			<p>{ $tip.description }</p>
+			{call feng.templates.common.PrimaryButton}
+				{param icon: 'change' /}
+				{param classname: 'change' /}
+				{param text: 'change' /}
+			{/call}
+		{/param}
+	{/call}
+	</div>
+
+	<div class="bottom">
+
+		<div class="colorSelector">
+			<div class="colorView">
+				<div class="carousel">
+					<ul>
+					{foreach $colorKey in keys($colors)}
+						<li>
+							<div class="color" style="background-color: {$colors[$colorKey].hex}" data-color="{$colorKey}">
+						</li>
+					{/foreach}
+					</ul>
+				</div>
+			</div>
 		</div>
 
 	</div>
