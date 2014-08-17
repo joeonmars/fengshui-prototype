@@ -52,6 +52,14 @@ feng.controllers.SoundController = function(){
     'page-flip': {
       urls: urls('sfx/page-flip'),
       onload: onSoundLoad
+    },
+    'refrigerator-open': {
+      urls: urls('sfx/refrigerator-open'),
+      onload: onSoundLoad
+    },
+    'refrigerator-close': {
+      urls: urls('sfx/refrigerator-close'),
+      onload: onSoundLoad
     }
   };
 

@@ -59,6 +59,8 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 
 		this.distanceToObject = this.getPosition().distanceTo( this._activeObject.object3d.position );
 
+		this._activeObject.onCameraIn();
+
 		// test...
 		var type = this._activeObject.tipInteraction || 'change_object';
 		var caption = this._view3d.hud.getCaption( this._activeObject, this, type );
@@ -80,6 +82,8 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 
 
 feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
+
+	this._activeObject.onCameraOut();
 
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,

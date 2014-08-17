@@ -76,6 +76,18 @@ feng.views.view3dobject.InteractiveObject.prototype.updateScreenBox = function()
 };
 
 
+feng.views.view3dobject.InteractiveObject.prototype.onCameraIn = function(){
+
+  console.log('on camera in: ' + this.name);
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.onCameraOut = function(){
+
+  console.log('on camera out: ' + this.name);
+};
+
+
 /*
  * Interactions
  */

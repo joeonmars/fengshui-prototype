@@ -276,6 +276,24 @@ feng.models.View3D.Data = {
 			'shoestorage':	{
 				collidable: true,
 				texture: "studio.interior3.shoestorage-texture"
+			},
+			'refrigerator':	{
+				class: "refrigerator",
+				collidable: true,
+				interactions: [
+
+				],
+				camera: {
+					position: new THREE.Vector3(-110, 80, -120),
+					rotation: new THREE.Euler(-0.64, -1.57, 0.00, 'YXZ'),
+					fov: 40
+				},
+				tipInteraction: "change_color",
+				tipKey: 'studio.livingroom.refrigerator',
+				texture: "studio.interior3.refrigerator-texture"
+			},
+			'refrigerator-door':	{
+				texture: "studio.interior3.refrigerator-door-texture"
 			}
 		},
 		'bathroom': {/*

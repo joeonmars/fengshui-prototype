@@ -34,25 +34,27 @@ feng.views.view3dobject.Arms = function( view3d ){
 goog.inherits(feng.views.view3dobject.Arms, feng.views.view3dobject.InteractiveObject);
 
 
-feng.views.view3dobject.Arms.prototype.addItem = function( interactiveObject ){
+feng.views.view3dobject.Arms.prototype.addItem = function( view3dObject ){
 
-  goog.array.insert( this._items, interactiveObject );
+  goog.array.insert( this._items, view3dObject );
 
-  var objectContainer = feng.views.view3dobject.Arms.Presets[ interactiveObject.name ];
-  objectContainer.add( interactiveObject.object3d );
+  this.object3d.add( view3dObject.object3d );
 
-  this.object3d.add( objectContainer );
+  var objectOrientation = feng.views.view3dobject.Arms.Presets[ view3dObject.name ];
+  view3dObject.object3d.position.copy( objectOrientation.position );
+  view3dObject.object3d.rotation.copy( objectOrientation.rotation );
+
+  console.log( 'collected by arms: ' + view3dObject.name );
 };
 
 
-feng.views.view3dobject.Arms.prototype.removeItem = function( interactiveObject ){
+feng.views.view3dobject.Arms.prototype.removeItem = function( view3dObject ){
 
-  goog.array.remove( this._items, interactiveObject );
+  goog.array.remove( this._items, view3dObject );
 
-  var objectContainer = feng.views.view3dobject.Arms.Presets[ interactiveObject.name ];
-  objectContainer.remove( interactiveObject.object3d );
-  
-  this.object3d.remove( objectContainer );
+  this.object3d.remove( view3dObject.object3d );
+
+  console.log( 'removed from arms: ' + view3dObject.name );
 };
 
 
@@ -65,8 +67,20 @@ feng.views.view3dobject.Arms.prototype.update = function( position, rotation ){
 
 
 feng.views.view3dobject.Arms.Presets = {
-  'apple': new THREE.Object3D(),
-  'orange': new THREE.Object3D(),
-  'pineapple': new THREE.Object3D(),
-  'peach': new THREE.Object3D()
+  'apple': {
+    position: new THREE.Vector3(0, 5, 0),
+    rotation: new THREE.Euler()
+  },
+  'orange': {
+    position: new THREE.Vector3(0, 5, 0),
+    rotation: new THREE.Euler()
+  },
+  'pineapple': {
+    position: new THREE.Vector3(0, 5, 0),
+    rotation: new THREE.Euler()
+  },
+  'peach': {
+    position: new THREE.Vector3(0, 5, 0),
+    rotation: new THREE.Euler()
+  }
 };

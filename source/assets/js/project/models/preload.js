@@ -115,7 +115,9 @@ feng.models.Preload = function(){
 				'round-lamp-texture': 'images/texture/studio/livingroom/round-lamp.png',
 				'reading-lamp-texture': 'images/texture/studio/livingroom/reading-lamp.png',
 				'boxes-texture': 'images/texture/studio/livingroom/boxes.png',
-				'shoestorage-texture': 'images/texture/studio/livingroom/shoestorage.png'
+				'shoestorage-texture': 'images/texture/studio/livingroom/shoestorage.png',
+				'refrigerator-texture': 'images/texture/studio/livingroom/refrigerator.png',
+				'refrigerator-door-texture': 'images/texture/studio/livingroom/refrigerator-door.png'
 			},
 			'bathroom': {
 				'scene-data': 'json/bathroom.json',

@@ -23,10 +23,5 @@ goog.inherits(feng.views.debug.Manipulate, feng.views.debug.DebugView);
 
 feng.views.debug.Manipulate.prototype.onInteractionStart = function(e){
 
-  var physics = e.target._physicsInteraction._currentPhysics;
-
-  if(physics) {
-  	goog.dom.removeChildren( this._viewPanelDom );
-  	goog.dom.appendChild( this._viewPanelDom, physics.debugCanvas );
-  }
+  
 };

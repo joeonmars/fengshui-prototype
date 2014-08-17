@@ -2,7 +2,6 @@ goog.provide('feng.controllers.controls.InteractionResolver');
 
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventHandler');
-goog.require('feng.controllers.controls.PhysicsInteraction');
 goog.require('feng.views.view3dobject.InteractiveObject');
 
 
@@ -17,7 +16,6 @@ feng.controllers.controls.InteractionResolver = function(){
 
 	var _startInteraction = goog.bind(this.startInteraction, this);
 	var _endInteraction = goog.bind(this.endInteraction, this);
-  this._physicsInteraction = new feng.controllers.controls.PhysicsInteraction(_startInteraction, _endInteraction);
 
   this._eventHandler = new goog.events.EventHandler( this );
 };
@@ -38,41 +36,10 @@ feng.controllers.controls.InteractionResolver.prototype.resolve = function( obje
 
 		case type.MOVE:
 
-			if(isPhysical) {
-				var worldId = options.worldId;
-				var worldWidth = options.worldWidth;
-				var worldHeight = options.worldHeight;
-				var collidableBoxes = options.collidableBoxes;
-				var objectBox = options.objectBox;
-				var camera = options.camera;
-
-				this._physicsInteraction.setPhysicsWorld( worldId, worldWidth, worldHeight );
-				this._physicsInteraction.move( object, collidableBoxes, objectBox, camera );
-			}
 			break;
 
 		case type.ROTATE:
 
-			if(isPhysical) {
-				var worldWidth = options.worldWidth;
-				var worldHeight = options.worldHeight;
-				var collidableBoxes = options.collidableBoxes;
-				var objectBox = options.objectBox;
-				var camera = options.camera;
-
-				this._physicsInteraction.setPhysicsWorld( worldId, worldWidth, worldHeight );
-				this._physicsInteraction.rotate( object, collidableBoxes, objectBox, camera );
-
-			}else {
-
-				if(this._rotateTweener && this._rotateTweener.isActive()) return;
-
-				var y = object3d.rotation.y;
-
-				this._rotateTweener = TweenMax.to(object3d.rotation, .2, {
-					y: y + Math.PI / 2
-				});
-			}
 			break;
 
 		case type.CHANGE_ACCESSORY:

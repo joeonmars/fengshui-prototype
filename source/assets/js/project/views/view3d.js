@@ -26,6 +26,7 @@ goog.require('feng.views.view3dobject.entities.Lamp');
 goog.require('feng.views.view3dobject.entities.Computer');
 goog.require('feng.views.view3dobject.entities.PictureDisplay');
 goog.require('feng.views.view3dobject.entities.PictureFrame');
+goog.require('feng.views.view3dobject.entities.Refrigerator');
 
 
 /**
@@ -352,7 +353,8 @@ feng.views.View3D.prototype.initScene = function() {
 		'picturedisplay': feng.views.view3dobject.entities.PictureDisplay,
 		'pictureframe': feng.views.view3dobject.entities.PictureFrame,
 		'computer': feng.views.view3dobject.entities.Computer,
-		'lamp': feng.views.view3dobject.entities.Lamp
+		'lamp': feng.views.view3dobject.entities.Lamp,
+		'refrigerator': feng.views.view3dobject.entities.Refrigerator
 	};
 
 	// parse scene objects

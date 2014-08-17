@@ -49,7 +49,6 @@
 		<script src="assets/js/thirdparty/threejs-utils/OrbitControls.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/DDSLoader.js"></script>
 		<script src="assets/js/thirdparty/pathfinding-browser.min.js"></script>
-		<script src="assets/js/thirdparty/Box2dWeb-2.1.a.3.min.js"></script>
 		<script src="assets/js/thirdparty/perlin.js"></script>
 
 		<!-- project js -->
