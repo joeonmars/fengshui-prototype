@@ -170,6 +170,10 @@ feng.models.View3D.Data = {
 				receiveShadow: true,
 				texture: "studio.interior3.floor-texture"
 			},
+			'bed':	{
+				collidable: true,
+				texture: "studio.interior3.bed-texture"
+			},
 			'kitchen-cabinets':	{
 				collidable: true,
 				texture: "studio.interior3.kitchen-cabinets-texture"

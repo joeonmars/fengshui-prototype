@@ -90,6 +90,7 @@ feng.models.Preload = function(){
 				'floor-texture': 'images/texture/studio/livingroom/floor.png',
 				'wall-texture': 'images/texture/studio/livingroom/wall.png',
 				'ceiling-texture': 'images/texture/studio/livingroom/ceiling.png',
+				'bed-texture': 'images/texture/studio/livingroom/bed.png',
 				'shoestorage-texture': 'images/texture/studio/livingroom/shoestorage.png',
 				'sofabed-cabinet-texture': 'images/texture/studio/livingroom/sofabed-cabinet.png',
 				'kitchen-cabinets-texture': 'images/texture/studio/livingroom/kitchen-cabinets.png',
