@@ -58,6 +58,20 @@ feng.views.View3DCaption.prototype.hide = function() {
 };
 
 
+feng.views.View3DCaption.prototype.close = function() {
+
+  this.doClose();
+};
+
+
+feng.views.View3DCaption.prototype.doClose = function() {
+
+  this.dispatchEvent({
+    type: feng.events.EventType.CLOSE
+  });
+};
+
+
 feng.views.View3DCaption.prototype.update = function() {
 
   var object3d = this._object.object3d;
@@ -79,9 +93,7 @@ feng.views.View3DCaption.prototype.onClick = function( e ) {
 
   switch(e.currentTarget) {
     case this._closeButton:
-    this.dispatchEvent({
-      type: feng.events.EventType.CLOSE
-    });
+    this.close();
     break;
 
     case this._changeButton:

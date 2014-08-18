@@ -37,6 +37,8 @@ feng.views.sections.captions.ChangeColorCaption.prototype.show = function() {
   goog.base(this, 'show');
 
   this._colorSelector.activate();
+
+  this._controls.shiftCameraToRight();
 };
 
 
@@ -45,6 +47,14 @@ feng.views.sections.captions.ChangeColorCaption.prototype.hide = function() {
   goog.base(this, 'hide');
 
   this._colorSelector.deactivate();
+};
+
+
+feng.views.sections.captions.ChangeColorCaption.prototype.close = function() {
+
+  this._controls.shiftCamera( 0 );
+
+  goog.Timer.callOnce(this.doClose, 600, this);
 };
 
 

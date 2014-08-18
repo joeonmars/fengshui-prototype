@@ -222,43 +222,11 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelectComplete = func
 		return;
 	}
 
-	// get special camera settings from object
-	var cameraSettings = object.isSpecialCameraEnabled ? object.specialCameraSettings : null;
-	console.log( 'specialCameraSettings: ', cameraSettings );
-
-	// otherwise focus on the center of object
-	if(!cameraSettings) {
-
-		// get camera angle looking at the object's center
-		var position = this.getPosition();
-		var object3d = object.object3d;
-		var objectCenter = object.getCenter();
-
-		var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
-		var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, objectCenter);
-		rotation.setFromQuaternion( quaternion );
-
-		var distance = position.distanceTo( objectCenter );
-
-		var height = object.getHeight() * 1.5;
-
-		var fov = 2 * Math.atan( height / ( 2 * distance ) ) * ( 180 / Math.PI );
-
-		cameraSettings = {
-			position: position,
-			rotation: rotation,
-			fov: fov
-		};
-	}
-
 	//
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
 		nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-		toPosition: cameraSettings.position,
-		toRotation: cameraSettings.rotation,
-		toFov: cameraSettings.fov,
 		object: object
 	});	
 };

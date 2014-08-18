@@ -202,9 +202,9 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	var fromRotation = e.fromRotation || oldControl.getRotation();
 	var fromFov = e.fromFov || oldControl.getFov();
 
-	var toPosition = e.toPosition;
-	var toRotation = e.toRotation;
-	var toFov = e.toFov;
+	var toPosition = e.toPosition || oldControl.getPosition();
+	var toRotation = e.toRotation || oldControl.getRotation();
+	var toFov = e.toFov || oldControl.getFov();
 
 	this.control.setPosition( fromPosition );
 	this.control.setRotation( fromRotation );
