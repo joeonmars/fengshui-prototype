@@ -38,8 +38,14 @@ feng.views.View3DCaption.prototype.show = function() {
 
   goog.style.showElement( this.domElement, true );
 
-  this._eventHandler.listen( this._closeButton, 'click', this.onClick, false, this );
-  this._eventHandler.listen( this._changeButton, 'click', this.onClick, false, this );
+  if(this._closeButton) {
+    this._eventHandler.listen( this._closeButton, 'click', this.onClick, false, this ); 
+  }
+
+  if(this._changeButton) {
+    this._eventHandler.listen( this._changeButton, 'click', this.onClick, false, this );  
+  }
+  
   this._eventHandler.listen( window, 'resize', this.onResize, false, this );
 
   this.onResize();

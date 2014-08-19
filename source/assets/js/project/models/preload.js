@@ -117,8 +117,13 @@ feng.models.Preload = function(){
 				'reading-lamp-texture': 'images/texture/studio/livingroom/reading-lamp.png',
 				'boxes-texture': 'images/texture/studio/livingroom/boxes.png',
 				'shoestorage-texture': 'images/texture/studio/livingroom/shoestorage.png',
+				'wardrobe-texture': 'images/texture/studio/livingroom/wardrobe.png',
 				'refrigerator-texture': 'images/texture/studio/livingroom/refrigerator.png',
-				'refrigerator-door-texture': 'images/texture/studio/livingroom/refrigerator-door.png'
+				'refrigerator-door-texture': 'images/texture/studio/livingroom/refrigerator-door.png',
+				'apple-texture': 'images/texture/studio/livingroom/apple.jpg',
+				'pineapple-texture': 'images/texture/studio/livingroom/pineapple.jpg',
+				'orange-texture': 'images/texture/studio/livingroom/orange.jpg',
+				'peach-texture': 'images/texture/studio/livingroom/peach.jpg'
 			},
 			'bathroom': {
 				'scene-data': 'json/bathroom.json',

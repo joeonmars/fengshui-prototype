@@ -5,6 +5,7 @@ goog.require('goog.math');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.views.sections.controls.Manipulator');
 goog.require('feng.controllers.controls.InteractionResolver');
+goog.require('feng.controllers.view3d.PathfindingController');
 
 
 /**
@@ -168,9 +169,28 @@ feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
 
 	this._activeObject.onCameraOut();
 
+	// find out the closest walkable position to go to
+	var pathfinder = feng.controllers.view3d.PathfindingController.getInstance();
+
+	var matrixId = 'test-matrix';
+	var collidableBoxes = this._view3d.getCollidableBoxes();
+	var floorObjects = this._view3d.getObjectsOfFloor();
+
+	var matrixData = pathfinder.generateMatrix( matrixId, collidableBoxes, floorObjects );
+
+	var tile = pathfinder.getTileByPosition( this.getPosition(), matrixData );
+	var toPosition = pathfinder.getClosestWalkableTilePosition( tile, matrixData );
+	toPosition.y = feng.controllers.controls.Controls.Default.STANCE_HEIGHT;
+
+	var toFov = feng.controllers.controls.Controls.Default.FOV;
+
+	//
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
-		mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
+		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+		nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
+		toPosition: toPosition,
+		toFov: toFov,
 		eventToTrigger: e ? e.eventToTrigger : null
 	});
 };

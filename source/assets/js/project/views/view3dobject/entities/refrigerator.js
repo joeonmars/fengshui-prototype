@@ -24,7 +24,7 @@ feng.views.view3dobject.entities.Refrigerator.prototype.enableRender = function(
 
   goog.base(this, 'enableRender');
 
-  this._door.visible = true;
+  this._door.view3dObject.enableRender();
 
   this._fruits = this._fruits || this.getFruits();
 
@@ -38,12 +38,12 @@ feng.views.view3dobject.entities.Refrigerator.prototype.disableRender = function
 
   goog.base(this, 'disableRender');
 
-  this._door.visible = false;
+  this._door.view3dObject.disableRender();
 
   this._fruits = this._fruits || this.getFruits();
 
   goog.array.forEach(this._fruits, function(fruit) {
-    fruit.view3dObject.enableRender();
+    fruit.view3dObject.disableRender();
   });
 };
 
@@ -69,7 +69,7 @@ feng.views.view3dobject.entities.Refrigerator.prototype.startInteraction = funct
   goog.base(this, 'startInteraction');
 
   this._fruits = this.getFruits();
-
+  
   this._interactionHandler.listen(this._view3d.domElement, 'click', this.onClick, false, this);
 };
 

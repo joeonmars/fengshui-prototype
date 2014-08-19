@@ -281,6 +281,10 @@ feng.models.View3D.Data = {
 				collidable: true,
 				texture: "studio.interior3.shoestorage-texture"
 			},
+			'wardrobe':	{
+				collidable: true,
+				texture: "studio.interior3.wardrobe-texture"
+			},
 			'refrigerator':	{
 				class: "refrigerator",
 				collidable: true,
@@ -292,12 +296,24 @@ feng.models.View3D.Data = {
 					rotation: new THREE.Euler(-0.64, -1.57, 0.00, 'YXZ'),
 					fov: 40
 				},
-				tipInteraction: "change_color",
+				tipInteraction: "change_object",
 				tipKey: 'studio.livingroom.refrigerator',
 				texture: "studio.interior3.refrigerator-texture"
 			},
-			'refrigerator-door':	{
+			'refrigerator-door': {
 				texture: "studio.interior3.refrigerator-door-texture"
+			},
+			'apple': {
+				texture: "studio.interior3.apple-texture"
+			},
+			'pineapple': {
+				texture: "studio.interior3.pineapple-texture"
+			},
+			'orange': {
+				texture: "studio.interior3.orange-texture"
+			},
+			'peach': {
+				texture: "studio.interior3.peach-texture"
 			}
 		},
 		'bathroom': {/*

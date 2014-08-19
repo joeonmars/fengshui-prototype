@@ -29,12 +29,16 @@ goog.inherits(feng.views.sections.captions.ChangeObjectCaption, feng.views.View3
 feng.views.sections.captions.ChangeObjectCaption.prototype.show = function() {
 
   goog.base(this, 'show');
+
+  this._object.startInteraction();
 };
 
 
 feng.views.sections.captions.ChangeObjectCaption.prototype.hide = function() {
 
   goog.base(this, 'hide');
+
+  this._object.stopInteraction();
 };
 
 

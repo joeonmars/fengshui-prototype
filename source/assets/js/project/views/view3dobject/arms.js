@@ -68,19 +68,19 @@ feng.views.view3dobject.Arms.prototype.update = function( position, rotation ){
 
 feng.views.view3dobject.Arms.Presets = {
   'apple': {
-    position: new THREE.Vector3(0, 5, 0),
-    rotation: new THREE.Euler()
+    position: new THREE.Vector3(0.47, 6.10, -4.36),
+    rotation: new THREE.Euler(-0.26, 0.16, 0.02)
   },
   'orange': {
-    position: new THREE.Vector3(0, 5, 0),
-    rotation: new THREE.Euler()
+    position: new THREE.Vector3(4.90, 4.31, -2.08),
+    rotation: new THREE.Euler(0.70, 0.26, -0.50)
   },
   'pineapple': {
-    position: new THREE.Vector3(0, 5, 0),
-    rotation: new THREE.Euler()
+    position: new THREE.Vector3(-4.73, 6.62, -0.80),
+    rotation: new THREE.Euler(0.12, -0.16, 0.14)
   },
   'peach': {
-    position: new THREE.Vector3(0, 5, 0),
-    rotation: new THREE.Euler()
+    position: new THREE.Vector3(0.69, 4.53, -0.42),
+    rotation: new THREE.Euler(0.70, 0.08, -0.60)
   }
 };
