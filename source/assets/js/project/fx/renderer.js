@@ -64,6 +64,7 @@ feng.fx.Renderer = function(canvas, scene, camera){
 
 	// create default render texture pass
 	var renderTarget = new THREE.WebGLRenderTarget( res.width, res.height, renderTargetParameters );
+	renderTarget.generateMipmaps = false;
 
 	this._renderComposer = new THREE.EffectComposer( this._renderer, renderTarget );
 	this._renderComposer.addPass( this._renderPass );
@@ -72,6 +73,7 @@ feng.fx.Renderer = function(canvas, scene, camera){
 
 	// create blur texture pass
 	var renderTarget = new THREE.WebGLRenderTarget( 256, 256, renderTargetParameters );
+	renderTarget.generateMipmaps = false;
 
 	this._blurComposer = new THREE.EffectComposer( this._renderer, renderTarget );
 	this._blurComposer.addPass( this._renderPass );
@@ -83,7 +85,8 @@ feng.fx.Renderer = function(canvas, scene, camera){
 
 	// create output
 	var renderTarget = new THREE.WebGLRenderTarget( res.width, res.height, renderTargetParameters );
-
+	renderTarget.generateMipmaps = false;
+	
 	this._outputComposer = new THREE.EffectComposer( this._renderer, renderTarget );
 
 	this._outputComposer.addPass( this._renderTexturePass );
