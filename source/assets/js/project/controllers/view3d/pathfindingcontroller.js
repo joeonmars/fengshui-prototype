@@ -29,6 +29,25 @@ feng.controllers.view3d.PathfindingController = function(){
 	}
   	*/
   };
+
+  // scene for capturing tiles
+  this._scene = new THREE.Scene();
+
+  this._camera = new THREE.OrthographicCamera(0, 0, 0, 0, -1000, 1000);
+  this._camera.rotation.x = - Math.PI / 2;
+
+  this._boundaryBox = new THREE.Box3();
+
+  this._zoom = 1;
+
+  this._centerOffset = {
+  	x: 0,
+  	y: 0
+  };
+
+  this._renderer = new THREE.CanvasRenderer();
+  this._renderer.setClearColor( feng.Color.TILEMAP_RED );
+  document.body.appendChild( this._renderer.domElement );
 };
 goog.inherits(feng.controllers.view3d.PathfindingController, goog.events.EventTarget);
 goog.addSingletonGetter(feng.controllers.view3d.PathfindingController);
@@ -48,14 +67,118 @@ feng.controllers.view3d.PathfindingController.prototype.getMatrixData = function
 
 feng.controllers.view3d.PathfindingController.prototype.generateMatrix = function( matrixId, collidableBoxes, objects, minTilesInRowOrCol ) {
 
+	// draw scene from top view (WIP)
+	// remove last children from rendering
+	var obj, i, l = this._scene.children.length;
+
+	for ( i = l - 1; i >= 0 ; i -- ) {
+
+	    obj = this._scene.children[ i ];
+			this._scene.remove( obj );
+	}
+
+	// add new children to rendering
+	l = objects.length;
+
+	for ( i = 0; i < l; i++ ) {
+
+	    obj = objects[ i ];
+
+	    if(obj.isCollidable() || obj.isFloor()) {
+	    	var proxyMesh = obj.getTilemapProxy();
+	    	this._scene.add( proxyMesh );
+	    }
+	}
+
+	var box = this._boundaryBox.setFromObject( this._scene );
+	var sceneSize = box.size();
+	var sceneWidth = sceneSize.x;
+	var sceneHeight = sceneSize.z;
+
+	this._camera.left = sceneWidth / -2;
+	this._camera.right = sceneWidth / 2;
+	this._camera.top = sceneHeight / 2;
+	this._camera.bottom = sceneHeight / -2;
+	this._camera.position.copy( box.center() );
+	this._camera.updateProjectionMatrix();
+
+	this._renderer.setSize( sceneWidth * this._zoom, sceneHeight * this._zoom );
+  this._renderer.render( this._scene, this._camera );
+
+  // parse tiles from render
+  var gridWidth = sceneWidth;
+  var gridHeight = sceneHeight;
+
+  var minTilesInRowOrCol = minTilesInRowOrCol || 40;
+	var tileSize = (gridWidth > gridHeight) ? Math.floor(gridWidth / minTilesInRowOrCol) : Math.floor(gridHeight / minTilesInRowOrCol);
+
+	gridWidth = Math.ceil(gridWidth / tileSize) * tileSize;
+	gridHeight = Math.ceil(gridHeight / tileSize) * tileSize;
+
+	var numCols = gridWidth / tileSize;
+	var numRows = gridHeight / tileSize;
+
+	var matrix = [];
+	var row = 0;
+	var col = 0;
+	var ctx = this._renderer.domElement.getContext('2d');
+	var halfTileSize = tileSize / 2;
+
+	for(row = 0; row < numRows; ++row) {
+		var rowData = [];
+
+		for(col = 0; col < numCols; ++col) {
+
+			var x = col * tileSize + halfTileSize;
+			var y = row * tileSize + halfTileSize;
+			var data = ctx.getImageData(x, y, 1, 1).data;
+
+			var collided = (data[0] === 255);
+
+			var type = collided ? 1 : 0;
+			rowData.push( type );
+		}
+
+		matrix.push(rowData);
+	}
+
+	console.log(matrix)
+
+	// generate matrix
+	var boxes = [];
+	var matrix = [];
+	var row = 0;
+	var col = 0;
+	for(row = 0; row < numRows; ++row) {
+		var rowData = [];
+
+		for(col = 0; col < numCols; ++col) {
+			var boxMinX = gridMinX + col * tileSize;
+			var boxMaxX = boxMinX + tileSize;
+			var boxMinZ = gridMinZ + row * tileSize;
+			var boxMaxZ = boxMinZ + tileSize;
+			var box = new goog.math.Box(boxMinZ, boxMaxX, boxMaxZ, boxMinX);
+			boxes.push(box);
+
+			var collided = goog.array.find(collidableBoxes, function(collidableBox) {
+				return goog.math.Box.intersects(box, collidableBox);
+			});
+			var type = collided ? 1 : 0;
+			rowData.push( type );
+		}
+
+		matrix.push(rowData);
+	}
+
+	//
 	var gridMinX = 0, gridMinZ = 0;
 	var gridMaxX = 0, gridMaxZ = 0;
 
 	goog.array.forEach(objects, function(obj) {
 
-		if(obj instanceof THREE.Mesh) {
+		if(obj.object3d instanceof THREE.Mesh) {
 			
-			var mesh = obj;
+			var mesh = obj.object3d;
 			var box = new THREE.Box3().setFromObject( mesh );
 
 			//console.log(mesh.name + ' bounding box: ', box);

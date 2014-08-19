@@ -21,8 +21,22 @@ feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
   this._view3d = view3d;
   this._boundingBox = new THREE.Box3();
   this._center = new THREE.Vector3();
+
+  this._tilemapProxy = null;
 };
 goog.inherits(feng.views.view3dobject.View3DObject, goog.events.EventTarget);
+
+
+feng.views.view3dobject.View3DObject.prototype.isCollidable = function(){
+
+  return (this.data.collidable === true);
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.isFloor = function(){
+
+  return (goog.string.startsWith(this.name, 'floor'));
+};
 
 
 feng.views.view3dobject.View3DObject.prototype.getBoundingBox = function(){
@@ -41,27 +55,6 @@ feng.views.view3dobject.View3DObject.prototype.getBox = function(){
   var maxZ = box3.max.z;
 
   var box2 = new goog.math.Box(minZ, maxX, maxZ, minX);
-
-  return box2;
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.getBoxBeforeRotation = function(){
-
-  var rotationY = this.object3d.rotation.y;
-  this.object3d.rotation.y = 0;
-
-  var box3 = this.getBoundingBox();
-
-  this.object3d.rotation.y = rotationY;
-
-  var minX = box3.min.x;
-  var minZ = box3.min.z;
-  var maxX = box3.max.x;
-  var maxZ = box3.max.z;
-
-  var box2 = new goog.math.Box(minZ, maxX, maxZ, minX);
-  box2.rotation = rotationY;
 
   return box2;
 };
@@ -89,6 +82,34 @@ feng.views.view3dobject.View3DObject.prototype.getBoundingBoxParameters = functi
 feng.views.view3dobject.View3DObject.prototype.getHeight = function(){
 
   return this.getBoundingBoxParameters().height;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getTilemapProxy = function(){
+
+  var clone = this._tilemapProxy;
+
+  if(!clone) {
+
+    clone = new THREE.Mesh( this.object3d.geometry.clone(), feng.views.view3dobject.View3DObject.ProxyMaterial.GREEN );
+    this._tilemapProxy = clone;
+  }
+
+  if(this.isCollidable()) {
+
+    clone.material = feng.views.view3dobject.View3DObject.ProxyMaterial.RED;
+
+  }else {
+
+    clone.material = feng.views.view3dobject.View3DObject.ProxyMaterial.GREEN;
+  }
+  
+  clone.material.overdraw = true;
+
+  clone.position.copy( this.object3d.position );
+  clone.rotation.copy( this.object3d.rotation );
+
+  return clone;
 };
 
 
@@ -124,4 +145,10 @@ feng.views.view3dobject.View3DObject.prototype.disableRender = function(){
   this.object3d.visible = false;
 
   //console.log("HIDE:", this.object3d.name);
+};
+
+
+feng.views.view3dobject.View3DObject.ProxyMaterial = {
+  RED: new THREE.MeshBasicMaterial( {color: feng.Color.TILEMAP_RED} ),
+  GREEN: new THREE.MeshBasicMaterial( {color: feng.Color.TILEMAP_GREEN} )
 };

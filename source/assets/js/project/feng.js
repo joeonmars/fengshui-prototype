@@ -42,6 +42,8 @@ feng.init = function( config ) {
 
 
 feng.Color = {
+	TILEMAP_RED: 0xff0000,
+	TILEMAP_GREEN: 0x00ff00,
 	/**
 	 * @expose
 	 */

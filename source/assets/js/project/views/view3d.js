@@ -5,6 +5,7 @@ goog.require('goog.dom.query');
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events');
+goog.require('goog.object');
 goog.require('feng.controllers.view3d.CameraController');
 goog.require('feng.controllers.view3d.ModeController');
 goog.require('feng.controllers.view3d.RenderController');
@@ -119,12 +120,19 @@ feng.views.View3D.prototype.getObjectsOfFloor = function( floorIndex ){
 
 	var objects = [];
 	
-	// find objects between this floor and its upper floor, if exists
-	this.scene.traverse(function(obj){
-		if(obj.position.y < maxY && obj.position.y >= minY) {
-			objects.push( obj );
+	// find view3d objects between this floor and its upper floor, if exists
+	goog.object.forEach(this.view3dObjects, function(object) {
+
+		var obj3d = object.object3d;
+
+		if(obj3d.position.y < maxY && obj3d.position.y >= minY) {
+			objects.push( object );
 		}
-	});
+  });
+
+	var designPlane = this.view3dObjects['design-plane'];
+
+	goog.array.remove( objects, designPlane );
 
 	return objects;
 };
@@ -156,18 +164,15 @@ feng.views.View3D.prototype.getObjectsByClass = function( objectClass ){
 };
 
 
-feng.views.View3D.prototype.getCollidables = function(excludes){
+feng.views.View3D.prototype.getCollidables = function(){
 
-	excludes = goog.isArray(excludes) ? excludes : [excludes];
+	var collidables = [];
 
-	var sectionId = this.sectionId;
-	var sceneId = this.id;
+	goog.object.forEach(this.view3dObjects, function(object) {
 
-	var collidables = goog.array.filter(this.scene.children, function(object) {
-
-		var objectData = feng.models.View3D.getData(sectionId+'.'+sceneId+'.'+object.name);
-  	return (goog.array.indexOf(excludes, object) < 0 && objectData.collidable === true);
-
+		if(object.isCollidable()) {
+			collidables.push( object.getTilemapProxy() );
+		}
   });
 
   return collidables;
@@ -176,7 +181,18 @@ feng.views.View3D.prototype.getCollidables = function(excludes){
 
 feng.views.View3D.prototype.getCollidableBoxes = function(excludes){
 
-	var collidables = this.getCollidables(excludes);
+	//
+	excludes = goog.isArray(excludes) ? excludes : [excludes];
+
+	var sectionId = this.sectionId;
+	var sceneId = this.id;
+
+	var collidables = goog.array.filter(this.scene.children, function(object) {
+		var objectData = feng.models.View3D.getData(sectionId+'.'+sceneId+'.'+object.name);
+		return (goog.array.indexOf(excludes, object) < 0 && objectData.collidable === true);
+	});
+
+	//
 
 	var collidableBoxes = [];
 
@@ -401,7 +417,7 @@ feng.views.View3D.prototype.initScene = function() {
 
 		}else {
 
-			if( !(object instanceof THREE.Light) ) {
+			if( object instanceof THREE.Mesh ) {
 
 				// create view3d object
 				var view3dObject = new feng.views.view3dobject.View3DObject( object, objectData, this);

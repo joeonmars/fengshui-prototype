@@ -149,7 +149,7 @@ feng.controllers.controls.DesignControls.prototype.close = function () {
 
 
 feng.controllers.controls.DesignControls.prototype.onManipulate = function ( e ) {
-
+	/*
 	var collidableBoxes = this._view3d.getCollidableBoxes( this._activeObject.object3d );
 	var objectBox = this._activeObject.getBoxBeforeRotation();
 
@@ -161,6 +161,7 @@ feng.controllers.controls.DesignControls.prototype.onManipulate = function ( e )
 		objectBox: objectBox,
 		camera: this._camera
 	});
+*/
 };
 
 
