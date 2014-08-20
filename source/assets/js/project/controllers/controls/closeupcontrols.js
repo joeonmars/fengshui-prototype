@@ -5,7 +5,6 @@ goog.require('goog.math');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.views.sections.controls.Manipulator');
 goog.require('feng.controllers.controls.InteractionResolver');
-goog.require('feng.controllers.view3d.PathfindingController');
 
 
 /**
@@ -170,13 +169,10 @@ feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
 	this._activeObject.onCameraOut();
 
 	// find out the closest walkable position to go to
-	var pathfinder = feng.controllers.view3d.PathfindingController.getInstance();
+	var pathfinder = feng.pathfinder;
 
 	var matrixId = 'test-matrix';
-	var collidableBoxes = this._view3d.getCollidableBoxes();
-	var floorObjects = this._view3d.getObjectsOfFloor();
-
-	var matrixData = pathfinder.generateMatrix( matrixId, collidableBoxes, floorObjects );
+	var matrixData = pathfinder.getMatrixData( matrixId );
 
 	var tile = pathfinder.getTileByPosition( this.getPosition(), matrixData );
 	var toPosition = pathfinder.getClosestWalkableTilePosition( tile, matrixData );

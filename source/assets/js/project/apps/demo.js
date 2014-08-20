@@ -8,6 +8,7 @@ goog.require('feng.controllers.NavigationController');
 goog.require('feng.controllers.SectionController');
 goog.require('feng.controllers.StorageController');
 goog.require('feng.controllers.SoundController');
+goog.require('feng.controllers.view3d.PathfindingController');
 goog.require('feng.views.debug.Debugger');
 goog.require('feng.views.MainOptions');
 goog.require('feng.views.EpisodeSelection');
@@ -47,6 +48,8 @@ feng.apps.Demo = function() {
 
 	feng.controllers.NavigationController.Implementation = feng.controllers.NavigationController.HASH;
 	feng.navigationController = feng.controllers.NavigationController.getInstance();
+
+	feng.pathfinder = feng.controllers.view3d.PathfindingController.getInstance();
 
 	feng.sectionController = feng.controllers.SectionController.getInstance();
 

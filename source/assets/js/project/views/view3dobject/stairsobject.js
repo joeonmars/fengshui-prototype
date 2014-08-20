@@ -33,18 +33,13 @@ feng.views.view3dobject.StairsObject.prototype.init = function() {
   this.upperPosition = feng.utils.ThreeUtils.getWorldPosition( this.object3d.getObjectByName('upper') );
 
   // adjust the lower / upper position within grid
-  var pathfinder = feng.controllers.view3d.PathfindingController.getInstance();
-
   var matrixId = 'test-matrix';
-  var collidableBoxes = this._view3d.getCollidableBoxes();
-  var floorObjects = this._view3d.getObjectsOfFloor();
-  
-  var matrixData = pathfinder.generateMatrix( matrixId, collidableBoxes, floorObjects );
+  var matrixData = feng.pathfinder.getMatrixData( matrixId );
 
-  var lowerTile = pathfinder.getTileByPosition( this.lowerPosition, matrixData );
-  lowerTile = pathfinder.getClosestWalkableTile( lowerTile, matrixData );
+  var lowerTile = feng.pathfinder.getTileByPosition( this.lowerPosition, matrixData );
+  lowerTile = feng.pathfinder.getClosestWalkableTile( lowerTile, matrixData );
   
-  var lowerTilePosition = pathfinder.getTilePosition( lowerTile, matrixData );
+  var lowerTilePosition = feng.pathfinder.getTilePosition( lowerTile, matrixData );
 
   this.lowerPosition.copy( lowerTilePosition );
 

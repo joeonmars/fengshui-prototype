@@ -161,6 +161,7 @@ feng.models.View3D.Data = {
 				gatewayid: "door"
 			},
 			'wall':	{
+				collidable: true,
 				texture: "studio.interior3.wall-texture"
 			},
 			'ceiling':	{

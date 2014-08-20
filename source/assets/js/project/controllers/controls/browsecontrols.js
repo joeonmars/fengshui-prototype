@@ -99,12 +99,16 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 	if ( this._shouldIgnoreClick ) return;
 
 	var clickableObjects = [];
+
 	goog.object.forEach(this._view3d.view3dObjects, function(object) {
+
 		clickableObjects.push( object.object3d );
 	});
-	
+
+	goog.array.remove( clickableObjects, this._view3d.getDesignPlane().object3d );
+
 	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, clickableObjects, this._camera, this._view3d.getViewSize() );
-	var intersectPosition = intersects[0].point.clone();
+	var intersectPosition = intersects[0].point;
 
 	if ( intersects.length > 0 ) {
 
@@ -134,15 +138,13 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 		// otherwise walk to the object
 		intersectPosition.y = intersectPosition.y < 10 ? this.getPosition().y : intersectPosition.y;
 
-		var objectName = intersects[0].object.name;
-
-		console.log( 'clicked on ' + objectName);
+		console.log( 'clicked on ' + intersects[0].object.name + ', at: ', intersectPosition );
 
 		this.dispatchEvent({
 			type: feng.events.EventType.CHANGE,
 			mode: feng.controllers.view3d.ModeController.Mode.WALK,
 			nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
-			toPosition: intersects[0].point,
+			toPosition: intersectPosition,
 			toRotation: this.getRotation(),
 			toFov: this.getFov(),
 			intersectPosition: intersectPosition

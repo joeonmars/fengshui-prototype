@@ -53,17 +53,12 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 	}
 
 	//
-	var pathfinder = feng.controllers.view3d.PathfindingController.getInstance();
+	var pathfinder = feng.pathfinder;
 
 	var matrixId = 'test-matrix';
 	var start = fromPosition;
 	var end = toPosition;
-	var collidableBoxes = this._view3d.getCollidableBoxes();
-	var floorObjects = this._view3d.getObjectsOfFloor();
-
-	// WIP
-	pathfinder.generateMatrix( matrixId, collidableBoxes, floorObjects );
-
+	
 	var coordinates = pathfinder.findPath( matrixId, start, end );
 	
 	if(!coordinates) {

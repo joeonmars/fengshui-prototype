@@ -108,6 +108,12 @@ feng.views.View3D.prototype.getViewSize = function(){
 };
 
 
+feng.views.View3D.prototype.getDesignPlane = function(){
+
+	return this.view3dObjects['design-plane'];
+};
+
+
 feng.views.View3D.prototype.getObjectsOfFloor = function( floorIndex ){
 
 	var hasFloorIndex = goog.isNumber( floorIndex );
@@ -130,9 +136,7 @@ feng.views.View3D.prototype.getObjectsOfFloor = function( floorIndex ){
 		}
   });
 
-	var designPlane = this.view3dObjects['design-plane'];
-
-	goog.array.remove( objects, designPlane );
+	goog.array.remove( objects, this.getDesignPlane() );
 
 	return objects;
 };
@@ -161,47 +165,6 @@ feng.views.View3D.prototype.getObjectsByClass = function( objectClass ){
 	});
 
 	return result;
-};
-
-
-feng.views.View3D.prototype.getCollidables = function(){
-
-	var collidables = [];
-
-	goog.object.forEach(this.view3dObjects, function(object) {
-
-		if(object.isCollidable()) {
-			collidables.push( object.getTilemapProxy() );
-		}
-  });
-
-  return collidables;
-};
-
-
-feng.views.View3D.prototype.getCollidableBoxes = function(excludes){
-
-	//
-	excludes = goog.isArray(excludes) ? excludes : [excludes];
-
-	var sectionId = this.sectionId;
-	var sceneId = this.id;
-
-	var collidables = goog.array.filter(this.scene.children, function(object) {
-		var objectData = feng.models.View3D.getData(sectionId+'.'+sceneId+'.'+object.name);
-		return (goog.array.indexOf(excludes, object) < 0 && objectData.collidable === true);
-	});
-
-	//
-
-	var collidableBoxes = [];
-
-	goog.array.forEach(collidables, function(mesh) {
-		var object = this.getView3dObject( mesh.name );
-	  collidableBoxes.push( object.getBox() );
-	}, this);
-
-	return collidableBoxes;
 };
 
 
@@ -442,6 +405,11 @@ feng.views.View3D.prototype.initScene = function() {
 		feng.views.View3D.parseChildren(child, parse);
 	});
 
+	// init pathfinder matrix
+	var matrixId = 'test-matrix';
+	var floorObjects = this.getObjectsOfFloor();
+	feng.pathfinder.generateMatrix( matrixId, floorObjects );
+
 	// init computer
 	var computers = this.getObjectsByClass( feng.views.view3dobject.entities.Computer );
 
@@ -467,7 +435,7 @@ feng.views.View3D.prototype.initScene = function() {
 	}
 
 	// init design plane
-	this.view3dObjects['design-plane'].remove();
+	this.getDesignPlane().remove();
 
 	// init arms
 	this.arms = new feng.views.view3dobject.Arms( this );
