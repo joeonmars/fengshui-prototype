@@ -1,7 +1,5 @@
 goog.provide('feng.controllers.controls.DesignControls');
 
-goog.require('goog.fx.anim.Animated');
-goog.require('goog.math');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.controllers.controls.InteractionResolver');
 goog.require('feng.utils.ThreeUtils');
@@ -19,13 +17,22 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement, 
 
   this._activeObject = null;
 
-  this._interactionResolver = feng.controllers.controls.InteractionResolver.getInstance();
+  this._focus = new THREE.Vector3();
 
-  var boundObject = this._view3d.getView3dObject( 'ground' ) || this._view3d.getView3dObject( 'wall' );
-  var boundBox = boundObject.getBox();
-  this._worldWidth = boundBox.right - boundBox.left;
-  this._worldHeight = boundBox.bottom - boundBox.top;
-  this._worldId = this._view3d.sectionId + '.' + this._view3d.id;
+  this._distance = 1000;
+
+  // detect bounding box on floors for camera to move around
+  this._boundingBox = new THREE.Box3();
+
+  goog.array.forEach(this._view3d.floorObjects, function(floorObject) {
+
+  	var floorBox = (new THREE.Box3()).setFromObject( floorObject );
+  	this._boundingBox = this._boundingBox.union( floorBox );
+
+  }, this);
+
+  //
+  this._interactionResolver = feng.controllers.controls.InteractionResolver.getInstance();
 
   var manipulatorDom = goog.dom.getElementByClass('manipulator', uiElement);
   this._manipulator = new feng.views.sections.controls.Manipulator( manipulatorDom );
@@ -38,33 +45,40 @@ goog.inherits(feng.controllers.controls.DesignControls, feng.controllers.control
 
 feng.controllers.controls.DesignControls.prototype.setCamera = function( fromPosition, fromFov, object ) {
 
-	// get camera angle from center
+	// reset focus to object
+	this._focus.copy( /*object ? object.object3d.position :*/ this._view3d.scene.position );
+
+	// set default rotation by default position
+	var position = new THREE.Vector3( this._distance, this._distance, this._distance );
+
 	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
-	var lookAtPosition = new THREE.Vector3(0, 0, 0);
 	var up = new THREE.Vector3(0, 1, 0);
-	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(fromPosition, lookAtPosition, up);
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, this._focus, up);
 	rotation.setFromQuaternion( quaternion );
 
-	// get position by camera angle
-	var cameraHeight = 1000;
-	var x = cameraHeight * Math.sin( rotation.y );
-	var z = cameraHeight * Math.cos( rotation.y );
-	var y = cameraHeight;
-
-	var position = new THREE.Vector3(x, y, z);
-
-	// get rotation looking at center
-	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
-	var lookAtPosition = new THREE.Vector3(0, 0, 0);
-	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, lookAtPosition);
-	rotation.setFromQuaternion( quaternion );
-
-	// apply
-	this.setPosition( position );
 	this.setRotation( rotation );
+
+	this.setFocus( this._focus.x, this._focus.z );
+	
 	this.setFov( this._zoomSlider.calculateFov() );
 
 	this._activeObject = object;
+};
+
+
+feng.controllers.controls.DesignControls.prototype.setFocus = function( x, z ) {
+
+	this._focus.set( x, 0, z );
+
+	var rotation = this.getRotation();
+
+	// get position by camera angle
+	var cameraX = this._distance/* * Math.sin( rotation.y )*/ + this._focus.x;
+	var cameraZ = this._distance/* * Math.cos( rotation.y )*/ + this._focus.z;
+	var cameraY = this._distance;
+
+	// apply position
+	this.setPosition( cameraX, cameraY, cameraZ );
 };
 
 
@@ -186,10 +200,9 @@ feng.controllers.controls.DesignControls.prototype.onUpdateHud = function(e){
 
 	if(e.target instanceof feng.views.sections.controls.Compass) {
 
-		var cameraHeight = this.getPosition().y;
-		var posX = cameraHeight * Math.sin( -e.rotation );
-		var posZ = cameraHeight * Math.cos( -e.rotation );
-		var posY = cameraHeight;
+		var posX = this._distance * Math.sin( -e.rotation );
+		var posZ = this._distance * Math.cos( -e.rotation );
+		var posY = this._distance;
 
 		this.setPosition( posX, posY, posZ );
 

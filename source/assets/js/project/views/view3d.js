@@ -73,7 +73,7 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud){
 	this.viewSize = new goog.math.Size(0, 0);
 
 	this.floorIndex = 0;
-	this._floorObjects = [];
+	this.floorObjects = [];
 	this._floorMatrixIds = [];
 
 	this._renderer = null;
@@ -126,9 +126,9 @@ feng.views.View3D.prototype.getObjectsOfFloor = function( floorIndex ){
 
 	var hasFloorIndex = goog.isNumber( floorIndex );
 
-	var floor = hasFloorIndex ? this._floorObjects[floorIndex] : this._floorObjects[0];
+	var floor = hasFloorIndex ? this.floorObjects[floorIndex] : this.floorObjects[0];
 
-	var upperFloor = this._floorObjects[floorIndex+1];
+	var upperFloor = this.floorObjects[floorIndex+1];
 
 	var minY = floor.position.y;
 	var maxY = upperFloor ? upperFloor.position.y : Number.MAX_VALUE;
@@ -383,17 +383,17 @@ feng.views.View3D.prototype.initScene = function() {
 	});
 
 	// find floors & init pathfinder matrix
-	this._floorObjects = goog.array.filter(this.scene.children, function(obj) {
+	this.floorObjects = goog.array.filter(this.scene.children, function(obj) {
 		if(goog.string.startsWith(obj.name, 'floor')) {
 			return true;
 		}
 	});
 
-	goog.array.sort(this._floorObjects, function(floorA, floorB) {
+	goog.array.sort(this.floorObjects, function(floorA, floorB) {
 		return ((floorA.position.y > floorB.position.y) ? 1 : -1);
 	});
 
-	this._floorMatrixIds = goog.array.map(this._floorObjects, function(obj, index) {
+	this._floorMatrixIds = goog.array.map(this.floorObjects, function(obj, index) {
 
 		var matrixId = ([this.sectionId, this.id, index]).join('-');
 

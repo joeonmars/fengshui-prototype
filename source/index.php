@@ -82,7 +82,7 @@
 				assetsPath: '<?php echo URLADDR; ?>'+'assets/',
 				app: 'demo',//'pathedit',
 				debug: true,
-				office: !true
+				office: true
 			};
 
 			feng.init( config );
