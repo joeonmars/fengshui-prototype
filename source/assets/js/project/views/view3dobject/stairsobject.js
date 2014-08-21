@@ -33,7 +33,7 @@ feng.views.view3dobject.StairsObject.prototype.init = function() {
   this.upperPosition = feng.utils.ThreeUtils.getWorldPosition( this.object3d.getObjectByName('upper') );
 
   // adjust the lower / upper position within grid
-  var matrixId = 'test-matrix';
+  var matrixId = this._view3d.getMatrixId();
   var matrixData = feng.pathfinder.getMatrixData( matrixId );
 
   var lowerTile = feng.pathfinder.getTileByPosition( this.lowerPosition, matrixData );

@@ -55,7 +55,7 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 	//
 	var pathfinder = feng.pathfinder;
 
-	var matrixId = 'test-matrix';
+	var matrixId = this._view3d.getMatrixId();
 	var start = fromPosition;
 	var end = toPosition;
 	

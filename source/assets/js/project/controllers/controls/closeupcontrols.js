@@ -171,7 +171,7 @@ feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
 	// find out the closest walkable position to go to
 	var pathfinder = feng.pathfinder;
 
-	var matrixId = 'test-matrix';
+	var matrixId = this._view3d.getMatrixId();
 	var matrixData = pathfinder.getMatrixData( matrixId );
 
 	var tile = pathfinder.getTileByPosition( this.getPosition(), matrixData );

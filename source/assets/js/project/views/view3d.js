@@ -68,6 +68,10 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud){
 
 	this.viewSize = new goog.math.Size(0, 0);
 
+	this.floorIndex = 0;
+	this._floorObjects = [];
+	this._floorMatrixIds = [];
+
 	this._renderer = null;
 
 	this._eventHandler = new goog.events.EventHandler(this);
@@ -108,6 +112,12 @@ feng.views.View3D.prototype.getViewSize = function(){
 };
 
 
+feng.views.View3D.prototype.getMatrixId = function(){
+
+	return this._floorMatrixIds[ this.floorIndex ];
+};
+
+
 feng.views.View3D.prototype.getDesignPlane = function(){
 
 	return this.view3dObjects['design-plane'];
@@ -118,8 +128,9 @@ feng.views.View3D.prototype.getObjectsOfFloor = function( floorIndex ){
 
 	var hasFloorIndex = goog.isNumber( floorIndex );
 
-	var floor = hasFloorIndex ? this.scene.getObjectByName('floor-' + floorIndex) : this.scene.getObjectByName('floor');
-	var upperFloor = this.scene.getObjectByName('floor-' + (floorIndex+1));
+	var floor = hasFloorIndex ? this._floorObjects[floorIndex] : this._floorObjects[0];
+
+	var upperFloor = this._floorObjects[floorIndex+1];
 
 	var minY = floor.position.y;
 	var maxY = upperFloor ? upperFloor.position.y : Number.MAX_VALUE;
@@ -405,10 +416,27 @@ feng.views.View3D.prototype.initScene = function() {
 		feng.views.View3D.parseChildren(child, parse);
 	});
 
-	// init pathfinder matrix
-	var matrixId = 'test-matrix';
-	var floorObjects = this.getObjectsOfFloor();
-	feng.pathfinder.generateMatrix( matrixId, floorObjects );
+	// find floors & init pathfinder matrix
+	this._floorObjects = goog.array.filter(this.scene.children, function(obj) {
+		if(goog.string.startsWith(obj.name, 'floor')) {
+			return true;
+		}
+	});
+
+	goog.array.sort(this._floorObjects, function(floorA, floorB) {
+		return ((floorA.position.y > floorB.position.y) ? 1 : -1);
+	});
+
+	this._floorMatrixIds = goog.array.map(this._floorObjects, function(obj, index) {
+
+		var matrixId = ([this.sectionId, this.id, index]).join('-');
+
+		var objectsOfFloor = this.getObjectsOfFloor( index );
+
+		feng.pathfinder.generateMatrix( matrixId, objectsOfFloor );
+
+		return matrixId;
+	}, this);
 
 	// init computer
 	var computers = this.getObjectsByClass( feng.views.view3dobject.entities.Computer );
