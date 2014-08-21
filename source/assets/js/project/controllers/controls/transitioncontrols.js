@@ -86,10 +86,12 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 
 	// toggle ground plane
 	var designPlane = this._view3d.designPlane;
+	var skybox = this._view3d.skybox;
 
 	if(nextMode === feng.controllers.view3d.ModeController.Mode.DESIGN) {
 
 		designPlane.add();
+		skybox.remove();
 
 		TweenMax.fromTo(designPlane.object3d.material, 1, {
 			opacity: 0
@@ -105,6 +107,7 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 			opacity: 0,
 			onComplete: function() {
 				designPlane.remove();
+				skybox.add();
 			}
 		});
 	}

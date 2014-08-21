@@ -27,6 +27,11 @@ feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
 goog.inherits(feng.views.view3dobject.View3DObject, goog.events.EventTarget);
 
 
+feng.views.view3dobject.View3DObject.prototype.init = function(){
+
+};
+
+
 feng.views.view3dobject.View3DObject.prototype.isCollidable = function(){
 
   return (this.data.collidable === true);

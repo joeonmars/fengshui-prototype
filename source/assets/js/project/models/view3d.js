@@ -286,6 +286,14 @@ feng.models.View3D.Data = {
 				collidable: true,
 				texture: "studio.interior3.wardrobe-texture"
 			},
+			'windows': {
+				class: "windows",
+				interactions: [
+
+				],
+				tipInteraction: "change_object",
+				tipKey: 'studio.livingroom.windows'
+			},
 			'refrigerator':	{
 				class: "refrigerator",
 				collidable: true,

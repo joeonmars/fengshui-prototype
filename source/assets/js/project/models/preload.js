@@ -123,7 +123,13 @@ feng.models.Preload = function(){
 				'apple-texture': 'images/texture/studio/livingroom/apple.jpg',
 				'pineapple-texture': 'images/texture/studio/livingroom/pineapple.jpg',
 				'orange-texture': 'images/texture/studio/livingroom/orange.jpg',
-				'peach-texture': 'images/texture/studio/livingroom/peach.jpg'
+				'peach-texture': 'images/texture/studio/livingroom/peach.jpg',
+				'skybox': {
+					'xpos': 'images/texture/studio/livingroom/skybox/xpos.png',
+					'xneg': 'images/texture/studio/livingroom/skybox/xneg.png',
+					'zpos': 'images/texture/studio/livingroom/skybox/zpos.png',
+					'zneg': 'images/texture/studio/livingroom/skybox/zneg.png'
+				}
 			},
 			'bathroom': {
 				'scene-data': 'json/bathroom.json',

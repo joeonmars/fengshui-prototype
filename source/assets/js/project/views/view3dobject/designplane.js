@@ -28,6 +28,7 @@ feng.views.view3dobject.DesignPlane = function( view3d ){
     map: texture,
     transparent: true
   } );
+  planeMaterial.shading = THREE.FlatShading;
 
   var designPlane = new THREE.Mesh( planeGeometry, planeMaterial );
   designPlane.name = 'design-plane';

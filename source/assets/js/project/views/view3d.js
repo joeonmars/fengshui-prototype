@@ -22,6 +22,7 @@ goog.require('feng.views.view3dobject.DesignPlane');
 goog.require('feng.views.view3dobject.HolderObject');
 goog.require('feng.views.view3dobject.GatewayObject');
 goog.require('feng.views.view3dobject.StairsObject');
+goog.require('feng.views.view3dobject.Skybox');
 goog.require('feng.views.view3dobject.AccessoryObject');
 goog.require('feng.views.view3dobject.TipObject');
 goog.require('feng.views.view3dobject.entities.Lamp');
@@ -29,6 +30,7 @@ goog.require('feng.views.view3dobject.entities.Computer');
 goog.require('feng.views.view3dobject.entities.PictureDisplay');
 goog.require('feng.views.view3dobject.entities.PictureFrame');
 goog.require('feng.views.view3dobject.entities.Refrigerator');
+goog.require('feng.views.view3dobject.entities.Windows');
 
 
 /**
@@ -60,13 +62,13 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud){
 	this.energyFlow = null;
 	this.arms = null;
 	this.designPlane = null;
+	this.skybox = null;
 
 	this.view3dObjects = {};
 	this.interactiveObjects = {};
 
 	this.accessories = [];
 	this.editables = [];
-	this.collidables = [];
 
 	this.viewSize = new goog.math.Size(0, 0);
 
@@ -144,6 +146,7 @@ feng.views.View3D.prototype.getObjectsOfFloor = function( floorIndex ){
   });
 
 	goog.array.remove( objects, this.designPlane );
+	goog.array.remove( objects, this.skybox );
 
 	return objects;
 };
@@ -311,7 +314,8 @@ feng.views.View3D.prototype.initScene = function() {
 		'pictureframe': feng.views.view3dobject.entities.PictureFrame,
 		'computer': feng.views.view3dobject.entities.Computer,
 		'lamp': feng.views.view3dobject.entities.Lamp,
-		'refrigerator': feng.views.view3dobject.entities.Refrigerator
+		'refrigerator': feng.views.view3dobject.entities.Refrigerator,
+		'windows': feng.views.view3dobject.entities.Windows
 	};
 
 	// parse scene objects
@@ -366,11 +370,6 @@ feng.views.View3D.prototype.initScene = function() {
 			}
 		}
 
-		// add collidables
-		if(objectData.collidable === true) {
-			this.collidables.push( object );
-		}
-
 		// add editables
 		var interactions = objectData.interactions;
 		if(interactions && (goog.array.contains(interactions, 'move') || goog.array.contains(interactions, 'rotate'))) {
@@ -405,21 +404,7 @@ feng.views.View3D.prototype.initScene = function() {
 		return matrixId;
 	}, this);
 
-	// init computer
-	var computers = this.getObjectsByClass( feng.views.view3dobject.entities.Computer );
-
-	goog.array.forEach( computers, function( obj ) {
-		obj.init();
-	});
-
-	// init stairs
-	var stairs = this.getObjectsByClass( feng.views.view3dobject.StairsObject );
-
-	goog.array.forEach( stairs, function( obj ) {
-		obj.init();
-	});
-
-	// init energyflow
+	// create energyflow
 	var preloadModel = feng.models.Preload.getInstance();
 	var energyFlowData = preloadModel.getAsset(this.sectionId+'.'+this.id+'.energyflow-data');
 
@@ -429,13 +414,24 @@ feng.views.View3D.prototype.initScene = function() {
 		//this.scene.add( this.energyFlow );
 	}
 
-	// init design plane
+	// create design plane
 	this.designPlane = new feng.views.view3dobject.DesignPlane( this );
 	this.view3dObjects[ this.designPlane.name ] = this.designPlane;
-	
-	// init arms
+
+	// create skybox
+	var assets = preloadModel.getAsset(this.sectionId+'.'+this.id+'.skybox');
+
+	this.skybox = new feng.views.view3dobject.Skybox( assets, this );
+	this.view3dObjects[ this.skybox.name ] = this.skybox;
+
+	// create arms
 	this.arms = new feng.views.view3dobject.Arms( this );
 	this.interactiveObjects[ this.arms.name ] = this.arms;
+
+	// init all view3d objects
+	goog.object.forEach(this.view3dObjects, function(object) {
+		object.init();
+	});
 };
 
 
@@ -507,7 +503,8 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 
 					if(textureAsset.src) {
 
-						texture = THREE.ImageUtils.loadTexture( textureAsset.src );
+						texture = new THREE.Texture( textureAsset );
+						texture.needsUpdate = true;
 
 					}else {
 
