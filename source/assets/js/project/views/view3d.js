@@ -18,6 +18,7 @@ goog.require('feng.views.book.Book');
 goog.require('feng.views.view3dobject.View3DObject');
 goog.require('feng.views.view3dobject.InteractiveObject');
 goog.require('feng.views.view3dobject.Arms');
+goog.require('feng.views.view3dobject.DesignPlane');
 goog.require('feng.views.view3dobject.HolderObject');
 goog.require('feng.views.view3dobject.GatewayObject');
 goog.require('feng.views.view3dobject.StairsObject');
@@ -58,6 +59,7 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud){
 	this.scene = null;
 	this.energyFlow = null;
 	this.arms = null;
+	this.designPlane = null;
 
 	this.view3dObjects = {};
 	this.interactiveObjects = {};
@@ -118,12 +120,6 @@ feng.views.View3D.prototype.getMatrixId = function(){
 };
 
 
-feng.views.View3D.prototype.getDesignPlane = function(){
-
-	return this.view3dObjects['design-plane'];
-};
-
-
 feng.views.View3D.prototype.getObjectsOfFloor = function( floorIndex ){
 
 	var hasFloorIndex = goog.isNumber( floorIndex );
@@ -147,7 +143,7 @@ feng.views.View3D.prototype.getObjectsOfFloor = function( floorIndex ){
 		}
   });
 
-	goog.array.remove( objects, this.getDesignPlane() );
+	goog.array.remove( objects, this.designPlane );
 
 	return objects;
 };
@@ -303,35 +299,6 @@ feng.views.View3D.prototype.initScene = function() {
 	// add fog to scene for fading 45 deg ground plane
 	this.scene.fog = new THREE.FogExp2( 0x8d867a, 0.0008 );
 
-	// add design mode ground plane
-	var size = 128;
-	var canvas = goog.dom.createDom('canvas');
-	canvas.width = size;
-	canvas.height = size;
-	var ctx = canvas.getContext("2d");
-	ctx.fillStyle = "#e4e4d8";
-	ctx.fillRect(0, 0, size, size);
-	ctx.strokeStyle = "#b8b2a6";
-	ctx.strokeRect(0, 0, size, size);
-
-	var texture = new THREE.Texture( canvas );
-	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(5000, 5000);
-    texture.needsUpdate = true;
-
-	var planeGeometry = new THREE.PlaneGeometry( 100000, 100000, 1, 1 );
-	var planeMaterial = new THREE.MeshBasicMaterial( {
-		map: texture,
-		transparent: true
-	} );
-
-	var designPlane = new THREE.Mesh( planeGeometry, planeMaterial );
-	designPlane.name = 'design-plane';
-	designPlane.rotation.x = -Math.PI/2;
-	designPlane.position.y = -10;
-
-	this.scene.add( designPlane );
-
 	/*
 	 * Classes to be created by external json data
 	 */
@@ -463,8 +430,9 @@ feng.views.View3D.prototype.initScene = function() {
 	}
 
 	// init design plane
-	this.getDesignPlane().remove();
-
+	this.designPlane = new feng.views.view3dobject.DesignPlane( this );
+	this.view3dObjects[ this.designPlane.name ] = this.designPlane;
+	
 	// init arms
 	this.arms = new feng.views.view3dobject.Arms( this );
 	this.interactiveObjects[ this.arms.name ] = this.arms;

@@ -85,7 +85,7 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 	this._tweener.add([positionTweener, rotationTweener, fovTweener], 0, 'start');
 
 	// toggle ground plane
-	var designPlane = this._view3d.view3dObjects['design-plane'];
+	var designPlane = this._view3d.designPlane;
 
 	if(nextMode === feng.controllers.view3d.ModeController.Mode.DESIGN) {
 
