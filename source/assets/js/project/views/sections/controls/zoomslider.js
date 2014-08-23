@@ -10,14 +10,12 @@ goog.require('feng.views.sections.controls.Controls');
 /**
  * @constructor
  */
-feng.views.sections.controls.ZoomSlider = function(domElement, mousewheelElement){
+feng.views.sections.controls.ZoomSlider = function(domElement, mousewheelElement, onUpdateCallback){
 	
   goog.base(this, domElement);
 
-  this._mouseWheelHandler = new goog.events.MouseWheelHandler( mousewheelElement );
-
-  this._fovRange = {
-  	min: 5,
+  this.fovRange = {
+  	min: 2,
   	max: 20
   };
 
@@ -26,6 +24,10 @@ feng.views.sections.controls.ZoomSlider = function(domElement, mousewheelElement
 
   this._fov = this.calculateFov();
   this._currentFov = this._fov;
+
+  this._mouseWheelHandler = new goog.events.MouseWheelHandler( mousewheelElement );
+
+  this._onUpdateCallback = onUpdateCallback || goog.nullFunction;
 };
 goog.inherits(feng.views.sections.controls.ZoomSlider, feng.views.sections.controls.Controls);
 
@@ -38,7 +40,7 @@ feng.views.sections.controls.ZoomSlider.prototype.getCurrentFov = function(){
 
 feng.views.sections.controls.ZoomSlider.prototype.calculateFov = function(){
 
-	return goog.math.lerp(this._fovRange.min, this._fovRange.max, this._zoomStep/this._zoomSteps);
+	return goog.math.lerp(this.fovRange.min, this.fovRange.max, this._zoomStep/this._zoomSteps);
 };
 
 
@@ -53,16 +55,12 @@ feng.views.sections.controls.ZoomSlider.prototype.activate = function(){
 feng.views.sections.controls.ZoomSlider.prototype.show = function(){
 
 	goog.base(this, 'show');
-
-	goog.fx.anim.registerAnimation(this);
 };
 
 
 feng.views.sections.controls.ZoomSlider.prototype.hide = function(){
 
 	goog.base(this, 'hide');
-
-	goog.fx.anim.unregisterAnimation(this);
 };
 
 
@@ -72,10 +70,18 @@ feng.views.sections.controls.ZoomSlider.prototype.onMouseWheel = function(e){
 	this._zoomStep = Math.max(0, Math.min(this._zoomStep, this._zoomSteps));
 
 	this._fov = this.calculateFov();
+
+	goog.fx.anim.registerAnimation(this);
 };
 
 
 feng.views.sections.controls.ZoomSlider.prototype.onAnimationFrame = function(now){
 
 	this._currentFov += (this._fov - this._currentFov) * .1;
+
+	this._onUpdateCallback( this.getCurrentFov() );
+
+	if( goog.math.nearlyEquals(this._currentFov, this._fov, 0.01) ) {
+		goog.fx.anim.unregisterAnimation(this);
+	}
 };

@@ -1,5 +1,6 @@
 goog.provide('feng.controllers.controls.DesignControls');
 
+goog.require('goog.fx.Dragger');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.controllers.controls.InteractionResolver');
 goog.require('feng.utils.ThreeUtils');
@@ -31,6 +32,20 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement, 
 
   }, this);
 
+  // dragger to drag the view
+  this._dragger = new goog.fx.Dragger( this._view3d.domElement );
+  this._dragger.setHysteresis( 2 );
+  this._dragger.defaultAction = goog.nullFunction;
+  this._dragger.setEnabled( false );
+
+  this._dragOrigin = new THREE.Vector3();
+  this._dragToPosition = new THREE.Vector3();
+  this._dragCamera = new THREE.PerspectiveCamera();
+
+	this._tracker = new THREE.Mesh( new THREE.CubeGeometry( 20, 20, 20 ), new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true, wireframeLinewidth: 2 }) );
+	this._tracker.material.fog = false;
+	//this._view3d.scene.add( this._tracker );
+
   //
   this._interactionResolver = feng.controllers.controls.InteractionResolver.getInstance();
 
@@ -38,7 +53,8 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement, 
   this._manipulator = new feng.views.sections.controls.Manipulator( manipulatorDom );
 
   var zoomSliderDom = goog.dom.createDom('div');
-  this._zoomSlider = new feng.views.sections.controls.ZoomSlider( zoomSliderDom, this._view3d.domElement );
+  var zoomCallback = goog.bind(this.setFov, this);
+  this._zoomSlider = new feng.views.sections.controls.ZoomSlider( zoomSliderDom, this._view3d.domElement, zoomCallback );
 };
 goog.inherits(feng.controllers.controls.DesignControls, feng.controllers.controls.Controls);
 
@@ -79,6 +95,9 @@ feng.controllers.controls.DesignControls.prototype.setFocus = function( x, z ) {
 
 	// apply position
 	this.setPosition( cameraX, cameraY, cameraZ );
+
+	// test
+	this._tracker.position.copy( this._focus );
 };
 
 
@@ -96,6 +115,9 @@ feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 		this._eventHandler.listen(this._interactionResolver, feng.events.EventType.START, this.onInteractionStart, false, this);
 		this._eventHandler.listen(this._interactionResolver, feng.events.EventType.END, this.onInteractionEnd, false, this);
 
+		this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
+		this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this);
+
 		this._zoomSlider.activate();
 		this._zoomSlider.show();
 
@@ -111,6 +133,8 @@ feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 		this._manipulator.hide();
 		this._manipulator.deactivate();
 	}
+
+	this._dragger.setEnabled( this._isEnabled );
 };
 
 
@@ -208,13 +232,66 @@ feng.controllers.controls.DesignControls.prototype.onUpdateHud = function(e){
 
 		// look at
 		var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
-		var centerPosition = new THREE.Vector3(0, 0, 0);
-		var position = centerPosition;
-		var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), position);
+		var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), this._focus);
 		rotation.setFromQuaternion( quaternion );
 
 		this.setRotation( rotation );
 	}
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onDragStart = function(e){
+
+	// set origin focus position
+	this._dragOrigin.copy( this._focus );
+	this._dragToPosition.copy( this._focus );
+
+	// relocate drag camera
+	this._dragCamera.position.copy( this.getPosition() );
+	this._dragCamera.fov = this.getFov();
+	this._dragCamera.aspect = this._camera.aspect;
+	this._dragCamera.updateProjectionMatrix();
+	this._dragCamera.lookAt( this._focus );
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onDrag = function(e){
+
+	var deltaX = this._dragger.deltaX;
+	var deltaY = this._dragger.deltaY;
+
+	var fov = this.getFov();
+	var minFov = this._zoomSlider.fovRange.min;
+	var maxFov = this._zoomSlider.fovRange.max;
+	var fovFraction = (fov - minFov) / (maxFov - minFov);
+	var deltaFactor = goog.math.lerp( 6, 4, fovFraction );
+
+	var cameraDeltaX = deltaX / deltaFactor;
+	var cameraDeltaY = deltaY / deltaFactor;
+
+	// drag object by camera direction
+	var forward = new THREE.Vector3( 0, 0, -1 );
+	forward.applyQuaternion( this._dragCamera.quaternion ).setY(0).normalize();
+	
+	var right = new THREE.Vector3( 1, 0, 0 );
+	right.applyQuaternion( this._dragCamera.quaternion ).setY(0).normalize();
+
+	this._dragToPosition.addVectors( forward.multiplyScalar(cameraDeltaY), right.multiplyScalar(-cameraDeltaX) );
+	this._dragToPosition.add( this._dragOrigin );
+
+	this._dragToPosition.x = goog.math.clamp( this._dragToPosition.x, this._boundingBox.min.x, this._boundingBox.max.x );
+	this._dragToPosition.z = goog.math.clamp( this._dragToPosition.z, this._boundingBox.min.z, this._boundingBox.max.z );
+
+	this._focus.copy( this._dragToPosition );
+
+	this._tracker.position.copy( this._focus );
+
+	// look at (WIP)
+	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), this._focus);
+	rotation.setFromQuaternion( quaternion );
+
+	this.setRotation( rotation );
 };
 
 
@@ -231,12 +308,4 @@ feng.controllers.controls.DesignControls.prototype.onInteractionEnd = function(e
 	if(e.interaction === 'close') {
 		this.close();
 	}
-};
-
-
-feng.controllers.controls.DesignControls.prototype.onAnimationFrame = function(now){
-
-	goog.base(this, 'onAnimationFrame', now);
-
-	this.setFov( this._zoomSlider.getCurrentFov() );
 };
