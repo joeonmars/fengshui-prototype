@@ -14,19 +14,26 @@ feng.views.view3dobject.HolderObject = function( object3d, data, view3d ){
 
 	this._holder = this.object3d.getObjectByName('holder');
 
+	if(!this._holder) {
+		this._holder = new THREE.Object3D();
+		this._holder.name = 'holder';
+		this._holder.position.copy( data.holderPosition );
+		this.object3d.add( this._holder );
+	}
+
 	if(this._type === feng.views.view3dobject.HolderObject.Type.ACCESSORY) {
 
 		var accessories = view3d.accessories;
 		var defaultAccessory = 'empty';
-		
+
 		this.accessory = new feng.views.view3dobject.AccessoryObject( accessories, this, defaultAccessory, view3d );
 		
-		var changeAccessory = feng.views.view3dobject.TipObject.Interaction.CHANGE_ACCESSORY;
+		var changeAccessory = feng.views.view3dobject.InteractiveObject.Interaction.CHANGE_ACCESSORY;
 		this.interactions.push(changeAccessory);
 
 	}else if(this._type === feng.views.view3dobject.HolderObject.Type.OBJECT) {
 
-
+		this.orientations = data.orientations;
 
 	}else {
 
@@ -40,7 +47,31 @@ feng.views.view3dobject.HolderObject.prototype.enableRender = function(){
 
 	goog.base(this, 'enableRender');
 
-	if(this.accessory) this.accessory.enableRender();
+	var children = this._holder.children;
+
+	goog.array.forEach(children, function(object3d) {
+
+		var view3dObject = object3d.view3dObject;
+		if(view3dObject) {
+			view3dObject.enableRender();
+		}
+	});
+};
+
+
+feng.views.view3dobject.HolderObject.prototype.disableRender = function(){
+
+	goog.base(this, 'disableRender');
+
+	var children = this._holder.children;
+	
+	goog.array.forEach(children, function(object3d) {
+
+		var view3dObject = object3d.view3dObject;
+		if(view3dObject) {
+			view3dObject.disableRender();
+		}
+	});
 };
 
 

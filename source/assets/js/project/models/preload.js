@@ -76,6 +76,14 @@ feng.models.Preload = function(){
 					'8': 'images/texture/studio/pictures/8.jpg',
 					'9': 'images/texture/studio/pictures/9.jpg',
 					'10': 'images/texture/studio/pictures/10.jpg'
+				},
+				'skybox': {
+					'xpos': 'images/texture/studio/livingroom/skybox/xpos.png',
+					'xneg': 'images/texture/studio/livingroom/skybox/xneg.png',
+					'ypos': 'images/texture/studio/livingroom/skybox/ypos.png',
+					'yneg': 'images/texture/studio/livingroom/skybox/yneg.png',
+					'zpos': 'images/texture/studio/livingroom/skybox/zpos.png',
+					'zneg': 'images/texture/studio/livingroom/skybox/zneg.png',
 				}
 			},
 			'interior2': {
@@ -127,8 +135,10 @@ feng.models.Preload = function(){
 				'skybox': {
 					'xpos': 'images/texture/studio/livingroom/skybox/xpos.png',
 					'xneg': 'images/texture/studio/livingroom/skybox/xneg.png',
+					'ypos': 'images/texture/studio/livingroom/skybox/ypos.png',
+					'yneg': 'images/texture/studio/livingroom/skybox/yneg.png',
 					'zpos': 'images/texture/studio/livingroom/skybox/zpos.png',
-					'zneg': 'images/texture/studio/livingroom/skybox/zneg.png'
+					'zneg': 'images/texture/studio/livingroom/skybox/zneg.png',
 				}
 			},
 			'bathroom': {
