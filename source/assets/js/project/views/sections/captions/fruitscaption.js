@@ -39,14 +39,6 @@ feng.views.sections.captions.FruitsCaption.prototype.hide = function() {
 };
 
 
-feng.views.sections.captions.FruitsCaption.prototype.close = function() {
-
-  //this._controls.shiftCamera( 0 );
-
-  //goog.Timer.callOnce(this.doClose, 600, this);
-};
-
-
 feng.views.sections.captions.FruitsCaption.prototype.onResize = function(e) {
 
   goog.base(this, 'onResize', e);

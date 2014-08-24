@@ -13,6 +13,65 @@
 
 
 /**
+ * Hint Content
+ @param hint the hint text
+ */
+{template .HintContent}
+<div class="hint">
+	<p>{ $hint }</p>
+	{call feng.templates.common.PrimaryButton}
+		{param icon: 'change' /}
+		{param classname: 'find' /}
+		{param text: 'Go Find It' /}
+	{/call}
+</div>
+{/template}
+
+
+/**
+ * Detail Content
+ @param advice the advice text
+ @param quote the quote text
+ @param description the description text
+ */
+{template .DetailContent}
+<div class="detail">
+	<h2>{ $advice }</h2>
+	<q>"{ $quote }"</q>
+	<p>{ $description }</p>
+</div>
+{/template}
+
+
+/**
+ * Locked Content
+ */
+{template .LockedContent}
+<div class="locked">
+	{call feng.templates.common.PrimaryButton}
+		{param icon: 'change' /}
+		{param classname: 'change' /}
+		{param text: 'change' /}
+	{/call}
+</div>
+{/template}
+
+
+/**
+ * Unlocked Content
+ */
+{template .UnlockedContent}
+<div class="unlocked">
+	<ul class="share">
+		<li><a class="facebook" target="_blank"></a></li>
+		<li><a class="twitter" target="_blank"></a></li>
+		<li><a class="google" target="_blank"></a></li>
+	</ul>
+</div>
+{/template}
+
+
+/**
  * Advice caption
  */
 {template .AdviceCaption}
@@ -72,17 +131,24 @@
 
 	<div class="right">
 	{call feng.templates.common.Popup}
+
 		{param content}
+
 			<h1>{ $tip.name }</h1>
-			<h2>{ $tip.advice }</h2>
-			<q>"{ $tip.quote }"</q>
-			<p>{ $tip.description }</p>
-			{call feng.templates.common.PrimaryButton}
-				{param icon: 'change' /}
-				{param classname: 'change' /}
-				{param text: 'change' /}
+
+			{call .DetailContent}
+				{param advice: $tip.advice /}
+				{param quote: $tip.quote /}
+				{param description: $tip.description /}
+			{/call}
+
+			{call .LockedContent}
+			{/call}
+
+			{call .UnlockedContent}
 			{/call}
 		{/param}
+
 	{/call}
 	</div>
 
@@ -140,13 +206,17 @@
 	{call feng.templates.common.Popup}
 		{param content}
 			<h1>{ $tip.name }</h1>
-			<h2>{ $tip.advice }</h2>
-			<q>"{ $tip.quote }"</q>
-			<p>{ $tip.description }</p>
-			{call feng.templates.common.PrimaryButton}
-				{param icon: 'change' /}
-				{param classname: 'change' /}
-				{param text: 'change' /}
+
+			{call .DetailContent}
+				{param advice: $tip.advice /}
+				{param quote: $tip.quote /}
+				{param description: $tip.description /}
+			{/call}
+
+			{call .LockedContent}
+			{/call}
+
+			{call .UnlockedContent}
 			{/call}
 		{/param}
 	{/call}
@@ -193,13 +263,21 @@
 	{call feng.templates.common.Popup}
 		{param content}
 			<h1>{ $tip.name }</h1>
-			<h2>{ $tip.advice }</h2>
-			<q>"{ $tip.quote }"</q>
-			<p>{ $tip.description }</p>
-			{call feng.templates.common.PrimaryButton}
-				{param icon: 'change' /}
-				{param classname: 'change' /}
-				{param text: 'ok' /}
+
+			{call .HintContent}
+				{param hint: $tip.hint /}
+			{/call}
+
+			{call .DetailContent}
+				{param advice: $tip.advice /}
+				{param quote: $tip.quote /}
+				{param description: $tip.description /}
+			{/call}
+
+			{call .LockedContent}
+			{/call}
+
+			{call .UnlockedContent}
 			{/call}
 		{/param}
 	{/call}

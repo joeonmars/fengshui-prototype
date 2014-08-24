@@ -25,6 +25,7 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId, data ){
   this.advice = data['advice'];
   this.quote = data['quote'];
   this.description = data['description'];
+  this.hint = data['hint'];
 
   this.iconId = data['icon'];
   this.goTipToken = feng.controllers.NavigationController.Token.GO_TIP.replace('{tipId}', this.id);

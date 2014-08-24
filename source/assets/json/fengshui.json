@@ -269,7 +269,8 @@
 			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "joanna",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the basket!"
+			"reminder": "Don't forget to check the basket!",
+			"hint": "Something is missing in the fruits plate..."
 		},
 		{
 			"id": "cabinet",
