@@ -24,6 +24,14 @@ feng.views.view3dobject.InteractiveObject = function( object3d, data, view3d ){
 goog.inherits(feng.views.view3dobject.InteractiveObject, feng.views.view3dobject.View3DObject);
 
 
+feng.views.view3dobject.InteractiveObject.prototype.registerToView3D = function(){
+
+  goog.base(this, 'registerToView3D');
+  
+  this._view3d.interactiveObjects[ this.name ] = this;
+};
+
+
 feng.views.view3dobject.InteractiveObject.prototype.hasInteraction = function( interaction ){
 
 	return goog.array.contains(this.interactions, interaction);

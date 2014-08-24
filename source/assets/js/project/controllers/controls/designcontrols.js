@@ -42,7 +42,7 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement, 
   this._dragToPosition = new THREE.Vector3();
   this._dragCamera = new THREE.PerspectiveCamera();
 
-	this._tracker = new THREE.Mesh( new THREE.CubeGeometry( 20, 20, 20 ), new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true, wireframeLinewidth: 2 }) );
+	this._tracker = new THREE.Mesh( new THREE.BoxGeometry( 20, 20, 20 ), new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true, wireframeLinewidth: 2 }) );
 	this._tracker.material.fog = false;
 	//this._view3d.scene.add( this._tracker );
 
@@ -208,7 +208,7 @@ feng.controllers.controls.DesignControls.prototype.onClickView = function(e){
 	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition(
 		e.clientX,
 		e.clientY,
-		this._view3d.editables,
+		this._view3d.tipObjects,
 		this._camera,
 		this._view3d.getViewSize());
 

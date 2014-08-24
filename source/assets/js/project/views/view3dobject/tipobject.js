@@ -25,6 +25,14 @@ feng.views.view3dobject.TipObject = function( object3d, data, view3d ){
 goog.inherits(feng.views.view3dobject.TipObject, feng.views.view3dobject.InteractiveObject);
 
 
+feng.views.view3dobject.TipObject.prototype.registerToView3D = function(){
+
+  goog.base(this, 'registerToView3D');
+  
+  this._view3d.tipObjects[ this.name ] = this;
+};
+
+
 feng.views.view3dobject.TipObject.prototype.onUnlock = function(e){
 
 	console.log("UNLOCKED TIP OBJECT: ", this);

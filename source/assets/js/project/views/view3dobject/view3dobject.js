@@ -23,8 +23,17 @@ feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
   this._center = new THREE.Vector3();
 
   this._tilemapProxy = null;
+
+  //
+  this.registerToView3D();
 };
 goog.inherits(feng.views.view3dobject.View3DObject, goog.events.EventTarget);
+
+
+feng.views.view3dobject.View3DObject.prototype.registerToView3D = function(){
+
+  this._view3d.view3dObjects[ this.name ] = this;
+};
 
 
 feng.views.view3dobject.View3DObject.prototype.init = function(){

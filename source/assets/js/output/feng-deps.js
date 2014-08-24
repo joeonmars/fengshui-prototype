@@ -114,7 +114,7 @@ goog.addDependency('../../../../project/views/view3dobject/entities/pictureframe
 goog.addDependency('../../../../project/views/view3dobject/entities/refrigerator.js', ['feng.views.view3dobject.entities.Refrigerator'], ['feng.models.Preload', 'feng.utils.ThreeUtils', 'feng.views.view3dobject.TipObject']);
 goog.addDependency('../../../../project/views/view3dobject/entities/windows.js', ['feng.views.view3dobject.entities.Windows'], ['feng.fx.TextureAnimator', 'feng.views.view3dobject.TipObject']);
 goog.addDependency('../../../../project/views/view3dobject/gatewayobject.js', ['feng.views.view3dobject.GatewayObject'], ['feng.views.view3dobject.InteractiveObject']);
-goog.addDependency('../../../../project/views/view3dobject/holderobject.js', ['feng.views.view3dobject.HolderObject'], ['feng.views.view3dobject.InteractiveObject']);
+goog.addDependency('../../../../project/views/view3dobject/holderobject.js', ['feng.views.view3dobject.HolderObject'], ['feng.views.view3dobject.TipObject']);
 goog.addDependency('../../../../project/views/view3dobject/interactiveobject.js', ['feng.views.view3dobject.InteractiveObject'], ['feng.views.view3dobject.View3DObject', 'goog.events.EventHandler']);
 goog.addDependency('../../../../project/views/view3dobject/skybox.js', ['feng.views.view3dobject.Skybox'], ['feng.views.view3dobject.View3DObject']);
 goog.addDependency('../../../../project/views/view3dobject/stairsobject.js', ['feng.views.view3dobject.StairsObject'], ['feng.views.view3dobject.View3DObject', 'goog.fx.easing']);

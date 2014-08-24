@@ -66,9 +66,9 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud){
 
 	this.view3dObjects = {};
 	this.interactiveObjects = {};
+	this.tipObjects = {};
 
 	this.accessories = [];
-	this.editables = [];
 
 	this.viewSize = new goog.math.Size(0, 0);
 
@@ -335,30 +335,12 @@ feng.views.View3D.prototype.initScene = function() {
 		if(className) {
 
 			// create specific class object
-			var typedObject = new objectClass[className](object, objectData, this);
-
-			if(typedObject instanceof feng.views.view3dobject.InteractiveObject) {
-
-				this.interactiveObjects[ object.name ] = typedObject;
-			}
-			
-			this.view3dObjects[ object.name ] = typedObject;
-
-			if(className === 'holder') {
-
-				var accessoryObject = new feng.views.view3dobject.AccessoryObject( this.accessories, typedObject, 'empty', this );
-
-				var objectName = accessoryObject.object3d.name;
-				this.interactiveObjects[ objectName ] = accessoryObject;
-				this.view3dObjects[ objectName ] = accessoryObject;
-			}
+			var classObject = new objectClass[className](object, objectData, this);
 
 		}else if(interactions.length > 0) {
 
 			// create interactive object
 			var interactiveObject = new feng.views.view3dobject.InteractiveObject( object, objectData, this);
-			this.interactiveObjects[ object.name ] = interactiveObject;
-			this.view3dObjects[ object.name ] = interactiveObject;
 
 		}else {
 
@@ -366,14 +348,7 @@ feng.views.View3D.prototype.initScene = function() {
 
 				// create view3d object
 				var view3dObject = new feng.views.view3dobject.View3DObject( object, objectData, this);
-				this.view3dObjects[ object.name ] = view3dObject;
 			}
-		}
-
-		// add editables
-		var interactions = objectData.interactions;
-		if(interactions && (goog.array.contains(interactions, 'move') || goog.array.contains(interactions, 'rotate'))) {
-			this.editables.push( object );
 		}
 
 	}, this);
@@ -416,17 +391,14 @@ feng.views.View3D.prototype.initScene = function() {
 
 	// create design plane
 	this.designPlane = new feng.views.view3dobject.DesignPlane( this );
-	this.view3dObjects[ this.designPlane.name ] = this.designPlane;
 
 	// create skybox
 	var assets = preloadModel.getAsset(this.sectionId+'.'+this.id+'.skybox');
 
 	this.skybox = new feng.views.view3dobject.Skybox( assets, this );
-	this.view3dObjects[ this.skybox.name ] = this.skybox;
 
 	// create arms
 	this.arms = new feng.views.view3dobject.Arms( this );
-	this.interactiveObjects[ this.arms.name ] = this.arms;
 
 	// init all view3d objects
 	goog.object.forEach(this.view3dObjects, function(object) {

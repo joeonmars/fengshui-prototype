@@ -23,15 +23,19 @@ feng.models.View3D.Data = {
 			},
 			'cabinet': {
 				class: "holder",
+				holderType: "accessory",
 				collidable: true,
 				texture: "studio.livingroom.cabinet-texture",
 				interactions: [
 					"move",
 					"rotate"
-				]
+				],
+				tipInteraction: "change_color",
+				tipKey: 'studio.livingroom.chair'
 			},
 			'bed': {
 				class: "holder",
+				holderType: "accessory",
 				collidable: true,
 				texture: "studio.livingroom.bed-texture",
 				interactions: [
@@ -42,7 +46,9 @@ feng.models.View3D.Data = {
 					position: new THREE.Vector3(-105.44, 89.50, 116.23),
 					rotation: new THREE.Euler(-0.34, -0.80, 0.00, 'YXZ'),
 					fov: 60
-				}
+				},
+				tipInteraction: "change_color",
+				tipKey: 'studio.livingroom.chair'
 			},
 			'door': {
 				class: "gateway",
