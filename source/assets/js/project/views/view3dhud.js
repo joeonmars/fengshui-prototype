@@ -11,6 +11,7 @@ goog.require('feng.views.sections.captions.AdviceCaption');
 goog.require('feng.views.sections.captions.ChangeColorCaption');
 goog.require('feng.views.sections.captions.ChangeObjectCaption');
 goog.require('feng.views.sections.captions.ChangePictureCaption');
+goog.require('feng.views.sections.captions.FruitsCaption');
 goog.require('feng.views.sections.overlays.TutorialOverlay');
 goog.require('feng.views.sections.overlays.OpeningOverlay');
 goog.require('feng.views.sections.overlays.EndingOverlay');
@@ -150,23 +151,42 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls, type ) {
 	}
 
   var captionClass;
+  var interaction = feng.views.view3dobject.InteractiveObject.Interaction;
 
-  switch(type) {
-    case 'advice':
-    captionClass = feng.views.sections.captions.AdviceCaption;
+  // get the caption if specified by object
+  switch(object.captionClass) {
+    case 'fruits':
+    captionClass = feng.views.sections.captions.FruitsCaption;
     break;
 
-    case 'change_color':
-    captionClass = feng.views.sections.captions.ChangeColorCaption;
+    default:
     break;
+  }
 
-    case 'change_object':
-    captionClass = feng.views.sections.captions.ChangeObjectCaption;
-    break;
+  // get the caption by its interaction type
+  if(!captionClass) {
 
-    case 'change_picture':
-    captionClass = feng.views.sections.captions.ChangePictureCaption;
-    break;
+    switch(type) {
+      case interaction.ADVICE:
+      captionClass = feng.views.sections.captions.AdviceCaption;
+      break;
+
+      case interaction.DROP:
+      captionClass = feng.views.sections.captions.ChangeColorCaption;
+      break;
+
+      case interaction.CHANGE_COLOR:
+      captionClass = feng.views.sections.captions.ChangeColorCaption;
+      break;
+
+      case interaction.CHANGE_OBJECT:
+      captionClass = feng.views.sections.captions.ChangeObjectCaption;
+      break;
+
+      case interaction.CHANGE_PICTURE:
+      captionClass = feng.views.sections.captions.ChangePictureCaption;
+      break;
+    }
   }
   
   var cameraController = this._view3d.cameraController;

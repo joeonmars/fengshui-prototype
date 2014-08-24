@@ -100,9 +100,13 @@ feng.views.view3dobject.InteractiveObject.prototype.onCameraOut = function(){
  * Interactions
  */
 feng.views.view3dobject.InteractiveObject.Interaction = {
+  ADVICE: 'advice',
   MOVE: 'move',
   ROTATE: 'rotate',
-  PLACE: 'place',
+  PICK: 'pick',
+  DROP: 'drop',
+  CHANGE_COLOR: 'change_color',
+  CHANGE_OBJECT: 'change_object',
   CHANGE_PICTURE: 'change_picture',
   CHANGE_ACCESSORY: 'change_accessory'
 };

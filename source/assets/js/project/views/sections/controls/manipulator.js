@@ -30,7 +30,10 @@ goog.inherits(feng.views.sections.controls.Manipulator, feng.views.sections.cont
 feng.views.sections.controls.Manipulator.prototype.registerButton = function( classname ){
 
   var button = goog.dom.getElementByClass(classname, this.domElement);
-  this._buttons[classname] = button;
+
+  if(button) {
+    this._buttons[classname] = button;
+  }
 
   return button;
 };

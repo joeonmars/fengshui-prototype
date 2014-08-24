@@ -247,9 +247,15 @@ feng.models.View3D.Data = {
 						rotation: new THREE.Euler(0, 0, 0)
 					}
 				},
+				camera: {
+					position: new THREE.Vector3(-84, 80, -87),
+					rotation: new THREE.Euler(-0.59, 2.02, 0.00, 'YXZ'),
+					fov: 40
+				},
 				texture: "studio.interior3.fruitplate-texture",
-				tipInteraction: "change_color",
+				tipInteraction: "drop",
 				tipKey: 'studio.livingroom.basket',
+				captionClass: 'fruits'
 			},
 			'dining-table':	{
 				collidable: true,

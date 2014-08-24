@@ -88,13 +88,24 @@ feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
  * @return {string}
  * @notypecheck
  */
+feng.templates.captions.FruitsCaption = function(opt_data, opt_ignored) {
+  return feng.templates.captions.Caption({classname: 'fruits', content: '<div class="right">' + feng.templates.common.Popup({content: '<h1>' + opt_data.tip.name + '</h1><h2>' + opt_data.tip.advice + '</h2><q>"' + opt_data.tip.quote + '"</q><p>' + opt_data.tip.description + '</p>' + feng.templates.common.PrimaryButton({icon: 'change', classname: 'change', text: 'ok'})}) + '</div>'});
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
 feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
   var output = '<p class="floatText">';
-  var lineList146 = opt_data.lines;
-  var lineListLen146 = lineList146.length;
-  for (var lineIndex146 = 0; lineIndex146 < lineListLen146; lineIndex146++) {
-    var lineData146 = lineList146[lineIndex146];
-    output += '<span>' + lineData146 + '</span>';
+  var lineList167 = opt_data.lines;
+  var lineListLen167 = lineList167.length;
+  for (var lineIndex167 = 0; lineIndex167 < lineListLen167; lineIndex167++) {
+    var lineData167 = lineList167[lineIndex167];
+    output += '<span>' + lineData167 + '</span>';
   }
   output += '</p>';
   return output;

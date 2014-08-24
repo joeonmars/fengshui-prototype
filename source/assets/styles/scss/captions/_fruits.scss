@@ -1,0 +1,39 @@
+&.fruits{
+
+	.right{
+		max-width: 470px;
+		width: 35%;
+
+		h1{
+			margin-top: 7px;
+			font-size: 3.5em;
+			color: $darkblue;
+		}
+
+		h2{
+			font-size: 2em;
+			color: $gray;
+			line-height: 2em;
+		}
+
+		q{
+			display: block;
+			font-size: 1.5em;
+			color: $darkblue;
+			line-height: 1.4em;
+			margin: 2em 0 .25em 0;
+		}
+
+		p{
+			font-size: 1.5em;
+			color: $gray;
+			line-height: 1.4em;
+			margin: 1em 0 2em 0;
+		}
+
+		.change{
+			margin: 0 auto;
+		}
+	}
+
+}

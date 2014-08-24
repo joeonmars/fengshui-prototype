@@ -21,6 +21,9 @@ feng.views.view3dobject.TipObject = function( object3d, data, view3d ){
   this.tip = feng.models.achievements.Achievements.getInstance().getTip(tipId, viewId, sectionId);
 
   goog.events.listenOnce(this.tip, feng.events.EventType.UNLOCK, this.onUnlock, false, this);
+
+  // get tip caption id if specified
+  this.captionClass = data.captionClass || null;
 };
 goog.inherits(feng.views.view3dobject.TipObject, feng.views.view3dobject.InteractiveObject);
 
