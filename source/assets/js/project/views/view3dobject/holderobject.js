@@ -15,10 +15,7 @@ feng.views.view3dobject.HolderObject = function( object3d, data, view3d ){
 	this._holder = this.object3d.getObjectByName('holder');
 
 	if(!this._holder) {
-		this._holder = new THREE.Object3D();
-		this._holder.name = 'holder';
-		this._holder.position.copy( data.holderPosition );
-		this.object3d.add( this._holder );
+		this.createHolder();
 	}
 
 	if(this._type === feng.views.view3dobject.HolderObject.Type.ACCESSORY) {
@@ -33,7 +30,6 @@ feng.views.view3dobject.HolderObject = function( object3d, data, view3d ){
 
 	}else if(this._type === feng.views.view3dobject.HolderObject.Type.OBJECT) {
 
-		this.orientations = data.orientations;
 
 	}else {
 
@@ -41,6 +37,14 @@ feng.views.view3dobject.HolderObject = function( object3d, data, view3d ){
 	}
 };
 goog.inherits(feng.views.view3dobject.HolderObject, feng.views.view3dobject.TipObject);
+
+
+feng.views.view3dobject.HolderObject.prototype.createHolder = function(){
+
+	this._holder = new THREE.Object3D();
+	this._holder.name = 'holder';
+	this.object3d.add( this._holder );
+};
 
 
 feng.views.view3dobject.HolderObject.prototype.enableRender = function(){

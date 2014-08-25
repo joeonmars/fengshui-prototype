@@ -228,25 +228,6 @@ feng.models.View3D.Data = {
 			'fruitplate':	{
 				class: 'holder',
 				holderType: "object",
-				holderPosition: new THREE.Vector3(-115.01, 50.36, -67.80),
-				orientations: {
-					'apple': {
-						position: new THREE.Vector3(0, 0, 0),
-						rotation: new THREE.Euler(0, 0, 0)
-					},
-					'pineapple': {
-						position: new THREE.Vector3(0, 0, 0),
-						rotation: new THREE.Euler(0, 0, 0)
-					},
-					'peach': {
-						position: new THREE.Vector3(0, 0, 0),
-						rotation: new THREE.Euler(0, 0, 0)
-					},
-					'orange': {
-						position: new THREE.Vector3(0, 0, 0),
-						rotation: new THREE.Euler(0, 0, 0)
-					}
-				},
 				camera: {
 					position: new THREE.Vector3(-84, 80, -87),
 					rotation: new THREE.Euler(-0.59, 2.02, 0.00, 'YXZ'),

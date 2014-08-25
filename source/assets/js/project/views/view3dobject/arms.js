@@ -40,7 +40,7 @@ feng.views.view3dobject.Arms.prototype.addItem = function( view3dObject ){
 
   this.object3d.add( view3dObject.object3d );
 
-  var objectOrientation = feng.views.view3dobject.Arms.Presets[ view3dObject.name ];
+  var objectOrientation = feng.views.view3dobject.Arms.Orientations[ view3dObject.name ];
   view3dObject.object3d.position.copy( objectOrientation.position );
   view3dObject.object3d.rotation.copy( objectOrientation.rotation );
 
@@ -66,7 +66,7 @@ feng.views.view3dobject.Arms.prototype.update = function( position, rotation ){
 };
 
 
-feng.views.view3dobject.Arms.Presets = {
+feng.views.view3dobject.Arms.Orientations = {
   'apple': {
     position: new THREE.Vector3(0.47, 6.10, -4.36),
     rotation: new THREE.Euler(-0.26, 0.16, 0.02)
