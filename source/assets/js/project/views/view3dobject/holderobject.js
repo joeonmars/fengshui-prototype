@@ -10,7 +10,7 @@ feng.views.view3dobject.HolderObject = function( object3d, data, view3d ){
 
 	goog.base(this, object3d, data, view3d);
 
-	this._type = data.holderType;
+	this._type = data.holderType || feng.views.view3dobject.HolderObject.Type.OBJECT;
 
 	this._holder = this.object3d.getObjectByName('holder');
 
@@ -31,9 +31,6 @@ feng.views.view3dobject.HolderObject = function( object3d, data, view3d ){
 	}else if(this._type === feng.views.view3dobject.HolderObject.Type.OBJECT) {
 
 
-	}else {
-
-		throw new Error('No holder type specified.');
 	}
 };
 goog.inherits(feng.views.view3dobject.HolderObject, feng.views.view3dobject.TipObject);

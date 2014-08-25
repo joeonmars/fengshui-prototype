@@ -30,6 +30,7 @@ goog.require('feng.views.view3dobject.entities.Computer');
 goog.require('feng.views.view3dobject.entities.PictureDisplay');
 goog.require('feng.views.view3dobject.entities.PictureFrame');
 goog.require('feng.views.view3dobject.entities.Refrigerator');
+goog.require('feng.views.view3dobject.entities.FruitPlate');
 goog.require('feng.views.view3dobject.entities.Windows');
 
 
@@ -315,7 +316,8 @@ feng.views.View3D.prototype.initScene = function() {
 		'computer': feng.views.view3dobject.entities.Computer,
 		'lamp': feng.views.view3dobject.entities.Lamp,
 		'refrigerator': feng.views.view3dobject.entities.Refrigerator,
-		'windows': feng.views.view3dobject.entities.Windows
+		'windows': feng.views.view3dobject.entities.Windows,
+		'fruitplate': feng.views.view3dobject.entities.FruitPlate
 	};
 
 	// parse scene objects

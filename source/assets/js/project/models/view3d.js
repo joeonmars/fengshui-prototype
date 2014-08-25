@@ -226,8 +226,7 @@ feng.models.View3D.Data = {
 				texture: "studio.interior3.microwave-texture"
 			},
 			'fruitplate':	{
-				class: 'holder',
-				holderType: "object",
+				class: 'fruitplate',
 				camera: {
 					position: new THREE.Vector3(-84, 80, -87),
 					rotation: new THREE.Euler(-0.59, 2.02, 0.00, 'YXZ'),
