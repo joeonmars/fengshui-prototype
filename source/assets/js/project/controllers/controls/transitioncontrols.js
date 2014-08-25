@@ -90,8 +90,8 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 
 	if(nextMode === feng.controllers.view3d.ModeController.Mode.DESIGN) {
 
-		designPlane.add();
-		skybox.remove();
+		designPlane.addToScene();
+		skybox.removeFromScene();
 
 		TweenMax.fromTo(designPlane.object3d.material, 1, {
 			opacity: 0
@@ -106,8 +106,8 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 		}, {
 			opacity: 0,
 			onComplete: function() {
-				designPlane.remove();
-				skybox.add();
+				designPlane.removeFromScene();
+				skybox.addToScene();
 			}
 		});
 	}

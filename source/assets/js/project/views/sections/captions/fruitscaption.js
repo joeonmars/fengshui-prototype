@@ -28,6 +28,7 @@ feng.views.sections.captions.FruitsCaption.prototype.show = function() {
 
   goog.base(this, 'show');
 
+  this._object.startInteraction();
   //this._controls.shiftCameraToRight();
 };
 
@@ -36,6 +37,7 @@ feng.views.sections.captions.FruitsCaption.prototype.hide = function() {
 
   goog.base(this, 'hide');
 
+  this._object.stopInteraction();
 };
 
 

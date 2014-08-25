@@ -46,6 +46,6 @@ feng.views.view3dobject.Skybox = function( assets, view3d ){
 
   goog.base( this, skybox, {}, view3d );
 
-  this.add();
+  this.addToScene();
 };
 goog.inherits(feng.views.view3dobject.Skybox, feng.views.view3dobject.View3DObject);

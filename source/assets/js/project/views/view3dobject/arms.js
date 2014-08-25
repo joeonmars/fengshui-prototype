@@ -29,7 +29,7 @@ feng.views.view3dobject.Arms = function( view3d ){
 
   this._items = [];
 
-  this.add();
+  this.addToScene();
 };
 goog.inherits(feng.views.view3dobject.Arms, feng.views.view3dobject.InteractiveObject);
 

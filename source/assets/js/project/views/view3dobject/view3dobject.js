@@ -127,13 +127,13 @@ feng.views.view3dobject.View3DObject.prototype.getTilemapProxy = function(){
 };
 
 
-feng.views.view3dobject.View3DObject.prototype.add = function(){
+feng.views.view3dobject.View3DObject.prototype.addToScene = function(){
 
   this._view3d.scene.add( this.object3d );
 };
 
 
-feng.views.view3dobject.View3DObject.prototype.remove = function(){
+feng.views.view3dobject.View3DObject.prototype.removeFromScene = function(){
 
   this._view3d.scene.remove( this.object3d );
 };
