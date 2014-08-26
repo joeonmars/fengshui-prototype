@@ -14,15 +14,11 @@ feng.views.sections.controls.DesignCaptions = function( domElement ){
 
   goog.base(this, domElement);
 
-  var unlockedCaptionEls = goog.dom.query('.design-caption.unlocked');
-  this._unlockedCaptions = goog.array.map( unlockedCaptionEls, function(el) {
-    return new feng.views.sections.designcaptions.UnlockedDesignCaption( el );
-  });
+  var unlockedCaptionEl = goog.dom.query('.design-caption.unlocked')[0];
+  this._unlockedCaption = new feng.views.sections.designcaptions.UnlockedDesignCaption( unlockedCaptionEl );
 
-  var lockedCaptionEls = goog.dom.query('.design-caption.locked');
-  this._lockedCaptions = goog.array.map( lockedCaptionEls, function(el) {
-    return new feng.views.sections.designcaptions.LockedDesignCaption( el );
-  });
+  var lockedCaptionEl = goog.dom.query('.design-caption.locked')[0];
+  this._lockedCaption = new feng.views.sections.designcaptions.LockedDesignCaption( lockedCaptionEl );
 
   this._objects = null;
 
@@ -52,14 +48,10 @@ feng.views.sections.controls.DesignCaptions.prototype.setView3D = function( view
 };
 
 
-feng.views.sections.controls.DesignCaptions.prototype.getFreeCaption = function( object ) {
+feng.views.sections.controls.DesignCaptions.prototype.getCaption = function( object ) {
 
   var unlocked = object.tip.unlocked;
-  var captions = unlocked ? this._unlockedCaptions : this._lockedCaptions;
-
-  var caption = goog.array.find( captions, function(caption) {
-      return (caption.activeObject != this._activeObject);
-    }, this);
+  var caption = unlocked ? this._unlockedCaption : this._lockedCaption;
 
   return caption;
 };
@@ -115,7 +107,7 @@ feng.views.sections.controls.DesignCaptions.prototype.detectHover = function() {
   
   if(!this._activeCaption) {
 
-    this._activeCaption = this.getFreeCaption( this._activeObject );
+    this._activeCaption = this.getCaption( this._activeObject );
     this._activeCaption.activate( this._activeObject );
   }
 

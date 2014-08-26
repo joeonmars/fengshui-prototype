@@ -1,12 +1,52 @@
+@at-root {
+
+	@include keyframes(fade-in-design-caption) {
+	  0%{
+	  	visibility: visible;
+			opacity: 0;
+			@include translateY(20px);
+	  }
+	  100%{
+	  	visibility: visible;
+			opacity: 1;
+			@include translateY(0px);
+	  }
+	}
+
+
+	@include keyframes(fade-out-design-caption) {
+	  0%{
+	  	visibility: visible;
+			opacity: 1;
+			@include translateY(0px);
+	  }
+	  100%{
+	  	visibility: hidden;
+			opacity: 0;
+			@include translateY(20px);
+	  }
+	}
+
+}
+
+
 >.design-caption{
 
 	position: absolute;
 	width: 250px;
 	height: 50px;
-	top: -60px;
-	left: 10px;
+	margin-top: -60px;
+	margin-left: 10px;
 	background: white;
 	outline: 1px solid red;
+
+	&.show{
+		@include animation(fade-in-design-caption .25s forwards $easeOutExpo);
+	}
+
+	&.hidden{
+		@include animation(fade-out-design-caption .25s forwards $easeOutExpo);
+	}
 
 	&.unlocked{
 
