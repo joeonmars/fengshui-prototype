@@ -45,19 +45,25 @@ feng.views.sections.controls.Controls.prototype.setView3D = function( view3d ){
 
 feng.views.sections.controls.Controls.prototype.activate = function(){
 
-  this._isActivated = true;
+  if(this._isActivated) return false;
+  else this._isActivated = true;
 
 	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
 
 	this.onResize();
+
+  return true;
 };
 
 
 feng.views.sections.controls.Controls.prototype.deactivate = function(){
 
-  this._isActivated = false;
+  if(!this._isActivated) return false;
+  else this._isActivated = false;
   
   this._eventHandler.removeAll();
+
+  return true;
 };
 
 

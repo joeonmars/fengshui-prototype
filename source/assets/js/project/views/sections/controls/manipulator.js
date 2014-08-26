@@ -41,7 +41,9 @@ feng.views.sections.controls.Manipulator.prototype.registerButton = function( cl
 
 feng.views.sections.controls.Manipulator.prototype.activate = function( interactions ){
   
-	goog.base(this, 'activate');
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
 
   // hide all buttons first
   goog.object.forEach(this._buttons, function(button) {

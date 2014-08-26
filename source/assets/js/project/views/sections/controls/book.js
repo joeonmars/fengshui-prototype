@@ -40,7 +40,9 @@ goog.inherits(feng.views.sections.controls.Book, feng.views.sections.controls.Co
 
 feng.views.sections.controls.Book.prototype.activate = function(){
 
-	goog.base(this, 'activate');
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
 
 	this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
 	this._eventHandler.listen(this.domElement, 'mouseover', this.onMouseOver, false, this);

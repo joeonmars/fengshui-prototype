@@ -102,7 +102,9 @@ goog.inherits(feng.views.sections.controls.ProgressBar, feng.views.sections.cont
 
 feng.views.sections.controls.ProgressBar.prototype.activate = function(){
 
-	goog.base(this, 'activate');
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
 
   goog.array.forEach(this._dotEls, function(dotEl) {
     this._eventHandler.listen(dotEl, 'mouseover', this.onMouseOverTip, false, this);

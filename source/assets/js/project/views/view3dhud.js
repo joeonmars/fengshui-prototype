@@ -2,11 +2,11 @@ goog.provide('feng.views.View3DHud');
 
 goog.require('feng.views.sections.controls.ObjectBox');
 goog.require('feng.views.sections.controls.ObjectSelector');
-goog.require('feng.views.View3DCaption');
 goog.require('feng.views.sections.controls.Compass');
 goog.require('feng.views.sections.controls.Book');
 goog.require('feng.views.sections.controls.Reminder');
 goog.require('feng.views.sections.controls.ProgressBar');
+goog.require('feng.views.sections.controls.DesignCaptions');
 goog.require('feng.views.sections.captions.AdviceCaption');
 goog.require('feng.views.sections.captions.ChangeColorCaption');
 goog.require('feng.views.sections.captions.ChangeObjectCaption');
@@ -69,6 +69,10 @@ feng.views.View3DHud = function( hudEl, view3dController, tips ){
 
   var objectSelectorEl = goog.dom.getElementByClass('objectSelector', this.domElement);
   this.objectSelector = new feng.views.sections.controls.ObjectSelector( objectSelectorEl );
+
+  // create design captions
+  var designCaptionsEl = goog.dom.getElementByClass('design-captions', this.domElement);
+  this.designCaptions = new feng.views.sections.controls.DesignCaptions( designCaptionsEl );
 };
 goog.inherits(feng.views.View3DHud, goog.events.EventTarget);
 
@@ -83,6 +87,7 @@ feng.views.View3DHud.prototype.setView3D = function( view3d ) {
   this.progressBar.setView3D( view3d );
   this.objectBox.setView3D( view3d );
   this.objectSelector.setView3D( view3d );
+  this.designCaptions.setView3D( view3d );
 
   this._view3d.modeController.listen(feng.events.EventType.UPDATE, this.onUpdateView3D, false, this);
 };
@@ -125,6 +130,8 @@ feng.views.View3DHud.prototype.deactivate = function() {
   this.book.deactivate();
   this.reminder.deactivate();
   this.progressBar.deactivate();
+
+  this.designCaptions.deactivate();
 
   this.tutorialOverlay.deactivate();
 };

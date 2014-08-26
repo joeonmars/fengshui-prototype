@@ -81,8 +81,10 @@ feng.views.sections.controls.ObjectSelector.prototype.setPosition = function (x,
 
 feng.views.sections.controls.ObjectSelector.prototype.activate = function( callbacks ) {
 
-	goog.base(this, 'activate');
-	
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
+  
 	this._selectableObjects = goog.object.getValues( this._view3d.interactiveObjects );
 	
 	this.updateHitTestMeshes();
@@ -101,7 +103,9 @@ feng.views.sections.controls.ObjectSelector.prototype.activate = function( callb
 
 feng.views.sections.controls.ObjectSelector.prototype.deactivate = function() {
 
-	goog.base(this, 'deactivate');
+  var shouldDeactivate = goog.base(this, 'deactivate');
+
+  if(!shouldDeactivate) return;
 
 	this._delay.stop();
 

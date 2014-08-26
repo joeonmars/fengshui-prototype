@@ -46,8 +46,10 @@ feng.views.sections.controls.ZoomSlider.prototype.calculateFov = function(){
 
 feng.views.sections.controls.ZoomSlider.prototype.activate = function(){
 
-	goog.base(this, 'activate');
+  var shouldActivate = goog.base(this, 'activate');
 
+  if(!shouldActivate) return;
+  
 	this._eventHandler.listen(this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this);
 };
 

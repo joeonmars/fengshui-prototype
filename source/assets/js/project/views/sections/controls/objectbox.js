@@ -86,7 +86,9 @@ feng.views.sections.controls.ObjectBox.prototype.setObject = function ( object )
 
 feng.views.sections.controls.ObjectBox.prototype.activate = function ( object ) {
 
-	goog.base(this, 'activate');
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
 
 	this.show();
 
@@ -98,7 +100,9 @@ feng.views.sections.controls.ObjectBox.prototype.activate = function ( object ) 
 
 feng.views.sections.controls.ObjectBox.prototype.deactivate = function () {
 
-	goog.base(this, 'deactivate');
+  var shouldDeactivate = goog.base(this, 'deactivate');
+
+  if(!shouldDeactivate) return;
 
 	this._object = null;
 

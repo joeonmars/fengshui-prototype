@@ -1,4 +1,4 @@
-goog.provide('feng.views.View3DCaption');
+goog.provide('feng.views.sections.captions.Caption');
 
 goog.require('goog.events.EventHandler');
 goog.require('feng.fx.WrapLayout');
@@ -7,7 +7,7 @@ goog.require('feng.fx.WrapLayout');
 /**
  * @constructor
  */
-feng.views.View3DCaption = function( object, cameraController, renderSize, controls, hud ){
+feng.views.sections.captions.Caption = function( object, cameraController, renderSize, controls, hud ){
 
   goog.base(this);
 
@@ -31,10 +31,10 @@ feng.views.View3DCaption = function( object, cameraController, renderSize, contr
   this._closeButton = goog.dom.getElementByClass('close-button', this.domElement);
   this._changeButton = goog.dom.getElementByClass('change', this.domElement);
 };
-goog.inherits(feng.views.View3DCaption, goog.events.EventTarget);
+goog.inherits(feng.views.sections.captions.Caption, goog.events.EventTarget);
 
 
-feng.views.View3DCaption.prototype.show = function() {
+feng.views.sections.captions.Caption.prototype.show = function() {
 
   goog.style.showElement( this.domElement, true );
 
@@ -54,7 +54,7 @@ feng.views.View3DCaption.prototype.show = function() {
 };
 
 
-feng.views.View3DCaption.prototype.hide = function() {
+feng.views.sections.captions.Caption.prototype.hide = function() {
 
   goog.style.showElement( this.domElement, false );
 
@@ -64,13 +64,13 @@ feng.views.View3DCaption.prototype.hide = function() {
 };
 
 
-feng.views.View3DCaption.prototype.close = function() {
+feng.views.sections.captions.Caption.prototype.close = function() {
 
   this.doClose();
 };
 
 
-feng.views.View3DCaption.prototype.doClose = function() {
+feng.views.sections.captions.Caption.prototype.doClose = function() {
 
   this.dispatchEvent({
     type: feng.events.EventType.CLOSE
@@ -78,7 +78,7 @@ feng.views.View3DCaption.prototype.doClose = function() {
 };
 
 
-feng.views.View3DCaption.prototype.update = function() {
+feng.views.sections.captions.Caption.prototype.update = function() {
 
   var object3d = this._object.object3d;
   var camera = this._cameraController.activeCamera;
@@ -87,7 +87,7 @@ feng.views.View3DCaption.prototype.update = function() {
 };
 
 
-feng.views.View3DCaption.prototype.onAnimationFrame = function( now ) {
+feng.views.sections.captions.Caption.prototype.onAnimationFrame = function( now ) {
 
   if(!this.allowUpdate) return;
 
@@ -95,7 +95,7 @@ feng.views.View3DCaption.prototype.onAnimationFrame = function( now ) {
 };
 
 
-feng.views.View3DCaption.prototype.onClick = function( e ) {
+feng.views.sections.captions.Caption.prototype.onClick = function( e ) {
 
   switch(e.currentTarget) {
     case this._closeButton:
@@ -109,7 +109,7 @@ feng.views.View3DCaption.prototype.onClick = function( e ) {
 };
 
 
-feng.views.View3DCaption.prototype.onResize = function( e ) {
+feng.views.sections.captions.Caption.prototype.onResize = function( e ) {
 
   
 };

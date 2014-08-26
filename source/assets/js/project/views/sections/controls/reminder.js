@@ -61,7 +61,9 @@ goog.inherits(feng.views.sections.controls.Reminder, feng.views.sections.control
 
 feng.views.sections.controls.Reminder.prototype.activate = function(){
 
-	goog.base(this, 'activate');
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
 
 	this._eventHandler.listen(this._prevEl, 'click', this.onClick, false, this);
 	this._eventHandler.listen(this._nextEl, 'click', this.onClick, false, this);

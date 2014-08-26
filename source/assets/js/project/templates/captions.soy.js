@@ -16,7 +16,7 @@ goog.require('feng.templates.controls');
  * @notypecheck
  */
 feng.templates.captions.Caption = function(opt_data, opt_ignored) {
-  return '<div class="captionView ' + opt_data.classname + '">' + opt_data.content + '</div>';
+  return '<div class="caption ' + opt_data.classname + '">' + opt_data.content + '</div>';
 };
 
 

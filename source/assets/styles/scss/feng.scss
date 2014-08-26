@@ -195,13 +195,22 @@ body{
 				@import "scene-controls";
 			}
 
-			>.captions{
+			>.design-captions{
 				@include absoluteTopLeft;
 				width: 100%;
 				height: 0;
 				z-index: 3;
 
-				>.captionView{
+				@import "design-caption";
+			}
+
+			>.captions{
+				@include absoluteTopLeft;
+				width: 100%;
+				height: 0;
+				z-index: 4;
+
+				>.caption{
 					@include absoluteTopLeft;
 					width: 100%;
 					height: 0;

@@ -2,7 +2,7 @@ goog.provide('feng.views.sections.captions.ChangeColorCaption');
 
 goog.require('goog.soy');
 goog.require('feng.templates.captions');
-goog.require('feng.views.View3DCaption');
+goog.require('feng.views.sections.captions.Caption');
 goog.require('feng.views.sections.controls.ColorSelector');
 
 
@@ -29,7 +29,7 @@ feng.views.sections.captions.ChangeColorCaption = function( object, cameraContro
   var colorSelectorEl = goog.dom.getElementByClass('colorSelector', this.domElement);
   this._colorSelector = new feng.views.sections.controls.ColorSelector( colorSelectorEl, object );
 };
-goog.inherits(feng.views.sections.captions.ChangeColorCaption, feng.views.View3DCaption);
+goog.inherits(feng.views.sections.captions.ChangeColorCaption, feng.views.sections.captions.Caption);
 
 
 feng.views.sections.captions.ChangeColorCaption.prototype.show = function() {

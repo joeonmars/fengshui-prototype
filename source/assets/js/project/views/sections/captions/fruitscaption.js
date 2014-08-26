@@ -2,7 +2,7 @@ goog.provide('feng.views.sections.captions.FruitsCaption');
 
 goog.require('goog.soy');
 goog.require('feng.templates.captions');
-goog.require('feng.views.View3DCaption');
+goog.require('feng.views.sections.captions.Caption');
 
 
 /**
@@ -21,7 +21,7 @@ feng.views.sections.captions.FruitsCaption = function( object, cameraController,
   var rightEl = goog.dom.getElementByClass('right', this.domElement);
   this._rightBlock = this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT );
 };
-goog.inherits(feng.views.sections.captions.FruitsCaption, feng.views.View3DCaption);
+goog.inherits(feng.views.sections.captions.FruitsCaption, feng.views.sections.captions.Caption);
 
 
 feng.views.sections.captions.FruitsCaption.prototype.show = function() {

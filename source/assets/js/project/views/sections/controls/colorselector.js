@@ -20,7 +20,9 @@ goog.inherits(feng.views.sections.controls.ColorSelector, feng.views.sections.co
 
 feng.views.sections.controls.ColorSelector.prototype.activate = function(){
 
-	goog.base(this, 'activate');
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
 
 	goog.array.forEach(this._colorEls, function(colorEl) {
 		this._eventHandler.listen(colorEl, 'click', this.onClickColor, false, this);
@@ -32,7 +34,9 @@ feng.views.sections.controls.ColorSelector.prototype.activate = function(){
 
 feng.views.sections.controls.ColorSelector.prototype.deactivate = function(){
 
-	goog.base(this, 'deactivate');
+  var shouldDeactivate = goog.base(this, 'deactivate');
+
+  if(!shouldDeactivate) return;
 
 	this._lamp.stopInteraction();
 };

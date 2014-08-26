@@ -1,0 +1,18 @@
+>.design-caption{
+
+	position: absolute;
+	width: 250px;
+	height: 50px;
+	top: -60px;
+	left: 10px;
+	background: white;
+	outline: 1px solid red;
+
+	&.unlocked{
+
+	}
+
+	&.locked{
+
+	}
+}

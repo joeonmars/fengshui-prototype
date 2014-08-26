@@ -36,7 +36,9 @@ goog.inherits(feng.views.sections.controls.Compass, feng.views.sections.controls
 
 feng.views.sections.controls.Compass.prototype.activate = function(){
 
-	goog.base(this, 'activate');
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
 
 	this._eventHandler.listen(this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
   this._eventHandler.listen(this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
@@ -47,7 +49,9 @@ feng.views.sections.controls.Compass.prototype.activate = function(){
 
 feng.views.sections.controls.Compass.prototype.deactivate = function(){
 
-  goog.base(this, 'deactivate');
+  var shouldDeactivate = goog.base(this, 'deactivate');
+
+  if(!shouldDeactivate) return;
 
   this._dragger.setEnabled( false );
 };

@@ -2,7 +2,7 @@ goog.provide('feng.views.sections.captions.ChangeObjectCaption');
 
 goog.require('goog.soy');
 goog.require('feng.templates.captions');
-goog.require('feng.views.View3DCaption');
+goog.require('feng.views.sections.captions.Caption');
 
 
 /**
@@ -23,7 +23,7 @@ feng.views.sections.captions.ChangeObjectCaption = function( object, cameraContr
   this._topBlock = this._wrapLayout.addBlock( topEl, feng.fx.WrapLayout.Alignment.TOP );
   this._rightBlock = this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT );
 };
-goog.inherits(feng.views.sections.captions.ChangeObjectCaption, feng.views.View3DCaption);
+goog.inherits(feng.views.sections.captions.ChangeObjectCaption, feng.views.sections.captions.Caption);
 
 
 feng.views.sections.captions.ChangeObjectCaption.prototype.show = function() {

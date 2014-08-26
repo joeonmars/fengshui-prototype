@@ -50,7 +50,9 @@ goog.inherits(feng.views.sections.controls.PictureSelector, feng.views.sections.
 
 feng.views.sections.controls.PictureSelector.prototype.activate = function(){
 
-	goog.base(this, 'activate');
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
 
 	this._eventHandler.listen( this._prevButtonEl, 'click', this.onClick, false, this );
 	this._eventHandler.listen( this._nextButtonEl, 'click', this.onClick, false, this );
@@ -74,8 +76,10 @@ feng.views.sections.controls.PictureSelector.prototype.activate = function(){
 
 feng.views.sections.controls.PictureSelector.prototype.deactivate = function(){
 
-	goog.base(this, 'deactivate');
+  var shouldDeactivate = goog.base(this, 'deactivate');
 
+  if(!shouldDeactivate) return;
+  
 	this._dragger.setEnabled( false );
 
 	goog.fx.anim.unregisterAnimation( this );

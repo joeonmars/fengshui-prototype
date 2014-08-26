@@ -2,7 +2,7 @@ goog.provide('feng.views.sections.captions.ChangePictureCaption');
 
 goog.require('goog.soy');
 goog.require('feng.templates.captions');
-goog.require('feng.views.View3DCaption');
+goog.require('feng.views.sections.captions.Caption');
 goog.require('feng.views.sections.controls.PictureSelector');
 
 
@@ -29,7 +29,7 @@ feng.views.sections.captions.ChangePictureCaption = function( object, cameraCont
   var pictureSelectorEl = goog.dom.getElementByClass('pictureSelector', this.domElement);
   this._pictureSelector = new feng.views.sections.controls.PictureSelector( pictureSelectorEl, object );
 };
-goog.inherits(feng.views.sections.captions.ChangePictureCaption, feng.views.View3DCaption);
+goog.inherits(feng.views.sections.captions.ChangePictureCaption, feng.views.sections.captions.Caption);
 
 
 feng.views.sections.captions.ChangePictureCaption.prototype.show = function() {
