@@ -78,19 +78,19 @@ feng.views.view3dobject.entities.FruitPlate.prototype.onClick = function(e){
 
 feng.views.view3dobject.entities.FruitPlate.Orientations = {
   'apple': {
-    position: new THREE.Vector3(0, 0, 0),
-    rotation: new THREE.Euler(0, 0, 0)
+    position: new THREE.Vector3(2.38, 2.75, -3.71),
+    rotation: new THREE.Euler(-0.28, -0.28, -0.32)
   },
   'orange': {
-    position: new THREE.Vector3(0, 0, 0),
-    rotation: new THREE.Euler(0, 0, 0)
+    position: new THREE.Vector3(3.49, 2.32, 1.97),
+    rotation: new THREE.Euler(0.38, 0.24, -0.18)
   },
   'pineapple': {
-    position: new THREE.Vector3(0, 0, 0),
-    rotation: new THREE.Euler(0, 0, 0)
+    position: new THREE.Vector3(-4.08, 5.76, 5.25),
+    rotation: new THREE.Euler(0.78, -0.3, 0.36)
   },
   'peach': {
-    position: new THREE.Vector3(0, 0, 0),
-    rotation: new THREE.Euler(0, 0, 0)
+    position: new THREE.Vector3(-3.16, 2, -3.63),
+    rotation: new THREE.Euler(0.14, 0, 0)
   }
 };

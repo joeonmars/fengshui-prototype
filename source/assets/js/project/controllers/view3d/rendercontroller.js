@@ -107,7 +107,11 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderBlur = function
 		view3dObject.enableRender();
 	});
 
-	if(maskedObject) maskedObject.disableRender();
+	if(maskedObject) {
+		
+		maskedObject.disableRender();
+		this._view3d.arms.disableRender();
+	}
 };
 
 
@@ -124,7 +128,8 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderMask = function
 	});
 
 	if(maskedObject) {
-		
+
 		maskedObject.enableRender();
+		this._view3d.arms.enableRender();
 	}
 };

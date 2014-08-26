@@ -20,34 +20,6 @@ feng.views.view3dobject.entities.Refrigerator = function( object3d, data, view3d
 goog.inherits(feng.views.view3dobject.entities.Refrigerator, feng.views.view3dobject.TipObject);
 
 
-feng.views.view3dobject.entities.Refrigerator.prototype.enableRender = function(){
-
-  goog.base(this, 'enableRender');
-
-  this._door.view3dObject.enableRender();
-
-  this._fruits = this._fruits || this.getFruits();
-
-  goog.array.forEach(this._fruits, function(fruit) {
-    fruit.view3dObject.enableRender();
-  });
-};
-
-
-feng.views.view3dobject.entities.Refrigerator.prototype.disableRender = function(){
-
-  goog.base(this, 'disableRender');
-
-  this._door.view3dObject.disableRender();
-
-  this._fruits = this._fruits || this.getFruits();
-
-  goog.array.forEach(this._fruits, function(fruit) {
-    fruit.view3dObject.disableRender();
-  });
-};
-
-
 feng.views.view3dobject.entities.Refrigerator.prototype.getFruits = function(){
 
   this._fruits = [];

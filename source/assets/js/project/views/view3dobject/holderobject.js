@@ -44,38 +44,6 @@ feng.views.view3dobject.HolderObject.prototype.createHolder = function(){
 };
 
 
-feng.views.view3dobject.HolderObject.prototype.enableRender = function(){
-
-	goog.base(this, 'enableRender');
-
-	var children = this._holder.children;
-
-	goog.array.forEach(children, function(object3d) {
-
-		var view3dObject = object3d.view3dObject;
-		if(view3dObject) {
-			view3dObject.enableRender();
-		}
-	});
-};
-
-
-feng.views.view3dobject.HolderObject.prototype.disableRender = function(){
-
-	goog.base(this, 'disableRender');
-
-	var children = this._holder.children;
-	
-	goog.array.forEach(children, function(object3d) {
-
-		var view3dObject = object3d.view3dObject;
-		if(view3dObject) {
-			view3dObject.disableRender();
-		}
-	});
-};
-
-
 feng.views.view3dobject.HolderObject.prototype.updateAccessory = function( accessory ){
 
 	this.accessory = accessory;

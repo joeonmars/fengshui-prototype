@@ -24,6 +24,8 @@ feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
 
   this._tilemapProxy = null;
 
+  this._canRender = this.object3d.visible;
+
   //
   this.registerToView3D();
 };
@@ -141,13 +143,28 @@ feng.views.view3dobject.View3DObject.prototype.removeFromScene = function(){
 
 feng.views.view3dobject.View3DObject.prototype.enableRender = function(){
 
-  // itself and its parent should be all renderable
-  var object3d = this.object3d;
+  if(this._canRender) return;
+  else this._canRender = true;
 
-  while(object3d && !(object3d instanceof THREE.Scene)) {
-    object3d.visible = true;
-    object3d = object3d.parent;
+  // itself, its parent and its children should be renderable
+  this.object3d.visible = true;
+
+  var parent = this.object3d.parent;
+  var scene = this._view3d.scene;
+
+  while(parent && !(parent === scene)) {
+
+    if(parent.view3dObject) parent.view3dObject.enableRender();
+    else parent.visible = true;
+
+    parent = parent.parent;
   }
+
+  this.object3d.traverse(function(child) {
+
+    if(child.view3dObject) child.view3dObject.enableRender();
+    else child.visible = true;
+  });
 
   //console.log("SHOW:", this.object3d.name);
 };
@@ -155,7 +172,10 @@ feng.views.view3dobject.View3DObject.prototype.enableRender = function(){
 
 feng.views.view3dobject.View3DObject.prototype.disableRender = function(){
 
-  // its children should not be renderable
+  if(!this._canRender) return;
+  else this._canRender = false;
+
+  // itself and its children should not be renderable
   this.object3d.visible = false;
 
   //console.log("HIDE:", this.object3d.name);
