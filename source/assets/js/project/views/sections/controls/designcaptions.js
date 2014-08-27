@@ -30,6 +30,8 @@ feng.views.sections.controls.DesignCaptions = function( domElement ){
   this._activeObject = null;
   this._activeCaption = null;
 
+  this._designControls = null;
+
   this._mouseMoveThrottle = new goog.async.Throttle( this.detectHover, 1000/30, this );
   this._updateThrottle = new goog.async.Throttle( this.update, 1000/30, this );
 };
@@ -43,8 +45,11 @@ feng.views.sections.controls.DesignCaptions.prototype.setView3D = function( view
   this._objects = [];
 
   goog.object.forEach(this._view3d.tipObjects, function(object) {
-    this._objects.push( object.object3d );
+    this._objects.push( object.getProxyBox() );
   }, this);
+
+  var design = feng.controllers.view3d.ModeController.Mode.DESIGN;
+  this._designControls = this._view3d.modeController.getModeControl( design );
 };
 
 
@@ -132,6 +137,8 @@ feng.views.sections.controls.DesignCaptions.prototype.onMouseMove = function(e) 
 
   this._mousePosition.x = e.clientX;
   this._mousePosition.y = e.clientY;
+  
+  if(this._designControls && this._designControls.isDragging()) return false;
 
   this._mouseMoveThrottle.fire();
 };

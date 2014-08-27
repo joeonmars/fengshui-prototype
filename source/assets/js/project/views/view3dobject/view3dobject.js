@@ -24,6 +24,9 @@ feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
 
   this._tilemapProxy = null;
 
+  this._proxyBox = new THREE.Mesh( new THREE.BoxGeometry(1,1,1) );
+  this._proxyBox.view3dObject = this;
+
   this._canRender = this.object3d.visible;
 
   //
@@ -52,6 +55,18 @@ feng.views.view3dobject.View3DObject.prototype.isCollidable = function(){
 feng.views.view3dobject.View3DObject.prototype.isFloor = function(){
 
   return (goog.string.startsWith(this.name, 'floor'));
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getProxyBox = function(){
+
+  var boundingBox = this.getBoundingBox();
+
+  boundingBox.size( this._proxyBox.scale );
+  boundingBox.center( this._proxyBox.position );
+  this._proxyBox.updateMatrixWorld();
+
+  return this._proxyBox;
 };
 
 

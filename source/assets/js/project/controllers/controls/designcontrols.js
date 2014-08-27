@@ -101,6 +101,12 @@ feng.controllers.controls.DesignControls.prototype.setFocus = function( x, z ) {
 };
 
 
+feng.controllers.controls.DesignControls.prototype.isDragging = function() {
+
+	return this._dragger.isDragging();
+};
+
+
 feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 
 	goog.base(this, 'enable', enable);
