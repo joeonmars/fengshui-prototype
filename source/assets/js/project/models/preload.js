@@ -97,6 +97,7 @@ feng.models.Preload = function(){
 				'scene-data': 'json/studio-livingroom.json',
 				'floor-texture': 'images/texture/studio/livingroom/floor.png',
 				'wall-texture': 'images/texture/studio/livingroom/wall.png',
+				'wall-outer-texture': 'images/texture/studio/livingroom/wall-outer.png',
 				'ceiling-texture': 'images/texture/studio/livingroom/ceiling.png',
 				'bed-texture': 'images/texture/studio/livingroom/bed.png',
 				'shoestorage-texture': 'images/texture/studio/livingroom/shoestorage.png',

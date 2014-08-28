@@ -159,22 +159,28 @@ feng.models.View3D.Data = {
 			'studio-door': {
 				class: "gateway",
 				viewid: "interior2",
-				gatewayid: "door"
+				gatewayid: "door",
+				castShadow: true
 			},
 			'bathroom-door': {
 				class: "gateway",
 				viewid: "interior2",
-				gatewayid: "door"
+				gatewayid: "door",
+				castShadow: true
 			},
 			'wall':	{
 				collidable: true,
+				castShadow: true,
 				texture: "studio.interior3.wall-texture"
+			},
+			'wall-outer':	{
+				castShadow: true,
+				texture: "studio.interior3.wall-outer-texture"
 			},
 			'ceiling':	{
 				texture: "studio.interior3.ceiling-texture"
 			},
 			'floor': {
-				receiveShadow: true,
 				texture: "studio.interior3.floor-texture"
 			},
 			'bed':	{
@@ -275,6 +281,7 @@ feng.models.View3D.Data = {
 			},
 			'book-shelf':	{
 				collidable: true,
+				castShadow: true,
 				texture: "studio.interior3.book-shelf-texture"
 			},
 			'kitchen-shelf':	{

@@ -33,6 +33,15 @@ feng.controllers.view3d.RenderController = function( view3d ){
   	'onReverseComplete': this.onBlurOutComplete,
   	'onReverseCompleteScope': this
   });
+
+  this._vignette = 0;
+
+  this._vignetteTweener = TweenMax.fromTo(this, 1, {
+  	_vignette: 0
+  }, {
+  	_vignette: 1,
+  	'paused': true
+  });
 };
 goog.inherits(feng.controllers.view3d.RenderController, goog.events.EventTarget);
 
@@ -41,7 +50,13 @@ feng.controllers.view3d.RenderController.prototype.updateByMode = function(mode,
 
 	var progress = progress || 0;
 
-	if(mode === feng.controllers.view3d.ModeController.Mode.CLOSE_UP || nextMode === feng.controllers.view3d.ModeController.Mode.CLOSE_UP) {
+	var modeToCloseUp = (mode === feng.controllers.view3d.ModeController.Mode.CLOSE_UP || nextMode === feng.controllers.view3d.ModeController.Mode.CLOSE_UP);
+	var modeToDesign = (mode === feng.controllers.view3d.ModeController.Mode.DESIGN || nextMode === feng.controllers.view3d.ModeController.Mode.DESIGN);
+
+	var notCloseUp = (mode !== feng.controllers.view3d.ModeController.Mode.CLOSE_UP && nextMode !== feng.controllers.view3d.ModeController.Mode.CLOSE_UP);
+	var notDesign = (mode !== feng.controllers.view3d.ModeController.Mode.DESIGN && nextMode !== feng.controllers.view3d.ModeController.Mode.DESIGN);
+
+	if(modeToCloseUp) {
 
 		var modeControl;
 
@@ -60,10 +75,24 @@ feng.controllers.view3d.RenderController.prototype.updateByMode = function(mode,
 		}
 	}
 
-	if(mode !== feng.controllers.view3d.ModeController.Mode.CLOSE_UP) {
+	if(modeToCloseUp || modeToDesign) {
+
+		if(!this._vignetteTweener.isActive() && this._vignette < 1) {
+			this._vignetteTweener.play();
+		}
+	}
+
+	if(notCloseUp) {
 
 		if(!this._blurTweener.reversed() && this._blur > 0) {
 			this._blurTweener.reverse();
+		}
+	}
+
+	if(notCloseUp && notDesign) {
+
+		if(!this._vignetteTweener.reversed() && this._vignette > 0) {
+			this._vignetteTweener.reverse();
 		}
 	}
 };
@@ -94,6 +123,8 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRender = function() {
 
 	var contrast = this._blurTweener.progress() * -.5;
 	this._renderer.setContrast( contrast );
+
+	this._renderer.setVignette( this._vignette );
 };
 
 

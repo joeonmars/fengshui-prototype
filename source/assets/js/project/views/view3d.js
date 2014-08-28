@@ -301,7 +301,29 @@ feng.views.View3D.prototype.initScene = function() {
 	this.scene = constructed.scene;
 
 	// add fog to scene for fading 45 deg ground plane
-	this.scene.fog = new THREE.FogExp2( 0x8d867a, 0.0008 );
+	this.scene.fog = new THREE.FogExp2( 0xd9d9d9, 0.0008 );
+
+	// add directional light for shadow
+	var light = new THREE.DirectionalLight( 0x000000, 1 );
+	light.position.set( 200, 200, 200 );
+	light.target.position.set(0, 0, 0);
+	light.castShadow = true;
+
+	light.shadowMapWidth = 512;
+	light.shadowMapHeight = 512;
+
+	var d = 400;
+	light.shadowCameraLeft = -d;
+	light.shadowCameraRight = d;
+	light.shadowCameraTop = d;
+	light.shadowCameraBottom = -d;
+	light.shadowCameraNear = 2;
+	light.shadowCameraFar = 800;
+
+	light.shadowDarkness = 0.1;
+	//light.shadowCameraVisible = true;
+
+	this.scene.add( light );
 
 	/*
 	 * Classes to be created by external json data
@@ -497,22 +519,6 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 					}
 
 			  	object.material.map = texture;
-			}
-
-			if(object instanceof THREE.DirectionalLight) {
-				object.castShadow = true;
-
-				object.shadowMapWidth = 1024;
-				object.shadowMapHeight = 1024;
-
-				var d = 400;
-				object.shadowCameraLeft = -d;
-				object.shadowCameraRight = d;
-				object.shadowCameraTop = d;
-				object.shadowCameraBottom = -d;
-				object.shadowCameraFar = 400;
-				object.shadowDarkness = 0.05;
-				//object.shadowCameraVisible = true;
 			}
 
 			if(object instanceof THREE.Mesh) {

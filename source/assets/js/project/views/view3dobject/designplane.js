@@ -13,18 +13,18 @@ feng.views.view3dobject.DesignPlane = function( view3d ){
   canvas.width = size;
   canvas.height = size;
   var ctx = canvas.getContext("2d");
-  ctx.fillStyle = "#e4e4d8";
+  ctx.fillStyle = "#f5f5f5";
   ctx.fillRect(0, 0, size, size);
-  ctx.strokeStyle = "#b8b2a6";
+  ctx.strokeStyle = "#414141";
   ctx.strokeRect(0, 0, size, size);
 
   var texture = new THREE.Texture( canvas );
   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(5000, 5000);
-    texture.needsUpdate = true;
+  texture.repeat.set(8000, 8000);
+  texture.needsUpdate = true;
 
   var planeGeometry = new THREE.PlaneGeometry( 100000, 100000, 1, 1 );
-  var planeMaterial = new THREE.MeshBasicMaterial( {
+  var planeMaterial = new THREE.MeshLambertMaterial( {
     map: texture,
     transparent: true
   } );
@@ -33,7 +33,8 @@ feng.views.view3dobject.DesignPlane = function( view3d ){
   var designPlane = new THREE.Mesh( planeGeometry, planeMaterial );
   designPlane.name = 'design-plane';
   designPlane.rotation.x = -Math.PI/2;
-  designPlane.position.y = -10;
+  designPlane.position.y = -1;
+  designPlane.receiveShadow = true;
 
   goog.base( this, designPlane, {}, view3d );
 };

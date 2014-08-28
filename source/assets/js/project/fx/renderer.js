@@ -36,6 +36,10 @@ feng.fx.Renderer = function(canvas, scene, camera){
 	this._fxaaPass = new THREE.ShaderPass( THREE.FXAAShader );
 	this._fxaaPass.renderToScreen = true;
 
+	this._vignettePass = new THREE.ShaderPass( THREE.VignetteShader );
+	this._vignettePass.uniforms['offset'].value = 0.95;
+	this.setVignette( 0 );
+
 	this._blurXPass = new THREE.ShaderPass( THREE.TriangleBlurShader, 'texture' );
 	this._blurXPass.uniforms[ 'delta' ].value = new THREE.Vector2( 0, 0 );
 
@@ -99,6 +103,8 @@ feng.fx.Renderer = function(canvas, scene, camera){
 	this._outputComposer.addPass( this._renderTexturePass );
 	this._outputComposer.addPass( this._clearMaskPass );
 
+	this._outputComposer.addPass( this._vignettePass );
+
 	this._outputComposer.addPass( this._fxaaPass );
 
 	//
@@ -148,6 +154,15 @@ feng.fx.Renderer.prototype.setBrightness = function( brightness ){
 feng.fx.Renderer.prototype.setContrast = function( contrast ){
 
 	this._brightnessContrastPass.uniforms['contrast'].value = contrast;
+};
+
+
+feng.fx.Renderer.prototype.setVignette = function( t ){
+
+	// darkness ranges from 0 - 1
+	var darkness = goog.math.lerp(0.5, 1, t);
+
+	this._vignettePass.uniforms['darkness'].value = darkness;
 };
 
 
