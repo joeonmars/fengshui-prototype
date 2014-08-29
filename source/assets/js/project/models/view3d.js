@@ -248,15 +248,17 @@ feng.models.View3D.Data = {
 				texture: "studio.interior3.dining-table-texture"
 			},
 			'dining-chair':	{
+				class: "movable",
 				collidable: true,
 				castShadow: true,
 				texture: "studio.interior3.dining-chair-texture",
-				class: "tip",
 				interactions: [
 					"move",
 					"rotate"
 				],
-				tipInteraction: "change_color",
+				destination: new THREE.Vector3(0, 0, 0),
+				range: 100,
+				tipInteraction: "change_object",
 				tipKey: 'studio.livingroom.chair'
 			},
 			'window-books':	{

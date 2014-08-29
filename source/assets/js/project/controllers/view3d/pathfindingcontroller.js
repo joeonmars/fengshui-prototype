@@ -237,11 +237,10 @@ feng.controllers.view3d.PathfindingController.prototype.getClosestWalkableTile =
 
 	var row = 0;
 	var col = 0;
-	var numRows = matrix.length;
-	
-	for(row = 0; row < numRows; ++row) {
+	var numRows = matrixData.numRows;
+	var numCols = matrixData.numCols;
 
-		var numCols = matrix[row].length;
+	for(row = 0; row < numRows; ++row) {
 
 		for(col = 0; col < numCols; ++col) {
 			var type = matrix[row][col];
