@@ -20,6 +20,7 @@ goog.require('feng.views.view3dobject.InteractiveObject');
 goog.require('feng.views.view3dobject.Arms');
 goog.require('feng.views.view3dobject.DesignPlane');
 goog.require('feng.views.view3dobject.HolderObject');
+goog.require('feng.views.view3dobject.MovableObject');
 goog.require('feng.views.view3dobject.GatewayObject');
 goog.require('feng.views.view3dobject.StairsObject');
 goog.require('feng.views.view3dobject.Skybox');
@@ -331,6 +332,7 @@ feng.views.View3D.prototype.initScene = function() {
 	var objectClass = {
 		'tip': feng.views.view3dobject.TipObject,
 		'holder': feng.views.view3dobject.HolderObject,
+		'movable': feng.views.view3dobject.MovableObject,
 		'gateway': feng.views.view3dobject.GatewayObject,
 		'stairs': feng.views.view3dobject.StairsObject,
 		'picturedisplay': feng.views.view3dobject.entities.PictureDisplay,
