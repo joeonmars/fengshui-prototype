@@ -120,13 +120,24 @@ feng.templates.controls.ObjectBox = function(opt_data, opt_ignored) {
  * @return {string}
  * @notypecheck
  */
+feng.templates.controls.DropButton = function(opt_data, opt_ignored) {
+  return '<div class="dropButton"><div class="arrow"></div></div>';
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var output = '<div class="progressBar"><div class="inner"><div class="wave"><canvas class="gray"></canvas><canvas class="fill"></canvas></div><ul class="tips">';
-  var tipList325 = opt_data.tips;
-  var tipListLen325 = tipList325.length;
-  for (var tipIndex325 = 0; tipIndex325 < tipListLen325; tipIndex325++) {
-    var tipData325 = tipList325[tipIndex325];
-    output += '<li class="tip" data-tip-id="' + tipData325.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><div class="content"><canvas data-tip-id="' + tipData325.id + '" data-view-id="' + tipData325.viewId + '" data-section-id="' + tipData325.sectionId + '"></canvas><a href="' + tipData325.goTipToken + '"><span class="icon"></span>GO</a></div></div></li>';
+  var tipList327 = opt_data.tips;
+  var tipListLen327 = tipList327.length;
+  for (var tipIndex327 = 0; tipIndex327 < tipListLen327; tipIndex327++) {
+    var tipData327 = tipList327[tipIndex327];
+    output += '<li class="tip" data-tip-id="' + tipData327.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><div class="content"><canvas data-tip-id="' + tipData327.id + '" data-view-id="' + tipData327.viewId + '" data-section-id="' + tipData327.sectionId + '"></canvas><a href="' + tipData327.goTipToken + '"><span class="icon"></span>GO</a></div></div></li>';
   }
   output += '</ul></div></div>';
   return output;

@@ -18,8 +18,6 @@ feng.controllers.controls.WalkControls = function(camera, view3d, domElement){
 
 	this._cameraRotation = new THREE.Euler(0, 0, 0, 'YXZ');
 
-	this._updateCallbacks = [];
-
 	this._gateway = null;
 };
 goog.inherits(feng.controllers.controls.WalkControls, feng.controllers.controls.Controls);
@@ -111,18 +109,6 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 };
 
 
-feng.controllers.controls.WalkControls.prototype.addUpdateCallback = function ( callback ) {
-
-	goog.array.insert( this._updateCallbacks, callback );
-};
-
-
-feng.controllers.controls.WalkControls.prototype.removeUpdateCallback = function ( callback ) {
-
-	goog.array.remove( this._updateCallbacks, callback );
-};
-
-
 feng.controllers.controls.WalkControls.prototype.onPathProgress = function ( prop ) {
 
   var u = prop.u;
@@ -148,17 +134,6 @@ feng.controllers.controls.WalkControls.prototype.onPathProgress = function ( pro
 	var intepolatedCameraY = goog.math.lerp( fromRotation.y, this._cameraRotation.y, u );
 
   this.setRotation( intepolatedCameraX, intepolatedCameraY );
-
-  // custom callbacks
-  if(this._updateCallbacks.length > 0) {
-
-	  var position = this.getPosition();
-	  var rotation = this.getRotation();
-
-	  goog.array.forEach( this._updateCallbacks, function(callback) {
-	  	callback( position, rotation );
-	  });
-  }
 };
 
 

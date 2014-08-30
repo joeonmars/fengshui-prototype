@@ -2,6 +2,7 @@ goog.provide('feng.views.View3DHud');
 
 goog.require('feng.views.sections.controls.ObjectBox');
 goog.require('feng.views.sections.controls.ObjectSelector');
+goog.require('feng.views.sections.controls.DropButton');
 goog.require('feng.views.sections.controls.Compass');
 goog.require('feng.views.sections.controls.Book');
 goog.require('feng.views.sections.controls.Reminder');
@@ -70,6 +71,9 @@ feng.views.View3DHud = function( hudEl, view3dController, tips ){
   var objectSelectorEl = goog.dom.getElementByClass('objectSelector', this.domElement);
   this.objectSelector = new feng.views.sections.controls.ObjectSelector( objectSelectorEl );
 
+  var dropButtonEl = goog.dom.getElementByClass('dropButton', this.domElement);
+  this.dropButton = new feng.views.sections.controls.DropButton( dropButtonEl );
+
   // create design captions
   var designCaptionsEl = goog.dom.getElementByClass('design-captions', this.domElement);
   this.designCaptions = new feng.views.sections.controls.DesignCaptions( designCaptionsEl );
@@ -87,6 +91,7 @@ feng.views.View3DHud.prototype.setView3D = function( view3d ) {
   this.progressBar.setView3D( view3d );
   this.objectBox.setView3D( view3d );
   this.objectSelector.setView3D( view3d );
+  this.dropButton.setView3D( view3d );
   this.designCaptions.setView3D( view3d );
 
   this._view3d.modeController.listen(feng.events.EventType.UPDATE, this.onUpdateView3D, false, this);
@@ -109,7 +114,6 @@ feng.views.View3DHud.prototype.activate = function() {
   this.book.activate();
   this.reminder.activate();
   this.progressBar.activate();
-
   this.tutorialOverlay.activate();
 };
 
@@ -130,9 +134,8 @@ feng.views.View3DHud.prototype.deactivate = function() {
   this.book.deactivate();
   this.reminder.deactivate();
   this.progressBar.deactivate();
-
+  this.dropButton.deactivate();
   this.designCaptions.deactivate();
-
   this.tutorialOverlay.deactivate();
 };
 

@@ -257,7 +257,7 @@ feng.models.View3D.Data = {
 					"rotate"
 				],
 				destination: new THREE.Vector3(0, 0, 0),
-				range: 100,
+				range: 80,
 				tipInteraction: "change_object",
 				tipKey: 'studio.livingroom.chair'
 			},

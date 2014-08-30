@@ -272,6 +272,56 @@
 	}
 }
 
+/* -- drop button -- */
+@at-root {
+
+	@include keyframes(fade-in-drop) {
+	  0%{
+	  	visibility: visible;
+			opacity: 0;
+			@include translateY(20px);
+	  }
+	  100%{
+	  	visibility: visible;
+			opacity: 1;
+			@include translateY(0px);
+	  }
+	}
+
+
+	@include keyframes(fade-out-drop) {
+	  0%{
+	  	visibility: visible;
+			opacity: 1;
+			@include translateY(0px);
+	  }
+	  100%{
+	  	visibility: hidden;
+			opacity: 0;
+			@include translateY(20px);
+	  }
+	}
+
+}
+
+>.dropButton{
+	position: absolute;
+	margin: -60px;
+	width: 120px;
+	height: 120px;
+	background: #fff;
+	@include border-radius(50%);
+
+	&.fadeIn{
+		@include animation(fade-in-drop .4s forwards $easeOutExpo);
+	}
+
+	&.fadeOut{
+		@include animation(fade-out-drop .4s forwards $easeOutExpo);
+	}
+}
+/* -- end -- */
+
 >.progressBar{
 	position: absolute;
 	padding: 14px 50px;

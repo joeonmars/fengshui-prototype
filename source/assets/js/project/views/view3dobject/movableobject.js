@@ -11,13 +11,17 @@ feng.views.view3dobject.MovableObject = function( object3d, data, view3d ){
 
   goog.base(this, object3d, data, view3d);
 
-  this._availTiles = null;
-  this._onWalkUpdate = goog.bind( this.onWalkUpdate, this );
+  this._minCol = 0;
+  this._maxCol = 0;
+  this._minRow = 0;
+  this._maxRow = 0;
+
+  this._dropPosition = new THREE.Vector3();
 };
 goog.inherits(feng.views.view3dobject.MovableObject, feng.views.view3dobject.TipObject);
 
 
-feng.views.view3dobject.MovableObject.prototype.updateAvailableTiles = function(){
+feng.views.view3dobject.MovableObject.prototype.updateTilesRange = function(){
 
   // get available tiles by destination and range (in view3d unit)
   var destPos = this.data.destination;
@@ -26,58 +30,55 @@ feng.views.view3dobject.MovableObject.prototype.updateAvailableTiles = function(
   var matrixId = this._view3d.getMatrixId();
   var matrixData = feng.pathfinder.getMatrixData( matrixId );
 
-  var rangeOfTiles = Math.ceil( range / matrixData.tileSize );  
+  var rangeOfTiles = Math.round( range / 2 / matrixData.tileSize );  
   var destTile = feng.pathfinder.getTileByPosition( destPos, matrixData );
 
   var numCols = matrixData.numCols;
   var numRows = matrixData.numRows;
 
-  var startCol = Math.max( destTile[0] - rangeOfTiles, 0 );
-  var endCol = Math.min( destTile[0] + rangeOfTiles, numCols - 1 );
-  var startRow = Math.max( destTile[1] - rangeOfTiles, 0 );
-  var endRow = Math.min( destTile[1] + rangeOfTiles, numRows - 1 );
+  this._minCol = Math.max( destTile[0] - rangeOfTiles, 0 );
+  this._maxCol = Math.min( destTile[0] + rangeOfTiles, numCols - 1 );
+  this._minRow = Math.max( destTile[1] - rangeOfTiles, 0 );
+  this._maxRow = Math.min( destTile[1] + rangeOfTiles, numRows - 1 );
 
-  var row, col;
-  var matrix = matrixData.matrix;
-  var tiles = [];
-
-  for(row = startRow; row < endRow; row++) {
-
-    var cols = matrix[ row ];
-
-    for(col = startCol; col < endCol; col++) {
-      if(cols[col] === 0) {
-        tiles.push( [col, row] );
-      }
-    }
-  }
-
-  return tiles;
+  /*
+  console.log(
+    'movable range of tiles: ' + rangeOfTiles,
+    'destination tile col: ' + destTile[0] + ', row: ' + destTile[1],
+    'min col: ' + this._minCol + ', max col: ' + this._maxCol + ', min row: ' + this._minRow + ', max row: ' + this._maxRow,
+    'total cols: ' + numCols + ', total rows: ' + numRows);*/
 };
 
 
-feng.views.view3dobject.MovableObject.prototype.getPositionIfAvailable = function( position ){
+feng.views.view3dobject.MovableObject.prototype.getPositionIfAvailable = function(){
+
+  var control = this._view3d.modeController.control;
+  var controlPosition = control.getPosition();
+
+  var forward = new THREE.Vector3( 0, 0, -1 );
+  forward.applyQuaternion( control.getObject().quaternion ).setY(0).normalize();
+
+  this._dropPosition.addVectors( controlPosition, forward.multiplyScalar(50) );
 
   var matrixId = this._view3d.getMatrixId();
   var matrixData = feng.pathfinder.getMatrixData( matrixId );
 
-  var tile = feng.pathfinder.getTileByPosition( position, matrixData );
+  var tile = feng.pathfinder.getTileByPosition( this._dropPosition, matrixData );
+  var tileCol = tile[0];
+  var tileRow = tile[1];
 
-  var walkable = (matrixData.matrix[ tile[1] ][ tile[0] ] === 0);
+  var isInRange = ((tileCol >= this._minCol && tileCol <= this._maxCol) && (tileRow >= this._minRow && tileRow <= this._maxRow));
 
-  return (walkable ? position : null);
+  return (isInRange ? this._dropPosition : null);
 };
 
 
 feng.views.view3dobject.MovableObject.prototype.pick = function(){
 
-  this.updateAvailableTiles();
+  this.updateTilesRange();
 
   var arms = this._view3d.arms;
   arms.addItem( this );
-
-  var walkControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.WALK );
-  walkControls.addUpdateCallback( this._onWalkUpdate );
 
   var closeUpControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.CLOSE_UP );
   closeUpControls.close();
@@ -89,8 +90,20 @@ feng.views.view3dobject.MovableObject.prototype.drop = function(){
   var arms = this._view3d.arms;
   arms.removeItem( this );
 
-  var walkControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.WALK );
-  walkControls.removeUpdateCallback( this._onWalkUpdate );
+  var position = this.getPositionIfAvailable();
+
+  this.object3d.position.copy( position ).setY( this._view3d.getFloorY() );
+  this.object3d.rotation.set( 0, 0, 0 );
+  this.addToScene();
+
+  var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
+  
+  browseControls.dispatchEvent({
+    type: feng.events.EventType.CHANGE,
+    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+    nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
+    object: this
+  });
 };
 
 
@@ -99,13 +112,6 @@ feng.views.view3dobject.MovableObject.prototype.startInteraction = function(){
   goog.base(this, 'startInteraction');
 
   this._interactionHandler.listen(this._view3d.domElement, 'click', this.onClick, false, this);
-};
-
-
-feng.views.view3dobject.MovableObject.prototype.onWalkUpdate = function( position ){
-
-  var availablePosition = this.getPositionIfAvailable( position );
-  console.log('available position to drop movable: ', availablePosition);
 };
 
 

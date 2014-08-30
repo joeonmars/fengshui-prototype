@@ -1,6 +1,7 @@
 goog.provide('feng.views.view3dobject.Arms');
 
 goog.require('feng.views.view3dobject.InteractiveObject');
+goog.require('feng.views.view3dobject.MovableObject');
 
 /**
  * @constructor
@@ -44,6 +45,12 @@ feng.views.view3dobject.Arms.prototype.addItem = function( view3dObject ){
   view3dObject.object3d.position.copy( objectOrientation.position );
   view3dObject.object3d.rotation.copy( objectOrientation.rotation );
 
+  // activate drop button if a movable object is added
+  if(view3dObject instanceof feng.views.view3dobject.MovableObject) {
+
+    this._view3d.hud.dropButton.activate( view3dObject );
+  }
+
   console.log( 'collected by arms: ' + view3dObject.name );
 };
 
@@ -53,6 +60,12 @@ feng.views.view3dobject.Arms.prototype.removeItem = function( view3dObject ){
   goog.array.remove( this._items, view3dObject );
 
   this.object3d.remove( view3dObject.object3d );
+
+  // deactivate drop button if a movable object is removed
+  if(view3dObject instanceof feng.views.view3dobject.MovableObject) {
+
+    this._view3d.hud.dropButton.deactivate();
+  }
 
   console.log( 'removed from arms: ' + view3dObject.name );
 };

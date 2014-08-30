@@ -169,6 +169,8 @@ feng.controllers.view3d.PathfindingController.prototype.generateMatrix = functio
 
 feng.controllers.view3d.PathfindingController.prototype.getTileByPosition = function( position, matrixData ) {
 
+	var gridMaxX = matrixData.gridMaxX;
+	var gridMaxZ = matrixData.gridMaxZ;
 	var gridMinX = matrixData.gridMinX;
 	var gridMinZ = matrixData.gridMinZ;
 	var tileSize = matrixData.tileSize;

@@ -10,7 +10,7 @@ feng.views.view3dobject.Skybox = function( assets, view3d ){
 
   var directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
 
-  var skyGeometry = new THREE.BoxGeometry( 150000, 150000, 150000 ); 
+  var skyGeometry = new THREE.BoxGeometry( 10000, 10000, 10000 );
   
   var materials = [];
 
@@ -41,7 +41,6 @@ feng.views.view3dobject.Skybox = function( assets, view3d ){
   skyMaterial.fog = false;
 
   var skybox = new THREE.Mesh( skyGeometry, skyMaterial );
-  skybox.position.y = -15000;
   skybox.name = 'skybox';
 
   goog.base( this, skybox, {}, view3d );

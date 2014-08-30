@@ -124,6 +124,12 @@ feng.views.View3D.prototype.getMatrixId = function(){
 };
 
 
+feng.views.View3D.prototype.getFloorY = function(){
+
+	return this.floorObjects[ this.floorIndex ].position.y;
+};
+
+
 feng.views.View3D.prototype.getObjectsOfFloor = function( floorIndex ){
 
 	var hasFloorIndex = goog.isNumber( floorIndex );
@@ -417,6 +423,12 @@ feng.views.View3D.prototype.initScene = function() {
 
 	// create design plane
 	this.designPlane = new feng.views.view3dobject.DesignPlane( this );
+
+	/* for testing skybox
+	goog.object.forEach(this.view3dObjects, function(object) {
+		object.removeFromScene();
+	});
+	*/
 
 	// create skybox
 	var assets = preloadModel.getAsset(this.sectionId+'.'+this.id+'.skybox');
