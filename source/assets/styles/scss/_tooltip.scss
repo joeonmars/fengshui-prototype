@@ -1,0 +1,73 @@
+@at-root {
+
+	@include keyframes(fade-in-tooltip) {
+	  0%{
+	  	visibility: visible;
+			opacity: 0;
+			@include translateY(20px);
+	  }
+	  100%{
+	  	visibility: visible;
+			opacity: 1;
+			@include translateY(0px);
+	  }
+	}
+
+
+	@include keyframes(fade-out-tooltip) {
+	  0%{
+	  	visibility: visible;
+			opacity: 1;
+			@include translateY(0px);
+	  }
+	  100%{
+	  	visibility: hidden;
+			opacity: 0;
+			@include translateY(20px);
+	  }
+	}
+
+}
+
+
+>.tooltip{
+
+	position: absolute;
+	opacity: 1;
+	@include translateZ(0);
+	@include transition( opacity .5s ease-in-out );
+
+	>.content{
+		width: 150px;
+		height: 150px;
+		margin-top: -150px;
+		margin-left: -75px;
+		color: #fff;
+		background-color: rgba(0, 0, 0, .8);
+		@include border-radius(50%);
+	}
+
+	&.fadeIn{
+		>.content{
+			@include animation(fade-in-tooltip .25s forwards $easeOutExpo);
+		}
+	}
+
+	&.fadeOut{
+		>.content{
+			@include animation(fade-out-tooltip .25s forwards $easeOutExpo);
+		}
+	}
+
+	&.blocked{
+		opacity: .1;
+	}
+
+	&.unlocked{
+
+	}
+
+	&.locked{
+
+	}
+}

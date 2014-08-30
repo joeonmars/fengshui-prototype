@@ -2,9 +2,7 @@ goog.provide('feng.controllers.controls.DesignControls');
 
 goog.require('goog.fx.Dragger');
 goog.require('feng.controllers.controls.Controls');
-goog.require('feng.controllers.controls.InteractionResolver');
 goog.require('feng.utils.ThreeUtils');
-goog.require('feng.views.sections.controls.Manipulator');
 goog.require('feng.views.sections.controls.ZoomSlider');
 
 
@@ -45,12 +43,6 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement, 
 	this._tracker = new THREE.Mesh( new THREE.BoxGeometry( 20, 20, 20 ), new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true, wireframeLinewidth: 2 }) );
 	this._tracker.material.fog = false;
 	//this._view3d.scene.add( this._tracker );
-
-  //
-  this._interactionResolver = feng.controllers.controls.InteractionResolver.getInstance();
-
-  var manipulatorDom = goog.dom.getElementByClass('manipulator', uiElement);
-  this._manipulator = new feng.views.sections.controls.Manipulator( manipulatorDom );
 
   var zoomSliderDom = goog.dom.createDom('div');
   var zoomCallback = goog.bind(this.setFov, this);
@@ -101,6 +93,15 @@ feng.controllers.controls.DesignControls.prototype.setFocus = function( x, z ) {
 };
 
 
+feng.controllers.controls.DesignControls.prototype.getZoomFraction = function() {
+
+	var fov = this._zoomSlider.getCurrentFov();
+	var range = this._zoomSlider.fovRange;
+	
+	return (fov - range.min) / (range.max - range.min);
+};
+
+
 feng.controllers.controls.DesignControls.prototype.isDragging = function() {
 
 	return this._dragger.isDragging();
@@ -115,11 +116,7 @@ feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 
 		this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this);
 
-		this._eventHandler.listen(this._manipulator, feng.events.EventType.CHANGE, this.onManipulate, false, this);
 		this._eventHandler.listen(this._view3d.domElement, 'click', this.onClickView, false, this);
-
-		this._eventHandler.listen(this._interactionResolver, feng.events.EventType.START, this.onInteractionStart, false, this);
-		this._eventHandler.listen(this._interactionResolver, feng.events.EventType.END, this.onInteractionEnd, false, this);
 
 		this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
 		this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this);
@@ -127,17 +124,12 @@ feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 		this._zoomSlider.activate();
 		this._zoomSlider.show();
 
-		this._manipulator.show();
-		this._manipulator.activate( this._activeObject.interactions );
 		this.update();
 
 	}else  {
 
 		this._zoomSlider.deactivate();
 		this._zoomSlider.hide();
-
-		this._manipulator.hide();
-		this._manipulator.deactivate();
 	}
 
 	this._dragger.setEnabled( this._isEnabled );
@@ -153,13 +145,6 @@ feng.controllers.controls.DesignControls.prototype.update = function () {
 		type: feng.events.EventType.UPDATE,
 		rotationY: -this.getYaw()
 	});
-
-	//
-	var renderElement = this._view3d.domElement;
-	var renderElementSize = goog.style.getSize( renderElement );
-	var object3d = this._activeObject.object3d;
-	var object2d = feng.utils.ThreeUtils.get2DCoordinates( object3d.position, this._camera, renderElementSize );
-	this._manipulator.update( object2d.x, object2d.y );
 };
 
 
@@ -189,23 +174,6 @@ feng.controllers.controls.DesignControls.prototype.close = function () {
 		toFov: feng.controllers.controls.Controls.Default.FOV,
 		object: this._activeObject
 	});
-};
-
-
-feng.controllers.controls.DesignControls.prototype.onManipulate = function ( e ) {
-	/*
-	var collidableBoxes = this._view3d.getCollidableBoxes( this._activeObject.object3d );
-	var objectBox = this._activeObject.getBoxBeforeRotation();
-
-	this._interactionResolver.resolve( this._activeObject, e.interaction, {
-		worldId: this._worldId,
-		worldWidth: this._worldWidth,
-		worldHeight: this._worldHeight,
-		collidableBoxes: collidableBoxes,
-		objectBox: objectBox,
-		camera: this._camera
-	});
-*/
 };
 
 
@@ -298,20 +266,4 @@ feng.controllers.controls.DesignControls.prototype.onDrag = function(e){
 	rotation.setFromQuaternion( quaternion );
 
 	this.setRotation( rotation );
-};
-
-
-feng.controllers.controls.DesignControls.prototype.onInteractionStart = function(e){
-
-	this._manipulator.hide();
-};
-
-
-feng.controllers.controls.DesignControls.prototype.onInteractionEnd = function(e){
-
-	this._manipulator.show();
-
-	if(e.interaction === 'close') {
-		this.close();
-	}
 };

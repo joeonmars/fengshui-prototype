@@ -190,18 +190,18 @@ body{
 
 			>.controls{
 				@include absoluteTopLeft;
-				z-index: 2;
+				z-index: 3;
 
 				@import "scene-controls";
 			}
 
-			>.design-captions{
+			>.tooltips{
 				@include absoluteTopLeft;
 				width: 100%;
 				height: 0;
-				z-index: 3;
+				z-index: 2;
 
-				@import "design-caption";
+				@import "tooltip";
 			}
 
 			>.captions{

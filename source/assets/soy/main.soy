@@ -87,9 +87,12 @@
 			{/call}
 		</div>
 
-		<div class="design-captions">
-			{call feng.templates.designcaptions.UnlockedDesignCaption}{/call}
-			{call feng.templates.designcaptions.LockedDesignCaption}{/call}
+		<div class="tooltips">
+			{foreach $tip in $tips}
+				{call feng.templates.controls.Tooltip}
+					{param tip: $tip /}
+				{/call}
+			{/foreach}
 		</div>
 
 		<div class="captions">

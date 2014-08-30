@@ -11,7 +11,7 @@ goog.require('feng.views.sections.Episode');
 feng.views.sections.Townhouse = function(){
 
 	var achievements = feng.models.achievements.Achievements.getInstance();
-	var tips = achievements.getTipsOfSection( 'townhouse', true );
+	var tips = achievements.getTipsOfSection( 'townhouse' );
 	
 	var template = feng.templates.main.EpisodeSection;
 	var templateData = {

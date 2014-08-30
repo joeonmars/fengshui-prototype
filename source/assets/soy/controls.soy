@@ -150,6 +150,19 @@
 
 
 /**
+ * Tooltip in design control
+ * @param tip the tip
+ */
+{template .Tooltip}
+<div class="tooltip" data-id="{ $tip.id }">
+	<div class="content">
+		<p>{ $tip.name }</p>
+	</div>
+</div>
+{/template}
+
+
+/**
  * Progress Bar
  * @param tips fengshui tips
  */

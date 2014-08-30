@@ -106,7 +106,7 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 	});
 
 	goog.array.remove( clickableObjects, this._view3d.designPlane.object3d );
-	goog.array.remove( clickableObjects, this._view3d.designPlane.skybox );
+	goog.array.remove( clickableObjects, this._view3d.skybox.object3d );
 
 	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, clickableObjects, this._camera, this._view3d.getViewSize() );
 	var intersectPosition = intersects[0].point;
