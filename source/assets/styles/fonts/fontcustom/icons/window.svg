@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="128px" height="128px" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.0.4 (8054) - http://www.bohemiancoding.com/sketch -->
+    <title>window</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="window" sketch:type="MSArtboardGroup" stroke-width="5">
+            <g id="windows-studio-sleepingarea" sketch:type="MSLayerGroup" transform="translate(0.000000, 16.000000)">
+                <path d="M0,0 L0,97 L128,97 L128,0 L0,0 Z M10.70209,11.831881 L10.70209,84.831881 L59.70209,84.831881 L59.70209,11.831881 L10.70209,11.831881 Z M68.009226,11.831881 L68.009226,84.831881 L117.009226,84.831881 L117.009226,11.831881 L68.009226,11.831881 Z" id="Rectangle-18" stroke="#121212" fill="#000000" sketch:type="MSShapeGroup"></path>
+                <path d="M103.509226,28.5 L80.509226,56.5" id="Line-4" stroke="#000000" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
+                <path d="M104.504613,42.5 L81.504613,70.5" id="Line-5" stroke="#000000" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
+                <path d="M45.509226,28.5 L22.509226,56.5" id="Line-7" stroke="#000000" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
+                <path d="M46.504613,42.5 L23.504613,70.5" id="Line-6" stroke="#000000" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
+            </g>
+        </g>
+    </g>
+</svg>

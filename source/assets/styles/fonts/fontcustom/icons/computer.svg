@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="128px" height="128px" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.0.4 (8054) - http://www.bohemiancoding.com/sketch -->
+    <title>computer</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="computer" sketch:type="MSArtboardGroup" fill="#000000">
+            <path d="M8.00697327,10 C3.58484404,10 0,13.5852722 0,17.9961124 L0,91.0038876 C0,95.4200185 3.59075293,99 8.00697327,99 L119.993027,99 C124.415156,99 128,95.4147278 128,91.0038876 L128,17.9961124 C128,13.5799815 124.409247,10 119.993027,10 L8.00697327,10 L8.00697327,10 Z M10.9904763,17 C8.78659709,17 7,18.7983311 7,21.0058104 L7,87.9941896 C7,90.2065376 8.79066777,92 10.9904763,92 L117.009524,92 C119.213403,92 121,90.2016689 121,87.9941896 L121,21.0058104 C121,18.7934624 119.209332,17 117.009524,17 L10.9904763,17 L10.9904763,17 Z" id="Rectangle-1" sketch:type="MSShapeGroup"></path>
+            <rect id="Rectangle-3" sketch:type="MSShapeGroup" x="14" y="24" width="100" height="61" rx="2"></rect>
+            <rect id="Rectangle-2" sketch:type="MSShapeGroup" x="39" y="109" width="50" height="9" rx="40"></rect>
+            <rect id="Rectangle-3" sketch:type="MSShapeGroup" x="49" y="101" width="30" height="6"></rect>
+        </g>
+    </g>
+</svg>

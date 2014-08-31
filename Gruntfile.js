@@ -67,6 +67,10 @@ module.exports = function(grunt) {
           spawn: false,
         },
       },
+      svg: {
+        files: ['source/assets/styles/fonts/fontcustom/icons/*.svg'],
+        tasks: ['webfont']
+      }
     },
 
     compass: {
@@ -85,6 +89,25 @@ module.exports = function(grunt) {
           environment: 'development'
         }
       },
+    },
+
+    webfont: {
+      icons: {
+        src: 'source/assets/styles/fonts/fontcustom/icons/*.svg',
+        dest: 'source/assets/styles/fonts/fontcustom',
+        destCss: 'source/assets/styles/scss',
+        options: {
+          stylesheet: 'scss',
+          htmlDemo: true,
+          hashes: true,
+          engine: 'node',
+          templateOptions: {
+            baseClass: 'icon',
+            classPrefix: 'icon-',
+            mixinPrefix: 'icon-'
+          }
+        }
+      }
     },
 
     closureSoys: {
@@ -157,9 +180,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-open');
   grunt.loadNpmTasks('grunt-bower-task');
+  grunt.loadNpmTasks('grunt-webfont');
 
   // Default task.
-  grunt.registerTask('default', ['bower', 'compass', 'closureSoys', 'closureDepsWriter', 'open:dev', 'watch']);
-  grunt.registerTask('dev', ['compass', 'closureSoys', 'closureDepsWriter', 'open:dev', 'watch']);
-  grunt.registerTask('build', ['compass', 'closureSoys', 'closureBuilder', 'closureCompiler', 'open:release']);
+  grunt.registerTask('default', ['bower', 'compass', 'webfont', 'closureSoys', 'closureDepsWriter', 'open:dev', 'watch']);
+  grunt.registerTask('dev', ['compass', 'webfont', 'closureSoys', 'closureDepsWriter', 'open:dev', 'watch']);
+  grunt.registerTask('build', ['compass', 'webfont', 'closureSoys', 'closureBuilder', 'closureCompiler', 'open:release']);
 };
