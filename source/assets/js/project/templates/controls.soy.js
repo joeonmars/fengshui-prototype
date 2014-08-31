@@ -132,7 +132,7 @@ feng.templates.controls.DropButton = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.controls.Tooltip = function(opt_data, opt_ignored) {
-  return '<div class="tooltip" data-id="' + opt_data.tip.id + '"><div class="content"><p>' + opt_data.tip.name + '</p></div></div>';
+  return '<div class="tooltip fadeOut" data-id="' + opt_data.tip.id + '"><div class="content"><button class="circle"><div class="wrapper"><div class="icon"></div><a href="' + opt_data.tip.goTipToken + '"></a></div></button><p>' + opt_data.tip.name + '</p></div></div>';
 };
 
 
@@ -144,11 +144,11 @@ feng.templates.controls.Tooltip = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var output = '<div class="progressBar"><div class="inner"><div class="wave"><canvas class="gray"></canvas><canvas class="fill"></canvas></div><ul class="tips">';
-  var tipList333 = opt_data.tips;
-  var tipListLen333 = tipList333.length;
-  for (var tipIndex333 = 0; tipIndex333 < tipListLen333; tipIndex333++) {
-    var tipData333 = tipList333[tipIndex333];
-    output += '<li class="tip" data-tip-id="' + tipData333.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><div class="content"><canvas data-tip-id="' + tipData333.id + '" data-view-id="' + tipData333.viewId + '" data-section-id="' + tipData333.sectionId + '"></canvas><a href="' + tipData333.goTipToken + '"><span class="icon"></span>GO</a></div></div></li>';
+  var tipList335 = opt_data.tips;
+  var tipListLen335 = tipList335.length;
+  for (var tipIndex335 = 0; tipIndex335 < tipListLen335; tipIndex335++) {
+    var tipData335 = tipList335[tipIndex335];
+    output += '<li class="tip" data-tip-id="' + tipData335.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><div class="content"><canvas data-tip-id="' + tipData335.id + '" data-view-id="' + tipData335.viewId + '" data-section-id="' + tipData335.sectionId + '"></canvas><a href="' + tipData335.goTipToken + '"><span class="icon"></span>GO</a></div></div></li>';
   }
   output += '</ul></div></div>';
   return output;

@@ -154,8 +154,14 @@
  * @param tip the tip
  */
 {template .Tooltip}
-<div class="tooltip" data-id="{ $tip.id }">
+<div class="tooltip fadeOut" data-id="{ $tip.id }">
 	<div class="content">
+		<button class="circle">
+			<div class="wrapper">
+				<div class="icon"></div>
+				<a href="{ $tip.goTipToken }"></a>
+			</div>
+		</button>
 		<p>{ $tip.name }</p>
 	</div>
 </div>

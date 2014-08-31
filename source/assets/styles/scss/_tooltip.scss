@@ -2,12 +2,12 @@
 
 	@include keyframes(fade-in-tooltip) {
 	  0%{
-	  	visibility: visible;
+	  		visibility: visible;
 			opacity: 0;
 			@include translateY(20px);
 	  }
 	  100%{
-	  	visibility: visible;
+	  		visibility: visible;
 			opacity: 1;
 			@include translateY(0px);
 	  }
@@ -16,12 +16,12 @@
 
 	@include keyframes(fade-out-tooltip) {
 	  0%{
-	  	visibility: visible;
+	  		visibility: visible;
 			opacity: 1;
 			@include translateY(0px);
 	  }
 	  100%{
-	  	visibility: hidden;
+	  		visibility: hidden;
 			opacity: 0;
 			@include translateY(20px);
 	  }
@@ -39,12 +39,49 @@
 
 	>.content{
 		width: 150px;
-		height: 150px;
 		margin-top: -150px;
 		margin-left: -75px;
 		color: #fff;
-		background-color: rgba(0, 0, 0, .8);
-		@include border-radius(50%);
+
+		>.circle{
+			width: 150px;
+			height: 150px;
+			background-color: rgba(0, 0, 0, .8);
+			overflow: hidden;
+			@include border-radius(50%);
+			@include translateZ(0);
+
+			>.wrapper{
+				@include transition( transform .2s ease-in-out );
+
+				>.icon{
+					width: 150px;
+					height: 150px;
+					background-color: blue;
+				}
+
+				>a{
+					display: block;
+					width: 150px;
+					height: 150px;
+					background-color: green;
+				}
+			}
+
+			&:hover{
+				>.wrapper{
+					@include translateY( -150px );
+				}
+			}
+		}
+
+		>p{
+			width: 100%;
+			font-size: 24px;
+			text-transform: uppercase;
+			text-align: center;
+			line-height: 2;
+		}
 	}
 
 	&.fadeIn{
