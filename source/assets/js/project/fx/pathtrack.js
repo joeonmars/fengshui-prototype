@@ -210,7 +210,7 @@ feng.fx.PathTrack.prototype.updateTrack = function(){
   this.tubeGeometry = new THREE.TubeGeometry(this.spline, this.segments, .5, 4, this.isClosed);
   var tubeMesh = new THREE.Mesh( this.tubeGeometry, this._material );
   this._debugObject.add(tubeMesh);
-
+  
   // create cubes for dragging
   goog.array.forEach(this.controlPoints, function(coordinate, index) {
   	var geometry = new THREE.BoxGeometry(6, 6, 6);

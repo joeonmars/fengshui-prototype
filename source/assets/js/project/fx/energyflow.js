@@ -41,7 +41,7 @@ feng.fx.EnergyFlow.prototype.create = function(controlPoints, offset, isClosed, 
 
 		var isLeaf = (i % (this._numParticles / this._numLeaves) === 0);
 		var timeOffset = i / this._numParticles;
-
+		
 		var particle = isLeaf ? new feng.fx.Leaf(
 			timeOffset,
 			this._preset.leaf,

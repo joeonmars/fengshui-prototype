@@ -203,7 +203,7 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 			new THREE.Vector3(-100, 50, -200)
 		];
 
-		var pathTrack = new feng.fx.EnergyFlow(coordinates, true, feng.fx.EnergyFlow.Preset.SHA);
+		var pathTrack = new feng.fx.EnergyFlow(coordinates, true, feng.fx.EnergyFlow.Preset.YANG);
 		pathTrack.activate();
 
 		scene.add( pathTrack );

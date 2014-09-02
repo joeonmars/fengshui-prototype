@@ -12,9 +12,10 @@ feng.fx.TextureAnimator = function ( texture, tilesHoriz, tilesVert, numTiles, t
   this._tilesVertical = tilesVert;
   this._numberOfTiles = numTiles;
 
-	this._texture = texture;
-	this._texture.wrapS = this._texture.wrapT = THREE.RepeatWrapping;
-  this._texture.repeat.set(1 / this._tilesHorizontal, 1 / this._tilesVertical);
+	this.texture = texture;
+  this.texture.needsUpdate = true;
+	this.texture.wrapS = this.texture.wrapT = THREE.RepeatWrapping;
+  this.texture.repeat.set(1 / this._tilesHorizontal, 1 / this._tilesVertical);
 
   this._tileDisplayDuration = tileDispDuration;
   this._currentDisplayTime = 0;
@@ -55,9 +56,9 @@ feng.fx.TextureAnimator.prototype.onAnimationFrame = function( now ) {
     }
 
     currentColumn = this._currentTile % this._tilesHorizontal;
-    this._texture.offset.x = currentColumn / this._tilesHorizontal;
+    this.texture.offset.x = currentColumn / this._tilesHorizontal;
 
     currentRow = Math.floor(this._currentTile / this._tilesHorizontal);
-    this._texture.offset.y = currentRow / this._tilesVertical;
+    this.texture.offset.y = currentRow / this._tilesVertical;
   }
 };
