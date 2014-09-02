@@ -19,9 +19,14 @@
 					position: absolute;
 					height: 100%;
 
-					>canvas{
+					>.icon{
 						position: absolute;
-						display: block;
+						color: #FFFDF1;
+						font-size: 40px;
+						width: 64px;
+						height: 64px;
+						text-align: center;
+						line-height: 64px;
 					}
 
 					>figcaption{
@@ -34,12 +39,13 @@
 
 							>.share{
 								position: relative;
+								top: -2px;
 								display: inline-block;
-								vertical-align: top;
 								margin-left: 10px;
 
 								>.icon{
 									display: inline-block;
+									font-size: 16px;
 									@include single-transition(opacity, .4s);
 									opacity: 1;
 								}
@@ -52,26 +58,13 @@
 
 									>li{
 										display: inline-block;
-										vertical-align: top;
-										margin: 0 5px;
+										vertical-align: middle;
 
 										>a{
 											display: block;
 											@include single-transition(opacity, .4s);
-											font-size: 18px;
+											font-size: 16px;
 											opacity: .25;
-
-											&.facebook{
-												@include font-awesome("fa-facebook");
-											}
-
-											&.twitter{
-												@include font-awesome("fa-twitter");
-											}
-
-											&.google{
-												@include font-awesome("fa-google-plus");
-											}
 
 											&:hover{
 												opacity: 1;
@@ -79,7 +72,7 @@
 										}
 
 										&:first-child{
-											margin-left: 10px;
+											margin-left: 5px;
 										}
 									}
 								}
@@ -117,12 +110,7 @@
 									color: $red;
 
 									>.share{
-										>.icon{
-											@include retina-icon("tip-share-red");
-										}
-										a{
-											color: $red;
-										}
+										color: $red;
 									}
 								}
 							}
@@ -162,12 +150,7 @@
 									color: $black;
 
 									>.share{
-										>.icon{
-											@include retina-icon("tip-share-black");
-										}
-										a{
-											color: $black;
-										}
+										color: $black;
 									}
 								}
 							}
@@ -207,12 +190,7 @@
 									color: $yellow;
 
 									>.share{
-										>.icon{
-											@include retina-icon("tip-share-yellow");
-										}
-										a{
-											color: $yellow;
-										}
+										color: $yellow;
 									}
 								}
 							}
@@ -248,9 +226,10 @@
 
 				&.locked{
 					>figure{
-						>canvas{
-							top: 83px;
-							left: 31px;
+						>.icon{
+							top: 71px;
+							left: 19px;
+							@extend .icon-lock;
 						}
 
 						>figcaption{
@@ -279,9 +258,9 @@
 
 					&.unlocked1{
 						>figure{
-							>canvas{
-								top: 84px;
-								left: 13px;
+							>.icon{
+								top: 72px;
+								left: 1px;
 							}
 
 							>figcaption{
@@ -293,9 +272,9 @@
 
 					&.unlocked2{
 						>figure{
-							>canvas{
-								top: 84px;
-								left: 27px;
+							>.icon{
+								top: 71px;
+								left: 15px;
 							}
 
 							>figcaption{
@@ -320,9 +299,9 @@
 
 					&.unlocked1{
 						>figure{
-							>canvas{
-								top: 82px;
-								left: 13px;
+							>.icon{
+								top: 71px;
+								left: 1px;
 							}
 
 							>figcaption{
@@ -334,9 +313,9 @@
 
 					&.unlocked2{
 						>figure{
-							>canvas{
-								top: 82px;
-								left: 27px;
+							>.icon{
+								top: 71px;
+								left: 15px;
 							}
 
 							>figcaption{

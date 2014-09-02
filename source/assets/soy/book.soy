@@ -80,16 +80,16 @@
 									{foreach $tip in $tips}
 									<li class="tip {if $tip.unlocked == true}unlocked{else}locked{/if}" data-tip-id="{ $tip.id }">
 										<figure>
-											<canvas></canvas>
+											<div class="icon icon-{ $tip.id }"></div>
 											<figcaption>
 												<h1>
 													{ $tip.name }
 													<div class="share">
-														<div class="icon"></div>
+														<div class="icon icon-share"></div>
 														<ul class="slider">
-															<li><a href="#" class="facebook"></a></li>
-															<li><a href="#" class="twitter"></a></li>
-															<li><a href="#" class="google"></a></li>
+															<li><a href="#" class="icon icon-facebook"></a></li>
+															<li><a href="#" class="icon icon-twitter"></a></li>
+															<li><a href="#" class="icon icon-google"></a></li>
 														</ul>
 													</div>
 												</h1>

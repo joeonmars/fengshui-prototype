@@ -381,12 +381,19 @@
 					left: -54px;
 					width: 108px;
 					height: 120px;
+					opacity: 0;
+					visibility: hidden;
+					@include translateY(20px);
+					@include transition( opacity .25s $easeInOutCubic, transform .25s $easeInOutCubic, visibility .3s );
 					@include popup( $padding: 20px 14px, $color: $brown );
 
 					>.content{
-						>canvas{
-							display: block;
-							margin: 0 auto;
+						>.icon{
+							width: 100%;
+							height: 50px;
+							text-align: center;
+							font-size: 50px;
+							color: $brown;
 						}
 
 						>a{
@@ -430,6 +437,12 @@
 						border-width: 8px 5px 0 5px;
 						border-color: $cream transparent transparent transparent;
 					}
+
+					&:hover{
+						visibility: visible;
+						opacity: 1;
+						@include translateY(0px);
+					}
 				}
 
 				&:hover{
@@ -439,6 +452,12 @@
 							opacity: 1;
 							@include scale(1);
 						}
+					}
+
+					>.dialog{
+						visibility: visible;
+						opacity: 1;
+						@include translateY(0px);
 					}
 				}
 

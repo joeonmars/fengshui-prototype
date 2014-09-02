@@ -32,8 +32,7 @@ body{
 			border: 1px solid $black;
 			background-color: transparent;
 			text-align: center;
-			font-size: 15px;
-			line-height: 1;
+			font-size: 13px;
 			color: $black;
 			@include box-sizing(border-box);
 			@include border-radius(50%);
@@ -49,14 +48,17 @@ body{
 		}
 
 		>.howtoplay{
-			@include font-awesome("fa-info");
+			@extend .icon;
+			@extend .icon-help;
 		}
 
 		>.sound{
-			@include font-awesome("fa-volume-up");
+			@extend .icon;
+			@extend .icon-sound-on;
 
 			&.mute{
-				@include font-awesome("fa-volume-off");
+				@extend .icon;
+				@extend .icon-sound-off;
 			}
 		}
 
@@ -82,7 +84,8 @@ body{
 
 			>button{
 				z-index: 1;
-				@include font-awesome("fa-share");
+				@extend .icon;
+				@extend .icon-share;
 			}
 		}
 
@@ -113,8 +116,9 @@ body{
 					display: inline-block;
 					vertical-align: middle;
 					width: 16px;
-					line-height: 28px;
 					text-align: center;
+					font-size: 15px;
+					line-height: 26px !important;
 					margin: 0 5px;
 					color: $black;
 					@include single-transition(opacity, .25s);
@@ -128,15 +132,18 @@ body{
 					}
 
 					&.facebook{
-						@include font-awesome("fa-facebook");
+						@extend .icon;
+						@extend .icon-facebook;
 					}
 
 					&.twitter{
-						@include font-awesome("fa-twitter");
+						@extend .icon;
+						@extend .icon-twitter;
 					}
 
 					&.google{
-						@include font-awesome("fa-google-plus");
+						@extend .icon;
+						@extend .icon-google;
 					}
 				}
 			}

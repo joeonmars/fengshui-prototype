@@ -18,22 +18,6 @@ feng.views.sections.controls.ProgressBar = function(domElement, tips){
 
   var achievements = feng.models.achievements.Achievements.getInstance();
 
-  goog.array.forEach(this._dialogEls, function(dialogEl) {
-
-    var iconCanvas = goog.dom.query('canvas', dialogEl)[0];
-
-    var tipId = iconCanvas.getAttribute('data-tip-id');
-    var viewId = iconCanvas.getAttribute('data-view-id');
-    var sectionId = iconCanvas.getAttribute('data-section-id');
-    var tip = achievements.getTip( tipId, viewId, sectionId );
-
-    iconCanvas = tip.getIcon(50, feng.Color.BROWN, iconCanvas, true);
-
-    TweenMax.set(dialogEl, {
-      'display': 'none'
-    });
-  });
-
   this._tips = {};
   
   goog.array.forEach(tips, function(tip) {
@@ -100,22 +84,6 @@ feng.views.sections.controls.ProgressBar = function(domElement, tips){
 goog.inherits(feng.views.sections.controls.ProgressBar, feng.views.sections.controls.Controls);
 
 
-feng.views.sections.controls.ProgressBar.prototype.activate = function(){
-
-  var shouldActivate = goog.base(this, 'activate');
-
-  if(!shouldActivate) return;
-
-  goog.array.forEach(this._dotEls, function(dotEl) {
-    this._eventHandler.listen(dotEl, 'mouseover', this.onMouseOverTip, false, this);
-  }, this);
-
-	goog.array.forEach(this._tipEls, function(tipEl) {
-    this._eventHandler.listen(tipEl, 'mouseout', this.onMouseOutTip, false, this);
-	}, this);
-};
-
-
 feng.views.sections.controls.ProgressBar.prototype.show = function(){
 
 	goog.base(this, 'show');
@@ -131,43 +99,6 @@ feng.views.sections.controls.ProgressBar.prototype.hide = function(){
 feng.views.sections.controls.ProgressBar.prototype.setProgress = function( progress ){
 
   goog.style.setStyle(this._fillCanvas, 'clip', 'rect(0px,' + this._canvasWidth * progress + 'px,30px,0px)');
-};
-
-
-feng.views.sections.controls.ProgressBar.prototype.onMouseOverTip = function(e){
-
-  var dotIndex = goog.array.indexOf( this._dotEls, e.currentTarget );
-  var tipEl = this._tipEls[ dotIndex ];
-
-  if(e.relatedTarget && goog.dom.contains(tipEl, e.relatedTarget)) return false;
-
-  var dialogEl = this._dialogEls[ dotIndex ];
-
-  TweenMax.fromTo(dialogEl, .25, {
-    'opacity': 0,
-    'y': 20
-  }, {
-    'opacity': 1,
-    'y': 0,
-    'display': 'block',
-    'ease': Cubic.easeInOut
-  });
-};
-
-
-feng.views.sections.controls.ProgressBar.prototype.onMouseOutTip = function(e){
-
-  if(e.relatedTarget && goog.dom.contains(e.currentTarget, e.relatedTarget)) return false;
-
-  var tipIndex = goog.array.indexOf( this._tipEls, e.currentTarget );
-  var dialogEl = this._dialogEls[ tipIndex ];
-
-  TweenMax.to(dialogEl, .25, {
-    'opacity': 0,
-    'y': 20,
-    'display': 'none',
-    'ease': Cubic.easeInOut
-  });
 };
 
 

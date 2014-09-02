@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="128px" height="128px" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
     <!-- Generator: Sketch 3.0.4 (8054) - http://www.bohemiancoding.com/sketch -->
-    <title>computer</title>
+    <title>Artboard 1</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-        <g id="computer" sketch:type="MSArtboardGroup" fill="#000000">
-            <path d="M8.00697327,10 C3.58484404,10 0,13.5852722 0,17.9961124 L0,91.0038876 C0,95.4200185 3.59075293,99 8.00697327,99 L119.993027,99 C124.415156,99 128,95.4147278 128,91.0038876 L128,17.9961124 C128,13.5799815 124.409247,10 119.993027,10 L8.00697327,10 L8.00697327,10 Z M10.9904763,17 C8.78659709,17 7,18.7983311 7,21.0058104 L7,87.9941896 C7,90.2065376 8.79066777,92 10.9904763,92 L117.009524,92 C119.213403,92 121,90.2016689 121,87.9941896 L121,21.0058104 C121,18.7934624 119.209332,17 117.009524,17 L10.9904763,17 L10.9904763,17 Z" id="Rectangle-1" sketch:type="MSShapeGroup"></path>
-            <rect id="Rectangle-3" sketch:type="MSShapeGroup" x="14" y="24" width="100" height="61" rx="2"></rect>
-            <rect id="Rectangle-2" sketch:type="MSShapeGroup" x="39" y="109" width="50" height="9" rx="40"></rect>
-            <rect id="Rectangle-3" sketch:type="MSShapeGroup" x="49" y="101" width="30" height="6"></rect>
+        <g id="Artboard-1" sketch:type="MSArtboardGroup" fill="#000000">
+            <g id="computer" sketch:type="MSLayerGroup" transform="translate(0.000000, 4.000000)">
+                <g id="Page-1" sketch:type="MSShapeGroup">
+                    <g id="computer">
+                        <path d="M3.12772393,0 C1.4003297,0 0,1.42746949 0,3.18363734 L0,32.2515478 C0,34.0098222 1.40263786,35.4351852 3.12772393,35.4351852 L46.8722762,35.4351852 C48.5996703,35.4351852 50,34.0077157 50,32.2515478 L50,3.18363734 C50,1.425363 48.5973621,0 46.8722762,0 L3.12772393,0 L3.12772393,0 Z M4.2931548,2.78703704 C3.43226449,2.78703704 2.734375,3.50303923 2.734375,4.38194303 L2.734375,31.0532422 C2.734375,31.9340844 3.4338546,32.6481481 4.2931548,32.6481481 L45.7068453,32.6481481 C46.5677355,32.6481481 47.265625,31.932146 47.265625,31.0532422 L47.265625,4.38194303 C47.265625,3.50110077 46.5661453,2.78703704 45.7068453,2.78703704 L4.2931548,2.78703704 L4.2931548,2.78703704 Z" id="Rectangle-1"></path>
+                        <rect id="Rectangle-3" x="5.46875" y="5.57407407" width="39.0625" height="24.287037" rx="2"></rect>
+                        <rect id="Rectangle-2" x="15.234375" y="39.4166667" width="19.53125" height="3.58333333" rx="40"></rect>
+                        <rect id="Rectangle-3" x="19.140625" y="36.2314815" width="11.71875" height="2.38888889"></rect>
+                    </g>
+                </g>
+            </g>
         </g>
     </g>
 </svg>

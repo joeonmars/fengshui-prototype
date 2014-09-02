@@ -2,7 +2,6 @@ goog.provide('feng.models.achievements.Tip');
 
 goog.require('goog.events.EventTarget');
 goog.require('feng.events');
-goog.require('feng.models.Preload');
 goog.require('feng.models.achievements.Achievements');
 goog.require('feng.controllers.NavigationController');
 
@@ -83,35 +82,4 @@ feng.models.achievements.Tip.prototype.unlock = function() {
   }
 
   return this.unlocked;
-};
-
-
-feng.models.achievements.Tip.prototype.getIcon = function(size, color, canvas, useUnlocked) {
-
-  var preload = feng.models.Preload.getInstance();
-
-  var tipIconsImg = preload.getAsset('global.tip-icons');
-  
-  var iconId = (this.unlocked || useUnlocked) ? this.iconId : 'lock';
-
-  var tipIconData = preload.getAsset('global.tip-icons-data')['frames'][iconId + '.png']['frame'];
-  var sourceIconX = tipIconData['x'];
-  var sourceIconY = tipIconData['y'];
-  var sourceIconW = tipIconData['w'];
-  var sourceIconH = tipIconData['h'];
-
-  var size = size || 32;
-  var color = color || '#ffffff';
-  var canvas = canvas || goog.dom.createDom('canvas');
-  canvas.width = size;
-  canvas.height = size;
-
-  var canvasCtx = canvas.getContext('2d');
-  canvasCtx.fillStyle = color;
-  canvasCtx.fillRect( 0, 0, size, size );
-
-  canvasCtx.globalCompositeOperation = 'destination-atop';
-  canvasCtx.drawImage( tipIconsImg, sourceIconX, sourceIconY, sourceIconW, sourceIconH, 0, 0, size, size );
-
-  return canvas;
 };
