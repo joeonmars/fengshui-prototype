@@ -155,14 +155,10 @@
  */
 {template .Tooltip}
 <div class="tooltip fadeOut" data-id="{ $tip.id }">
-	<div class="content">
-		<button class="circle">
-			<div class="wrapper">
-				<div class="icon"></div>
-				<a href="{ $tip.goTipToken }"></a>
-			</div>
-		</button>
-		<p>{ $tip.name }</p>
+	<div class="bar">
+		<div class="icon icon-{ $tip.id }"></div>
+		<h6>{ $tip.name }</h6>
+		<a class="icon icon-go" href="{ $tip.goTipToken }"></a>
 	</div>
 </div>
 {/template}

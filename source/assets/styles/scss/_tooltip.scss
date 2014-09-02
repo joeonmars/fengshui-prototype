@@ -2,12 +2,12 @@
 
 	@include keyframes(fade-in-tooltip) {
 	  0%{
-	  		visibility: visible;
+	  	visibility: visible;
 			opacity: 0;
 			@include translateY(20px);
 	  }
 	  100%{
-	  		visibility: visible;
+	  	visibility: visible;
 			opacity: 1;
 			@include translateY(0px);
 	  }
@@ -16,12 +16,12 @@
 
 	@include keyframes(fade-out-tooltip) {
 	  0%{
-	  		visibility: visible;
+	  	visibility: visible;
 			opacity: 1;
 			@include translateY(0px);
 	  }
 	  100%{
-	  		visibility: hidden;
+	  	visibility: hidden;
 			opacity: 0;
 			@include translateY(20px);
 	  }
@@ -34,64 +34,70 @@
 
 	position: absolute;
 	opacity: 1;
-	@include translateZ(0);
 	@include transition( opacity .5s ease-in-out );
 
-	>.content{
+	>.bar{
+		position: absolute;
+		top: -150px;
+		left: -75px;
 		width: 150px;
-		margin-top: -150px;
-		margin-left: -75px;
-		color: #fff;
+		height: 150px;
+		overflow: hidden;
+		background-color: rgba(0, 0, 0, .8);
+		@include border-radius(75px);
+		@include transition( width .4s ease-in-out, left .4s ease-in-out, background-color .4s ease-out );
 
-		>.circle{
+		>.icon{
 			width: 150px;
 			height: 150px;
-			background-color: rgba(0, 0, 0, .8);
-			overflow: hidden;
-			@include border-radius(50%);
-			@include translateZ(0);
-
-			>.wrapper{
-				@include transition( transform .2s ease-in-out );
-
-				>.icon{
-					width: 150px;
-					height: 150px;
-					background-color: blue;
-				}
-
-				>a{
-					display: block;
-					width: 150px;
-					height: 150px;
-					background-color: green;
-				}
-			}
-
-			&:hover{
-				>.wrapper{
-					@include translateY( -150px );
-				}
-			}
+			top: 0;
+			left: 0;
+			text-align: center;
+			line-height: 150px !important;
+			color: #fff;
+			font-size: 75px;
+			@include single-transition(color, .25s);
 		}
 
-		>p{
-			width: 100%;
-			font-size: 24px;
-			text-transform: uppercase;
+		>h6{
+			display: block;
+			position: absolute;
+			top: 0;
+			left: ((600px - 300px) / 2);
+			width: 300px;
+			line-height: 150px !important;
 			text-align: center;
-			line-height: 2;
+			text-transform: uppercase;
+			color: #000;
+			font-size: 40px;
+		}
+
+		>a{
+			display: block;
+			position: absolute;
+			left: (600px - 150px) !important;
+			color: #000 !important;
+		}
+
+		&:hover{
+			width: 600px;
+			left: -300px;
+			background-color: #fff;
+
+			>.icon{
+				color: #000;
+			}
 		}
 	}
 
 	&.fadeIn{
-		>.content{
+		>.bar{
 			@include animation(fade-in-tooltip .25s forwards $easeOutExpo);
 		}
 	}
 
 	&.fadeOut{
-		>.content{
+		>.bar{
 			@include animation(fade-out-tooltip .25s forwards $easeOutExpo);
 		}
 	}

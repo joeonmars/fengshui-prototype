@@ -132,7 +132,7 @@ feng.templates.controls.DropButton = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.controls.Tooltip = function(opt_data, opt_ignored) {
-  return '<div class="tooltip fadeOut" data-id="' + opt_data.tip.id + '"><div class="content"><button class="circle"><div class="wrapper"><div class="icon"></div><a href="' + opt_data.tip.goTipToken + '"></a></div></button><p>' + opt_data.tip.name + '</p></div></div>';
+  return '<div class="tooltip fadeOut" data-id="' + opt_data.tip.id + '"><div class="bar"><div class="icon icon-' + opt_data.tip.id + '"></div><h6>' + opt_data.tip.name + '</h6><a class="icon icon-go" href="' + opt_data.tip.goTipToken + '"></a></div></div>';
 };
 
 
@@ -144,11 +144,11 @@ feng.templates.controls.Tooltip = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var output = '<div class="progressBar"><div class="inner"><div class="wave"><canvas class="gray"></canvas><canvas class="fill"></canvas></div><ul class="tips">';
-  var tipList337 = opt_data.tips;
-  var tipListLen337 = tipList337.length;
-  for (var tipIndex337 = 0; tipIndex337 < tipListLen337; tipIndex337++) {
-    var tipData337 = tipList337[tipIndex337];
-    output += '<li class="tip" data-tip-id="' + tipData337.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><div class="content"><div class="icon icon-' + tipData337.id + '" data-tip-id="' + tipData337.id + '" data-view-id="' + tipData337.viewId + '" data-section-id="' + tipData337.sectionId + '"></div><a href="' + tipData337.goTipToken + '"><span class="icon"></span>GO</a></div></div></li>';
+  var tipList339 = opt_data.tips;
+  var tipListLen339 = tipList339.length;
+  for (var tipIndex339 = 0; tipIndex339 < tipListLen339; tipIndex339++) {
+    var tipData339 = tipList339[tipIndex339];
+    output += '<li class="tip" data-tip-id="' + tipData339.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><div class="content"><div class="icon icon-' + tipData339.id + '" data-tip-id="' + tipData339.id + '" data-view-id="' + tipData339.viewId + '" data-section-id="' + tipData339.sectionId + '"></div><a href="' + tipData339.goTipToken + '"><span class="icon"></span>GO</a></div></div></li>';
   }
   output += '</ul></div></div>';
   return output;
