@@ -121,6 +121,8 @@ feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 		this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
 		this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this);
 
+		this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
+		
 		this._zoomSlider.activate();
 		this._zoomSlider.show();
 
@@ -266,4 +268,22 @@ feng.controllers.controls.DesignControls.prototype.onDrag = function(e){
 	rotation.setFromQuaternion( quaternion );
 
 	this.setRotation( rotation );
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onNavigationChange = function(e){
+
+	var navController = e.target;
+
+	var goTipResult = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.GO_TIP );
+
+	if(goTipResult) {
+
+		var achievements = feng.models.achievements.Achievements.getInstance();
+		var tip = achievements.getTip( goTipResult.tipId, goTipResult.viewId, goTipResult.sectionId );
+
+		this._activeObject = this._view3d.getObjectByTip( tip );
+
+		this.close();
+	}
 };

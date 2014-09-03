@@ -41,6 +41,48 @@ feng.controllers.NavigationController.prototype.init = function(){
 };
 
 
+feng.controllers.NavigationController.prototype.testToken = function( token, tokenToTest ){
+
+  var tokenArr = goog.isArray( token ) ? token : tokenString.split('/');
+  var tokenToTestArr = tokenToTest.replace('#/', '').split('/');
+
+  var result;
+
+  if(tokenArr.length !== tokenToTestArr.length) {
+
+  	result = null;
+
+  }else {
+
+  	var result = {};
+
+  	var i, l = tokenArr.length;
+  	var regex = /{(.*?)}/;
+
+  	for(i = 0; i < l; i++) {
+
+  		var tokenStr = tokenArr[i];
+  		var tokenToTestStr = tokenToTestArr[i];
+
+  		var isVariable = regex.test( tokenToTestStr );
+
+  		if(isVariable) {
+
+  			var key = tokenToTestStr.replace(/{|}/g, '');
+  			result[ key ] = tokenStr;
+
+  		}else if( tokenStr != tokenToTestStr ){
+
+  			result = null;
+  			break;
+  		}
+  	}
+  }
+
+  return result;
+};
+
+
 feng.controllers.NavigationController.prototype.setToken = function(token, title){
 
 	var token = goog.isArray(token) ? this.getTokenFromArray( token ) : token;

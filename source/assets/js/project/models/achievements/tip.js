@@ -27,7 +27,7 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId, data ){
   this.hint = data['hint'];
 
   this.iconId = data['icon'];
-  this.goTipToken = feng.controllers.NavigationController.Token.GO_TIP.replace('{tipId}', this.id);
+  this.goTipToken = feng.controllers.NavigationController.Token.GO_TIP.replace('{sectionId}', this.sectionId).replace('{viewId}', this.viewId).replace('{tipId}', this.id);
   this.readTipToken = feng.controllers.NavigationController.Token.READ_TIP.replace('{tipId}', this.id);
 
   this.unlocked = feng.storageController.isTipUnlocked( this.id );
@@ -35,14 +35,6 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId, data ){
   this._requiredTipId = null;
 };
 goog.inherits(feng.models.achievements.Tip, goog.events.EventTarget);
-
-
-feng.models.achievements.Tip.prototype.getView3dObject = function() {
-
-	var view3dController = feng.controllers.view3d.View3DController.getInstance();
-	var view3d = view3dController.getView3D(this.sectionId, this.viewId);
-	return view3d.interactiveObjects[ this.id ];
-};
 
 
 feng.models.achievements.Tip.prototype.getRequiredTip = function() {

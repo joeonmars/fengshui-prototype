@@ -130,6 +130,16 @@ feng.views.View3D.prototype.getFloorY = function(){
 };
 
 
+feng.views.View3D.prototype.getObjectByTip = function( tip ){
+
+	var tipObject = goog.object.findValue( this.tipObjects, function(object) {
+		return (object.tip === tip);
+	});
+
+	return tipObject;
+};
+
+
 feng.views.View3D.prototype.getObjectsOfFloor = function( floorIndex ){
 
 	var hasFloorIndex = goog.isNumber( floorIndex );
@@ -188,9 +198,9 @@ feng.views.View3D.prototype.getObjectsByClass = function( objectClass ){
 
 feng.views.View3D.prototype.activate = function(){
 
- 	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
- 	this._eventHandler.listen(this.cameraController, feng.events.EventType.CHANGE, this.onCameraChange, false, this);
-
+ 	this._eventHandler.listen( window, 'resize', this.onResize, false, this );
+ 	this._eventHandler.listen( this.cameraController, feng.events.EventType.CHANGE, this.onCameraChange, false, this );
+ 	
  	goog.object.forEach(this.interactiveObjects, function(interactiveObject) {
  		interactiveObject.activate();
  	});
