@@ -160,13 +160,23 @@ feng.models.View3D.Data = {
 				class: "gateway",
 				viewid: "interior2",
 				gatewayid: "door",
-				castShadow: true
+				castShadow: true,
+				isEntry: true,
+				origin: {
+					position: new THREE.Vector3(-240, 0, 34),
+					rotation: new THREE.Euler(0, -Math.PI/2, 0)
+				}
 			},
 			'bathroom-door': {
 				class: "gateway",
 				viewid: "interior2",
 				gatewayid: "door",
-				castShadow: true
+				castShadow: true,
+				isEntry: false,
+				origin: {
+					position: new THREE.Vector3(-240, 0, 34),
+					rotation: new THREE.Euler(0, -Math.PI/2, 0)
+				}
 			},
 			'wall':	{
 				collidable: true,

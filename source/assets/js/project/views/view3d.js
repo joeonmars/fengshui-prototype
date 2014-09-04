@@ -58,8 +58,6 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud){
   this.renderController = null;
 	this.modeController = null;
 
-	this.origin = new THREE.Vector3(0, feng.controllers.controls.Controls.Default.STANCE_HEIGHT, 0);
-
 	this.scene = null;
 	this.energyFlow = null;
 	this.arms = null;
@@ -121,6 +119,18 @@ feng.views.View3D.prototype.getViewSize = function(){
 feng.views.View3D.prototype.getMatrixId = function(){
 
 	return this._floorMatrixIds[ this.floorIndex ];
+};
+
+
+feng.views.View3D.prototype.getEntry = function(){
+
+	var gatewayObjects = this.getObjectsByClass( feng.views.view3dobject.GatewayObject );
+
+	var entry = goog.array.find( gatewayObjects, function(gatewayObject) {
+		return (gatewayObject.isEntry === true);
+	});
+
+	return entry;
 };
 
 

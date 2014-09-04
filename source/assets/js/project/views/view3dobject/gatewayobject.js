@@ -13,15 +13,12 @@ feng.views.view3dobject.GatewayObject = function( object3d, data, view3d ){
   this.viewId = this.data.viewid;
   this.gatewayId = this.data.gatewayid;
 
+  this.isEntry = true;
+
+  this.origin = this.data.origin;
+  this.origin.position.y = feng.controllers.controls.Controls.Default.STANCE_HEIGHT;
+
   this._baseRotationY = this.object3d.rotation.y;
-
-  // create origin position that is half meter away from the door
-  var origin = new THREE.Vector3();
-  origin.subVectors( this.object3d.parent.position, this.getCenter() ).normalize().multiplyScalar(25);
-  origin = this.getCenter().clone().add( origin );
-  origin.y = feng.controllers.controls.Controls.Default.STANCE_HEIGHT;
-
-  this.origin = origin;
 };
 goog.inherits(feng.views.view3dobject.GatewayObject, feng.views.view3dobject.InteractiveObject);
 

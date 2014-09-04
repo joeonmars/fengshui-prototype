@@ -134,18 +134,9 @@ feng.views.sections.Episode.prototype.onShowView3D = function(e){
 
 	var view3d = e.target;
 
-	var position = view3d.origin;
-
-	var gatewayObjects = view3d.getObjectsByClass( feng.views.view3dobject.GatewayObject );
-	if(gatewayObjects.length > 0) {
-		var gatewayObject = gatewayObjects[0];
-		position = gatewayObject.origin;
-	}
-
-	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
-	var lookAtPosition = new THREE.Vector3(0, feng.controllers.controls.Controls.Default.STANCE_HEIGHT, 0);
-	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, lookAtPosition);
-	rotation.setFromQuaternion( quaternion );
+	var gatewayObject = view3d.getEntry();
+	var position = gatewayObject.origin.position;
+	var rotation = gatewayObject.origin.rotation;
   
   // set initial mode
 
