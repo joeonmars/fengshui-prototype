@@ -108,6 +108,12 @@ feng.controllers.SoundController = function(){
       volume: 0,
       loop: true,
       onload: onSoundLoad
+    },
+    'closeup': {
+      urls: urls('loop/optimize-loop-7'),
+      volume: 0,
+      loop: true,
+      onload: onSoundLoad
     }
   };
 
@@ -329,7 +335,9 @@ feng.controllers.SoundController.prototype.playLoop = function( id ){
 feng.controllers.SoundController.prototype.playMix = function( mixId ){
   
   var mix = this._mix[ mixId ];
-  mix.timer.start();
+
+  if(mix.timer.enabled) return;
+  else mix.timer.start();
 
   mix.position = 0;
 
@@ -341,7 +349,9 @@ feng.controllers.SoundController.prototype.playMix = function( mixId ){
 feng.controllers.SoundController.prototype.stopMix = function( mixId ){
   
   var mix = this._mix[ mixId ];
-  mix.timer.stop();
+
+  if(!mix.timer.enabled) return;
+  else mix.timer.stop();
 
   var sound = mix.sounds[ mix.position ];
 

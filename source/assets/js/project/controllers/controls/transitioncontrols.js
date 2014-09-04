@@ -112,6 +112,18 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 		});
 	}
 
+	// toggle sound loops
+	if(nextMode === feng.controllers.view3d.ModeController.Mode.CLOSE_UP) {
+
+		feng.soundController.stopMix( this._view3d.sectionId );
+		feng.soundController.fadeLoop( 'closeup', 0, 1, 4, false );console.log('play close up');
+
+	}else {
+
+		feng.soundController.playMix( this._view3d.sectionId );
+		feng.soundController.fadeLoop( 'closeup', 1, 0, 4, true );console.log('stop close up');
+	}
+
 	//
 	this.dispatchEvent({
 		type: feng.events.EventType.UPDATE,
