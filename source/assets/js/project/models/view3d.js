@@ -415,15 +415,80 @@ feng.models.View3D.Data = {
 				texture: "townhouse.livingroom.bed-texture"
 			}
 		},
-		'interior2': {
-			'ground': {
-				receiveShadow: true
+		'boysroom': {
+			'floor': {
+				texture: "townhouse.boysroom.floor-texture"
 			},
-			'door': {
-				class: "gateway",
+			'wall':	{
 				collidable: true,
+				castShadow: true
+			},
+			'wall-outer':	{
+				castShadow: true
+			},
+			'ceiling':	{
+
+			},
+			'bed': {
+				collidable: true,
+				//texture: "townhouse.boysroom.bed-texture"
+			},
+			'stools': {
+				collidable: true,
+				texture: "townhouse.boysroom.stools-texture"
+			},
+			'football': {
+				collidable: true,
+				texture: "townhouse.boysroom.football-texture"
+			},
+			'moon': {
+				texture: "townhouse.boysroom.moon-texture"
+			},
+			'shelf-stuff-3': {
+				texture: "townhouse.boysroom.shelf-stuff-3-texture"
+			},
+			'shelf-stuff-4': {
+				texture: "townhouse.boysroom.shelf-stuff-4-texture"
+			},
+			'shelf-stuff-5': {
+				texture: "townhouse.boysroom.shelf-stuff-5-texture"
+			},
+			'shelf-stuff-4': {
+				texture: "townhouse.boysroom.shelf-stuff-4-texture"
+			},
+			'computer': {
+				texture: "townhouse.boysroom.computer-texture"
+			},
+			'nightstand': {
+				collidable: true
+			},
+			'boysroom-door': {
+				class: "gateway",
 				viewid: "bathroom",
-				gatewayid: "door"
+				gatewayid: "door",
+				isEntry: true,
+				origin: {
+					position: new THREE.Vector3(78, 0, 33),
+					rotation: new THREE.Euler(0, -Math.PI/2, 0)
+				}
+			},
+			'ceiling-lamps': {
+				texture: "townhouse.boysroom.ceiling-lamps-texture"
+			},
+			'nightstand-lamp': {
+				texture: "townhouse.boysroom.nightstand-lamp-texture"
+			},
+			'yellow-reading-lamp': {
+				texture: "townhouse.boysroom.yellow-reading-lamp-texture"
+			},
+			'bedding': {
+				texture: "townhouse.boysroom.bedding-texture"
+			},
+			'slippers': {
+				texture: "townhouse.boysroom.slippers-texture"
+			},
+			'table-books': {
+				texture: "townhouse.boysroom.table-books-texture"
 			}
 		},
 		'bathroom': {

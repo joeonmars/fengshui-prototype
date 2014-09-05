@@ -174,12 +174,32 @@ feng.models.Preload = function(){
 					'10': 'images/texture/studio/pictures/10.jpg'
 				}
 			},
-			'interior2': {
-				'scene-data': 'json/scene-interior2.json',
-				'energyflow-data': 'json/energyflow/energyflow-2.json',
-				'pc-texture': 'images/texture/pc.jpg',
-				'screensaver-texture': 'images/texture/spritesheet/screensaver.png',
-				'cactus-texture': 'images/texture/cactus.png',
+			'boysroom': {
+				'scene-data': 'json/townhouse-boysroom.json',
+				'floor-texture': 'images/texture/townhouse/boysroom/floor.jpg',
+				/*'bed-texture': 'images/texture/townhouse/boysroom/bed.jpg',*/
+				'ceiling-lamps-texture': 'images/texture/townhouse/boysroom/ceiling-lamps.jpg',
+				'stools-texture': 'images/texture/townhouse/boysroom/stools.jpg',
+				'football-texture': 'images/texture/townhouse/boysroom/football.jpg',
+				'moon-texture': 'images/texture/townhouse/boysroom/moon.jpg',
+				'shelf-stuff-3-texture': 'images/texture/townhouse/boysroom/shelf-stuff-3.jpg',
+				'shelf-stuff-4-texture': 'images/texture/townhouse/boysroom/shelf-stuff-4.jpg',
+				'shelf-stuff-5-texture': 'images/texture/townhouse/boysroom/shelf-stuff-5.jpg',
+				/*'shelf-stuff-3-texture': 'images/texture/townhouse/boysroom/shelf-stuff-3.jpg',*/
+				'nightstand-lamp-texture': 'images/texture/townhouse/boysroom/nightstand-lamp.jpg',
+				'yellow-reading-lamp-texture': 'images/texture/townhouse/boysroom/yellow-reading-lamp.jpg',
+				'bedding-texture': 'images/texture/townhouse/boysroom/bedding.jpg',
+				'slippers-texture': 'images/texture/townhouse/boysroom/slippers.jpg',
+				'table-books-texture': 'images/texture/townhouse/boysroom/table-books.jpg',
+				'computer-texture': 'images/texture/townhouse/boysroom/computer.jpg',
+				'skybox': {
+					'xpos': 'images/texture/studio/livingroom/skybox/pos-x.png',
+					'xneg': 'images/texture/studio/livingroom/skybox/neg-x.png',
+					'ypos': 'images/texture/studio/livingroom/skybox/pos-y.png',
+					'yneg': 'images/texture/studio/livingroom/skybox/neg-y.png',
+					'zpos': 'images/texture/studio/livingroom/skybox/pos-z.png',
+					'zneg': 'images/texture/studio/livingroom/skybox/neg-z.png',
+				}
 			},
 			'bathroom': {
 				'scene-data': 'json/bathroom.json',

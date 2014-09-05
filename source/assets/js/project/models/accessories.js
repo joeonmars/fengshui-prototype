@@ -19,7 +19,7 @@ feng.models.Accessories.Data = {
 	},
 	'townhouse': {
 		'livingroom': ['rubberplant', 'cactus', 'lotus'],
-		'interior2': [],
+		'boysroom': [],
 		'bathroom': []
 	}
 };
