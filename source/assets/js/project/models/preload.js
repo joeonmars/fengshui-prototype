@@ -192,6 +192,7 @@ feng.models.Preload = function(){
 				'slippers-texture': 'images/texture/townhouse/boysroom/slippers.jpg',
 				'table-books-texture': 'images/texture/townhouse/boysroom/table-books.jpg',
 				'computer-texture': 'images/texture/townhouse/boysroom/computer.jpg',
+				'table-texture': 'images/texture/townhouse/boysroom/table.jpg',
 				'skybox': {
 					'xpos': 'images/texture/studio/livingroom/skybox/pos-x.png',
 					'xneg': 'images/texture/studio/livingroom/skybox/neg-x.png',

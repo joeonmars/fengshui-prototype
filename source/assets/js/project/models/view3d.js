@@ -459,6 +459,9 @@ feng.models.View3D.Data = {
 			'computer': {
 				texture: "townhouse.boysroom.computer-texture"
 			},
+			'table': {
+				texture: "townhouse.boysroom.table-texture"
+			},
 			'nightstand': {
 				collidable: true
 			},
