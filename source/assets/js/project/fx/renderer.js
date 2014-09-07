@@ -8,10 +8,13 @@ goog.require('goog.array');
  */
 feng.fx.Renderer = function(canvas, scene, camera){
 
+	this._DPR = window.devicePixelRatio || 1;
+
 	// create default renderer
 	this._renderer = new THREE.WebGLRenderer( {
 		canvas: canvas,
-		antialias: false
+		antialias: false,
+		devicePixelRatio: this._DPR
 	});
 
 	this._renderer.gammaInput = true;
@@ -47,8 +50,10 @@ feng.fx.Renderer = function(canvas, scene, camera){
 	this._blurYPass.uniforms[ 'delta' ].value = new THREE.Vector2( 0, 0 );
 
 	this._brightnessContrastPass = new THREE.ShaderPass( THREE.BrightnessContrastShader );
-	this._brightnessContrastPass.uniforms['brightness'].value = 0;
-	this._brightnessContrastPass.uniforms['contrast'].value = 0;
+
+	this._adjustmentBrightnessContrastPass = new THREE.ShaderPass( THREE.BrightnessContrastShader );
+	this._adjustmentBrightnessContrastPass.uniforms['brightness'].value = 0.05;
+	this._adjustmentBrightnessContrastPass.uniforms['contrast'].value = 0.05;
 
 	this._maskPass = new THREE.MaskPass( scene );
 	this._clearMaskPass = new THREE.ClearMaskPass();
@@ -64,10 +69,10 @@ feng.fx.Renderer = function(canvas, scene, camera){
 		stencilBuffer: true
 	};
 
-	var res = (window.screen.width < 1280) ? feng.fx.Renderer.Resolution['480p'] : feng.fx.Renderer.Resolution['720p'];
+	var resolution = (new goog.math.Size( screen.width, screen.height )).scale( this._DPR ).scale( 1 );
 
 	// create default render texture pass
-	var renderTarget = new THREE.WebGLRenderTarget( res.width, res.height, renderTargetParameters );
+	var renderTarget = new THREE.WebGLRenderTarget( resolution.width, resolution.height, renderTargetParameters );
 	renderTarget.generateMipmaps = false;
 
 	this._renderComposer = new THREE.EffectComposer( this._renderer, renderTarget );
@@ -88,7 +93,7 @@ feng.fx.Renderer = function(canvas, scene, camera){
 	this._blurTexturePass.enabled = false;
 
 	// create output
-	var renderTarget = new THREE.WebGLRenderTarget( res.width, res.height, renderTargetParameters );
+	var renderTarget = new THREE.WebGLRenderTarget( resolution.width, resolution.height, renderTargetParameters );
 	renderTarget.generateMipmaps = false;
 	
 	this._outputComposer = new THREE.EffectComposer( this._renderer, renderTarget );
@@ -102,6 +107,8 @@ feng.fx.Renderer = function(canvas, scene, camera){
 	this._outputComposer.addPass( this._maskPass );
 	this._outputComposer.addPass( this._renderTexturePass );
 	this._outputComposer.addPass( this._clearMaskPass );
+	
+	this._outputComposer.addPass( this._adjustmentBrightnessContrastPass );
 
 	this._outputComposer.addPass( this._vignettePass );
 
@@ -170,7 +177,7 @@ feng.fx.Renderer.prototype.setSize = function( width, height ){
 
 	this._renderer.setSize( width, height );
 
-	this._fxaaPass.uniforms['resolution'].value.set( 1/width, 1/height );
+	this._fxaaPass.uniforms['resolution'].value.set( 1 / (width * this._DPR), 1 / (height * this._DPR) );
 };
 
 
@@ -187,10 +194,4 @@ feng.fx.Renderer.prototype.render = function(){
 	this._renderComposer.render();
 
 	this._outputComposer.render();
-};
-
-
-feng.fx.Renderer.Resolution = {
-	'720p': new goog.math.Size(1280, 720),
-	'480p': new goog.math.Size(640, 480)
 };

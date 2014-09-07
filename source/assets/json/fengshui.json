@@ -435,6 +435,24 @@
 			"reminder": "Don't forget to check the books!"
 		},
 		{
+			"id": "handheld",
+			"section": "townhouse",
+			"view": "boysroom",
+			"name": "electronic devices",
+			"icon": "mascot",
+			"interaction": "pick",
+			"unlocked": false,
+			"mandatory": true,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"advice": "Be loremipsum, loremipsum",
+			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
+			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
+			"character": "nick",
+			"response": "Thank you.",
+			"reminder": "Don't forget to check the handheld!"
+		},
+		{
 			"id": "bear",
 			"section": "townhouse",
 			"view": "boysroom",

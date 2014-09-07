@@ -95,7 +95,7 @@ feng.controllers.view3d.ModeController.prototype.setMode = function( modeData ){
 
 feng.controllers.view3d.ModeController.prototype.createBrowseControls = function(){
 
-	var uiElement = this._view3d.uiElement;
+	var uiElement = this._view3d.hud.domElement;
 	var renderElement = this._view3d.domElement;
 	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.BROWSE );
 
@@ -108,7 +108,7 @@ feng.controllers.view3d.ModeController.prototype.createBrowseControls = function
 
 feng.controllers.view3d.ModeController.prototype.createCloseUpControls = function(){
 
-	var uiElement = this._view3d.uiElement;
+	var uiElement = this._view3d.hud.domElement;
 	var renderElement = this._view3d.domElement;
 	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.CLOSE_UP );
 
@@ -121,7 +121,7 @@ feng.controllers.view3d.ModeController.prototype.createCloseUpControls = functio
 
 feng.controllers.view3d.ModeController.prototype.createDesignControls = function(){
 
-	var uiElement = this._view3d.uiElement;
+	var uiElement = this._view3d.hud.domElement;
 	var renderElement = this._view3d.domElement;
 	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.DESIGN );
 

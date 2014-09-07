@@ -55,10 +55,13 @@ feng.controllers.view3d.CameraController.prototype.addCamera = function( name, f
   this._scene.add(camera);
   this.cameras.push(camera);
 
-	var cameraHelper = new THREE.CameraHelper( camera );
-  cameraHelper.name = name + '-helper';
-  this._scene.add(cameraHelper);
-  this.cameraHelpers.push(cameraHelper);
+  if(feng.debug) {
+
+    var cameraHelper = new THREE.CameraHelper( camera );
+    cameraHelper.name = name + '-helper';
+    this._scene.add(cameraHelper);
+    this.cameraHelpers.push(cameraHelper);
+  }
 
   this.dispatchEvent({
     type: feng.events.EventType.ADD,

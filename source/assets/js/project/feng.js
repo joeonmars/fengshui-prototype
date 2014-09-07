@@ -18,6 +18,17 @@ feng.init = function( config ) {
 	var uri = new goog.Uri( window.location.href );
 	var queryData = uri.getQueryData();
 
+	// apply queries to config
+	if(queryData.get('debug') === 'true') {
+
+		feng.Config['debug'] = true;
+	}
+
+	if(queryData.get('office') === 'true') {
+
+		feng.Config['office'] = true;
+	}
+
 	// execute app
 	var app = queryData.get('app') || feng.Config['app'];
 

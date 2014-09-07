@@ -23,18 +23,18 @@ feng.apps.Demo = function() {
 	
 	goog.fx.anim.setAnimationWindow(window);
 
-	var debug = feng.Config['debug'];
-	var office = feng.Config['office'];
+	feng.debug = feng.Config['debug'];
+	feng.office = feng.Config['office'];
 
 	var mainFrag = soy.renderAsFragment(feng.templates.main.Main, {
-		debug: debug
+		debug: feng.debug
 	});
 	goog.dom.appendChild(document.body, mainFrag);
 
 	feng.pubsub = feng.PubSub.getInstance();
 
-	if(debug) feng.views.debug.Debugger.getInstance();
-	if(office) goog.style.setOpacity(document.body, .1);
+	if(feng.debug) feng.views.debug.Debugger.getInstance();
+	if(feng.office) goog.style.setOpacity(document.body, .1);
 
 	feng.storageController = feng.controllers.StorageController.getInstance();
 

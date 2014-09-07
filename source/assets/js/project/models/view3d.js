@@ -421,17 +421,28 @@ feng.models.View3D.Data = {
 			},
 			'wall':	{
 				collidable: true,
-				castShadow: true
+				castShadow: true,
+				texture: "townhouse.boysroom.wall-texture"
 			},
 			'wall-outer':	{
-				castShadow: true
+				castShadow: true,
+				texture: "townhouse.boysroom.wall-outer-texture"
 			},
 			'ceiling':	{
-
+				texture: "townhouse.boysroom.ceiling-texture"
 			},
 			'bed': {
 				collidable: true,
-				//texture: "townhouse.boysroom.bed-texture"
+				texture: "townhouse.boysroom.bed-texture"
+			},
+			'big-frame': {
+				texture: "townhouse.boysroom.big-frame-texture"
+			},
+			'decoration-pictures': {
+				texture: "townhouse.boysroom.decoration-pictures-texture"
+			},
+			'carpet':	{
+				texture: "townhouse.boysroom.carpet-texture"
 			},
 			'stools': {
 				collidable: true,
@@ -444,6 +455,12 @@ feng.models.View3D.Data = {
 			'moon': {
 				texture: "townhouse.boysroom.moon-texture"
 			},
+			'shelf-stuff-1': {
+				texture: "townhouse.boysroom.shelf-stuff-1-texture"
+			},
+			'shelf-stuff-2': {
+				texture: "townhouse.boysroom.shelf-stuff-2-texture"
+			},
 			'shelf-stuff-3': {
 				texture: "townhouse.boysroom.shelf-stuff-3-texture"
 			},
@@ -453,27 +470,50 @@ feng.models.View3D.Data = {
 			'shelf-stuff-5': {
 				texture: "townhouse.boysroom.shelf-stuff-5-texture"
 			},
-			'shelf-stuff-4': {
-				texture: "townhouse.boysroom.shelf-stuff-4-texture"
+			'shelf-stuff-6': {
+				texture: "townhouse.boysroom.shelf-stuff-6-texture"
+			},
+			'toytrain': {
+				texture: "townhouse.boysroom.toytrain-texture"
 			},
 			'computer': {
 				texture: "townhouse.boysroom.computer-texture"
 			},
+			'desk': {
+				collidable: true,
+				texture: "townhouse.boysroom.desk-texture"
+			},
 			'table': {
+				collidable: true,
 				texture: "townhouse.boysroom.table-texture"
 			},
+			'table-stuff': {
+				texture: "townhouse.boysroom.table-stuff-texture"
+			},
+			'swivel-chair': {
+				collidable: true,
+				texture: "townhouse.boysroom.swivel-chair-texture"
+			},
 			'nightstand': {
-				collidable: true
+				collidable: true,
+				texture: "townhouse.boysroom.nightstand-texture"
+			},
+			'pencil-vase': {
+				texture: "townhouse.boysroom.pencil-vase-texture"
 			},
 			'boysroom-door': {
 				class: "gateway",
 				viewid: "bathroom",
 				gatewayid: "door",
+				castShadow: true,
 				isEntry: true,
 				origin: {
 					position: new THREE.Vector3(78, 0, 33),
-					rotation: new THREE.Euler(0, -Math.PI/2, 0)
+					rotation: new THREE.Euler(0, Math.PI/2, 0)
 				}
+			},
+			'sketchpad': {
+				texture: "townhouse.boysroom.sketchpad-texture"
 			},
 			'ceiling-lamps': {
 				texture: "townhouse.boysroom.ceiling-lamps-texture"
@@ -484,14 +524,55 @@ feng.models.View3D.Data = {
 			'yellow-reading-lamp': {
 				texture: "townhouse.boysroom.yellow-reading-lamp-texture"
 			},
+			'blue-reading-lamp': {
+				texture: "townhouse.boysroom.blue-reading-lamp-texture"
+			},
 			'bedding': {
 				texture: "townhouse.boysroom.bedding-texture"
+			},
+			'chalkboard': {
+				texture: "townhouse.boysroom.chalkboard-texture"
 			},
 			'slippers': {
 				texture: "townhouse.boysroom.slippers-texture"
 			},
 			'table-books': {
 				texture: "townhouse.boysroom.table-books-texture"
+			},
+			'shelf-left': {
+				collidable: true,
+				texture: "townhouse.boysroom.shelf-left-texture"
+			},
+			'shelf-right': {
+				collidable: true,
+				texture: "townhouse.boysroom.shelf-right-texture"
+			},
+			'drawer': {
+				texture: "townhouse.boysroom.drawer-texture"
+			},
+			'handheld': {
+				class: 'tip',
+				interactions: [
+					"move",
+					"rotate"
+				],
+				camera: {
+					position: new THREE.Vector3(-29, 56, 16),
+					rotation: new THREE.Euler(-0.70, 1.55, 0.00, 'YXZ'),
+					fov: 20
+				},
+				texture: "townhouse.boysroom.handheld-nightstand-texture",
+				tipInteraction: "drop",
+				tipKey: 'townhouse.boysroom.handheld'
+			},
+			'window': {
+				texture: "townhouse.boysroom.window-texture"
+			},
+			'window-frame': {
+				texture: "townhouse.boysroom.window-frame-texture"
+			},
+			'door-frame': {
+				texture: "townhouse.boysroom.door-frame-texture"
 			}
 		},
 		'bathroom': {

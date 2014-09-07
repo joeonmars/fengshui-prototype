@@ -151,7 +151,7 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 		caption.show();
 
 	}else  {
-
+		
 		this._manipulator.hide();
 		this._manipulator.deactivate();
 
@@ -206,11 +206,9 @@ feng.controllers.controls.CloseUpControls.prototype.update = function() {
 feng.controllers.controls.CloseUpControls.prototype.onManipulate = function ( e ) {
 
 	var interaction = feng.views.view3dobject.InteractiveObject.Interaction;
-	var isPhysical = this._activeObject.isPhysical;
 	var shouldGoDesignMode = false;
 
-	if(e.interaction === interaction.MOVE) shouldGoDesignMode = true;
-	if(isPhysical && e.interaction === interaction.ROTATE) shouldGoDesignMode = true;
+	if(e.interaction === interaction.MOVE || e.interaction === interaction.ROTATE) shouldGoDesignMode = true;
 
 	if(shouldGoDesignMode) {
 

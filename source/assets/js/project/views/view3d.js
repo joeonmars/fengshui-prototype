@@ -91,9 +91,6 @@ feng.views.View3D.prototype.init = function(){
 	this.cameraController.init( this.scene );
 
 	this._renderer = new feng.fx.Renderer(this.domElement, this.scene, this.cameraController.activeCamera);
-
-	var viewSize = this.getViewSize();
-	this._renderer.setSize( viewSize.width, viewSize.height );
 	
 	this.renderController = new feng.controllers.view3d.RenderController(this);
 
