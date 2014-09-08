@@ -579,10 +579,10 @@
 			"reminder": "Don't forget to check the photos!"
 		},
 		{
-			"id": "desk",
+			"id": "setsquare",
 			"section": "townhouse",
 			"view": "homeoffice",
-			"name": "desk",
+			"name": "set square",
 			"icon": "desk",
 			"interaction": "move",
 			"unlocked": false,
@@ -594,7 +594,7 @@
 			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "joanna",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the desk!"
+			"reminder": "Don't forget to check the set square!"
 		},
 		{
 			"id": "flower",
