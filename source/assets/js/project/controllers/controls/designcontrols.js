@@ -42,7 +42,10 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement, 
 
 	this._tracker = new THREE.Mesh( new THREE.BoxGeometry( 20, 20, 20 ), new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true, wireframeLinewidth: 2 }) );
 	this._tracker.material.fog = false;
-	//this._view3d.scene.add( this._tracker );
+
+	if(feng.debug) {
+		this._view3d.scene.add( this._tracker );
+	}
 
   var zoomSliderDom = goog.dom.createDom('div');
   var zoomCallback = goog.bind(this.setFov, this);
@@ -53,22 +56,15 @@ goog.inherits(feng.controllers.controls.DesignControls, feng.controllers.control
 
 feng.controllers.controls.DesignControls.prototype.setCamera = function( fromPosition, fromFov, object ) {
 
-	// reset focus to object
-	this._focus.copy( /*object ? object.object3d.position :*/ this._view3d.scene.position );
+	// set focus to object
+	this._focus.copy( this._view3d.scene.position );
 
-	// set default rotation by default position
-	var position = new THREE.Vector3( this._distance, this._distance, this._distance );
-
-	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
-	var up = new THREE.Vector3(0, 1, 0);
-	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, this._focus, up);
-	rotation.setFromQuaternion( quaternion );
-
-	this.setRotation( rotation );
-
+	// set position / rotation based on focus
 	this.setFocus( this._focus.x, this._focus.z );
 	
-	this.setFov( this._zoomSlider.calculateFov() );
+	this.setFov( this._zoomSlider.calculateFov( .6 ) );
+
+	this._zoomSlider.reset();
 
 	this._activeObject = object;
 };
@@ -78,17 +74,24 @@ feng.controllers.controls.DesignControls.prototype.setFocus = function( x, z ) {
 
 	this._focus.set( x, 0, z );
 
-	var rotation = this.getRotation();
+	var rotationY = THREE.Math.degToRad( 45 );
 
 	// get position by camera angle
-	var cameraX = this._distance/* * Math.sin( rotation.y )*/ + this._focus.x;
-	var cameraZ = this._distance/* * Math.cos( rotation.y )*/ + this._focus.z;
+	var cameraX = (this._distance + this._focus.x) * Math.sin( rotationY );
+	var cameraZ = (this._distance + this._focus.z) * Math.cos( rotationY );
 	var cameraY = this._distance;
 
 	// apply position
 	this.setPosition( cameraX, cameraY, cameraZ );
 
-	// test
+	// recalculate rotation
+	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), this._focus);
+	rotation.setFromQuaternion( quaternion );
+
+	this.setRotation( rotation );
+
+	// update tracker position
 	this._tracker.position.copy( this._focus );
 };
 
@@ -200,8 +203,8 @@ feng.controllers.controls.DesignControls.prototype.onUpdateHud = function(e){
 
 	if(e.target instanceof feng.views.sections.controls.Compass) {
 
-		var posX = this._distance * Math.sin( -e.rotation );
-		var posZ = this._distance * Math.cos( -e.rotation );
+		var posX = (this._distance + this._focus.x) * Math.sin( -e.rotation );
+		var posZ = (this._distance + this._focus.z) * Math.cos( -e.rotation );
 		var posY = this._distance;
 
 		this.setPosition( posX, posY, posZ );
@@ -262,7 +265,7 @@ feng.controllers.controls.DesignControls.prototype.onDrag = function(e){
 
 	this._tracker.position.copy( this._focus );
 
-	// look at (WIP)
+	// look at
 	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
 	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), this._focus);
 	rotation.setFromQuaternion( quaternion );

@@ -15,7 +15,7 @@ feng.views.sections.controls.ZoomSlider = function(domElement, mousewheelElement
   goog.base(this, domElement);
 
   this.fovRange = {
-  	min: 2,
+  	min: 5,
   	max: 20
   };
 
@@ -38,9 +38,20 @@ feng.views.sections.controls.ZoomSlider.prototype.getCurrentFov = function(){
 };
 
 
-feng.views.sections.controls.ZoomSlider.prototype.calculateFov = function(){
+feng.views.sections.controls.ZoomSlider.prototype.calculateFov = function( zoomRatio ){
 
-	return goog.math.lerp(this.fovRange.min, this.fovRange.max, this._zoomStep/this._zoomSteps);
+	this._zoomStep = goog.isNumber(zoomRatio) ? Math.round(goog.math.lerp(0, this._zoomSteps, zoomRatio)) : this._zoomStep;
+
+	this._fov = goog.math.lerp(this.fovRange.min, this.fovRange.max, this._zoomStep/this._zoomSteps);
+	
+	return this._fov;
+};
+
+
+feng.views.sections.controls.ZoomSlider.prototype.reset = function( zoomRatio ){
+
+	this._fov = this.calculateFov( zoomRatio );
+	this._currentFov = this._fov;
 };
 
 

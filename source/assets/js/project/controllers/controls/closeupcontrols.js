@@ -222,7 +222,6 @@ feng.controllers.controls.CloseUpControls.prototype.onManipulate = function ( e 
 	}else {
 
 		this._interactionResolver.resolve( this._activeObject, e.interaction );
-
 	}
 	
 };

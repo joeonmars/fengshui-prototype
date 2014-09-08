@@ -17,7 +17,7 @@ feng.controllers.controls.TransitionControls = function(camera, view3d, domEleme
 goog.inherits(feng.controllers.controls.TransitionControls, feng.controllers.controls.Controls);
 
 
-feng.controllers.controls.TransitionControls.prototype.start = function ( toPosition, toRotation, toFov, nextMode ) {
+feng.controllers.controls.TransitionControls.prototype.start = function ( toPosition, toRotation, toFov, e, nextMode ) {
 
 	var fromPosition = this.getPosition();
 	var fromRotation = this.getRotation();
@@ -46,7 +46,7 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 		onCompleteScope: this
 	});
 
-	var dur = 1;
+	var dur = goog.math.clamp( 1, 2, goog.math.lerp( 1, 2, fromPosition.distanceTo( toPosition )/1000 ));
 
 	var positionTweener = TweenMax.to(prop, dur, {
 		positionX: toPosition.x,
@@ -67,7 +67,11 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 		ease: Quad.easeInOut,
 		onUpdate: function() {
 
-			this.setRotation( prop.rotationX, prop.rotationY, prop.rotationZ );
+			var rx = prop.rotationX;
+			var ry = prop.rotationY;
+			var rz = prop.rotationZ;
+
+			this.setRotation( rx, ry, rz );
 		},
 		onUpdateScope: this
 	});

@@ -431,6 +431,10 @@ feng.models.View3D.Data = {
 			'ceiling':	{
 				texture: "townhouse.boysroom.ceiling-texture"
 			},
+			'cabinet':	{
+				collidable: true,
+				texture: "townhouse.boysroom.cabinet-texture"
+			},
 			'bed': {
 				collidable: true,
 				texture: "townhouse.boysroom.bed-texture"
@@ -549,6 +553,16 @@ feng.models.View3D.Data = {
 			},
 			'drawer': {
 				texture: "townhouse.boysroom.drawer-texture"
+			},
+			'bear': {
+				class: 'tip',
+				interactions: [
+					"move",
+					"rotate"
+				],
+				texture: "townhouse.boysroom.bear-in-drawer-texture",
+				tipInteraction: "drop",
+				tipKey: 'townhouse.boysroom.bear'
 			},
 			'handheld': {
 				class: 'tip',

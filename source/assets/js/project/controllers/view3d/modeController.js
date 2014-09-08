@@ -260,7 +260,6 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 			break;
 
 		case feng.controllers.view3d.ModeController.Mode.DESIGN:
-			console.log(e);
 			break;
 
 		case feng.controllers.view3d.ModeController.Mode.WALK:
@@ -272,7 +271,7 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 			break;
 
 		case feng.controllers.view3d.ModeController.Mode.TRANSITION:
-			this.control.start( toPosition, toRotation, toFov, nextMode );
+			this.control.start( toPosition, toRotation, toFov, e, nextMode );
 			break;
 
 		default:
