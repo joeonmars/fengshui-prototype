@@ -589,15 +589,26 @@ feng.models.View3D.Data = {
 				texture: "townhouse.boysroom.door-frame-texture"
 			}
 		},
-		'bathroom': {
-			'wall': {
-				texture: "townhouse.bathroom.wall-texture"
+		'homeoffice': {
+			'floor': {
 			},
-			'door': {
-				class: "gateway",
+			'wall':	{
 				collidable: true,
-				viewid: "interior2",
-				gatewayid: "door"
+				castShadow: true
+			},
+			'wall-outer':	{
+				castShadow: true
+			},
+			'homeoffice-door': {
+				class: "gateway",
+				viewid: "homeoffice",
+				gatewayid: "door",
+				castShadow: true,
+				isEntry: true,
+				origin: {
+					position: new THREE.Vector3(78, 0, 33),
+					rotation: new THREE.Euler(0, Math.PI/2, 0)
+				}
 			}
 		}
 	}

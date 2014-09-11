@@ -228,18 +228,8 @@ feng.models.Preload = function(){
 					'zneg': 'images/texture/townhouse/boysroom/skybox/neg-z.png',
 				}
 			},
-			'bathroom': {
-				'scene-data': 'json/bathroom.json',
-				'energyflow-data': 'json/energyflow/energyflow-3.json',
-				'bathtub-texture': 'images/texture/studio/bathroom/bathtub.png',
-				'closet-door-texture': 'images/texture/studio/bathroom/closet-door.png',
-				'closet-texture': 'images/texture/studio/bathroom/closet.jpg',
-				'lamp-texture': 'images/texture/studio/bathroom/lamp.png',
-				'shelf-texture': 'images/texture/studio/bathroom/shelf.png',
-				'toilet-texture': 'images/texture/studio/bathroom/toilet.png',
-				'towel-texture': 'images/texture/studio/bathroom/towel.png',
-				'wall-texture': 'images/texture/studio/bathroom/wall.jpg',
-				'washer-texture': 'images/texture/studio/bathroom/washer.jpg'
+			'homeoffice': {
+				'scene-data': 'json/townhouse-homeoffice.json'
 			}
 		}
 	};
