@@ -177,8 +177,8 @@ feng.controllers.controls.BrowseControls.prototype.onMouseMove = function ( e ) 
 	this._lastMouseX = e.clientX;
 	this._lastMouseY = e.clientY;
 
-	this._targetRotationY = this._yawObject.rotation.y + movementX * 0.004;
-	this._targetRotationX = this._pitchObject.rotation.x + movementY * 0.004;
+	this._targetRotationY = this._yawObject.rotation.y + movementX * 0.009;
+	this._targetRotationX = this._pitchObject.rotation.x + movementY * 0.009;
 
 	// limit vertical rotation
 	this._targetRotationX = Math.max(Math.min(this._maxRotationX, this._targetRotationX), this._minRotationX);

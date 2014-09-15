@@ -33,7 +33,7 @@ feng.views.view3dobject.DesignPlane = function( view3d ){
   var designPlane = new THREE.Mesh( planeGeometry, planeMaterial );
   designPlane.name = 'design-plane';
   designPlane.rotation.x = -Math.PI/2;
-  designPlane.position.y = -1;
+  designPlane.position.y = -.5;
   designPlane.receiveShadow = true;
 
   goog.base( this, designPlane, {}, view3d );

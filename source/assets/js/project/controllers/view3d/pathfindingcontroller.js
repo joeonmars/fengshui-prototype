@@ -162,7 +162,7 @@ feng.controllers.view3d.PathfindingController.prototype.generateMatrix = functio
 	};
 
 	this._matrixData[ matrixId ] = matrixData;
-
+	
 	return matrixData;
 };
 

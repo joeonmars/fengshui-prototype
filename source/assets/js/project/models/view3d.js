@@ -591,13 +591,19 @@ feng.models.View3D.Data = {
 		},
 		'homeoffice': {
 			'floor': {
+				texture: "townhouse.homeoffice.floor-texture"
+			},
+			'ceiling': {
+				texture: "townhouse.homeoffice.ceiling-texture"
 			},
 			'wall':	{
 				collidable: true,
-				castShadow: true
+				castShadow: true,
+				texture: "townhouse.homeoffice.wall-texture"
 			},
 			'wall-outer':	{
-				castShadow: true
+				castShadow: true,
+				texture: "townhouse.homeoffice.wall-outer-texture"
 			},
 			'homeoffice-door': {
 				class: "gateway",
@@ -606,9 +612,162 @@ feng.models.View3D.Data = {
 				castShadow: true,
 				isEntry: true,
 				origin: {
-					position: new THREE.Vector3(78, 0, 33),
+					position: new THREE.Vector3(68, 0, -53),
 					rotation: new THREE.Euler(0, Math.PI/2, 0)
 				}
+			},
+			'swivel-chair': {
+				collidable: true,
+				texture: "townhouse.homeoffice.swivel-chair-texture"
+			},
+			'storage': {
+				collidable: true,
+				texture: "townhouse.homeoffice.storage-texture"
+			},
+			'setsquare': {
+				class: 'tip',
+				interactions: [
+					"move",
+					"rotate"
+				],
+				texture: "townhouse.homeoffice.setsquare-texture",
+				tipInteraction: "drop",
+				tipKey: 'townhouse.homeoffice.setsquare'
+			},
+			'carpet': {
+				texture: "townhouse.homeoffice.carpet-texture"
+			},
+			'door-frame': {
+				texture: "townhouse.homeoffice.door-frame-texture"
+			},
+			'display-shelf-lamp': {
+				texture: "townhouse.homeoffice.display-shelf-lamp-texture"
+			},
+			'bookshelf-lamps': {
+				texture: "townhouse.homeoffice.bookshelf-lamps-texture"
+			},
+			'picture-frame-1': {
+				texture: "townhouse.homeoffice.picture-frame-1-texture"
+			},
+			'picture-frame-2': {
+				texture: "townhouse.homeoffice.picture-frame-2-texture"
+			},
+			'picture-frame-3': {
+				texture: "townhouse.homeoffice.picture-frame-3-texture"
+			},
+			'picture-frame-4': {
+				texture: "townhouse.homeoffice.picture-frame-4-texture"
+			},
+			'block-shelf-1':	{
+				texture: "townhouse.homeoffice.block-shelf-1-texture"
+			},
+			'block-shelf-2':	{
+				texture: "townhouse.homeoffice.block-shelf-2-texture"
+			},
+			'block-stuff-1':	{
+				texture: "townhouse.homeoffice.block-stuff-1-texture"
+			},
+			'block-stuff-2':	{
+				texture: "townhouse.homeoffice.block-stuff-2-texture"
+			},
+			'books-1':	{
+				texture: "townhouse.homeoffice.books-1-texture"
+			},
+			'books-2':	{
+				texture: "townhouse.homeoffice.books-2-texture"
+			},
+			'round-lamp':	{
+				collidable: true,
+				texture: "townhouse.homeoffice.round-lamp-texture"
+			},
+			'calendar':	{
+				texture: "townhouse.homeoffice.calendar-texture"
+			},
+			'magazine':	{
+				texture: "townhouse.homeoffice.magazine-texture"
+			},
+			'window':	{
+				texture: "townhouse.homeoffice.window-texture"
+			},
+			'armchair':	{
+				collidable: true,
+				texture: "townhouse.homeoffice.armchair-texture"
+			},
+			'coffeecup':	{
+				texture: "townhouse.homeoffice.coffeecup-texture"
+			},
+			'writing-desk':	{
+				collidable: true,
+				texture: "townhouse.homeoffice.writing-desk-texture"
+			},
+			'dracaena-fragrans': {
+				collidable: true,
+				texture: "townhouse.homeoffice.dracaena-fragrans-texture"
+			},
+			'handbag': {
+				texture: "townhouse.homeoffice.handbag-texture"
+			},
+			'pen-vase': {
+				texture: "townhouse.homeoffice.pen-vase-texture"
+			},
+			'rubberplant': {
+				texture: "townhouse.homeoffice.rubberplant-texture"
+			},
+			'coffee-table':	{
+				collidable: true,
+				texture: "townhouse.homeoffice.coffee-table-texture"
+			},
+			'coffeecup': {
+				texture: "townhouse.homeoffice.coffeecup-texture"
+			},
+			'floor-lamp': {
+				collidable: true,
+				texture: "townhouse.homeoffice.floor-lamp-texture"
+			},
+			'ceiling-lamp': {
+				texture: "townhouse.homeoffice.ceiling-lamp-texture"
+			},
+			'cup': {
+				texture: "townhouse.homeoffice.cup-texture"
+			},
+			'reading-lamp-1': {
+				texture: "townhouse.homeoffice.reading-lamp-1-texture"
+			},
+			'reading-lamp-2': {
+				texture: "townhouse.homeoffice.reading-lamp-2-texture"
+			},
+			'sofa': {
+				collidable: true,
+				texture: "townhouse.homeoffice.sofa-texture"
+			},
+			'trash': {
+				texture: "townhouse.homeoffice.trash-texture"
+			},
+			'display-shelf': {
+				collidable: true,
+				texture: "townhouse.homeoffice.display-shelf-texture"
+			},
+			'computer':	{
+				texture: "townhouse.homeoffice.computer-texture"
+			},
+			'laptop':	{
+				texture: "townhouse.homeoffice.laptop-texture"
+			},
+			'curtain':	{
+				texture: "townhouse.homeoffice.curtain-texture"
+			},
+			'curtain-rod':	{
+				texture: "townhouse.homeoffice.curtain-rod-texture"
+			},
+			'telephone':	{
+				texture: "townhouse.homeoffice.telephone-texture"
+			},
+			'bookshelf':	{
+				collidable: true,
+				texture: "townhouse.homeoffice.bookshelf-texture"
+			},
+			'bookshelf-stuff':	{
+				texture: "townhouse.homeoffice.bookshelf-stuff-texture"
 			}
 		}
 	}

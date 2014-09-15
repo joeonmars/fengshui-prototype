@@ -328,8 +328,12 @@ feng.views.View3D.prototype.initScene = function() {
 	this.scene.fog = new THREE.FogExp2( 0xd9d9d9, 0.0008 );
 
 	// add directional light for shadow
+	var hemiLight = this.scene.getObjectByName('HemisphereLight');
+	
+	var directionalLightPosition = hemiLight ? hemiLight.position : new THREE.Vector3(200, 200, 200);
+
 	var light = new THREE.DirectionalLight( 0x000000, 1 );
-	light.position.set( 200, 200, 200 );
+	light.position.copy( directionalLightPosition );
 	light.target.position.set(0, 0, 0);
 	light.castShadow = true;
 
@@ -408,7 +412,7 @@ feng.views.View3D.prototype.initScene = function() {
 
 	// find floors & init pathfinder matrix
 	this.floorObjects = goog.array.filter(this.scene.children, function(obj) {
-		if(goog.string.startsWith(obj.name, 'floor')) {
+		if(goog.string.startsWith(obj.name, 'floor') && obj.name.length <= 7) {
 			return true;
 		}
 	});
