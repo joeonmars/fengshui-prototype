@@ -33,8 +33,6 @@ feng.fx.Trail.prototype.create = function() {
 	var mesh = new THREE.Mesh(this._geometry, this._material);
 	mesh.dynamic = true;
 
-	mesh.rotation.x = 90;
-
 	for (var i = 0; i < this._numSegments*2; i++)
 	{
 	  this._positions[i] = 0;
