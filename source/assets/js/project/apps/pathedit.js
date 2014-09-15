@@ -186,8 +186,6 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 		];
 
 		var pathTrack = new feng.fx.EnergyFlow(coordinates, true, feng.fx.EnergyFlow.Preset.SHA);
-		pathTrack.activate();
-
 		scene.add( pathTrack );
 
 		return scene;
@@ -204,8 +202,6 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 		];
 
 		var pathTrack = new feng.fx.EnergyFlow(coordinates, true, feng.fx.EnergyFlow.Preset.YANG);
-		pathTrack.activate();
-
 		scene.add( pathTrack );
 
 		return scene;
@@ -277,7 +273,11 @@ feng.apps.PathEdit.prototype.onChange = function(e) {
 		this._scene.add( this._editCamera );
 		this._scene.add( this._motionCamera );
 
+		if(this._pathTrack) this._pathTrack.deactivate();
+
 	  this._pathTrack = this.getDefaultPathTrack();
+	  this._pathTrack.activate();
+
 	  this._controlPoint = this._pathTrack.controlPoints[0];
 	  this.highlightControl();
 

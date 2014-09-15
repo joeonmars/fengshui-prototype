@@ -70,7 +70,7 @@ feng.fx.EnergyFlow.prototype.create = function(controlPoints, offset, isClosed, 
 
 
 feng.fx.EnergyFlow.prototype.activate = function(){
-
+	
 	goog.fx.anim.registerAnimation( this );
 
 	this._start = goog.now();
@@ -163,33 +163,33 @@ feng.fx.EnergyFlow.prototype.onWindowBlur = function( e ){
 
 feng.fx.EnergyFlow.Preset = {
 	DEFAULT: {
-		numTrails: 100,
+		numTrails: 50,
 		numLeaves: 20,
 		leaf: null,
 		leafMinSize: 0,
 		leafMaxSize: 0,
 		color: '#48D1CC',
 		duration: 20000,
-		length: 80,
+		length: 20,
 		blendMode: THREE.AdditiveBlending,
 		jiggleFrequency: 2,
 		maxJiggleAmount: 4 
 	},
 	JI: {
-		numTrails: 100,
+		numTrails: 50,
 		numLeaves: 20,
 		leaf: 'ji',
 		leafMinSize: 2,
 		leafMaxSize: 4,
 		color: '#25DDFF',
 		duration: 20000,
-		length: 80,
+		length: 20,
 		blendMode: THREE.AdditiveBlending,
 		jiggleFrequency: 2,
 		maxJiggleAmount: 4 
 	},
 	SHA: {
-		numTrails: 100,
+		numTrails: 50,
 		numLeaves: 20,
 		leaf: 'sha',
 		leafMinSize: 2,
@@ -202,27 +202,27 @@ feng.fx.EnergyFlow.Preset = {
 		maxJiggleAmount: 4 
 	},
 	YIN: {
-		numTrails: 100,
+		numTrails: 50,
 		numLeaves: 20,
 		leaf: 'yin',
 		leafMinSize: 2,
 		leafMaxSize: 4,
 		color: '#00B936',
 		duration: 20000,
-		length: 60,
+		length: 20,
 		blendMode: THREE.AdditiveBlending,
 		jiggleFrequency: 2,
 		maxJiggleAmount: 4 
 	},
 	YANG: {
-		numTrails: 100,
+		numTrails: 50,
 		numLeaves: 20,
 		leaf: 'yang',
 		leafMinSize: 2,
 		leafMaxSize: 4,
 		color: '#EF3B00',
 		duration: 20000,
-		length: 60,
+		length: 20,
 		blendMode: THREE.AdditiveBlending,
 		jiggleFrequency: 2,
 		maxJiggleAmount: 4 
@@ -235,7 +235,7 @@ feng.fx.EnergyFlow.Preset = {
 		leafMaxSize: 12,
 		color: '#48D1CC',
 		duration: 20000,
-		length: 80,
+		length: 20,
 		blendMode: THREE.MultiplyBlending,
 		jiggleFrequency: 2,
 		maxJiggleAmount: 4 

@@ -9,12 +9,18 @@ goog.require('feng.fx.Particle');
  */
 feng.fx.Trail = function(timeOffset, color, length, blendMode, jiggleFrequency, maxJiggleAmount, pathTrack){
 
-	this._numLineVertices = length + Math.round(Math.random()*length);
-	this._geometry = new THREE.Geometry();
-
-	this._hsl = new THREE.Color( color ).getHSL();
+	this._numSegments = length + Math.round( goog.math.uniformRandom(-length * .5, length * .5) );
 
 	this._blendMode = blendMode || THREE.AdditiveBlending;
+
+	this._geometry = new THREE.PlaneGeometry(30, 30, 1, this._numSegments-1);
+
+	this._material = this.createMaterial( color );
+
+	this._positions = [];
+	this._rotations = [];
+
+	this._width = .5;
 
 	//
 	goog.base(this, timeOffset, jiggleFrequency, maxJiggleAmount, pathTrack);
@@ -24,37 +30,18 @@ goog.inherits(feng.fx.Trail, feng.fx.Particle);
 
 feng.fx.Trail.prototype.create = function() {
 
-	var color = new THREE.Color();
-	var h = goog.math.uniformRandom(this._hsl.h - .02, this._hsl.h + .02);
+	var mesh = new THREE.Mesh(this._geometry, this._material);
+	mesh.dynamic = true;
 
-	for( var i = 0; i < this._numLineVertices; i++ ) {
+	mesh.rotation.x = 90;
 
-		this._geometry.vertices.push( i === 0 ? this._position : new THREE.Vector3() );
-		
-		var ratio = i / (this._numLineVertices - 1);
-		var s = this._hsl.s;
-		var l = Math.sin( ratio * Math.PI ) * .1;
-
-		if(this._blendMode === THREE.MultiplyBlending) {
-			l = 1 - l;
-		}
-
-		color.setHSL(h, s, l);
-
-		this._geometry.colors.push( color.clone() );
+	for (var i = 0; i < this._numSegments*2; i++)
+	{
+	  this._positions[i] = 0;
+	  this._rotations[i] = 0;
 	}
 
-	var material = new THREE.LineBasicMaterial({
-		blending: this._blendMode,
-		vertexColors: THREE.VertexColors,
-		transparent: true,
-		linewidth: 4,
-		fog: false
-	});
-
-	var line = new THREE.Line( this._geometry, material );
-
-	return line;
+	return mesh;
 };
 
 
@@ -62,12 +49,48 @@ feng.fx.Trail.prototype.setPosition = function( position ) {
 
 	goog.base(this, 'setPosition', position);
 
-	for(var i = 0; i < this._numLineVertices; i++ ) {
 
-		this._geometry.vertices[i].copy( this._position );
+};
+
+
+feng.fx.Trail.prototype.createMaterial = function( color ) {
+
+	if(!feng.fx.Trail.DefaultTexture) {
+
+	  var size = 16;
+
+	  // create canvas
+	  var canvas = document.createElement('canvas');
+	  canvas.width = size;
+	  canvas.height = size;
+
+	  // get context
+	  var context = canvas.getContext('2d');
+
+	  // draw gradient
+	  var gradient = context.createLinearGradient( 0, 0, 0, size );
+	  gradient.addColorStop(0, '#000000');
+	  gradient.addColorStop(.25, '#555555');
+	  gradient.addColorStop(.5, '#000000'); 
+	  context.fillStyle = gradient;
+	  context.fillRect( 0, 0, size, size );
+
+    var texture = new THREE.Texture( canvas );
+    texture.needsUpdate = true;
+
+	  feng.fx.Trail.DefaultTexture = texture;
 	}
 
-	this._geometry.verticesNeedUpdate = true;
+  var material = new THREE.MeshBasicMaterial({
+    color: color || (Math.random() * 0xFFFFFF),
+    map: feng.fx.Trail.DefaultTexture,
+    fog: false,
+    side: THREE.DoubleSide,
+    transparent: true,
+    blending: this._blendMode
+  });
+
+	return material;
 };
 
 
@@ -75,10 +98,41 @@ feng.fx.Trail.prototype.update = function( u ) {
 
 	goog.base(this, 'update', u);
 
-	for(var i = this._numLineVertices - 1; i > 0; i --) {
+  this._positions.pop();
+  this._positions.pop();
+  this._positions.pop();
+  
+  this._rotations.pop();
+  this._rotations.pop();
+  this._rotations.pop();
+  
+  var position = this.getPosition();
 
-		this._geometry.vertices[i].copy( this._geometry.vertices[i-1] );
-	}
+  this._positions.unshift( position.x, position.y, position.z );
+  this._rotations.unshift( this._width, this._width, 0 );
+  
+  for (var i = 0; i < this._numSegments; i++) {
 
-	this._geometry.verticesNeedUpdate = true;
+    var v1 = this._geometry.vertices[i*2];
+    var v2 = this._geometry.vertices[i*2+1];
+    
+    var ix = i*3;
+    var iy = i*3+1;
+    var iz = i*3+2;
+
+    v1.x = this._positions[ix] + this._rotations[ix];
+    v1.y = this._positions[iy] + this._rotations[iy];
+    v1.z = this._positions[iz] + this._rotations[iz];
+    v2.x = this._positions[ix] - this._rotations[ix];
+    v2.y = this._positions[iy] - this._rotations[iy];
+    v2.z = this._positions[iz] - this._rotations[iz];
+  }
+  
+  this._geometry.computeFaceNormals();
+  this._geometry.computeVertexNormals();
+  this._geometry.verticesNeedUpdate = true;
+  this._geometry.normalsNeedUpdate = true;
 };
+
+
+feng.fx.Trail.DefaultTexture = null;
