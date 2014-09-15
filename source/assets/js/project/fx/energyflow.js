@@ -163,7 +163,7 @@ feng.fx.EnergyFlow.prototype.onWindowBlur = function( e ){
 
 feng.fx.EnergyFlow.Preset = {
 	DEFAULT: {
-		numTrails: 50,
+		numTrails: 80,
 		numLeaves: 20,
 		leaf: null,
 		leafMinSize: 0,
@@ -176,21 +176,21 @@ feng.fx.EnergyFlow.Preset = {
 		maxJiggleAmount: 4 
 	},
 	JI: {
-		numTrails: 50,
+		numTrails: 100,
 		numLeaves: 20,
 		leaf: 'ji',
 		leafMinSize: 2,
 		leafMaxSize: 4,
 		color: '#25DDFF',
 		duration: 20000,
-		length: 20,
+		length: 40,
 		blendMode: THREE.AdditiveBlending,
 		jiggleFrequency: 2,
 		maxJiggleAmount: 4 
 	},
 	SHA: {
-		numTrails: 50,
-		numLeaves: 20,
+		numTrails: 80,
+		numLeaves: 10,
 		leaf: 'sha',
 		leafMinSize: 2,
 		leafMaxSize: 4,
@@ -202,7 +202,7 @@ feng.fx.EnergyFlow.Preset = {
 		maxJiggleAmount: 4 
 	},
 	YIN: {
-		numTrails: 50,
+		numTrails: 80,
 		numLeaves: 20,
 		leaf: 'yin',
 		leafMinSize: 2,
@@ -215,7 +215,7 @@ feng.fx.EnergyFlow.Preset = {
 		maxJiggleAmount: 4 
 	},
 	YANG: {
-		numTrails: 50,
+		numTrails: 80,
 		numLeaves: 20,
 		leaf: 'yang',
 		leafMinSize: 2,
@@ -228,7 +228,7 @@ feng.fx.EnergyFlow.Preset = {
 		maxJiggleAmount: 4 
 	},
 	HANZI_CHI: {
-		numTrails: 50,
+		numTrails: 80,
 		numLeaves: 10,
 		leaf: 'ji',
 		leafMinSize: 6,

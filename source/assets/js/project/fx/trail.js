@@ -13,6 +13,9 @@ feng.fx.Trail = function(timeOffset, color, length, blendMode, jiggleFrequency, 
 
 	this._blendMode = blendMode || THREE.AdditiveBlending;
 
+	this._color = ( new THREE.Color() ).set( color );
+	this._baseHSL = this._color.getHSL();
+
 	this._geometry = new THREE.PlaneGeometry(30, 30, 1, this._numSegments-1);
 
 	this._material = this.createMaterial( color );
@@ -79,8 +82,13 @@ feng.fx.Trail.prototype.createMaterial = function( color ) {
 	  feng.fx.Trail.DefaultTexture = texture;
 	}
 
+	this._baseHSL.h = goog.math.uniformRandom(this._baseHSL.h - .1, this._baseHSL.h + .1);
+	this._baseHSL.l = goog.math.uniformRandom(this._baseHSL.l - .5, this._baseHSL.l);
+
+	this._color.setHSL( this._baseHSL.h, this._baseHSL.s, this._baseHSL.l );
+
   var material = new THREE.MeshBasicMaterial({
-    color: color || (Math.random() * 0xFFFFFF),
+    color: this._color,
     map: feng.fx.Trail.DefaultTexture,
     fog: false,
     side: THREE.DoubleSide,

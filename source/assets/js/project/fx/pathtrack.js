@@ -31,7 +31,7 @@ feng.fx.PathTrack = function(controlPoints, offset, isClosed, color, debug){
   this._offset = 0;
 
   this._debug = (debug === false) ? false : true;
-
+  
   if(this._debug) {
   	this._debugObject = new THREE.Object3D();
   	this.add( this._debugObject );
