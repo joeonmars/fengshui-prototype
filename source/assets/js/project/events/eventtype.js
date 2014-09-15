@@ -29,6 +29,7 @@ feng.events.EventType = {
 	ANIMATE_OUT: 'animate_out',
 	ANIMATED_IN: 'animated_in',
 	ANIMATED_OUT: 'animated_out',
+	UNLOCK_READY: 'unlock_ready',
 	UNLOCK: 'unlock',
 	DRAG: 'drag',
 	DRAG_END: 'drag_end',

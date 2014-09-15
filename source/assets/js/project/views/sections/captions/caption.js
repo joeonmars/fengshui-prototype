@@ -30,6 +30,8 @@ feng.views.sections.captions.Caption = function( object, cameraController, rende
 
   this._closeButton = goog.dom.getElementByClass('close-button', this.domElement);
   this._changeButton = goog.dom.getElementByClass('change', this.domElement);
+
+  this._hasUnlockReady = false;
 };
 goog.inherits(feng.views.sections.captions.Caption, goog.events.EventTarget);
 
@@ -39,13 +41,28 @@ feng.views.sections.captions.Caption.prototype.show = function() {
   goog.style.showElement( this.domElement, true );
 
   if(this._closeButton) {
-    this._eventHandler.listen( this._closeButton, 'click', this.onClick, false, this ); 
+    this._eventHandler.listen( this._closeButton, 'click', this.onClick, false, this );
   }
 
   if(this._changeButton) {
-    this._eventHandler.listen( this._changeButton, 'click', this.onClick, false, this );  
+    this._eventHandler.listen( this._changeButton, 'click', this.onClick, false, this );
   }
   
+  // listen for unlock ready event from view3d object
+  if( this._object.isUnlocked() ) {
+
+    this.onUnlock();
+
+  }else if( this._object.wasUnlockReady() ) {
+
+    this.onUnlockReady();
+
+  }else {
+
+    this._eventHandler.listen( this._object, feng.events.EventType.UNLOCK_READY, this.onUnlockReady, false, this );
+    this._eventHandler.listen( this._object, feng.events.EventType.UNLOCK, this.onUnlock, false, this );
+  }
+
   this._eventHandler.listen( window, 'resize', this.onResize, false, this );
 
   this.onResize();
@@ -78,6 +95,14 @@ feng.views.sections.captions.Caption.prototype.doClose = function() {
 };
 
 
+feng.views.sections.captions.Caption.prototype.unlock = function() {
+
+  // trigger tip object to unlock
+  this._object.unlock();
+};
+
+
+
 feng.views.sections.captions.Caption.prototype.update = function() {
 
   var object3d = this._object.object3d;
@@ -105,7 +130,25 @@ feng.views.sections.captions.Caption.prototype.onClick = function( e ) {
     case this._changeButton:
     this._object.tip.unlock();
     break;
+
+    /* WIP
+    case this._unlockButton:
+    this.unlock();
+    break;
+    */
   }
+};
+
+
+feng.views.sections.captions.Caption.prototype.onUnlock = function( e ) {
+
+  // handle caption UI change
+};
+
+
+feng.views.sections.captions.Caption.prototype.onUnlockReady = function( e ) {
+
+  // handle caption UI change
 };
 
 

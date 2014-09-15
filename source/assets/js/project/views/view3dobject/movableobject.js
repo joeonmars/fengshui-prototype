@@ -104,6 +104,8 @@ feng.views.view3dobject.MovableObject.prototype.drop = function(){
     nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
     object: this
   });
+
+  this.unlockReady();
 };
 
 

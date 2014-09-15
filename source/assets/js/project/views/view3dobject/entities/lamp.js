@@ -53,6 +53,8 @@ feng.views.view3dobject.entities.Lamp.prototype.setColor = function(color) {
   	},
   	onUpdateScope: this
   });
+
+  this.unlockReady();
 };
 
 

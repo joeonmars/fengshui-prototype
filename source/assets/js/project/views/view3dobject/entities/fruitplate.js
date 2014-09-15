@@ -42,6 +42,15 @@ feng.views.view3dobject.entities.FruitPlate.prototype.drop = function( view3dObj
   object3d.rotation.copy( orientation.rotation );
 
   this._holder.add( object3d );
+
+  // check all fruits status for unlock ready
+  var notReady = goog.object.findKey(this._fruits, function(result) {
+    return (result === false);
+  });
+
+  if(!notReady) {
+    this.unlockReady();
+  }
 };
 
 

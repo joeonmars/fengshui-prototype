@@ -24,6 +24,9 @@ feng.views.view3dobject.TipObject = function( object3d, data, view3d ){
 
   // get tip caption id if specified
   this.captionClass = data.captionClass || null;
+
+  //
+  this._wasUnlockReady = false;
 };
 goog.inherits(feng.views.view3dobject.TipObject, feng.views.view3dobject.InteractiveObject);
 
@@ -36,7 +39,48 @@ feng.views.view3dobject.TipObject.prototype.registerToView3D = function(){
 };
 
 
+feng.views.view3dobject.TipObject.prototype.wasUnlockReady = function(){
+
+  return this._wasUnlockReady;
+};
+
+
+feng.views.view3dobject.TipObject.prototype.isUnlocked = function(){
+
+  return this.tip.unlocked;
+};
+
+
+feng.views.view3dobject.TipObject.prototype.unlockReady = function(){
+
+  if(this._wasUnlockReady) {
+
+    // return false if already ready
+    return false;
+
+  }else {
+
+    this._wasUnlockReady = true;
+  }
+
+  this.dispatchEvent( feng.events.EventType.UNLOCK_READY );
+
+  console.log("UNLOCK READY: ", this);
+
+  // return true when ready
+  return true;
+};
+
+
+feng.views.view3dobject.TipObject.prototype.unlock = function(e){
+
+  this.tip.unlock();
+};
+
+
 feng.views.view3dobject.TipObject.prototype.onUnlock = function(e){
 
-	console.log("UNLOCKED TIP OBJECT: ", this);
+  this.dispatchEvent( feng.events.EventType.UNLOCK );
+
+  console.log("UNLOCK: ", this);
 };
