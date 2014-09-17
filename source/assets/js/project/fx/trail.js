@@ -93,7 +93,8 @@ feng.fx.Trail.prototype.createMaterial = function( color ) {
     fog: false,
     side: THREE.DoubleSide,
     transparent: true,
-    blending: this._blendMode
+    blending: this._blendMode,
+    depthTest: false
   });
 
 	return material;
