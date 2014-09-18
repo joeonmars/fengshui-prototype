@@ -143,9 +143,11 @@ feng.models.Preload = function(){
 			'bathroom': {
 				'scene-data': 'json/studio-bathroom.json',
 				'floor-texture': 'images/texture/studio/bathroom/floor.jpg',
+				'wall-texture': 'images/texture/studio/bathroom/wall.jpg',
 				'bathrobe-texture': 'images/texture/studio/bathroom/bathrobe.jpg',
 				'bathtub-texture': 'images/texture/studio/bathroom/bathtub.jpg',
 				'lotus-texture': 'images/texture/studio/bathroom/lotus.jpg',
+				'towel-texture': 'images/texture/studio/bathroom/towel.jpg',
 				'shelf-texture': 'images/texture/studio/bathroom/shelf.jpg',
 				'carpets-texture': 'images/texture/studio/bathroom/carpets.jpg',
 				'toilet-texture': 'images/texture/studio/bathroom/toilet.jpg',

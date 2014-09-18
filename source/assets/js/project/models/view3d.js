@@ -363,6 +363,11 @@ feng.models.View3D.Data = {
 			'floor': {
 				texture: "studio.bathroom.floor-texture"
 			},
+			'wall':	{
+				collidable: true,
+				castShadow: true,
+				texture: "studio.bathroom.wall-texture"
+			},
 			'lotus': {
 				class: 'tip',
 				interactions: [
@@ -372,6 +377,9 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.lotus-texture",
 				tipInteraction: "drop",
 				tipKey: 'studio.bathroom.lotus'
+			},
+			'towel': {
+				texture: "studio.bathroom.towel-texture"
 			},
 			'shelf': {
 				collidable: true,
@@ -412,7 +420,7 @@ feng.models.View3D.Data = {
 				isEntry: true,
 				origin: {
 					position: new THREE.Vector3(12, 0, -60),
-					rotation: new THREE.Euler(0, Math.PI/2, 0)
+					rotation: new THREE.Euler(0, Math.PI, 0)
 				}
 			}
 		}

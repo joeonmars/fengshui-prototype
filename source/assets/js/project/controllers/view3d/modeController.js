@@ -11,6 +11,7 @@ goog.require('feng.controllers.controls.DesignControls');
 goog.require('feng.controllers.controls.WalkControls');
 goog.require('feng.controllers.controls.ClimbControls');
 goog.require('feng.controllers.controls.TransitionControls');
+goog.require('feng.controllers.controls.BackgroundControls');
 
 
 /**
@@ -33,6 +34,7 @@ feng.controllers.view3d.ModeController = function( view3d ){
   this._walkControls = null;
   this._climbControls = null;
   this._transitionControls = null;
+  this._backgroundControls = null;
 
   this._mode = null;
 
@@ -44,20 +46,13 @@ goog.inherits(feng.controllers.view3d.ModeController, goog.events.EventTarget);
 feng.controllers.view3d.ModeController.prototype.init = function(){
 
 	// create mode controls
-	this._browseControls = this.createBrowseControls();
-	this._closeUpControls = this.createCloseUpControls();
-	this._designControls = this.createDesignControls();
-	this._walkControls = this.createWalkControls();
-	this._climbControls = this.createClimbControls();
-	this._transitionControls = this.createTransitionControls();
-
-	// register mode controls
-  this._modeControls[feng.controllers.view3d.ModeController.Mode.BROWSE] = this._browseControls;
-  this._modeControls[feng.controllers.view3d.ModeController.Mode.CLOSE_UP] = this._closeUpControls;
-  this._modeControls[feng.controllers.view3d.ModeController.Mode.DESIGN] = this._designControls;
-  this._modeControls[feng.controllers.view3d.ModeController.Mode.WALK] = this._walkControls;
-  this._modeControls[feng.controllers.view3d.ModeController.Mode.CLIMB] = this._climbControls;
-  this._modeControls[feng.controllers.view3d.ModeController.Mode.TRANSITION] = this._transitionControls;
+	this._browseControls = this.createControls( feng.controllers.view3d.ModeController.Mode.BROWSE );
+	this._closeUpControls = this.createControls( feng.controllers.view3d.ModeController.Mode.CLOSE_UP );
+	this._designControls = this.createControls( feng.controllers.view3d.ModeController.Mode.DESIGN );
+	this._walkControls = this.createControls( feng.controllers.view3d.ModeController.Mode.WALK );
+	this._climbControls = this.createControls( feng.controllers.view3d.ModeController.Mode.CLIMB );
+	this._transitionControls = this.createControls( feng.controllers.view3d.ModeController.Mode.TRANSITION );
+	this._backgroundControls = this.createControls( feng.controllers.view3d.ModeController.Mode.BACKGROUND );
 
   //
   this.control = this._browseControls;
@@ -93,76 +88,50 @@ feng.controllers.view3d.ModeController.prototype.setMode = function( modeData ){
 };
 
 
-feng.controllers.view3d.ModeController.prototype.createBrowseControls = function(){
+feng.controllers.view3d.ModeController.prototype.createControls = function( mode ){
 
 	var uiElement = this._view3d.hud.domElement;
 	var renderElement = this._view3d.domElement;
-	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.BROWSE );
+	var camera = this._cameraController.getCamera( mode );
 
-	var controls = new feng.controllers.controls.BrowseControls( camera, this._view3d, renderElement, uiElement );
+	var ControlClass;
+
+	switch(mode) {
+
+		case feng.controllers.view3d.ModeController.Mode.BROWSE:
+		ControlClass = feng.controllers.controls.BrowseControls;
+		break;
+
+		case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
+		ControlClass = feng.controllers.controls.CloseUpControls;
+		break;
+
+		case feng.controllers.view3d.ModeController.Mode.DESIGN:
+		ControlClass = feng.controllers.controls.DesignControls;
+		break;
+
+		case feng.controllers.view3d.ModeController.Mode.WALK:
+		ControlClass = feng.controllers.controls.WalkControls;
+		break;
+
+		case feng.controllers.view3d.ModeController.Mode.CLIMB:
+		ControlClass = feng.controllers.controls.ClimbControls;
+		break;
+
+		case feng.controllers.view3d.ModeController.Mode.TRANSITION:
+		ControlClass = feng.controllers.controls.TransitionControls;
+		break;
+
+		case feng.controllers.view3d.ModeController.Mode.BACKGROUND:
+		ControlClass = feng.controllers.controls.BackgroundControls;
+		break;
+	}
+
+	var controls = new ControlClass( camera, this._view3d, renderElement, uiElement );
 	controls.setParentEventTarget( this );
 
-	return controls;
-};
-
-
-feng.controllers.view3d.ModeController.prototype.createCloseUpControls = function(){
-
-	var uiElement = this._view3d.hud.domElement;
-	var renderElement = this._view3d.domElement;
-	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.CLOSE_UP );
-
-	var controls = new feng.controllers.controls.CloseUpControls( camera, this._view3d, renderElement, uiElement );
-	controls.setParentEventTarget( this );
-
-	return controls;
-};
-
-
-feng.controllers.view3d.ModeController.prototype.createDesignControls = function(){
-
-	var uiElement = this._view3d.hud.domElement;
-	var renderElement = this._view3d.domElement;
-	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.DESIGN );
-
-	var controls = new feng.controllers.controls.DesignControls( camera, this._view3d, renderElement, uiElement );
-	controls.setParentEventTarget( this );
-
-	return controls;
-};
-
-
-feng.controllers.view3d.ModeController.prototype.createWalkControls = function(){
-
-	var renderElement = this._view3d.domElement;
-	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.WALK );
-
-	var controls = new feng.controllers.controls.WalkControls( camera, this._view3d, renderElement );
-	controls.setParentEventTarget( this );
-
-	return controls;
-};
-
-
-feng.controllers.view3d.ModeController.prototype.createClimbControls = function(){
-
-	var renderElement = this._view3d.domElement;
-	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.CLIMB );
-
-	var controls = new feng.controllers.controls.ClimbControls( camera, this._view3d, renderElement );
-	controls.setParentEventTarget( this );
-
-	return controls;
-};
-
-
-feng.controllers.view3d.ModeController.prototype.createTransitionControls = function(){
-
-	var renderElement = this._view3d.domElement;
-	var camera = this._cameraController.getCamera( feng.controllers.view3d.ModeController.Mode.TRANSITION );
-
-	var controls = new feng.controllers.controls.TransitionControls( camera, this._view3d, renderElement );
-	controls.setParentEventTarget( this );
+	// register mode controls
+	this._modeControls[ mode ] = controls;
 
 	return controls;
 };
@@ -289,5 +258,6 @@ feng.controllers.view3d.ModeController.Mode = {
 	DESIGN: 'design', // isometrix view for ease of positioning/rotating control
 	WALK: 'walk',	// walk along a path
 	CLIMB: 'climb',	// climb stairs
-	TRANSITION: 'transition' // transition between different cameras for the above mode
+	TRANSITION: 'transition', // transition between different cameras for the above mode
+	BACKGROUND: 'background' // when paused or paused for other hud priorities
 };

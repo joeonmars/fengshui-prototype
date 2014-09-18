@@ -48,8 +48,41 @@ feng.templates.captions.DetailContent = function(opt_data, opt_ignored) {
  * @return {string}
  * @notypecheck
  */
+feng.templates.captions.Instruction = function(opt_data, opt_ignored) {
+  return '<div class="instruction"></div>';
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.captions.Unlocker = function(opt_data, opt_ignored) {
+  return '<div class="unlocker"></div>';
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.captions.ShareOptions = function(opt_data, opt_ignored) {
+  return '<div class="share"><ul><li><a class="facebook" target="_blank"></a></li><li><a class="twitter" target="_blank"></a></li><li><a class="google" target="_blank"></a></li></ul></div>';
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
 feng.templates.captions.LockedContent = function(opt_data, opt_ignored) {
-  return '<div class="locked">' + feng.templates.common.PrimaryButton({icon: 'change', classname: 'change', text: 'change'}) + '</div>';
+  return '<div class="locked">' + feng.templates.captions.Instruction(null) + feng.templates.captions.Unlocker(null) + feng.templates.captions.ShareOptions(null) + '</div>';
 };
 
 
@@ -60,7 +93,7 @@ feng.templates.captions.LockedContent = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.UnlockedContent = function(opt_data, opt_ignored) {
-  return '<div class="unlocked"><ul class="share"><li><a class="facebook" target="_blank"></a></li><li><a class="twitter" target="_blank"></a></li><li><a class="google" target="_blank"></a></li></ul></div>';
+  return '<div class="unlocked">' + feng.templates.captions.ShareOptions(null) + '</div>';
 };
 
 
@@ -71,7 +104,7 @@ feng.templates.captions.UnlockedContent = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.AdviceCaption = function(opt_data, opt_ignored) {
-  return feng.templates.captions.Caption({classname: 'advice', content: '<div class="right"></div>'});
+  return feng.templates.captions.Caption({classname: 'advice', content: '<div class="right">' + feng.templates.captions.ShareOptions(null) + '</div>'});
 };
 
 
@@ -93,15 +126,15 @@ feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
-  var param104 = '<div class="draggerContainer"><img class="dragger" draggable="false"></div><div class="right">' + feng.templates.common.Popup({content: '<h1>' + opt_data.tip.name + '</h1>' + feng.templates.captions.DetailContent({advice: opt_data.tip.advice, quote: opt_data.tip.quote, description: opt_data.tip.description}) + feng.templates.captions.LockedContent(null) + feng.templates.captions.UnlockedContent(null)}) + '</div><div class="bottom"><div class="pictureSelector">' + feng.templates.controls.RoundButton({content: '<div class="icon"></div>', classname: 'prev'}) + '<div class="pictureView"><div class="carousel"><ul>';
-  var pictureList123 = opt_data.pictures;
-  var pictureListLen123 = pictureList123.length;
-  for (var pictureIndex123 = 0; pictureIndex123 < pictureListLen123; pictureIndex123++) {
-    var pictureData123 = pictureList123[pictureIndex123];
-    param104 += '<li data-id="' + pictureIndex123 + '"><div class="thumbnail" style="background-image: url(' + pictureData123.src + ')" data-id="' + pictureIndex123 + '"></li>';
+  var param113 = '<div class="draggerContainer"><img class="dragger" draggable="false"></div><div class="right">' + feng.templates.common.Popup({content: '<h1>' + opt_data.tip.name + '</h1>' + feng.templates.captions.DetailContent({advice: opt_data.tip.advice, quote: opt_data.tip.quote, description: opt_data.tip.description}) + feng.templates.captions.LockedContent(null) + feng.templates.captions.UnlockedContent(null)}) + '</div><div class="bottom"><div class="pictureSelector">' + feng.templates.controls.RoundButton({content: '<div class="icon"></div>', classname: 'prev'}) + '<div class="pictureView"><div class="carousel"><ul>';
+  var pictureList132 = opt_data.pictures;
+  var pictureListLen132 = pictureList132.length;
+  for (var pictureIndex132 = 0; pictureIndex132 < pictureListLen132; pictureIndex132++) {
+    var pictureData132 = pictureList132[pictureIndex132];
+    param113 += '<li data-id="' + pictureIndex132 + '"><div class="thumbnail" style="background-image: url(' + pictureData132.src + ')" data-id="' + pictureIndex132 + '"></li>';
   }
-  param104 += '</ul></div></div>' + feng.templates.controls.RoundButton({content: '<div class="icon"></div>', classname: 'next'}) + '</div></div>';
-  var output = feng.templates.captions.Caption({classname: 'changepicture', content: param104});
+  param113 += '</ul></div></div>' + feng.templates.controls.RoundButton({content: '<div class="icon"></div>', classname: 'next'}) + '</div></div>';
+  var output = feng.templates.captions.Caption({classname: 'changepicture', content: param113});
   return output;
 };
 
@@ -113,15 +146,15 @@ feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
-  var param141 = '<div class="right">' + feng.templates.common.Popup({content: '<h1>' + opt_data.tip.name + '</h1>' + feng.templates.captions.DetailContent({advice: opt_data.tip.advice, quote: opt_data.tip.quote, description: opt_data.tip.description}) + feng.templates.captions.LockedContent(null) + feng.templates.captions.UnlockedContent(null)}) + '</div><div class="bottom"><div class="colorSelector"><div class="colorView"><div class="carousel"><ul>';
-  var colorKeyList155 = soy.$$getMapKeys(opt_data.colors);
-  var colorKeyListLen155 = colorKeyList155.length;
-  for (var colorKeyIndex155 = 0; colorKeyIndex155 < colorKeyListLen155; colorKeyIndex155++) {
-    var colorKeyData155 = colorKeyList155[colorKeyIndex155];
-    param141 += '<li><div class="color" style="background-color: ' + opt_data.colors[colorKeyData155].hex + '" data-color="' + colorKeyData155 + '"></li>';
+  var param150 = '<div class="right">' + feng.templates.common.Popup({content: '<h1>' + opt_data.tip.name + '</h1>' + feng.templates.captions.DetailContent({advice: opt_data.tip.advice, quote: opt_data.tip.quote, description: opt_data.tip.description}) + feng.templates.captions.LockedContent(null) + feng.templates.captions.UnlockedContent(null)}) + '</div><div class="bottom"><div class="colorSelector"><div class="colorView"><div class="carousel"><ul>';
+  var colorKeyList164 = soy.$$getMapKeys(opt_data.colors);
+  var colorKeyListLen164 = colorKeyList164.length;
+  for (var colorKeyIndex164 = 0; colorKeyIndex164 < colorKeyListLen164; colorKeyIndex164++) {
+    var colorKeyData164 = colorKeyList164[colorKeyIndex164];
+    param150 += '<li><div class="color" style="background-color: ' + opt_data.colors[colorKeyData164].hex + '" data-color="' + colorKeyData164 + '"></li>';
   }
-  param141 += '</ul></div></div></div></div>';
-  var output = feng.templates.captions.Caption({classname: 'changecolor', content: param141});
+  param150 += '</ul></div></div></div></div>';
+  var output = feng.templates.captions.Caption({classname: 'changecolor', content: param150});
   return output;
 };
 
@@ -145,11 +178,11 @@ feng.templates.captions.FruitsCaption = function(opt_data, opt_ignored) {
  */
 feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
   var output = '<p class="floatText">';
-  var lineList185 = opt_data.lines;
-  var lineListLen185 = lineList185.length;
-  for (var lineIndex185 = 0; lineIndex185 < lineListLen185; lineIndex185++) {
-    var lineData185 = lineList185[lineIndex185];
-    output += '<span>' + lineData185 + '</span>';
+  var lineList194 = opt_data.lines;
+  var lineListLen194 = lineList194.length;
+  for (var lineIndex194 = 0; lineIndex194 < lineListLen194; lineIndex194++) {
+    var lineData194 = lineList194[lineIndex194];
+    output += '<span>' + lineData194 + '</span>';
   }
   output += '</p>';
   return output;
