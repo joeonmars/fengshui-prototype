@@ -207,7 +207,9 @@ feng.views.View3D.prototype.activate = function(){
 
  	this._eventHandler.listen( window, 'resize', this.onResize, false, this );
  	this._eventHandler.listen( this.cameraController, feng.events.EventType.CHANGE, this.onCameraChange, false, this );
- 	
+ 	this._eventHandler.listen( feng.episodeSelectionOverlay, feng.events.EventType.ANIMATE_IN, this.pause, false, this );
+ 	this._eventHandler.listen( feng.episodeSelectionOverlay, feng.events.EventType.ANIMATE_OUT, this.resume, false, this );
+
  	goog.object.forEach(this.interactiveObjects, function(interactiveObject) {
  		interactiveObject.activate();
  	});
@@ -310,6 +312,24 @@ feng.views.View3D.prototype.fadeOut = function(){
  			type: feng.events.EventType.ANIMATED_OUT
  		});
  	}, this));
+};
+
+
+feng.views.View3D.prototype.pause = function(){
+
+	console.log("Pause View3D!!!");
+
+	this.modeController.control.pause( true );
+	this.renderController.updateByPause( true );
+};
+
+
+feng.views.View3D.prototype.resume = function(){
+
+	console.log("Resume View3D!!!");
+
+	this.modeController.control.pause( false );
+	this.renderController.updateByPause( false );
 };
 
 

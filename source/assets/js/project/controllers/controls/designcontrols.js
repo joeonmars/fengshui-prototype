@@ -113,31 +113,45 @@ feng.controllers.controls.DesignControls.prototype.isDragging = function() {
 
 feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 
-	goog.base(this, 'enable', enable);
+	var shouldEnable = goog.base(this, 'enable', enable);
 
-	if(this._isEnabled) {
+	if(shouldEnable) {
 
-		this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this);
-
-		this._eventHandler.listen(this._view3d.domElement, 'click', this.onClickView, false, this);
-
-		this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
-		this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this);
-
-		this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
-		
-		this._zoomSlider.activate();
 		this._zoomSlider.show();
 
 		this.update();
 
 	}else  {
 
-		this._zoomSlider.deactivate();
 		this._zoomSlider.hide();
 	}
 
 	this._dragger.setEnabled( this._isEnabled );
+};
+
+
+feng.controllers.controls.DesignControls.prototype.activate = function () {
+
+	goog.base(this, 'activate');
+
+	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this);
+
+	this._eventHandler.listen(this._view3d.domElement, 'click', this.onClickView, false, this);
+
+	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
+	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this);
+
+	this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
+	
+	this._zoomSlider.activate();
+};
+
+
+feng.controllers.controls.DesignControls.prototype.deactivate = function () {
+
+	goog.base(this, 'deactivate');
+
+	this._zoomSlider.deactivate();
 };
 
 

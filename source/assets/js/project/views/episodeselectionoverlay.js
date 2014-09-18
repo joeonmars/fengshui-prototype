@@ -3,6 +3,7 @@ goog.provide('feng.views.EpisodeSelectionOverlay');
 goog.require('goog.dom');
 goog.require('goog.math.Box');
 goog.require('goog.style');
+goog.require('feng.events');
 goog.require('feng.views.Overlay');
 
 
@@ -75,6 +76,9 @@ feng.views.EpisodeSelectionOverlay.prototype.animateIn = function(){
 	this._episodeSelection.reset();
 
 	TweenMax.delayedCall(.5, this._episodeSelection.animateIn, null, this._episodeSelection);
+
+	//
+	this.dispatchEvent( feng.events.EventType.ANIMATE_IN );
 };
 
 
@@ -113,6 +117,9 @@ feng.views.EpisodeSelectionOverlay.prototype.animateOut = function( episodeId ){
 			'onCompleteScope': this
 		});
 	}
+
+	//
+	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
 };
 
 

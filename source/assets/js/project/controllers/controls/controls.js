@@ -19,8 +19,16 @@ feng.controllers.controls.Controls = function(camera, view3d, domElement){
 
   this._eventHandler = new goog.events.EventHandler(this);
 
-  this._isEnabled = false;
-  this._clock = new THREE.Clock(false);
+  this.isEnabled = false;
+  this.isPaused = false;
+
+  this._pauseProps = {
+  	fov: 0,
+  	oFov: 0,
+  	z: 0,
+  	oZ: 0
+  };
+
   this._rotation = new THREE.Euler(0, 0, 0, 'YXZ'); //YXZ is to overcome gimbal lock
 
   this._originalPosition = this._camera.position.clone();
@@ -145,33 +153,82 @@ feng.controllers.controls.Controls.prototype.reset = function () {
 };
 
 
+feng.controllers.controls.Controls.prototype.activate = function() {
+
+	this._eventHandler.listen(this._domElement, 'click', this.onClick, false, this);
+	this._eventHandler.listen(this._domElement, 'mousedown', this.onMouseDown, false, this);
+
+	goog.fx.anim.registerAnimation(this);
+
+	goog.dom.classes.add(this._view3d.domElement, 'grab');
+};
+
+
+feng.controllers.controls.Controls.prototype.deactivate = function() {
+
+	this._eventHandler.removeAll();
+
+	goog.fx.anim.unregisterAnimation(this);
+
+	goog.dom.classes.remove(this._view3d.domElement, 'grab');
+	goog.dom.classes.remove(this._mainEl, 'grabbing');
+};
+
+
 feng.controllers.controls.Controls.prototype.enable = function( enable ) {
 
-	if(this._isEnabled === enable) return;
+	if(this.isEnabled === enable) return;
 	
-	this._isEnabled = enable;
+	this.isEnabled = enable;
 
-	if(this._isEnabled) {
+	if(this.isEnabled) {
 
-		this._eventHandler.listen(this._domElement, 'click', this.onClick, false, this);
-		this._eventHandler.listen(this._domElement, 'mousedown', this.onMouseDown, false, this);
-		this._eventHandler.listen(window, 'resize', this.onResize, false, this);
-
-		this._clock.start();
-		goog.fx.anim.registerAnimation(this);
-
-		goog.dom.classes.add(this._view3d.domElement, 'grab');
+		this.activate();
 
 	}else {
 
-		this._eventHandler.removeAll();
-
-		this._clock.stop();
-		goog.fx.anim.unregisterAnimation(this);
-
-		goog.dom.classes.remove(this._view3d.domElement, 'grab');
-		goog.dom.classes.remove(this._mainEl, 'grabbing');
+		this.deactivate();
 	}
+
+	return this.isEnabled;
+};
+
+
+feng.controllers.controls.Controls.prototype.pause = function( pause ) {
+
+	if(this.isPaused === pause || !this.isEnabled) return;
+	
+	this.isPaused = pause;
+
+	if(this.isPaused) {
+
+		this._pauseProps.oFov = this._pauseProps.fov = this.getFov();
+		this._pauseProps.oZ = this._pauseProps.z = 0;
+
+		TweenMax.to( this._pauseProps, .8, {
+			fov: this._pauseProps.oFov + 8,
+			z: 5,
+			ease: Quad.easeInOut,
+			onUpdate: this.onPauseAnimate,
+			onUpdateScope: this,
+			onStart: this.onPauseStart,
+			onStartScope: this
+		});
+
+	}else {
+
+		TweenMax.to( this._pauseProps, .8, {
+			fov: this._pauseProps.oFov,
+			z: this._pauseProps.oZ,
+			ease: Quad.easeInOut,
+			onUpdate: this.onPauseAnimate,
+			onUpdateScope: this,
+			onComplete: this.onPauseResumed,
+			onCompleteScope: this
+		});
+	}
+
+	return this.isPaused;
 };
 
 
@@ -191,6 +248,28 @@ feng.controllers.controls.Controls.prototype.getDirection = function() {
 	v.copy( direction ).applyEuler( rotation );
 
 	return v;
+};
+
+
+feng.controllers.controls.Controls.prototype.onPauseStart = function() {
+
+	this.deactivate();
+};
+
+
+feng.controllers.controls.Controls.prototype.onPauseAnimate = function() {
+
+	var camera = this.getCamera();
+
+	camera.position.z = this._pauseProps.z;
+
+	this.setFov( this._pauseProps.fov );
+};
+
+
+feng.controllers.controls.Controls.prototype.onPauseResumed = function() {
+
+	this.activate();
 };
 
 
@@ -224,11 +303,6 @@ feng.controllers.controls.Controls.prototype.onMouseUp = function ( e ) {
 feng.controllers.controls.Controls.prototype.onMouseMove = function ( e ) {
 
 	goog.dom.classes.add(this._mainEl, 'grabbing');
-};
-
-
-feng.controllers.controls.Controls.prototype.onResize = function ( e ) {
-
 };
 
 

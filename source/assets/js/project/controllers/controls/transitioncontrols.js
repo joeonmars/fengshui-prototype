@@ -134,3 +134,18 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 		mode: nextMode
 	});
 };
+
+
+feng.controllers.controls.TransitionControls.prototype.pause = function ( pause ) {
+
+	var shouldPause = goog.base(this, 'pause', pause);
+
+	if(shouldPause) {
+
+		this._tweener.pause();
+
+	}else {
+
+		this._tweener.resume();
+	}
+};

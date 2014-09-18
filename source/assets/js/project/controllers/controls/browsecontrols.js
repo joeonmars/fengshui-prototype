@@ -39,11 +39,9 @@ goog.inherits(feng.controllers.controls.BrowseControls, feng.controllers.control
 
 feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mouseEventToTrigger ) {
 
-	goog.base(this, 'enable', enable);
+	var shouldEnable = goog.base(this, 'enable', enable);
 
-	if(this._isEnabled) {
-
-		this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this);
+	if(shouldEnable) {
 
 		if(mouseEventToTrigger) {
 			this.onMouseDown( mouseEventToTrigger );
@@ -51,13 +49,25 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 
 		this._targetRotationY = this._yawObject.rotation.y;
 		this._targetRotationX = this._pitchObject.rotation.x;
-
-		this._objectSelector.activate( this._objectSelectorCallbacks );
-
-	}else  {
-
-		this._objectSelector.deactivate();
 	}
+};
+
+
+feng.controllers.controls.BrowseControls.prototype.activate = function () {
+
+	goog.base(this, 'activate');
+
+	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this);
+
+	this._objectSelector.activate( this._objectSelectorCallbacks );
+};
+
+
+feng.controllers.controls.BrowseControls.prototype.deactivate = function () {
+
+	goog.base(this, 'deactivate');
+
+	this._objectSelector.deactivate();
 };
 
 

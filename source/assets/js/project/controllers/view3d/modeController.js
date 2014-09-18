@@ -11,7 +11,6 @@ goog.require('feng.controllers.controls.DesignControls');
 goog.require('feng.controllers.controls.WalkControls');
 goog.require('feng.controllers.controls.ClimbControls');
 goog.require('feng.controllers.controls.TransitionControls');
-goog.require('feng.controllers.controls.BackgroundControls');
 
 
 /**
@@ -34,7 +33,6 @@ feng.controllers.view3d.ModeController = function( view3d ){
   this._walkControls = null;
   this._climbControls = null;
   this._transitionControls = null;
-  this._backgroundControls = null;
 
   this._mode = null;
 
@@ -52,7 +50,6 @@ feng.controllers.view3d.ModeController.prototype.init = function(){
 	this._walkControls = this.createControls( feng.controllers.view3d.ModeController.Mode.WALK );
 	this._climbControls = this.createControls( feng.controllers.view3d.ModeController.Mode.CLIMB );
 	this._transitionControls = this.createControls( feng.controllers.view3d.ModeController.Mode.TRANSITION );
-	this._backgroundControls = this.createControls( feng.controllers.view3d.ModeController.Mode.BACKGROUND );
 
   //
   this.control = this._browseControls;
@@ -120,10 +117,6 @@ feng.controllers.view3d.ModeController.prototype.createControls = function( mode
 
 		case feng.controllers.view3d.ModeController.Mode.TRANSITION:
 		ControlClass = feng.controllers.controls.TransitionControls;
-		break;
-
-		case feng.controllers.view3d.ModeController.Mode.BACKGROUND:
-		ControlClass = feng.controllers.controls.BackgroundControls;
 		break;
 	}
 
@@ -258,6 +251,5 @@ feng.controllers.view3d.ModeController.Mode = {
 	DESIGN: 'design', // isometrix view for ease of positioning/rotating control
 	WALK: 'walk',	// walk along a path
 	CLIMB: 'climb',	// climb stairs
-	TRANSITION: 'transition', // transition between different cameras for the above mode
-	BACKGROUND: 'background' // when paused or paused for other hud priorities
+	TRANSITION: 'transition' // transition between different cameras for the above mode
 };

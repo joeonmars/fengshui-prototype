@@ -122,23 +122,14 @@ feng.controllers.controls.CloseUpControls.prototype.shiftCamera = function ( x )
 
 
 feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, object ) {
-
-	goog.base(this, 'enable', enable);
-
+	
 	this._activeObject = object || this._activeObject;
 
-	if(this._isEnabled) {
+	var shouldEnable = goog.base(this, 'enable', enable);
 
-		this._eventHandler.listen(this, feng.events.EventType.CLOSE, this.close, false, this);
-
-		this._eventHandler.listen(this._manipulator, feng.events.EventType.CLOSE, this.close, false, this);
-		this._eventHandler.listen(this._manipulator, feng.events.EventType.CHANGE, this.onManipulate, false, this);
-
-		this._eventHandler.listen(this._interactionResolver, feng.events.EventType.START, this.onInteractionStart, false, this);
-		this._eventHandler.listen(this._interactionResolver, feng.events.EventType.END, this.onInteractionEnd, false, this);
+	if(shouldEnable) {
 
 		this._manipulator.show();
-		this._manipulator.activate( this._activeObject.interactions );
 
 		this.distanceToObject = this.getPosition().distanceTo( this._activeObject.object3d.position );
 
@@ -153,7 +144,6 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 	}else  {
 		
 		this._manipulator.hide();
-		this._manipulator.deactivate();
 
 		// test...
 		var type = this._activeObject.tipInteraction || 'change_object';
@@ -161,6 +151,30 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 		caption.setParentEventTarget(this);
 		caption.hide();
 	}
+};
+
+
+feng.controllers.controls.CloseUpControls.prototype.activate = function () {
+
+	goog.base(this, 'activate');
+
+	this._eventHandler.listen(this, feng.events.EventType.CLOSE, this.close, false, this);
+
+	this._eventHandler.listen(this._manipulator, feng.events.EventType.CLOSE, this.close, false, this);
+	this._eventHandler.listen(this._manipulator, feng.events.EventType.CHANGE, this.onManipulate, false, this);
+
+	this._eventHandler.listen(this._interactionResolver, feng.events.EventType.START, this.onInteractionStart, false, this);
+	this._eventHandler.listen(this._interactionResolver, feng.events.EventType.END, this.onInteractionEnd, false, this);
+
+	this._manipulator.activate( this._activeObject.interactions );
+};
+
+
+feng.controllers.controls.CloseUpControls.prototype.deactivate = function () {
+
+	goog.base(this, 'deactivate');
+
+	this._manipulator.deactivate();
 };
 
 
@@ -240,12 +254,4 @@ feng.controllers.controls.CloseUpControls.prototype.onInteractionEnd = function(
 	if(e.interaction === 'close') {
 		this.close();
 	}
-};
-
-
-feng.controllers.controls.CloseUpControls.prototype.onResize = function ( e ) {
-
-	goog.base(this, 'onResize', e);
-
-	this.shiftCamera( this._cameraOffsetX );
 };

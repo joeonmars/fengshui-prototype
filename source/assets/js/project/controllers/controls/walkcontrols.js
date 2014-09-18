@@ -25,9 +25,9 @@ goog.inherits(feng.controllers.controls.WalkControls, feng.controllers.controls.
 
 feng.controllers.controls.WalkControls.prototype.enable = function( enable ) {
 
-	goog.base(this, 'enable', enable);
+	var shouldEnable = goog.base(this, 'enable', enable);
 
-	if(this._isEnabled) {
+	if(shouldEnable) {
 
 
 	}else  {
@@ -37,6 +37,21 @@ feng.controllers.controls.WalkControls.prototype.enable = function( enable ) {
 			this._gateway = null;
 		}
 	}	
+};
+
+
+feng.controllers.controls.WalkControls.prototype.pause = function ( pause ) {
+
+	var shouldPause = goog.base(this, 'pause', pause);
+
+	if(shouldPause) {
+
+		this._tweener.pause();
+
+	}else {
+
+		this._tweener.resume();
+	}
 };
 
 

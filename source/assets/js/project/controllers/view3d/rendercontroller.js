@@ -19,13 +19,25 @@ feng.controllers.view3d.RenderController = function( view3d ){
 
   this._maskedObject = null;
 
+  //
   this._blur = 0;
+  this._brightness = 0;
+  this._contrast = 0;
+  this._vignette = 0;
+
   this._maxBlur = 50;
+  this._minBrightness = -.5;
+  this._minContrast = -.5;
+  this._maxVignette = 1;
 
   this._blurTweener = TweenMax.fromTo(this, .5, {
-  	_blur: 0
+  	_blur: 0,
+  	_brightness: 0,
+  	_contrast: 0
   }, {
   	_blur: this._maxBlur,
+  	_brightness: this._minBrightness,
+  	_contrast: this._minContrast,
   	'ease': Quad.easeInOut,
   	'paused': true,
   	'onStart': this.onBlurInStart,
@@ -34,12 +46,18 @@ feng.controllers.view3d.RenderController = function( view3d ){
   	'onReverseCompleteScope': this
   });
 
-  this._vignette = 0;
-
   this._vignetteTweener = TweenMax.fromTo(this, 1, {
   	_vignette: 0
   }, {
-  	_vignette: 1,
+  	_vignette: this._maxVignette,
+  	'paused': true
+  });
+
+  this._brightnessTweener = TweenMax.fromTo(this, .5, {
+  	_brightness: 0
+  }, {
+  	_brightness: this._minBrightness,
+  	'ease': Quad.easeInOut,
   	'paused': true
   });
 };
@@ -98,9 +116,26 @@ feng.controllers.view3d.RenderController.prototype.updateByMode = function(mode,
 };
 
 
+feng.controllers.view3d.RenderController.prototype.updateByPause = function( pause ) {
+
+	if(pause) {
+
+		this._brightnessTweener.restart();
+
+	}else {
+
+		this._brightnessTweener.reverse();
+	}
+};
+
+
 feng.controllers.view3d.RenderController.prototype.onBlurInStart = function() {
 
 	this._renderer._blurTexturePass.enabled = true;
+	//this._renderer._maskPass.enabled = true;
+	//this._renderer._renderTexturePass.enabled = true;
+	//this._renderer._clearMaskPass.enabled = true;
+
 	this._renderer.render();
 };
 
@@ -117,13 +152,8 @@ feng.controllers.view3d.RenderController.prototype.onBlurOutComplete = function(
 feng.controllers.view3d.RenderController.prototype.onBeforeRender = function() {
 
 	this._renderer.setBlur( this._blur, this._blur );
-
-	var brightness = this._blurTweener.progress() * -.5;
-	this._renderer.setBrightness( brightness );
-
-	var contrast = this._blurTweener.progress() * -.5;
-	this._renderer.setContrast( contrast );
-
+	this._renderer.setBrightness( this._brightness );
+	this._renderer.setContrast( this._contrast );
 	this._renderer.setVignette( this._vignette );
 };
 
