@@ -368,6 +368,9 @@ feng.models.View3D.Data = {
 				castShadow: true,
 				texture: "studio.bathroom.wall-texture"
 			},
+			'ceiling-lamps':	{
+				texture: "studio.bathroom.ceiling-lamps-texture"
+			},
 			'lotus': {
 				class: 'tip',
 				interactions: [
@@ -385,6 +388,12 @@ feng.models.View3D.Data = {
 				collidable: true,
 				texture: "studio.bathroom.shelf-texture"
 			},
+			'plug': {
+				texture: "studio.bathroom.plug-texture"
+			},
+			'fragrance': {
+				texture: "studio.bathroom.fragrance-texture"
+			},
 			'toilet-paper': {
 				texture: "studio.bathroom.toilet-paper-texture"
 			},
@@ -397,6 +406,9 @@ feng.models.View3D.Data = {
 			},
 			'bathtub': {
 				texture: "studio.bathroom.bathtub-texture"
+			},
+			'shower-curtain': {
+				texture: "studio.bathroom.shower-curtain-texture"
 			},
 			'carpets': {
 				texture: "studio.bathroom.carpets-texture"
