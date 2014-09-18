@@ -359,43 +359,55 @@ feng.models.View3D.Data = {
 				texture: "studio.interior3.peach-texture"
 			}
 		},
-		'bathroom': {/*
-			'wall': {
-				texture: "studio.bathroom.wall-texture"
+		'bathroom': {
+			'floor': {
+				texture: "studio.bathroom.floor-texture"
 			},
-			'door': {
-				class: "gateway",
-				collidable: true,
-				viewid: "interior2",
-				gatewayid: "door"
-			},
-			'bathtub': {
-				texture: "studio.bathroom.bathtub-texture"
-			},
-			'closet-door-mirror': {
-
-			},
-			'closet-door': {
-				texture: "studio.bathroom.closet-door-texture"
-			},
-			'closet': {
-				texture: "studio.bathroom.closet-texture"
-			},
-			'lamp': {
-				texture: "studio.bathroom.lamp-texture"
+			'lotus': {
+				class: 'tip',
+				interactions: [
+					"move",
+					"rotate"
+				],
+				texture: "studio.bathroom.lotus-texture",
+				tipInteraction: "drop",
+				tipKey: 'studio.bathroom.lotus'
 			},
 			'shelf': {
+				collidable: true,
 				texture: "studio.bathroom.shelf-texture"
 			},
-			'toilet': {
-				texture: "studio.bathroom.toilet-texture"
+			'toilet-paper': {
+				texture: "studio.bathroom.toilet-paper-texture"
 			},
-			'towel': {
-				texture: "studio.bathroom.towel-texture"
+			'bathrobe': {
+				texture: "studio.bathroom.bathrobe-texture"
 			},
-			'washer': {
-				texture: "studio.bathroom.washer-texture"
-			}*/
+			'carpets': {
+				texture: "studio.bathroom.carpets-texture"
+			},
+			'washbasin': {
+				collidable: true,
+				texture: "studio.bathroom.washbasin-texture"
+			},
+			'flipflop': {
+				texture: "studio.bathroom.flipflop-texture"
+			},
+			'lamps': {
+				collidable: true,
+				texture: "studio.bathroom.lamps-texture"
+			},
+			'bathroom-door': {
+				class: "gateway",
+				viewid: "bathroom",
+				gatewayid: "door",
+				castShadow: true,
+				isEntry: true,
+				origin: {
+					position: new THREE.Vector3(12, 0, -60),
+					rotation: new THREE.Euler(0, Math.PI/2, 0)
+				}
+			}
 		}
 	},
 	'townhouse': {

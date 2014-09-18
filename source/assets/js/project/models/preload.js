@@ -76,7 +76,7 @@ feng.models.Preload = function(){
 					'10': 'images/texture/studio/pictures/10.jpg'
 				},
 				'skybox': {
-					'xpos-x': 'images/texture/studio/livingroom/skybox/pos-x.png',
+					'xpos': 'images/texture/studio/livingroom/skybox/pos-x.png',
 					'xneg': 'images/texture/studio/livingroom/skybox/neg-x.png',
 					'ypos': 'images/texture/studio/livingroom/skybox/pos-y.png',
 					'yneg': 'images/texture/studio/livingroom/skybox/neg-y.png',
@@ -141,17 +141,24 @@ feng.models.Preload = function(){
 				}
 			},
 			'bathroom': {
-				'scene-data': 'json/bathroom.json',
-				'energyflow-data': 'json/energyflow/energyflow-3.json',
-				'bathtub-texture': 'images/texture/studio/bathroom/bathtub.png',
-				'closet-door-texture': 'images/texture/studio/bathroom/closet-door.png',
-				'closet-texture': 'images/texture/studio/bathroom/closet.jpg',
-				'lamp-texture': 'images/texture/studio/bathroom/lamp.png',
-				'shelf-texture': 'images/texture/studio/bathroom/shelf.png',
-				'toilet-texture': 'images/texture/studio/bathroom/toilet.png',
-				'towel-texture': 'images/texture/studio/bathroom/towel.png',
-				'wall-texture': 'images/texture/studio/bathroom/wall.jpg',
-				'washer-texture': 'images/texture/studio/bathroom/washer.jpg'
+				'scene-data': 'json/studio-bathroom.json',
+				'floor-texture': 'images/texture/studio/bathroom/floor.jpg',
+				'bathrobe-texture': 'images/texture/studio/bathroom/bathrobe.jpg',
+				'lotus-texture': 'images/texture/studio/bathroom/lotus.jpg',
+				'shelf-texture': 'images/texture/studio/bathroom/shelf.jpg',
+				'carpets-texture': 'images/texture/studio/bathroom/carpets.jpg',
+				'toilet-paper-texture': 'images/texture/studio/bathroom/toilet-paper.jpg',
+				'washbasin-texture': 'images/texture/studio/bathroom/washbasin.jpg',
+				'lamps-texture': 'images/texture/studio/bathroom/lamps.jpg',
+				'flipflop-texture': 'images/texture/studio/bathroom/flipflop.jpg',
+				'skybox': {
+					'xpos': 'images/texture/studio/livingroom/skybox/pos-x.png',
+					'xneg': 'images/texture/studio/livingroom/skybox/neg-x.png',
+					'ypos': 'images/texture/studio/livingroom/skybox/pos-y.png',
+					'yneg': 'images/texture/studio/livingroom/skybox/neg-y.png',
+					'zpos': 'images/texture/studio/livingroom/skybox/pos-z.png',
+					'zneg': 'images/texture/studio/livingroom/skybox/neg-z.png',
+				}
 			}
 		},
 		'townhouse': {

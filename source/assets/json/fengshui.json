@@ -309,6 +309,24 @@
 			"reminder": "Don't forget to check the cabinet!"
 		},
 		{
+			"id": "lotus",
+			"section": "studio",
+			"view": "bathroom",
+			"name": "lotus",
+			"icon": "cabinet",
+			"interaction": null,
+			"unlocked": false,
+			"mandatory": false,
+			"require": null,
+			"problem": "Lorem Ipsum?",
+			"advice": "Be loremipsum, loremipsum",
+			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
+			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
+			"character": "joanna",
+			"response": "Thank you.",
+			"reminder": "Don't forget to check the lotus!"
+		},
+		{
 			"id": "glassbowl",
 			"section": "townhouse",
 			"view": "livingroom",
