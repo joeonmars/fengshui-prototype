@@ -380,8 +380,15 @@ feng.models.View3D.Data = {
 			'toilet-paper': {
 				texture: "studio.bathroom.toilet-paper-texture"
 			},
+			'toilet': {
+				collidable: true,
+				texture: "studio.bathroom.toilet-texture"
+			},
 			'bathrobe': {
 				texture: "studio.bathroom.bathrobe-texture"
+			},
+			'bathtub': {
+				texture: "studio.bathroom.bathtub-texture"
 			},
 			'carpets': {
 				texture: "studio.bathroom.carpets-texture"
