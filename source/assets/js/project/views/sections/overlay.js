@@ -81,12 +81,16 @@ feng.views.Overlay.prototype.hide = function( shouldDispatch ){
 feng.views.Overlay.prototype.animateIn = function(){
 
 	this.show( true );
+
+	this.dispatchEvent( feng.events.EventType.ANIMATE_IN );
 };
 
 
 feng.views.Overlay.prototype.animateOut = function(){
 
 	this.hide( true );
+
+	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
 };
 
 

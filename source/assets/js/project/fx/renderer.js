@@ -51,12 +51,17 @@ feng.fx.Renderer = function(canvas, scene, camera){
 
 	this._brightnessContrastPass = new THREE.ShaderPass( THREE.BrightnessContrastShader );
 
+	this._hueSaturationPass = new THREE.ShaderPass( THREE.HueSaturationShader );
+
 	this._adjustmentBrightnessContrastPass = new THREE.ShaderPass( THREE.BrightnessContrastShader );
 	this._adjustmentBrightnessContrastPass.uniforms['brightness'].value = 0.05;
 	this._adjustmentBrightnessContrastPass.uniforms['contrast'].value = 0.05;
 
 	this._maskPass = new THREE.MaskPass( scene );
+	this._maskPass.enabled = false;
+
 	this._clearMaskPass = new THREE.ClearMaskPass();
+	this._clearMaskPass.enabled = false;
 
 	// create composers
 
@@ -80,8 +85,11 @@ feng.fx.Renderer = function(canvas, scene, camera){
 
 	this._renderTexturePass = new THREE.TexturePass( this._renderComposer.renderTarget2 );
 
+	this._renderTextureForMaskingPass = new THREE.TexturePass( this._renderComposer.renderTarget2 );
+	this._renderTextureForMaskingPass.enabled = false;
+
 	// create blur texture pass
-	var renderTarget = new THREE.WebGLRenderTarget( 256, 256, renderTargetParameters );
+	var renderTarget = new THREE.WebGLRenderTarget( 1024, 1024, renderTargetParameters );
 	renderTarget.generateMipmaps = false;
 
 	this._blurComposer = new THREE.EffectComposer( this._renderer, renderTarget );
@@ -105,9 +113,11 @@ feng.fx.Renderer = function(canvas, scene, camera){
 	this._outputComposer.addPass( this._brightnessContrastPass );
 
 	this._outputComposer.addPass( this._maskPass );
-	this._outputComposer.addPass( this._renderTexturePass );
+	this._outputComposer.addPass( this._renderTextureForMaskingPass );
 	this._outputComposer.addPass( this._clearMaskPass );
 	
+	this._outputComposer.addPass( this._hueSaturationPass );
+
 	this._outputComposer.addPass( this._adjustmentBrightnessContrastPass );
 
 	this._outputComposer.addPass( this._vignettePass );
@@ -161,6 +171,12 @@ feng.fx.Renderer.prototype.setBrightness = function( brightness ){
 feng.fx.Renderer.prototype.setContrast = function( contrast ){
 
 	this._brightnessContrastPass.uniforms['contrast'].value = contrast;
+};
+
+
+feng.fx.Renderer.prototype.setSaturation = function( saturation ){
+
+	this._hueSaturationPass.uniforms['saturation'].value = saturation;
 };
 
 

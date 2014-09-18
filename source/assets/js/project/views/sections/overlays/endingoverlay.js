@@ -57,6 +57,8 @@ feng.views.sections.overlays.EndingOverlay.prototype.updateContent = function( s
 
 feng.views.sections.overlays.EndingOverlay.prototype.animateIn = function(){
 
+	goog.base(this, 'animateIn');
+
 	var shouldAnimateIn;
 
 	if(!this._shownOnce[this._sectionId]) {
@@ -93,6 +95,8 @@ feng.views.sections.overlays.EndingOverlay.prototype.animateIn = function(){
 
 
 feng.views.sections.overlays.EndingOverlay.prototype.animateOut = function(){
+
+	goog.base(this, 'animateOut');
 
 	TweenMax.to(this.domElement, .8, {
 		'delay': .25,

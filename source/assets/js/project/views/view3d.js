@@ -209,6 +209,8 @@ feng.views.View3D.prototype.activate = function(){
  	this._eventHandler.listen( this.cameraController, feng.events.EventType.CHANGE, this.onCameraChange, false, this );
  	this._eventHandler.listen( feng.episodeSelectionOverlay, feng.events.EventType.ANIMATE_IN, this.pause, false, this );
  	this._eventHandler.listen( feng.episodeSelectionOverlay, feng.events.EventType.ANIMATE_OUT, this.resume, false, this );
+ 	this._eventHandler.listen( this.hud.tutorialOverlay, feng.events.EventType.ANIMATE_IN, this.pause, false, this );
+ 	this._eventHandler.listen( this.hud.tutorialOverlay, feng.events.EventType.ANIMATE_OUT, this.resume, false, this );
 
  	goog.object.forEach(this.interactiveObjects, function(interactiveObject) {
  		interactiveObject.activate();

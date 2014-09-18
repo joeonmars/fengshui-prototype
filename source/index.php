@@ -47,6 +47,7 @@
 		<script src="assets/js/thirdparty/threejs-utils/VignetteShader.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/TriangleBlurShader.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/BrightnessContrastShader.js"></script>
+		<script src="assets/js/thirdparty/threejs-utils/HueSaturationShader.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/OrbitControls.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/DDSLoader.js"></script>
 		<script src="assets/js/thirdparty/pathfinding-browser.min.js"></script>

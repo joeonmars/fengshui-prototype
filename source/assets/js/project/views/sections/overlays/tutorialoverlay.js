@@ -43,6 +43,8 @@ feng.views.sections.overlays.TutorialOverlay.prototype.animateIn = function(){
 
 feng.views.sections.overlays.TutorialOverlay.prototype.animateOut = function(){
 
+	goog.base(this, 'animateOut');
+
 	TweenMax.to(this.domElement, .8, {
 		'delay': .25,
 		'opacity': 0,

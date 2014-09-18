@@ -23,6 +23,7 @@ feng.controllers.view3d.RenderController = function( view3d ){
   this._blur = 0;
   this._brightness = 0;
   this._contrast = 0;
+  this._saturation = 0;
   this._vignette = 0;
 
   this._maxBlur = 50;
@@ -30,7 +31,7 @@ feng.controllers.view3d.RenderController = function( view3d ){
   this._minContrast = -.5;
   this._maxVignette = 1;
 
-  this._blurTweener = TweenMax.fromTo(this, .5, {
+  this._closeUpTweener = TweenMax.fromTo(this, .5, {
   	_blur: 0,
   	_brightness: 0,
   	_contrast: 0
@@ -40,9 +41,9 @@ feng.controllers.view3d.RenderController = function( view3d ){
   	_contrast: this._minContrast,
   	'ease': Quad.easeInOut,
   	'paused': true,
-  	'onStart': this.onBlurInStart,
+  	'onStart': this.onCloseUpStart,
   	'onStartScope': this,
-  	'onReverseComplete': this.onBlurOutComplete,
+  	'onReverseComplete': this.onCloseUpComplete,
   	'onReverseCompleteScope': this
   });
 
@@ -54,11 +55,21 @@ feng.controllers.view3d.RenderController = function( view3d ){
   });
 
   this._brightnessTweener = TweenMax.fromTo(this, .5, {
-  	_brightness: 0
+  	_brightness: 0,
+  	_contrast: 0,
+  	_blur: this._blur,
+  	_saturation: 0
   }, {
-  	_brightness: this._minBrightness,
+  	_brightness: -.9,
+  	_contrast: -.2,
+  	_blur: this._maxBlur / 8,
+  	_saturation: -.65,
   	'ease': Quad.easeInOut,
-  	'paused': true
+  	'paused': true,
+  	'onStart': this.onBlurInStart,
+  	'onStartScope': this,
+  	'onReverseComplete': this.onBlurOutComplete,
+  	'onReverseCompleteScope': this
   });
 };
 goog.inherits(feng.controllers.view3d.RenderController, goog.events.EventTarget);
@@ -88,8 +99,8 @@ feng.controllers.view3d.RenderController.prototype.updateByMode = function(mode,
 
 		this._maskedObject = modeControl._activeObject;
 
-		if(!this._blurTweener.isActive() && this._blur < this._maxBlur) {
-			this._blurTweener.play();
+		if(!this._closeUpTweener.isActive() && this._blur < this._maxBlur) {
+			this._closeUpTweener.play();
 		}
 	}
 
@@ -102,8 +113,8 @@ feng.controllers.view3d.RenderController.prototype.updateByMode = function(mode,
 
 	if(notCloseUp) {
 
-		if(!this._blurTweener.reversed() && this._blur > 0) {
-			this._blurTweener.reverse();
+		if(!this._closeUpTweener.reversed() && this._blur > 0) {
+			this._closeUpTweener.reverse();
 		}
 	}
 
@@ -129,23 +140,43 @@ feng.controllers.view3d.RenderController.prototype.updateByPause = function( pau
 };
 
 
-feng.controllers.view3d.RenderController.prototype.onBlurInStart = function() {
+feng.controllers.view3d.RenderController.prototype.onCloseUpStart = function() {
 
-	this._renderer._blurTexturePass.enabled = true;
-	//this._renderer._maskPass.enabled = true;
-	//this._renderer._renderTexturePass.enabled = true;
-	//this._renderer._clearMaskPass.enabled = true;
+	this._renderer._maskPass.enabled = true;
+	this._renderer._renderTextureForMaskingPass.enabled = true;
+	this._renderer._clearMaskPass.enabled = true;
+
+	this.onBlurInStart();
 
 	this._renderer.render();
 };
 
 
-feng.controllers.view3d.RenderController.prototype.onBlurOutComplete = function() {
+feng.controllers.view3d.RenderController.prototype.onCloseUpComplete = function() {
 
 	this._maskedObject = null;
 
-	this._renderer._blurTexturePass.enabled = false;
+	this._renderer._maskPass.enabled = false;
+	this._renderer._renderTextureForMaskingPass.enabled = false;
+	this._renderer._clearMaskPass.enabled = false;
+
+	this.onBlurOutComplete();
+
 	this._renderer.render();
+};
+
+
+feng.controllers.view3d.RenderController.prototype.onBlurInStart = function() {
+
+	this._renderer._blurTexturePass.enabled = true;
+};
+
+
+feng.controllers.view3d.RenderController.prototype.onBlurOutComplete = function() {
+
+	if(this._blur === 0) {
+		this._renderer._blurTexturePass.enabled = false;
+	}
 };
 
 
@@ -154,6 +185,7 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRender = function() {
 	this._renderer.setBlur( this._blur, this._blur );
 	this._renderer.setBrightness( this._brightness );
 	this._renderer.setContrast( this._contrast );
+	this._renderer.setSaturation( this._saturation );
 	this._renderer.setVignette( this._vignette );
 };
 
