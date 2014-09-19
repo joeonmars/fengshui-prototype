@@ -53,6 +53,8 @@ feng.fx.Renderer = function(canvas, scene, camera){
 
 	this._hueSaturationPass = new THREE.ShaderPass( THREE.HueSaturationShader );
 
+	//this._bloomPass = new THREE.BloomPass(.35, 25, 4);
+
 	this._adjustmentBrightnessContrastPass = new THREE.ShaderPass( THREE.BrightnessContrastShader );
 	this._adjustmentBrightnessContrastPass.uniforms['brightness'].value = 0.05;
 	this._adjustmentBrightnessContrastPass.uniforms['contrast'].value = 0.05;
@@ -116,6 +118,8 @@ feng.fx.Renderer = function(canvas, scene, camera){
 	this._outputComposer.addPass( this._renderTextureForMaskingPass );
 	this._outputComposer.addPass( this._clearMaskPass );
 	
+	//this._outputComposer.addPass( this._bloomPass );
+
 	this._outputComposer.addPass( this._hueSaturationPass );
 
 	this._outputComposer.addPass( this._adjustmentBrightnessContrastPass );

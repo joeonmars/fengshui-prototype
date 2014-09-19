@@ -397,36 +397,48 @@ feng.models.View3D.Data = {
 			'showerhead': {
 				texture: "studio.bathroom.showerhead-texture"
 			},
+			'shower-handle': {
+				texture: "studio.bathroom.shower-handle-texture"
+			},
 			'shelf': {
 				collidable: true,
 				texture: "studio.bathroom.shelf-texture"
 			},
 			'jar-1': {
-				castShadow: true
+				castShadow: true,
+				texture: "studio.bathroom.jar-1-texture"
 			},
 			'jar-2': {
-				castShadow: true
+				castShadow: true,
+				texture: "studio.bathroom.jar-2-texture"
 			},
 			'jar-3': {
-				castShadow: true
+				castShadow: true,
+				texture: "studio.bathroom.jar-3-texture"
 			},
 			'jar-4': {
-				castShadow: true
+				castShadow: true,
+				texture: "studio.bathroom.jar-4-texture"
 			},
 			'jar-5': {
-				castShadow: true
+				castShadow: true,
+				texture: "studio.bathroom.jar-5-texture"
 			},
 			'jar-6': {
-				castShadow: true
+				castShadow: true,
+				texture: "studio.bathroom.jar-6-texture"
 			},
 			'jar-7': {
-				castShadow: true
+				castShadow: true,
+				texture: "studio.bathroom.jar-7-texture"
 			},
 			'jar-8': {
-				castShadow: true
+				castShadow: true,
+				texture: "studio.bathroom.jar-8-texture"
 			},
 			'jar-9': {
-				castShadow: true
+				castShadow: true,
+				texture: "studio.bathroom.jar-9-texture"
 			},
 			'bottles': {
 				texture: "studio.bathroom.bottles-texture",
@@ -443,6 +455,10 @@ feng.models.View3D.Data = {
 			},
 			'closet-door': {
 				texture: "studio.bathroom.closet-door-texture",
+			},
+			'trashcan': {
+				collidable: true,
+				texture: "studio.bathroom.trashcan-texture"
 			},
 			'plug': {
 				texture: "studio.bathroom.plug-texture"
