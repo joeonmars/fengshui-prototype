@@ -176,14 +176,14 @@ feng.fx.EnergyFlow.Preset = {
 		maxJiggleAmount: 4 
 	},
 	JI: {
-		numTrails: 100,
-		numLeaves: 20,
+		numTrails: 50,
+		numLeaves: 10,
 		leaf: 'ji',
 		leafMinSize: 2,
 		leafMaxSize: 4,
 		color: '#25DDFF',
 		duration: 20000,
-		length: 40,
+		length: 10,//80,
 		blendMode: THREE.AdditiveBlending,
 		jiggleFrequency: 2,
 		maxJiggleAmount: 4 

@@ -368,6 +368,16 @@ feng.models.View3D.Data = {
 				castShadow: true,
 				texture: "studio.bathroom.wall-texture"
 			},
+			'wall-outer':	{
+				castShadow: true,
+				texture: "studio.bathroom.wall-outer-texture"
+			},
+			'door-frame':	{
+				texture: "studio.bathroom.door-frame-texture"
+			},
+			'ceiling':	{
+				texture: "studio.bathroom.ceiling-texture"
+			},
 			'ceiling-lamps':	{
 				texture: "studio.bathroom.ceiling-lamps-texture"
 			},
@@ -384,9 +394,55 @@ feng.models.View3D.Data = {
 			'towel': {
 				texture: "studio.bathroom.towel-texture"
 			},
+			'showerhead': {
+				texture: "studio.bathroom.showerhead-texture"
+			},
 			'shelf': {
 				collidable: true,
 				texture: "studio.bathroom.shelf-texture"
+			},
+			'jar-1': {
+				castShadow: true
+			},
+			'jar-2': {
+				castShadow: true
+			},
+			'jar-3': {
+				castShadow: true
+			},
+			'jar-4': {
+				castShadow: true
+			},
+			'jar-5': {
+				castShadow: true
+			},
+			'jar-6': {
+				castShadow: true
+			},
+			'jar-7': {
+				castShadow: true
+			},
+			'jar-8': {
+				castShadow: true
+			},
+			'jar-9': {
+				castShadow: true
+			},
+			'bottles': {
+				texture: "studio.bathroom.bottles-texture",
+			},
+			'towel-roll': {
+				texture: "studio.bathroom.towel-roll-texture"
+			},
+			'cosmetic-bag': {
+				texture: "studio.bathroom.cosmetic-bag-texture",
+			},
+			'closet': {
+				texture: "studio.bathroom.closet-texture",
+				receiveShadow: true
+			},
+			'closet-door': {
+				texture: "studio.bathroom.closet-door-texture",
 			},
 			'plug': {
 				texture: "studio.bathroom.plug-texture"
@@ -408,6 +464,7 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.bathtub-texture"
 			},
 			'shower-curtain': {
+				collidable: true,
 				texture: "studio.bathroom.shower-curtain-texture"
 			},
 			'carpets': {

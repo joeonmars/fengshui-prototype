@@ -9,21 +9,22 @@ goog.require('feng.fx.Particle');
  */
 feng.fx.Trail = function(timeOffset, color, length, blendMode, jiggleFrequency, maxJiggleAmount, pathTrack){
 
-	this._numSegments = length + Math.round( goog.math.uniformRandom(-length * .5, length * .5) );
+	//this._numSegments = length + Math.round( goog.math.uniformRandom(-length * .5, length * .5) );
+	this._numSegments = 10;
 
 	this._blendMode = blendMode || THREE.AdditiveBlending;
 
 	this._color = ( new THREE.Color() ).set( color );
 	this._baseHSL = this._color.getHSL();
 
-	this._geometry = new THREE.PlaneGeometry(30, 30, 1, this._numSegments-1);
+	this._geometry = new THREE.PlaneGeometry(30, 30, 1, this._numSegments);
 
 	this._material = this.createMaterial( color );
 
 	this._positions = [];
 	this._rotations = [];
 
-	this._width = .5;
+	this._width = goog.math.uniformRandom(.5, 1);
 
 	//
 	goog.base(this, timeOffset, jiggleFrequency, maxJiggleAmount, pathTrack);
@@ -58,7 +59,7 @@ feng.fx.Trail.prototype.createMaterial = function( color ) {
 
 	if(!feng.fx.Trail.DefaultTexture) {
 
-	  var size = 16;
+	  var size = 32;
 
 	  // create canvas
 	  var canvas = document.createElement('canvas');
@@ -71,10 +72,14 @@ feng.fx.Trail.prototype.createMaterial = function( color ) {
 	  // draw gradient
 	  var gradient = context.createLinearGradient( 0, 0, 0, size );
 	  gradient.addColorStop(0, '#000000');
-	  gradient.addColorStop(.25, '#555555');
-	  gradient.addColorStop(.5, '#000000'); 
+	  gradient.addColorStop(.5, '#555555');
+	  gradient.addColorStop(1, '#000000'); 
 	  context.fillStyle = gradient;
-	  context.fillRect( 0, 0, size, size );
+	  var hs = size/2;
+	  context.moveTo(0, hs);
+	  context.arcTo(hs, 0, size, hs, 10);
+	  context.arcTo(hs, size, 0, hs, 10);
+	  context.fill();
 
     var texture = new THREE.Texture( canvas );
     texture.needsUpdate = true;
@@ -92,8 +97,9 @@ feng.fx.Trail.prototype.createMaterial = function( color ) {
     map: feng.fx.Trail.DefaultTexture,
     fog: false,
     side: THREE.DoubleSide,
-    transparent: true,
-    blending: this._blendMode,
+    wireframe: true,
+    //transparent: true,
+    //blending: this._blendMode,
     depthTest: false
   });
 
@@ -135,10 +141,7 @@ feng.fx.Trail.prototype.update = function( u ) {
     v2.z = this._positions[iz] - this._rotations[iz];
   }
   
-  this._geometry.computeFaceNormals();
-  this._geometry.computeVertexNormals();
   this._geometry.verticesNeedUpdate = true;
-  this._geometry.normalsNeedUpdate = true;
 };
 
 
