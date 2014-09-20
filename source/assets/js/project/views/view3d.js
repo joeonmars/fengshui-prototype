@@ -360,8 +360,9 @@ feng.views.View3D.prototype.initScene = function() {
 	light.target.position.set(0, 0, 0);
 	light.castShadow = true;
 
-	light.shadowMapWidth = 1024;
-	light.shadowMapHeight = 1024;
+	var shadowMapSize = feng.renderSettings.shadowMapSize;
+	light.shadowMapWidth = shadowMapSize;
+	light.shadowMapHeight = shadowMapSize;
 
 	var d = 400;
 	light.shadowCameraLeft = -d;

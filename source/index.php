@@ -85,6 +85,7 @@
 				basePath: '<?php echo URLADDR; ?>',
 				assetsPath: '<?php echo URLADDR; ?>'+'assets/',
 				app: 'demo',//'pathedit',
+				quality: 'high',
 				debug: !true,
 				office: !true
 			};

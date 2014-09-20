@@ -15,6 +15,7 @@ goog.require('feng.views.EpisodeSelection');
 goog.require('feng.views.EpisodeSelectionOverlay');
 goog.require('feng.views.popups.Tutorial');
 goog.require('feng.PubSub');
+goog.require('feng.utils.Utils');
 
 
 feng.apps.Demo = function() {
@@ -23,8 +24,14 @@ feng.apps.Demo = function() {
 	
 	goog.fx.anim.setAnimationWindow(window);
 
-	feng.debug = feng.Config['debug'];
-	feng.office = feng.Config['office'];
+	feng.debug = (feng.utils.Utils.getQuery('debug') === 'true') || feng.Config['debug'];
+	feng.office = (feng.utils.Utils.getQuery('office') === 'true') || feng.Config['office'];
+	feng.quality = feng.utils.Utils.getQuery('quality') || feng.Config['quality'];
+	
+	feng.renderSettings = {
+		renderSize: (feng.quality === 'high') ? 1024 : 512,
+		shadowMapSize: (feng.quality === 'high') ? 1024 : 512
+	};
 
 	var mainFrag = soy.renderAsFragment(feng.templates.main.Main, {
 		debug: feng.debug

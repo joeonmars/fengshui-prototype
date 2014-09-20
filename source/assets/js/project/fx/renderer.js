@@ -91,7 +91,8 @@ feng.fx.Renderer = function(canvas, scene, camera){
 	this._renderTextureForMaskingPass.enabled = false;
 
 	// create blur texture pass
-	var renderTarget = new THREE.WebGLRenderTarget( 1024, 1024, renderTargetParameters );
+	var renderSize = feng.renderSettings.renderSize;
+	var renderTarget = new THREE.WebGLRenderTarget( renderSize, renderSize, renderTargetParameters );
 	renderTarget.generateMipmaps = false;
 
 	this._blurComposer = new THREE.EffectComposer( this._renderer, renderTarget );
