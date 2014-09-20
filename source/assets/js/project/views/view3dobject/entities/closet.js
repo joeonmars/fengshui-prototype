@@ -31,7 +31,7 @@ feng.views.view3dobject.entities.Closet.prototype.onCameraIn = function(){
 
   goog.base(this, 'onCameraIn');
 
-  TweenMax.to(this._door.rotation, 2, {
+  TweenMax.to(this._door.rotation, 1, {
     'y': -2.8,
     'ease': Quad.easeInOut
   });

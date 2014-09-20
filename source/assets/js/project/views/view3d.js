@@ -15,6 +15,7 @@ goog.require('feng.models.Preload');
 goog.require('feng.models.View3D');
 goog.require('feng.models.Accessories');
 goog.require('feng.views.book.Book');
+goog.require('feng.views.view3dfx.FX');
 goog.require('feng.views.view3dobject.View3DObject');
 goog.require('feng.views.view3dobject.InteractiveObject');
 goog.require('feng.views.view3dobject.Arms');
@@ -54,12 +55,13 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud){
   goog.dom.appendChild( this.containerElement, this.domElement );
 
   this.hud = hud;
-  
+
   this.cameraController = null;
   this.renderController = null;
 	this.modeController = null;
 
 	this.scene = null;
+	this.fx = null;
 	this.energyFlow = null;
 	this.arms = null;
 	this.designPlane = null;
@@ -483,6 +485,10 @@ feng.views.View3D.prototype.initScene = function() {
 
 	// create arms
 	this.arms = new feng.views.view3dobject.Arms( this );
+
+	// create fx(s)
+	this.fx = new feng.views.view3dfx.FX();
+	this.scene.add( this.fx );
 
 	// init all view3d objects
 	goog.object.forEach(this.view3dObjects, function(object) {

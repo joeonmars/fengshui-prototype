@@ -71,6 +71,19 @@ feng.controllers.controls.BrowseControls.prototype.deactivate = function () {
 };
 
 
+feng.controllers.controls.BrowseControls.prototype.getClickableObjects = function () {
+
+	var clickableObjects = [];
+
+	goog.object.forEach(this._view3d.view3dObjects, function(object) {
+
+		clickableObjects.push( object.object3d );
+	});
+
+	return clickableObjects;
+};
+
+
 feng.controllers.controls.BrowseControls.prototype.update = function () {
 
 	goog.base(this, 'update');
@@ -108,20 +121,16 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 
 	if ( this._shouldIgnoreClick ) return;
 
-	var clickableObjects = [];
-
-	goog.object.forEach(this._view3d.view3dObjects, function(object) {
-
-		clickableObjects.push( object.object3d );
-	});
+	var clickableObjects = this.getClickableObjects();
 
 	goog.array.remove( clickableObjects, this._view3d.designPlane.object3d );
 	goog.array.remove( clickableObjects, this._view3d.skybox.object3d );
 
 	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, clickableObjects, this._camera, this._view3d.getViewSize() );
-	var intersectPosition = intersects[0].point;
 
 	if ( intersects.length > 0 ) {
+
+		var intersectPosition = intersects[0].point;
 
 		// check if clicked on any particular object
 		var clickedObject = intersects[0].object.view3dObject;
@@ -160,6 +169,10 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 			toFov: this.getFov(),
 			intersectPosition: intersectPosition
 		});
+
+		// play click effect
+		var intersectNormal = intersects[0].face.normal;
+		this._view3d.fx.clickEffect.play( intersectPosition, intersectNormal );
 	}
 };
 
