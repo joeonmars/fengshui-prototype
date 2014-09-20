@@ -334,6 +334,49 @@
 
 
 /**
+ * Arrange closet caption
+ * @param tip the tip
+ */
+{template .ArrangeClosetCaption}
+
+{call .Caption}
+
+	{param classname: 'arrangecloset' /}
+
+	{param content}
+
+	<div class="left">
+	{call feng.templates.common.Popup}
+		{param content}
+			<h1>{ $tip.name }</h1>
+
+			{call .HintContent}
+				{param hint: $tip.hint /}
+			{/call}
+
+			{call .DetailContent}
+				{param advice: $tip.advice /}
+				{param quote: $tip.quote /}
+				{param description: $tip.description /}
+			{/call}
+
+			{call .LockedContent}
+			{/call}
+
+			{call .UnlockedContent}
+			{/call}
+		{/param}
+	{/call}
+	</div>
+
+	{/param}
+
+{/call}
+
+{/template}
+
+
+/**
  * Float Text
  * @param lines the lines of texts
  */

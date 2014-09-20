@@ -13,6 +13,7 @@ goog.require('feng.views.sections.captions.ChangeColorCaption');
 goog.require('feng.views.sections.captions.ChangeObjectCaption');
 goog.require('feng.views.sections.captions.ChangePictureCaption');
 goog.require('feng.views.sections.captions.FruitsCaption');
+goog.require('feng.views.sections.captions.ArrangeClosetCaption');
 goog.require('feng.views.sections.overlays.TutorialOverlay');
 goog.require('feng.views.sections.overlays.OpeningOverlay');
 goog.require('feng.views.sections.overlays.EndingOverlay');
@@ -167,6 +168,10 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls, type ) {
   switch(object.captionClass) {
     case 'fruits':
     captionClass = feng.views.sections.captions.FruitsCaption;
+    break;
+
+    case 'arrangecloset':
+    captionClass = feng.views.sections.captions.ArrangeClosetCaption;
     break;
 
     default:

@@ -176,13 +176,24 @@ feng.templates.captions.FruitsCaption = function(opt_data, opt_ignored) {
  * @return {string}
  * @notypecheck
  */
+feng.templates.captions.ArrangeClosetCaption = function(opt_data, opt_ignored) {
+  return feng.templates.captions.Caption({classname: 'arrangecloset', content: '<div class="left">' + feng.templates.common.Popup({content: '<h1>' + opt_data.tip.name + '</h1>' + feng.templates.captions.HintContent({hint: opt_data.tip.hint}) + feng.templates.captions.DetailContent({advice: opt_data.tip.advice, quote: opt_data.tip.quote, description: opt_data.tip.description}) + feng.templates.captions.LockedContent(null) + feng.templates.captions.UnlockedContent(null)}) + '</div>'});
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
 feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
   var output = '<p class="floatText">';
-  var lineList194 = opt_data.lines;
-  var lineListLen194 = lineList194.length;
-  for (var lineIndex194 = 0; lineIndex194 < lineListLen194; lineIndex194++) {
-    var lineData194 = lineList194[lineIndex194];
-    output += '<span>' + lineData194 + '</span>';
+  var lineList213 = opt_data.lines;
+  var lineListLen213 = lineList213.length;
+  for (var lineIndex213 = 0; lineIndex213 < lineListLen213; lineIndex213++) {
+    var lineData213 = lineList213[lineIndex213];
+    output += '<span>' + lineData213 + '</span>';
   }
   output += '</p>';
   return output;

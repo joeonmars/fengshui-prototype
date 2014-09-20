@@ -28,6 +28,7 @@ goog.require('feng.views.view3dobject.AccessoryObject');
 goog.require('feng.views.view3dobject.TipObject');
 goog.require('feng.views.view3dobject.entities.Lamp');
 goog.require('feng.views.view3dobject.entities.Computer');
+goog.require('feng.views.view3dobject.entities.Closet');
 goog.require('feng.views.view3dobject.entities.PictureDisplay');
 goog.require('feng.views.view3dobject.entities.PictureFrame');
 goog.require('feng.views.view3dobject.entities.Refrigerator');
@@ -384,6 +385,7 @@ feng.views.View3D.prototype.initScene = function() {
 		'movable': feng.views.view3dobject.MovableObject,
 		'gateway': feng.views.view3dobject.GatewayObject,
 		'stairs': feng.views.view3dobject.StairsObject,
+		'closet': feng.views.view3dobject.entities.Closet,
 		'picturedisplay': feng.views.view3dobject.entities.PictureDisplay,
 		'pictureframe': feng.views.view3dobject.entities.PictureFrame,
 		'computer': feng.views.view3dobject.entities.Computer,

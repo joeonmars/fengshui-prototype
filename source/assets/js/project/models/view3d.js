@@ -450,8 +450,20 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.cosmetic-bag-texture",
 			},
 			'closet': {
-				texture: "studio.bathroom.closet-texture",
-				receiveShadow: true
+				class: "closet",
+				receiveShadow: true,
+				interactions: [
+
+				],
+				camera: {
+					position: new THREE.Vector3(35, 81, -47),
+					rotation: new THREE.Euler(-0.07, 1.70, 0.00, 'YXZ'),
+					fov: 40
+				},
+				tipInteraction: "change_object",
+				tipKey: 'studio.bathroom.closet',
+				captionClass: 'arrangecloset',
+				texture: "studio.bathroom.closet-texture"
 			},
 			'closet-door': {
 				texture: "studio.bathroom.closet-door-texture",
