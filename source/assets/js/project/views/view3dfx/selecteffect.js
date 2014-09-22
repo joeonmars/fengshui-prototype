@@ -165,10 +165,12 @@ feng.views.view3dfx.SelectEffect.prototype.animateOut = function( delay ) {
 		return;
 	}
 
+	var scale = this.scale.x * .5;console.log(scale)
+
 	this._animateOutTweener = TweenMax.to(this.scale, .5, {
-		'x': 1,
-		'y': 1,
-		'z': 1,
+		'x': scale,
+		'y': scale,
+		'z': scale,
 		'delay': delay || 0,
 		'ease': Strong.easeOut,
 		'onComplete': this.deactivate,

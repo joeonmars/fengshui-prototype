@@ -80,7 +80,7 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 		this.onPathComplete( gateway, nextMode );
 		return;
 	}
-	
+
 	// create path track
 	if(this._pathTrack) {
 		this._scene.remove( this._pathTrack );
@@ -94,7 +94,7 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 	var distanceT = Math.max(0, distance / length);
 	
 	// adult walking speed is 1.564 meter per second
-	var speed = 1.564 * 100 * (gateway ? 2 : 1);
+	var speed = 1.000 * 100 * (gateway ? 2 : 1);
 	var duration = distance / (speed / 2);
 
 	var footstepLength = 20;
@@ -106,13 +106,14 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 		u: 0,
 		footstep: 0,
 		toPosition: toPosition,
-		fromRotation: fromRotation
+		fromRotation: fromRotation,
+		lookAt: ev.lookAt
 	};
 
   this._tweener = TweenMax.to(prop, duration, {
     u: distanceT,
     footstep: Math.PI * footsteps,
-    ease: Linear.easeNone,
+    ease: Sine.easeInOut,
     onUpdate: this.onPathProgress,
     onUpdateParams: [prop],
     onUpdateScope: this,
@@ -137,17 +138,19 @@ feng.controllers.controls.WalkControls.prototype.onPathProgress = function ( pro
   this.setPosition( cameraPosition.x, cameraY, cameraPosition.z );
 
   // calculate rotation looking at intersect
-	var toPosition = prop.toPosition;
-	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( this.getPosition(), toPosition );
-	this._cameraRotation.setFromQuaternion( quaternion );
+  if(prop.lookAt) {
 
-	var fromRotation = prop.fromRotation;
-	fromRotation = feng.utils.ThreeUtils.getShortestRotation(this._cameraRotation, fromRotation);
+		var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( this.getPosition(), prop.lookAt );
+		this._cameraRotation.setFromQuaternion( quaternion );
 
-	var intepolatedCameraX = goog.math.lerp( fromRotation.x, this._cameraRotation.x, u );
-	var intepolatedCameraY = goog.math.lerp( fromRotation.y, this._cameraRotation.y, u );
+		var fromRotation = prop.fromRotation;
+		fromRotation = feng.utils.ThreeUtils.getShortestRotation(this._cameraRotation, fromRotation);
 
-  this.setRotation( intepolatedCameraX, intepolatedCameraY );
+		var intepolatedCameraX = goog.math.lerp( fromRotation.x, this._cameraRotation.x, u );
+		var intepolatedCameraY = goog.math.lerp( fromRotation.y, this._cameraRotation.y, u );
+
+		this.setRotation( intepolatedCameraX, intepolatedCameraY );
+  }
 };
 
 

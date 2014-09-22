@@ -168,7 +168,8 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 			nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
 			toPosition: toPosition,
 			toRotation: this.getRotation(),
-			toFov: this.getFov()
+			toFov: this.getFov(),
+			lookAt: toPosition
 		});
 
 		// play click effect
@@ -211,7 +212,7 @@ feng.controllers.controls.BrowseControls.prototype.onMouseMove = function ( e ) 
 
 feng.controllers.controls.BrowseControls.prototype.onMouseWheel = function ( e ) {
 
-	var distance = goog.math.lerp( 50, 100, Math.abs(e.deltaY) / this._maxMouseWheelDeltaY );
+	var distance = goog.math.lerp( 100, 400, Math.abs(e.deltaY) / this._maxMouseWheelDeltaY );
 	distance *= - e.deltaY / Math.abs(e.deltaY);
 
 	var forward = this.getForwardVector();

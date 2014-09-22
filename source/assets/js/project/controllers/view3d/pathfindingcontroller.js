@@ -109,7 +109,7 @@ feng.controllers.view3d.PathfindingController.prototype.generateMatrix = functio
 	var gridMaxX = box.max.x;
 	var gridMaxZ = box.max.z;
 
-	var tileSize = 20;
+	var tileSize = 15;
 
 	gridWidth = Math.floor(gridWidth / tileSize) * tileSize;
 	gridHeight = Math.floor(gridHeight / tileSize) * tileSize;
@@ -324,9 +324,7 @@ feng.controllers.view3d.PathfindingController.prototype.findPath = function( mat
 
 	var finder = new PF.AStarFinder({
 		allowDiagonal: true,
-		heuristic: function(dx, dz) {
-			return Math.sqrt(Math.pow((start.x - dx), 2) + Math.pow((start.z - dz), 2));
-		}
+		heuristic: PF.Heuristic.euclidean
 	});
 
 	var path = finder.findPath(startTile[0], startTile[1], endTile[0], endTile[1], grid);
