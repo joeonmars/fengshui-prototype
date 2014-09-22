@@ -94,6 +94,15 @@ feng.controllers.controls.Controls.prototype.getFov = function () {
 };
 
 
+feng.controllers.controls.Controls.prototype.getForwardVector = function () {
+
+	var forward = new THREE.Vector3( 0, 0, -1 );
+	forward.applyQuaternion( this.getObject().quaternion ).setY(0).normalize();
+
+	return forward;
+};
+
+
 feng.controllers.controls.Controls.prototype.setPosition = function (x, y, z) {
 
 	if(x instanceof THREE.Vector3) {

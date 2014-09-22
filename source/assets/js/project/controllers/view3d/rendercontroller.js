@@ -200,6 +200,8 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderBlur = function
 		view3dObject.enableRender();
 	});
 
+	this._view3d.fx.visible = true;
+
 	if(maskedObject) {
 		
 		maskedObject.disableRender();
@@ -219,6 +221,8 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderMask = function
 
 		view3dObject.disableRender();
 	});
+
+	this._view3d.fx.visible = false;
 
 	if(maskedObject) {
 

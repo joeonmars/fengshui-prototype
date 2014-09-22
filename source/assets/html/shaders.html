@@ -1,0 +1,75 @@
+<script type="x-shader/x-vertex" id="dotsVertexShader">
+
+  attribute float alpha;
+
+  uniform float time;
+  uniform float pulse;
+
+  varying float vAlpha;
+
+  void main() {
+
+    vAlpha = abs(alpha + time - 1.00);
+
+    vec3 newPosition = position * pulse;
+           
+    gl_PointSize = 10.0;
+
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+  }
+
+</script>
+
+
+<script type="x-shader/x-fragment" id="dotsFragmentShader">
+
+  uniform float globalAlpha;
+  uniform vec3 color;
+  uniform sampler2D texture;
+     
+  varying float vAlpha;
+
+  void main() {
+   
+    vec4 texColor = texture2D( texture, gl_PointCoord );
+            
+    gl_FragColor = texColor * vec4(color, vAlpha * globalAlpha);
+  }
+
+</script>
+
+
+<script type="x-shader/x-vertex" id="linesVertexShader">
+
+  attribute float alpha;
+
+  uniform float time;
+  uniform float pulse;
+     
+  varying float vAlpha2;
+
+  void main() {
+
+    vAlpha2 = 0.05 + (1.0 - 0.05) * time * alpha;
+
+    vec3 newPosition = position * pulse;
+
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+  }
+
+</script>
+
+
+<script type="x-shader/x-fragment" id="linesFragmentShader">
+
+  uniform float globalAlpha;
+  uniform vec3 color;
+     
+  varying float vAlpha2;
+     
+  void main() {
+
+    gl_FragColor = vec4(color, vAlpha2 * globalAlpha);
+  }
+
+</script>

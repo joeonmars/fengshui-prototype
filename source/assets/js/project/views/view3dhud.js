@@ -1,6 +1,5 @@
 goog.provide('feng.views.View3DHud');
 
-goog.require('feng.views.sections.controls.ObjectBox');
 goog.require('feng.views.sections.controls.ObjectSelector');
 goog.require('feng.views.sections.controls.DropButton');
 goog.require('feng.views.sections.controls.Compass');
@@ -66,9 +65,6 @@ feng.views.View3DHud = function( hudEl, view3dController, tips ){
   this.progressBar = new feng.views.sections.controls.ProgressBar( progressBarEl, tips );
   this.progressBar.setParentEventTarget( this );
 
-  var objectBoxEl = goog.dom.getElementByClass('objectBox', this.domElement);
-  this.objectBox = new feng.views.sections.controls.ObjectBox( objectBoxEl );
-
   var objectSelectorEl = goog.dom.getElementByClass('objectSelector', this.domElement);
   this.objectSelector = new feng.views.sections.controls.ObjectSelector( objectSelectorEl );
 
@@ -90,7 +86,6 @@ feng.views.View3DHud.prototype.setView3D = function( view3d ) {
   this.book.setView3D( view3d );
   this.reminder.setView3D( view3d );
   this.progressBar.setView3D( view3d );
-  this.objectBox.setView3D( view3d );
   this.objectSelector.setView3D( view3d );
   this.dropButton.setView3D( view3d );
   this.tooltips.setView3D( view3d );

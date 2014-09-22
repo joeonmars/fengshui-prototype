@@ -57,7 +57,6 @@ feng.controllers.controls.WalkControls.prototype.pause = function ( pause ) {
 
 feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition, toPosition, ev, nextMode ) {
 
-	var intersectPosition = ev.intersectPosition;
 	var viewDistance = (ev.viewDistance >= 0) ? ev.viewDistance : 50;
 	var gateway = ev.gateway;
 	var stairs = ev.stairs;
@@ -81,7 +80,7 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 		this.onPathComplete( gateway, nextMode );
 		return;
 	}
-
+	
 	// create path track
 	if(this._pathTrack) {
 		this._scene.remove( this._pathTrack );
@@ -106,7 +105,7 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 	var prop = {
 		u: 0,
 		footstep: 0,
-		toPosition: intersectPosition,
+		toPosition: toPosition,
 		fromRotation: fromRotation
 	};
 

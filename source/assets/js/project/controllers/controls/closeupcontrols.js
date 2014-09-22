@@ -194,6 +194,9 @@ feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
 
 	var toFov = feng.controllers.controls.Controls.Default.FOV;
 
+	// delay to animate out object select effect
+	this._view3d.fx.selectEffect.animateOut( 1 );
+
 	//
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,

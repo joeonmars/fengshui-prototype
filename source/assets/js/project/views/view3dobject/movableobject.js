@@ -55,8 +55,7 @@ feng.views.view3dobject.MovableObject.prototype.getPositionIfAvailable = functio
   var control = this._view3d.modeController.control;
   var controlPosition = control.getPosition();
 
-  var forward = new THREE.Vector3( 0, 0, -1 );
-  forward.applyQuaternion( control.getObject().quaternion ).setY(0).normalize();
+  var forward = control.getForwardVector();
 
   this._dropPosition.addVectors( controlPosition, forward.multiplyScalar(50) );
 

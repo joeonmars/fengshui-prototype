@@ -20,6 +20,7 @@ feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
 
   this._view3d = view3d;
   this._boundingBox = new THREE.Box3();
+  this._boundingSphere = new THREE.Sphere();
   this._center = new THREE.Vector3();
 
   this._tilemapProxy = null;
@@ -74,6 +75,13 @@ feng.views.view3dobject.View3DObject.prototype.getBoundingBox = function(){
 
   this._boundingBox.setFromObject( this.object3d );
   return this._boundingBox;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getBoundingSphere = function(){
+
+  this.getBoundingBox().getBoundingSphere( this._boundingSphere );
+  return this._boundingSphere;
 };
 
 

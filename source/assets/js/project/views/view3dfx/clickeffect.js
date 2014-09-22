@@ -67,20 +67,20 @@ feng.views.view3dfx.ClickEffect.prototype.play = function( position, normal ) {
 	this._lookAtPosition.addVectors( normal, position );
 	this.lookAt( this._lookAtPosition );
 
-	TweenMax.fromTo(this.scale, .5, {
+	TweenMax.fromTo(this.scale, .8, {
 		'x': .5,
 		'y': .5,
 	}, {
 		'x': 1.5,
 		'y': 1.5,
-		'easing': Expo.easeOut
+		'ease': Expo.easeOut
 	});
 
-	TweenMax.fromTo(this.material, .5, {
+	TweenMax.fromTo(this.material, .8, {
 		'opacity': 1,
 	}, {
 		'opacity': 0,
-		'easing': Expo.easeOut
+		'ease': Expo.easeOut
 	});
 };
 

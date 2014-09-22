@@ -1,6 +1,7 @@
 goog.provide('feng.controllers.controls.BrowseControls');
 
 goog.require('goog.events');
+goog.require('goog.events.MouseWheelHandler');
 goog.require('goog.math.Box');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.utils.ThreeUtils');
@@ -25,6 +26,10 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 	};
 
 	this._objectSelector = this._view3d.hud.objectSelector;
+
+	this._maxMouseWheelDeltaY = 50;
+	this._mouseWheelHandler = new goog.events.MouseWheelHandler( domElement );
+	this._mouseWheelHandler.setMaxDeltaY( this._maxMouseWheelDeltaY );
 
 	this._lastMouseX = 0;
 	this._lastMouseY = 0;
@@ -57,7 +62,8 @@ feng.controllers.controls.BrowseControls.prototype.activate = function () {
 
 	goog.base(this, 'activate');
 
-	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this);
+	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this );
+	this._eventHandler.listen( this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this );
 
 	this._objectSelector.activate( this._objectSelectorCallbacks );
 };
@@ -130,8 +136,6 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 
 	if ( intersects.length > 0 ) {
 
-		var intersectPosition = intersects[0].point;
-
 		// check if clicked on any particular object
 		var clickedObject = intersects[0].object.view3dObject;
 
@@ -147,7 +151,6 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 				toPosition: toPosition,
 				toRotation: this.getRotation(),
 				toFov: this.getFov(),
-				intersectPosition: intersectPosition,
 				stairs: stairsObject,
 				viewDistance: 0
 			});
@@ -156,23 +159,21 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 		}
 
 		// otherwise walk to the object
-		intersectPosition.y = intersectPosition.y < 10 ? this.getPosition().y : intersectPosition.y;
-
-		console.log( 'clicked on ' + intersects[0].object.name + ', at: ', intersectPosition );
+		var toPosition = intersects[0].point;
+		toPosition.y = toPosition.y < 10 ? this.getPosition().y : toPosition.y;
 
 		this.dispatchEvent({
 			type: feng.events.EventType.CHANGE,
 			mode: feng.controllers.view3d.ModeController.Mode.WALK,
 			nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
-			toPosition: intersectPosition,
+			toPosition: toPosition,
 			toRotation: this.getRotation(),
-			toFov: this.getFov(),
-			intersectPosition: intersectPosition
+			toFov: this.getFov()
 		});
 
 		// play click effect
-		var intersectNormal = intersects[0].face.normal;
-		this._view3d.fx.clickEffect.play( intersectPosition, intersectNormal );
+		var normal = intersects[0].face.normal;
+		this._view3d.fx.clickEffect.play( toPosition, normal );
 	}
 };
 
@@ -208,15 +209,35 @@ feng.controllers.controls.BrowseControls.prototype.onMouseMove = function ( e ) 
 };
 
 
+feng.controllers.controls.BrowseControls.prototype.onMouseWheel = function ( e ) {
+
+	var distance = goog.math.lerp( 50, 100, Math.abs(e.deltaY) / this._maxMouseWheelDeltaY );
+	distance *= - e.deltaY / Math.abs(e.deltaY);
+
+	var forward = this.getForwardVector();
+	var toPosition = (new THREE.Vector3()).addVectors( this.getPosition(), forward.multiplyScalar( distance ) );
+	toPosition.y = this.getPosition().y;
+
+	this.dispatchEvent({
+		type: feng.events.EventType.CHANGE,
+		mode: feng.controllers.view3d.ModeController.Mode.WALK,
+		nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
+		toPosition: toPosition,
+		toRotation: this.getRotation(),
+		toFov: this.getFov()
+	});
+};
+
+
 feng.controllers.controls.BrowseControls.prototype.onObjectSelectCancel = function () {
 
-	this._view3d.hud.objectBox.deactivate();
+	this._view3d.fx.selectEffect.animateOut();
 };
 
 
 feng.controllers.controls.BrowseControls.prototype.onObjectSelectStart = function ( object ) {
 
-	this._view3d.hud.objectBox.activate( object );
+	this._view3d.fx.selectEffect.animateIn( object );
 };
 
 
@@ -241,8 +262,7 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelectComplete = func
 			mode: feng.controllers.view3d.ModeController.Mode.WALK,
 			nextMode: null,
 			gateway: object,
-			toPosition: center,
-			intersectPosition: center
+			toPosition: center
 		});
 
 		return;

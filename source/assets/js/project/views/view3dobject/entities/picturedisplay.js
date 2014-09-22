@@ -88,8 +88,6 @@ feng.views.view3dobject.entities.PictureDisplay.prototype.onPictureDrag = functi
 
     this._activePictureFrame = null;
   }
-
-  this._view3d.hud.objectBox.activate( this._activePictureFrame );
 };
 
 
