@@ -21,7 +21,7 @@ feng.views.sections.Studio = function(){
 
   goog.base(this, template, templateData);
 
-  this._viewIds = ['bathroom'/*'interior3', 'livingroom', 'interior2'*/];
+  this._viewIds = ['interior3' /*'livingroom', 'bathroom', 'interior2'*/];
 };
 goog.inherits(feng.views.sections.Studio, feng.views.sections.Episode);
 
