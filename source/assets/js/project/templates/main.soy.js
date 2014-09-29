@@ -18,11 +18,11 @@ goog.require('feng.templates.debug');
  */
 feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
   var output = '<div class="section episode" id="' + opt_data.id + '"><div class="hud"><div class="overlays"><div class="tutorial-overlay"></div><div class="opening-overlay">' + feng.templates.common.Popup({classname: 'opening', content: '<h1></h1><div class="line"></div><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'yes', text: 'got it'}) + '<div class="character"></div>'}) + '</div><div class="ending-overlay">' + feng.templates.common.Popup({classname: 'ending', content: '<h1></h1><div class="line"></div><p></p>' + feng.templates.common.PrimaryButton({classname: 'continue', icon: 'yes', text: 'continue investigating'}) + feng.templates.common.PrimaryButton({classname: 'visit', icon: 'yes', text: 'visit another residence'}) + '<div class="character"></div>'}) + '</div><div class="finale-overlay">' + feng.templates.common.Popup({classname: 'finale', content: '<h1></h1><div class="line"></div><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'yes', text: 'done'})}) + '</div></div><div class="controls">' + feng.templates.controls.Compass(null) + feng.templates.controls.Book(null) + feng.templates.controls.Reminder(opt_data) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.Manipulator(null) + feng.templates.controls.DropButton(null) + feng.templates.controls.ProgressBar(opt_data) + '</div><div class="tooltips">';
-  var tipList501 = opt_data.tips;
-  var tipListLen501 = tipList501.length;
-  for (var tipIndex501 = 0; tipIndex501 < tipListLen501; tipIndex501++) {
-    var tipData501 = tipList501[tipIndex501];
-    output += feng.templates.controls.Tooltip({tip: tipData501});
+  var tipList503 = opt_data.tips;
+  var tipListLen503 = tipList503.length;
+  for (var tipIndex503 = 0; tipIndex503 < tipListLen503; tipIndex503++) {
+    var tipData503 = tipList503[tipIndex503];
+    output += feng.templates.controls.Tooltip({tip: tipData503});
   }
   output += '</div><div class="captions"></div></div><div class="sceneContainer"></div></div>';
   return output;

@@ -27,6 +27,11 @@ feng.views.sections.controls.Controls = function(domElement){
 goog.inherits(feng.views.sections.controls.Controls, goog.events.EventTarget);
 
 
+feng.views.sections.controls.Controls.prototype.init = function(){
+  
+};
+
+
 feng.views.sections.controls.Controls.prototype.setView3D = function( view3d ){
 
   if(this._view3d) {

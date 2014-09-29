@@ -4,7 +4,7 @@ goog.provide('feng.models.View3D');
 feng.models.View3D.Data = {
 
 	'studio': {
-		'livingroom': {
+		'livingroom-test': {
 			'ground': {
 				receiveShadow: true
 			},
@@ -155,7 +155,7 @@ feng.models.View3D.Data = {
 				texture: "studio.interior2.cactus-texture"
 			}
 		},
-		'interior3': {
+		'livingroom': {
 			'studio-door': {
 				class: "gateway",
 				viewid: "interior2",
@@ -181,40 +181,40 @@ feng.models.View3D.Data = {
 			'wall':	{
 				collidable: true,
 				castShadow: true,
-				texture: "studio.interior3.wall-texture"
+				texture: "studio.livingroom.wall-texture"
 			},
 			'wall-outer':	{
 				castShadow: true,
-				texture: "studio.interior3.wall-outer-texture"
+				texture: "studio.livingroom.wall-outer-texture"
 			},
 			'ceiling':	{
-				texture: "studio.interior3.ceiling-texture"
+				texture: "studio.livingroom.ceiling-texture"
 			},
 			'floor': {
-				texture: "studio.interior3.floor-texture"
+				texture: "studio.livingroom.floor-texture"
 			},
 			'bed':	{
 				collidable: true,
-				texture: "studio.interior3.bed-texture"
+				texture: "studio.livingroom.bed-texture"
 			},
 			'kitchen-cabinets':	{
 				collidable: true,
-				texture: "studio.interior3.kitchen-cabinets-texture"
+				texture: "studio.livingroom.kitchen-cabinets-texture"
 			},
 			'sofabed':	{
 				collidable: true,
-				texture: "studio.interior3.sofabed-texture"
+				texture: "studio.livingroom.sofabed-texture"
 			},
 			'sofabed-cabinet':	{
 				collidable: true,
-				texture: "studio.interior3.sofabed-cabinet-texture"
+				texture: "studio.livingroom.sofabed-cabinet-texture"
 			},
 			'kitchen-storage':	{
 				collidable: true,
-				texture: "studio.interior3.kitchen-storage-texture"
+				texture: "studio.livingroom.kitchen-storage-texture"
 			},
 			'coffee-pot':	{
-				texture: "studio.interior3.coffee-pot-texture"
+				texture: "studio.livingroom.coffee-pot-texture"
 			},
 			'round-lamp':	{
 				class: 'lamp',
@@ -230,16 +230,16 @@ feng.models.View3D.Data = {
 				],
 				tipInteraction: "change_color",
 				tipKey: 'studio.livingroom.lamp',
-				texture: "studio.interior3.round-lamp-texture"
+				texture: "studio.livingroom.round-lamp-texture"
 			},
 			'reading-lamp':	{
-				texture: "studio.interior3.reading-lamp-texture"
+				texture: "studio.livingroom.reading-lamp-texture"
 			},
 			'ventilator':	{
-				texture: "studio.interior3.ventilator-texture"
+				texture: "studio.livingroom.ventilator-texture"
 			},
 			'microwave':	{
-				texture: "studio.interior3.microwave-texture"
+				texture: "studio.livingroom.microwave-texture"
 			},
 			'fruitplate':	{
 				class: 'fruitplate',
@@ -248,20 +248,20 @@ feng.models.View3D.Data = {
 					rotation: new THREE.Euler(-0.59, 2.02, 0.00, 'YXZ'),
 					fov: 40
 				},
-				texture: "studio.interior3.fruitplate-texture",
+				texture: "studio.livingroom.fruitplate-texture",
 				tipInteraction: "drop",
 				tipKey: 'studio.livingroom.basket',
 				captionClass: 'fruits'
 			},
 			'dining-table':	{
 				collidable: true,
-				texture: "studio.interior3.dining-table-texture"
+				texture: "studio.livingroom.dining-table-texture"
 			},
 			'dining-chair':	{
 				class: "movable",
 				collidable: true,
 				castShadow: true,
-				texture: "studio.interior3.dining-chair-texture",
+				texture: "studio.livingroom.dining-chair-texture",
 				interactions: [
 					"move",
 					"rotate"
@@ -272,53 +272,53 @@ feng.models.View3D.Data = {
 				tipKey: 'studio.livingroom.chair'
 			},
 			'window-books':	{
-				texture: "studio.interior3.window-books-texture"
+				texture: "studio.livingroom.window-books-texture"
 			},
 			'clockset':	{
-				texture: "studio.interior3.clockset-texture"
+				texture: "studio.livingroom.clockset-texture"
 			},
 			'bed-shelf':	{
-				texture: "studio.interior3.bed-shelf-texture"
+				texture: "studio.livingroom.bed-shelf-texture"
 			},
 			'tv-table':	{
 				collidable: true,
-				texture: "studio.interior3.tv-table-texture"
+				texture: "studio.livingroom.tv-table-texture"
 			},
 			'tv':	{
-				texture: "studio.interior3.tv-texture"
+				texture: "studio.livingroom.tv-texture"
 			},
 			'sofa':	{
 				collidable: true,
-				texture: "studio.interior3.sofa-texture"
+				texture: "studio.livingroom.sofa-texture"
 			},
 			'book-shelf':	{
 				collidable: true,
 				castShadow: true,
-				texture: "studio.interior3.book-shelf-texture"
+				texture: "studio.livingroom.book-shelf-texture"
 			},
 			'kitchen-shelf':	{
-				texture: "studio.interior3.kitchen-shelf-texture"
+				texture: "studio.livingroom.kitchen-shelf-texture"
 			},
 			'nightstand':	{
 				collidable: true,
-				texture: "studio.interior3.nightstand-texture"
+				texture: "studio.livingroom.nightstand-texture"
 			},
 			'sewingmachine':	{
-				texture: "studio.interior3.sewingmachine-texture"
+				texture: "studio.livingroom.sewingmachine-texture"
 			},
 			'sewingmachine-cover':	{
-				texture: "studio.interior3.sewingmachine-cover-texture"
+				texture: "studio.livingroom.sewingmachine-cover-texture"
 			},
 			'boxes':	{
-				texture: "studio.interior3.boxes-texture"
+				texture: "studio.livingroom.boxes-texture"
 			},
 			'shoestorage':	{
 				collidable: true,
-				texture: "studio.interior3.shoestorage-texture"
+				texture: "studio.livingroom.shoestorage-texture"
 			},
 			'wardrobe':	{
 				collidable: true,
-				texture: "studio.interior3.wardrobe-texture"
+				texture: "studio.livingroom.wardrobe-texture"
 			},
 			'windows': {
 				class: "windows",
@@ -341,22 +341,22 @@ feng.models.View3D.Data = {
 				},
 				tipInteraction: "change_object",
 				tipKey: 'studio.livingroom.refrigerator',
-				texture: "studio.interior3.refrigerator-texture"
+				texture: "studio.livingroom.refrigerator-texture"
 			},
 			'refrigerator-door': {
-				texture: "studio.interior3.refrigerator-door-texture"
+				texture: "studio.livingroom.refrigerator-door-texture"
 			},
 			'apple': {
-				texture: "studio.interior3.apple-texture"
+				texture: "studio.livingroom.apple-texture"
 			},
 			'pineapple': {
-				texture: "studio.interior3.pineapple-texture"
+				texture: "studio.livingroom.pineapple-texture"
 			},
 			'orange': {
-				texture: "studio.interior3.orange-texture"
+				texture: "studio.livingroom.orange-texture"
 			},
 			'peach': {
-				texture: "studio.interior3.peach-texture"
+				texture: "studio.livingroom.peach-texture"
 			}
 		},
 		'bathroom': {

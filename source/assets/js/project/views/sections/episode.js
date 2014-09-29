@@ -108,6 +108,9 @@ feng.views.sections.Episode.prototype.onLoadComplete = function(e){
 
 	if(this._view3ds.length === 0) {
 
+		// create hud
+		this._hud.init();
+
 		// create view 3ds
 		var view3dContainerEl = goog.dom.getElementByClass('sceneContainer', this.domElement);
 

@@ -56,7 +56,7 @@ feng.views.View3DHud = function( hudEl, view3dController, tips ){
   var bookEl = goog.dom.getElementByClass('book', this.domElement);
   this.book = new feng.views.sections.controls.Book( bookEl );
   this.book.setParentEventTarget( this );
-
+  
   var reminderEl = goog.dom.getElementByClass('reminder', this.domElement);
   this.reminder = new feng.views.sections.controls.Reminder( reminderEl, tips );
   this.reminder.setParentEventTarget( this );
@@ -76,6 +76,12 @@ feng.views.View3DHud = function( hudEl, view3dController, tips ){
   this.tooltips = new feng.views.sections.controls.Tooltips( tooltipsEl );
 };
 goog.inherits(feng.views.View3DHud, goog.events.EventTarget);
+
+
+feng.views.View3DHud.prototype.init = function() {
+
+  this.reminder.init();
+};
 
 
 feng.views.View3DHud.prototype.setView3D = function( view3d ) {

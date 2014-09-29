@@ -3,7 +3,7 @@ goog.provide('feng.views.sections.controls.Reminder');
 goog.require('goog.async.Delay');
 goog.require('goog.Timer');
 goog.require('feng.views.sections.controls.Controls');
-
+goog.require('feng.models.Preload');
 
 /**
  * @constructor
@@ -25,7 +25,9 @@ feng.views.sections.controls.Reminder = function( domElement, tips ){
   this._hintDialogueEl = goog.dom.query('.dialogue.hint', this.domElement)[0];
   this._prevEl = goog.dom.query('.left button', this.domElement)[0];
   this._nextEl = goog.dom.query('.right button', this.domElement)[0];
-  this._avatarEl = goog.dom.getElementByClass('avatar', this.domElement);
+  this._characterEl = goog.dom.getElementByClass('character', this.domElement);
+  this._canvasEl = goog.dom.query('canvas', this._characterEl)[0];
+  this._canvasContext = this._canvasEl.getContext('2d');
 
   this._responseDialogueEl = goog.dom.query('.dialogue.response', this.domElement)[0];
 
@@ -37,6 +39,9 @@ feng.views.sections.controls.Reminder = function( domElement, tips ){
 
   this._hintTitleEl = null;
   this._hintParagraphEl = null;
+
+  this._characterAnimations = null;
+  this._characterAnimation = null;
 
   this.updateHints();
 
@@ -59,6 +64,28 @@ feng.views.sections.controls.Reminder = function( domElement, tips ){
 goog.inherits(feng.views.sections.controls.Reminder, feng.views.sections.controls.Controls);
 
 
+feng.views.sections.controls.Reminder.prototype.init = function(){
+
+	goog.base(this, 'init');
+
+	this._characterAnimations = this.getCharacterAnimations();
+};
+
+
+feng.views.sections.controls.Reminder.prototype.setView3D = function( view3d ){
+
+  goog.base(this, 'setView3D', view3d);
+
+  this._characterAnimation = goog.object.findValue(this._characterAnimations, function(data) {
+  	return (data.viewId === view3d.id);
+  });
+
+  this._canvasEl.width = this._characterAnimation.size['width'];
+  this._canvasEl.height = this._characterAnimation.size['height'];
+  this._characterAnimation.loop.restart();
+};
+
+
 feng.views.sections.controls.Reminder.prototype.activate = function(){
 
   var shouldActivate = goog.base(this, 'activate');
@@ -67,7 +94,7 @@ feng.views.sections.controls.Reminder.prototype.activate = function(){
 
 	this._eventHandler.listen(this._prevEl, 'click', this.onClick, false, this);
 	this._eventHandler.listen(this._nextEl, 'click', this.onClick, false, this);
-	this._eventHandler.listen(this._avatarEl, 'mousedown', this.onClick, false, this);
+	this._eventHandler.listen(this._characterEl, 'mousedown', this.onClick, false, this);
 	this._eventHandler.listen(this._hintDialogueEl, 'mouseover', this.onMouseOver, false, this);
 	this._eventHandler.listen(this._responseDialogueEl, 'mouseover', this.onMouseOver, false, this);
 	this._eventHandler.listen(this._hintDialogueEl, 'mouseout', this.onMouseOut, false, this);
@@ -82,6 +109,91 @@ feng.views.sections.controls.Reminder.prototype.activate = function(){
 };
 
 
+feng.views.sections.controls.Reminder.prototype.getCharacterAnimations = function(){
+
+	// extract unique character names from tips
+	var animations = {};
+	var preload = feng.models.Preload.getInstance();
+
+	goog.array.forEach(this._tips, function(tip) {
+
+		var character = tip.character;
+
+		if(animations[character]) return;
+
+		var sectionId = tip.sectionId;
+		var viewId = tip.viewId;
+
+		var img = preload.getAsset( sectionId + '.character.' + character );
+		var data = preload.getAsset( sectionId + '.character.' + character + '-data' );
+		var frames = data['frames'];
+		var size = data['size'];
+
+		var keys = goog.object.getKeys( frames );
+
+		var loopKeys = goog.array.filter(keys, function(key) {
+			return goog.string.startsWith(key, 'loop-');
+		});
+
+		var raiseKeys = goog.array.filter(keys, function(key) {
+			return goog.string.startsWith(key, 'raise-');
+		});
+
+		var loopProp = {
+			frame: 0,
+		};
+
+		var loopTweener = TweenMax.to(loopProp, 5, {
+			frame: loopKeys.length - 1,
+			'ease': Linear.easeNone,
+			'paused': true,
+			'yoyo': true,
+			'repeat': -1,
+			'onUpdate': function() {
+				var frame = Math.round( loopProp.frame );
+				this.drawCharacter( img, frames[ loopKeys[ frame ] ] );
+			},
+			'onUpdateScope': this
+		});
+
+		var raiseProp = {
+			frame: 0,
+		};
+
+		var raiseTweener = TweenMax.to(raiseProp, 5, {
+			frame: raiseKeys.length - 1,
+			'ease': Linear.easeNone,
+			'paused': true,
+			'onUpdate': function() {
+				var frame = Math.round( raiseProp.frame );
+				this.drawCharacter( img, frames[ raiseKeys[ frame ] ] );
+			},
+			'onUpdateScope': this
+		});
+
+		animations[character] = {
+			viewId: tip.viewId,
+			size: size,
+			loop: loopTweener,
+			raise: raiseTweener
+		};
+
+	}, this);
+
+	/* data structure */
+	/*
+	character: {
+		size: <Object>,
+		loop: <TweenMax>,
+		raise: <TweenMax>,
+		viewId: <String>
+	}
+	*/
+
+	return animations;
+};
+
+
 feng.views.sections.controls.Reminder.prototype.getCurrentTip = function(){
 
 	var tip = goog.array.find(this._tips, function(tip) {
@@ -89,6 +201,16 @@ feng.views.sections.controls.Reminder.prototype.getCurrentTip = function(){
 	});
 
 	return tip;
+};
+
+
+feng.views.sections.controls.Reminder.prototype.drawCharacter = function(img, frame){
+
+	var x = -frame['x'], y = -frame['y'];
+	var width = this._canvasEl.width, height = this._canvasEl.height;
+
+	this._canvasContext.clearRect( 0, 0, width, height );
+	this._canvasContext.drawImage( img, 0, 0, width, height, x, y, width, height );
 };
 
 
@@ -289,7 +411,7 @@ feng.views.sections.controls.Reminder.prototype.onClick = function(e){
 		this.nextHint();
 		break;
 
-		case this._avatarEl:
+		case this._characterEl:
 
 		if(this._isHintShown) {
 

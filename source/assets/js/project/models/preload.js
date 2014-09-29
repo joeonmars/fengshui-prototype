@@ -57,7 +57,11 @@ feng.models.Preload = function(){
 			'lotus-texture': 'images/texture/lotus.png'
 		},
 		'studio': {
-			'livingroom': {
+			'character': {
+				'ollie-data': 'json/characters/ollie.json',
+				'ollie': 'images/characters/ollie.png'
+			},
+			'livingroom-test': {
 				'scene-data': 'json/scene-interior1.json',
 				'energyflow-data': 'json/energyflow/energyflow-1.json',
 				'bed-texture': 'images/texture/bed.jpg',
@@ -91,7 +95,7 @@ feng.models.Preload = function(){
 				'screensaver-texture': 'images/texture/spritesheet/screensaver.png',
 				'cactus-texture': 'images/texture/cactus.png',
 			},
-			'interior3': {
+			'livingroom': {
 				'scene-data': 'json/studio-livingroom.json',
 				'floor-texture': 'images/texture/studio/livingroom/floor.jpg',
 				'wall-texture': 'images/texture/studio/livingroom/wall.jpg',
@@ -190,6 +194,14 @@ feng.models.Preload = function(){
 			}
 		},
 		'townhouse': {
+			'character': {
+				'joanna-data': 'json/characters/joanna.json',
+				'joanna': 'images/characters/joanna.png',
+				'scott-data': 'json/characters/scott.json',
+				'scott': 'images/characters/scott.png',
+				'nick-data': 'json/characters/nick.json',
+				'nick': 'images/characters/nick.png'
+			},
 			'livingroom': {
 				'scene-data': 'json/scene-interior1.json',
 				'energyflow-data': 'json/energyflow/energyflow-1.json',

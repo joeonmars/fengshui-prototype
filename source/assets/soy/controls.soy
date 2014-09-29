@@ -56,8 +56,12 @@
 {template .Reminder}
 <div class="reminder">
 
-	<div class="avatar">
-		{call .RoundButton}{/call}
+	<div class="character">
+		{call .RoundButton}
+		{param content}
+			<canvas></canvas>
+		{/param}
+		{/call}
 	</div>
 
 	<div class="dialogue hint">
