@@ -2,8 +2,9 @@ goog.provide('feng.views.sections.controls.Reminder');
 
 goog.require('goog.async.Delay');
 goog.require('goog.Timer');
-goog.require('feng.views.sections.controls.Controls');
+goog.require('feng.models.achievements.Achievements');
 goog.require('feng.models.Preload');
+goog.require('feng.views.sections.controls.Controls');
 
 /**
  * @constructor
@@ -13,6 +14,7 @@ feng.views.sections.controls.Reminder = function( domElement, tips ){
   goog.base(this, domElement);
 
   this._tips = tips;
+  this._currentTips = [];
 
   this._isHintShown = false;
   this._isResponseShown = false;
@@ -54,8 +56,32 @@ feng.views.sections.controls.Reminder.prototype.init = function(){
 	goog.base(this, 'init');
 
 	this._characterAnimations = this.getCharacterAnimations();
+};
 
-	this.updateHints();
+
+feng.views.sections.controls.Reminder.prototype.getLockedTipsOfView = function(){
+
+  var achievements = feng.models.achievements.Achievements.getInstance();
+  this._currentTips = achievements.getTipsOfView( this._view3d.id, this._view3d.sectionId );
+
+  this._currentTips = goog.array.filter(this._currentTips, function(tip) {
+  	return (tip.unlocked === false);
+  });
+
+  this._numHints = this._currentTips.length;
+console.log(this._numHints)
+  return this._currentTips;
+};
+
+
+feng.views.sections.controls.Reminder.prototype.setView3D = function( view3d ){
+
+  goog.base(this, 'setView3D', view3d);
+
+  this._currentTips = this.getLockedTipsOfView();
+
+	this._hintTitleEls = goog.dom.query('.title li', this._hintDialogueEl);
+  this._hintParagraphEls = goog.dom.query('.paragraph li', this._hintDialogueEl);
 
 	TweenMax.set(this._hintTitleEls, {
   	'display': 'none',
@@ -66,12 +92,6 @@ feng.views.sections.controls.Reminder.prototype.init = function(){
   	'display': 'none',
   	'opacity': 0
   });
-};
-
-
-feng.views.sections.controls.Reminder.prototype.setView3D = function( view3d ){
-
-  goog.base(this, 'setView3D', view3d);
 
   this._characterAnimation = goog.object.findValue(this._characterAnimations, function(data) {
   	return (data.viewId === view3d.id);
@@ -201,7 +221,7 @@ feng.views.sections.controls.Reminder.prototype.getCharacterAnimations = functio
 
 feng.views.sections.controls.Reminder.prototype.getCurrentTip = function(){
 
-	var tip = goog.array.find(this._tips, function(tip) {
+	var tip = goog.array.find(this._currentTips, function(tip) {
 		return !tip.unlocked;
 	});
 
@@ -219,23 +239,12 @@ feng.views.sections.controls.Reminder.prototype.drawCharacter = function(img, fr
 };
 
 
-feng.views.sections.controls.Reminder.prototype.updateHints = function(){
-
-	this._hintTitleEls = goog.dom.query('.title li', this._hintDialogueEl);
-  this._hintParagraphEls = goog.dom.query('.paragraph li', this._hintDialogueEl);
-
-	this._numHints = this._hintParagraphEls.length;
-
-	this.gotoHint( this._hintIndex );
-};
-
-
 feng.views.sections.controls.Reminder.prototype.prevHint = function(){
 
 	this._hintIndex --;
 	if(this._hintIndex < 0) this._hintIndex = this._numHints - 1;
 
-	this.gotoHint( this._hintIndex );
+	this.gotoHintByTip( this._currentTips[this._hintIndex].id );
 };
 
 
@@ -244,13 +253,17 @@ feng.views.sections.controls.Reminder.prototype.nextHint = function(){
 	this._hintIndex ++;
 	if(this._hintIndex > this._numHints - 1) this._hintIndex = 0;
 
-	this.gotoHint( this._hintIndex );
+	this.gotoHintByTip( this._currentTips[this._hintIndex].id );
 };
 
 
-feng.views.sections.controls.Reminder.prototype.gotoHint = function( hintIndex ){
+feng.views.sections.controls.Reminder.prototype.gotoHintByTip = function( tipId ){
 
-	this._hintIndex = hintIndex;
+	var domIndex = goog.array.findIndex(this._hintParagraphEls, function(el, index) {
+		if(el.getAttribute('data-tip-id') === tipId) {
+			return true;
+		}
+	});
 
 	if(this._hintTitleEl) {
 		TweenMax.to(this._hintTitleEl, .25, {
@@ -266,8 +279,8 @@ feng.views.sections.controls.Reminder.prototype.gotoHint = function( hintIndex )
 		});
 	}
 
-	this._hintTitleEl = this._hintTitleEls[ this._hintIndex ];
-	this._hintParagraphEl = this._hintParagraphEls[ this._hintIndex ];
+	this._hintTitleEl = this._hintTitleEls[ domIndex ];
+	this._hintParagraphEl = this._hintParagraphEls[ domIndex ];
 
 	TweenMax.to(this._hintTitleEl, .25, {
 		'opacity': 1,
@@ -278,20 +291,6 @@ feng.views.sections.controls.Reminder.prototype.gotoHint = function( hintIndex )
 		'opacity': 1,
 		'display': 'block'
 	});
-};
-
-
-feng.views.sections.controls.Reminder.prototype.gotoHintByTip = function( tipId ){
-
-	var hintIndex;
-
-	goog.array.forEach(this._hintParagraphEls, function(el, index) {
-		if(el.getAttribute('data-tip-id') === tipId) {
-			hintIndex = index;
-		}
-	});
-
-	this.gotoHint( hintIndex );
 };
 
 
@@ -494,7 +493,7 @@ feng.views.sections.controls.Reminder.prototype.onTipUnlock = function(e){
 	var paragraphEl = goog.dom.query('.paragraph li[data-tip-id="' + tipId + '"]', this._hintDialogueEl)[0];
 	goog.dom.removeNode( paragraphEl );
 
-	this.updateHints();
+	this._currentTips = this.getLockedTipsOfView();
 
 	this.showResponse( tipId );
 };
