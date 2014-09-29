@@ -13,6 +13,10 @@
 @import "fonts";
 @import "icons";
 
+@at-root {
+  @import "animations";
+}
+
 // --- Global vars ---
 $min_width: 1024px;
 $min_height: 640px;

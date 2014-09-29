@@ -69,7 +69,7 @@ feng.views.sections.controls.Reminder.prototype.getLockedTipsOfView = function()
   });
 
   this._numHints = this._currentTips.length;
-console.log(this._numHints)
+
   return this._currentTips;
 };
 
@@ -300,17 +300,6 @@ feng.views.sections.controls.Reminder.prototype.showHint = function( tipId ){
 
 	this.gotoHintByTip( tipId );
 
-	TweenMax.fromTo(this._hintDialogueEl, .4, {
-		'y': 20,
-		'opacity': 0,
-		'display': 'none'
-	}, {
-		'y': 0,
-		'opacity': 1,
-		'display': 'block',
-		'ease': Back.easeInOut
-	});
-
 	goog.dom.classes.add(this.domElement, 'active');
 
 	this._hideHintDelay.start();
@@ -350,17 +339,6 @@ feng.views.sections.controls.Reminder.prototype.showResponse = function( tipId )
 		'display': 'block'
 	});
 
-	TweenMax.fromTo(this._responseDialogueEl, .4, {
-		'y': 20,
-		'opacity': 0,
-		'display': 'none'
-	}, {
-		'y': 0,
-		'opacity': 1,
-		'display': 'block',
-		'ease': Back.easeInOut
-	});
-
 	goog.dom.classes.add(this.domElement, 'active');
 
 	this._hideResponseDelay.start();
@@ -378,13 +356,6 @@ feng.views.sections.controls.Reminder.prototype.hideHint = function( instance ){
 
 	var duration = instance ? 0 : .4;
 
-	TweenMax.to(this._hintDialogueEl, duration, {
-		'y': 20,
-		'opacity': 0,
-		'display': 'none',
-		'ease': Back.easeInOut
-	});
-
 	goog.dom.classes.remove(this.domElement, 'active');
 
 	this._hintTimer.start();
@@ -398,13 +369,6 @@ feng.views.sections.controls.Reminder.prototype.hideResponse = function( instanc
 	this._isResponseShown = false;
 
 	var duration = instance ? 0 : .4;
-
-	TweenMax.to(this._responseDialogueEl, duration, {
-		'y': 20,
-		'opacity': 0,
-		'display': 'none',
-		'ease': Back.easeInOut
-	});
 
 	goog.dom.classes.remove(this.domElement, 'active');
 
