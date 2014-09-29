@@ -43,23 +43,8 @@ feng.views.sections.controls.Reminder = function( domElement, tips ){
   this._characterAnimations = null;
   this._characterAnimation = null;
 
-  this.updateHints();
-
   this._hideHintDelay = new goog.async.Delay(this.hideHint, 6000, this);
   this._hideResponseDelay = new goog.async.Delay(this.hideResponse, 3000, this);
-
-  TweenMax.set(this._hintTitleEls, {
-  	'display': 'none',
-  	'opacity': 0
-  });
-
-  TweenMax.set(this._hintParagraphEls, {
-  	'display': 'none',
-  	'opacity': 0
-  });
-
-  this.hideHint( true );
-  this.hideResponse( true );
 };
 goog.inherits(feng.views.sections.controls.Reminder, feng.views.sections.controls.Controls);
 
@@ -69,6 +54,18 @@ feng.views.sections.controls.Reminder.prototype.init = function(){
 	goog.base(this, 'init');
 
 	this._characterAnimations = this.getCharacterAnimations();
+
+	this.updateHints();
+
+	TweenMax.set(this._hintTitleEls, {
+  	'display': 'none',
+  	'opacity': 0
+  });
+
+  TweenMax.set(this._hintParagraphEls, {
+  	'display': 'none',
+  	'opacity': 0
+  });
 };
 
 
@@ -143,15 +140,18 @@ feng.views.sections.controls.Reminder.prototype.getCharacterAnimations = functio
 			frame: 0,
 		};
 
-		var loopTweener = TweenMax.to(loopProp, 5, {
-			frame: loopKeys.length - 1,
+		var numLoopFrames = loopKeys.length;
+
+		var loopTweener = TweenMax.to(loopProp, numLoopFrames/30, {
+			frame: numLoopFrames - 1,
 			'ease': Linear.easeNone,
 			'paused': true,
 			'yoyo': true,
 			'repeat': -1,
+			'repeatDelay': 2,
 			'onUpdate': function() {
 				var frame = Math.round( loopProp.frame );
-				this.drawCharacter( img, frames[ loopKeys[ frame ] ] );
+				this.drawCharacter( img, frames[ 'loop-' + frame ] );
 			},
 			'onUpdateScope': this
 		});
@@ -160,15 +160,20 @@ feng.views.sections.controls.Reminder.prototype.getCharacterAnimations = functio
 			frame: 0,
 		};
 
-		var raiseTweener = TweenMax.to(raiseProp, 5, {
-			frame: raiseKeys.length - 1,
+		var numRaiseFrames = raiseKeys.length;
+
+		var raiseTweener = TweenMax.to(raiseProp, numRaiseFrames/30, {
+			frame: numRaiseFrames - 1,
 			'ease': Linear.easeNone,
 			'paused': true,
 			'onUpdate': function() {
 				var frame = Math.round( raiseProp.frame );
-				this.drawCharacter( img, frames[ raiseKeys[ frame ] ] );
+				this.drawCharacter( img, frames[ 'raise-' + frame ] );
 			},
-			'onUpdateScope': this
+			'onUpdateScope': this,
+			'onReverseComplete': function() {
+				loopTweener.restart();
+			}
 		});
 
 		animations[character] = {
@@ -206,18 +211,18 @@ feng.views.sections.controls.Reminder.prototype.getCurrentTip = function(){
 
 feng.views.sections.controls.Reminder.prototype.drawCharacter = function(img, frame){
 
-	var x = -frame['x'], y = -frame['y'];
+	var x = frame['x'], y = frame['y'];
 	var width = this._canvasEl.width, height = this._canvasEl.height;
 
 	this._canvasContext.clearRect( 0, 0, width, height );
-	this._canvasContext.drawImage( img, 0, 0, width, height, x, y, width, height );
+	this._canvasContext.drawImage( img, x, y, width, height, 0, 0, width, height );
 };
 
 
 feng.views.sections.controls.Reminder.prototype.updateHints = function(){
 
 	this._hintTitleEls = goog.dom.query('.title li', this._hintDialogueEl);
-  	this._hintParagraphEls = goog.dom.query('.paragraph li', this._hintDialogueEl);
+  this._hintParagraphEls = goog.dom.query('.paragraph li', this._hintDialogueEl);
 
 	this._numHints = this._hintParagraphEls.length;
 
@@ -312,6 +317,9 @@ feng.views.sections.controls.Reminder.prototype.showHint = function( tipId ){
 	this._hideHintDelay.start();
 
 	this._hintTimer.stop();
+
+	this._characterAnimation.loop.pause();
+	this._characterAnimation.raise.restart();
 };
 
 
@@ -359,6 +367,9 @@ feng.views.sections.controls.Reminder.prototype.showResponse = function( tipId )
 	this._hideResponseDelay.start();
 
 	this._hintTimer.stop();
+
+	this._characterAnimation.loop.pause();
+	this._characterAnimation.raise.restart();
 };
 
 
@@ -378,6 +389,8 @@ feng.views.sections.controls.Reminder.prototype.hideHint = function( instance ){
 	goog.dom.classes.remove(this.domElement, 'active');
 
 	this._hintTimer.start();
+
+	this._characterAnimation.raise.reverse();
 };
 
 
@@ -397,6 +410,8 @@ feng.views.sections.controls.Reminder.prototype.hideResponse = function( instanc
 	goog.dom.classes.remove(this.domElement, 'active');
 
 	this._hintTimer.start();
+
+	this._characterAnimation.raise.reverse();
 };
 
 

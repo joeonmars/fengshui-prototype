@@ -21,7 +21,7 @@ feng.views.sections.Townhouse = function(){
 
   goog.base(this, template, templateData);
 
-this._viewIds = ['homeoffice', /*'boysroom', 'livingroom', */];
+this._viewIds = ['homeoffice' /*'boysroom', 'livingroom', */];
 };
 goog.inherits(feng.views.sections.Townhouse, feng.views.sections.Episode);
 
