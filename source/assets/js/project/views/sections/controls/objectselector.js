@@ -14,7 +14,7 @@ feng.views.sections.controls.ObjectSelector = function(domElement){
 
   goog.base(this, domElement);
 
-  this._selectableObjects = null;
+  this._selectableObjects = [];
 
   this._domElement = domElement;
   this._fillEl = goog.dom.getElementByClass('fill', this._domElement);
@@ -44,38 +44,29 @@ feng.views.sections.controls.ObjectSelector = function(domElement){
 goog.inherits(feng.views.sections.controls.ObjectSelector, feng.views.sections.controls.Controls);
 
 
-feng.views.sections.controls.ObjectSelector.prototype.updateHitTestMeshes = function () {
-	
-	var hitTestMeshes = [];
+feng.views.sections.controls.ObjectSelector.prototype.setPosition = function ( x, y ) {
 
-	var parseObject = function(object) {
-		
-		if(object.interactiveObject) {
-			hitTestMeshes.push( object );
-		}else {
-			var children = object.children;
-
-			if(children.length > 0) {
-				goog.array.forEach(children, function(child) {
-					parseObject( child );
-				});
-			}
-		}
-	};
-
-	goog.array.forEach(this._selectableObjects, function(object) {
-		parseObject( object.object3d );
-	}, this);
-
-	this._hitTestMeshes = hitTestMeshes;
-
-	return this._hitTestMeshes;
+	goog.style.setPosition(this.domElement, x, y);
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.setPosition = function (x, y) {
+feng.views.sections.controls.ObjectSelector.prototype.setObjects = function ( objects ) {
 
-	goog.style.setPosition(this.domElement, x, y);
+	this._selectableObjects = objects;
+
+	var hitTestMeshes = [];
+
+	goog.array.forEach(this._selectableObjects, function(object) {
+
+		object.object3d.traverse(function(obj) {
+			if(obj.interactiveObject) {
+				hitTestMeshes.push( obj );
+			}
+		});
+
+	}, this);
+
+	this._hitTestMeshes = hitTestMeshes;
 };
 
 
@@ -85,10 +76,6 @@ feng.views.sections.controls.ObjectSelector.prototype.activate = function( callb
 
   if(!shouldActivate) return;
   
-	this._selectableObjects = goog.object.getValues( this._view3d.interactiveObjects );
-	
-	this.updateHitTestMeshes();
-
 	this._callbacks = {
 	  	'onProgress': callbacks['onProgress'] || goog.nullFunction,
 	  	'onStart': callbacks['onStart'] || goog.nullFunction,
@@ -215,8 +202,8 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseDownCancel = functi
 
 	this._delay.stop();
 
-	this._eventHandler.unlisten(document, 'mousemove', this.onMouseMove, false, this);
-	this._eventHandler.unlisten(document, 'mouseup', this.onMouseUp, false, this);
+	this._eventHandler.unlisten(document, 'mousemove', this.onMouseDownCancel, false, this);
+	this._eventHandler.unlisten(document, 'mouseup', this.onMouseDownCancel, false, this);
 
 	goog.fx.anim.unregisterAnimation( this );
 
@@ -242,8 +229,8 @@ feng.views.sections.controls.ObjectSelector.prototype.onAnimationFrame = functio
 
 	if(progress === 1) {
 
-		this._eventHandler.unlisten(document, 'mousemove', this.onMouseMove, false, this);
-		this._eventHandler.unlisten(document, 'mouseup', this.onMouseUp, false, this);
+		this._eventHandler.unlisten(document, 'mousemove', this.onMouseDownCancel, false, this);
+		this._eventHandler.unlisten(document, 'mouseup', this.onMouseDownCancel, false, this);
 
 		goog.fx.anim.unregisterAnimation( this );
 

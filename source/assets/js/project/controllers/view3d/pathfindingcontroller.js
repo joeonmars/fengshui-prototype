@@ -352,7 +352,7 @@ feng.controllers.view3d.PathfindingController.prototype.findPath = function( mat
 	});
 
 	// return smoothened coordinates
-	var spline = new THREE.SplineCurve3( coordinates );console.log(spline.getLength(), coordinates)
+	var spline = new THREE.SplineCurve3( coordinates );
 	var numPoints = Math.floor( spline.getLength() / 50 );
 	var coordinates = spline.getSpacedPoints( numPoints );
 

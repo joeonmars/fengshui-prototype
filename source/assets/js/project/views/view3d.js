@@ -140,6 +140,17 @@ feng.views.View3D.prototype.getFloorY = function(){
 };
 
 
+feng.views.View3D.prototype.getSolidObjects = function(){
+
+	var objects = goog.object.getValues( this.view3dObjects );
+	goog.array.remove( objects, this.skybox );
+	goog.array.remove( objects, this.arms );
+	goog.array.remove( objects, this.designPlane );
+
+  return objects;
+};
+
+
 feng.views.View3D.prototype.getObjectByTip = function( tip ){
 
 	var tipObject = goog.object.findValue( this.tipObjects, function(object) {

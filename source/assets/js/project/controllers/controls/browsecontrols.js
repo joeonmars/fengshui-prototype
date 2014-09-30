@@ -27,6 +27,13 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 
 	this._objectSelector = this._view3d.hud.objectSelector;
 
+	this._detectorDistance = 300/2;
+	
+	this._detectorSphere = new THREE.Sphere();
+
+	this._detectorRay = new THREE.Raycaster();
+	this._detectorRay.far = this._detectorDistance;
+
 	this._maxMouseWheelDeltaY = 50;
 	this._mouseWheelHandler = new goog.events.MouseWheelHandler( domElement );
 	this._mouseWheelHandler.setMaxDeltaY( this._maxMouseWheelDeltaY );
@@ -54,6 +61,39 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 
 		this._targetRotationY = this._yawObject.rotation.y;
 		this._targetRotationX = this._pitchObject.rotation.x;
+
+		// update sphere to limit the reach of tip objects
+		var cameraPosition = this.getPosition();
+		this._detectorSphere.set( cameraPosition, this._detectorDistance );
+
+		// update selectable objects only locked within sphere
+		var selectableObjects = [];
+
+		var solidObjects = this._view3d.getSolidObjects();
+		var object3ds = goog.array.map(solidObjects, function(object) {
+			return object.object3d;
+		});
+
+		goog.object.forEach(this._view3d.tipObjects, function(tipObject) {
+
+			var locked = !tipObject.tip.unlocked;
+			var withinRange = this._detectorSphere.intersectsSphere( tipObject.getBoundingSphere() );
+			var canReach = false;
+
+			var rayDirection = new THREE.Vector3().subVectors( tipObject.getCenter(), cameraPosition ).normalize();
+			this._detectorRay.set( cameraPosition, rayDirection );
+
+			var intersects = this._detectorRay.intersectObjects( object3ds );
+			var canReach = (intersects.length > 0) ? (intersects[0].object === tipObject.object3d) : false;
+
+			//console.log('withinRange: ' + withinRange + ', locked: ' + locked + ', canReach: ' + canReach, tipObject);
+
+			if(locked && withinRange && canReach) {
+				selectableObjects.push( tipObject );
+			}
+		}, this);
+
+		this._objectSelector.setObjects( selectableObjects );
 	}
 };
 
