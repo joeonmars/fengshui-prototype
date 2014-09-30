@@ -50,7 +50,7 @@ feng.views.sections.controls.ObjectSelector.prototype.setPosition = function ( x
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.setObjects = function ( objects ) {
+feng.views.sections.controls.ObjectSelector.prototype.setSelectableObjects = function ( objects ) {
 
 	this._selectableObjects = objects;
 

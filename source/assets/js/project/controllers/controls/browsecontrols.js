@@ -26,6 +26,7 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 	};
 
 	this._objectSelector = this._view3d.hud.objectSelector;
+	this._progressBar = this._view3d.hud.progressBar;
 
 	this._detectorDistance = 300/2;
 	
@@ -93,7 +94,8 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 			}
 		}, this);
 
-		this._objectSelector.setObjects( selectableObjects );
+		this._objectSelector.setSelectableObjects( selectableObjects );
+		this._progressBar.setNearbyObjects( selectableObjects );
 	}
 };
 
@@ -106,6 +108,7 @@ feng.controllers.controls.BrowseControls.prototype.activate = function () {
 	this._eventHandler.listen( this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this );
 
 	this._objectSelector.activate( this._objectSelectorCallbacks );
+	this._progressBar.activate();
 };
 
 
@@ -114,6 +117,7 @@ feng.controllers.controls.BrowseControls.prototype.deactivate = function () {
 	goog.base(this, 'deactivate');
 
 	this._objectSelector.deactivate();
+	this._progressBar.deactivate();
 };
 
 
