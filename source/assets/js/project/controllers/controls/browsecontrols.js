@@ -213,7 +213,8 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 			toPosition: toPosition,
 			toRotation: this.getRotation(),
 			toFov: this.getFov(),
-			lookAt: toPosition
+			fromTarget: this.getTarget(),
+			toTarget: toPosition
 		});
 
 		// play click effect

@@ -13,7 +13,7 @@ feng.controllers.controls.WalkControls = function(camera, view3d, domElement){
 
   goog.base(this, camera, view3d, domElement);
 
-	this._tweener = null;
+	this._tweener = new TimelineMax();
 	this._pathTrack = null;
 
 	this._cameraRotation = new THREE.Euler(0, 0, 0, 'YXZ');
@@ -100,31 +100,43 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 	var footstepLength = 20;
 	var footsteps = Math.floor(distance / footstepLength);
 
-	var fromRotation = this.getRotation().clone();
-
-	var prop = {
+	var uProp = {
 		u: 0,
-		footstep: 0,
-		toPosition: toPosition,
-		fromRotation: fromRotation,
-		lookAt: ev.lookAt
+		footstep: 0
 	};
 
-  this._tweener = TweenMax.to(prop, duration, {
+	var tProp = {
+		t: 0,
+		fromTarget: ev.fromTarget,
+		toTarget: ev.toTarget
+	};
+
+  var uTweener = TweenMax.to(uProp, duration, {
     u: distanceT,
     footstep: Math.PI * footsteps,
     ease: Sine.easeInOut,
-    onUpdate: this.onPathProgress,
-    onUpdateParams: [prop],
+    onUpdate: this.onPathUProgress,
+    onUpdateParams: [uProp],
     onUpdateScope: this,
     onComplete: this.onPathComplete,
     onCompleteParams: [gateway, stairs, nextMode],
     onCompleteScope: this
   });
+
+  var tTweener = TweenMax.to(tProp, duration, {
+    t: 1,
+    ease: Quad.easeInOut,
+    onUpdate: this.onPathTProgress,
+    onUpdateParams: [tProp],
+    onUpdateScope: this,
+  });
+
+  this._tweener.clear();
+  this._tweener.add( [uTweener, tTweener], '+=0', 'start' );
 };
 
 
-feng.controllers.controls.WalkControls.prototype.onPathProgress = function ( prop ) {
+feng.controllers.controls.WalkControls.prototype.onPathUProgress = function ( prop ) {
 
   var u = prop.u;
   var pathTrack = this._pathTrack;
@@ -136,20 +148,22 @@ feng.controllers.controls.WalkControls.prototype.onPathProgress = function ( pro
   var cameraY = defaultHeight + footstepHeight;
 
   this.setPosition( cameraPosition.x, cameraY, cameraPosition.z );
+};
 
-  // calculate rotation looking at intersect
-  if(prop.lookAt) {
 
-		var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( this.getPosition(), prop.lookAt );
+feng.controllers.controls.WalkControls.prototype.onPathTProgress = function ( prop ) {
+
+  var t = prop.t;
+
+  // calculate rotation looking at tweening target
+  if(prop.fromTarget && prop.toTarget) {
+
+  	var position = prop.fromTarget.clone().lerp( prop.toTarget, t );
+
+  	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( this.getPosition(), position );
 		this._cameraRotation.setFromQuaternion( quaternion );
 
-		var fromRotation = prop.fromRotation;
-		fromRotation = feng.utils.ThreeUtils.getShortestRotation(this._cameraRotation, fromRotation);
-
-		var intepolatedCameraX = goog.math.lerp( fromRotation.x, this._cameraRotation.x, u );
-		var intepolatedCameraY = goog.math.lerp( fromRotation.y, this._cameraRotation.y, u );
-
-		this.setRotation( intepolatedCameraX, intepolatedCameraY );
+		this.setRotation( this._cameraRotation.x, this._cameraRotation.y );
   }
 };
 

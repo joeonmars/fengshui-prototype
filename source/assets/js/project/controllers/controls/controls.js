@@ -109,6 +109,16 @@ feng.controllers.controls.Controls.prototype.getForwardVector = function (dontFo
 };
 
 
+feng.controllers.controls.Controls.prototype.getTarget = function () {
+
+	var raycaster = new THREE.Raycaster(this.getPosition(), this.getForwardVector(true));
+	var intersects = raycaster.intersectObjects( this._view3d.scene.children );
+	var intersectPosition = intersects.length > 0 ? intersects[0].point : this._view3d.scene.position;
+
+	return intersectPosition;
+};
+
+
 feng.controllers.controls.Controls.prototype.setPosition = function (x, y, z) {
 
 	if(x instanceof THREE.Vector3) {
