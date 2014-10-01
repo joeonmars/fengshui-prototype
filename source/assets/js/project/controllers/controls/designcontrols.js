@@ -126,7 +126,7 @@ feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 		this._zoomSlider.hide();
 	}
 
-	this._dragger.setEnabled( this._isEnabled );
+	this._dragger.setEnabled( shouldEnable );
 };
 
 

@@ -72,16 +72,13 @@ feng.controllers.view3d.ModeController.prototype.getMode = function(){
 
 feng.controllers.view3d.ModeController.prototype.setMode = function( modeData ){
 
-	this.dispatchEvent({
-		type: feng.events.EventType.CHANGE,
-		mode: modeData.mode,
-		fromPosition: modeData.fromPosition,
-		toPosition: modeData.toPosition,
-		fromRotation: modeData.fromRotation,
-		toRotation: modeData.toRotation,
-		fromFov: modeData.fromFov,
-		toFov: modeData.toFov
-	});
+	var eventData = {
+		type: feng.events.EventType.CHANGE
+	};
+
+	goog.object.extend( eventData, modeData );
+
+	this.dispatchEvent( eventData );
 };
 
 
@@ -164,9 +161,9 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	var fromRotation = e.fromRotation || oldControl.getRotation();
 	var fromFov = e.fromFov || oldControl.getFov();
 
-	var toPosition = e.toPosition || oldControl.getPosition();
-	var toRotation = e.toRotation || oldControl.getRotation();
-	var toFov = e.toFov || oldControl.getFov();
+	var toPosition = e.toPosition || (nextControl ? nextControl.getPosition() : newControl.getPosition());
+	var toRotation = e.toRotation || (nextControl ? nextControl.getRotation() : newControl.getRotation());
+	var toFov = e.toFov || (nextControl ? nextControl.getFov() : newControl.getFov());
 
 	this.control.setPosition( fromPosition );
 	this.control.setRotation( fromRotation );

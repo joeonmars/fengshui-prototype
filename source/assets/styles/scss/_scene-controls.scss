@@ -19,7 +19,31 @@
 	&.design{
 		.cube{
 			.design{
+				opacity: 1;
+			}
+		}
+	}
+
+	&.browse{
+		.cube{
+			.design{
+				opacity: 0;
+			}
+		}
+	}
+
+	&.hover-design{
+		.cube{
+			.design{
 				opacity: 1 !important;
+			}
+		}
+	}
+
+	&.hover-browse{
+		.cube{
+			.design{
+				opacity: 0 !important;
 			}
 		}
 	}
