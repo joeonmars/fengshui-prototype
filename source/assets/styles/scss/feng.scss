@@ -187,16 +187,29 @@ body{
 			height: 0;
 			@include user-select(none);
 
+			%fadeWhenPause{
+				opacity: 1;
+				visibility: visible;
+				@include transition(opacity .4s ease-out, visibility .4s);
+
+				&.paused{
+					opacity: 0;
+					visibility: hidden;
+				}
+			}
+
 			>.overlays{
 				@include absoluteTopLeft;
 				z-index: 1;
-				
+				@extend %fadeWhenPause;
+
 				@import "scene-overlays";
 			}
 
 			>.controls{
 				@include absoluteTopLeft;
 				z-index: 3;
+				@extend %fadeWhenPause;
 
 				@import "scene-controls";
 			}
@@ -206,6 +219,7 @@ body{
 				width: 100%;
 				height: 0;
 				z-index: 2;
+				@extend %fadeWhenPause;
 
 				@import "tooltip";
 			}
@@ -215,7 +229,8 @@ body{
 				width: 100%;
 				height: 0;
 				z-index: 4;
-
+				@extend %fadeWhenPause;
+				
 				>.caption{
 					@include absoluteTopLeft;
 					width: 100%;

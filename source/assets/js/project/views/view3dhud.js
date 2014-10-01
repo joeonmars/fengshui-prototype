@@ -27,7 +27,6 @@ feng.views.View3DHud = function( hudEl, view3dController, tips ){
   goog.base(this);
 
   this.domElement = hudEl;
-  this._captionContainerEl = goog.dom.getElementByClass('captions', this.domElement);
 
   this._view3d = null;
   this._view3dController = view3dController;
@@ -36,44 +35,51 @@ feng.views.View3DHud = function( hudEl, view3dController, tips ){
   this._captions = {};
 
   // create overlays
-  var tutorialOverlayEl = goog.dom.getElementByClass('tutorial-overlay', this.domElement);
+  this._overlaysEl = goog.dom.getElementByClass('overlays', this.domElement);
+
+  var tutorialOverlayEl = goog.dom.getElementByClass('tutorial-overlay', this._overlaysEl);
   this.tutorialOverlay = new feng.views.sections.overlays.TutorialOverlay( tutorialOverlayEl );
 
-  var openingOverlayEl = goog.dom.getElementByClass('opening-overlay', this.domElement);
+  var openingOverlayEl = goog.dom.getElementByClass('opening-overlay', this._overlaysEl);
   this.openingOverlay = new feng.views.sections.overlays.OpeningOverlay( openingOverlayEl );
 
-  var endingOverlayEl = goog.dom.getElementByClass('ending-overlay', this.domElement);
+  var endingOverlayEl = goog.dom.getElementByClass('ending-overlay', this._overlaysEl);
   this.endingOverlay = new feng.views.sections.overlays.EndingOverlay( endingOverlayEl );
 
-  var finaleOverlayEl = goog.dom.getElementByClass('finale-overlay', this.domElement);
+  var finaleOverlayEl = goog.dom.getElementByClass('finale-overlay', this._overlaysEl);
   this.finaleOverlay = new feng.views.sections.overlays.FinaleOverlay( finaleOverlayEl );
 
   // create controls
-  var compassEl = goog.dom.getElementByClass('compass', this.domElement);
+  this._controlsEl = goog.dom.getElementByClass('controls', this.domElement);
+
+  var compassEl = goog.dom.getElementByClass('compass', this._controlsEl);
   this.compass = new feng.views.sections.controls.Compass( compassEl );
   this.compass.setParentEventTarget( this );
 
-  var bookEl = goog.dom.getElementByClass('book', this.domElement);
+  var bookEl = goog.dom.getElementByClass('book', this._controlsEl);
   this.book = new feng.views.sections.controls.Book( bookEl );
   this.book.setParentEventTarget( this );
   
-  var reminderEl = goog.dom.getElementByClass('reminder', this.domElement);
+  var reminderEl = goog.dom.getElementByClass('reminder', this._controlsEl);
   this.reminder = new feng.views.sections.controls.Reminder( reminderEl, tips );
   this.reminder.setParentEventTarget( this );
 
-  var progressBarEl = goog.dom.getElementByClass('progressBar', this.domElement);
+  var progressBarEl = goog.dom.getElementByClass('progressBar', this._controlsEl);
   this.progressBar = new feng.views.sections.controls.ProgressBar( progressBarEl, tips );
   this.progressBar.setParentEventTarget( this );
 
-  var objectSelectorEl = goog.dom.getElementByClass('objectSelector', this.domElement);
+  var objectSelectorEl = goog.dom.getElementByClass('objectSelector', this._controlsEl);
   this.objectSelector = new feng.views.sections.controls.ObjectSelector( objectSelectorEl );
 
-  var dropButtonEl = goog.dom.getElementByClass('dropButton', this.domElement);
+  var dropButtonEl = goog.dom.getElementByClass('dropButton', this._controlsEl);
   this.dropButton = new feng.views.sections.controls.DropButton( dropButtonEl );
 
-  // create design captions
-  var tooltipsEl = goog.dom.getElementByClass('tooltips', this.domElement);
-  this.tooltips = new feng.views.sections.controls.Tooltips( tooltipsEl );
+  // captions
+  this._captionsEl = goog.dom.getElementByClass('captions', this.domElement);
+
+  // tooltips
+  this._tooltipsEl = goog.dom.getElementByClass('tooltips', this.domElement);
+  this.tooltips = new feng.views.sections.controls.Tooltips( this._tooltipsEl );
 };
 goog.inherits(feng.views.View3DHud, goog.events.EventTarget);
 
@@ -97,6 +103,23 @@ feng.views.View3DHud.prototype.setView3D = function( view3d ) {
   this.tooltips.setView3D( view3d );
 
   this._view3d.modeController.listen(feng.events.EventType.UPDATE, this.onUpdateView3D, false, this);
+};
+
+
+feng.views.View3DHud.prototype.pause = function( shouldPause ) {
+
+  if(shouldPause) {
+
+    goog.dom.classes.add( this._captionsEl, 'paused' );
+    goog.dom.classes.add( this._tooltipsEl, 'paused' );
+    goog.dom.classes.add( this._controlsEl, 'paused' );
+
+  }else {
+
+    goog.dom.classes.remove( this._captionsEl, 'paused' );
+    goog.dom.classes.remove( this._tooltipsEl, 'paused' );
+    goog.dom.classes.remove( this._controlsEl, 'paused' );
+  }
 };
 
 
@@ -139,18 +162,6 @@ feng.views.View3DHud.prototype.deactivate = function() {
   this.dropButton.deactivate();
   this.tooltips.deactivate();
   this.tutorialOverlay.deactivate();
-};
-
-
-feng.views.View3DHud.prototype.show = function() {
-
-  goog.style.showElement(this.domElement, true);
-};
-
-
-feng.views.View3DHud.prototype.hide = function() {
-
-  goog.style.showElement(this.domElement, false);
 };
 
 
@@ -211,7 +222,7 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls, type ) {
 	var caption = new captionClass( object, cameraController, viewSize, controls, this );
 	this._captions[ key ] = caption;
 
-	goog.dom.appendChild( this._captionContainerEl, caption.domElement );
+	goog.dom.appendChild( this._captionsEl, caption.domElement );
 
 	return caption;
 };

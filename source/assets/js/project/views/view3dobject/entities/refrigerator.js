@@ -13,7 +13,7 @@ feng.views.view3dobject.entities.Refrigerator = function( object3d, data, view3d
 
   goog.base(this, object3d, data, view3d);
 
-  this._door = this.object3d.getObjectByName('refrigerator-door');
+  this._door = this.object3d;
 
   this._fruits = null;
 };
@@ -26,7 +26,7 @@ feng.views.view3dobject.entities.Refrigerator.prototype.getFruits = function(){
 
   goog.array.forEach( ['apple', 'pineapple', 'orange', 'peach'], function(name) {
 
-    var fruit = this.object3d.getObjectByName( name );
+    var fruit = this._door.parent.getObjectByName( name );
     if(fruit) {
       this._fruits.push( fruit );
     }

@@ -87,7 +87,7 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 			var intersects = this._detectorRay.intersectObjects( object3ds );
 			var canReach = (intersects.length > 0) ? (intersects[0].object === tipObject.object3d) : false;
 
-			//console.log('withinRange: ' + withinRange + ', locked: ' + locked + ', canReach: ' + canReach, tipObject);
+			console.log(tipObject.name + ' withinRange: ' + withinRange + ', locked: ' + locked + ', canReach: ' + canReach, (intersects.length > 0 ? intersects[0].object : null));
 
 			if(locked && withinRange && canReach) {
 				selectableObjects.push( tipObject );

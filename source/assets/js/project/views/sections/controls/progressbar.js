@@ -25,6 +25,8 @@ feng.views.sections.controls.ProgressBar = function(domElement, tips){
 		this._tips[ tip.id ] = tip;
   }, this);
 
+  this._nearbyTipEl = null;
+
   // create sine waves on canvas
   var numWaves = this._tipEls.length - 1;
   this._canvasWidth = 60 * numWaves;
@@ -146,6 +148,7 @@ feng.views.sections.controls.ProgressBar.prototype.detectNearbyObjects = functio
   var nearestObject;
 
   goog.array.forEach(this._nearbyObjects, function(object) {
+    
     var objectDirection = object.getCenter().clone().sub( cameraPosition ).normalize();
     var dot = objectDirection.dot( cameraDirection );
     //console.log(dot, object.name)
@@ -156,32 +159,30 @@ feng.views.sections.controls.ProgressBar.prototype.detectNearbyObjects = functio
   });
 
   if(nearestObject) {
-    //console.log(nearestObject.name);
-  }
 
-  /* test */
-  if(!this.line) {
-    var material = new THREE.LineBasicMaterial({
-      color: 0xff0000,
-      linewidth: 10
+    //console.log(nearestObject.name);
+    var tipId = nearestObject.tip.id;
+    var tipEl = goog.array.find(this._tipEls, function(tipEl) {
+      return (tipEl.getAttribute('data-tip-id') === tipId);
     });
 
-    var geometry = new THREE.Geometry();
-    geometry.vertices.push(
-      new THREE.Vector3( 0, 0, 0 ),
-      new THREE.Vector3( 0, 0, 0 )
-    );
+    if(this._nearbyTipEl !== tipEl) {
 
-    this.line = new THREE.Line( geometry, material );
-    this._view3d.scene.add( this.line );
+      if(this._nearbyTipEl) {
+        goog.dom.classes.remove(this._nearbyTipEl, 'nearby');
+      }
+
+      this._nearbyTipEl = tipEl;
+      goog.dom.classes.add(this._nearbyTipEl, 'nearby');
+    }
+
+  }else {
+
+    if(this._nearbyTipEl) {
+      goog.dom.classes.remove(this._nearbyTipEl, 'nearby');
+      this._nearbyTipEl = null;
+    }
   }
-
-  var pos = new THREE.Vector3().addVectors(cameraPosition, cameraDirection.multiplyScalar(100));
-  this.line.geometry.vertices[0].copy( cameraPosition );
-  this.line.geometry.vertices[1].copy( pos );
-  this.line.geometry.verticesNeedUpdate = true;
-
-  console.log(cameraPosition, pos, cameraDirection);
 };
 
 

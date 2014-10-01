@@ -337,6 +337,7 @@ feng.views.View3D.prototype.pause = function(){
 
 	this.modeController.control.pause( true );
 	this.renderController.updateByPause( true );
+	this.hud.pause( true );
 };
 
 
@@ -346,6 +347,7 @@ feng.views.View3D.prototype.resume = function(){
 
 	this.modeController.control.pause( false );
 	this.renderController.updateByPause( false );
+	this.hud.pause( false );
 };
 
 

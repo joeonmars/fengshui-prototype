@@ -304,6 +304,14 @@
 			>li{
 				position: absolute;
 
+				&.nearby{
+					>.dot{
+						>.inner{
+							background: #00FF00;
+						}
+					}
+				}
+
 				>.dot{
 					position: relative;
 					margin: -20px;

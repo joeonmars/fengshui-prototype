@@ -329,8 +329,12 @@ feng.models.View3D.Data = {
 				tipKey: 'studio.livingroom.windows'
 			},
 			'refrigerator':	{
-				class: "refrigerator",
 				collidable: true,
+				texture: "studio.livingroom.refrigerator-texture"
+			},
+			'refrigerator-door': {
+				class: "refrigerator",
+				texture: "studio.livingroom.refrigerator-door-texture",
 				interactions: [
 
 				],
@@ -341,10 +345,6 @@ feng.models.View3D.Data = {
 				},
 				tipInteraction: "change_object",
 				tipKey: 'studio.livingroom.refrigerator',
-				texture: "studio.livingroom.refrigerator-texture"
-			},
-			'refrigerator-door': {
-				texture: "studio.livingroom.refrigerator-door-texture"
 			},
 			'apple': {
 				texture: "studio.livingroom.apple-texture"
