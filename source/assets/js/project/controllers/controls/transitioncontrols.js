@@ -120,12 +120,12 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( toPosi
 	if(nextMode === feng.controllers.view3d.ModeController.Mode.CLOSE_UP) {
 
 		feng.soundController.stopMix( this._view3d.sectionId );
-		feng.soundController.fadeLoop( 'closeup', 0, 1, 4, false );console.log('play close up');
+		feng.soundController.fadeLoop( 'closeup', 0, 1, 4, false );
 
 	}else {
 
 		feng.soundController.playMix( this._view3d.sectionId );
-		feng.soundController.fadeLoop( 'closeup', 1, 0, 4, true );console.log('stop close up');
+		feng.soundController.fadeLoop( 'closeup', 1, 0, 4, true );
 	}
 
 	//
