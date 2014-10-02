@@ -161,9 +161,9 @@ feng.controllers.controls.WalkControls.prototype.onPathTProgress = function ( pr
   	var position = prop.fromTarget.clone().lerp( prop.toTarget, t );
 
   	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( this.getPosition(), position );
-		this._cameraRotation.setFromQuaternion( quaternion );
+	this._cameraRotation.setFromQuaternion( quaternion );
 
-		this.setRotation( this._cameraRotation.x, this._cameraRotation.y );
+	this.setRotation( this._cameraRotation.x, this._cameraRotation.y );
   }
 };
 
