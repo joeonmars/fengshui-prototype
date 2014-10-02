@@ -57,9 +57,11 @@ feng.models.Preload = function(){
 			'lotus-texture': 'images/texture/lotus.png'
 		},
 		'studio': {
-			'character': {
-				'ollie-data': 'json/characters/ollie.json',
-				'ollie': 'images/characters/ollie.png'
+			'global': {
+				'character': {
+					'ollie-data': 'json/characters/ollie.json',
+					'ollie': 'images/characters/ollie.png'
+				}
 			},
 			'livingroom-test': {
 				'scene-data': 'json/scene-interior1.json',
@@ -194,13 +196,15 @@ feng.models.Preload = function(){
 			}
 		},
 		'townhouse': {
-			'character': {
-				'joanna-data': 'json/characters/joanna.json',
-				'joanna': 'images/characters/joanna.png',
-				'scott-data': 'json/characters/scott.json',
-				'scott': 'images/characters/scott.png',
-				'nick-data': 'json/characters/nick.json',
-				'nick': 'images/characters/nick.png'
+			'global': {
+				'character': {
+					'joanna-data': 'json/characters/joanna.json',
+					'joanna': 'images/characters/joanna.png',
+					'scott-data': 'json/characters/scott.json',
+					'scott': 'images/characters/scott.png',
+					'nick-data': 'json/characters/nick.json',
+					'nick': 'images/characters/nick.png'
+				}
 			},
 			'livingroom': {
 				'scene-data': 'json/scene-interior1.json',
@@ -379,11 +383,14 @@ feng.models.Preload.prototype.getManifest = function( keys ) {
 		goog.object.forEach(asset, function(obj, id) {
 
 			if(goog.isString(obj)) {
+
 				// if obj is an Url rather than result
 				var loadItem = parseLoadItem( {id: key+'.'+id, src: obj} );
 				manifest.push( loadItem );
+
 			}else {
-				// if obj is an Object contains keys
+				
+				// if obj is an Object contains keys, parse it again
 				parseObject(key+'.'+id, obj);
 			}
 		});

@@ -141,8 +141,8 @@ feng.views.sections.controls.Reminder.prototype.getCharacterAnimations = functio
 		var sectionId = tip.sectionId;
 		var viewId = tip.viewId;
 
-		var img = preload.getAsset( sectionId + '.character.' + character );
-		var data = preload.getAsset( sectionId + '.character.' + character + '-data' );
+		var img = preload.getAsset( sectionId + '.global.character.' + character );
+		var data = preload.getAsset( sectionId + '.global.character.' + character + '-data' );
 		var frames = data['frames'];
 		var size = data['size'];
 

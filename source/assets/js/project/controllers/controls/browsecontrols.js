@@ -94,8 +94,14 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 			}
 		}, this);
 
+		//
+		var nearbyObjects = selectableObjects.concat();
+
+		var gatewayObjects = this._view3d.getGatewayObjects();
+		var selectableObjects = ([]).concat(gatewayObjects).concat(selectableObjects);
+
 		this._objectSelector.setSelectableObjects( selectableObjects );
-		this._progressBar.setNearbyObjects( selectableObjects );
+		this._progressBar.setNearbyObjects( nearbyObjects );
 	}
 };
 

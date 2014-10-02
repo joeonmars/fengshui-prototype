@@ -40,7 +40,7 @@ goog.require('feng.views.view3dobject.entities.Windows');
 /**
  * @constructor
  */
-feng.views.View3D = function(sectionId, viewId, containerElement, hud){
+feng.views.View3D = function(sectionId, viewId, containerElement, hud, episode){
 
   goog.base(this);
 
@@ -55,6 +55,8 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud){
   goog.dom.appendChild( this.containerElement, this.domElement );
 
   this.hud = hud;
+
+  this.episode = episode;
 
   this.cameraController = null;
   this.renderController = null;
@@ -122,9 +124,17 @@ feng.views.View3D.prototype.getMatrixId = function(){
 };
 
 
-feng.views.View3D.prototype.getEntry = function(){
+feng.views.View3D.prototype.getGatewayObjects = function(){
 
 	var gatewayObjects = this.getObjectsByClass( feng.views.view3dobject.GatewayObject );
+
+	return gatewayObjects;
+};
+
+
+feng.views.View3D.prototype.getEntry = function(){
+
+	var gatewayObjects = this.getGatewayObjects();
 
 	var entry = goog.array.find( gatewayObjects, function(gatewayObject) {
 		return (gatewayObject.isEntry === true);

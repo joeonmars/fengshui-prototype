@@ -20,8 +20,6 @@ feng.views.sections.Home = function(){
 	var domElement = goog.dom.getElement('home');
   goog.base(this, domElement);
 
-  this.assetKeys = [this.id, 'accessories', 'global'];
-
   var preloadScreenEl = goog.dom.getElement('main-preloader');
   this._preloadScreen = new feng.views.sections.home.PreloadScreen( preloadScreenEl );
 
@@ -60,6 +58,14 @@ feng.views.sections.Home.prototype.deactivate = function(){
 	this._preloadScreen.deactivate();
 	this._introScreen.deactivate();
 	this._episodeScreen.deactivate();
+};
+
+
+feng.views.sections.Home.prototype.load = function(){
+
+	this._assetKeys = [this.id, 'accessories', 'global'];
+	
+	goog.base(this, 'load');
 };
 
 

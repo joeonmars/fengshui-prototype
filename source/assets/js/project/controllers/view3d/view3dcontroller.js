@@ -46,6 +46,13 @@ feng.controllers.view3d.View3DController.prototype.registerView3D = function( vi
 };
 
 
+feng.controllers.view3d.View3DController.prototype.isRegisteredViewID = function( sectionId, viewId ){
+
+	var isRegistered = goog.isDefAndNotNull( this._view3ds[ sectionId + '.' + viewId ] );
+	return isRegistered;
+};
+
+
 feng.controllers.view3d.View3DController.prototype.getView3D = function( sectionId, viewId ){
 
 	return this._view3ds[sectionId + '.' + viewId];
@@ -78,11 +85,8 @@ feng.controllers.view3d.View3DController.prototype.onChangeView3D = function(e){
 
 	this._view3dToFadeIn = this.getView3D( e.sectionId, e.viewId );
 
-	var gateway = this._view3dToFadeIn.interactiveObjects[ e.gatewayId ];
-	var origin = gateway.origin;
-
-	this._view3dToFadeIn.origin.setX( origin.x );
-	this._view3dToFadeIn.origin.setZ( origin.z );
+	//var gateway = this._view3dToFadeIn.interactiveObjects[ e.gatewayId ];
+	//var origin = gateway.origin;
 
 	console.log('Change View3D from: ' + e.target.id + ' to ' + this._view3dToFadeIn.id);
 };

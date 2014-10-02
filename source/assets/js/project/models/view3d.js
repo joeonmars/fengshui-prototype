@@ -631,8 +631,8 @@ feng.models.View3D.Data = {
 			},
 			'boysroom-door': {
 				class: "gateway",
-				viewid: "bathroom",
-				gatewayid: "door",
+				viewid: "homeoffice",
+				gatewayid: "homeoffice-door",
 				castShadow: true,
 				isEntry: true,
 				origin: {
@@ -731,8 +731,8 @@ feng.models.View3D.Data = {
 			},
 			'homeoffice-door': {
 				class: "gateway",
-				viewid: "homeoffice",
-				gatewayid: "door",
+				viewid: "boysroom",
+				gatewayid: "boysroom-door",
 				castShadow: true,
 				isEntry: true,
 				origin: {

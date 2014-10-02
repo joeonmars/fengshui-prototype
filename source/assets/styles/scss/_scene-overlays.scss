@@ -60,3 +60,21 @@
 		margin-top: -19.5em;
 	}
 }
+
+>.loader-overlay{
+	@include absoluteTopLeft;
+	background-color: rgba(0, 0, 0, .35);
+
+	>.loader{
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		margin-left: -100px;
+		margin-top: -50px;
+		width: 200px;
+		height: 100px;
+		text-align: center;
+		font-size: 20px;
+		color: #fff;
+	}
+}

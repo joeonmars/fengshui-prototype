@@ -25,11 +25,15 @@ feng.views.sections.Episode = function(template, templateData){
 
   this._view3dController = new feng.controllers.view3d.View3DController;
 
+  this._view3dContainerEl = goog.dom.getElementByClass('sceneContainer', this.domElement);
+
   var hudEl = goog.dom.getElementByClass('hud', this.domElement);
   var tips = templateData.tips;
-  this._hud = new feng.views.View3DHud( hudEl, this._view3dController, tips );
+  this._hud = new feng.views.View3DHud( hudEl, this._view3dController, tips, this );
 
   this._viewIds = [];
+  this._viewId = null;
+
   this._view3ds = [];
   this._view3d = null;
 };
@@ -80,6 +84,19 @@ feng.views.sections.Episode.prototype.deactivate = function(){
 };
 
 
+feng.views.sections.Episode.prototype.load = function( viewId ){
+
+	this._viewId = viewId || this._viewIds[0];
+
+	var globalAssetsKey = this.id + '.global';
+	var view3dAssetsKey = this.id + '.' + this._viewId;
+
+	this._assetKeys = [globalAssetsKey, view3dAssetsKey];
+	
+	goog.base(this, 'load');
+};
+
+
 feng.views.sections.Episode.prototype.animateIn = function(){
 
 	var shouldDo = goog.base(this, 'animateIn');
@@ -99,6 +116,9 @@ feng.views.sections.Episode.prototype.animateOut = function(){
 	if(!shouldDo) return false;
 
 	feng.soundController.stopMix( this.id );
+
+	this._viewId = null;
+	this._view3d = null;
 };
 
 
@@ -110,24 +130,27 @@ feng.views.sections.Episode.prototype.onLoadComplete = function(e){
 
 		// create hud
 		this._hud.init();
+	}
 
-		// create view 3ds
-		var view3dContainerEl = goog.dom.getElementByClass('sceneContainer', this.domElement);
+	// register loaded view3d
+	var sectionId = this.id;
+	var viewId = this._viewId;
 
-		var sectionId = this.id;
+	var alreadyRegistered = this._view3dController.isRegisteredViewID( sectionId, this._viewId );
 
-		this._view3ds = goog.array.map(this._viewIds, function(viewId) {
+	if(!alreadyRegistered) {
 
-			var view3d = new feng.views.View3D( sectionId, viewId, view3dContainerEl, this._hud );
-			this._view3dController.registerView3D( view3d );
+		var view3d = new feng.views.View3D( sectionId, viewId, this._view3dContainerEl, this._hud, this );
+		this._view3dController.registerView3D( view3d );
+		
+		view3d.init();
 
-			view3d.init();
+		this._view3ds.push( view3d );
+	}
 
-			return view3d;
-		}, this);
+	if(!this._view3d) {
 
-		this._view3d = this._view3ds[0];
-
+		this._view3d = this._view3dController.getView3D( sectionId, viewId );
 		this.activateView();
 	}
 };
@@ -142,7 +165,6 @@ feng.views.sections.Episode.prototype.onShowView3D = function(e){
 	var rotation = gatewayObject.origin.rotation;
   
   // set initial mode
-
 	view3d.modeController.setMode({
 		mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
 		fromPosition: position,

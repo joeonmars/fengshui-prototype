@@ -21,20 +21,7 @@ feng.views.sections.Studio = function(){
 
   goog.base(this, template, templateData);
 
-  this._viewIds = ['livingroom' /*'interior3-test', 'bathroom', 'interior2'*/];
+  this._viewIds = ['livingroom', 'livingroom-test', 'bathroom', 'interior2'];
+  this._viewId = this._viewIds[0];
 };
 goog.inherits(feng.views.sections.Studio, feng.views.sections.Episode);
-
-
-feng.views.sections.Studio.prototype.init = function(){
-
-	goog.base(this, 'init');
-
-};
-
-
-feng.views.sections.Studio.prototype.activate = function(){
-
-	goog.base(this, 'activate');
-
-};

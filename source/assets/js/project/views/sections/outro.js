@@ -13,8 +13,7 @@ feng.views.sections.Outro = function(){
 
 	var domElement = goog.dom.getElement('outro');
   goog.base(this, domElement);
-
-  this.assetKeys = [this.id];
+  
 };
 goog.inherits(feng.views.sections.Outro, feng.views.sections.Section);
 

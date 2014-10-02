@@ -20,6 +20,11 @@ feng.views.Preloader = function(domElement, duration){
   this._loader = new createjs.LoadQueue(true, feng.Config['assetsPath']);
   createjs.LoadQueue.loadTimeout = 100000;
 
+  this._onLoadStart = goog.bind(this.onLoadStart, this);
+  this._onFileLoad = goog.bind(this.onFileLoad, this);
+  this._onComplete = goog.bind(this.onComplete, this);
+  this._onError = goog.bind(this.onError, this);
+
   var fps = 30;
   this._ticker = new goog.Timer(1000/fps);
   goog.events.listen(this._ticker, goog.Timer.TICK, this.onTick, false, this);
@@ -34,12 +39,13 @@ goog.inherits(feng.views.Preloader, goog.events.EventTarget);
 
 feng.views.Preloader.prototype.load = function( keys ){
 
-	if(this.isCompleted) return false;
+	this.isCompleted = false;
 
-	this._loader.on("loadstart", goog.bind(this.onLoadStart, this));
-	this._loader.on("fileload", goog.bind(this.onFileLoad, this));
-	this._loader.on("complete", goog.bind(this.onComplete, this));
-	this._loader.on("error", goog.bind(this.onError, this));
+	this._loader.removeAllEventListeners();
+
+	this._loader.addEventListener("fileload", this._onFileLoad);
+	this._loader.addEventListener("complete", this._onComplete);
+	this._loader.addEventListener("error", this._onError);
 	this._loader.setMaxConnections(5);
 
 	var manifest = [];
@@ -56,8 +62,12 @@ feng.views.Preloader.prototype.load = function( keys ){
 	}
 
 	if(manifest.length > 0) {
+
 		this._loader.loadManifest( manifest );
+		this.onLoadStart();
+
 	}else {
+		
 		this.onComplete();
 		this._loader.progress = 1;
 	}

@@ -21,20 +21,7 @@ feng.views.sections.Townhouse = function(){
 
   goog.base(this, template, templateData);
 
-this._viewIds = ['boysroom'/*'homeoffice'/*, 'livingroom', */];
+	this._viewIds = ['boysroom', 'homeoffice', 'livingroom'];
+	this._viewId = this._viewIds[0];
 };
 goog.inherits(feng.views.sections.Townhouse, feng.views.sections.Episode);
-
-
-feng.views.sections.Townhouse.prototype.init = function(){
-
-	goog.base(this, 'init');
-
-};
-
-
-feng.views.sections.Townhouse.prototype.activate = function(){
-
-	goog.base(this, 'activate');
-
-};

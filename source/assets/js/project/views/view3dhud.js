@@ -17,12 +17,13 @@ goog.require('feng.views.sections.overlays.TutorialOverlay');
 goog.require('feng.views.sections.overlays.OpeningOverlay');
 goog.require('feng.views.sections.overlays.EndingOverlay');
 goog.require('feng.views.sections.overlays.FinaleOverlay');
+goog.require('feng.views.sections.overlays.LoaderOverlay');
 
 
 /**
  * @constructor
  */
-feng.views.View3DHud = function( hudEl, view3dController, tips ){
+feng.views.View3DHud = function( hudEl, view3dController, tips, episode ){
 
   goog.base(this);
 
@@ -30,6 +31,8 @@ feng.views.View3DHud = function( hudEl, view3dController, tips ){
 
   this._view3d = null;
   this._view3dController = view3dController;
+
+  this._episode = episode;
 
   // create a captions collection
   this._captions = {};
@@ -48,6 +51,9 @@ feng.views.View3DHud = function( hudEl, view3dController, tips ){
 
   var finaleOverlayEl = goog.dom.getElementByClass('finale-overlay', this._overlaysEl);
   this.finaleOverlay = new feng.views.sections.overlays.FinaleOverlay( finaleOverlayEl );
+
+  var loaderOverlayEl = goog.dom.getElementByClass('loader-overlay', this._overlaysEl);
+  this.loaderOverlay = new feng.views.sections.overlays.LoaderOverlay( loaderOverlayEl, this._episode );
 
   // create controls
   this._controlsEl = goog.dom.getElementByClass('controls', this.domElement);
@@ -140,6 +146,7 @@ feng.views.View3DHud.prototype.activate = function() {
   this.reminder.activate();
   this.progressBar.activate();
   this.tutorialOverlay.activate();
+  this.loaderOverlay.activate();
 };
 
 
@@ -162,6 +169,7 @@ feng.views.View3DHud.prototype.deactivate = function() {
   this.dropButton.deactivate();
   this.tooltips.deactivate();
   this.tutorialOverlay.deactivate();
+  this.loaderOverlay.deactivate();
 };
 
 

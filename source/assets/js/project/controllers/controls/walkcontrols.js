@@ -63,7 +63,6 @@ feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition
 
 	if(gateway) {
 		this._gateway = gateway;
-		this._gateway.open();
 	}
 
 	//
@@ -171,20 +170,19 @@ feng.controllers.controls.WalkControls.prototype.onPathTProgress = function ( pr
 feng.controllers.controls.WalkControls.prototype.onPathComplete = function ( gateway, stairs, nextMode ) {
 
 	if(gateway) {
-		// if event has gateway object, fade out view3d
-		this._view3d.dispatchEvent({
-			type: feng.events.EventType.CHANGE,
-			sectionId: this._view3d.sectionId,
-			viewId: gateway.viewId,
-			gatewayId: gateway.gatewayId
-		});
+
+		gateway.open();
+		gateway.listenOnce( feng.events.EventType.PAUSE, this.onGatewayPause, false, this );
+		gateway.listenOnce( feng.events.EventType.COMPLETE, this.onGatewayOpenComplete, false, this );
 	}
 
+	/*
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		mode: nextMode,
 		stairs: stairs
 	});
+	*/
 };
 
 
@@ -198,5 +196,39 @@ feng.controllers.controls.WalkControls.prototype.onMouseDown = function ( e ) {
 		type: feng.events.EventType.CHANGE,
 		mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
 		eventToTrigger: e
+	});
+};
+
+
+feng.controllers.controls.WalkControls.prototype.onGatewayPause = function ( e ) {
+
+	var gateway = e.target;
+	var viewId = gateway.viewId;
+
+	// start to load the go-to view3d of this episode
+	this._view3d.episode.load( viewId );
+
+	// listen to episode load complete event to resume after load
+	this._eventHandler.listenOnce( this._view3d.episode, feng.events.EventType.COMPLETE, function() {
+
+		// resume gateway
+		gateway.resume();
+		
+		// disable mouse events after pause
+		this._eventHandler.removeAll();
+
+	}, false, this);
+};
+
+
+feng.controllers.controls.WalkControls.prototype.onGatewayOpenComplete = function ( e ) {
+
+	var gateway = e.target;
+
+	this._view3d.dispatchEvent({
+		type: feng.events.EventType.CHANGE,
+		sectionId: this._view3d.sectionId,
+		viewId: gateway.viewId,
+		gatewayId: gateway.gatewayId
 	});
 };

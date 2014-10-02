@@ -31,8 +31,6 @@ feng.views.sections.Section = function(domElement){
   });
 
   // section loader
-  this.assetKeys = [this.id];
-
   this._preloaderDom = goog.dom.query('.preloader', this.domElement)[0];
   this._preloader = new feng.views.Preloader( this._preloaderDom, 2000 );
   this._preloader.setParentEventTarget(this);
@@ -42,6 +40,10 @@ feng.views.sections.Section = function(domElement){
 
   // activatable events
   this._eventHandler = new goog.events.EventHandler(this);
+
+  // asset keys
+  this._assetKeys = [];
+  this._loadedAssetKeys = [];
 };
 goog.inherits(feng.views.sections.Section, goog.events.EventTarget);
 
@@ -89,6 +91,27 @@ feng.views.sections.Section.prototype.activate = function(){
 feng.views.sections.Section.prototype.deactivate = function(){
 
 	this._eventHandler.removeAll();
+};
+
+
+feng.views.sections.Section.prototype.addPreloadListeners = function(){
+
+	this.listen(feng.events.EventType.START, this.onLoadStart, false, this);
+	this.listen(feng.events.EventType.PROGRESS, this.onLoadProgress, false, this);
+	this.listen(feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this);
+	this.listen(feng.events.EventType.COMPLETE, this.onLoadAnimationComplete, false, this);
+};
+
+
+feng.views.sections.Section.prototype.load = function(){
+
+	this.addPreloadListeners();
+
+	this._assetKeys = goog.array.filter( this._assetKeys, function(key) {
+		return !goog.array.contains(this._loadedAssetKeys, key);
+	}, this);
+
+	this._preloader.load( this._assetKeys );
 };
 
 
@@ -145,18 +168,7 @@ feng.views.sections.Section.prototype.animateOut = function(){
 
 feng.views.sections.Section.prototype.doNavigate = function(){
 
-	if(!this._preloader.isCompleted) {
-
-		this.listen(feng.events.EventType.START, this.onLoadStart, false, this);
-		this.listen(feng.events.EventType.PROGRESS, this.onLoadProgress, false, this);
-		this.listen(feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this);
-		this.listen(feng.events.EventType.COMPLETE, this.onLoadAnimationComplete, false, this);
-
-		this._preloader.load( this.assetKeys );
-
-	}else {
-
-	}
+	this.load();
 };
 
 
@@ -192,16 +204,19 @@ feng.views.sections.Section.prototype.onLoadProgress = function(e){
 
 feng.views.sections.Section.prototype.onLoadComplete = function(e){
 	
-	//console.log("section load complete")
+	//console.log("section load complete");
+
+	goog.array.forEach( this._assetKeys, function(key) {
+		goog.array.insert(this._loadedAssetKeys, key);
+	}, this);
+
+	goog.array.clear( this._assetKeys );
 };
 
 
 feng.views.sections.Section.prototype.onLoadAnimationComplete = function(e){
 	
-	this.unlisten(feng.events.EventType.START, this.onLoadStart, false, this);
-	this.unlisten(feng.events.EventType.PROGRESS, this.onLoadProgress, false, this);
-	this.unlisten(feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this);
-	this.unlisten(feng.events.EventType.COMPLETE, this.onLoadAnimationComplete, false, this);
+	//console.log("section load animation complete");
 };
 
 
