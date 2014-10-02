@@ -3,7 +3,6 @@ goog.provide('feng.controllers.controls.CloseUpControls');
 goog.require('goog.events');
 goog.require('goog.math');
 goog.require('feng.controllers.controls.Controls');
-goog.require('feng.views.sections.controls.Manipulator');
 goog.require('feng.controllers.controls.InteractionResolver');
 
 
@@ -15,9 +14,6 @@ feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement,
   goog.base(this, camera, view3d, domElement);
 
   this._activeObject = null;
-
-  var manipulatorDom = goog.dom.getElementByClass('manipulator', uiElement);
-  this._manipulator = new feng.views.sections.controls.Manipulator( manipulatorDom );
 
   this._interactionResolver = feng.controllers.controls.InteractionResolver.getInstance();
 
@@ -129,8 +125,6 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 
 	if(shouldEnable) {
 
-		this._manipulator.show();
-
 		this.distanceToObject = this.getPosition().distanceTo( this._activeObject.object3d.position );
 
 		this._activeObject.onCameraIn();
@@ -143,8 +137,6 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 
 	}else  {
 		
-		this._manipulator.hide();
-
 		// test...
 		var type = this._activeObject.tipInteraction || 'change_object';
 		var caption = this._view3d.hud.getCaption( this._activeObject, this, type );
@@ -159,22 +151,6 @@ feng.controllers.controls.CloseUpControls.prototype.activate = function () {
 	goog.base(this, 'activate');
 
 	this._eventHandler.listen(this, feng.events.EventType.CLOSE, this.close, false, this);
-
-	this._eventHandler.listen(this._manipulator, feng.events.EventType.CLOSE, this.close, false, this);
-	this._eventHandler.listen(this._manipulator, feng.events.EventType.CHANGE, this.onManipulate, false, this);
-
-	this._eventHandler.listen(this._interactionResolver, feng.events.EventType.START, this.onInteractionStart, false, this);
-	this._eventHandler.listen(this._interactionResolver, feng.events.EventType.END, this.onInteractionEnd, false, this);
-
-	this._manipulator.activate( this._activeObject.interactions );
-};
-
-
-feng.controllers.controls.CloseUpControls.prototype.deactivate = function () {
-
-	goog.base(this, 'deactivate');
-
-	this._manipulator.deactivate();
 };
 
 
@@ -206,55 +182,4 @@ feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
 		toFov: toFov,
 		eventToTrigger: e ? e.eventToTrigger : null
 	});
-};
-
-
-feng.controllers.controls.CloseUpControls.prototype.update = function() {
-
-	goog.base(this, 'update');
-
-	var viewSize = this._view3d.getViewSize();
-	var position3d = feng.utils.ThreeUtils.getWorldPosition( this._activeObject.object3d, this._tempPosition );
-	var position2d = feng.utils.ThreeUtils.get2DCoordinates( position3d, this._camera, viewSize );
-	this._manipulator.update( position2d.x, position2d.y );
-};
-
-
-feng.controllers.controls.CloseUpControls.prototype.onManipulate = function ( e ) {
-
-	var interaction = feng.views.view3dobject.InteractiveObject.Interaction;
-	var shouldGoDesignMode = false;
-
-	if(e.interaction === interaction.MOVE || e.interaction === interaction.ROTATE) shouldGoDesignMode = true;
-
-	if(shouldGoDesignMode) {
-
-		this.dispatchEvent({
-			type: feng.events.EventType.CHANGE,
-			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-			nextMode: feng.controllers.view3d.ModeController.Mode.DESIGN,
-			object: this._activeObject
-		});
-
-	}else {
-
-		this._interactionResolver.resolve( this._activeObject, e.interaction );
-	}
-	
-};
-
-
-feng.controllers.controls.CloseUpControls.prototype.onInteractionStart = function(e){
-
-	this._manipulator.hide();
-};
-
-
-feng.controllers.controls.CloseUpControls.prototype.onInteractionEnd = function(e){
-
-	this._manipulator.show();
-
-	if(e.interaction === 'close') {
-		this.close();
-	}
 };

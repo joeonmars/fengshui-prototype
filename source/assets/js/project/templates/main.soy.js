@@ -17,12 +17,12 @@ goog.require('feng.templates.debug');
  * @notypecheck
  */
 feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
-  var output = '<div class="section episode" id="' + opt_data.id + '"><div class="hud"><div class="overlays"><div class="tutorial-overlay"></div><div class="opening-overlay">' + feng.templates.common.Popup({classname: 'opening', content: '<h1></h1><div class="line"></div><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'yes', text: 'got it'}) + '<div class="character"></div>'}) + '</div><div class="ending-overlay">' + feng.templates.common.Popup({classname: 'ending', content: '<h1></h1><div class="line"></div><p></p>' + feng.templates.common.PrimaryButton({classname: 'continue', icon: 'yes', text: 'continue investigating'}) + feng.templates.common.PrimaryButton({classname: 'visit', icon: 'yes', text: 'visit another residence'}) + '<div class="character"></div>'}) + '</div><div class="finale-overlay">' + feng.templates.common.Popup({classname: 'finale', content: '<h1></h1><div class="line"></div><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'yes', text: 'done'})}) + '</div></div><div class="controls">' + feng.templates.controls.Compass(null) + feng.templates.controls.Book(null) + feng.templates.controls.Reminder(opt_data) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.Manipulator(null) + feng.templates.controls.DropButton(null) + feng.templates.controls.ProgressBar(opt_data) + '</div><div class="tooltips">';
-  var tipList503 = opt_data.tips;
-  var tipListLen503 = tipList503.length;
-  for (var tipIndex503 = 0; tipIndex503 < tipListLen503; tipIndex503++) {
-    var tipData503 = tipList503[tipIndex503];
-    output += feng.templates.controls.Tooltip({tip: tipData503});
+  var output = '<div class="section episode" id="' + opt_data.id + '"><div class="hud"><div class="overlays"><div class="tutorial-overlay"></div><div class="opening-overlay">' + feng.templates.common.Popup({classname: 'opening', content: '<h1></h1><div class="line"></div><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'yes', text: 'got it'}) + '<div class="character"></div>'}) + '</div><div class="ending-overlay">' + feng.templates.common.Popup({classname: 'ending', content: '<h1></h1><div class="line"></div><p></p>' + feng.templates.common.PrimaryButton({classname: 'continue', icon: 'yes', text: 'continue investigating'}) + feng.templates.common.PrimaryButton({classname: 'visit', icon: 'yes', text: 'visit another residence'}) + '<div class="character"></div>'}) + '</div><div class="finale-overlay">' + feng.templates.common.Popup({classname: 'finale', content: '<h1></h1><div class="line"></div><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'yes', text: 'done'})}) + '</div></div><div class="controls">' + feng.templates.controls.Compass(null) + feng.templates.controls.Book(null) + feng.templates.controls.Reminder(opt_data) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.DropButton(null) + feng.templates.controls.ProgressBar(opt_data) + '</div><div class="tooltips">';
+  var tipList500 = opt_data.tips;
+  var tipListLen500 = tipList500.length;
+  for (var tipIndex500 = 0; tipIndex500 < tipListLen500; tipIndex500++) {
+    var tipData500 = tipList500[tipIndex500];
+    output += feng.templates.controls.Tooltip({tip: tipData500});
   }
   output += '</div><div class="captions"></div></div><div class="sceneContainer"></div></div>';
   return output;
