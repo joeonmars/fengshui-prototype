@@ -236,6 +236,10 @@ feng.views.View3D.prototype.activate = function(){
  	this._eventHandler.listen( this.hud.tutorialOverlay, feng.events.EventType.ANIMATE_IN, this.pause, false, this );
  	this._eventHandler.listen( this.hud.tutorialOverlay, feng.events.EventType.ANIMATE_OUT, this.resume, false, this );
 
+ 	var book = feng.views.book.Book.getInstance();
+	this._eventHandler.listen( book, feng.events.EventType.OPEN, this.pause, false, this );
+	this._eventHandler.listen( book, feng.events.EventType.CLOSE, this.resume, false, this );
+
  	goog.object.forEach(this.interactiveObjects, function(interactiveObject) {
  		interactiveObject.activate();
  	});
@@ -268,10 +272,6 @@ feng.views.View3D.prototype.show = function(){
 
  	this.onResize();
 
- 	var book = feng.views.book.Book.getInstance();
- 	book.listen(feng.events.EventType.OPEN, this.deactivate, false, this);
- 	book.listen(feng.events.EventType.CLOSE, this.activate, false, this);
-
 	this.dispatchEvent({
 		type: feng.events.EventType.SHOW
 	});
@@ -287,10 +287,6 @@ feng.views.View3D.prototype.hide = function(){
 		'opacity': 0,
 		'display': 'none'
 	});
-
- 	var book = feng.views.book.Book.getInstance();
- 	book.unlisten(feng.events.EventType.OPEN, this.deactivate, false, this);
- 	book.unlisten(feng.events.EventType.CLOSE, this.activate, false, this);
 
 	this.dispatchEvent({
 		type: feng.events.EventType.HIDE

@@ -3,106 +3,83 @@
 	width: 100%;
 	height: 100%;
 	z-index: 100;
+	@include user-select(none);
+	display: table;
 
-	>.shade{
-		@include absoluteTopLeft;
-		width: 100%;
-		height: 100%;
-		background-color: #000;
+	>.close-button{
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		z-index: 2;
 	}
 
-	>.main{
-		@include absoluteTopLeft;
+	>.scroller-wrapper{
+		display: table-cell;
 		width: 100%;
 		height: 100%;
-		padding: 10px 0;
-		@include box-sizing(border-box);
-		background-color: $darkblue;
+		vertical-align: middle;
 
-		>nav{
-			position: absolute;
-			top: 20px;
-			width: 100%;
-			text-align: center;
-			z-index: 1;
-
-			>button{
-				display: inline-block;
-				vertical-align: top;
-				padding: 8px 20px;
-				font-size: 16px;
-				letter-spacing: 2px;
-				text-align: center;
-				color: $darkblue;
-				font-family: $font_marineup;
-
-				&.active{
-					@include border-radius(40px);
-					color: $cream;
-					background-color: $darkblue;
-				}
-
-				&.tab{
-					min-width: 100px;
-				}
-			}
-		}
-
-		>.close-button{
-			position: absolute;
-			top: 20px;
-			right: 20px;
-			z-index: 2;
-		}
-
-		>.pages{
+		>.scroller{
 			position: relative;
 			width: 100%;
-			height: 100%;
-			z-index: 0;
+			overflow: hidden;
 
-			>section{
-				@include absoluteTopLeft;
-				width: 100%;
-				height: 100%;
-				overflow: hidden;
+			>.inner{
 
-				>.shade{
-					@include absoluteTopLeft;
-					width: 100%;
-					height: 100%;
-					background: rgba(0, 0, 0, .25);
-					z-index: 1;
-				}
+				>ul{
+					white-space: nowrap;
 
-				>.wrapper{
-					position: relative;
-					width: 100%;
-					height: 100%;
-					padding: 50px 0 25px 0;
-					@include box-sizing(border-box);
-					background-color: $cream;
-				}
+					>li{
+						position: relative;
+						display: inline-block;
+						width: 25%;
+						height: 0;
+						padding-bottom: 35%;
+						white-space: normal;
+						margin: 0 10px;
 
-				&.glossary{
-					>.wrapper{
-						@import "book/glossary";
-					}
-				}
+						>figure{
+							position: absolute;
+							width: 100%;
+							height: 100%;
+							border: 1px solid #fff;
+							@include box-sizing(border-box);
+							color: #fff;
+							background-size: cover;
+							background-position: center center;
 
-				&.tips{
-					>.wrapper{
-						@import "book/tips";
-					}
-				}
+							>button{
 
-				&.about{
-					>.wrapper{
-						@import "book/about";
+							}
+						}
+
+						>.details{
+							position: absolute;
+							width: 150%;
+							height: 100%;
+							background-color: rgba(255, 255, 255, .95);
+							color: #000;
+							visibility: hidden;
+						}
 					}
 				}
 			}
+		}
+	}
 
+	>.scrubber{
+		position: absolute;
+		left: 50%;
+		bottom: 10%;
+		margin-left: -200px;
+		width: 400px;
+		height: 10px;
+		background: #555;
+	 
+		>.handle{
+			position: relative;
+			height: 100%;
+			background: #fff;
 		}
 	}
 }

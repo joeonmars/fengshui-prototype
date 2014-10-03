@@ -161,7 +161,7 @@ feng.views.View3DHud.prototype.deactivate = function() {
 
   this._view3dController.removeAllListeners();
   feng.tutorial.removeAllListeners();
-  this.loaderOverlay.removeAllListeners();
+  this._episode.removeAllListeners();
 
   this.compass.deactivate();
   this.book.deactivate();

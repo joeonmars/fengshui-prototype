@@ -52,13 +52,8 @@ goog.addDependency('../../../../project/utils/multilinearinterpolator.js', ['fen
 goog.addDependency('../../../../project/utils/random.js', ['feng.utils.Randomizer'], ['goog.math', 'goog.testing.PseudoRandom']);
 goog.addDependency('../../../../project/utils/threeutils.js', ['feng.utils.ThreeUtils'], ['goog.math']);
 goog.addDependency('../../../../project/utils/utils.js', ['feng.utils.Utils'], ['goog.Uri', 'goog.style']);
-goog.addDependency('../../../../project/views/book/book.js', ['feng.views.book.Book'], ['feng.events', 'feng.models.achievements.Achievements', 'feng.templates.book', 'feng.views.book.pages.About', 'feng.views.book.pages.Glossary', 'feng.views.book.pages.Help', 'feng.views.book.pages.Tips', 'goog.dom', 'goog.events.EventHandler', 'goog.object']);
+goog.addDependency('../../../../project/views/book/book.js', ['feng.views.book.Book'], ['feng.events', 'feng.models.achievements.Achievements', 'feng.templates.book', 'goog.dom', 'goog.events.EventHandler', 'goog.object']);
 goog.addDependency('../../../../project/views/book/hanzi.js', ['feng.views.book.Hanzi'], ['feng.fx.EnergyFlow', 'feng.models.Preload']);
-goog.addDependency('../../../../project/views/book/pages/about.js', ['feng.views.book.pages.About'], ['feng.views.book.pages.Page', 'goog.events.MouseWheelHandler', 'goog.fx.Dragger', 'goog.math.Rect']);
-goog.addDependency('../../../../project/views/book/pages/glossary.js', ['feng.views.book.pages.Glossary'], ['feng.views.book.Hanzi', 'feng.views.book.pages.Page', 'goog.Timer', 'goog.events.MouseWheelHandler', 'goog.fx.Dragger', 'goog.math.Rect']);
-goog.addDependency('../../../../project/views/book/pages/help.js', ['feng.views.book.pages.Help'], ['feng.views.book.pages.Page']);
-goog.addDependency('../../../../project/views/book/pages/page.js', ['feng.views.book.pages.Page'], ['goog.dom', 'goog.events.EventHandler']);
-goog.addDependency('../../../../project/views/book/pages/tips.js', ['feng.views.book.pages.Tips'], ['feng.events', 'feng.models.achievements.Achievements', 'feng.views.book.pages.Page', 'goog.events.MouseWheelHandler', 'goog.fx.Dragger', 'goog.math.Box', 'goog.math.Rect', 'goog.math.Size']);
 goog.addDependency('../../../../project/views/debug/achievements.js', ['feng.views.debug.Achievements'], ['feng.events', 'feng.models.achievements.Achievements', 'feng.templates.debug', 'feng.views.debug.DebugView']);
 goog.addDependency('../../../../project/views/debug/camera.js', ['feng.views.debug.Camera'], ['feng.templates.debug', 'feng.views.debug.DebugView']);
 goog.addDependency('../../../../project/views/debug/debugger.js', ['feng.views.debug.Debugger'], ['feng.models.achievements.Achievements', 'feng.views.debug.Achievements', 'feng.views.debug.Camera', 'feng.views.debug.Manipulate', 'feng.views.debug.PathTrack', 'feng.views.debug.Pathfinding', 'goog.dom', 'goog.dom.query', 'goog.events', 'goog.events.EventHandler', 'goog.events.EventTarget']);
