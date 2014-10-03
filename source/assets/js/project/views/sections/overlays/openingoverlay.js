@@ -66,8 +66,6 @@ feng.views.sections.overlays.OpeningOverlay.prototype.updateContent = function( 
 
 feng.views.sections.overlays.OpeningOverlay.prototype.animateIn = function(){
 
-	goog.base(this, 'animateIn');
-
 	var shouldAnimateIn;
 
 	if( !this._shownOnce[this._sectionId] ) {

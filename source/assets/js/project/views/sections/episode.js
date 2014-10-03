@@ -164,7 +164,7 @@ feng.views.sections.Episode.prototype.onShowView3D = function(e){
 	var position = gatewayObject.origin.position;
 	var rotation = gatewayObject.origin.rotation;
   
-  // set initial mode
+  	// set initial mode
 	view3d.modeController.setMode({
 		mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
 		fromPosition: position,

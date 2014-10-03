@@ -172,8 +172,10 @@ feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = functio
 	var mouseX = this._mouseMovePosition.x;
 	var mouseY = this._mouseMovePosition.y;
 
-	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( mouseX, mouseY, this._hitTestMeshes, this._camera, this._viewSize );
+	var camera = this._cameraController.activeCamera;
 
+	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( mouseX, mouseY, this._hitTestMeshes, camera, this._viewSize );
+	
 	goog.dom.classes.enable(this._renderEl, 'help', (intersects.length > 0));
 };
 
@@ -182,7 +184,9 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e
 
 	this._selectedObject = null;
 
-	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, this._hitTestMeshes, this._camera, this._viewSize );
+	var camera = this._cameraController.activeCamera;
+
+	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, this._hitTestMeshes, camera, this._viewSize );
 
 	if(intersects.length === 0) {
 		return false;

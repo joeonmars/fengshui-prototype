@@ -16,7 +16,6 @@ feng.views.sections.controls.Controls = function(domElement){
 
   this._view3d = null;
   this._cameraController = null;
-  this._camera = null;
   this._viewSize = null;
   this._renderEl = null;
 
@@ -40,7 +39,6 @@ feng.views.sections.controls.Controls.prototype.setView3D = function( view3d ){
 
 	this._view3d = view3d;
   this._cameraController = view3d.cameraController;
-  this._camera = view3d.cameraController.activeCamera;
   this._viewSize = view3d.viewSize;
   this._renderEl = view3d.domElement;
 
