@@ -53,7 +53,7 @@ feng.views.View3DHud = function( hudEl, view3dController, tips, episode ){
   this.finaleOverlay = new feng.views.sections.overlays.FinaleOverlay( finaleOverlayEl );
 
   var loaderOverlayEl = goog.dom.getElementByClass('loader-overlay', this._overlaysEl);
-  this.loaderOverlay = new feng.views.sections.overlays.LoaderOverlay( loaderOverlayEl, this._episode );
+  this.loaderOverlay = new feng.views.sections.overlays.LoaderOverlay( loaderOverlayEl );
 
   // create controls
   this._controlsEl = goog.dom.getElementByClass('controls', this.domElement);
@@ -141,26 +141,27 @@ feng.views.View3DHud.prototype.activate = function() {
   feng.tutorial.listen(feng.events.EventType.ANIMATE_IN, this.tutorialOverlay.animateIn, false, this.tutorialOverlay);
   feng.tutorial.listen(feng.events.EventType.ANIMATE_OUT, this.tutorialOverlay.animateOut, false, this.tutorialOverlay);
 
+  this._episode.listen(feng.events.EventType.START, this.loaderOverlay.onLoadStart, false, this.loaderOverlay);
+  this._episode.listen(feng.events.EventType.PROGRESS, this.loaderOverlay.onLoadProgress, false, this.loaderOverlay);
+  this._episode.listen(feng.events.EventType.COMPLETE, this.loaderOverlay.onLoadComplete, false, this.loaderOverlay);
+
   this.compass.activate();
   this.book.activate();
   this.reminder.activate();
   this.progressBar.activate();
   this.tutorialOverlay.activate();
-  this.loaderOverlay.activate();
 };
 
 
 feng.views.View3DHud.prototype.deactivate = function() {
 
   if(this._view3d) {
-    this._view3d.modeController.unlisten(feng.events.EventType.UPDATE, this.onUpdateView3D, false, this);
+    this._view3d.modeController.removeAllListeners();
   }
 
-  this._view3dController.unlisten(feng.events.EventType.SHOW, this.onShowView3D, false, this);
-  this._view3dController.unlisten(feng.events.EventType.ANIMATED_IN, this.onAnimatedInView3D, false, this);
-
-  feng.tutorial.unlisten(feng.events.EventType.ANIMATE_IN, this.tutorialOverlay.animateIn, false, this.tutorialOverlay);
-  feng.tutorial.unlisten(feng.events.EventType.ANIMATE_OUT, this.tutorialOverlay.animateOut, false, this.tutorialOverlay);
+  this._view3dController.removeAllListeners();
+  feng.tutorial.removeAllListeners();
+  this.loaderOverlay.removeAllListeners();
 
   this.compass.deactivate();
   this.book.deactivate();
@@ -169,7 +170,6 @@ feng.views.View3DHud.prototype.deactivate = function() {
   this.dropButton.deactivate();
   this.tooltips.deactivate();
   this.tutorialOverlay.deactivate();
-  this.loaderOverlay.deactivate();
 };
 
 

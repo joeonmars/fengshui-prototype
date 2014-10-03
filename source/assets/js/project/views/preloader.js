@@ -64,13 +64,9 @@ feng.views.Preloader.prototype.load = function( keys ){
 	if(manifest.length > 0) {
 
 		this._loader.loadManifest( manifest );
-		this.onLoadStart();
-
-	}else {
-		
-		this.onComplete();
-		this._loader.progress = 1;
 	}
+
+	this.onLoadStart();
 
 	this._ticked = 1;
 	this._ticker.start();

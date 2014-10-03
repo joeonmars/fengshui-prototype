@@ -169,7 +169,7 @@ feng.views.sections.Episode.prototype.onShowView3D = function(e){
 		mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
 		fromPosition: position,
 		fromRotation: rotation,
-		fromFov: 40
+		fromFov: feng.controllers.controls.Controls.Default.FOV
 	});
 	
 	// test mode

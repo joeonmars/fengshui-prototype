@@ -8,27 +8,16 @@ goog.require('feng.views.Overlay');
 /**
  * @constructor
  */
-feng.views.sections.overlays.LoaderOverlay = function(domElement, episode){
+feng.views.sections.overlays.LoaderOverlay = function(domElement){
 
 	var canHalt = true;
 
   goog.base(this, domElement, canHalt);
 
   this._loaderEl = goog.dom.getElementByClass('loader', this.domElement);
-  this._episode = episode;
 };
 goog.inherits(feng.views.sections.overlays.LoaderOverlay, feng.views.Overlay);
 goog.addSingletonGetter(feng.views.sections.overlays.LoaderOverlay);
-
-
-feng.views.sections.overlays.LoaderOverlay.prototype.activate = function(){
-
-	goog.base(this, 'activate');
-
-	this._eventHandler.listen(this._episode, feng.events.EventType.START, this.onLoadStart, false, this);
-	this._eventHandler.listen(this._episode, feng.events.EventType.PROGRESS, this.onLoadProgress, false, this);
-	this._eventHandler.listen(this._episode, feng.events.EventType.COMPLETE, this.onLoadComplete, false, this);
-};
 
 
 feng.views.sections.overlays.LoaderOverlay.prototype.animateIn = function(){
