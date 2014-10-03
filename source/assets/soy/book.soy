@@ -16,8 +16,8 @@
 				<div class="inner">
 					<ul>
 						{foreach $tip in $tips}
-						<li class="tip {if $tip.unlocked == true}unlocked{else}locked{/if}" data-tip-id="{ $tip.id }">
-							<figure data-img="">
+						<li class="tip-module" data-tip-id="{ $tip.id }">
+							<figure class="cover">
 								<div class="icon icon-{ $tip.id }"></div>
 								<ul class="share">
 									<li><a href="#" class="icon icon-facebook"></a></li>
@@ -28,10 +28,12 @@
 								<button>View</button>
 							</figure>
 							<div class="details">
-								<article>
-									<h1>{ $tip.name }</h1>
-									<p>{ $tip.description }</p>
-								</article>
+								<div class="wrapper">
+									<article>
+										<h1>{ $tip.name }</h1>
+										<p>{ $tip.description }</p>
+									</article>
+								</div>
 							</div>
 						</li>
 						{/foreach}

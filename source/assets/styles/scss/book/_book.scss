@@ -27,26 +27,22 @@
 			>.inner{
 
 				>ul{
-					white-space: nowrap;
 
 					>li{
-						position: relative;
-						display: inline-block;
-						width: 25%;
-						height: 0;
-						padding-bottom: 35%;
-						white-space: normal;
-						margin: 0 10px;
+						@include absoluteTopLeft;
+						text-align: center;
+						white-space: nowrap;
 
-						>figure{
-							position: absolute;
-							width: 100%;
-							height: 100%;
+						>.cover{
+							display: inline-block;
+							vertical-align: top;
 							border: 1px solid #fff;
 							@include box-sizing(border-box);
 							color: #fff;
 							background-size: cover;
 							background-position: center center;
+							text-align: left;
+							white-space: normal;
 
 							>button{
 
@@ -54,12 +50,17 @@
 						}
 
 						>.details{
-							position: absolute;
-							width: 150%;
-							height: 100%;
+							display: inline-block;
+							vertical-align: top;
 							background-color: rgba(255, 255, 255, .95);
 							color: #000;
-							visibility: hidden;
+							text-align: left;
+							white-space: normal;
+							overflow: hidden;
+
+							>.wrapper{
+								height: 100%;
+							}
 						}
 					}
 				}

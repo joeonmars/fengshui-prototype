@@ -20,7 +20,7 @@ feng.templates.book.Book = function(opt_data, opt_ignored) {
   var tipListLen6 = tipList6.length;
   for (var tipIndex6 = 0; tipIndex6 < tipListLen6; tipIndex6++) {
     var tipData6 = tipList6[tipIndex6];
-    output += '<li class="tip ' + ((tipData6.unlocked == true) ? 'unlocked' : 'locked') + '" data-tip-id="' + tipData6.id + '"><figure data-img=""><div class="icon icon-' + tipData6.id + '"></div><ul class="share"><li><a href="#" class="icon icon-facebook"></a></li><li><a href="#" class="icon icon-twitter"></a></li><li><a href="#" class="icon icon-google"></a></li></ul><figcaption>' + tipData6.name + '</figcaption><button>View</button></figure><div class="details"><article><h1>' + tipData6.name + '</h1><p>' + tipData6.description + '</p></article></div></li>';
+    output += '<li class="tip-module" data-tip-id="' + tipData6.id + '"><figure class="cover"><div class="icon icon-' + tipData6.id + '"></div><ul class="share"><li><a href="#" class="icon icon-facebook"></a></li><li><a href="#" class="icon icon-twitter"></a></li><li><a href="#" class="icon icon-google"></a></li></ul><figcaption>' + tipData6.name + '</figcaption><button>View</button></figure><div class="details"><div class="wrapper"><article><h1>' + tipData6.name + '</h1><p>' + tipData6.description + '</p></article></div></div></li>';
   }
   output += '</ul></div></div></div><div class="scrubber"><div class="handle"></div></div></div>';
   return output;
