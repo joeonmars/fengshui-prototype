@@ -11,31 +11,20 @@ feng.views.view3dfx.SelectEffect = function(){
 	THREE.Object3D.call( this );
 
 	// create texture
-	var texture;
+	var canvas = document.createElement('canvas');
+	canvas.width = canvas.height = 32;
 
-	if(!feng.views.view3dfx.SelectEffect.Texture) {
+	var context = canvas.getContext('2d');
+	var centerX = canvas.width / 2;
+	var centerY = canvas.height / 2;
+	var radius = 12;
 
-		var canvas = document.createElement('canvas');
-		canvas.width = canvas.height = 32;
+	context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+	context.fillStyle = 'rgba(255, 255, 255, 1)';
+	context.fill();
 
-		var context = canvas.getContext('2d');
-		var centerX = canvas.width / 2;
-		var centerY = canvas.height / 2;
-		var radius = 12;
-
-		context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-		context.fillStyle = 'rgba(255, 255, 255, 1)';
-		context.fill();
-
-		texture = new THREE.Texture( canvas );
-		texture.needsUpdate = true;
-
-		feng.views.view3dfx.SelectEffect.Texture = texture;
-
-	}else {
-
-		texture = feng.views.view3dfx.SelectEffect.Texture;
-	}
+	var texture = new THREE.Texture( canvas );
+	texture.needsUpdate = true;
 
 	// shader attributes
 	var dotAttributes = {
@@ -193,6 +182,3 @@ feng.views.view3dfx.SelectEffect.prototype.onAnimationFrame = function(now) {
 	this._uniforms.time.value = Math.sin(now * 0.001) * .5 + .5;
     this._uniforms.pulse.value = goog.math.lerp(.8, 1, Math.sin(now * 0.001) * .5 + .5);
 };
-
-
-feng.views.view3dfx.SelectEffect.Texture = null;

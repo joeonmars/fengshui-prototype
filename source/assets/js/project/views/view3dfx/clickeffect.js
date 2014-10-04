@@ -8,40 +8,29 @@ feng.views.view3dfx.ClickEffect = function(){
 
 	var geometry = new THREE.PlaneGeometry( 10, 10 );
 
-	var texture;
+	var canvas = goog.dom.createDom('canvas');
+	canvas.width = canvas.height = 128;
 
-	if(!feng.views.view3dfx.ClickEffect.Texture) {
+	var context = canvas.getContext('2d');
+	var centerX = canvas.width / 2;
+	var centerY = canvas.height / 2;
 
-		var canvas = goog.dom.createDom('canvas');
-		canvas.width = canvas.height = 128;
+	context.beginPath();
+	context.arc(centerX, centerY, 40, 0, 2 * Math.PI, false);
+	context.lineWidth = 30;
+	context.strokeStyle = 'rgba(255, 255, 255, .1)';
+	context.stroke();
+	context.closePath();
 
-		var context = canvas.getContext('2d');
-		var centerX = canvas.width / 2;
-		var centerY = canvas.height / 2;
+	context.beginPath();
+	context.arc(centerX, centerY, 30, 0, 2 * Math.PI, false);
+	context.lineWidth = 6;
+	context.strokeStyle = 'rgba(255, 255, 255, .2)';
+	context.stroke();
+	context.closePath();
 
-    context.beginPath();
-    context.arc(centerX, centerY, 40, 0, 2 * Math.PI, false);
-    context.lineWidth = 30;
-    context.strokeStyle = 'rgba(255, 255, 255, .1)';
-    context.stroke();
-		context.closePath();
-    
-    context.beginPath();
-    context.arc(centerX, centerY, 30, 0, 2 * Math.PI, false);
-    context.lineWidth = 6;
-    context.strokeStyle = 'rgba(255, 255, 255, .2)';
-    context.stroke();
-    context.closePath();
-
-    texture = new THREE.Texture( canvas );
-    texture.needsUpdate = true;
-
-		feng.views.view3dfx.ClickEffect.Texture = texture;
-
-	}else {
-
-		texture = feng.views.view3dfx.ClickEffect.Texture;
-	}
+	var texture = new THREE.Texture( canvas );
+	texture.needsUpdate = true;
 
 	var material = new THREE.MeshBasicMaterial({
 		//color: 0xff0000,
@@ -83,6 +72,3 @@ feng.views.view3dfx.ClickEffect.prototype.play = function( position, normal ) {
 		'ease': Expo.easeOut
 	});
 };
-
-
-feng.views.view3dfx.ClickEffect.Texture = null;
