@@ -187,19 +187,19 @@ feng.views.book.Book.prototype.getTipModuleIndexByX = function( x ) {
 	var i, l = finalTipModuleWidths.length;
 	var currentX = leftX;
 
-	for(i = 0; i < l; i ++) {
+	for(i = 0; i < l - 1; i ++) {
 
-		var nextWidth = (i + 1 < l) ? finalTipModuleWidths[i + 1] : Number.MAX_VALUE;
-		var nextX = currentX + nextWidth;
+		var nextX = currentX + finalTipModuleWidths[i];
 
 		if(x >= currentX && x < nextX) {
 			return i;
 			break;
 		}
 
-		var currentWidth = finalTipModuleWidths[i];
-		currentX += currentWidth;
+		currentX = nextX;
 	}
+
+	return (l-1);
 };
 
 
@@ -215,9 +215,10 @@ feng.views.book.Book.prototype.scrollToTipModule = function( index ) {
 	var leftX = scrollInfo.leftX;
 
 	var widths = finalTipModuleWidths.slice(0, index);
+	var tipModuleWidth = finalTipModuleWidths[ index ];
 	var tipModuleX = goog.array.reduce(widths, this._sumFunc, 0);
 
-	var scrollX = leftX + tipModuleX;
+	var scrollX = tipModuleX - (this._viewportSize.width - tipModuleWidth) / 2;
 
 	TweenMax.to(this, .5, {
 		_scrollX: scrollX,
