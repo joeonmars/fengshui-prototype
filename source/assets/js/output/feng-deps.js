@@ -52,7 +52,7 @@ goog.addDependency('../../../../project/utils/multilinearinterpolator.js', ['fen
 goog.addDependency('../../../../project/utils/random.js', ['feng.utils.Randomizer'], ['goog.math', 'goog.testing.PseudoRandom']);
 goog.addDependency('../../../../project/utils/threeutils.js', ['feng.utils.ThreeUtils'], ['goog.math']);
 goog.addDependency('../../../../project/utils/utils.js', ['feng.utils.Utils'], ['goog.Uri', 'goog.style']);
-goog.addDependency('../../../../project/views/book/book.js', ['feng.views.book.Book'], ['feng.events', 'feng.models.achievements.Achievements', 'feng.templates.book', 'feng.views.book.TipModule', 'goog.dom', 'goog.events.EventHandler', 'goog.events.MouseWheelHandler', 'goog.object']);
+goog.addDependency('../../../../project/views/book/book.js', ['feng.views.book.Book'], ['feng.events', 'feng.models.achievements.Achievements', 'feng.templates.book', 'feng.views.book.TipModule', 'goog.dom', 'goog.events.EventHandler', 'goog.events.MouseWheelHandler', 'goog.fx.Dragger', 'goog.math.Rect', 'goog.object']);
 goog.addDependency('../../../../project/views/book/hanzi.js', ['feng.views.book.Hanzi'], ['feng.fx.EnergyFlow', 'feng.models.Preload']);
 goog.addDependency('../../../../project/views/book/tipmodule.js', ['feng.views.book.TipModule'], ['feng.events', 'feng.models.achievements.Achievements', 'goog.dom', 'goog.events.EventHandler', 'goog.math.Size']);
 goog.addDependency('../../../../project/views/debug/achievements.js', ['feng.views.debug.Achievements'], ['feng.events', 'feng.models.achievements.Achievements', 'feng.templates.debug', 'feng.views.debug.DebugView']);

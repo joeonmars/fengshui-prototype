@@ -3,6 +3,8 @@ goog.provide('feng.views.book.Book');
 goog.require('goog.dom');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events.MouseWheelHandler');
+goog.require('goog.fx.Dragger');
+goog.require('goog.math.Rect');
 goog.require('goog.object');
 goog.require('feng.events');
 goog.require('feng.models.achievements.Achievements');
@@ -29,6 +31,15 @@ feng.views.book.Book = function() {
 	this._scrollerEl = goog.dom.getElementByClass('scroller', this.domElement);
 	this._scrollerInnerEl = goog.dom.getElementByClass('inner', this._scrollerEl);
 
+	this._scrubberEl = goog.dom.getElementByClass('scrubber', this.domElement);
+	this._handleEl = goog.dom.getElementByClass('handle', this._scrubberEl);
+
+	this._scrubberWidth = 0;
+	this._handleWidth = 0;
+
+	this._dragger = new goog.fx.Dragger(this._handleEl);
+	this._draggerLimits = new goog.math.Rect(0, 0, 0, 0);
+
 	var tipModuleEls = goog.dom.getElementsByClass('tip-module', this.domElement);
 	var widthChangeCallback = goog.bind(this.updateFromTipModuleIndex, this);
 
@@ -50,6 +61,8 @@ feng.views.book.Book = function() {
 	this._targetScrollX = 0;
 	this._sumFunc = function(r, v, i, arr) {return r + v;}
 
+	this._scrollTweener = null;
+
 	//
 	this._mouseWheelHandler = new goog.events.MouseWheelHandler( this.domElement );
 	this._maxDelta = 30;
@@ -70,7 +83,11 @@ feng.views.book.Book.prototype.activate = function() {
 	this._eventHandler.listen( this._closeButton, 'click', this.animateOut, false, this );
 	this._eventHandler.listen( this, feng.events.EventType.OPEN, this.onTipModuleOpen, false, this );
 	this._eventHandler.listen( this, feng.events.EventType.CLOSE, this.onTipModuleClose, false, this );
+	this._eventHandler.listen( this, feng.events.EventType.CHANGE, this.onTipModuleChange, false, this );
 	this._eventHandler.listen( this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this );
+	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this );
+	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this );
+	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this );
 
 	goog.array.forEach( this._tipModules, function(tipModule) {
 		tipModule.activate();
@@ -109,6 +126,14 @@ feng.views.book.Book.prototype.resize = function( e ) {
 		tipModule.setX( x );
 
 	}, this);
+
+	// set scrubber limits
+	var tipModuleTotalWidth = goog.array.reduce(this._tipModuleWidths, this._sumFunc, 0); 
+	this._scrubberWidth = goog.style.getSize(this._scrubberEl).width;
+	this._handleWidth = this._viewportSize.width / tipModuleTotalWidth * this._scrubberWidth;
+	goog.style.setStyle(this._handleEl, 'width', this._handleWidth + 'px');
+	this._draggerLimits.width = this._scrubberWidth - this._handleWidth;
+	this._dragger.setLimits( this._draggerLimits );
 };
 
 
@@ -220,7 +245,7 @@ feng.views.book.Book.prototype.scrollToTipModule = function( index ) {
 
 	var scrollX = tipModuleX - (this._viewportSize.width - tipModuleWidth) / 2;
 
-	TweenMax.to(this, .5, {
+	this._scrollTweener = TweenMax.to(this, .5, {
 		_scrollX: scrollX,
 		_targetScrollX: scrollX,
 		'ease': Quad.easeInOut,
@@ -247,6 +272,17 @@ feng.views.book.Book.prototype.nextTipModule = function() {
 feng.views.book.Book.prototype.applyScrollX = function() {
 
 	goog.style.setStyle( this._scrollerInnerEl, 'transform', 'translateX(' + (-this._scrollX) + 'px)' );
+
+	if(!this._dragger.isDragging()) {
+
+		var scrollInfo = this.getScrollInfo();
+		var leftX = scrollInfo.leftX;
+		var rightX = scrollInfo.rightX;
+		var scrollWidth = scrollInfo.scrollWidth;
+		var ratio = (this._scrollX - leftX) / (rightX - leftX);
+		var handleX = (this._scrubberWidth - this._handleWidth) * ratio;
+		goog.style.setPosition( this._handleEl, handleX, 0 );
+	}
 };
 
 
@@ -268,6 +304,47 @@ feng.views.book.Book.prototype.onTipModuleClose = function(e) {
 };
 
 
+feng.views.book.Book.prototype.onTipModuleChange = function(e) {
+
+	var tipModule = e.target;
+	var tipModuleIndex = tipModule.index;
+
+	if(tipModuleIndex === this._activeTipIndex) {
+
+		tipModule.toggle();
+	}
+
+	this.scrollToTipModule( tipModuleIndex );
+};
+
+
+feng.views.book.Book.prototype.onDrag = function( e ) {
+
+	var ratio = Math.max(0, Math.min(1, this._dragger.deltaX / this._draggerLimits.width));
+	var scrollInfo = this.getScrollInfo();
+	var leftX = scrollInfo.leftX;
+	var rightX = scrollInfo.rightX;
+
+	this._targetScrollX = goog.math.lerp( leftX, rightX, ratio );
+};
+
+
+feng.views.book.Book.prototype.onDragStart = function( e ) {
+
+	goog.fx.anim.registerAnimation( this );
+
+	if(this._scrollTweener && this._scrollTweener.isActive()) {
+		this._scrollTweener.kill();
+	}
+};
+
+
+feng.views.book.Book.prototype.onDragEnd = function( e ) {
+
+
+};
+
+
 feng.views.book.Book.prototype.onMouseWheel = function( e ) {
 
 	var delta = e.deltaX || e.deltaY;
@@ -282,6 +359,10 @@ feng.views.book.Book.prototype.onMouseWheel = function( e ) {
 	this._targetScrollX = Math.max( Math.min( rightX, this._targetScrollX ), leftX );
 
 	goog.fx.anim.registerAnimation( this );
+
+	if(this._scrollTweener && this._scrollTweener.isActive()) {
+		this._scrollTweener.kill();
+	}
 };
 
 
@@ -291,7 +372,7 @@ feng.views.book.Book.prototype.onAnimationFrame = function( now ) {
 	this.applyScrollX();
 
 	// if reached the target scroll x, stop animating and lock to the nearest tip module
-	if( goog.math.nearlyEquals(this._scrollX, this._targetScrollX, 1) ) {
+	if( goog.math.nearlyEquals(this._scrollX, this._targetScrollX, 1) && !this._dragger.isDragging()) {
 
 		goog.fx.anim.unregisterAnimation( this );
 

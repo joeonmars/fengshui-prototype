@@ -62,6 +62,13 @@ feng.views.book.TipModule.prototype.getFinalWidth = function() {
 };
 
 
+feng.views.book.TipModule.prototype.toggle = function() {
+
+	if(this._isOpened) this.close();
+	else this.open();
+};
+
+
 feng.views.book.TipModule.prototype.open = function() {
 
 	var openedWidth = this._coverWidth + this._detailsWidth + this._margin * 2;
@@ -106,7 +113,7 @@ feng.views.book.TipModule.prototype.close = function() {
 	});
 
 	this._closeTweener.clear();
-	this._closeTweener.add([detailsTweener, sizeTweener], '+=0', 'sequence');
+	this._closeTweener.add([detailsTweener, sizeTweener], '+=0', 'start');
 
 	this.dispatchEvent( feng.events.EventType.CLOSE );
 };
@@ -155,13 +162,16 @@ feng.views.book.TipModule.prototype.updateWidth = function() {
 
 feng.views.book.TipModule.prototype.onClickCover = function(e) {
 
+	/*
 	if(this._openTweener.isActive() || this._closeTweener.isActive()) return;
 
 	if(this._isOpened) {
 		this.close();
 	}else {
 		this.open();
-	}
+	}*/
+
+	this.dispatchEvent( feng.events.EventType.CHANGE );
 };
 
 
