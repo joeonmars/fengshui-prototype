@@ -27,6 +27,8 @@ $gray: #969696;
 $red: #e2443a;
 $yellow: #e3cc76;
 $black: #3d3e39;
+$gray-ui: #8a8a8a;
+$yellow-ui: #fdf1ba;
 
 $easeInOutCirc: cubic-bezier(0.785, 0.135, 0.150, 0.860);
 $easeInOutSine: cubic-bezier(0.445, 0.050, 0.550, 0.950);
@@ -87,12 +89,13 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   }
 }
 
-@mixin roundButton($size, $border_size:5px){
+@mixin roundButton($size, $border_size:7px){
   position: relative;
   width: $size;
   height: $size;
-  background-color: rgba(255, 255, 255, .5);
+  background-color: rgba(255, 255, 255, .25);
   @include border-radius(50%);
+  @include single-transition(opacity, .25s, ease-out);
 
   &:hover{
     >.outline{
@@ -102,11 +105,9 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   }
 
   &.disabled{
-    pointer-events: none;
     opacity: .5;
 
     >.outline{
-      @include scale(0);
       opacity: 0;
     }
   }
@@ -117,7 +118,7 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
     left: 0;
     width: $size;
     height: $size;
-    border: $border_size solid $darkblue;
+    border: $border_size solid $gray-ui;
     @include border-radius(50%);
     @include box-sizing(border-box);
     @include transition(transform .2s ease-in-out, opacity .35s ease-in-out);
@@ -127,6 +128,7 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
 
   >.circle{
     position: absolute;
+    display: table;
     top: $border_size;
     left: $border_size;
     width: $size - $border_size * 2;
@@ -135,6 +137,11 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
     overflow: hidden;
     @include border-radius(50%);
     @include single-box-shadow(1px, 1px, 2px, 0px, rgba(0, 0, 0, .14));
+
+    >.circle-content{
+      display: table-cell;
+      vertical-align: middle;
+    }
   }
 }
 
@@ -182,6 +189,70 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   cursor: url(../cursor/help.cur) 8 8, help;
 }
 
+// place holder styles
+%bordered-ui{
+  position: relative;
+  background-color: #fff;
+  @include border-radius( 6px );
+  @include box-shadow( 0 0 0 7px rgba(255, 255, 255, .25), 1px 1px 2px 0px rgba(0, 0, 0, .14) );
+  @include user-select(none);
+
+  h1, h2, h3, h4, h5, h6{
+    color: #626262;
+  }
+
+  p{
+    color: #9a9a9a;
+  }
+}
+
+%arrow-left{
+  &:before{
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin-left: -20px;
+    margin-top: -11px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 11px 20px 11px 0;
+    border-color: transparent #ffffff transparent transparent;
+  }
+}
+
+%arrow-right{
+  &:before{
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    margin-top: -11px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 11px 0 11px 20px;
+    border-color: transparent transparent transparent #ffffff;
+  }
+}
+
+%arrow-bottom{
+  &:before{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left: -11px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 20px 11px 0 11px;
+    border-color: #ffffff transparent transparent transparent;
+  }
+}
+//
+
 
 html, body{
   position: absolute;
@@ -210,10 +281,17 @@ body{
 #main{
   @include chromeOSDefaultCursor;
   
-  h1, h2, h3, h4, h5, h6{
-    font-family: $font_marineup_light;
-    text-transform: uppercase;
-    letter-spacing: .1em;
+  h1, h2{
+    font-family: $font_marineup;
+    text-transform: camelcase;
+    letter-spacing: 0.05em;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h3, h4, h5, h6{
+    font-family: $font_marine;
+    text-transform: camelcase;
+    letter-spacing: 0.05em;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -276,47 +354,45 @@ body{
   .primary-button{
     position: relative;
     display: block;
-    font-family: $font_marineup_light;
-    font-size: 18px;
-    line-height: 18px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+    font-family: $font_marineup;
+    font-size: 1.8em;
+    text-align: center;
+    line-height: 0;
+    letter-spacing: .05em;
     padding: 9px 20px;
-    color: $darkblue;
+    color: $gray-ui;
     overflow: hidden;
-    border: 2px solid $darkblue;
+    border: 2px solid $gray-ui;
     @include border-radius( 40px );
     @include box-sizing( border-box );
-    @include transition( color .4s $easeInOutCirc, background-color .2s, text-indent .25s );
+    @include transition( color .4s $easeInOutCirc, background-color .2s );
+
+    &.small{
+      min-width: 4.4em;
+      padding: .3em .2em;
+    }
 
     >.icon{
-      position: absolute;
-      color: $cream;
-      line-height: 18px;
-      text-indent: 0;
-      @include translateY( -18px - 12px );
-      @include single-transition( transform, .25s );
-
-      &.yes{
-        @include font-awesome( "fa-check" );
-      }
-
-      &.change{
-        @include font-awesome( "fa-check" );
-      }
-
-      &.skip{
-        @include font-awesome( "fa-chevron-right" );
-      }
+      display: inline-block;
+      vertical-align: middle;
+      width: 0;
+      color: $yellow-ui;
+      text-align: center;
+      margin-left: -.2em;
+      margin-right: .2em;
+      opacity: 0;
+      @include translateX( -2em );
+      @include transition( transform .25s, width .25s, opacity .25s );
     }
 
     &:hover{
-      color: $cream;
-      background-color: $darkblue;
-      text-indent: 18px;
+      color: #fff;
+      background-color: $gray-ui;
 
       >.icon{
-        @include translateY( 0px );
+        @include translateX( 0px );
+        width: 1em;
+        opacity: 1;
       }
     }
   }

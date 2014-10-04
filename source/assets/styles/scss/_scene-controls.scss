@@ -1,7 +1,59 @@
+$circle_size: 100px;
+$cube_size: 80px;
+$border_size: 7px;
+
+>.home-button{
+
+	position: absolute;
+	top: 30px;
+	left: 30px;
+	@include roundButton( $circle_size, $border_size );
+
+	.icon{
+		@extend .icon-exit;
+		font-size: 5.4em;
+		color: $gray-ui;
+	}
+}
+
+>.home-button-prompt{
+
+	@extend %bordered-ui;
+	@extend %arrow-left;
+	position: absolute;
+	top: 20px;
+	left: 160px;
+	padding: 3em 4em;
+	opacity: 0;
+	visibility: hidden;
+	@include transition( opacity 200ms ease-out, visibility 200ms );
+	@include animation( home-button-prompt-out 200ms ease-out both );
+
+	&.shown{
+		opacity: 1;
+		visibility: visible;
+		@include animation( home-button-prompt-in 1000ms linear both );
+	}
+
+	>h3{
+		font-size: 1.8em;
+		white-space: nowrap;
+	}
+
+	>.button-group{
+		margin-top: 2em;
+
+		>.primary-button{
+			display: inline-block;
+
+			&:first-child{
+				margin-right: .65em;
+			}
+		}
+	}
+}
+
 >.compass{
-	$circle_size: 100px;
-	$cube_size: 80px;
-	$border_size: 5px;
 
 	@include absoluteTopLeft;
 
@@ -117,8 +169,9 @@
 			@include roundButton( $circle_size, $border_size );
 
 			canvas{
-				width: 100%;
-				height: 100%;
+				display: block;
+				width: 90px;
+				height: 90px;
 			}
 		}
 	}

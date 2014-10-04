@@ -33,6 +33,12 @@ feng.views.sections.home.EpisodeScreen.prototype.deactivate = function() {
 
 
 
+feng.views.sections.home.EpisodeScreen.prototype.reset = function() {
+
+	this._episodeSelection.animateIn();
+};
+
+
 feng.views.sections.home.EpisodeScreen.prototype.animateIn = function() {
 
 	goog.base(this, 'animateIn');

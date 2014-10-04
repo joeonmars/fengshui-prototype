@@ -158,8 +158,8 @@ feng.models.View3D.Data = {
 		'livingroom': {
 			'studio-door': {
 				class: "gateway",
-				viewid: "interior2",
-				gatewayid: "door",
+				viewid: "bathroom",
+				gatewayid: "bathroom-door",
 				castShadow: true,
 				isEntry: true,
 				origin: {
@@ -169,8 +169,8 @@ feng.models.View3D.Data = {
 			},
 			'bathroom-door': {
 				class: "gateway",
-				viewid: "interior2",
-				gatewayid: "door",
+				viewid: "bathroom",
+				gatewayid: "bathroom-door",
 				castShadow: true,
 				isEntry: false,
 				origin: {
@@ -185,10 +185,16 @@ feng.models.View3D.Data = {
 			},
 			'wall-outer':	{
 				castShadow: true,
-				texture: "studio.livingroom.wall-outer-texture"
+				//texture: "studio.livingroom.wall-outer-texture"
 			},
 			'ceiling':	{
 				texture: "studio.livingroom.ceiling-texture"
+			},
+			'ceiling-lamp-1':	{
+				texture: "studio.livingroom.ceiling-lamp-1-texture"
+			},
+			'ceiling-lamp-2':	{
+				texture: "studio.livingroom.ceiling-lamp-2-texture"
 			},
 			'floor': {
 				texture: "studio.livingroom.floor-texture"
@@ -200,6 +206,13 @@ feng.models.View3D.Data = {
 			'kitchen-cabinets':	{
 				collidable: true,
 				texture: "studio.livingroom.kitchen-cabinets-texture"
+			},
+			'kitchen-ware':	{
+				texture: "studio.livingroom.kitchen-ware-texture"
+			},
+			'linen-cabinet':	{
+				collidable: true,
+				texture: "studio.livingroom.linen-cabinet-texture"
 			},
 			'sofabed':	{
 				collidable: true,
@@ -235,8 +248,8 @@ feng.models.View3D.Data = {
 			'reading-lamp':	{
 				texture: "studio.livingroom.reading-lamp-texture"
 			},
-			'ventilator':	{
-				texture: "studio.livingroom.ventilator-texture"
+			'hood':	{
+				texture: "studio.livingroom.hood-texture"
 			},
 			'microwave':	{
 				texture: "studio.livingroom.microwave-texture"
@@ -274,8 +287,11 @@ feng.models.View3D.Data = {
 			'window-books':	{
 				texture: "studio.livingroom.window-books-texture"
 			},
-			'clockset':	{
-				texture: "studio.livingroom.clockset-texture"
+			'clock':	{
+				texture: "studio.livingroom.clock-texture"
+			},
+			'seasoning':	{
+				texture: "studio.livingroom.seasoning-texture"
 			},
 			'bed-shelf':	{
 				texture: "studio.livingroom.bed-shelf-texture"
@@ -309,6 +325,9 @@ feng.models.View3D.Data = {
 			'sewingmachine-cover':	{
 				texture: "studio.livingroom.sewingmachine-cover-texture"
 			},
+			'pictures':	{
+				texture: "studio.livingroom.pictures-texture"
+			},
 			'boxes':	{
 				texture: "studio.livingroom.boxes-texture"
 			},
@@ -316,17 +335,35 @@ feng.models.View3D.Data = {
 				collidable: true,
 				texture: "studio.livingroom.shoestorage-texture"
 			},
+			'carpet':	{
+				texture: "studio.livingroom.carpet-texture"
+			},
+			'crystal':	{
+				class: "tip",
+				texture: "studio.livingroom.crystal-texture",
+				interactions: [
+				],
+				tipInteraction: "change_object",
+				tipKey: 'studio.livingroom.crystal'
+			},
+			'laptop':	{
+				texture: "studio.livingroom.laptop-texture"
+			},
 			'wardrobe':	{
 				collidable: true,
 				texture: "studio.livingroom.wardrobe-texture"
 			},
-			'windows': {
-				class: "windows",
-				interactions: [
-
-				],
-				tipInteraction: "change_object",
-				tipKey: 'studio.livingroom.windows'
+			'window-left': {
+				texture: "studio.livingroom.window-left-texture"
+			},
+			'window-right': {
+				texture: "studio.livingroom.window-right-texture"
+			},
+			'window-left-switch': {
+				texture: "studio.livingroom.window-left-switch-texture"
+			},
+			'window-right-switch': {
+				texture: "studio.livingroom.window-right-switch-texture"
 			},
 			'refrigerator':	{
 				collidable: true,
@@ -334,7 +371,7 @@ feng.models.View3D.Data = {
 			},
 			'refrigerator-door': {
 				class: "refrigerator",
-				texture: "studio.livingroom.refrigerator-door-texture",
+				//texture: "studio.livingroom.refrigerator-door-texture",
 				interactions: [
 
 				],
@@ -511,8 +548,8 @@ feng.models.View3D.Data = {
 			},
 			'bathroom-door': {
 				class: "gateway",
-				viewid: "bathroom",
-				gatewayid: "door",
+				viewid: "livingroom",
+				gatewayid: "bathroom-door",
 				castShadow: true,
 				isEntry: true,
 				origin: {

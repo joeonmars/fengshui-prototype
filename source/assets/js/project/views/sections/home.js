@@ -30,6 +30,8 @@ feng.views.sections.Home = function(){
   var episodeScreenEl = goog.dom.getElement('main-episode-selection');
   this._episodeScreen = new feng.views.sections.home.EpisodeScreen( episodeScreenEl );
   this._episodeScreen.hide();
+
+  this._hasLoadedOnce = false;
 };
 goog.inherits(feng.views.sections.Home, feng.views.sections.Section);
 
@@ -139,20 +141,30 @@ feng.views.sections.Home.prototype.onLoadComplete = function(e){
 
 	goog.base(this, 'onLoadComplete', e);
 
-	// init modules reply on fengshui data
-	var globalAssets = e.target.model.getAsset('global');
-	var fsData = globalAssets['fengshui-data'];
-	var tipsData = fsData['tips'];
+	if(!this._hasLoadedOnce) {
 
-	var achievements = feng.models.achievements.Achievements.getInstance();
-	achievements.init( tipsData );
+		// init main modules with loaded fengshui data
+		var globalAssets = e.target.model.getAsset('global');
+		var fsData = globalAssets['fengshui-data'];
+		var tipsData = fsData['tips'];
 
-	var sectionController = feng.controllers.SectionController.getInstance();
-	sectionController.init();
+		var achievements = feng.models.achievements.Achievements.getInstance();
+		achievements.init( tipsData );
 
-	var book = feng.views.book.Book.getInstance();
+		var sectionController = feng.controllers.SectionController.getInstance();
+		sectionController.init();
 
-	feng.pubsub.publish( feng.PubSub.Topic.MAIN_LOAD_COMPLETE, globalAssets );
+		var book = feng.views.book.Book.getInstance();
+
+		feng.pubsub.publish( feng.PubSub.Topic.MAIN_LOAD_COMPLETE, globalAssets );
+
+	}else {
+
+		this._episodeScreen.reset();
+	}
+
+	//
+	this._hasLoadedOnce = true;
 };
 
 

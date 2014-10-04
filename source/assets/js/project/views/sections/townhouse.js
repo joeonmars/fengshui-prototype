@@ -16,7 +16,8 @@ feng.views.sections.Townhouse = function(){
 	var template = feng.templates.main.EpisodeSection;
 	var templateData = {
 		id: 'townhouse',
-		tips: tips
+		tips: tips,
+		token: feng.controllers.NavigationController.Token
 	};
 
   goog.base(this, template, templateData);

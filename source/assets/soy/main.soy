@@ -5,6 +5,7 @@
  * Episode Section
  * @param id section id
  * @param tips fengshui tips of section
+ * @param token the navigation token collection
  */
 {template .EpisodeSection}
 <div class="section episode" id="{ $id }">
@@ -77,6 +78,9 @@
 		</div>
 
 		<div class="controls">
+			{call feng.templates.controls.HomeButton}
+				{param token: $token /}
+			{/call}
 			{call feng.templates.controls.Compass}{/call}
 			{call feng.templates.controls.Book}{/call}
 			{call feng.templates.controls.Reminder}
@@ -229,11 +233,6 @@
 
 	<div class="section" id="outro">
 	</div>
-
-	<div id="episode-selection-overlay">
-	</div>
-
-	<button id="episode-button"></button>
 
 	<ul id="main-options">
 		<li>

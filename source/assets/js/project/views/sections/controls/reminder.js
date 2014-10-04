@@ -97,6 +97,10 @@ feng.views.sections.controls.Reminder.prototype.setView3D = function( view3d ){
   	return (data.viewId === view3d.id);
   });
 
+  // if no character animation was found by view id, use the default character
+  this._characterAnimation = this._characterAnimation || goog.object.getValues(this._characterAnimations)[0];
+  //
+
   this._canvasEl.width = this._characterAnimation.size['width'];
   this._canvasEl.height = this._characterAnimation.size['height'];
   this._characterAnimation.loop.restart();

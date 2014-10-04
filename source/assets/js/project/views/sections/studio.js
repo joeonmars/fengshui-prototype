@@ -16,7 +16,8 @@ feng.views.sections.Studio = function(){
 	var template = feng.templates.main.EpisodeSection;
 	var templateData = {
 		id: 'studio',
-		tips: tips
+		tips: tips,
+		token: feng.controllers.NavigationController.Token
 	};
 
   goog.base(this, template, templateData);

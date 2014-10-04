@@ -12,7 +12,6 @@ goog.require('feng.controllers.view3d.PathfindingController');
 goog.require('feng.views.debug.Debugger');
 goog.require('feng.views.MainOptions');
 goog.require('feng.views.EpisodeSelection');
-goog.require('feng.views.EpisodeSelectionOverlay');
 goog.require('feng.views.popups.Tutorial');
 goog.require('feng.fx.Shaders');
 goog.require('feng.PubSub');
@@ -62,8 +61,6 @@ feng.apps.Demo = function() {
 	feng.shaders = feng.fx.Shaders.getInstance();
 
 	feng.sectionController = feng.controllers.SectionController.getInstance();
-
-	feng.episodeSelectionOverlay = feng.views.EpisodeSelectionOverlay.getInstance();
 
 	feng.initialToken = feng.navigationController.getTokenArray();
 	

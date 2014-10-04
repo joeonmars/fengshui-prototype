@@ -5,6 +5,7 @@ goog.require('feng.views.sections.controls.DropButton');
 goog.require('feng.views.sections.controls.Compass');
 goog.require('feng.views.sections.controls.Book');
 goog.require('feng.views.sections.controls.Reminder');
+goog.require('feng.views.sections.controls.HomeButton');
 goog.require('feng.views.sections.controls.ProgressBar');
 goog.require('feng.views.sections.controls.Tooltips');
 goog.require('feng.views.sections.captions.AdviceCaption');
@@ -57,6 +58,10 @@ feng.views.View3DHud = function( hudEl, view3dController, tips, episode ){
 
   // create controls
   this._controlsEl = goog.dom.getElementByClass('controls', this.domElement);
+
+  var homeButtonEl = goog.dom.getElementByClass('home-button', this._controlsEl);
+  this.homeButton = new feng.views.sections.controls.HomeButton( homeButtonEl );
+  this.homeButton.setParentEventTarget( this );
 
   var compassEl = goog.dom.getElementByClass('compass', this._controlsEl);
   this.compass = new feng.views.sections.controls.Compass( compassEl );
@@ -145,6 +150,7 @@ feng.views.View3DHud.prototype.activate = function() {
   this._episode.listen(feng.events.EventType.PROGRESS, this.loaderOverlay.onLoadProgress, false, this.loaderOverlay);
   this._episode.listen(feng.events.EventType.COMPLETE, this.loaderOverlay.onLoadComplete, false, this.loaderOverlay);
 
+  this.homeButton.activate();
   this.compass.activate();
   this.book.activate();
   this.reminder.activate();
@@ -156,13 +162,14 @@ feng.views.View3DHud.prototype.activate = function() {
 feng.views.View3DHud.prototype.deactivate = function() {
 
   if(this._view3d) {
-    this._view3d.modeController.removeAllListeners();
+    this._view3d.modeController.unlisten(feng.events.EventType.UPDATE, this.onUpdateView3D, false, this);
   }
 
   this._view3dController.removeAllListeners();
   feng.tutorial.removeAllListeners();
   this._episode.removeAllListeners();
 
+  this.homeButton.deactivate();
   this.compass.deactivate();
   this.book.deactivate();
   this.reminder.deactivate();

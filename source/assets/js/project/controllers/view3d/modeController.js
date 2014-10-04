@@ -51,10 +51,20 @@ feng.controllers.view3d.ModeController.prototype.init = function(){
 	this._climbControls = this.createControls( feng.controllers.view3d.ModeController.Mode.CLIMB );
 	this._transitionControls = this.createControls( feng.controllers.view3d.ModeController.Mode.TRANSITION );
 
-  //
-  this.control = this._browseControls;
+	//
+	this.control = this._browseControls;
+};
 
-  this._eventHandler.listen(this, feng.events.EventType.CHANGE, this.onModeChange, false, this);
+
+feng.controllers.view3d.ModeController.prototype.activate = function(){
+
+	this._eventHandler.listen(this, feng.events.EventType.CHANGE, this.onModeChange, false, this);
+};
+
+
+feng.controllers.view3d.ModeController.prototype.deactivate = function(){
+
+	this._eventHandler.removeAll();
 };
 
 
