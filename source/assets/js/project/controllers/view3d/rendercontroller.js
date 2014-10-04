@@ -60,7 +60,7 @@ feng.controllers.view3d.RenderController = function( view3d ){
   	_blur: this._blur,
   	_saturation: 0
   }, {
-  	_brightness: -.9,
+  	_brightness: -.65,
   	_contrast: -.2,
   	_blur: this._maxBlur / 8,
   	_saturation: -.65,

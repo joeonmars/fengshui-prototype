@@ -22,7 +22,17 @@
 		>.scroller{
 			position: relative;
 			width: 100%;
-			overflow: hidden;
+			@include transform-origin(50% 50%);
+			@include single-transition(transform, .5s, ease-in-out);
+			@extend .zoom-in;
+
+			&.zoom-out{
+				@include scale(.55);
+			}
+
+			&.zoom-in{
+				@include scale(1);
+			}
 
 			>.inner{
 
@@ -33,12 +43,21 @@
 						text-align: center;
 						white-space: nowrap;
 
+						&.active{
+							>.cover{
+								>.curtain{
+									visibility: hidden;
+									opacity: 0;
+								}
+							}
+						}
+
 						>.cover{
+							position: relative;
 							display: inline-block;
 							vertical-align: top;
-							border: 1px solid #fff;
-							@include box-sizing(border-box);
-							color: #fff;
+							color: #000;
+							background-color: #fff;
 							background-size: cover;
 							background-position: center center;
 							text-align: left;
@@ -47,12 +66,49 @@
 							>button{
 
 							}
+
+							>.curtain{
+								position: absolute;
+								display: table;
+								width: 100%;
+								height: 100%;
+								background-color: rgba(255, 255, 255, 1);
+								visibility: visible;
+								opacity: 1;
+								@include transition(visibility .4s, opacity .4s ease-out);
+
+								>.wrapper{
+									display: table-cell;
+									vertical-align: middle;
+									text-align: center;
+
+									>.icon{
+										font-size: 10em;
+										line-height: 1.2;
+									}
+
+									>h1{
+										font-size: 2em;
+										line-height: 3;
+									}
+
+									>h2{
+										font-size: 2em;
+										line-height: 1.5;
+
+										>span{
+											font-size: .65em;
+											display: block;
+										}
+									}
+								}
+							}
 						}
 
 						>.details{
 							display: inline-block;
 							vertical-align: top;
-							background-color: rgba(255, 255, 255, .95);
+							background-color: #fff;
 							color: #000;
 							text-align: left;
 							white-space: normal;

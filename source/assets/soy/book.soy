@@ -17,14 +17,19 @@
 					<ul>
 						{foreach $tip in $tips}
 						<li class="tip-module" data-tip-id="{ $tip.id }">
-							<figure class="cover">
-								<div class="icon icon-{ $tip.id }"></div>
+							<figure class="cover" data-src="{ $tip.cover }">
+								<div class="curtain">
+									<div class="wrapper">
+										<div class="icon icon-{ $tip.id }"></div>
+										<h1>{ $tip.name }</h1>
+										<h2><span>Found in</span> { $tip.character }'s { $tip.sectionId }</h2>
+									</div>
+								</div>
 								<ul class="share">
 									<li><a href="#" class="icon icon-facebook"></a></li>
 									<li><a href="#" class="icon icon-twitter"></a></li>
 									<li><a href="#" class="icon icon-google"></a></li>
 								</ul>
-								<figcaption>{ $tip.name }</figcaption>
 								<button>View</button>
 							</figure>
 							<div class="details">

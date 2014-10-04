@@ -4,7 +4,6 @@ goog.require('goog.dom');
 goog.require('goog.events.EventHandler');
 goog.require('goog.math.Size');
 goog.require('feng.events');
-goog.require('feng.models.achievements.Achievements');
 
 
 feng.views.book.TipModule = function( domElement, index, widthChangeCallback ) {
@@ -59,6 +58,22 @@ feng.views.book.TipModule.prototype.getFinalWidth = function() {
 
 	var detailsWidth = this._isOpened ? this._detailsWidth : 0;
 	return this._coverWidth + detailsWidth + this._margin * 2;
+};
+
+
+feng.views.book.TipModule.prototype.setActive = function( isActive ) {
+
+	if(isActive) {
+
+		goog.dom.classes.add(this.domElement, 'active');
+
+		var coverSrc = this._coverEl.getAttribute('data-src');
+		goog.style.setStyle(this._coverEl, 'background-image', 'url(' + coverSrc + ')');
+
+	}else {
+
+		goog.dom.classes.remove(this.domElement, 'active');
+	}
 };
 
 
@@ -161,15 +176,6 @@ feng.views.book.TipModule.prototype.updateWidth = function() {
 
 
 feng.views.book.TipModule.prototype.onClickCover = function(e) {
-
-	/*
-	if(this._openTweener.isActive() || this._closeTweener.isActive()) return;
-
-	if(this._isOpened) {
-		this.close();
-	}else {
-		this.open();
-	}*/
 
 	this.dispatchEvent( feng.events.EventType.CHANGE );
 };

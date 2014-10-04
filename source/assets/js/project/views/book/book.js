@@ -232,8 +232,14 @@ feng.views.book.Book.prototype.scrollToTipModule = function( index ) {
 
 	goog.fx.anim.unregisterAnimation( this );
 
+	if(this._activeTipModule) {
+		this._activeTipModule.setActive(false);
+	}
+
 	this._activeTipIndex = index;
 	this._activeTipModule = this._tipModules[ index ];
+
+	this._activeTipModule.setActive(true);
 
 	var scrollInfo = this.getScrollInfo();
 	var finalTipModuleWidths = scrollInfo.widths;
@@ -336,12 +342,14 @@ feng.views.book.Book.prototype.onDragStart = function( e ) {
 	if(this._scrollTweener && this._scrollTweener.isActive()) {
 		this._scrollTweener.kill();
 	}
+
+	goog.dom.classes.addRemove(this._scrollerEl, 'zoom-in', 'zoom-out');
 };
 
 
 feng.views.book.Book.prototype.onDragEnd = function( e ) {
 
-
+	goog.dom.classes.addRemove(this._scrollerEl, 'zoom-out', 'zoom-in');
 };
 
 
