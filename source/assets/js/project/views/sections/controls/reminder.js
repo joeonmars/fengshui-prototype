@@ -17,7 +17,6 @@ feng.views.sections.controls.Reminder = function( domElement, tips ){
   this._currentTips = [];
 
   this._isHintShown = false;
-  this._isResponseShown = false;
 
   this._hintIndex = 0;
   this._numHints = 0;
@@ -31,9 +30,6 @@ feng.views.sections.controls.Reminder = function( domElement, tips ){
   this._canvasEl = goog.dom.query('canvas', this._characterEl)[0];
   this._canvasContext = this._canvasEl.getContext('2d');
 
-  this._responseDialogueEl = goog.dom.query('.dialogue.response', this.domElement)[0];
-
-  this._responseEls = goog.dom.query('.responses li', this._responseDialogueEl);
   this._hintEls = null;
   this._hintEl = null;
 
@@ -41,7 +37,6 @@ feng.views.sections.controls.Reminder = function( domElement, tips ){
   this._characterAnimation = null;
 
   this._hideHintDelay = new goog.async.Delay(this.hideHint, 6000, this);
-  this._hideResponseDelay = new goog.async.Delay(this.hideResponse, 3000, this);
 };
 goog.inherits(feng.views.sections.controls.Reminder, feng.views.sections.controls.Controls);
 
@@ -101,9 +96,7 @@ feng.views.sections.controls.Reminder.prototype.activate = function(){
 	this._eventHandler.listen(this._nextEl, 'click', this.onClick, false, this);
 	this._eventHandler.listen(this._characterEl, 'mousedown', this.onClick, false, this);
 	this._eventHandler.listen(this._hintDialogueEl, 'mouseover', this.onMouseOver, false, this);
-	this._eventHandler.listen(this._responseDialogueEl, 'mouseover', this.onMouseOver, false, this);
 	this._eventHandler.listen(this._hintDialogueEl, 'mouseout', this.onMouseOut, false, this);
-	this._eventHandler.listen(this._responseDialogueEl, 'mouseout', this.onMouseOut, false, this);
 	this._eventHandler.listen(this._hintTimer, 'tick', this.onHintTick, false, this);
 
 	goog.array.forEach(this._tips, function(tip) {
@@ -111,6 +104,20 @@ feng.views.sections.controls.Reminder.prototype.activate = function(){
 	}, this);
 
 	this._hintTimer.start();
+};
+
+
+feng.views.sections.controls.Reminder.prototype.deactivate = function(){
+
+  var shouldDeactivate = goog.base(this, 'deactivate');
+
+  if(!shouldDeactivate) return;
+
+	goog.array.forEach(this._tips, function(tip) {
+		tip.unlisten(feng.events.EventType.UNLOCK, this.onTipUnlock, false, this);
+	}, this);
+
+	this._hintTimer.stop();
 };
 
 
@@ -254,12 +261,12 @@ feng.views.sections.controls.Reminder.prototype.gotoHintByTip = function( tipId 
 	});
 
 	if(this._hintEl) {
-		goog.dom.classes.remove(this._hintEl, 'shown');
+		goog.dom.classes.remove( this._hintEl, 'shown' );
 	}
 
 	this._hintEl = this._hintEls[ domIndex ];
 
-	goog.dom.classes.add(this._hintEl, 'shown');
+	goog.dom.classes.add( this._hintEl, 'shown' );
 };
 
 
@@ -269,36 +276,9 @@ feng.views.sections.controls.Reminder.prototype.showHint = function( tipId ){
 
 	this.gotoHintByTip( tipId );
 
-	goog.dom.classes.add(this.domElement, 'active');
+	goog.dom.classes.add( this.domElement, 'active' );
 
 	this._hideHintDelay.start();
-
-	this._hintTimer.stop();
-
-	this._characterAnimation.loop.pause();
-	this._characterAnimation.raise.restart();
-};
-
-
-feng.views.sections.controls.Reminder.prototype.showResponse = function( tipId ){
-
-	this._isResponseShown = true;
-
-	TweenMax.set(this._responseEls, {
-		'display': 'none'
-	});
-
-	var paragraphEl = goog.array.find(this._responseEls, function(el) {
-		return (el.getAttribute('data-tip-id') === tipId);
-	});
-
-	TweenMax.set(paragraphEl, {
-		'display': 'block'
-	});
-
-	goog.dom.classes.add(this.domElement, 'active');
-
-	this._hideResponseDelay.start();
 
 	this._hintTimer.stop();
 
@@ -313,21 +293,7 @@ feng.views.sections.controls.Reminder.prototype.hideHint = function( instance ){
 
 	var duration = instance ? 0 : .4;
 
-	goog.dom.classes.remove(this.domElement, 'active');
-
-	this._hintTimer.start();
-
-	this._characterAnimation.raise.reverse();
-};
-
-
-feng.views.sections.controls.Reminder.prototype.hideResponse = function( instance ){
-	
-	this._isResponseShown = false;
-
-	var duration = instance ? 0 : .4;
-
-	goog.dom.classes.remove(this.domElement, 'active');
+	goog.dom.classes.remove( this.domElement, 'active' );
 
 	this._hintTimer.start();
 
@@ -357,11 +323,6 @@ feng.views.sections.controls.Reminder.prototype.onClick = function(e){
 			var tip = this.getCurrentTip();
 			this.showHint( tip.id );
 		}
-
-		if(this._isResponseShown) {
-
-			this.hideResponse();
-		}
 		break;
 	}
 };
@@ -372,10 +333,6 @@ feng.views.sections.controls.Reminder.prototype.onMouseOver = function(e){
 	if(e.currentTarget === this._hintDialogueEl) {
 
 		this._hideHintDelay.stop();
-
-	}else if(e.currentTarget === this._responseDialogueEl) {
-		
-		this._hideResponseDelay.stop();
 	}
 };
 
@@ -386,12 +343,6 @@ feng.views.sections.controls.Reminder.prototype.onMouseOut = function(e){
 
 		if(!e.relatedTarget || !goog.dom.contains(e.currentTarget, e.relatedTarget)) {
 			this._hideHintDelay.start();
-		}
-
-	}else if(e.currentTarget === this._responseDialogueEl) {
-		
-		if(!e.relatedTarget || !goog.dom.contains(e.currentTarget, e.relatedTarget)) {
-			this._hideResponseDelay.start();
 		}
 	}
 };
@@ -408,12 +359,10 @@ feng.views.sections.controls.Reminder.prototype.onTipUnlock = function(e){
 
 	var tipId = e.tip.id;
 
-	var paragraphEl = goog.dom.query('.hints li[data-tip-id="' + tipId + '"]', this._hintDialogueEl)[0];
-	goog.dom.removeNode( paragraphEl );
+	var unlockedHintEl = goog.dom.query('.hints li[data-tip-id="' + tipId + '"]', this._hintDialogueEl)[0];
+	goog.dom.removeNode( unlockedHintEl );
 
 	this._currentTips = this.getLockedTipsOfView();
-
-	this.showResponse( tipId );
 };
 
 
@@ -425,17 +374,13 @@ feng.views.sections.controls.Reminder.prototype.onModeChange = function(e){
 
 		case feng.controllers.view3d.ModeController.Mode.BROWSE:
 		case feng.controllers.view3d.ModeController.Mode.WALK:
-		if(!this._isActivated) {
-			goog.style.showElement(this.domElement, true);
-			this.activate();
-		}
+		goog.style.showElement(this.domElement, true);
+		this.activate();
 		break;
 
 		default:
-		if(this._isActivated) {
-			goog.style.showElement(this.domElement, false);
-			this.deactivate();
-		}
+		goog.style.showElement(this.domElement, false);
+		this.deactivate();
 		break;
 	}
 };

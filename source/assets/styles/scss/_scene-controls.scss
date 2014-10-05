@@ -183,20 +183,17 @@ $border_size: 7px;
 		@extend %bordered-ui;
 		@extend %arrow-bottom-right;
 		@include animation( fade-out .25s ease-in-out both, reminder-drop .25s ease-in-out );
-
-		&.hint, &.response{
-			right: 0;
-			width: 40em;
-			height: 7em;
-			padding: 2.7em 2em;
-			text-align: center;
-		}
+		right: 0;
+		width: 40em;
+		height: 7em;
+		padding: 2.7em 2em;
+		text-align: center;
 
 		>.wrapper{
 			display: table-cell;
 			vertical-align: middle;
 
-			.hints, .responses{
+			>.hints{
 				display: inline-block;
 				vertical-align: middle;
 				width: 27em;
@@ -216,7 +213,7 @@ $border_size: 7px;
 				}
 			}
 
-			button{
+			>button{
 				display: inline-block;
 				vertical-align: middle;
 				@extend %arrow-button;

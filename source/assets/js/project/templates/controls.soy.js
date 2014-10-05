@@ -67,14 +67,7 @@ feng.templates.controls.Reminder = function(opt_data, opt_ignored) {
     var tipData301 = tipList301[tipIndex301];
     output += '<li data-tip-id="' + tipData301.id + '">' + tipData301.reminder + '</li>';
   }
-  output += '</ul><button class="next icon icon-next"></button></div></div><div class="dialogue response"><div class="wrapper"><ul class="responses">';
-  var tipList309 = opt_data.tips;
-  var tipListLen309 = tipList309.length;
-  for (var tipIndex309 = 0; tipIndex309 < tipListLen309; tipIndex309++) {
-    var tipData309 = tipList309[tipIndex309];
-    output += '<li data-tip-id="' + tipData309.id + '">' + tipData309.response + '</li>';
-  }
-  output += '</ul></div></div></div>';
+  output += '</ul><button class="next icon icon-next"></button></div></div></div>';
   return output;
 };
 
@@ -120,11 +113,11 @@ feng.templates.controls.Tooltip = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var output = '<div class="progressBar"><div class="inner"><div class="wave"><canvas class="gray"></canvas><canvas class="fill"></canvas></div><ul class="tips">';
-  var tipList333 = opt_data.tips;
-  var tipListLen333 = tipList333.length;
-  for (var tipIndex333 = 0; tipIndex333 < tipListLen333; tipIndex333++) {
-    var tipData333 = tipList333[tipIndex333];
-    output += '<li class="tip" data-tip-id="' + tipData333.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><div class="content"><div class="icon icon-' + tipData333.id + '" data-tip-id="' + tipData333.id + '" data-view-id="' + tipData333.viewId + '" data-section-id="' + tipData333.sectionId + '"></div><a href="' + tipData333.goTipToken + '"><span class="icon"></span>GO</a></div></div></li>';
+  var tipList325 = opt_data.tips;
+  var tipListLen325 = tipList325.length;
+  for (var tipIndex325 = 0; tipIndex325 < tipListLen325; tipIndex325++) {
+    var tipData325 = tipList325[tipIndex325];
+    output += '<li class="tip" data-tip-id="' + tipData325.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><div class="content"><div class="icon icon-' + tipData325.id + '" data-tip-id="' + tipData325.id + '" data-view-id="' + tipData325.viewId + '" data-section-id="' + tipData325.sectionId + '"></div><a href="' + tipData325.goTipToken + '"><span class="icon"></span>GO</a></div></div></li>';
   }
   output += '</ul></div></div>';
   return output;
