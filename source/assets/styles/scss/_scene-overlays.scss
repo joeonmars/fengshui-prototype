@@ -5,18 +5,10 @@
 		position: absolute;
 		left: 50%;
 		top: 50%;
-		margin-left: -300px;
-		margin-top: -225px;
-
-		.steps{
-			width: 470px !important;
-		}
+		margin-left: (-86em / 2);
+		margin-top: (-50em / 2);
 
 		.loader{
-			display: none !important;
-		}
-
-		.skip{
 			display: none !important;
 		}
 	}

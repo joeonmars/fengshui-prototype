@@ -34,8 +34,17 @@
 <div class="home-button-prompt">
 	<h3>Are you sure you want to leave?</h3>
 	<div class="button-group">
-		<a class="primary-button small no"><span class="icon icon-no"></span>No</a>
-		<a class="primary-button small yes" href="{ $token.HOME }"><span class="icon icon-yes"></span>Yes</a>
+		{call feng.templates.common.PrimaryButton}
+			{param classname: 'small no' /}
+			{param icon: 'icon-no' /}
+			{param text: 'No' /}
+		{/call}
+		{call feng.templates.common.PrimaryButton}
+			{param classname: 'small yes' /}
+			{param icon: 'icon-yes' /}
+			{param text: 'Yes' /}
+			{param href: $token.HOME /}
+		{/call}
 	</div>
 </div>
 

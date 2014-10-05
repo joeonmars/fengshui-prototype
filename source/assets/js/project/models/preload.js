@@ -138,7 +138,7 @@ feng.models.Preload = function(){
 				'wardrobe-texture': 'images/texture/studio/livingroom/wardrobe.jpg',
 				'pictures-texture': 'images/texture/studio/livingroom/pictures.jpg',
 				'refrigerator-texture': 'images/texture/studio/livingroom/refrigerator.jpg',
-				//'refrigerator-door-texture': 'images/texture/studio/livingroom/refrigerator-door.jpg',
+				'refrigerator-door-texture': 'images/texture/studio/livingroom/refrigerator-door.jpg',
 				'crystal-texture': 'images/texture/studio/livingroom/crystal.jpg',
 				'carpet-texture': 'images/texture/studio/livingroom/carpet.jpg',
 				'laptop-texture': 'images/texture/studio/livingroom/laptop.jpg',

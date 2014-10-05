@@ -1,120 +1,120 @@
 &.tutorial{
-	width: 600px;
-	height: 450px;
+	width: 86em;
+	height: 50em;
+
+	>.close-button{
+		display: none;
+	}
 
 	>.content{
+		padding: 4.6em;
+		@include box-sizing(border-box);
+
 		>h1{
-			padding: 12px 0;
-			font-size: 20px;
-			color: $darkblue;
-			line-height: 20px;
-			letter-spacing: 2px;
+			font-size: 4em;
+			line-height: 1;
 			text-align: center;
 		}
 
-		>.line{
-			margin: 0 auto;
-			width: 180px;
-			height: 1px;
-			background-color: $darkblue;
-			opacity: .2;
-		}
-
-		>.carousel{
-			position: relative;
+		>.steps{
+			margin-top: 5em;
 			width: 100%;
-			height: 295px;
-			margin: 10px auto;
+			text-align: center;
+			white-space: nowrap;
 
-			>.steps{
+			>li{
 				position: relative;
-				margin: 0 auto;
-				width: 350px;
+				display: inline-block;
+				vertical-align: top;
+				margin: 0 4%;
+				padding-bottom: 27.5%;
+				width: 27.5%;
+				height: 0;
+				border: 1px solid $gray-ui;
+				@include box-sizing( border-box );
+				opacity: .4;
+				@include single-transition(opacity, .5s);
 
-				>li{
-					@include absoluteTopLeft;
+				&:first-child{
+					margin-left: 0;
+				}
+
+				&:last-child{
+					margin-right: 0;
+				}
+
+				&.active, &:hover{
+					opacity: 1;
+				}
+
+				>h6{
+					position: relative;
+					z-index: 1;
+					padding: 1em 2em;
+					text-transform: uppercase;
+					white-space: normal;
+					text-align: center;
+					font-size: 1.6em;
+					line-height: 1.25;
+					color: $gray-ui;
+				}
+
+				>.video-wrapper{
+					position: absolute;
+					top: 0;
+					width: 100%;
+					height: 100%;
+					text-align: center;
 
 					>video{
-						display: block;
-						width: 100%;
-						background-color: black;
-					}
-
-					>p{
-						width: 100%;
-						font-size: 15px;
-						line-height: 50px;
-						text-align: center;
-						letter-spacing: 1px;
-						color: $gray;
-					}
-				}
-			}
-
-			>aside{
-				display: table;
-				position: absolute;
-				height: 100%;
-				top: 0;
-				right: 15px;
-
-				>.navigator{
-					height: 100%;
-					display: table-cell;
-					vertical-align: middle;
-
-					>li{
-						margin: 23px 0;
-
-						>button{
-							width: 10px;
-							height: 10px;
-							@include border-radius(50%);
-							background-color: $brown;
-							@include single-transition(background-color, .25s);
-
-							&.active{
-								background-color: $darkblue;
-							}
-						}
+						margin-top: 40%;
+						display: inline-block;
+						max-width: 100%;
+						background-color: #fff;
 					}
 				}
 			}
 		}
 
-		.loader{
-			text-align: center;
+		>.controls{
+			width: 100%;
+			margin-top: 3.8em;
+			height: 6em;
 
-			>.bar{
-				margin: 0 auto 20px auto;
-				width: 257px;
-				height: 1px;
-				background-color: #F0E8D9;
+			.loader{
+				text-align: center;
 
-				>.fill{
-					margin: 0 auto;
-					width: 0;
-					height: 100%;
-					background-color: $darkblue;
+				>.bar{
+					margin: 0 auto 20px auto;
+					width: 257px;
+					height: 1px;
+					background-color: #F0E8D9;
+
+					>.fill{
+						margin: 0 auto;
+						width: 0;
+						height: 100%;
+						background-color: $darkblue;
+					}
+				}
+
+				>.counter{
+					font-family: $font_marineup_light;
+					font-size: 18px;
+					color: $darkblue;
+					line-height: 18px;
+					letter-spacing: 2px;
+
+					&:after{
+						content: "%";
+						font-size: 12px;
+					}
 				}
 			}
 
-			>.counter{
-				font-family: $font_marineup_light;
-				font-size: 18px;
-				color: $darkblue;
-				line-height: 18px;
-				letter-spacing: 2px;
-
-				&:after{
-					content: "%";
-					font-size: 12px;
-				}
+			.skip{
+				margin: 0 auto;
 			}
-		}
-
-		.skip{
-			margin: 0 auto;
 		}
 	}
 }

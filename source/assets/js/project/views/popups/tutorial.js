@@ -18,29 +18,19 @@ feng.views.popups.Tutorial = function(){
 	goog.base( this, domElement );
 
 	// steps
-	this._stepButtonEls = goog.dom.query('.navigator button', this.domElement);
 	this._videoEls = goog.dom.query('video', this.domElement);
 	this._stepEls = goog.dom.query('.steps li', this.domElement);
-	this._descriptionEls = goog.dom.query('.steps p', this.domElement);
 
 	this._step = 0;
 	this._totalSteps = this._stepEls.length;
 
-	this._loopCount = 0;
 	this._videoEl = null;
 	this._stepEl = null;
-	this._stepButtonEl = null;
 
 	this._isAutoPlayEnabled = false;
 
 	this._numLoaded = 0;
 	this._isLoaded = false;
-
-	goog.array.forEach(this._stepEls, function(stepEl) {
-		TweenMax.set(stepEl, {
-			'display': 'none'
-		});
-	});
 
 	// loader
 	this._loaderEl = goog.dom.getElementByClass('loader', this.domElement);
@@ -84,65 +74,21 @@ feng.views.popups.Tutorial.prototype.gotoStep = function( step ){
 
 		this._videoEl.pause();
 		this._eventHandler.unlisten( this._videoEl, 'ended', this.onVideoEnded, false, this );
-	
-		var stepSize = goog.style.getSize( this._stepEl );
-
-		TweenMax.fromTo(this._stepEl, .65, {
-			'clip': 'rect(0px, ' + stepSize.width + 'px, ' + stepSize.height + 'px, 0px)',
-			'opacity': 1,
-		},{
-			'clip': 'rect(0px, 0px, ' + stepSize.height + 'px, 0px)',
-			'opacity': 0,
-			'display': 'none',
-			'ease': Power4.easeOut
-		});
+		
+		goog.dom.classes.remove( this._stepEl, 'active' );
 	}
 
 	// handle next step
 	this._step = step;
 
-	this._loopCount = 0;
-
 	this._videoEl = this._videoEls[ this._step ];
-	this._videoEl.currentTime = 0;
-
-	this._eventHandler.listen( this._videoEl, 'ended', this.onVideoEnded, false, this );
+	this._videoEl.play();
 
 	this._stepEl = this._stepEls[ this._step ];
 
-	var stepSize = goog.style.getSize( this._stepEl );
+	goog.dom.classes.add( this._stepEl, 'active' );
 
-	TweenMax.fromTo(this._stepEl, .65, {
-		'clip': 'rect(0px, ' + stepSize.width + 'px, ' + stepSize.height + 'px, ' + stepSize.width + 'px)',
-		'opacity': 0
-	},{
-		'clip': 'rect(0px, ' + stepSize.width + 'px, ' + stepSize.height + 'px, 0px)',
-		'opacity': 1,
-		'display': 'block',
-		'clearProps': 'all',
-		'ease': Power4.easeOut,
-		'onComplete': function() {
-			this._videoEl.play();
-		},
-		'onCompleteScope': this
-	});
-
-	var descriptionEl = this._descriptionEls[ this._step ];
-
-	TweenMax.fromTo(descriptionEl, .5, {
-		'opacity': 0,
-	},{
-		'delay': .4,
-		'opacity': 1
-	});
-
-	// handle navigator
-	if(this._stepButtonEl) {
-		goog.dom.classes.remove( this._stepButtonEl, 'active' );
-	}
-
-	this._stepButtonEl = this._stepButtonEls[ this._step ];
-	goog.dom.classes.add( this._stepButtonEl, 'active' );
+	this._eventHandler.listenOnce( this._videoEl, 'ended', this.onVideoEnded, false, this );
 };
 
 
@@ -150,25 +96,11 @@ feng.views.popups.Tutorial.prototype.activate = function(){
 
 	goog.base(this, 'activate');
 
-	this._eventHandler.listen( this._skipButton, 'click', this.animateOut, false, this );
-
-	goog.array.forEach(this._stepButtonEls, function(stepButtonEl) {
-		this._eventHandler.listen( stepButtonEl, 'mousedown', this.onClickNavigator, false, this );
+	goog.array.forEach(this._stepEls, function(stepEl) {
+		this._eventHandler.listen( stepEl, 'mousedown', this.onMouseDownStep, false, this );
 	}, this);
-};
 
-
-feng.views.popups.Tutorial.prototype.deactivate = function(){
-
-	goog.base(this, 'deactivate');
-
-	this._videoEl.pause();
-};
-
-
-feng.views.popups.Tutorial.prototype.animateIn = function(){
-
-	goog.base(this, 'animateIn');
+	this._eventHandler.listen( this._skipButton, 'click', this.animateOut, false, this );
 
 	if(!this._isLoaded) {
 
@@ -181,6 +113,16 @@ feng.views.popups.Tutorial.prototype.animateIn = function(){
 
 		this.gotoStep( 0 );
 	}
+};
+
+
+feng.views.popups.Tutorial.prototype.deactivate = function(){
+
+	goog.base(this, 'deactivate');
+
+	this._videoEl.pause();
+
+	this._eventHandler.removeAll();
 };
 
 
@@ -259,24 +201,15 @@ feng.views.popups.Tutorial.prototype.onVideoEnded = function(e){
 
 	}else {
 
-		this._loopCount ++;
-
-		if(this._loopCount < 2) {
-
-			e.currentTarget.play();
-
-		}else {
-
-			this.nextStep();
-		}
+		this.nextStep();
 	}
 };
 
 
-feng.views.popups.Tutorial.prototype.onClickNavigator = function(e){
-
-	var index = goog.array.indexOf( this._stepButtonEls, e.currentTarget );
-	this.gotoStep( index );
+feng.views.popups.Tutorial.prototype.onMouseDownStep = function(e){
 
 	this.enableAutoPlay( false );
+
+	var step = goog.array.indexOf(this._stepEls, e.currentTarget);
+	this.gotoStep( step );
 };

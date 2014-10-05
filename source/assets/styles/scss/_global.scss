@@ -146,26 +146,14 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
 }
 
 @mixin popup($padding, $box-shadow: none, $color: $darkblue) {
-  padding: $padding;
-  @include border-radius(3px);
-  @include box-sizing(border-box);
-  background-color: $cream;
-  @include box-shadow( $box-shadow );
+  @extend %bordered-ui;
+  display: table;
 
   >.content{
+    display: table-cell;
+    vertical-align: middle;
     width: 100%;
     height: 100%;
-  }
-
-  &:before{
-    @include absoluteTopLeft;
-    content: "";
-    display: block;
-    width: 100%;
-    height: 6px;
-    background-color: $color;
-    @include border-top-left-radius(3px);
-    @include border-top-right-radius(3px);
   }
 }
 
@@ -284,14 +272,14 @@ body{
   h1, h2{
     font-family: $font_marineup;
     text-transform: camelcase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.025em;
     -webkit-font-smoothing: antialiased;
   }
 
   h3, h4, h5, h6{
     font-family: $font_marine;
     text-transform: camelcase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.025em;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -355,21 +343,23 @@ body{
     position: relative;
     display: block;
     font-family: $font_marineup;
-    font-size: 1.8em;
     text-align: center;
     line-height: 0;
-    letter-spacing: .05em;
-    padding: 9px 20px;
+    letter-spacing: .025em;
     color: $gray-ui;
     overflow: hidden;
     border: 2px solid $gray-ui;
+    vertical-align: middle;
+    font-size: 3em;
+    padding: 1em 1.1em;
     @include border-radius( 40px );
     @include box-sizing( border-box );
     @include transition( color .4s $easeInOutCirc, background-color .2s );
 
     &.small{
+      font-size: 1.8em;
       min-width: 4.4em;
-      padding: .3em .2em;
+      padding: .8em .7em;
     }
 
     >.icon{
@@ -378,6 +368,7 @@ body{
       width: 0;
       color: $yellow-ui;
       text-align: center;
+      line-height: 0;
       margin-left: -.2em;
       margin-right: .2em;
       opacity: 0;

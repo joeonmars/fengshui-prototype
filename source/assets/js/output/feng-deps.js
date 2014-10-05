@@ -43,7 +43,7 @@ goog.addDependency('../../../../project/pubsub.js', ['feng.PubSub'], ['goog.pubs
 goog.addDependency('../../../../project/templates/book.soy.js', ['feng.templates.book'], ['feng.templates.common', 'soy', 'soydata']);
 goog.addDependency('../../../../project/templates/captions.soy.js', ['feng.templates.captions'], ['feng.templates.common', 'feng.templates.controls', 'soy', 'soydata']);
 goog.addDependency('../../../../project/templates/common.soy.js', ['feng.templates.common'], ['soy', 'soydata']);
-goog.addDependency('../../../../project/templates/controls.soy.js', ['feng.templates.controls'], ['soy', 'soydata']);
+goog.addDependency('../../../../project/templates/controls.soy.js', ['feng.templates.controls'], ['feng.templates.common', 'soy', 'soydata']);
 goog.addDependency('../../../../project/templates/debug.soy.js', ['feng.templates.debug'], ['soy', 'soydata']);
 goog.addDependency('../../../../project/templates/designcaptions.soy.js', ['feng.templates.designcaptions'], ['soy', 'soydata']);
 goog.addDependency('../../../../project/templates/main.soy.js', ['feng.templates.main'], ['feng.templates.common', 'feng.templates.controls', 'feng.templates.debug', 'soy', 'soydata']);

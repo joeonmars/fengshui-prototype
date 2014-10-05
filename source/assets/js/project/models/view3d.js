@@ -371,7 +371,7 @@ feng.models.View3D.Data = {
 			},
 			'refrigerator-door': {
 				class: "refrigerator",
-				//texture: "studio.livingroom.refrigerator-door-texture",
+				texture: "studio.livingroom.refrigerator-door-texture",
 				interactions: [
 
 				],
