@@ -22,7 +22,6 @@ feng.views.sections.overlays.TutorialOverlay.prototype.show = function( shouldDi
 
 	goog.base(this, 'show', shouldDispatch);
 	
-	feng.tutorial.showCloseButton();
 	feng.tutorial.enableAutoPlay(false);
 	goog.dom.appendChild( this.domElement, feng.tutorial.domElement );
 };
@@ -43,7 +42,7 @@ feng.views.sections.overlays.TutorialOverlay.prototype.animateIn = function(){
 
 feng.views.sections.overlays.TutorialOverlay.prototype.animateOut = function(){
 
-	goog.base(this, 'animateOut');
+	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
 
 	TweenMax.to(this.domElement, .8, {
 		'delay': .25,

@@ -25,22 +25,17 @@ feng.views.sections.controls.Reminder = function( domElement, tips ){
   this._hintTimer = new goog.Timer( 15000 );
 
   this._hintDialogueEl = goog.dom.query('.dialogue.hint', this.domElement)[0];
-  this._prevEl = goog.dom.query('.left button', this.domElement)[0];
-  this._nextEl = goog.dom.query('.right button', this.domElement)[0];
+  this._prevEl = goog.dom.query('.prev', this.domElement)[0];
+  this._nextEl = goog.dom.query('.next', this.domElement)[0];
   this._characterEl = goog.dom.getElementByClass('character', this.domElement);
   this._canvasEl = goog.dom.query('canvas', this._characterEl)[0];
   this._canvasContext = this._canvasEl.getContext('2d');
 
   this._responseDialogueEl = goog.dom.query('.dialogue.response', this.domElement)[0];
 
-  this._responseTitleEls = goog.dom.query('.title li', this._responseDialogueEl);
-  this._responseParagraphEls = goog.dom.query('.paragraph li', this._responseDialogueEl);
-
-  this._hintTitleEls = null;
-  this._hintParagraphEls = null;
-
-  this._hintTitleEl = null;
-  this._hintParagraphEl = null;
+  this._responseEls = goog.dom.query('.responses li', this._responseDialogueEl);
+  this._hintEls = null;
+  this._hintEl = null;
 
   this._characterAnimations = null;
   this._characterAnimation = null;
@@ -80,18 +75,7 @@ feng.views.sections.controls.Reminder.prototype.setView3D = function( view3d ){
 
   this._currentTips = this.getLockedTipsOfView();
 
-	this._hintTitleEls = goog.dom.query('.title li', this._hintDialogueEl);
-  this._hintParagraphEls = goog.dom.query('.paragraph li', this._hintDialogueEl);
-
-	TweenMax.set(this._hintTitleEls, {
-  	'display': 'none',
-  	'opacity': 0
-  });
-
-  TweenMax.set(this._hintParagraphEls, {
-  	'display': 'none',
-  	'opacity': 0
-  });
+  this._hintEls = goog.dom.query('.hints li', this._hintDialogueEl);
 
   this._characterAnimation = goog.object.findValue(this._characterAnimations, function(data) {
   	return (data.viewId === view3d.id);
@@ -263,38 +247,19 @@ feng.views.sections.controls.Reminder.prototype.nextHint = function(){
 
 feng.views.sections.controls.Reminder.prototype.gotoHintByTip = function( tipId ){
 
-	var domIndex = goog.array.findIndex(this._hintParagraphEls, function(el, index) {
+	var domIndex = goog.array.findIndex(this._hintEls, function(el, index) {
 		if(el.getAttribute('data-tip-id') === tipId) {
 			return true;
 		}
 	});
 
-	if(this._hintTitleEl) {
-		TweenMax.to(this._hintTitleEl, .25, {
-			'opacity': 0,
-			'display': 'none'
-		});
+	if(this._hintEl) {
+		goog.dom.classes.remove(this._hintEl, 'shown');
 	}
 
-	if(this._hintParagraphEl) {
-		TweenMax.to(this._hintParagraphEl, .25, {
-			'opacity': 0,
-			'display': 'none'
-		});
-	}
+	this._hintEl = this._hintEls[ domIndex ];
 
-	this._hintTitleEl = this._hintTitleEls[ domIndex ];
-	this._hintParagraphEl = this._hintParagraphEls[ domIndex ];
-
-	TweenMax.to(this._hintTitleEl, .25, {
-		'opacity': 1,
-		'display': 'block'
-	});
-
-	TweenMax.to(this._hintParagraphEl, .25, {
-		'opacity': 1,
-		'display': 'block'
-	});
+	goog.dom.classes.add(this._hintEl, 'shown');
 };
 
 
@@ -319,24 +284,12 @@ feng.views.sections.controls.Reminder.prototype.showResponse = function( tipId )
 
 	this._isResponseShown = true;
 
-	TweenMax.set(this._responseTitleEls, {
+	TweenMax.set(this._responseEls, {
 		'display': 'none'
 	});
 
-	TweenMax.set(this._responseParagraphEls, {
-		'display': 'none'
-	});
-
-	var titleEl = goog.array.find(this._responseTitleEls, function(el) {
+	var paragraphEl = goog.array.find(this._responseEls, function(el) {
 		return (el.getAttribute('data-tip-id') === tipId);
-	});
-
-	var paragraphEl = goog.array.find(this._responseParagraphEls, function(el) {
-		return (el.getAttribute('data-tip-id') === tipId);
-	});
-
-	TweenMax.set(titleEl, {
-		'display': 'block'
 	});
 
 	TweenMax.set(paragraphEl, {
@@ -369,7 +322,7 @@ feng.views.sections.controls.Reminder.prototype.hideHint = function( instance ){
 
 
 feng.views.sections.controls.Reminder.prototype.hideResponse = function( instance ){
-
+	
 	this._isResponseShown = false;
 
 	var duration = instance ? 0 : .4;
@@ -455,10 +408,7 @@ feng.views.sections.controls.Reminder.prototype.onTipUnlock = function(e){
 
 	var tipId = e.tip.id;
 
-	var titleEl = goog.dom.query('.title li[data-tip-id="' + tipId + '"]', this._hintDialogueEl)[0];
-	goog.dom.removeNode( titleEl );
-
-	var paragraphEl = goog.dom.query('.paragraph li[data-tip-id="' + tipId + '"]', this._hintDialogueEl)[0];
+	var paragraphEl = goog.dom.query('.hints li[data-tip-id="' + tipId + '"]', this._hintDialogueEl)[0];
 	goog.dom.removeNode( paragraphEl );
 
 	this._currentTips = this.getLockedTipsOfView();

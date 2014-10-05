@@ -101,39 +101,25 @@
 	</div>
 
 	<div class="dialogue hint">
-		<div class="left">
-			<button></button>
-		</div>
-		<div class="middle">
-			<ul class="title">
-			{foreach $tip in $tips}
-				<li data-tip-id="{ $tip.id }">from { $tip.character }</li>
-			{/foreach}
-			</ul>
-
-			<ul class="paragraph">
+		<div class="wrapper">
+			<button class="prev icon icon-prev"></button>
+			<ul class="hints">
 			{foreach $tip in $tips}
 				<li data-tip-id="{ $tip.id }">{ $tip.reminder }</li>
 			{/foreach}
 			</ul>
-		</div>
-		<div class="right">
-			<button></button>
+			<button class="next icon icon-next"></button>
 		</div>
 	</div>
 
 	<div class="dialogue response">
-		<ul class="title">
-		{foreach $tip in $tips}
-			<li data-tip-id="{ $tip.id }">appreciation from { $tip.character }</li>
-		{/foreach}
-		</ul>
-
-		<ul class="paragraph">
-		{foreach $tip in $tips}
-			<li data-tip-id="{ $tip.id }">{ $tip.response }</li>
-		{/foreach}
-		</ul>
+		<div class="wrapper">
+			<ul class="responses">
+			{foreach $tip in $tips}
+				<li data-tip-id="{ $tip.id }">{ $tip.response }</li>
+			{/foreach}
+			</ul>
+		</div>
 	</div>
 </div>
 {/template}

@@ -60,35 +60,21 @@ feng.templates.controls.Book = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.controls.Reminder = function(opt_data, opt_ignored) {
-  var output = '<div class="reminder"><div class="character">' + feng.templates.controls.RoundButton({content: '<canvas></canvas>'}) + '</div><div class="dialogue hint"><div class="left"><button></button></div><div class="middle"><ul class="title">';
+  var output = '<div class="reminder"><div class="character">' + feng.templates.controls.RoundButton({content: '<canvas></canvas>'}) + '</div><div class="dialogue hint"><div class="wrapper"><button class="prev icon icon-prev"></button><ul class="hints">';
   var tipList301 = opt_data.tips;
   var tipListLen301 = tipList301.length;
   for (var tipIndex301 = 0; tipIndex301 < tipListLen301; tipIndex301++) {
     var tipData301 = tipList301[tipIndex301];
-    output += '<li data-tip-id="' + tipData301.id + '">from ' + tipData301.character + '</li>';
+    output += '<li data-tip-id="' + tipData301.id + '">' + tipData301.reminder + '</li>';
   }
-  output += '</ul><ul class="paragraph">';
+  output += '</ul><button class="next icon icon-next"></button></div></div><div class="dialogue response"><div class="wrapper"><ul class="responses">';
   var tipList309 = opt_data.tips;
   var tipListLen309 = tipList309.length;
   for (var tipIndex309 = 0; tipIndex309 < tipListLen309; tipIndex309++) {
     var tipData309 = tipList309[tipIndex309];
-    output += '<li data-tip-id="' + tipData309.id + '">' + tipData309.reminder + '</li>';
+    output += '<li data-tip-id="' + tipData309.id + '">' + tipData309.response + '</li>';
   }
-  output += '</ul></div><div class="right"><button></button></div></div><div class="dialogue response"><ul class="title">';
-  var tipList317 = opt_data.tips;
-  var tipListLen317 = tipList317.length;
-  for (var tipIndex317 = 0; tipIndex317 < tipListLen317; tipIndex317++) {
-    var tipData317 = tipList317[tipIndex317];
-    output += '<li data-tip-id="' + tipData317.id + '">appreciation from ' + tipData317.character + '</li>';
-  }
-  output += '</ul><ul class="paragraph">';
-  var tipList325 = opt_data.tips;
-  var tipListLen325 = tipList325.length;
-  for (var tipIndex325 = 0; tipIndex325 < tipListLen325; tipIndex325++) {
-    var tipData325 = tipList325[tipIndex325];
-    output += '<li data-tip-id="' + tipData325.id + '">' + tipData325.response + '</li>';
-  }
-  output += '</ul></div></div>';
+  output += '</ul></div></div></div>';
   return output;
 };
 
@@ -134,11 +120,11 @@ feng.templates.controls.Tooltip = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var output = '<div class="progressBar"><div class="inner"><div class="wave"><canvas class="gray"></canvas><canvas class="fill"></canvas></div><ul class="tips">';
-  var tipList349 = opt_data.tips;
-  var tipListLen349 = tipList349.length;
-  for (var tipIndex349 = 0; tipIndex349 < tipListLen349; tipIndex349++) {
-    var tipData349 = tipList349[tipIndex349];
-    output += '<li class="tip" data-tip-id="' + tipData349.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><div class="content"><div class="icon icon-' + tipData349.id + '" data-tip-id="' + tipData349.id + '" data-view-id="' + tipData349.viewId + '" data-section-id="' + tipData349.sectionId + '"></div><a href="' + tipData349.goTipToken + '"><span class="icon"></span>GO</a></div></div></li>';
+  var tipList333 = opt_data.tips;
+  var tipListLen333 = tipList333.length;
+  for (var tipIndex333 = 0; tipIndex333 < tipListLen333; tipIndex333++) {
+    var tipData333 = tipList333[tipIndex333];
+    output += '<li class="tip" data-tip-id="' + tipData333.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><div class="content"><div class="icon icon-' + tipData333.id + '" data-tip-id="' + tipData333.id + '" data-view-id="' + tipData333.viewId + '" data-section-id="' + tipData333.sectionId + '"></div><a href="' + tipData333.goTipToken + '"><span class="icon"></span>GO</a></div></div></li>';
   }
   output += '</ul></div></div>';
   return output;

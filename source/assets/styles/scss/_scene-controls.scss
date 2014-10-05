@@ -178,107 +178,57 @@ $border_size: 7px;
 
 	>.dialogue{
 		position: absolute;
-		top: -130px;
-		height: 120px;
-		background-color: $cream;
-		@include single-box-shadow(0px, 1px, 2px, 0px, rgba(0, 0, 0, .14));
+		display: table;
+		bottom: 130px;
+		@extend %bordered-ui;
+		@extend %arrow-bottom-right;
 		@include animation( fade-out .25s ease-in-out both, reminder-drop .25s ease-in-out );
 
-		&.hint{
-			left: -400px + $circle_size;
-			width: 400px;
-
-			.paragraph{
-				border-left: 1px solid $brown;
-				border-right: 1px solid $brown;
-			}
+		&.hint, &.response{
+			right: 0;
+			width: 40em;
+			height: 7em;
+			padding: 2.7em 2em;
+			text-align: center;
 		}
 
-		&.response{
-			left: -308px + $circle_size;
-			width: 308px;
-		}
+		>.wrapper{
+			display: table-cell;
+			vertical-align: middle;
 
-		.title{
-			position: relative;
-			height: 14px;
-			margin: 14px 0 12px 16px;
-			@include box-sizing(border-box);
+			.hints, .responses{
+				display: inline-block;
+				vertical-align: middle;
+				width: 27em;
+				text-align: left;
 
-			>li{
-				@include absoluteTopLeft;
-				color: $darkblue;
-				font-family: $font_marineup;
-				letter-spacing: 2px;
-				font-size: 14px;
-				text-transform: uppercase;
-			}
-		}
+				>li{
+					color: $gray;
+					font-size: 1.6em;
+					line-height: 1.4;
+					font-family: $font_marine;
+					display: none;
 
-		.paragraph{
-			position: relative;
-			width: 100%;
-			height: 60px;
-			@include box-sizing(border-box);
-
-			>li{
-				@include absoluteTopLeft;
-				padding: 0 14px;
-				color: $gray;
-				font-size: 14px;
-				line-height: 18px;
-				font-family: $font_marine;
-			}
-		}
-
-		>div{
-			display: inline-block;
-			vertical-align: top;
-			height: 100%;
-
-			&.left{
-				width: 46px;
-				text-align: center;
-
-				>button{
-					display: inline-block;
-					margin-top: 60px;
-					@include retina-icon("dialogue-arrow-left");
-					@include transition(opacity .25s, transform .1s);
-
-					&:hover{
-						opacity: .8;
-					}
-
-					&:active{
-						opacity: .4;
-						@include scale(.8);
+					&.shown{
+						display: block;
+						@include animation( fade-in .25s ease-out both );
 					}
 				}
 			}
 
-			&.middle{
-				width: 308px;
-			}
+			button{
+				display: inline-block;
+				vertical-align: middle;
+				@extend %arrow-button;
+				font-size: 3em;
+				margin: 0 (2em/3);
 
-			&.right{
-				width: 46px;
-				text-align: center;
+				&:first-child{
+					margin-left: 0;
+				}
 
-				>button{
-					display: inline-block;
-					margin-top: 60px;
-					@include retina-icon("dialogue-arrow-right");
-					@include transition(opacity .25s, transform .1s);
-					
-					&:hover{
-						opacity: .8;
-					}
-
-					&:active{
-						opacity: .4;
-						@include scale(.8);
-					}
+				&:last-child{
+					margin-right: 0;
 				}
 			}
 		}

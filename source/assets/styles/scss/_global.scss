@@ -126,7 +126,7 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
     opacity: 0;
   }
 
-  >.circle{
+>.circle{
     position: absolute;
     display: table;
     top: $border_size;
@@ -148,12 +148,25 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
 @mixin popup($padding, $box-shadow: none, $color: $darkblue) {
   @extend %bordered-ui;
   display: table;
+  @include transition( opacity .25s, visibility .25s );
 
   >.content{
     display: table-cell;
     vertical-align: middle;
     width: 100%;
     height: 100%;
+  }
+
+  &.from-bottom{
+    opacity: 0;
+    visibility: hidden;
+    @include animation( popup-to-bottom .25s ease-out both );
+
+    &.shown{
+      opacity: 1;
+      visibility: visible;
+      @include animation( popup-from-bottom 1000ms linear both );
+    }
   }
 }
 
@@ -225,18 +238,48 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   }
 }
 
-%arrow-bottom{
+%arrow-bottom-right{
   &:before{
     content: "";
     position: absolute;
-    bottom: 0;
-    left: 50%;
-    margin-left: -11px;
+    top: 100%;
+    right: 0;
+    margin-right: 4em;
     width: 0;
     height: 0;
     border-style: solid;
     border-width: 20px 11px 0 11px;
     border-color: #ffffff transparent transparent transparent;
+  }
+}
+
+%arrow-button{
+  @include border-radius(100%);
+  border: 2px solid $gray-ui;
+  color: $gray-ui;
+  width: 1em;
+  height: 1em;
+  background-color: transparent;
+  @include box-sizing(border-box);
+  @include transition(opacity .25s, color .25s, background-color .25s, transform .1s);
+
+  &:before{
+    display: block;
+    font-size: .5em;
+  }
+  
+  &:hover, &:active{
+    color: #fff;
+    background-color: $gray-ui;
+  }
+
+  &:hover{
+    opacity: .8;
+  }
+
+  &:active{
+    opacity: .4;
+    @include scale(.85);
   }
 }
 //

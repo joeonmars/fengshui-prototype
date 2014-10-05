@@ -18,11 +18,11 @@ goog.require('feng.templates.debug');
  */
 feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
   var output = '<div class="section episode" id="' + opt_data.id + '"><div class="hud"><div class="overlays"><div class="tutorial-overlay"></div><div class="opening-overlay">' + feng.templates.common.Popup({classname: 'opening', content: '<h1></h1><div class="line"></div><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'yes', text: 'got it'}) + '<div class="character"></div>'}) + '</div><div class="ending-overlay">' + feng.templates.common.Popup({classname: 'ending', content: '<h1></h1><div class="line"></div><p></p>' + feng.templates.common.PrimaryButton({classname: 'continue', icon: 'yes', text: 'continue investigating'}) + feng.templates.common.PrimaryButton({classname: 'visit', icon: 'yes', text: 'visit another residence'}) + '<div class="character"></div>'}) + '</div><div class="finale-overlay">' + feng.templates.common.Popup({classname: 'finale', content: '<h1></h1><div class="line"></div><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'yes', text: 'done'})}) + '</div><div class="loader-overlay"><div class="loader"></div></div></div><div class="controls">' + feng.templates.controls.HomeButton(opt_data) + feng.templates.controls.Compass(null) + feng.templates.controls.Book(null) + feng.templates.controls.Reminder(opt_data) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.DropButton(null) + feng.templates.controls.ProgressBar(opt_data) + '</div><div class="tooltips">';
-  var tipList486 = opt_data.tips;
-  var tipListLen486 = tipList486.length;
-  for (var tipIndex486 = 0; tipIndex486 < tipListLen486; tipIndex486++) {
-    var tipData486 = tipList486[tipIndex486];
-    output += feng.templates.controls.Tooltip({tip: tipData486});
+  var tipList470 = opt_data.tips;
+  var tipListLen470 = tipList470.length;
+  for (var tipIndex470 = 0; tipIndex470 < tipListLen470; tipIndex470++) {
+    var tipData470 = tipList470[tipIndex470];
+    output += feng.templates.controls.Tooltip({tip: tipData470});
   }
   output += '</div><div class="captions"></div></div><div class="sceneContainer"></div></div>';
   return output;

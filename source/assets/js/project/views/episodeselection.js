@@ -567,7 +567,6 @@ feng.views.EpisodeSelection.prototype.onLoadStart = function(e){
 			'display': 'none'
 		});
 
-		feng.tutorial.hideCloseButton();
 		goog.dom.appendChild( this._studioEl, feng.tutorial.domElement );
 
 	}else if(this._episode.id === 'townhouse') {
@@ -580,7 +579,6 @@ feng.views.EpisodeSelection.prototype.onLoadStart = function(e){
 			'display': 'none'
 		});
 
-		feng.tutorial.hideCloseButton();
 		goog.dom.appendChild( this._townhouseEl, feng.tutorial.domElement );
 	}
 };
