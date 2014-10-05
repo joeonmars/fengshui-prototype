@@ -238,6 +238,21 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   }
 }
 
+%arrow-bottom{
+  &:before{
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -10px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 20px 11px 0 11px;
+    border-color: #ffffff transparent transparent transparent;
+  }
+}
+
 %arrow-bottom-right{
   &:before{
     content: "";
@@ -260,7 +275,7 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   width: 1em;
   height: 1em;
   background-color: transparent;
-  @include box-sizing(border-box);
+  @include background-clip(border-box);
   @include transition(opacity .25s, color .25s, background-color .25s, transform .1s);
 
   &:before{
@@ -280,6 +295,18 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   &:active{
     opacity: .4;
     @include scale(.85);
+  }
+}
+
+@mixin arrow-button($size:1em, $color:$gray-ui) {
+
+  @extend %arrow-button;
+  font-size: $size;
+  color: $color;
+  border-color: $color;
+
+  &:hover, &:active{
+    background-color: $color;
   }
 }
 //

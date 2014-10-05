@@ -17,6 +17,7 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId, data ){
   this.sectionId = sectionId;
 
   this.isMandatory = data['mandatory'];
+  this.isFinal = data['final'];
   this.reminder = data['reminder'];
   this.response = data['response'];
   this.character = data['character'];
@@ -35,6 +36,7 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId, data ){
   this.unlocked = feng.storageController.isTipUnlocked( this.id );
 
   this._requiredTipId = null;
+  this._providedTipId = null;
 };
 goog.inherits(feng.models.achievements.Tip, goog.events.EventTarget);
 
@@ -50,9 +52,27 @@ feng.models.achievements.Tip.prototype.getRequiredTip = function() {
 };
 
 
+feng.models.achievements.Tip.prototype.getProvidedTip = function() {
+
+  if(!this._providedTipId) return null;
+
+  var achievements = feng.models.achievements.Achievements.getInstance();
+  var providedTip = achievements.getTip( this._providedTipId, this.viewId, this.sectionId );
+
+  return providedTip;
+};
+
+
 feng.models.achievements.Tip.prototype.require = function( tipId ) {
 
   this._requiredTipId = tipId;
+  return this;
+};
+
+
+feng.models.achievements.Tip.prototype.provide = function( tipId ) {
+
+  this._providedTipId = tipId;
   return this;
 };
 

@@ -4,7 +4,8 @@
 /**
  * Episode Section
  * @param id section id
- * @param tips fengshui tips of section
+ * @param tips fengshui tips of episode
+ * @param tipsOfViews fengshui tips categorized by episode views
  * @param token the navigation token collection
  */
 {template .EpisodeSection}
@@ -83,12 +84,12 @@
 			{/call}
 			{call feng.templates.controls.Compass}{/call}
 			{call feng.templates.controls.Book}{/call}
-			{call feng.templates.controls.Reminder}
-				{param tips: $tips /}
-			{/call}
 			{call feng.templates.controls.ObjectSelector}{/call}
 			{call feng.templates.controls.DropButton}{/call}
 			{call feng.templates.controls.ProgressBar}
+				{param tipsOfViews: $tipsOfViews /}
+			{/call}
+			{call feng.templates.controls.Reminder}
 				{param tips: $tips /}
 			{/call}
 		</div>

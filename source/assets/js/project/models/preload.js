@@ -101,7 +101,7 @@ feng.models.Preload = function(){
 				'scene-data': 'json/studio-livingroom.json',
 				'floor-texture': 'images/texture/studio/livingroom/floor.jpg',
 				'wall-texture': 'images/texture/studio/livingroom/wall.jpg',
-				//'wall-outer-texture': 'images/texture/studio/livingroom/wall-outer.jpg',
+				'wall-outer-texture': 'images/texture/studio/livingroom/wall-outer.jpg',
 				'ceiling-texture': 'images/texture/studio/livingroom/ceiling.jpg',
 				'ceiling-lamp-1-texture': 'images/texture/studio/livingroom/ceiling-lamp-1.jpg',
 				'ceiling-lamp-2-texture': 'images/texture/studio/livingroom/ceiling-lamp-2.jpg',

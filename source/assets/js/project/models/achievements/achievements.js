@@ -29,11 +29,12 @@ feng.models.achievements.Achievements.prototype.init = function( tipsData ) {
     var sectionId = tipData['section'];
     var tipId = tipData['id'];
     var requireId = tipData['require'];
+    var provideId = tipData['provide'];
 
     this._sections[sectionId] = this._sections[sectionId] || {};
     this._sections[sectionId][viewId] = this._sections[sectionId][viewId] || [];
 
-    var tip = new feng.models.achievements.Tip( tipId, viewId, sectionId, tipData ).require( requireId );
+    var tip = new feng.models.achievements.Tip( tipId, viewId, sectionId, tipData ).provide( provideId ).require( requireId );
     this._sections[sectionId][viewId].push( tip );
 
   }, this);
@@ -51,15 +52,27 @@ feng.models.achievements.Achievements.prototype.getTip = function(tipId, viewId,
 };
 
 
-feng.models.achievements.Achievements.prototype.getTipsOfView = function(viewId, sectionId, onlyMandatory) {
+feng.models.achievements.Achievements.prototype.getTipsOfView = function(viewId, sectionId, onlyMandatory, onlyFinal) {
 
   var tips = this._sections[ sectionId ][ viewId ];
+  
+  tips = goog.array.filter(tips, function(tip) {
 
-  if(onlyMandatory) {
-    tips = goog.array.filter(tips, function(tip) {
+    if(onlyMandatory && onlyFinal) {
+
+      return (tip.isMandatory && tip.isFinal);
+
+    }else if(onlyMandatory && !onlyFinal) {
+
       return tip.isMandatory;
-    });
-  }
+
+    }else if(!onlyMandatory && onlyFinal) {
+
+      return tip.isFinal;
+    }
+
+    return true;
+  });
 
   return tips;
 };

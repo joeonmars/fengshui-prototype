@@ -112,13 +112,20 @@ feng.templates.controls.Tooltip = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
-  var output = '<div class="progressBar"><div class="inner"><div class="wave"><canvas class="gray"></canvas><canvas class="fill"></canvas></div><ul class="tips">';
-  var tipList325 = opt_data.tips;
-  var tipListLen325 = tipList325.length;
-  for (var tipIndex325 = 0; tipIndex325 < tipListLen325; tipIndex325++) {
-    var tipData325 = tipList325[tipIndex325];
-    output += '<li class="tip" data-tip-id="' + tipData325.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><div class="content"><div class="icon icon-' + tipData325.id + '" data-tip-id="' + tipData325.id + '" data-view-id="' + tipData325.viewId + '" data-section-id="' + tipData325.sectionId + '"></div><a href="' + tipData325.goTipToken + '"><span class="icon"></span>GO</a></div></div></li>';
+  var output = '<div class="progressBar"><div class="inner"><button class="prev icon icon-prev"></button><button class="next icon icon-next"></button><div class="tips-wrapper">';
+  var viewIdList325 = soy.$$getMapKeys(opt_data.tipsOfViews);
+  var viewIdListLen325 = viewIdList325.length;
+  for (var viewIdIndex325 = 0; viewIdIndex325 < viewIdListLen325; viewIdIndex325++) {
+    var viewIdData325 = viewIdList325[viewIdIndex325];
+    output += '<ul class="tips" data-view-id="' + viewIdData325 + '">';
+    var tipList329 = opt_data.tipsOfViews[viewIdData325];
+    var tipListLen329 = tipList329.length;
+    for (var tipIndex329 = 0; tipIndex329 < tipListLen329; tipIndex329++) {
+      var tipData329 = tipList329[tipIndex329];
+      output += '<li class="tip" data-tip-id="' + tipData329.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><div class="content"><div class="icon icon-' + tipData329.id + '" data-tip-id="' + tipData329.id + '" data-view-id="' + tipData329.viewId + '" data-section-id="' + tipData329.sectionId + '"></div><a href="' + tipData329.goTipToken + '"><span class="icon"></span>GO</a></div></div></li>';
+    }
+    output += '</ul>';
   }
-  output += '</ul></div></div>';
+  output += '</div></div></div>';
   return output;
 };

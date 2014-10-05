@@ -13,8 +13,7 @@ feng.views.view3dobject.entities.Closet = function( object3d, data, view3d ){
 
   goog.base(this, object3d, data, view3d);
 
-  this._door = this.object3d.getObjectByName('closet-door');
-  console.log(this.tip)
+  this._door = this.object3d;
 };
 goog.inherits(feng.views.view3dobject.entities.Closet, feng.views.view3dobject.TipObject);
 

@@ -21,8 +21,7 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 	this._objectSelectorCallbacks = {
 		'onStart': goog.bind(this.onObjectSelectStart, this),
 		'onCancel': goog.bind(this.onObjectSelectCancel, this),
-		'onComplete': goog.bind(this.onObjectSelectComplete, this),
-		'onProgress': goog.bind(this.onObjectSelectProgress, this),
+		'onComplete': goog.bind(this.onObjectSelectComplete, this)
 	};
 
 	this._objectSelector = this._view3d.hud.objectSelector;
@@ -114,7 +113,6 @@ feng.controllers.controls.BrowseControls.prototype.activate = function () {
 	this._eventHandler.listen( this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this );
 
 	this._objectSelector.activate( this._objectSelectorCallbacks );
-	this._progressBar.activate();
 };
 
 
@@ -123,7 +121,6 @@ feng.controllers.controls.BrowseControls.prototype.deactivate = function () {
 	goog.base(this, 'deactivate');
 
 	this._objectSelector.deactivate();
-	this._progressBar.deactivate();
 };
 
 
@@ -290,11 +287,6 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelectCancel = functi
 feng.controllers.controls.BrowseControls.prototype.onObjectSelectStart = function ( object ) {
 
 	this._view3d.fx.selectEffect.animateIn( object );
-};
-
-
-feng.controllers.controls.BrowseControls.prototype.onObjectSelectProgress = function ( object, progress ) {
-
 };
 
 

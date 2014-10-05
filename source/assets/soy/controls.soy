@@ -152,31 +152,33 @@
 
 /**
  * Progress Bar
- * @param tips fengshui tips
+ * @param tipsOfViews tips key/value pairings categorized by episode views
  */
 {template .ProgressBar}
 <div class="progressBar">
 	<div class="inner">
-		<div class="wave">
-			<canvas class="gray"></canvas>
-			<canvas class="fill"></canvas>
-		</div>
-		<ul class="tips">
-			{foreach $tip in $tips}
-				<li class="tip" data-tip-id="{ $tip.id }">
-					<div class="dot">
-						<div class="outer"></div>
-						<div class="inner"></div>
-					</div>
-					<div class="dialog">
-						<div class="content">
-							<div class="icon icon-{ $tip.id }" data-tip-id="{ $tip.id }" data-view-id="{ $tip.viewId }" data-section-id="{ $tip.sectionId }"></div>
-							<a href="{ $tip.goTipToken }"><span class="icon"></span>GO</a>
-						</div>
-					</div>
-				</li>
+		<button class="prev icon icon-prev"></button>
+		<button class="next icon icon-next"></button>
+		<div class="tips-wrapper">
+			{foreach $viewId in keys($tipsOfViews)}
+				<ul class="tips" data-view-id="{ $viewId }">
+					{foreach $tip in $tipsOfViews[$viewId]}
+						<li class="tip" data-tip-id="{ $tip.id }">
+							<div class="dot">
+								<div class="outer"></div>
+								<div class="inner"></div>
+							</div>
+							<div class="dialog">
+								<div class="content">
+									<div class="icon icon-{ $tip.id }" data-tip-id="{ $tip.id }" data-view-id="{ $tip.viewId }" data-section-id="{ $tip.sectionId }"></div>
+									<a href="{ $tip.goTipToken }"><span class="icon"></span>GO</a>
+								</div>
+							</div>
+						</li>
+					{/foreach}
+				</ul>
 			{/foreach}
-		</ul>
+		</div>
 	</div>
 </div>
 {/template}

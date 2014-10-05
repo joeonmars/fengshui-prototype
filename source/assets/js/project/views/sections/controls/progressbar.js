@@ -2,7 +2,6 @@ goog.provide('feng.views.sections.controls.ProgressBar');
 
 goog.require('goog.async.Throttle');
 goog.require('feng.views.sections.controls.Controls');
-goog.require('feng.models.achievements.Achievements');
 
 
 /**
@@ -12,12 +11,20 @@ feng.views.sections.controls.ProgressBar = function(domElement, tips){
 
   goog.base(this, domElement);
 
-  this._innerEl = goog.dom.query('.inner', this.domElement)[0];
+  this._tipsWrapperEl = goog.dom.query('.tips-wrapper', this.domElement)[0];
+  this._tipsEls = goog.dom.query('.tips', this.domElement);
   this._tipEls = goog.dom.query('.tips > li', this.domElement);
   this._dotEls = goog.dom.query('.tips .dot', this.domElement);
-  this._dialogEls = goog.dom.query('.tips .dialog', this.domElement);
+  this._prevButtonEl = goog.dom.getElementByClass('prev', this.domElement);
+  this._nextButtonEl = goog.dom.getElementByClass('next', this.domElement);
 
-  var achievements = feng.models.achievements.Achievements.getInstance();
+  this._tipsEl = this._tipsEls[0];
+
+  this._viewIds = goog.array.map( this._tipsEls, function(tipsEl) {
+    return tipsEl.getAttribute('data-view-id');
+  });
+
+  this._viewId = this._viewIds[0];
 
   this._tips = {};
   
@@ -27,69 +34,45 @@ feng.views.sections.controls.ProgressBar = function(domElement, tips){
 
   this._nearbyTipEl = null;
 
-  // create sine waves on canvas
-  var numWaves = this._tipEls.length - 1;
-  this._canvasWidth = 60 * numWaves;
-  this._canvasHeight = 30;
-
-  var numWavePoints = 20;
-  var numPoints = numWaves * numWavePoints;
-
-  this._waveEl = goog.dom.getElementByClass('wave', this.domElement);
-  goog.style.setSize(this._waveEl, this._canvasWidth, this._canvasHeight);
-
-  this._grayCanvas = goog.dom.query('canvas.gray', this.domElement)[0];
-  this._grayCanvas.width = this._canvasWidth;
-  this._grayCanvas.height = this._canvasHeight;
-
-  this._fillCanvas = goog.dom.query('canvas.fill', this.domElement)[0];
-  this._fillCanvas.width = this._canvasWidth;
-  this._fillCanvas.height = this._canvasHeight;
-
-  var grayCtx = this._grayCanvas.getContext('2d');
-  grayCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-  grayCtx.lineWidth = 4;
-  grayCtx.beginPath();
-
-  var fillCtx = this._fillCanvas.getContext('2d');
-  fillCtx.strokeStyle = '#ffffff';
-  fillCtx.lineWidth = 4;
-  fillCtx.beginPath();
-
-  var halfHeight = this._canvasHeight / 2;
-
-  for(var i = 0; i <= numPoints; i ++) {
-
-    var x = this._canvasWidth / numPoints * i;
-    var y = halfHeight + halfHeight * Math.sin( i/numPoints * Math.PI * numWaves ) * .5;
-
-    if(i === 0) {
-      grayCtx.moveTo(x, y);
-      fillCtx.moveTo(x, y);
-    }else {
-      grayCtx.lineTo(x, y);
-      fillCtx.lineTo(x, y);
-    }
-  }
-
-  grayCtx.stroke();
-  fillCtx.stroke();
-
-  goog.array.forEach(this._tipEls, function(tipEl, index) {
-    var x = index * this._canvasWidth / numWaves;
-    var y = halfHeight;
-    goog.style.setPosition(tipEl, x, y);
-  }, this);
-
   //
   this._detectNearbyThrottle = new goog.async.Throttle(this.detectNearbyObjects, 1000/5, this);
   
   this._nearbyObjects = [];
 
-  //
-  this.setProgress( 0 );
+  this._tipsWidthViewportRatio = 0.5;
+  this._maxTipMargin = 50;
+
+  this._tweener = new TimelineMax();
 };
 goog.inherits(feng.views.sections.controls.ProgressBar, feng.views.sections.controls.Controls);
+
+
+feng.views.sections.controls.ProgressBar.prototype.setView3D = function( view3d ){
+
+  goog.base(this, 'setView3D', view3d);
+
+  this.calculateTipsLayout();
+  this.goTipsOfView( view3d.id );
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.calculateTipsLayout = function(){
+
+  this._tipEls = goog.dom.query( 'li', this._tipsEl );
+
+  // arrange tip dots
+  var numDots = this._tipEls.length;
+  var dotsWidth = numDots * this._maxTipMargin * 2;
+  var actualWidth = Math.min( dotsWidth, this._tipsWidthViewportRatio * goog.dom.getViewportSize().width );
+  var dotWidth = actualWidth / numDots;
+  var margin = dotWidth / 2;
+
+  goog.array.forEach(this._tipEls, function(tipEl) {
+    goog.style.setStyle( tipEl, 'margin', '0 ' + margin + 'px' );
+  });
+
+  return actualWidth;
+};
 
 
 feng.views.sections.controls.ProgressBar.prototype.activate = function() {
@@ -97,6 +80,15 @@ feng.views.sections.controls.ProgressBar.prototype.activate = function() {
   var shouldActivate = goog.base(this, 'activate');
 
   if(!shouldActivate) return;
+
+  this._eventHandler.listen(this._prevButtonEl, 'click', this.goPrevTips, false, this);
+  this._eventHandler.listen(this._nextButtonEl, 'click', this.goNextTips, false, this);
+
+  goog.object.forEach(this._tips, function(tip) {
+
+    tip.listen(feng.events.EventType.UNLOCK, this.onTipUnlock, false, this);
+    if(tip.unlocked) this.unlockedTipEl( tip.id );
+  }, this);
 
   this._detectNearbyThrottle.fire();
 };
@@ -108,13 +100,90 @@ feng.views.sections.controls.ProgressBar.prototype.deactivate = function() {
 
   if(!shouldDeactivate) return;
 
+  goog.object.forEach(this._tips, function(tip) {
+    tip.unlisten(feng.events.EventType.UNLOCK, this.onTipUnlock, false, this);
+  }, this);
+
   this._detectNearbyThrottle.stop();
+
+  this._tweener.kill();
 };
 
 
-feng.views.sections.controls.ProgressBar.prototype.setProgress = function( progress ){
+feng.views.sections.controls.ProgressBar.prototype.goTipsOfView = function( viewId ) {
 
-  goog.style.setStyle(this._fillCanvas, 'clip', 'rect(0px,' + this._canvasWidth * progress + 'px,30px,0px)');
+  this._viewId = viewId;
+
+  // get tips element of the view id
+  var tipsEl = goog.array.find(this._tipsEls, function(tipsEl) {
+    return (tipsEl.getAttribute('data-view-id') === viewId);
+  });
+
+  // animate tips
+  var tweener = TweenMax.to(this._tipsEls, 0, {
+    'display': 'none'
+  });
+
+  // assign new tips el
+  this._tipsEl = tipsEl;
+
+  // calculate new tips layout
+  var tipsWrapperWidth = this.calculateTipsLayout();
+
+  var tweener2 = TweenMax.to( this._tipsWrapperEl, .5, {
+    'width': tipsWrapperWidth,
+    'ease': Strong.easeOut
+  });
+
+  //
+  var tweener3 = new TimelineMax();
+
+  var tweeners = goog.array.map( goog.dom.query('li', this._tipsEl), function(tipEl) {
+
+    var t = TweenMax.fromTo(tipEl, .25, {
+      'opacity': 0,
+      'y': 20
+    }, {
+      'opacity': 1,
+      'y': 0
+    });
+
+    return t;
+  });
+
+  tweener3.add( tweeners, '+=0', 'start', .05 );
+
+  tweener4 = TweenMax.to(this._tipsEl, .25, {
+    'opacity': 1,
+    'display': 'block'
+  });
+
+  this._tweener.clear();
+  this._tweener.add([tweener, tweener2, tweener3, tweener4]);
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.goPrevTips = function() {
+
+  var currentTipsIndex = goog.array.indexOf(this._viewIds, this._tipsEl.getAttribute('data-view-id'));
+
+  currentTipsIndex --;
+
+  if(currentTipsIndex < 0) currentTipsIndex = this._viewIds.length - 1;
+
+  this.goTipsOfView( this._viewIds[currentTipsIndex] );
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.goNextTips = function() {
+
+  var currentTipsIndex = goog.array.indexOf(this._viewIds, this._tipsEl.getAttribute('data-view-id'));
+
+  currentTipsIndex ++;
+
+  if(currentTipsIndex > this._viewIds.length - 1) currentTipsIndex = 0;
+
+  this.goTipsOfView( this._viewIds[currentTipsIndex] );
 };
 
 
@@ -161,11 +230,15 @@ feng.views.sections.controls.ProgressBar.prototype.detectNearbyObjects = functio
   if(nearestObject) {
 
     //console.log(nearestObject.name);
-    var tipId = nearestObject.tip.id;
+    var tip = nearestObject.tip;
+    var providedTip = tip.getProvidedTip();
+
+    var tipId = providedTip ? providedTip.id : tip.id;
+
     var tipEl = goog.array.find(this._tipEls, function(tipEl) {
       return (tipEl.getAttribute('data-tip-id') === tipId);
     });
-
+    
     if(this._nearbyTipEl !== tipEl) {
 
       if(this._nearbyTipEl) {
@@ -186,6 +259,23 @@ feng.views.sections.controls.ProgressBar.prototype.detectNearbyObjects = functio
 };
 
 
+feng.views.sections.controls.ProgressBar.prototype.unlockTip = function( tipId ){
+
+  var unlockedTipEl = goog.array.find(this._tipEls, function(tipEl) {
+    return tipEl.getAttribute('data-tip-id') === tipId;
+  });
+
+  goog.dom.classes.add( unlockedTipEl, 'unlocked' );
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.onTipUnlock = function(e){
+
+  var tipId = e.tip.id;
+  this.unlockTip( tipId );
+};
+
+
 feng.views.sections.controls.ProgressBar.prototype.onModeChange = function(e){
 
   goog.base(this, 'onModeChange', e);
@@ -194,17 +284,13 @@ feng.views.sections.controls.ProgressBar.prototype.onModeChange = function(e){
 
     case feng.controllers.view3d.ModeController.Mode.BROWSE:
     case feng.controllers.view3d.ModeController.Mode.WALK:
-    if(!this._isActivated) {
-      goog.style.showElement(this.domElement, true);
-      this.activate();
-    }
+    goog.style.showElement(this.domElement, true);
+    this.activate();
     break;
 
     default:
-    if(this._isActivated) {
-      goog.style.showElement(this.domElement, false);
-      this.deactivate();
-    }
+    goog.style.showElement(this.domElement, false);
+    this.deactivate();
     break;
   }
 };
@@ -214,10 +300,12 @@ feng.views.sections.controls.ProgressBar.prototype.onResize = function(e){
 
 	goog.base(this, 'onResize', e);
 
-	var mainSize = goog.style.getSize( goog.dom.getElement('main') );
+	var viewportSize = goog.dom.getViewportSize();
   var domSize = goog.style.getSize( this.domElement );
 
-  var x = (mainSize.width - domSize.width) / 2;
-  var y = mainSize.height - domSize.height - 40;
-	goog.style.setPosition(this.domElement, x, y);
+  var y = viewportSize.height - 115;
+	goog.style.setStyle( this.domElement, 'top', y + 'px');
+
+  this.calculateTipsLayout();
+  this.goTipsOfView( this._viewId );
 };

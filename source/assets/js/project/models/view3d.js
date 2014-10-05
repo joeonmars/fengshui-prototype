@@ -185,7 +185,7 @@ feng.models.View3D.Data = {
 			},
 			'wall-outer':	{
 				castShadow: true,
-				//texture: "studio.livingroom.wall-outer-texture"
+				texture: "studio.livingroom.wall-outer-texture"
 			},
 			'ceiling':	{
 				texture: "studio.livingroom.ceiling-texture"
@@ -432,7 +432,14 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.towel-texture"
 			},
 			'showerhead': {
-				texture: "studio.bathroom.showerhead-texture"
+				class: 'tip',
+				interactions: [
+					"move",
+					"rotate"
+				],
+				texture: "studio.bathroom.showerhead-texture",
+				tipInteraction: "drop",
+				tipKey: 'studio.bathroom.showerhead'
 			},
 			'shower-handle': {
 				texture: "studio.bathroom.shower-handle-texture"
@@ -487,6 +494,9 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.cosmetic-bag-texture",
 			},
 			'closet': {
+				texture: "studio.bathroom.closet-texture"
+			},
+			'closet-door': {
 				class: "closet",
 				receiveShadow: true,
 				interactions: [
@@ -500,9 +510,6 @@ feng.models.View3D.Data = {
 				tipInteraction: "change_object",
 				tipKey: 'studio.bathroom.closet',
 				captionClass: 'arrangecloset',
-				texture: "studio.bathroom.closet-texture"
-			},
-			'closet-door': {
 				texture: "studio.bathroom.closet-door-texture",
 			},
 			'trashcan': {

@@ -54,6 +54,13 @@
 /* -- end -- */
 
 
+/* -- pulse circle -- */
+@include keyframes(pulse) {
+  from { @include scale(.5); opacity: 1; }
+  to { @include scale(2.5); opacity: 0; }
+}
+/* -- end -- */
+
 /* -- reminder dialogue -- */
 /* Generated with Bounce.js. Edit at http://goo.gl/oeCR1n */
 @include keyframes(reminder-popup) {

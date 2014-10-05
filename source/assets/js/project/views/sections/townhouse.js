@@ -10,19 +10,29 @@ goog.require('feng.views.sections.Episode');
  */
 feng.views.sections.Townhouse = function(){
 
+	var viewIds = ['boysroom', 'homeoffice', 'livingroom'];
+	var sectionId = 'townhouse';
+
 	var achievements = feng.models.achievements.Achievements.getInstance();
-	var tips = achievements.getTipsOfSection( 'townhouse' );
-	
+	var tips = achievements.getTipsOfSection( sectionId );
+
+	var tipsOfViews = {};
+	goog.object.forEach(viewIds, function(viewId) {
+		var tips = achievements.getTipsOfView( viewId, sectionId, false, true );
+		tipsOfViews[ viewId ] = tips;
+	});
+
 	var template = feng.templates.main.EpisodeSection;
 	var templateData = {
-		id: 'townhouse',
+		id: sectionId,
 		tips: tips,
+		tipsOfViews: tipsOfViews,
 		token: feng.controllers.NavigationController.Token
 	};
 
   goog.base(this, template, templateData);
 
-	this._viewIds = ['boysroom', 'homeoffice', 'livingroom'];
-	this._viewId = this._viewIds[0];
+  this._viewIds = viewIds;
+  this._viewId = this._viewIds[0];
 };
 goog.inherits(feng.views.sections.Townhouse, feng.views.sections.Episode);
