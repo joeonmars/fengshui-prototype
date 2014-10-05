@@ -72,7 +72,7 @@ feng.views.sections.controls.Book.prototype.onClick = function(e){
 feng.views.sections.controls.Book.prototype.onResize = function(e){
 
 	var viewportSize = goog.dom.getViewportSize();
-	goog.style.setPosition(this.domElement, viewportSize.width - 100 - 30, 140);
+	goog.style.setPosition(this.domElement, viewportSize.width - 100 - 30, 150);
 };
 
 

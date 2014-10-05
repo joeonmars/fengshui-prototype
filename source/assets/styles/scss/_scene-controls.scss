@@ -125,9 +125,7 @@ $border_size: 7px;
 }
 
 >.book{
-	$circle_size: 100px;
 	$book_size: 80px;
-	$border_size: 5px;
 
 	@include absoluteTopLeft;
 
@@ -321,20 +319,6 @@ $border_size: 7px;
 						}
 					}
 
-					&.unlocked{
-						>.dot{
-							opacity: 1;
-						}
-
-						&:hover{
-							>.dot{
-								>.outer{
-									@include scale(1.4);
-								}
-							}
-						}
-					}
-
 					>.dot{
 						position: relative;
 						width: 0;
@@ -366,6 +350,7 @@ $border_size: 7px;
 
 					>.dialog{
 						position: absolute;
+						display: table;
 						top: -16em;
 						left: -6.6em;
 						width: 13.2em;
@@ -378,41 +363,52 @@ $border_size: 7px;
 						@extend %arrow-bottom;
 
 						>.content{
+							display: table-cell;
+							vertical-align: middle;
+							color: $darkgray-ui;
+							opacity: .85;
+							@include single-transition(opacity, .25s);
+
+							&:hover{
+								opacity: 1;
+							}
+
 							>.icon{
+								position: relative;
+								display: block;
 								width: 100%;
 								height: 50px;
 								text-align: center;
 								font-size: 50px;
-								color: $brown;
+								color: inherit;
+
+								&:after{
+									@include absoluteTopLeft;
+									width: 100%;
+									height: 100%;
+									background: #fff;
+									@extend .icon;
+									@extend .icon-lock:before;
+								}
 							}
 
-							>a{
-								&:before{
-									content: "";
-									display: block;
-									margin: 10px auto;
-									width: 100%;
-									height: 1px;
-									background-color: $brown;
-									opacity: .25;
-								}
-
-								>.icon{
-									@include font-awesome("fa-angle-right");
-									margin-right: 3px;
-								}
-
-								&:hover{
-									color: $darkblue;
-								}
-
+							>h6{
+								position: relative;
 								display: block;
 								width: 100%;
 								text-align: center;
-								font-size: 16px;
-								letter-spacing: 1px;
-								color: $brown;
-								@include single-transition(color, .25s);
+								margin-top: .65em;
+								font-size: 1.6em;
+								color: inherit;
+								text-transform: capitalize;
+
+								&:after{
+									@include absoluteTopLeft;
+									width: 100%;
+									height: 100%;
+									background: #fff;
+									content: "Locked";
+								}
 							}
 						}
 
@@ -423,8 +419,21 @@ $border_size: 7px;
 						}
 					}
 
-					&:hover{
+					&.unlocked{
+						>.dot{
+							opacity: 1;
+						}
 
+						&:hover{
+							>.dot{
+								>.outer{
+									@include scale(1.4);
+								}
+							}
+						}
+					}
+
+					&:hover{
 						>.dot{
 							>.outer{
 								opacity: 1;

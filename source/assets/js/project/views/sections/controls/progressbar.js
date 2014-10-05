@@ -238,6 +238,8 @@ feng.views.sections.controls.ProgressBar.prototype.detectNearbyObjects = functio
     var tipEl = goog.array.find(this._tipEls, function(tipEl) {
       return (tipEl.getAttribute('data-tip-id') === tipId);
     });
+
+    //console.log(tipEl, tipId, providedTip)
     
     if(this._nearbyTipEl !== tipEl) {
 

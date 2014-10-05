@@ -169,10 +169,10 @@
 								<div class="inner"></div>
 							</div>
 							<div class="dialog">
-								<div class="content">
+								<a class="content" href="{ $tip.goTipToken }">
 									<div class="icon icon-{ $tip.id }" data-tip-id="{ $tip.id }" data-view-id="{ $tip.viewId }" data-section-id="{ $tip.sectionId }"></div>
-									<a href="{ $tip.goTipToken }"><span class="icon"></span>GO</a>
-								</div>
+									<h6>{ $tip.name }</h6>
+								</a>
 							</div>
 						</li>
 					{/foreach}
