@@ -123,13 +123,15 @@ feng.controllers.view3d.PathfindingController.prototype.generateMatrix = functio
 	var ctx = this._renderer.domElement.getContext('2d');
 	var halfTileSize = tileSize / 2;
 
+	var DPI = window.devicePixelRatio || 1;
+
 	for(row = 0; row < numRows; ++row) {
 		var rowData = [];
 
 		for(col = 0; col < numCols; ++col) {
 
-			var x = col * tileSize + halfTileSize;
-			var y = row * tileSize + halfTileSize;
+			var x = (col * tileSize + halfTileSize) * DPI;
+			var y = (row * tileSize + halfTileSize) * DPI;
 
 			var redCount = 0;
 

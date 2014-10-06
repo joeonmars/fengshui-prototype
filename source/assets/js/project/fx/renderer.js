@@ -8,7 +8,7 @@ goog.require('goog.array');
  */
 feng.fx.Renderer = function(canvas, scene, camera){
 
-	this._DPR = window.devicePixelRatio || 1;
+	this._DPR = 1; //window.devicePixelRatio || 1; working weirdly
 
 	// create default renderer
 	this._renderer = new THREE.WebGLRenderer( {

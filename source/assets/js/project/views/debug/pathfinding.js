@@ -44,6 +44,7 @@ feng.views.debug.Pathfinding.prototype.setColors = function(colors) {
 
 
 feng.views.debug.Pathfinding.prototype.update = function(matrix, gridWidth, gridHeight, numCols, numRows, cellSize, path) {
+
 	var canvasWidth = gridWidth * this._debugScale;
 	var canvasHeight = gridHeight * this._debugScale;
 
