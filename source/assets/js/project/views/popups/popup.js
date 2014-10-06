@@ -35,7 +35,6 @@ goog.inherits(feng.views.popups.Popup, goog.events.EventTarget);
 feng.views.popups.Popup.prototype.activate = function() {
 
 	this._eventHandler.listen(this._closeButton, 'click', this.animateOut, false, this);
-	this._eventHandler.listen(document, 'click', this.onClickDocument, false, this);
 };
 
 
@@ -115,10 +114,4 @@ feng.views.popups.Popup.prototype.onAnimatedOut = function() {
 	this._isShown = false;
 
 	this.dispatchEvent( feng.events.EventType.CLOSE );
-};
-
-
-feng.views.popups.Popup.prototype.onClickDocument = function(e) {
-
-	
 };

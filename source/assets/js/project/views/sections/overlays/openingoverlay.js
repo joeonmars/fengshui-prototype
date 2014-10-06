@@ -38,7 +38,8 @@ feng.views.sections.overlays.OpeningOverlay.prototype.activate = function(){
 
 	goog.base(this, 'activate');
 
-	this._eventHandler.listen(this._okButton, 'click', this.animateOut, false, this);
+	this._eventHandler.listenOnce( this._okButton, 'click', this.onClickOK, false, this );
+	this._eventHandler.listenOnce( this._popup, feng.events.EventType.ANIMATE_OUT, this.animateOut, false, this );
 };
 
 
@@ -109,6 +110,10 @@ feng.views.sections.overlays.OpeningOverlay.prototype.animateOut = function(){
 		'onCompleteParams': [ true ],
 		'onCompleteScope': this
 	});
+};
+
+
+feng.views.sections.overlays.OpeningOverlay.prototype.onClickOK = function(e){
 
 	this._popup.animateOut();
 };
