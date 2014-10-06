@@ -1,3 +1,24 @@
+&{
+	>.content{
+
+		h1{
+			font-size: 4.2em;
+			line-height: 1.2;
+			text-transform: capitalize;
+		}
+
+		p{
+			font-size: 1.6em;
+			color: $lightgray-ui;
+			line-height: 1.5;
+
+			>br{
+				line-height: 2em;
+			}
+		}
+	}
+}
+
 &.tutorial{
 	width: 86em;
 	height: 50em;
@@ -129,19 +150,14 @@
 		>h1{
 			position: relative;
 			z-index: 1;
-			font-size: 4.2em;
-			line-height: 1.2;
 			width: 65%;
 		}
 
 		>p{
 			position: relative;
 			z-index: 2;
-			padding: 1.5em 0 2.8em 0;
-			font-size: 1.6em;
-			color: $lightgray-ui;
-			line-height: 1.5;
 			width: 65%;
+			padding: 1em 0 2em 0;
 		}
 
 		>button{

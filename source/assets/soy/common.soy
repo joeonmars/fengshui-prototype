@@ -96,7 +96,7 @@
  */
 {template .Popup}
 
-<div class="popup {if $classname}{ $classname }{/if} from-bottom">
+<div class="popup {if $classname}{ $classname }{/if}">
 	{call .CloseButton}{/call}
 	<div class="content">
 	{ $content }
@@ -113,7 +113,7 @@
 {template .TutorialPopup}
 
 {call .Popup}
-	{param classname: 'tutorial' /}
+	{param classname: 'tutorial from-bottom' /}
 	{param content}
 		<h1>Control Instructions</h1>
 

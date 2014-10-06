@@ -13,13 +13,10 @@ feng.views.sections.captions.AdviceCaption = function( object, cameraController,
   this._template = feng.templates.captions.AdviceCaption;
 
   this._templateData = {
-  	
+  	tip: object.tip
   };
 
   goog.base(this, object, cameraController, renderSize, controls, hud);
-
-  var rightEl = goog.dom.getElementByClass('right', this.domElement);
-  this._rightBlock = this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT );
 };
 goog.inherits(feng.views.sections.captions.AdviceCaption, feng.views.sections.captions.Caption);
 
@@ -33,12 +30,4 @@ feng.views.sections.captions.AdviceCaption.prototype.show = function() {
 feng.views.sections.captions.AdviceCaption.prototype.hide = function() {
 
   goog.base(this, 'hide');
-};
-
-
-feng.views.sections.captions.AdviceCaption.prototype.onResize = function(e) {
-
-  goog.base(this, 'onResize', e);
-
-  this._wrapLayout.updateBlockSize( this._rightBlock );
 };

@@ -59,7 +59,7 @@ feng.templates.common.FengshuiLogo = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.common.Popup = function(opt_data, opt_ignored) {
-  return '<div class="popup ' + ((opt_data.classname) ? opt_data.classname : '') + ' from-bottom">' + feng.templates.common.CloseButton(null) + '<div class="content">' + opt_data.content + '</div></div>';
+  return '<div class="popup ' + ((opt_data.classname) ? opt_data.classname : '') + '">' + feng.templates.common.CloseButton(null) + '<div class="content">' + opt_data.content + '</div></div>';
 };
 
 
@@ -70,5 +70,5 @@ feng.templates.common.Popup = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.common.TutorialPopup = function(opt_data, opt_ignored) {
-  return feng.templates.common.Popup({classname: 'tutorial', content: '<h1>Control Instructions</h1><ul class="steps"><li><h6>Explore the environment</h6><div class="video-wrapper"><video preload="none"><source src="' + opt_data.assetsPath + 'video/tutorial-1.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-1.ogg" type="video/ogg"></video></div></li><li><h6>Inspect objects for tips</h6><div class="video-wrapper"><video preload="none"><source src="' + opt_data.assetsPath + 'video/tutorial-2.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-2.ogg" type="video/ogg"></video></div></li><li><h6>Ask the client for clues</h6><div class="video-wrapper"><video preload="none"><source src="' + opt_data.assetsPath + 'video/tutorial-3.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-3.ogg" type="video/ogg"></video></div></li></ul><div class="controls"><div class="loader"><div class="bar"><div class="fill"></div></div><p class="counter">00</p></div>' + feng.templates.common.PrimaryButton({classname: 'skip', icon: 'icon-yes', text: 'Continue'}) + '</div>'});
+  return feng.templates.common.Popup({classname: 'tutorial from-bottom', content: '<h1>Control Instructions</h1><ul class="steps"><li><h6>Explore the environment</h6><div class="video-wrapper"><video preload="none"><source src="' + opt_data.assetsPath + 'video/tutorial-1.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-1.ogg" type="video/ogg"></video></div></li><li><h6>Inspect objects for tips</h6><div class="video-wrapper"><video preload="none"><source src="' + opt_data.assetsPath + 'video/tutorial-2.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-2.ogg" type="video/ogg"></video></div></li><li><h6>Ask the client for clues</h6><div class="video-wrapper"><video preload="none"><source src="' + opt_data.assetsPath + 'video/tutorial-3.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-3.ogg" type="video/ogg"></video></div></li></ul><div class="controls"><div class="loader"><div class="bar"><div class="fill"></div></div><p class="counter">00</p></div>' + feng.templates.common.PrimaryButton({classname: 'skip', icon: 'icon-yes', text: 'Continue'}) + '</div>'});
 };

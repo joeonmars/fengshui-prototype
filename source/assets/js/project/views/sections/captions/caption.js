@@ -1,7 +1,6 @@
 goog.provide('feng.views.sections.captions.Caption');
 
 goog.require('goog.events.EventHandler');
-goog.require('feng.fx.WrapLayout');
 
 
 /**
@@ -16,7 +15,6 @@ feng.views.sections.captions.Caption = function( object, cameraController, rende
   this._renderSize = renderSize;
   this._controls = controls;
   this._hud = hud;
-  this._wrapLayout = new feng.fx.WrapLayout;
 
   this.allowUpdate = true;
 
@@ -105,10 +103,6 @@ feng.views.sections.captions.Caption.prototype.unlock = function() {
 
 feng.views.sections.captions.Caption.prototype.update = function() {
 
-  var object3d = this._object.object3d;
-  var camera = this._cameraController.activeCamera;
-
-  this._wrapLayout.update( object3d, camera, this._renderSize );
 };
 
 
@@ -154,5 +148,6 @@ feng.views.sections.captions.Caption.prototype.onUnlockReady = function( e ) {
 
 feng.views.sections.captions.Caption.prototype.onResize = function( e ) {
 
-  
+  var viewportSize = goog.dom.getViewportSize();
+  goog.style.setStyle( this.domElement, 'height', viewportSize.height + 'px' );
 };

@@ -19,7 +19,6 @@ feng.views.sections.captions.ArrangeClosetCaption = function( object, cameraCont
   goog.base(this, object, cameraController, renderSize, controls, hud);
 
   var leftEl = goog.dom.getElementByClass('left', this.domElement);
-  this._leftBlock = this._wrapLayout.addBlock( leftEl, feng.fx.WrapLayout.Alignment.LEFT );
 };
 goog.inherits(feng.views.sections.captions.ArrangeClosetCaption, feng.views.sections.captions.Caption);
 
@@ -33,12 +32,4 @@ feng.views.sections.captions.ArrangeClosetCaption.prototype.show = function() {
 feng.views.sections.captions.ArrangeClosetCaption.prototype.hide = function() {
 
   goog.base(this, 'hide');
-};
-
-
-feng.views.sections.captions.ArrangeClosetCaption.prototype.onResize = function(e) {
-
-  goog.base(this, 'onResize', e);
-
-  this._wrapLayout.updateBlockSize( this._leftBlock );
 };

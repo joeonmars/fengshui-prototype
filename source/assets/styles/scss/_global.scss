@@ -147,7 +147,7 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   }
 }
 
-@mixin popup($padding, $box-shadow: none, $color: $darkblue) {
+@mixin popup() {
   @extend %bordered-ui;
   display: table;
   @include transition( opacity .25s, visibility .25s );
@@ -195,6 +195,7 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
 // place holder styles
 %bordered-ui{
   position: relative;
+  text-align: left;
   background-color: #fff;
   @include border-radius( 6px );
   @include box-shadow( 0 0 0 7px rgba(255, 255, 255, .25), 1px 1px 2px 0px rgba(0, 0, 0, .14) );
@@ -400,7 +401,7 @@ body{
   }
 
   .popup{
-    @include popup( $padding: 23px 20px, $box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.15) );
+    @include popup();
 
     >.close-button{
       position: absolute;

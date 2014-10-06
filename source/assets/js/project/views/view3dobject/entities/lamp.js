@@ -66,8 +66,8 @@ feng.views.view3dobject.entities.Lamp.prototype.setColorByName = function(name) 
 
 
 feng.views.view3dobject.entities.Lamp.Colors = {
-	"pink": new THREE.Color().set( '#ed6464' ),
-	"yellow": new THREE.Color().set( '#ffd700' ),
+	"pink": new THREE.Color().set( '#FFC5CC' ),
+	"yellow": new THREE.Color().set( '#FCE9A8' ),
 	"white": new THREE.Color().set( '#ffffff' ),
-	"orange": new THREE.Color().set( '#ffb35d' )
+	"orange": new THREE.Color().set( '#F6D5EE' )
 };

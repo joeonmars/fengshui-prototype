@@ -1,3 +1,46 @@
+&{
+	position: absolute;
+	display: table;
+	width: 50%;
+	max-width: 650px;
+
+	&.left{
+		left: 0;
+	}
+
+	&.right{
+		right: 0;
+	}
+
+	>.popup-wrapper{
+		display: table-cell;
+		vertical-align: middle;
+		text-align: center;
+		padding: 0 8.8em;
+
+		>.popup{
+			>.content{
+				padding: 5em 6.5em 4em 6.5em;
+
+				h1{
+					margin-bottom: .2em;
+				}
+
+				h2{
+					font-size: 1.8em;
+					height: 3em;
+					line-height: 3em;
+					text-transform: uppercase;
+				}
+
+				.primary-button{
+					margin-top: 1em;
+				}
+			}
+		}
+	}
+}
+
 @import "captions/change-color";
 @import "captions/change-picture";
 @import "captions/fruits";

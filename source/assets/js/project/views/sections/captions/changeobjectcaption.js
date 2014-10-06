@@ -13,15 +13,13 @@ feng.views.sections.captions.ChangeObjectCaption = function( object, cameraContr
   this._template = feng.templates.captions.ChangeObjectCaption;
 
   this._templateData = {
-  	
+  	tip: object.tip
   };
 
   goog.base(this, object, cameraController, renderSize, controls, hud);
 
   var topEl = goog.dom.getElementByClass('top', this.domElement);
   var rightEl = goog.dom.getElementByClass('right', this.domElement);
-  this._topBlock = this._wrapLayout.addBlock( topEl, feng.fx.WrapLayout.Alignment.TOP );
-  this._rightBlock = this._wrapLayout.addBlock( rightEl, feng.fx.WrapLayout.Alignment.RIGHT );
 };
 goog.inherits(feng.views.sections.captions.ChangeObjectCaption, feng.views.sections.captions.Caption);
 
@@ -39,13 +37,4 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.hide = function() {
   goog.base(this, 'hide');
 
   this._object.stopInteraction();
-};
-
-
-feng.views.sections.captions.ChangeObjectCaption.prototype.onResize = function(e) {
-
-  goog.base(this, 'onResize', e);
-
-  this._wrapLayout.updateBlockSize( this._rightBlock );
-  this._wrapLayout.updateBlockSize( this._topBlock );
 };

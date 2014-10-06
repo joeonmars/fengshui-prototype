@@ -20,7 +20,7 @@
 <div class="hint">
 	<p>{ $hint }</p>
 	{call feng.templates.common.PrimaryButton}
-		{param icon: 'change' /}
+		{param icon: 'icon-yes' /}
 		{param classname: 'find' /}
 		{param text: 'Go Find It' /}
 	{/call}
@@ -30,15 +30,19 @@
 
 /**
  * Detail Content
- @param advice the advice text
- @param quote the quote text
- @param description the description text
+ @param? problem the problem text
+ @param? advice the advice text
  */
 {template .DetailContent}
 <div class="detail">
-	<h2>{ $advice }</h2>
-	<q>"{ $quote }"</q>
-	<p>{ $description }</p>
+	{if $problem}
+		<h2>Problem</h2>
+		<p>{ $problem }</p>
+	{/if}
+
+	{if $advice}
+		<p>{ $advice }</p>
+	{/if}
 </div>
 {/template}
 
@@ -71,6 +75,21 @@
 		<li><a class="twitter" target="_blank"></a></li>
 		<li><a class="google" target="_blank"></a></li>
 	</ul>
+</div>
+{/template}
+
+
+/**
+ * Interaction Content
+ * @param title the title text
+ * @param content the interaction content
+ */
+{template .InteractionContent}
+<div class="interaction">
+	<h2>{ $title }</h2>
+	<div class="content">
+		{ $content }
+	</div>
 </div>
 {/template}
 
@@ -113,18 +132,34 @@
 
 /**
  * Advice caption
+ * @param tip the tip
  */
 {template .AdviceCaption}
 
 {call .Caption}
 
-	{param classname: 'advice' /}
+	{param classname: 'advice right' /}
 
 	{param content}
 	
-	<div class="right">
-		{call .ShareOptions}
-		{/call}
+	<div class="popup-wrapper">
+	{call feng.templates.common.Popup}
+
+		{param classname: 'from-right' /}
+
+		{param content}
+
+			<h1>{ $tip.name }</h1>
+
+			{call .DetailContent}
+				{param advice: $tip.advice /}
+			{/call}
+
+			{call .UnlockedContent}
+			{/call}
+		{/param}
+
+	{/call}
 	</div>
 
 	{/param}
@@ -136,17 +171,39 @@
 
 /**
  * Change object caption
+ * @param tip the tip
  */
 {template .ChangeObjectCaption}
 
 {call .Caption}
 
-	{param classname: 'changeobject' /}
+	{param classname: 'changeobject right' /}
 
 	{param content}
 
 	<div class="top"></div>
-	<div class="right"></div>
+	<div class="popup-wrapper">
+	{call feng.templates.common.Popup}
+
+		{param classname: 'from-right' /}
+
+		{param content}
+
+			<h1>{ $tip.name }</h1>
+
+			{call .DetailContent}
+				{param problem: $tip.problem /}
+			{/call}
+
+			{call .LockedContent}
+			{/call}
+
+			{call .UnlockedContent}
+			{/call}
+		{/param}
+
+	{/call}
+	</div>
 
 	{/param}
 
@@ -164,7 +221,7 @@
 
 {call .Caption}
 
-	{param classname: 'changepicture' /}
+	{param classname: 'changepicture left' /}
 
 	{param content}
 
@@ -172,17 +229,17 @@
 		<img class="dragger" draggable="false">
 	</div>
 
-	<div class="right">
+	<div class="popup-wrapper">
 	{call feng.templates.common.Popup}
+
+		{param classname: 'from-left' /}
 
 		{param content}
 
 			<h1>{ $tip.name }</h1>
 
 			{call .DetailContent}
-				{param advice: $tip.advice /}
-				{param quote: $tip.quote /}
-				{param description: $tip.description /}
+				{param problem: $tip.problem /}
 			{/call}
 
 			{call .LockedContent}
@@ -241,19 +298,33 @@
 
 {call .Caption}
 
-	{param classname: 'changecolor' /}
+	{param classname: 'changecolor right' /}
 
 	{param content}
 
-	<div class="right">
+	<div class="popup-wrapper">
 	{call feng.templates.common.Popup}
+
+		{param classname: 'from-right' /}
+
 		{param content}
 			<h1>{ $tip.name }</h1>
 
 			{call .DetailContent}
-				{param advice: $tip.advice /}
-				{param quote: $tip.quote /}
-				{param description: $tip.description /}
+				{param problem: $tip.problem /}
+			{/call}
+
+			{call .InteractionContent}
+				{param title: 'Click On A Color To Change' /}
+				{param content}
+				<ul class="color-selector">
+					{foreach $colorKey in keys($colors)}
+						<li>
+							<div class="color" style="background-color: {$colors[$colorKey].hex}" data-color="{$colorKey}">
+						</li>
+					{/foreach}
+				</ul>
+				{/param}
 			{/call}
 
 			{call .LockedContent}
@@ -263,24 +334,6 @@
 			{/call}
 		{/param}
 	{/call}
-	</div>
-
-	<div class="bottom">
-
-		<div class="colorSelector">
-			<div class="colorView">
-				<div class="carousel">
-					<ul>
-					{foreach $colorKey in keys($colors)}
-						<li>
-							<div class="color" style="background-color: {$colors[$colorKey].hex}" data-color="{$colorKey}">
-						</li>
-					{/foreach}
-					</ul>
-				</div>
-			</div>
-		</div>
-
 	</div>
 
 	{/param}
@@ -298,23 +351,24 @@
 
 {call .Caption}
 
-	{param classname: 'fruits' /}
+	{param classname: 'fruits right' /}
 
 	{param content}
 
-	<div class="right">
+	<div class="popup-wrapper">
 	{call feng.templates.common.Popup}
+
+		{param classname: 'from-right' /}
+
 		{param content}
 			<h1>{ $tip.name }</h1>
 
-			{call .HintContent}
-				{param hint: $tip.hint /}
+			{call .DetailContent}
+				{param problem: $tip.problem /}
 			{/call}
 
-			{call .DetailContent}
-				{param advice: $tip.advice /}
-				{param quote: $tip.quote /}
-				{param description: $tip.description /}
+			{call .HintContent}
+				{param hint: $tip.hint /}
 			{/call}
 
 			{call .LockedContent}
@@ -341,23 +395,24 @@
 
 {call .Caption}
 
-	{param classname: 'arrangecloset' /}
+	{param classname: 'arrangecloset left' /}
 
 	{param content}
 
 	<div class="left">
 	{call feng.templates.common.Popup}
+
+		{param classname: 'from-left' /}
+
 		{param content}
 			<h1>{ $tip.name }</h1>
 
-			{call .HintContent}
-				{param hint: $tip.hint /}
+			{call .DetailContent}
+				{param problem: $tip.problem /}
 			{/call}
 
-			{call .DetailContent}
-				{param advice: $tip.advice /}
-				{param quote: $tip.quote /}
-				{param description: $tip.description /}
+			{call .HintContent}
+				{param hint: $tip.hint /}
 			{/call}
 
 			{call .LockedContent}

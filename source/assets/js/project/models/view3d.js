@@ -238,7 +238,6 @@ feng.models.View3D.Data = {
 				colors: [
 					"pink",
 					"yellow",
-					"white",
 					"orange"
 				],
 				tipInteraction: "change_color",
@@ -343,8 +342,9 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.crystal-texture",
 				interactions: [
 				],
-				tipInteraction: "change_object",
-				tipKey: 'studio.livingroom.crystal'
+				tipInteraction: "",
+				tipKey: 'studio.livingroom.crystal',
+				captionClass: 'advice'
 			},
 			'laptop':	{
 				texture: "studio.livingroom.laptop-texture"

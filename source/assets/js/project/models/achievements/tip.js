@@ -23,8 +23,7 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId, data ){
   this.character = data['character'];
   this.name = data['name'];
   this.advice = data['advice'];
-  this.quote = data['quote'];
-  this.description = data['description'];
+  this.problem = data['problem'];
   this.hint = data['hint'];
 
   this.cover = feng.Config['assetsPath'] + 'images/tip-covers/' + data['cover'];

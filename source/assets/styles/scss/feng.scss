@@ -213,23 +213,6 @@ body{
 				@extend %fadeWhenPause;
 				
 				>.caption{
-					@include absoluteTopLeft;
-					width: 100%;
-					height: 0;
-
-					>div{
-						position: absolute;
-						//outline: 1px solid blue;
-
-						&.intersected{
-							background: rgba(255, 255, 255, .6);
-						}
-
-						@media only screen and (max-width : 1080px)  {
-							font-size: .8em;
-						}
-					}
-
 					@import "scene-captions";
 				}
 			}

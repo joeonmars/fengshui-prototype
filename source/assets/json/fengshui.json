@@ -50,13 +50,11 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be warm, friendly, happy",
-			"quote": "Children must feel safe, secure, and cared for to thrive.",
-			"description": "Feng shui believes that children and parents can enjoy success in life and healthy relationships if the environment supports them. Also very important, be sure to eliminate images of ferocious or dangerous animals or violence.",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the frame!"
+			"reminder": "I love taking photos and display them above my bed!"
 		},
 		{
 			"id": "chair",
@@ -71,13 +69,11 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "What is around you when sitting? Make sure your body is not in alignment with a door, between two doors, or a window and door. This is too much Yang activity around your body. Over time, your energy will be depleted.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the chair!"
+			"reminder": "Oh, sorry! The chair in the middle of the room blocks your way."
 		},
 		{
 			"id": "lamp",
@@ -92,13 +88,11 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "It is not advisable to use cold color light in dining areas. These adverse situations will create mental tension in the occupants of the dwelling and can result in stress.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the lamp!"
+			"reminder": "Yes, my room to dark, so I usually turn the Dome Light to MAX."
 		},
 		{
 			"id": "crystal",
@@ -113,13 +107,11 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
-			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
+			"problem": "This is a statement about this object's fengshui problem.",
+			"advice": "In Feng Shui, crystals are considered powerful Feng Shui cures and are used to improve the Feng Shui energy flow in various areas of the house or office, as well as to improve one's own energy.<br>The best place for the crystal is near a window. On sunny days, the crystal captures energy and sunlight and redirects lots of rainbow beams in the room creating a positive energy.",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the crystal!"
+			"reminder": "I got a crystal as a gift, does it has any Feng Shui function? I display it above the vanity cabinet."
 		},
 		{
 			"id": "windows",
@@ -134,13 +126,11 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "Identifying the flow of energy in your home is easy if you visualize energy, flowing into your home as water. Would the water flow smoothly and nourish all areas of your home or will it get blocked and stagnant in many areas?",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the windows!"
+			"reminder": "My room is small, so I tried to open the windows more often, but still feel suffocated."
 		},
 		{
 			"id": "cactus",
@@ -155,13 +145,11 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "Plants are always excellent Feng Shui for a home or office because they bring vibrant energy into one's space. But the cactus plant is a classic example of a so-called bad Feng Shui plant, because its energy is very spiky.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the cactus!"
+			"reminder": "I love my “little green”, Cactus leaf also offers health benefits, is that correct?"
 		},
 		{
 			"id": "sewingmachine",
@@ -176,13 +164,11 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "It is not advisable to display any reflective items or sharp and pointed objects in the interior of the dwelling. Under accepted FENG SHUI principles sharp objects are known as [sha energy].<br>These adverse situations will create mental tension in the occupants of the dwelling and can result in stress and even increase in blood pressure.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the sewingmachine!"
+			"reminder": "I like fashion design and hand crafts, especially love work with sewing machine."
 		},
 		{
 			"id": "seasoningboxes",
@@ -197,8 +183,6 @@
 			"require": null,
 			"problem": null,
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the seasoningboxes!"
@@ -216,13 +200,11 @@
 			"require": null,
 			"provide": "basket",
 			"final": false,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the refrigerator!"
+			"reminder": "How do you love fruits? I have stored some in the refrigerator..."
 		},
 		{
 			"id": "basket",
@@ -237,13 +219,11 @@
 			"require": "refrigerator",
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the basket!",
+			"reminder": "How do you love fruits? I have stored some in the refrigerator...",
 			"hint": "Something is missing in the fruits plate..."
 		},
 		{
@@ -259,13 +239,11 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "You cannot cover, conceal or pretend not to see low energy, because in the world of Feng Shui energy, there are no boundaries.<br>Here is the thing about closets - most people think of closets as an out of sight, out of mind deal. Clutter should be clean and organized.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the closet!"
+			"reminder": "I always have a rush morning. Don’t have time to organize the closet."
 		},
 		{
 			"id": "lotus",
@@ -280,13 +258,11 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the lotus!"
+			"reminder": "Do you like my flower vase? I think it brings fresh mood to this area!"
 		},
 		{
 			"id": "showerhead",
@@ -301,13 +277,11 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the showerhead!"
+			"reminder": "Oh... somewhere is leaking? Maybe I should have tap the shower head!"
 		},
 		{
 			"id": "glassbowl",
@@ -322,10 +296,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "joanna",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the glassbowl!"
@@ -343,10 +315,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "joanna",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the candle!"
@@ -364,10 +334,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "joanna",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the pictures!"
@@ -385,10 +353,8 @@
 			"require": null,
 			"provide": "drawer",
 			"final": false,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "joanna",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the cookingutensils!"
@@ -406,10 +372,8 @@
 			"require": "cookingutensils",
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "joanna",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the drawer!"
@@ -427,10 +391,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "joanna",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the centerofstairs!"
@@ -448,8 +410,6 @@
 			"require": null,
 			"problem": null,
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "joanna",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the books!"
@@ -467,10 +427,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "nick",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the handheld!"
@@ -488,10 +446,8 @@
 			"require": null,
 			"provide": "bed",
 			"final": false,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "nick",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the bear!"
@@ -509,10 +465,8 @@
 			"require": "bear",
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "nick",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the bed!"
@@ -530,10 +484,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "nick",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the pc!"
@@ -551,10 +503,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "nick",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the picture!"
@@ -572,10 +522,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "nick",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the wall!"
@@ -593,10 +541,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "scott",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the chair!"
@@ -614,10 +560,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "scott",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the photos!"
@@ -635,10 +579,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "scott",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the set square!"
@@ -656,10 +598,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "scott",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the flower!"
@@ -677,10 +617,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Lorem Ipsum?",
+			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
-			"quote": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum.",
-			"description": "loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum loremipsum",
 			"character": "scott",
 			"response": "Thank you.",
 			"reminder": "Don't forget to check the mascot!"
@@ -691,13 +629,13 @@
 			"studio": {
 				"livingroom": {
 					"character": "ollie",
-					"title": "Welcome to my place!",
-					"paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque viverra, sapien varius pellentesque commodo, lectus nulla malesuada quam, eu tempor turpis metus sed libero. Integer viverra purus congue magna rutrum imperdiet."
+					"title": "Welcome to my studio!",
+					"paragraph": "My name is Ollie B. Bowie. 24years old and I am a graphic designer. This is my apartment. Welcome!<br>I love photos and plants and hand crafts. I have a hard time recently and if you have any suggestion on improving Feng Shui in my studio, that will be great!"
 				},
 				"bathroom": {
 					"character": "ollie",
 					"title": "Something about the bathroom...",
-					"paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque viverra, sapien varius pellentesque commodo, lectus nulla malesuada quam, eu tempor turpis metus sed libero. Integer viverra purus congue magna rutrum imperdiet."
+					"paragraph": "After a whole day working, I really enjoy soaking in the bath in the early mornings and late nights.<br>Ideally, the bathroom should be serene, clean and comfortable. Somewhere totally relaxed and refresh. Wish we could make it!"
 				}
 			},
 			"townhouse": {
@@ -722,7 +660,7 @@
 			"studio": {
 				"character": "ollie",
 				"title": "Thank you so much!",
-				"paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque viverra, sapien varius pellentesque commodo."
+				"paragraph": "You have helped me solve all Feng Shui problems in my studio! We have replaced the cactus with a broadleaf plant, brightened the living area and smoothed out the energy flow. The Bathroom has no more hidden area now.<br>Thanks you very much! It is a really pleasant experience!"
 			},
 			"townhouse": {
 				"character": "joanna-scott-nick",

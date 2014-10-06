@@ -61,11 +61,11 @@ feng.templates.controls.Book = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.Reminder = function(opt_data, opt_ignored) {
   var output = '<div class="reminder"><div class="character">' + feng.templates.controls.RoundButton({content: '<canvas></canvas>'}) + '</div><div class="dialogue hint"><div class="wrapper"><button class="prev icon icon-prev"></button><ul class="hints">';
-  var tipList301 = opt_data.tips;
-  var tipListLen301 = tipList301.length;
-  for (var tipIndex301 = 0; tipIndex301 < tipListLen301; tipIndex301++) {
-    var tipData301 = tipList301[tipIndex301];
-    output += '<li data-tip-id="' + tipData301.id + '">' + tipData301.reminder + '</li>';
+  var tipList331 = opt_data.tips;
+  var tipListLen331 = tipList331.length;
+  for (var tipIndex331 = 0; tipIndex331 < tipListLen331; tipIndex331++) {
+    var tipData331 = tipList331[tipIndex331];
+    output += '<li data-tip-id="' + tipData331.id + '">' + tipData331.reminder + '</li>';
   }
   output += '</ul><button class="next icon icon-next"></button></div></div></div>';
   return output;
@@ -113,16 +113,16 @@ feng.templates.controls.Tooltip = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var output = '<div class="progressBar"><div class="inner"><button class="prev icon icon-prev"></button><button class="next icon icon-next"></button><div class="tips-wrapper">';
-  var viewIdList325 = soy.$$getMapKeys(opt_data.tipsOfViews);
-  var viewIdListLen325 = viewIdList325.length;
-  for (var viewIdIndex325 = 0; viewIdIndex325 < viewIdListLen325; viewIdIndex325++) {
-    var viewIdData325 = viewIdList325[viewIdIndex325];
-    output += '<ul class="tips" data-view-id="' + viewIdData325 + '">';
-    var tipList329 = opt_data.tipsOfViews[viewIdData325];
-    var tipListLen329 = tipList329.length;
-    for (var tipIndex329 = 0; tipIndex329 < tipListLen329; tipIndex329++) {
-      var tipData329 = tipList329[tipIndex329];
-      output += '<li class="tip" data-tip-id="' + tipData329.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content" href="' + tipData329.goTipToken + '"><div class="icon icon-' + tipData329.id + '" data-tip-id="' + tipData329.id + '" data-view-id="' + tipData329.viewId + '" data-section-id="' + tipData329.sectionId + '"></div><h6>' + tipData329.name + '</h6></a></div></li>';
+  var viewIdList355 = soy.$$getMapKeys(opt_data.tipsOfViews);
+  var viewIdListLen355 = viewIdList355.length;
+  for (var viewIdIndex355 = 0; viewIdIndex355 < viewIdListLen355; viewIdIndex355++) {
+    var viewIdData355 = viewIdList355[viewIdIndex355];
+    output += '<ul class="tips" data-view-id="' + viewIdData355 + '">';
+    var tipList359 = opt_data.tipsOfViews[viewIdData355];
+    var tipListLen359 = tipList359.length;
+    for (var tipIndex359 = 0; tipIndex359 < tipListLen359; tipIndex359++) {
+      var tipData359 = tipList359[tipIndex359];
+      output += '<li class="tip" data-tip-id="' + tipData359.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content" href="' + tipData359.goTipToken + '"><div class="icon icon-' + tipData359.id + '" data-tip-id="' + tipData359.id + '" data-view-id="' + tipData359.viewId + '" data-section-id="' + tipData359.sectionId + '"></div><h6>' + tipData359.name + '</h6></a></div></li>';
     }
     output += '</ul>';
   }

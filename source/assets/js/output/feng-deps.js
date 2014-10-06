@@ -33,7 +33,6 @@ goog.addDependency('../../../../project/fx/renderer.js', ['feng.fx.Renderer'], [
 goog.addDependency('../../../../project/fx/shaders.js', ['feng.fx.Shaders'], ['goog.dom.query', 'goog.net.XhrIo']);
 goog.addDependency('../../../../project/fx/textureanimator.js', ['feng.fx.TextureAnimator'], ['goog.events.EventTarget']);
 goog.addDependency('../../../../project/fx/trail.js', ['feng.fx.Trail'], ['feng.fx.Particle', 'goog.math']);
-goog.addDependency('../../../../project/fx/wraplayout.js', ['feng.fx.WrapLayout'], ['feng.utils.ThreeUtils', 'goog.math.Box']);
 goog.addDependency('../../../../project/models/accessories.js', ['feng.models.Accessories'], ['feng.models.Preload']);
 goog.addDependency('../../../../project/models/achievements/achievements.js', ['feng.models.achievements.Achievements'], ['feng.models.achievements.Tip', 'goog.array', 'goog.object']);
 goog.addDependency('../../../../project/models/achievements/tip.js', ['feng.models.achievements.Tip'], ['feng.controllers.NavigationController', 'feng.events', 'feng.models.achievements.Achievements', 'goog.events.EventTarget']);
@@ -71,7 +70,7 @@ goog.addDependency('../../../../project/views/popups/tutorial.js', ['feng.views.
 goog.addDependency('../../../../project/views/preloader.js', ['feng.views.Preloader'], ['feng.events', 'feng.models.Preload', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/views/sections/captions/advicecaption.js', ['feng.views.sections.captions.AdviceCaption'], ['feng.templates.captions', 'feng.views.sections.captions.Caption', 'goog.soy']);
 goog.addDependency('../../../../project/views/sections/captions/arrangeclosetcaption.js', ['feng.views.sections.captions.ArrangeClosetCaption'], ['feng.templates.captions', 'feng.views.sections.captions.Caption', 'goog.soy']);
-goog.addDependency('../../../../project/views/sections/captions/caption.js', ['feng.views.sections.captions.Caption'], ['feng.fx.WrapLayout', 'goog.events.EventHandler']);
+goog.addDependency('../../../../project/views/sections/captions/caption.js', ['feng.views.sections.captions.Caption'], ['goog.events.EventHandler']);
 goog.addDependency('../../../../project/views/sections/captions/changecolorcaption.js', ['feng.views.sections.captions.ChangeColorCaption'], ['feng.templates.captions', 'feng.views.sections.captions.Caption', 'feng.views.sections.controls.ColorSelector', 'goog.soy']);
 goog.addDependency('../../../../project/views/sections/captions/changeobjectcaption.js', ['feng.views.sections.captions.ChangeObjectCaption'], ['feng.templates.captions', 'feng.views.sections.captions.Caption', 'goog.soy']);
 goog.addDependency('../../../../project/views/sections/captions/changepicturecaption.js', ['feng.views.sections.captions.ChangePictureCaption'], ['feng.templates.captions', 'feng.views.sections.captions.Caption', 'feng.views.sections.controls.PictureSelector', 'goog.soy']);
