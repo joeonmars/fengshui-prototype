@@ -5,6 +5,7 @@ goog.require('goog.style');
 goog.require('feng.views.Overlay');
 goog.require('feng.views.popups.Popup');
 goog.require('feng.models.Preload');
+goog.require('feng.utils.Utils');
 
 
 /**
@@ -59,7 +60,7 @@ feng.views.sections.overlays.OpeningOverlay.prototype.updateContent = function( 
 	titleEl.innerHTML = title;
 	paragraphEl.innerHTML = paragraph;
 
-	goog.dom.classes.add( characterEl, this._character, character );
+	goog.dom.classes.addRemove( characterEl, this._character, character );
 	this._character = character;
 };
 
@@ -98,7 +99,7 @@ feng.views.sections.overlays.OpeningOverlay.prototype.animateIn = function(){
 
 feng.views.sections.overlays.OpeningOverlay.prototype.animateOut = function(){
 
-	goog.base(this, 'animateOut');
+	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
 
 	TweenMax.to(this.domElement, .8, {
 		'delay': .25,
@@ -117,5 +118,9 @@ feng.views.sections.overlays.OpeningOverlay.prototype.onResize = function(e){
 
 	goog.base(this, 'onResize', e);
 
-	goog.style.setSize(this.domElement, goog.dom.getViewportSize());
+	var viewportSize = goog.dom.getViewportSize();
+
+	goog.style.setSize(this.domElement, viewportSize);
+
+	feng.utils.Utils.centerAlign( this._popup.domElement, viewportSize );
 };

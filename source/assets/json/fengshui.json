@@ -702,7 +702,7 @@
 			},
 			"townhouse": {
 				"livingroom": {
-					"character": "ollie",
+					"character": "joanna",
 					"title": "Welcome to our home.",
 					"paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque viverra, sapien varius pellentesque commodo, lectus nulla malesuada quam, eu tempor turpis metus sed libero. Integer viverra purus congue magna rutrum imperdiet."
 				},
@@ -712,7 +712,7 @@
 					"paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque viverra, sapien varius pellentesque commodo, lectus nulla malesuada quam, eu tempor turpis metus sed libero. Integer viverra purus congue magna rutrum imperdiet."
 				},
 				"homeoffice": {
-					"character": "ollie",
+					"character": "scott",
 					"title": "Could you improve the home office?",
 					"paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque viverra, sapien varius pellentesque commodo, lectus nulla malesuada quam, eu tempor turpis metus sed libero. Integer viverra purus congue magna rutrum imperdiet."
 				}
@@ -720,28 +720,14 @@
 		},
 		"ending": {
 			"studio": {
-				"unfinished": {
-					"character": "ollie",
-					"title": "Thank you!",
-					"paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque viverra, sapien varius pellentesque commodo."
-				},
-				"finished": {
-					"character": "ollie",
-					"title": "Thank you so much!",
-					"paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque viverra, sapien varius pellentesque commodo."
-				}
+				"character": "ollie",
+				"title": "Thank you so much!",
+				"paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque viverra, sapien varius pellentesque commodo."
 			},
 			"townhouse": {
-				"unfinished": {
-					"character": "ollie-and-nick",
-					"title": "Thank you!",
-					"paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque viverra, sapien varius pellentesque commodo."
-				},
-				"finished": {
-					"character": "ollie-and-nick",
-					"title": "Thank you so much!",
-					"paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque viverra, sapien varius pellentesque commodo."
-				}
+				"character": "joanna-scott-nick",
+				"title": "Thank you so much!",
+				"paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque viverra, sapien varius pellentesque commodo."
 			}
 		},
 		"finale": {

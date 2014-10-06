@@ -44,3 +44,19 @@ feng.utils.Utils.hasQuery = function(key, value) {
 
   return (goog.isString(value) ? (queryData.get(key) === value) : queryData.hasQuery(key));
 };
+
+
+feng.utils.Utils.centerAlign = function(alignEl, relativeElOrSize) {
+
+  var relativeSize = (relativeElOrSize.width && relativeElOrSize.height) ? relativeElOrSize : null;
+
+  if(!relativeSize) {
+    relativeSize = goog.style.getSize( relativeElOrSize );
+  }
+
+  var alignElSize = goog.style.getSize( alignEl );
+  var alignElX = Math.round( (relativeSize.width - alignElSize.width) / 2 );
+  var alignElY = Math.round( (relativeSize.height - alignElSize.height) / 2 );
+
+  goog.style.setPosition( alignEl, alignElX, alignElY );
+};

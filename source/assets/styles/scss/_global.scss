@@ -27,6 +27,7 @@ $gray: #969696;
 $red: #e2443a;
 $yellow: #e3cc76;
 $black: #3d3e39;
+$lightgray-ui: #9a9a9a;
 $darkgray-ui: #626262;
 $gray-ui: #8a8a8a;
 $yellow-ui: #fdf1ba;
@@ -200,11 +201,11 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   @include user-select(none);
 
   h1, h2, h3, h4, h5, h6{
-    color: #626262;
+    color: $darkgray-ui;
   }
 
   p{
-    color: #9a9a9a;
+    color: $lightgray-ui;
   }
 }
 
@@ -356,13 +357,13 @@ body{
 
   p{
     font-family: $font_marine_light;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.025em;
   }
 
   q{
     font-family: $font_marine_light;
     font-style: italic;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.025em;
   }
 
   a{
@@ -405,6 +406,7 @@ body{
       position: absolute;
       top: 23px;
       right: 20px;
+      z-index: 10;
     }
 
     @import "popup";
