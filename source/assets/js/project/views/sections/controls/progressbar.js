@@ -87,7 +87,7 @@ feng.views.sections.controls.ProgressBar.prototype.activate = function() {
   goog.object.forEach(this._tips, function(tip) {
 
     tip.listen(feng.events.EventType.UNLOCK, this.onTipUnlock, false, this);
-    if(tip.unlocked) this.unlockedTipEl( tip.id );
+    if(tip.unlocked) this.unlockTip( tip.id );
   }, this);
 
   this._detectNearbyThrottle.fire();
@@ -262,10 +262,12 @@ feng.views.sections.controls.ProgressBar.prototype.detectNearbyObjects = functio
 
 
 feng.views.sections.controls.ProgressBar.prototype.unlockTip = function( tipId ){
-
+  
   var unlockedTipEl = goog.array.find(this._tipEls, function(tipEl) {
     return tipEl.getAttribute('data-tip-id') === tipId;
   });
+
+  if(!unlockedTipEl) return;
 
   goog.dom.classes.add( unlockedTipEl, 'unlocked' );
 };

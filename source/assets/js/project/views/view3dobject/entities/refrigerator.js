@@ -86,4 +86,9 @@ feng.views.view3dobject.entities.Refrigerator.prototype.onClick = function(e){
     var fruit = clickedObjects[0];
     arms.addItem( fruit.object.view3dObject );
   }
+
+  if(this.getFruits().length === 0) {
+    this.unlock();
+    this.stopInteraction();
+  }
 };

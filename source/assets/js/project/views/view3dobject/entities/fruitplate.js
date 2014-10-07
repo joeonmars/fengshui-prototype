@@ -43,13 +43,12 @@ feng.views.view3dobject.entities.FruitPlate.prototype.drop = function( view3dObj
 
   this._holder.add( object3d );
 
-  // check all fruits status for unlock ready
-  var notReady = goog.object.findKey(this._fruits, function(result) {
-    return (result === false);
-  });
+  // check all fruits status for unlock
+  var isDone = this._fruits['apple'] && this._fruits['orange'] && this._fruits['pineapple'] && this._fruits['peach'];
 
-  if(!notReady) {
-    this.unlockReady();
+  if(isDone) {
+    this.unlock();
+    this.stopInteraction();
   }
 };
 
@@ -57,6 +56,8 @@ feng.views.view3dobject.entities.FruitPlate.prototype.drop = function( view3dObj
 feng.views.view3dobject.entities.FruitPlate.prototype.startInteraction = function(){
 
   goog.base(this, 'startInteraction');
+
+  if(this.isUnlocked()) return;
 
   this._interactionHandler.listen(this._view3d.domElement, 'click', this.onClick, false, this);
 };
@@ -81,6 +82,11 @@ feng.views.view3dobject.entities.FruitPlate.prototype.onClick = function(e){
 
     arms.removeItem( fruit );
     this.drop( fruit );
+
+    this.dispatchEvent({
+      type: feng.events.EventType.CHANGE,
+      fruit: fruitName
+    });
   }
 };
 

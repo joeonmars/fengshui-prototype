@@ -381,15 +381,6 @@ $border_size: 7px;
 								text-align: center;
 								font-size: 50px;
 								color: inherit;
-
-								&:after{
-									@include absoluteTopLeft;
-									width: 100%;
-									height: 100%;
-									background: #fff;
-									@extend .icon;
-									@extend .icon-lock:before;
-								}
 							}
 
 							>h6{
@@ -401,14 +392,6 @@ $border_size: 7px;
 								font-size: 1.6em;
 								color: inherit;
 								text-transform: capitalize;
-
-								&:after{
-									@include absoluteTopLeft;
-									width: 100%;
-									height: 100%;
-									background: #fff;
-									content: "Locked";
-								}
 							}
 						}
 
@@ -419,11 +402,36 @@ $border_size: 7px;
 						}
 					}
 
+					&:not(.unlocked) {
+						>.dialog{
+							h6:after{
+								@include absoluteTopLeft;
+								width: 100%;
+								height: 100%;
+								background: #fff;
+								content: "Locked";
+							}
+
+							.icon:before{
+								display: none;
+							}
+
+							.icon:after{
+								@include absoluteTopLeft;
+								width: 100%;
+								height: 100%;
+								background: #fff;
+								@extend .icon;
+								@extend .icon-lock:before;
+							}
+						}
+					}
+
 					&.unlocked{
 						>.dot{
 							opacity: 1;
 						}
-
+						
 						&:hover{
 							>.dot{
 								>.outer{

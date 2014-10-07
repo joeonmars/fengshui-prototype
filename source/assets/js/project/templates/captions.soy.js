@@ -6,7 +6,6 @@ goog.provide('feng.templates.captions');
 goog.require('soy');
 goog.require('soydata');
 goog.require('feng.templates.common');
-goog.require('feng.templates.controls');
 
 
 /**
@@ -16,118 +15,7 @@ goog.require('feng.templates.controls');
  * @notypecheck
  */
 feng.templates.captions.Caption = function(opt_data, opt_ignored) {
-  return '<div class="caption ' + opt_data.classname + '">' + opt_data.content + '</div>';
-};
-
-
-/**
- * @param {Object.<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
- * @return {string}
- * @notypecheck
- */
-feng.templates.captions.HintContent = function(opt_data, opt_ignored) {
-  return '<div class="hint"><p>' + opt_data.hint + '</p>' + feng.templates.common.PrimaryButton({icon: 'icon-yes', classname: 'find', text: 'Go Find It'}) + '</div>';
-};
-
-
-/**
- * @param {Object.<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
- * @return {string}
- * @notypecheck
- */
-feng.templates.captions.DetailContent = function(opt_data, opt_ignored) {
-  opt_data = opt_data || {};
-  return '<div class="detail">' + ((opt_data.problem) ? '<h2>Problem</h2><p>' + opt_data.problem + '</p>' : '') + ((opt_data.advice) ? '<p>' + opt_data.advice + '</p>' : '') + '</div>';
-};
-
-
-/**
- * @param {Object.<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
- * @return {string}
- * @notypecheck
- */
-feng.templates.captions.Instruction = function(opt_data, opt_ignored) {
-  return '<div class="instruction"></div>';
-};
-
-
-/**
- * @param {Object.<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
- * @return {string}
- * @notypecheck
- */
-feng.templates.captions.Unlocker = function(opt_data, opt_ignored) {
-  return '<div class="unlocker"></div>';
-};
-
-
-/**
- * @param {Object.<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
- * @return {string}
- * @notypecheck
- */
-feng.templates.captions.ShareOptions = function(opt_data, opt_ignored) {
-  return '<div class="share"><ul><li><a class="facebook" target="_blank"></a></li><li><a class="twitter" target="_blank"></a></li><li><a class="google" target="_blank"></a></li></ul></div>';
-};
-
-
-/**
- * @param {Object.<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
- * @return {string}
- * @notypecheck
- */
-feng.templates.captions.InteractionContent = function(opt_data, opt_ignored) {
-  return '<div class="interaction"><h2>' + opt_data.title + '</h2><div class="content">' + opt_data.content + '</div></div>';
-};
-
-
-/**
- * @param {Object.<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
- * @return {string}
- * @notypecheck
- */
-feng.templates.captions.LockedContent = function(opt_data, opt_ignored) {
-  return '<div class="locked">' + feng.templates.captions.Instruction(null) + feng.templates.captions.Unlocker(null) + feng.templates.captions.ShareOptions(null) + '</div>';
-};
-
-
-/**
- * @param {Object.<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
- * @return {string}
- * @notypecheck
- */
-feng.templates.captions.UnlockedContent = function(opt_data, opt_ignored) {
-  return '<div class="unlocked">' + feng.templates.captions.ShareOptions(null) + '</div>';
-};
-
-
-/**
- * @param {Object.<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
- * @return {string}
- * @notypecheck
- */
-feng.templates.captions.AdviceCaption = function(opt_data, opt_ignored) {
-  return feng.templates.captions.Caption({classname: 'advice right', content: '<div class="popup-wrapper">' + feng.templates.common.Popup({classname: 'from-right', content: '<h1>' + opt_data.tip.name + '</h1>' + feng.templates.captions.DetailContent({advice: opt_data.tip.advice}) + feng.templates.captions.UnlockedContent(null)}) + '</div>'});
-};
-
-
-/**
- * @param {Object.<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
- * @return {string}
- * @notypecheck
- */
-feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
-  return feng.templates.captions.Caption({classname: 'changeobject right', content: '<div class="top"></div><div class="popup-wrapper">' + feng.templates.common.Popup({classname: 'from-right', content: '<h1>' + opt_data.tip.name + '</h1>' + feng.templates.captions.DetailContent({problem: opt_data.tip.problem}) + feng.templates.captions.LockedContent(null) + feng.templates.captions.UnlockedContent(null)}) + '</div>'});
+  return '<div class="caption ' + opt_data.position + '"><div class="popup-wrapper">' + feng.templates.common.Popup({classname: opt_data.position, content: '<h1>' + opt_data.tip.name + '</h1><div class="problem"><h2>Problem</h2><button class="icon icon-arrow-down"></button><div class="drawer"><p>' + opt_data.tip.problem + '</p></div></div><div class="hint"><p>' + opt_data.tip.hint + '</p>' + feng.templates.common.PrimaryButton({icon: 'icon-yes', classname: 'hint-button', text: 'I see'}) + '</div><div class="interaction">' + ((opt_data.interactionContent) ? opt_data.interactionContent : feng.templates.common.PrimaryButton({classname: 'interaction-button', icon: 'icon-yes', text: 'Solve the problem'})) + '</div><div class="advice"><h2>Your Tip</h2><button class="icon icon-arrow-down"></button><div class="drawer"><p>' + opt_data.tip.advice + '</p></div></div><div class="share"><h2>Share With Friends</h2><ul><li><a href="" target="_blank" class="icon icon-facebook"></a><li><a href="" target="_blank" class="icon icon-twitter"></a><li><a href="" target="_blank" class="icon icon-google"></a></ul></div>'}) + '</div></div>';
 };
 
 
@@ -138,16 +26,7 @@ feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
-  var param110 = '<div class="draggerContainer"><img class="dragger" draggable="false"></div><div class="popup-wrapper">' + feng.templates.common.Popup({classname: 'from-left', content: '<h1>' + opt_data.tip.name + '</h1>' + feng.templates.captions.DetailContent({problem: opt_data.tip.problem}) + feng.templates.captions.LockedContent(null) + feng.templates.captions.UnlockedContent(null)}) + '</div><div class="bottom"><div class="pictureSelector">' + feng.templates.controls.RoundButton({content: '<div class="icon"></div>', classname: 'prev'}) + '<div class="pictureView"><div class="carousel"><ul>';
-  var pictureList128 = opt_data.pictures;
-  var pictureListLen128 = pictureList128.length;
-  for (var pictureIndex128 = 0; pictureIndex128 < pictureListLen128; pictureIndex128++) {
-    var pictureData128 = pictureList128[pictureIndex128];
-    param110 += '<li data-id="' + pictureIndex128 + '"><div class="thumbnail" style="background-image: url(' + pictureData128.src + ')" data-id="' + pictureIndex128 + '"></li>';
-  }
-  param110 += '</ul></div></div>' + feng.templates.controls.RoundButton({content: '<div class="icon"></div>', classname: 'next'}) + '</div></div>';
-  var output = feng.templates.captions.Caption({classname: 'changepicture left', content: param110});
-  return output;
+  return feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: ''}));
 };
 
 
@@ -158,21 +37,15 @@ feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
-  var param146 = '<div class="popup-wrapper">';
-  var param149 = '<h1>' + opt_data.tip.name + '</h1>' + feng.templates.captions.DetailContent({problem: opt_data.tip.problem});
-  var param156 = '<ul class="color-selector">';
-  var colorKeyList158 = soy.$$getMapKeys(opt_data.colors);
-  var colorKeyListLen158 = colorKeyList158.length;
-  for (var colorKeyIndex158 = 0; colorKeyIndex158 < colorKeyListLen158; colorKeyIndex158++) {
-    var colorKeyData158 = colorKeyList158[colorKeyIndex158];
-    param156 += '<li><div class="color" style="background-color: ' + opt_data.colors[colorKeyData158].hex + '" data-color="' + colorKeyData158 + '"></li>';
+  var param62 = '<div class="change-color"><h2>Click on a color to change</h2><ul class="colors">';
+  var colorKeyList64 = soy.$$getMapKeys(opt_data.colors);
+  var colorKeyListLen64 = colorKeyList64.length;
+  for (var colorKeyIndex64 = 0; colorKeyIndex64 < colorKeyListLen64; colorKeyIndex64++) {
+    var colorKeyData64 = colorKeyList64[colorKeyIndex64];
+    param62 += '<li><button class="color" style="background-color: ' + opt_data.colors[colorKeyData64].hex + '" data-color="' + colorKeyData64 + '"></button></li>';
   }
-  param156 += '</ul>';
-  param149 += feng.templates.captions.InteractionContent({title: 'Click On A Color To Change', content: param156});
-  param149 += feng.templates.captions.LockedContent(null) + feng.templates.captions.UnlockedContent(null);
-  param146 += feng.templates.common.Popup({classname: 'from-right', content: param149});
-  param146 += '</div>';
-  var output = feng.templates.captions.Caption({classname: 'changecolor right', content: param146});
+  param62 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param62}));
   return output;
 };
 
@@ -183,19 +56,24 @@ feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
  * @return {string}
  * @notypecheck
  */
-feng.templates.captions.FruitsCaption = function(opt_data, opt_ignored) {
-  return feng.templates.captions.Caption({classname: 'fruits right', content: '<div class="popup-wrapper">' + feng.templates.common.Popup({classname: 'from-right', content: '<h1>' + opt_data.tip.name + '</h1>' + feng.templates.captions.DetailContent({problem: opt_data.tip.problem}) + feng.templates.captions.HintContent({hint: opt_data.tip.hint}) + feng.templates.captions.LockedContent(null) + feng.templates.captions.UnlockedContent(null)}) + '</div>'});
-};
-
-
-/**
- * @param {Object.<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
- * @return {string}
- * @notypecheck
- */
-feng.templates.captions.ArrangeClosetCaption = function(opt_data, opt_ignored) {
-  return feng.templates.captions.Caption({classname: 'arrangecloset left', content: '<div class="left">' + feng.templates.common.Popup({classname: 'from-left', content: '<h1>' + opt_data.tip.name + '</h1>' + feng.templates.captions.DetailContent({problem: opt_data.tip.problem}) + feng.templates.captions.HintContent({hint: opt_data.tip.hint}) + feng.templates.captions.LockedContent(null) + feng.templates.captions.UnlockedContent(null)}) + '</div>'});
+feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
+  var param74 = '<h2>Fill the plate with fruits</h2><div class="drop-fruits"><ul class="fruits">';
+  var fruitKeyList76 = soy.$$getMapKeys(opt_data.fruits);
+  var fruitKeyListLen76 = fruitKeyList76.length;
+  for (var fruitKeyIndex76 = 0; fruitKeyIndex76 < fruitKeyListLen76; fruitKeyIndex76++) {
+    var fruitKeyData76 = fruitKeyList76[fruitKeyIndex76];
+    param74 += '<li><button data-fruit-id="' + fruitKeyData76 + '"></button></li>';
+  }
+  param74 += '</ul><ul class="descriptions">';
+  var fruitKeyList82 = soy.$$getMapKeys(opt_data.fruits);
+  var fruitKeyListLen82 = fruitKeyList82.length;
+  for (var fruitKeyIndex82 = 0; fruitKeyIndex82 < fruitKeyListLen82; fruitKeyIndex82++) {
+    var fruitKeyData82 = fruitKeyList82[fruitKeyIndex82];
+    param74 += '<li data-fruit-id="' + fruitKeyData82 + '"><p>' + opt_data.fruits[fruitKeyData82] + '</p></li>';
+  }
+  param74 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param74}));
+  return output;
 };
 
 
@@ -207,11 +85,11 @@ feng.templates.captions.ArrangeClosetCaption = function(opt_data, opt_ignored) {
  */
 feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
   var output = '<p class="floatText">';
-  var lineList210 = opt_data.lines;
-  var lineListLen210 = lineList210.length;
-  for (var lineIndex210 = 0; lineIndex210 < lineListLen210; lineIndex210++) {
-    var lineData210 = lineList210[lineIndex210];
-    output += '<span>' + lineData210 + '</span>';
+  var lineList93 = opt_data.lines;
+  var lineListLen93 = lineList93.length;
+  for (var lineIndex93 = 0; lineIndex93 < lineListLen93; lineIndex93++) {
+    var lineData93 = lineList93[lineIndex93];
+    output += '<span>' + lineData93 + '</span>';
   }
   output += '</p>';
   return output;

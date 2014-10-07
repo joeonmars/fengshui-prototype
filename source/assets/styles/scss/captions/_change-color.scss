@@ -1,6 +1,6 @@
-&.changecolor{
+.change-color{
 
-	.color-selector{
+	.colors{
 		width: 100%;
 
 		>li{
@@ -15,7 +15,6 @@
 			>.color{
 				width: 7em;
 				height: 7em;
-				cursor: pointer;
 				@include border-radius(100%);
 			}
 		}

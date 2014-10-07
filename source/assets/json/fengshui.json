@@ -107,11 +107,30 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
+			"problem": null,
 			"advice": "In Feng Shui, crystals are considered powerful Feng Shui cures and are used to improve the Feng Shui energy flow in various areas of the house or office, as well as to improve one's own energy.<br>The best place for the crystal is near a window. On sunny days, the crystal captures energy and sunlight and redirects lots of rainbow beams in the room creating a positive energy.",
 			"character": "ollie",
 			"response": "Thank you.",
 			"reminder": "I got a crystal as a gift, does it has any Feng Shui function? I display it above the vanity cabinet."
+		},
+		{
+			"id": "clock",
+			"section": "studio",
+			"view": "livingroom",
+			"name": "clock",
+			"icon": "clock",
+			"cover": "default.jpg",
+			"interaction": null,
+			"unlocked": true,
+			"mandatory": false,
+			"require": null,
+			"provide": null,
+			"final": true,
+			"problem": null,
+			"advice": "This is an advice for selecting a clock.",
+			"character": "ollie",
+			"response": "Thank you.",
+			"reminder": "What time is it now?"
 		},
 		{
 			"id": "windows",
@@ -171,23 +190,6 @@
 			"reminder": "I like fashion design and hand crafts, especially love work with sewing machine."
 		},
 		{
-			"id": "seasoningboxes",
-			"section": "studio",
-			"view": "livingroom",
-			"name": "seasoningboxes",
-			"icon": "seasoningboxes",
-			"cover": "default.jpg",
-			"interaction": null,
-			"unlocked": true,
-			"mandatory": false,
-			"require": null,
-			"problem": null,
-			"advice": "Be loremipsum, loremipsum",
-			"character": "ollie",
-			"response": "Thank you.",
-			"reminder": "Don't forget to check the seasoningboxes!"
-		},
-		{
 			"id": "refrigerator",
 			"section": "studio",
 			"view": "livingroom",
@@ -198,7 +200,7 @@
 			"unlocked": false,
 			"mandatory": true,
 			"require": null,
-			"provide": "basket",
+			"provide": "fruitplate",
 			"final": false,
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
@@ -207,10 +209,10 @@
 			"reminder": "How do you love fruits? I have stored some in the refrigerator..."
 		},
 		{
-			"id": "basket",
+			"id": "fruitplate",
 			"section": "studio",
 			"view": "livingroom",
-			"name": "basket",
+			"name": "fruitplate",
 			"icon": "fruits",
 			"cover": "default.jpg",
 			"interaction": "put",
@@ -224,7 +226,15 @@
 			"character": "ollie",
 			"response": "Thank you.",
 			"reminder": "How do you love fruits? I have stored some in the refrigerator...",
-			"hint": "Something is missing in the fruits plate..."
+			"hint": "Something is missing on the fruit plate...",
+			"details": {
+				"descriptions": {
+					"apple": "This is the description of an apple in Feng Shui principles.",
+					"pineapple": "This is the description of a pineapple in Feng Shui principles.",
+					"peach": "This is the description of a peach in Feng Shui principles.",
+					"orange": "This is the description of an orange in Feng Shui principles."
+				}
+			}
 		},
 		{
 			"id": "closet",

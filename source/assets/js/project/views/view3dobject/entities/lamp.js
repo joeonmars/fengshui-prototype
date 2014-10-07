@@ -27,7 +27,8 @@ feng.views.view3dobject.entities.Lamp = function( object3d, data, view3d ){
   	}
   }, this);
 
-  this._color = this._light.color.clone();
+  this._defaultColor = this._light.color;
+  this._color = this._defaultColor.clone();
 
   this.setColor( this._color );
 };
@@ -54,7 +55,9 @@ feng.views.view3dobject.entities.Lamp.prototype.setColor = function(color) {
   	onUpdateScope: this
   });
 
-  this.unlockReady();
+  if(!color.equals( this._defaultColor )) {
+    this.unlock();
+  }
 };
 
 

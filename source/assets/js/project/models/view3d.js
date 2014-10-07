@@ -242,7 +242,8 @@ feng.models.View3D.Data = {
 				],
 				tipInteraction: "change_color",
 				tipKey: 'studio.livingroom.lamp',
-				texture: "studio.livingroom.round-lamp-texture"
+				texture: "studio.livingroom.round-lamp-texture",
+				captionClass: 'changecolor'
 			},
 			'reading-lamp':	{
 				texture: "studio.livingroom.reading-lamp-texture"
@@ -262,8 +263,8 @@ feng.models.View3D.Data = {
 				},
 				texture: "studio.livingroom.fruitplate-texture",
 				tipInteraction: "drop",
-				tipKey: 'studio.livingroom.basket',
-				captionClass: 'fruits'
+				tipKey: 'studio.livingroom.fruitplate',
+				captionClass: 'dropfruits'
 			},
 			'dining-table':	{
 				collidable: true,
@@ -287,7 +288,12 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.window-books-texture"
 			},
 			'clock':	{
-				texture: "studio.livingroom.clock-texture"
+				class: "tip",
+				texture: "studio.livingroom.clock-texture",
+				interactions: [
+				],
+				tipInteraction: "",
+				tipKey: 'studio.livingroom.clock'
 			},
 			'seasoning':	{
 				texture: "studio.livingroom.seasoning-texture"
@@ -343,8 +349,7 @@ feng.models.View3D.Data = {
 				interactions: [
 				],
 				tipInteraction: "",
-				tipKey: 'studio.livingroom.crystal',
-				captionClass: 'advice'
+				tipKey: 'studio.livingroom.crystal'
 			},
 			'laptop':	{
 				texture: "studio.livingroom.laptop-texture"
@@ -509,7 +514,6 @@ feng.models.View3D.Data = {
 				},
 				tipInteraction: "change_object",
 				tipKey: 'studio.bathroom.closet',
-				captionClass: 'arrangecloset',
 				texture: "studio.bathroom.closet-door-texture",
 			},
 			'trashcan': {

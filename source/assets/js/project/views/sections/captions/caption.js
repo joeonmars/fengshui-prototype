@@ -1,6 +1,7 @@
 goog.provide('feng.views.sections.captions.Caption');
 
 goog.require('goog.events.EventHandler');
+goog.require('feng.templates.captions');
 
 
 /**
@@ -16,66 +17,64 @@ feng.views.sections.captions.Caption = function( object, cameraController, rende
   this._controls = controls;
   this._hud = hud;
 
-  this.allowUpdate = true;
-
   this._eventHandler = new goog.events.EventHandler(this);
 
-  this._template = this._template || null;
-  this._templateData = this._templateData || null;
+  this._template = this._template || feng.templates.captions.Caption;
+  
+  this._templateData = this._templateData || {
+    tip: object.tip,
+    position: 'right'
+  };
 
   // render HTML template
   this.domElement = soy.renderAsFragment(this._template, this._templateData);
 
   this._closeButton = goog.dom.getElementByClass('close-button', this.domElement);
-  this._changeButton = goog.dom.getElementByClass('change', this.domElement);
+  this._hintButton = goog.dom.getElementByClass('hint-button', this.domElement);
+  this._interactionButton = goog.dom.getElementByClass('interaction-button', this.domElement);
 
-  this._hasUnlockReady = false;
+  this._popupEl = goog.dom.getElementByClass('popup', this.domElement);
+  this._problemEl = goog.dom.getElementByClass('problem', this.domElement);
+  this._hintEl = goog.dom.getElementByClass('hint', this.domElement);
+  this._interactionEl = goog.dom.getElementByClass('interaction', this.domElement);
+  this._adviceEl = goog.dom.getElementByClass('advice', this.domElement);
+  this._shareEl = goog.dom.getElementByClass('share', this.domElement);
+
+  // set elements status by tip
+  this.updateStatus();
 };
 goog.inherits(feng.views.sections.captions.Caption, goog.events.EventTarget);
 
 
 feng.views.sections.captions.Caption.prototype.show = function() {
 
-  goog.style.showElement( this.domElement, true );
+  this._eventHandler.listen( this._closeButton, 'click', this.close, false, this );
+  this._eventHandler.listen( this._hintButton, 'click', this.close, false, this );
 
-  if(this._closeButton) {
-    this._eventHandler.listen( this._closeButton, 'click', this.onClick, false, this );
-  }
-
-  if(this._changeButton) {
-    this._eventHandler.listen( this._changeButton, 'click', this.onClick, false, this );
+  if(this._interactionButton) {
+    this._eventHandler.listen( this._interactionButton, 'click', this.onClick, false, this );
   }
   
   // listen for unlock ready event from view3d object
-  if( this._object.isUnlocked() ) {
-
-    this.onUnlock();
-
-  }else if( this._object.wasUnlockReady() ) {
-
-    this.onUnlockReady();
-
-  }else {
-
-    this._eventHandler.listen( this._object, feng.events.EventType.UNLOCK_READY, this.onUnlockReady, false, this );
-    this._eventHandler.listen( this._object, feng.events.EventType.UNLOCK, this.onUnlock, false, this );
-  }
+  this._eventHandler.listen( this._object, feng.events.EventType.UNLOCK, this.updateStatus, false, this );
 
   this._eventHandler.listen( window, 'resize', this.onResize, false, this );
 
-  this.onResize();
+  this.updateStatus();
 
-  goog.fx.anim.registerAnimation( this );
+  goog.style.showElement( this.domElement, true );
+
+  this.onResize();
 };
 
 
 feng.views.sections.captions.Caption.prototype.hide = function() {
 
-  goog.style.showElement( this.domElement, false );
-
   this._eventHandler.removeAll();
 
-  goog.fx.anim.unregisterAnimation( this );
+  this._object.stopInteraction();
+
+  goog.style.showElement( this.domElement, false );
 };
 
 
@@ -100,49 +99,57 @@ feng.views.sections.captions.Caption.prototype.unlock = function() {
 };
 
 
+feng.views.sections.captions.Caption.prototype.updateStatus = function() {
 
-feng.views.sections.captions.Caption.prototype.update = function() {
+  var tip = this._object.tip;
 
-};
+  var requiredTip = tip.getRequiredTip();
+  var hasLockedRequiredTip = (requiredTip && !requiredTip.unlocked);
+  goog.style.showElement( this._hintEl, hasLockedRequiredTip );
+  goog.style.showElement( this._interactionEl, !hasLockedRequiredTip );
 
+  if(!tip.problem || hasLockedRequiredTip) {
+    goog.style.showElement( this._problemEl, false );
+  }
 
-feng.views.sections.captions.Caption.prototype.onAnimationFrame = function( now ) {
+  if(this._interactionButton) {
+    goog.style.showElement( this._interactionButton, !tip.unlocked );
+  }
+  
+  goog.style.showElement( this._adviceEl, tip.unlocked );
+  goog.style.showElement( this._shareEl, tip.unlocked );
 
-  if(!this.allowUpdate) return;
+  if(tip.unlocked) {
+    
+    if(tip.problem) {
+      goog.dom.classes.add( this._problemEl, 'closed' );
+    }
 
-  this.update();
+    goog.dom.classes.remove( this._adviceEl, 'closed' );
+
+    goog.dom.classes.add( this._interactionEl, 'unlocked' );
+  }
 };
 
 
 feng.views.sections.captions.Caption.prototype.onClick = function( e ) {
 
   switch(e.currentTarget) {
-    case this._closeButton:
-    this.close();
+    case this._interactionButton:
+    this._object.startInteraction();
+    goog.dom.classes.add( this.domElement, 'minimized' );
     break;
 
+    /*
     case this._changeButton:
     this._object.tip.unlock();
     break;
 
-    /* WIP
     case this._unlockButton:
     this.unlock();
     break;
     */
   }
-};
-
-
-feng.views.sections.captions.Caption.prototype.onUnlock = function( e ) {
-
-  // handle caption UI change
-};
-
-
-feng.views.sections.captions.Caption.prototype.onUnlockReady = function( e ) {
-
-  // handle caption UI change
 };
 
 

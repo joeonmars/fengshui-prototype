@@ -77,6 +77,10 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 		goog.object.forEach(this._view3d.tipObjects, function(tipObject) {
 
 			var locked = !tipObject.tip.unlocked;
+			
+			var isUnlockedRequiredTip = (tipObject.tip.getProvidedTip() && !locked);
+			if(isUnlockedRequiredTip) return;
+
 			var withinRange = this._detectorSphere.intersectsSphere( tipObject.getBoundingSphere() );
 			var canReach = false;
 
@@ -86,9 +90,9 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 			var intersects = this._detectorRay.intersectObjects( object3ds );
 			var canReach = (intersects.length > 0) ? (intersects[0].object === tipObject.object3d) : false;
 
-			console.log(tipObject.name + ' withinRange: ' + withinRange + ', locked: ' + locked + ', canReach: ' + canReach, (intersects.length > 0 ? intersects[0].object : null));
+			//console.log(tipObject.name + ' withinRange: ' + withinRange + ', locked: ' + locked + ', canReach: ' + canReach, (intersects.length > 0 ? intersects[0].object : null));
 
-			if(locked && withinRange && canReach) {
+			if(/*locked && */withinRange && canReach) {
 				selectableObjects.push( tipObject );
 			}
 		}, this);
