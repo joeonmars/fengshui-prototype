@@ -107,7 +107,7 @@ feng.models.Preload = function(){
 				'ceiling-lamp-2-texture': 'images/texture/studio/livingroom/ceiling-lamp-2.jpg',
 				'bed-texture': 'images/texture/studio/livingroom/bed.jpg',
 				'shoestorage-texture': 'images/texture/studio/livingroom/shoestorage.jpg',
-				'sofabed-cabinet-texture': 'images/texture/studio/livingroom/sofabed-cabinet.png',
+				'sofabed-cabinet-texture': 'images/texture/studio/livingroom/sofabed-cabinet.jpg',
 				'kitchen-cabinets-texture': 'images/texture/studio/livingroom/kitchen-cabinets.jpg',
 				'kitchen-storage-texture': 'images/texture/studio/livingroom/kitchen-storage.jpg',
 				'microwave-texture': 'images/texture/studio/livingroom/microwave.jpg',
