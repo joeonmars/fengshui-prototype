@@ -197,7 +197,8 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.ceiling-lamp-2-texture"
 			},
 			'floor': {
-				texture: "studio.livingroom.floor-texture"
+				texture: "studio.livingroom.floor-texture",
+				receiveShadow: true
 			},
 			'bed':	{
 				collidable: true,
@@ -403,7 +404,8 @@ feng.models.View3D.Data = {
 		},
 		'bathroom': {
 			'floor': {
-				texture: "studio.bathroom.floor-texture"
+				texture: "studio.bathroom.floor-texture",
+				receiveShadow: true
 			},
 			'wall':	{
 				collidable: true,
@@ -589,7 +591,8 @@ feng.models.View3D.Data = {
 		},
 		'boysroom': {
 			'floor': {
-				texture: "townhouse.boysroom.floor-texture"
+				texture: "townhouse.boysroom.floor-texture",
+				receiveShadow: true
 			},
 			'wall':	{
 				collidable: true,
@@ -763,7 +766,8 @@ feng.models.View3D.Data = {
 		},
 		'homeoffice': {
 			'floor': {
-				texture: "townhouse.homeoffice.floor-texture"
+				texture: "townhouse.homeoffice.floor-texture",
+				receiveShadow: true
 			},
 			'ceiling': {
 				texture: "townhouse.homeoffice.ceiling-texture"
@@ -789,8 +793,18 @@ feng.models.View3D.Data = {
 				}
 			},
 			'swivel-chair': {
+				class: "movable",
 				collidable: true,
-				texture: "townhouse.homeoffice.swivel-chair-texture"
+				castShadow: true,
+				texture: "townhouse.homeoffice.swivel-chair-texture",
+				interactions: [
+					"move",
+					"rotate"
+				],
+				destination: new THREE.Vector3(0, 0, 0),
+				range: 80,
+				tipInteraction: "change_object",
+				tipKey: 'townhouse.homeoffice.chair'
 			},
 			'storage': {
 				collidable: true,
