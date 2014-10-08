@@ -246,22 +246,12 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 
 	switch(this._mode) {
 		case feng.controllers.view3d.ModeController.Mode.BROWSE:
-			break;
-
 		case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
-			break;
-
 		case feng.controllers.view3d.ModeController.Mode.DESIGN:
 			break;
 
-		case feng.controllers.view3d.ModeController.Mode.WALK:console.log(e)
-			this.control.start( fromPosition, toPosition, e, nextMode );
-			break;
-
+		case feng.controllers.view3d.ModeController.Mode.WALK:
 		case feng.controllers.view3d.ModeController.Mode.CLIMB:
-			this.control.start( e );
-			break;
-
 		case feng.controllers.view3d.ModeController.Mode.TRANSITION:
 			this.control.start( e );
 			break;

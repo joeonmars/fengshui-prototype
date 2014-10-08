@@ -55,11 +55,11 @@ feng.controllers.controls.WalkControls.prototype.pause = function ( pause ) {
 };
 
 
-feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition, toPosition, ev, nextMode ) {
+feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 
-	//var fromPosition = ev.fromPosition;
-	//var toPosition = ev.toPosition;
-	//var nextMode = ev.nextMode;
+	var fromPosition = ev.fromPosition;
+	var toPosition = ev.toPosition;
+	var nextMode = ev.nextMode;
 
 	var viewDistance = (ev.viewDistance >= 0) ? ev.viewDistance : 50;
 	var gateway = ev.gateway;
@@ -180,13 +180,11 @@ feng.controllers.controls.WalkControls.prototype.onPathComplete = function ( gat
 		gateway.listenOnce( feng.events.EventType.COMPLETE, this.onGatewayOpenComplete, false, this );
 	}
 
-	/*
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		mode: nextMode,
 		stairs: stairs
 	});
-	*/
 };
 
 
