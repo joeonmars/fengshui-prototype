@@ -206,38 +206,42 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	// set and get the next mode controls start values and use that for current controls' end value
 	if(nextControl) {
 
-		var shouldUpdateTo;
-		var nextPosition, nextRotation, nextFov;
+		var shouldUpdateToPosition = false;
+		var shouldUpdateToRotation = false;
+		var shouldUpdateToFov = false;
+		var shouldUpdateToTarget = false;
 
 		switch(nextControl) {
 			
 			case this._browseControls:
-			this._browseControls.setCamera( toRotation );
-			shouldUpdateTo = true;
+			if(oldControl === this._designControls || oldControl === this._closeUpControls) {
+				this._browseControls.setCamera( toRotation );
+				shouldUpdateToRotation = true;
+				shouldUpdateToTarget = true;
+			}
 			break;
 
 			case this._closeUpControls:
 			this._closeUpControls.setCamera( fromPosition, fromRotation, fromFov, e.object );
-			shouldUpdateTo = true;
+			shouldUpdateToPosition = true;
+			shouldUpdateToRotation = true;
+			shouldUpdateToFov = true;
+			shouldUpdateToTarget = true;
 			break;
 
 			case this._designControls:
 			this._designControls.setCamera( this.control.getForwardVector(), e.object );
-			shouldUpdateTo = true;
+			shouldUpdateToPosition = true;
+			shouldUpdateToRotation = true;
+			shouldUpdateToFov = true;
+			shouldUpdateToTarget = true;
 			break;
 		};
 
-		if(shouldUpdateTo) {
-
-			nextPosition = nextControl.getPosition();
-			nextRotation = feng.utils.ThreeUtils.getShortestRotation( fromRotation, nextControl.getRotation() );
-			nextFov = nextControl.getFov();
-		}
-
-		e.toPosition = nextPosition || toPosition;
-		e.toRotation = nextRotation || toRotation;
-		e.toFov = nextFov || toFov;
-		e.toTarget = nextControl.getTarget();
+		e.toPosition = shouldUpdateToPosition ? nextControl.getPosition() : e.toPosition;
+		e.toRotation = shouldUpdateToRotation ? feng.utils.ThreeUtils.getShortestRotation(fromRotation, nextControl.getRotation()) : e.toRotation;
+		e.toFov = shouldUpdateToFov ? nextControl.getFov() : e.toFov;
+		e.toTarget = shouldUpdateToTarget ? nextControl.getTarget() : e.toTarget;
 	}
 
 	switch(this._mode) {
@@ -250,7 +254,7 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 		case feng.controllers.view3d.ModeController.Mode.DESIGN:
 			break;
 
-		case feng.controllers.view3d.ModeController.Mode.WALK:
+		case feng.controllers.view3d.ModeController.Mode.WALK:console.log(e)
 			this.control.start( fromPosition, toPosition, e, nextMode );
 			break;
 

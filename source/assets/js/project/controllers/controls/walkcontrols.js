@@ -57,6 +57,10 @@ feng.controllers.controls.WalkControls.prototype.pause = function ( pause ) {
 
 feng.controllers.controls.WalkControls.prototype.start = function ( fromPosition, toPosition, ev, nextMode ) {
 
+	//var fromPosition = ev.fromPosition;
+	//var toPosition = ev.toPosition;
+	//var nextMode = ev.nextMode;
+
 	var viewDistance = (ev.viewDistance >= 0) ? ev.viewDistance : 50;
 	var gateway = ev.gateway;
 	var stairs = ev.stairs;
