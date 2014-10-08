@@ -49,6 +49,12 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, 
 goog.inherits(feng.controllers.controls.BrowseControls, feng.controllers.controls.Controls);
 
 
+feng.controllers.controls.BrowseControls.prototype.setCamera = function( toRotation ) {
+
+	this.setRotation( toRotation );
+};
+
+
 feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mouseEventToTrigger ) {
 
 	var shouldEnable = goog.base(this, 'enable', enable);

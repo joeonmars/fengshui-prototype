@@ -211,13 +211,18 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 
 		switch(nextControl) {
 			
+			case this._browseControls:
+			this._browseControls.setCamera( toRotation );
+			shouldUpdateTo = true;
+			break;
+
 			case this._closeUpControls:
 			this._closeUpControls.setCamera( fromPosition, fromRotation, fromFov, e.object );
 			shouldUpdateTo = true;
 			break;
 
 			case this._designControls:
-			this._designControls.setCamera( fromPosition, fromFov, e.object );
+			this._designControls.setCamera( this.control.getForwardVector(), e.object );
 			shouldUpdateTo = true;
 			break;
 		};

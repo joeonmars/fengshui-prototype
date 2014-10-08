@@ -54,13 +54,13 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement, 
 goog.inherits(feng.controllers.controls.DesignControls, feng.controllers.controls.Controls);
 
 
-feng.controllers.controls.DesignControls.prototype.setCamera = function( fromPosition, fromFov, object ) {
+feng.controllers.controls.DesignControls.prototype.setCamera = function( forward, object ) {
 
-	// set focus to object
+	// set focus to center of scene
 	this._focus.copy( this._view3d.scene.position );
 
 	// set position / rotation based on focus
-	this.setFocus( this._focus.x, this._focus.z );
+	this.setFocus( this._focus.x, this._focus.z, forward );
 	
 	this.setFov( this._zoomSlider.calculateFov( .6 ) );
 
@@ -70,15 +70,15 @@ feng.controllers.controls.DesignControls.prototype.setCamera = function( fromPos
 };
 
 
-feng.controllers.controls.DesignControls.prototype.setFocus = function( x, z ) {
+feng.controllers.controls.DesignControls.prototype.setFocus = function( x, z, forward ) {
 
 	this._focus.set( x, 0, z );
 
-	var rotationY = THREE.Math.degToRad( 45 );
+	// calculate camera position from inversed forward vector
+	var vector = forward.negate().multiplyScalar( this._distance );
 
-	// get position by camera angle
-	var cameraX = (this._distance + this._focus.x) * Math.sin( rotationY );
-	var cameraZ = (this._distance + this._focus.z) * Math.cos( rotationY );
+	var cameraX = vector.x;
+	var cameraZ = vector.z;
 	var cameraY = this._distance;
 
 	// apply position

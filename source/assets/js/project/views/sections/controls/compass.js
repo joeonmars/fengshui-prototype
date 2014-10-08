@@ -38,6 +38,8 @@ feng.views.sections.controls.Compass = function(domElement){
   this._hoveredBrowse = false;
 
   this._rotation = 0;
+
+  this._isInDesignMode = false;
 };
 goog.inherits(feng.views.sections.controls.Compass, feng.views.sections.controls.Controls);
 
@@ -199,7 +201,7 @@ feng.views.sections.controls.Compass.prototype.onClick = function(e){
 
 	if(this._hoveredDesign) {
 
-		console.log("CLICK DESIGN");
+		if(this._isInDesignMode) return false;
 
 		this._view3d.modeController.setMode({
 			type: feng.events.EventType.CHANGE,
@@ -209,12 +211,17 @@ feng.views.sections.controls.Compass.prototype.onClick = function(e){
 
 	}else if(this._hoveredBrowse) {
 
-		console.log("CLICK BROWSE");
+		if(!this._isInDesignMode) return false;
+
+		var designControl = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.DESIGN );
+		var toRotation = designControl.getRotation().clone();
+		toRotation.x = 0;
 
 		this._view3d.modeController.setMode({
 			type: feng.events.EventType.CHANGE,
 			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-			nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE
+			nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
+			toRotation: toRotation
 		});
 	}
 };
@@ -235,9 +242,13 @@ feng.views.sections.controls.Compass.prototype.onModeChange = function(e){
 
   	goog.dom.classes.addRemove(this.domElement, 'browse', 'design');
 
+  	this._isInDesignMode = true;
+
   }else {
 
   	goog.dom.classes.addRemove(this.domElement, 'design', 'browse');
+
+  	this._isInDesignMode = false;
   }
   
   switch(e.mode) {
