@@ -18,7 +18,7 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement, 
 
   this._focus = new THREE.Vector3();
 
-  this._distance = 1000;
+  this._distance = 900;
 
   // detect bounding box on floors for camera to move around
   this._boundingBox = new THREE.Box3();

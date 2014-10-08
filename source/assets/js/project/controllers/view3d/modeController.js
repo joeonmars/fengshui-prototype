@@ -179,6 +179,13 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	this.control.setRotation( fromRotation );
 	this.control.setFov( fromFov );
 
+	e.fromPosition = fromPosition;
+	e.fromRotation = fromRotation;
+	e.fromFov = fromFov;
+	e.toPosition = toPosition;
+	e.toRotation = toRotation;
+	e.toFov = toFov;
+
 	switch(this.control) {
 		case this._browseControls:
 		this.control.enable( true, e.eventToTrigger );
@@ -200,6 +207,7 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	if(nextControl) {
 
 		var shouldUpdateTo;
+		var nextPosition, nextRotation, nextFov;
 
 		switch(nextControl) {
 			
@@ -215,10 +223,16 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 		};
 
 		if(shouldUpdateTo) {
-			toPosition = nextControl.getPosition();
-			toRotation = feng.utils.ThreeUtils.getShortestRotation( fromRotation, nextControl.getRotation() );
-			toFov = nextControl.getFov();
+
+			nextPosition = nextControl.getPosition();
+			nextRotation = feng.utils.ThreeUtils.getShortestRotation( fromRotation, nextControl.getRotation() );
+			nextFov = nextControl.getFov();
 		}
+
+		e.toPosition = nextPosition || toPosition;
+		e.toRotation = nextRotation || toRotation;
+		e.toFov = nextFov || toFov;
+		e.toTarget = nextControl.getTarget();
 	}
 
 	switch(this._mode) {
@@ -240,7 +254,7 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 			break;
 
 		case feng.controllers.view3d.ModeController.Mode.TRANSITION:
-			this.control.start( toPosition, toRotation, toFov, e, nextMode );
+			this.control.start( e );
 			break;
 
 		default:

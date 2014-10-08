@@ -15,8 +15,8 @@ feng.views.sections.controls.ZoomSlider = function(domElement, mousewheelElement
   goog.base(this, domElement);
 
   this.fovRange = {
-  	min: 5,
-  	max: 20
+  	min: 10,
+  	max: 30
   };
 
   this._zoomSteps = 10;
