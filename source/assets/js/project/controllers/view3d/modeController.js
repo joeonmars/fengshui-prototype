@@ -7,6 +7,7 @@ goog.require('goog.object');
 goog.require('feng.events');
 goog.require('feng.controllers.controls.BrowseControls');
 goog.require('feng.controllers.controls.CloseUpControls');
+goog.require('feng.controllers.controls.EntryControls');
 goog.require('feng.controllers.controls.DesignControls');
 goog.require('feng.controllers.controls.WalkControls');
 goog.require('feng.controllers.controls.ClimbControls');
@@ -47,12 +48,13 @@ feng.controllers.view3d.ModeController.prototype.init = function(){
 	this._browseControls = this.createControls( feng.controllers.view3d.ModeController.Mode.BROWSE );
 	this._closeUpControls = this.createControls( feng.controllers.view3d.ModeController.Mode.CLOSE_UP );
 	this._designControls = this.createControls( feng.controllers.view3d.ModeController.Mode.DESIGN );
+	this._entryControls = this.createControls( feng.controllers.view3d.ModeController.Mode.ENTRY );
 	this._walkControls = this.createControls( feng.controllers.view3d.ModeController.Mode.WALK );
 	this._climbControls = this.createControls( feng.controllers.view3d.ModeController.Mode.CLIMB );
 	this._transitionControls = this.createControls( feng.controllers.view3d.ModeController.Mode.TRANSITION );
 
 	//
-	this.control = this._browseControls;
+	this.control = this._entryControls;
 };
 
 
@@ -112,6 +114,10 @@ feng.controllers.view3d.ModeController.prototype.createControls = function( mode
 
 		case feng.controllers.view3d.ModeController.Mode.DESIGN:
 		ControlClass = feng.controllers.controls.DesignControls;
+		break;
+
+		case feng.controllers.view3d.ModeController.Mode.ENTRY:
+		ControlClass = feng.controllers.controls.EntryControls;
 		break;
 
 		case feng.controllers.view3d.ModeController.Mode.WALK:
@@ -245,9 +251,8 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	}
 
 	switch(this._mode) {
-		case feng.controllers.view3d.ModeController.Mode.BROWSE:
-		case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
-		case feng.controllers.view3d.ModeController.Mode.DESIGN:
+		case feng.controllers.view3d.ModeController.Mode.ENTRY:
+			this.control.start();
 			break;
 
 		case feng.controllers.view3d.ModeController.Mode.WALK:
@@ -267,8 +272,9 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 
 feng.controllers.view3d.ModeController.Mode = {
 	BROWSE: 'browse', //look around
-	CLOSE_UP: 'close_up', // a locked perspective viewing a specific object
+	CLOSE_UP: 'close_up', //a locked perspective viewing a specific object
 	DESIGN: 'design', // isometrix view for ease of positioning/rotating control
+	ENTRY: 'entry', //first-time enter a residence
 	WALK: 'walk',	// walk along a path
 	CLIMB: 'climb',	// climb stairs
 	TRANSITION: 'transition' // transition between different cameras for the above mode

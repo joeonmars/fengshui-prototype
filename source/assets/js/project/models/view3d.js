@@ -158,8 +158,8 @@ feng.models.View3D.Data = {
 		'livingroom': {
 			'studio-door': {
 				class: "gateway",
-				viewid: "bathroom",
-				gatewayid: "bathroom-door",
+				viewid: "livingroom",
+				gatewayid: "studio-door",
 				castShadow: true,
 				isEntry: true,
 				origin: {

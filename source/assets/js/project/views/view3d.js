@@ -135,7 +135,7 @@ feng.views.View3D.prototype.getGatewayObjects = function(){
 feng.views.View3D.prototype.getEntry = function(){
 
 	var gatewayObjects = this.getGatewayObjects();
-
+	
 	var entry = goog.array.find( gatewayObjects, function(gatewayObject) {
 		return (gatewayObject.isEntry === true);
 	});

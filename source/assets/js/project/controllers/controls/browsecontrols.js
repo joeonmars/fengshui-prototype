@@ -12,7 +12,7 @@ goog.require('feng.views.view3dobject.StairsObject');
  * @constructor
  * a mod of PointerLockControls...
  */
-feng.controllers.controls.BrowseControls = function(camera, view3d, domElement, uiElement){
+feng.controllers.controls.BrowseControls = function(camera, view3d, domElement){
 
   goog.base(this, camera, view3d, domElement);
 

@@ -10,7 +10,7 @@ goog.require('feng.views.sections.controls.ZoomSlider');
  * @constructor
  * a combination of trackball controls and transform controls
  */
-feng.controllers.controls.DesignControls = function(camera, view3d, domElement, uiElement){
+feng.controllers.controls.DesignControls = function(camera, view3d, domElement){
 
   goog.base(this, camera, view3d, domElement);
 

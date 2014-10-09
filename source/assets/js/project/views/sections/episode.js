@@ -36,6 +36,8 @@ feng.views.sections.Episode = function(template, templateData){
 
   this._view3ds = [];
   this._view3d = null;
+
+  this._hasDoneIntro = false;
 };
 goog.inherits(feng.views.sections.Episode, feng.views.sections.Section);
 
@@ -160,17 +162,28 @@ feng.views.sections.Episode.prototype.onShowView3D = function(e){
 
 	var view3d = e.target;
 
-	var gatewayObject = view3d.getEntry();
-	var position = gatewayObject.origin.position;
-	var rotation = gatewayObject.origin.rotation;
-  
-  	// set initial mode
-	view3d.modeController.setMode({
-		mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
-		fromPosition: position,
-		fromRotation: rotation,
-		fromFov: feng.controllers.controls.Controls.Default.FOV
-	});
+	// set initial mode
+	if(!this._hasDoneIntro) {
+
+		view3d.modeController.setMode({
+			mode: feng.controllers.view3d.ModeController.Mode.ENTRY
+		});
+
+		this._hasDoneIntro = true;
+		
+	}else {
+
+		var gatewayObject = view3d.getEntry();
+		var position = gatewayObject.origin.position;
+		var rotation = gatewayObject.origin.rotation;
+	  	
+		view3d.modeController.setMode({
+			mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
+			fromPosition: position,
+			fromRotation: rotation,
+			fromFov: feng.controllers.controls.Controls.Default.FOV
+		});
+	}
 	
 	// test mode
 	if(feng.utils.Utils.hasQuery('interaction', 'true')) {

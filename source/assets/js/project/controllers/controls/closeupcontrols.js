@@ -9,7 +9,7 @@ goog.require('feng.controllers.controls.InteractionResolver');
 /**
  * @constructor
  */
-feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement, uiElement) {
+feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement) {
 
   goog.base(this, camera, view3d, domElement);
 
