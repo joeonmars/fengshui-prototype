@@ -21,7 +21,7 @@ feng.views.sections.controls.Reminder = function( domElement, tips ){
   this._hintIndex = 0;
   this._numHints = 0;
 
-  this._hintTimer = new goog.Timer( 15000 );
+  this._hintTimer = new goog.Timer( 30000 );
 
   this._hintDialogueEl = goog.dom.query('.dialogue.hint', this.domElement)[0];
   this._prevEl = goog.dom.query('.prev', this.domElement)[0];

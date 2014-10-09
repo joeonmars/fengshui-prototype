@@ -73,7 +73,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "Oh, sorry! The chair in the middle of the room blocks your way."
+			"reminder": "Oh, sorry! The chair in the middle of the room blocks your way. Maybe I should move it somewhere else."
 		},
 		{
 			"id": "lamp",
@@ -92,7 +92,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "Yes, my room to dark, so I usually turn the Dome Light to MAX."
+			"reminder": "I love novels and makeup magazines, but sometimes I feel tired after reading for a while."
 		},
 		{
 			"id": "crystal",
@@ -149,7 +149,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "My room is small, so I tried to open the windows more often, but still feel suffocated."
+			"reminder": "My room is small, so I try to open the windows more often, but I still feel suffocated."
 		},
 		{
 			"id": "cactus",
@@ -168,7 +168,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "I love my “little green”, Cactus leaf also offers health benefits, is that correct?"
+			"reminder": "I love my “little green”, and cactus leaves also offer health benefits, right?"
 		},
 		{
 			"id": "sewingmachine",
@@ -187,7 +187,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "I like fashion design and hand crafts, especially love work with sewing machine."
+			"reminder": "Fashion design and handcrafts are my favorites. I especially enjoy working with a sewing machine."
 		},
 		{
 			"id": "refrigerator",
@@ -206,7 +206,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "How do you love fruits? I have stored some in the refrigerator..."
+			"reminder": "How do you like fresh fruit? I have some stored in the refrigerator."
 		},
 		{
 			"id": "fruitplate",
@@ -225,7 +225,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "How do you love fruits? I have stored some in the refrigerator...",
+			"reminder": "How do you like fresh fruit? I have some stored in the refrigerator.",
 			"hint": "Something is missing on the fruit plate...",
 			"details": {
 				"descriptions": {
@@ -253,7 +253,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "I always have a rush morning. Don’t have time to organize the closet."
+			"reminder": "I always have a really rushed morning. I don’t have time to organize the closet."
 		},
 		{
 			"id": "lotus",
@@ -272,7 +272,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
 			"response": "Thank you.",
-			"reminder": "Do you like my flower vase? I think it brings fresh mood to this area!"
+			"reminder": "Do you like my flower vase? I think it brings a fresh mood to the bathroom."
 		},
 		{
 			"id": "showerhead",
@@ -310,14 +310,14 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "joanna",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the glassbowl!"
+			"reminder": "We had a goldfish, but it passed away a few months ago. We left the empty aquarium near the sofa."
 		},
 		{
-			"id": "candle",
+			"id": "mirror",
 			"section": "townhouse",
 			"view": "livingroom",
-			"name": "candle",
-			"icon": "candle",
+			"name": "mirror",
+			"icon": "mirror",
 			"cover": "default.jpg",
 			"interaction": "change_object",
 			"unlocked": false,
@@ -329,26 +329,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "joanna",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the candle!"
-		},
-		{
-			"id": "pictures",
-			"section": "townhouse",
-			"view": "livingroom",
-			"name": "pictures",
-			"icon": "pictures",
-			"cover": "default.jpg",
-			"interaction": "change_object",
-			"unlocked": false,
-			"mandatory": false,
-			"require": null,
-			"provide": null,
-			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
-			"character": "joanna",
-			"response": "Thank you.",
-			"reminder": "Don't forget to check the pictures!"
+			"reminder": "I heard that mirrors have some unexpected Feng Shui influences. Is that true? Have I used it correctly?"
 		},
 		{
 			"id": "cookingutensils",
@@ -367,7 +348,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "joanna",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the cookingutensils!"
+			"reminder": "My husband Scott always displays cooking utensils on the countertop. But I really like to keep them organized in a drawer."
 		},
 		{
 			"id": "drawer",
@@ -386,7 +367,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "joanna",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the drawer!"
+			"reminder": "My husband Scott always displays cooking utensils on the countertop. But I really like to keep them organized in a drawer."
 		},
 		{
 			"id": "centerofstairs",
@@ -405,7 +386,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "joanna",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the centerofstairs!"
+			"reminder": "The stairs to up to the second floor are narrow and sometimes make me uncomfortable. Can we check it out?"
 		},
 		{
 			"id": "books",
@@ -422,7 +403,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "joanna",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the books!"
+			"reminder": "The half-wall book stack shelf is the most significant decoration in our living room, but we actually seldom read those books."
 		},
 		{
 			"id": "handheld",
@@ -441,7 +422,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "nick",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the handheld!"
+			"reminder": "I love to play with my handheld console! I put it near my bed so I can reach it at night!"
 		},
 		{
 			"id": "bear",
@@ -460,7 +441,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "nick",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the bear!"
+			"reminder": "Dad said I need to clean my room, so I threw my bear, Nick King, into a drawer, but I don’t think he liked it."
 		},
 		{
 			"id": "bed",
@@ -498,7 +479,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "nick",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the pc!"
+			"reminder": "There is a playground outside my window. I hope I can finish my homework soon and join Tom and Ryan."
 		},
 		{
 			"id": "picture",
@@ -520,25 +501,6 @@
 			"reminder": "Don't forget to check the picture!"
 		},
 		{
-			"id": "wall",
-			"section": "townhouse",
-			"view": "boysroom",
-			"name": "wall",
-			"icon": "paint",
-			"cover": "default.jpg",
-			"interaction": "change_color",
-			"unlocked": false,
-			"mandatory": false,
-			"require": null,
-			"provide": null,
-			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
-			"character": "nick",
-			"response": "Thank you.",
-			"reminder": "Don't forget to check the wall!"
-		},
-		{
 			"id": "chair",
 			"section": "townhouse",
 			"view": "homeoffice",
@@ -555,7 +517,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "scott",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the chair!"
+			"reminder": "Have a seat! Try this desk chair, it’s very comfortable! But I don’t know why I sometimes get backaches."
 		},
 		{
 			"id": "photos",
@@ -574,7 +536,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "scott",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the photos!"
+			"reminder": "Any suggestions on the picture wall? I’ve heard that Feng Shui can help with my career."
 		},
 		{
 			"id": "setsquare",
@@ -593,7 +555,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "scott",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the set square!"
+			"reminder": "I always need set square. Do you think it is in a good position now? I want to keep it at hand."
 		},
 		{
 			"id": "flower",
@@ -612,7 +574,7 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "scott",
 			"response": "Thank you.",
-			"reminder": "Don't forget to check the flower!"
+			"reminder": "I love having some plants in the room. Do you think I have made a wise choice?"
 		},
 		{
 			"id": "mascot",
@@ -640,42 +602,42 @@
 				"livingroom": {
 					"character": "ollie",
 					"title": "Welcome to my studio!",
-					"paragraph": "My name is Ollie B. Bowie. 24years old and I am a graphic designer. This is my apartment. Welcome!<br>I love photos and plants and hand crafts. I have a hard time recently and if you have any suggestion on improving Feng Shui in my studio, that will be great!"
+					"paragraph": "My name is Ollie B. Bowie. I am 24 years old, and I am a graphic designer. This is my apartment. Welcome!<br>I love photos and plants and handcrafts. I have had a hard time recently, and if you have any suggestions on improving the workspace energy in my studio, it would be great!"
 				},
 				"bathroom": {
 					"character": "ollie",
-					"title": "Something about the bathroom...",
-					"paragraph": "After a whole day working, I really enjoy soaking in the bath in the early mornings and late nights.<br>Ideally, the bathroom should be serene, clean and comfortable. Somewhere totally relaxed and refresh. Wish we could make it!"
+					"title": "This is my bathroom..",
+					"paragraph": "After a whole day working, I really enjoy soaking in the bath in the early mornings and late nights.<br>Ideally, the bathroom should be serene, clean and comfortable. Somewhere totally relaxed. What can we do to make this a more refreshing place?"
 				}
 			},
 			"townhouse": {
 				"livingroom": {
 					"character": "joanna",
-					"title": "Welcome to our home.",
-					"paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque viverra, sapien varius pellentesque commodo, lectus nulla malesuada quam, eu tempor turpis metus sed libero. Integer viverra purus congue magna rutrum imperdiet."
+					"title": "Welcome to our house!",
+					"paragraph": "My name is Joanna. Welcome to our house. Isn’t it a very nice living room? How can we make it even better?<br>We spend a great deal of time here, and I hope that the living room can provide more wealth and prosperity for my family. We would also like to improve my husband’s workplace and provide a positive learning environment for Nick."
 				},
 				"boysroom": {
 					"character": "nick",
-					"title": "Fengshui master in my room!",
-					"paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque viverra, sapien varius pellentesque commodo, lectus nulla malesuada quam, eu tempor turpis metus sed libero. Integer viverra purus congue magna rutrum imperdiet."
+					"title": "Hey, this is my room.",
+					"paragraph": "I am almost 6 now, and I will start school next September. I don’t really want to go to school… Mom said I would have to spend more time studying in the future.<br>I am a big gamer, and here is the new computer I just got! When I grow up, I will travel around the world just like Superman."
 				},
 				"homeoffice": {
 					"character": "scott",
-					"title": "Could you improve the home office?",
-					"paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque viverra, sapien varius pellentesque commodo, lectus nulla malesuada quam, eu tempor turpis metus sed libero. Integer viverra purus congue magna rutrum imperdiet."
+					"title": "Welcome to my home office!",
+					"paragraph": "Hi, there! This is my workplace. I am sure you have been a great help for Joanna and Nick!<br>Working for a university mathematics department can be very stressful and difficult. Sometimes I hope that I can totally relax in my home office. I hope that this is a place where I can buck up when depressed. What sorts of things we can do here?"
 				}
 			}
 		},
 		"ending": {
 			"studio": {
 				"character": "ollie",
-				"title": "Thank you so much!",
-				"paragraph": "You have helped me solve all Feng Shui problems in my studio! We have replaced the cactus with a broadleaf plant, brightened the living area and smoothed out the energy flow. The Bathroom has no more hidden area now.<br>Thanks you very much! It is a really pleasant experience!"
+				"title": "Ollie says thank you!",
+				"paragraph": "You have helped me solve all the Feng Shui problems in my studio! We have replaced the cactus with a broadleaf plant, brightened the living area, and smoothed out the energy flow. The bathroom has no hidden areas now.<br>Thank you very much! It was a really pleasant experience!"
 			},
 			"townhouse": {
 				"character": "joanna-scott-nick",
-				"title": "Thank you so much!",
-				"paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque viverra, sapien varius pellentesque commodo."
+				"title": "Thanks for your help!",
+				"paragraph": "Now we have a very pleasant living room with a delightful goldfish, a quiet, relaxed and efficient home office, and a fun learning environment for little Nick."
 			}
 		},
 		"finale": {

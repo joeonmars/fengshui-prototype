@@ -140,6 +140,7 @@ feng.views.View3DHud.prototype.activate = function() {
   }
 
   this._view3dController.listen(feng.events.EventType.SHOW, this.onShowView3D, false, this);
+  this._view3dController.listen(feng.events.EventType.ANIMATED_IN, this.onAnimatedInView3D, false, this);
 
   feng.tutorial.listen(feng.events.EventType.ANIMATE_IN, this.tutorialOverlay.animateIn, false, this.tutorialOverlay);
   feng.tutorial.listen(feng.events.EventType.ANIMATE_OUT, this.tutorialOverlay.animateOut, false, this.tutorialOverlay);
@@ -219,6 +220,17 @@ feng.views.View3DHud.prototype.onShowView3D = function( e ) {
   var view3d = e.target;
 
   this.setView3D( view3d );
+};
+
+
+feng.views.View3DHud.prototype.onAnimatedInView3D = function( e ) {
+ 
+  var view3d = e.target;
+  var viewId = view3d.id;
+  var sectionId = view3d.sectionId;
+ 
+  this.openingOverlay.updateContent( sectionId, viewId );
+  this.openingOverlay.animateIn();
 };
 
 
