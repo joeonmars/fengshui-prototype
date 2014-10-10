@@ -12,7 +12,7 @@ feng.controllers.view3d.RenderController = function( view3d ){
 
   this._view3d = view3d;
 
-  this._renderer = this._view3d._renderer;
+  this._renderer = this._view3d.renderer;
   this._renderer.onBeforeRender = goog.bind(this.onBeforeRender, this);
   this._renderer.onBeforeRenderBlur = goog.bind(this.onBeforeRenderBlur, this);
   this._renderer.onBeforeRenderMask = goog.bind(this.onBeforeRenderMask, this);

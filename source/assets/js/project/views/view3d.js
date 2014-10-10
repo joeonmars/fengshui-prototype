@@ -25,6 +25,7 @@ goog.require('feng.views.view3dobject.MovableObject');
 goog.require('feng.views.view3dobject.GatewayObject');
 goog.require('feng.views.view3dobject.StairsObject');
 goog.require('feng.views.view3dobject.Skybox');
+goog.require('feng.views.view3dobject.Mirror');
 goog.require('feng.views.view3dobject.AccessoryObject');
 goog.require('feng.views.view3dobject.TipObject');
 goog.require('feng.views.view3dobject.entities.Lamp');
@@ -81,7 +82,7 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud, episode){
 	this.floorObjects = [];
 	this._floorMatrixIds = [];
 
-	this._renderer = null;
+	this.renderer = null;
 
 	this._eventHandler = new goog.events.EventHandler(this);
 };
@@ -90,12 +91,14 @@ goog.inherits(feng.views.View3D, goog.events.EventTarget);
 
 feng.views.View3D.prototype.init = function(){
 
-	this.initScene();
+	this.createScene();
 
 	this.cameraController = new feng.controllers.view3d.CameraController(this);
 	this.cameraController.init( this.scene );
 
-	this._renderer = new feng.fx.Renderer(this.domElement, this.scene, this.cameraController.activeCamera);
+	this.renderer = new feng.fx.Renderer(this.domElement, this.scene, this.cameraController.activeCamera);
+
+	this.initScene();
 	
 	this.renderController = new feng.controllers.view3d.RenderController(this);
 
@@ -361,14 +364,18 @@ feng.views.View3D.prototype.resume = function(){
 
 feng.views.View3D.prototype.render = function() {
 	
-	this._renderer.render();
+	this.renderer.render();
+};
+
+
+feng.views.View3D.prototype.createScene = function() {
+
+	var constructed = feng.views.View3D.constructScene(this.sectionId, this.id);
+	this.scene = constructed.scene;
 };
 
 
 feng.views.View3D.prototype.initScene = function() {
-	
-	var constructed = feng.views.View3D.constructScene(this.sectionId, this.id);
-	this.scene = constructed.scene;
 
 	// add fog to scene for fading 45 deg ground plane
 	this.scene.fog = new THREE.FogExp2( 0xd9d9d9, 0.0008 );
@@ -409,6 +416,7 @@ feng.views.View3D.prototype.initScene = function() {
 		'movable': feng.views.view3dobject.MovableObject,
 		'gateway': feng.views.view3dobject.GatewayObject,
 		'stairs': feng.views.view3dobject.StairsObject,
+		'mirror': feng.views.view3dobject.Mirror,
 		'closet': feng.views.view3dobject.entities.Closet,
 		'picturedisplay': feng.views.view3dobject.entities.PictureDisplay,
 		'pictureframe': feng.views.view3dobject.entities.PictureFrame,
@@ -529,7 +537,7 @@ feng.views.View3D.prototype.onAnimationFrame = function(now){
 
 feng.views.View3D.prototype.onCameraChange = function(e){
 
-	this._renderer.setCamera( e.camera );
+	this.renderer.setCamera( e.camera );
 };
 
 
@@ -541,7 +549,7 @@ feng.views.View3D.prototype.onResize = function(e){
 
 	this.cameraController.onResize( this.viewSize.aspectRatio() );
 
-	this._renderer.setSize( this.viewSize.width, this.viewSize.height );
+	this.renderer.setSize( this.viewSize.width, this.viewSize.height );
 
 	this.render();
 };

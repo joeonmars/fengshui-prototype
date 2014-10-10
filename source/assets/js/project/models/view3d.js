@@ -215,6 +215,9 @@ feng.models.View3D.Data = {
 				collidable: true,
 				texture: "studio.livingroom.linen-cabinet-texture"
 			},
+			'mirror':	{
+				class: "mirror"
+			},
 			'sofabed':	{
 				collidable: true,
 				texture: "studio.livingroom.sofabed-texture"
