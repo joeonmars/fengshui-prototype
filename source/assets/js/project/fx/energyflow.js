@@ -226,18 +226,5 @@ feng.fx.EnergyFlow.Preset = {
 		blendMode: THREE.AdditiveBlending,
 		jiggleFrequency: 2,
 		maxJiggleAmount: 4 
-	},
-	HANZI_CHI: {
-		numTrails: 80,
-		numLeaves: 10,
-		leaf: 'ji',
-		leafMinSize: 6,
-		leafMaxSize: 12,
-		color: '#48D1CC',
-		duration: 20000,
-		length: 20,
-		blendMode: THREE.MultiplyBlending,
-		jiggleFrequency: 2,
-		maxJiggleAmount: 4 
 	}
 };

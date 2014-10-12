@@ -10,7 +10,6 @@ goog.require('feng.fx.PathTrack');
 goog.require('feng.models.Preload');
 goog.require('feng.views.Preloader');
 goog.require('feng.views.View3D');
-goog.require('feng.views.book.Hanzi');
 goog.require('feng.views.debug.Debugger');
 goog.require('feng.PubSub');
 
@@ -30,14 +29,6 @@ feng.apps.PathEdit = function() {
 		'studio.interior3',
 		'studio.interior2',
 		'studio.bathroom'
-	];
-
-	this._hanziKeys = [
-		'global.hanzi.chi',
-		'global.hanzi.ji',
-		'global.hanzi.sha',
-		'global.hanzi.wuxing',
-		'global.hanzi.yinyang'
 	];
 
 	this._scene = null;
@@ -107,7 +98,7 @@ feng.apps.PathEdit.prototype.init = function() {
 	this._controls.noKeys = true;
 
 	var assetKeys = [];
-	goog.array.extend(assetKeys, this._sceneKeys, this._hanziKeys, 'global');
+	goog.array.extend(assetKeys, this._sceneKeys, 'global');
 
 	this._preloader.load( assetKeys );
 	goog.events.listenOnce(this._preloader, feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this);
@@ -191,23 +182,7 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 		return scene;
 	}, this);
 
-	var hanziScenes = goog.array.map(['chi', 'ji', 'sha', 'wuxing', 'yinyang'], function(id) {
-
-		var scene = feng.views.book.Hanzi.constructScene(id).scene;
-
-		var coordinates = [
-			new THREE.Vector3(100, 40, 0),
-			new THREE.Vector3(-30, 50, -50),
-			new THREE.Vector3(-100, 50, -200)
-		];
-
-		var pathTrack = new feng.fx.EnergyFlow(coordinates, true, feng.fx.EnergyFlow.Preset.YANG);
-		scene.add( pathTrack );
-
-		return scene;
-	});
-
-	goog.array.extend( this._scenes, view3dScenes, hanziScenes );
+	goog.array.extend( this._scenes, view3dScenes );
 
 	this._scene = this._scenes[0];
 	this._scene.add( this._editCamera );

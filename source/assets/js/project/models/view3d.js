@@ -165,7 +165,14 @@ feng.models.View3D.Data = {
 				origin: {
 					position: new THREE.Vector3(-240, 0, 34),
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
-				}
+				},
+				texture: "studio.livingroom.studio-door-texture"
+			},
+			'studio-door-handle': {
+				texture: "studio.livingroom.studio-door-handle-texture"
+			},
+			'studio-door-frame': {
+				texture: "studio.livingroom.studio-door-frame-texture"
 			},
 			'bathroom-door': {
 				class: "gateway",
@@ -188,6 +195,7 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.wall-outer-texture"
 			},
 			'ceiling':	{
+				castShadow: true,
 				texture: "studio.livingroom.ceiling-texture"
 			},
 			'ceiling-lamp-1':	{

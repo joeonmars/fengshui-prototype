@@ -47,18 +47,28 @@
 
 >.loader-overlay{
 	@include absoluteTopLeft;
-	background-color: rgba(0, 0, 0, .35);
+	background-color: rgba(0, 0, 0, .65);
 
 	>.loader{
 		position: absolute;
 		left: 50%;
 		top: 50%;
-		margin-left: -100px;
-		margin-top: -50px;
-		width: 200px;
-		height: 100px;
-		text-align: center;
-		font-size: 20px;
-		color: #fff;
+		margin-left: -160px;
+		margin-top: -160px;
+		width: 320px;
+		height: 320px;
+
+		>.spinner{
+		}
+
+		>.progress{
+			position: absolute;
+			top: 0;
+			width: 100%;
+			line-height: 320px;
+			text-align: center;
+			font-size: 40px;
+			color: #fff;
+		}
 	}
 }

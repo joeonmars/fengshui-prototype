@@ -2,7 +2,9 @@ goog.provide('feng.views.sections.overlays.LoaderOverlay');
 
 goog.require('goog.dom');
 goog.require('goog.style');
+goog.require('feng.models.Preload');
 goog.require('feng.views.Overlay');
+goog.require('feng.fx.CanvasSprite');
 
 
 /**
@@ -10,11 +12,20 @@ goog.require('feng.views.Overlay');
  */
 feng.views.sections.overlays.LoaderOverlay = function(domElement){
 
-	var canHalt = true;
+  this._loaderEl = goog.dom.getElementByClass('loader', domElement);
+  this._spinnerEl = goog.dom.getElementByClass('spinner', domElement);
+  this._progressEl = goog.dom.getElementByClass('progress', domElement);
+
+  var preload = feng.models.Preload.getInstance();
+  var img = preload.getAsset( 'global.spinner' );
+	var data = preload.getAsset( 'global.spinner-data' );
+  this._spinner = new feng.fx.CanvasSprite( img, data, this._spinnerEl );
+
+  this._spinnerTweener = this._spinner.getTweener();
+
+  var canHalt = true;
 
   goog.base(this, domElement, canHalt);
-
-  this._loaderEl = goog.dom.getElementByClass('loader', this.domElement);
 };
 goog.inherits(feng.views.sections.overlays.LoaderOverlay, feng.views.Overlay);
 goog.addSingletonGetter(feng.views.sections.overlays.LoaderOverlay);
@@ -30,12 +41,21 @@ feng.views.sections.overlays.LoaderOverlay.prototype.animateIn = function(){
 		'opacity': 1,
 		'ease': Strong.easeInOut
 	});
+
+	TweenMax.fromTo(this._loaderEl, .8, {
+		'opacity': 0
+	}, {
+		'delay': .8,
+		'opacity': 1
+	});
+
+	this._spinnerTweener.restart();
 };
 
 
 feng.views.sections.overlays.LoaderOverlay.prototype.animateOut = function(){
 
-	goog.base(this, 'animateOut');
+	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
 
 	TweenMax.to(this.domElement, .8, {
 		'opacity': 0,
@@ -47,6 +67,14 @@ feng.views.sections.overlays.LoaderOverlay.prototype.animateOut = function(){
 };
 
 
+feng.views.sections.overlays.LoaderOverlay.prototype.hide = function( shouldDispatch ){
+
+	goog.base(this, 'hide', shouldDispatch);
+
+	this._spinnerTweener.pause();
+};
+
+
 feng.views.sections.overlays.LoaderOverlay.prototype.onLoadStart = function(e){
 
 	this.animateIn();
@@ -55,7 +83,8 @@ feng.views.sections.overlays.LoaderOverlay.prototype.onLoadStart = function(e){
 
 feng.views.sections.overlays.LoaderOverlay.prototype.onLoadProgress = function(e){
 
-	this._loaderEl.innerHTML = Math.round(e.progress * 100) + '%';
+	var numStr = Math.round(e.progress * 100).toString();
+	this._progressEl.innerHTML = (numStr.length > 1) ? numStr : ('0' + numStr);
 };
 
 

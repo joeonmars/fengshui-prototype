@@ -12,6 +12,8 @@ feng.models.Preload = function(){
 	this._assets = {
 		'global': {
 			'fengshui-data': 'json/fengshui.json',
+			'spinner': 'images/spinner.png',
+			'spinner-data': 'json/spinner.json',
 			'scene-studio': 'images/scene-studio.jpg',
 			'scene-townhouse': 'images/scene-townhouse.jpg',
 			'circular-fill': 'images/circular-fill.png',
@@ -23,23 +25,6 @@ feng.models.Preload = function(){
 				'sha': 'images/texture/leaf/sha.png',
 				'yin': 'images/texture/leaf/yin.png',
 				'yang': 'images/texture/leaf/yang.png'
-			},
-			'hanzi': {
-				'chi': {
-					'scene': 'json/hanzi/chi.json'
-				},
-				'ji': {
-					'scene': 'json/hanzi/ji.json'
-				},
-				'sha': {
-					'scene': 'json/hanzi/sha.json'
-				},
-				'wuxing': {
-					'scene': 'json/hanzi/wuxing.json'
-				},
-				'yinyang': {
-					'scene': 'json/hanzi/yinyang.json'
-				}
 			}
 		},
 		'home': {
@@ -105,6 +90,9 @@ feng.models.Preload = function(){
 				'ceiling-texture': 'images/texture/studio/livingroom/ceiling.jpg',
 				'ceiling-lamp-1-texture': 'images/texture/studio/livingroom/ceiling-lamp-1.jpg',
 				'ceiling-lamp-2-texture': 'images/texture/studio/livingroom/ceiling-lamp-2.jpg',
+				'studio-door-texture': 'images/texture/studio/livingroom/studio-door.jpg',
+				'studio-door-handle-texture': 'images/texture/studio/livingroom/studio-door-handle.jpg',
+				'studio-door-frame-texture': 'images/texture/studio/livingroom/studio-door-frame.jpg',
 				'bed-texture': 'images/texture/studio/livingroom/bed.jpg',
 				'shoestorage-texture': 'images/texture/studio/livingroom/shoestorage.jpg',
 				'sofabed-cabinet-texture': 'images/texture/studio/livingroom/sofabed-cabinet.jpg',
