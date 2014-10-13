@@ -26,31 +26,6 @@
 	</head>
 
 	<body>
-		<!-- third-party -->
-		<script src="assets/js/thirdparty/howler.min.js"></script>
-		<script src="assets/js/thirdparty/createjs/preloadjs-0.4.1.min.js"></script>
-		<script src="assets/js/thirdparty/greensock/TweenMax.min.js"></script>
-		<script src="assets/js/thirdparty/greensock/utils/Draggable.min.js"></script>
-		
-		<script src="assets/js/thirdparty/threejs/build/three68.min.js"></script>
-
-		<script src="assets/js/thirdparty/threejs-utils/CombinedCamera.js"></script>
-		<script src="assets/js/thirdparty/threejs-utils/EffectComposer.js"></script>
-		<script src="assets/js/thirdparty/threejs-utils/RenderPass.js"></script>
-		<script src="assets/js/thirdparty/threejs-utils/ShaderPass.js"></script>
-		<script src="assets/js/thirdparty/threejs-utils/TexturePass.js"></script>
-		<script src="assets/js/thirdparty/threejs-utils/MaskPass.js"></script>
-		<script src="assets/js/thirdparty/threejs-utils/BloomPass.js"></script>
-		<script src="assets/js/thirdparty/threejs-utils/CopyShader.js"></script>
-		<script src="assets/js/thirdparty/threejs-utils/FXAAShader.js"></script>
-		<script src="assets/js/thirdparty/threejs-utils/VignetteShader.js"></script>
-		<script src="assets/js/thirdparty/threejs-utils/TriangleBlurShader.js"></script>
-		<script src="assets/js/thirdparty/threejs-utils/BrightnessContrastShader.js"></script>
-		<script src="assets/js/thirdparty/threejs-utils/HueSaturationShader.js"></script>
-		<script src="assets/js/thirdparty/threejs-utils/ConvolutionShader.js"></script>
-		<script src="assets/js/thirdparty/threejs-utils/OrbitControls.js"></script>
-		<script src="assets/js/thirdparty/pathfinding-browser.min.js"></script>
-
 		<!-- project js -->
 		<?php
 			$USE_COMPILE_JS = false;
@@ -63,10 +38,35 @@
 			
 			if($USE_COMPILE_JS == true) {
 				echo('
+					<script src="assets/js/output/thirdparty.js"></script>
 					<script src="assets/js/output/feng-compiled.js"></script>
 				');
 			}else {
 				echo('
+					<script src="assets/js/thirdparty/howler.min.js"></script>
+					<script src="assets/js/thirdparty/createjs/preloadjs-0.4.1.min.js"></script>
+					<script src="assets/js/thirdparty/greensock/TweenMax.min.js"></script>
+					<script src="assets/js/thirdparty/greensock/utils/Draggable.min.js"></script>
+					
+					<script src="assets/js/thirdparty/threejs/build/three68.min.js"></script>
+
+					<script src="assets/js/thirdparty/threejs-utils/CombinedCamera.js"></script>
+					<script src="assets/js/thirdparty/threejs-utils/EffectComposer.js"></script>
+					<script src="assets/js/thirdparty/threejs-utils/RenderPass.js"></script>
+					<script src="assets/js/thirdparty/threejs-utils/ShaderPass.js"></script>
+					<script src="assets/js/thirdparty/threejs-utils/TexturePass.js"></script>
+					<script src="assets/js/thirdparty/threejs-utils/MaskPass.js"></script>
+					<script src="assets/js/thirdparty/threejs-utils/BloomPass.js"></script>
+					<script src="assets/js/thirdparty/threejs-utils/CopyShader.js"></script>
+					<script src="assets/js/thirdparty/threejs-utils/FXAAShader.js"></script>
+					<script src="assets/js/thirdparty/threejs-utils/VignetteShader.js"></script>
+					<script src="assets/js/thirdparty/threejs-utils/TriangleBlurShader.js"></script>
+					<script src="assets/js/thirdparty/threejs-utils/BrightnessContrastShader.js"></script>
+					<script src="assets/js/thirdparty/threejs-utils/HueSaturationShader.js"></script>
+					<script src="assets/js/thirdparty/threejs-utils/ConvolutionShader.js"></script>
+					<script src="assets/js/thirdparty/threejs-utils/OrbitControls.js"></script>
+					<script src="assets/js/thirdparty/pathfinding-browser.min.js"></script>
+
 					<script src="http://localhost:35729/livereload.js"></script>
 					<script src="assets/js/thirdparty/closure-library/closure/goog/base.js"></script>
 					<script src="assets/js/output/feng-deps.js"></script>

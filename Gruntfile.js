@@ -180,8 +180,25 @@ module.exports = function(grunt) {
         checkModified: true,
         compilerOpts: {
            compilation_level: 'ADVANCED_OPTIMIZATIONS',//WHITESPACE_ONLY, SIMPLE_OPTIMIZATIONS, ADVANCED_OPTIMIZATIONS
+           language_in: 'ECMASCRIPT5_STRICT',
            externs: [
-           '<%= projectJsDir %>/externs.js'
+            '<%= projectJsDir %>/externs.js',
+            '<%= thirdPartyJsDir %>/threejs/build/three68.min.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/CombinedCamera.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/EffectComposer.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/RenderPass.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/ShaderPass.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/TexturePass.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/MaskPass.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/BloomPass.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/CopyShader.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/FXAAShader.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/VignetteShader.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/TriangleBlurShader.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/BrightnessContrastShader.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/HueSaturationShader.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/ConvolutionShader.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/OrbitControls.js'
             ],
            define: ["'goog.DEBUG=false'"],
            warning_level: 'verbose',

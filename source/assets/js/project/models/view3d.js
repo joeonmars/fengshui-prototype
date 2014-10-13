@@ -890,9 +890,6 @@ feng.models.View3D.Data = {
 				collidable: true,
 				texture: "townhouse.homeoffice.armchair-texture"
 			},
-			'coffeecup':	{
-				texture: "townhouse.homeoffice.coffeecup-texture"
-			},
 			'writing-desk':	{
 				collidable: true,
 				texture: "townhouse.homeoffice.writing-desk-texture"

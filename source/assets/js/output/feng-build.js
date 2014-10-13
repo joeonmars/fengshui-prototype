@@ -24758,8 +24758,8 @@ feng.views.view3dobject.View3DObject.prototype.disableRender = function(){
 
 
 feng.views.view3dobject.View3DObject.ProxyMaterial = {
-  RED: new THREE.MeshBasicMaterial( {color: feng.Color.TILEMAP_RED} ),
-  GREEN: new THREE.MeshBasicMaterial( {color: feng.Color.TILEMAP_GREEN} )
+  RED: new THREE.MeshBasicMaterial( {color: 0xff0000} ),
+  GREEN: new THREE.MeshBasicMaterial( {color: 0x00ff00} )
 };goog.provide('feng.views.view3dobject.InteractiveObject');
 
 goog.require('goog.events.EventHandler');
@@ -29423,8 +29423,8 @@ feng.controllers.view3d.PathfindingController = function(){
 
   this._zoom = 1;
 
-  this._renderer = new THREE.CanvasRenderer();
-  this._renderer.setClearColor( feng.Color.TILEMAP_RED );
+  this._renderer = new THREE.CanvasRenderer();feng.views.view3dobject.View3DObject.ProxyMaterial
+  this._renderer.setClearColor( 0xff0000 );
   //document.body.appendChild( this._renderer.domElement );
 };
 goog.inherits(feng.controllers.view3d.PathfindingController, goog.events.EventTarget);
@@ -32787,7 +32787,6 @@ feng.models.Preload = function(){
 				'round-lamp-texture': 'images/texture/studio/livingroom/round-lamp.png',
 				'reading-lamp-texture': 'images/texture/studio/livingroom/reading-lamp.jpg',
 				'boxes-texture': 'images/texture/studio/livingroom/boxes.jpg',
-				'shoestorage-texture': 'images/texture/studio/livingroom/shoestorage.jpg',
 				'wardrobe-texture': 'images/texture/studio/livingroom/wardrobe.jpg',
 				'pictures-texture': 'images/texture/studio/livingroom/pictures.jpg',
 				'refrigerator-texture': 'images/texture/studio/livingroom/refrigerator.jpg',
@@ -32980,11 +32979,9 @@ feng.models.Preload = function(){
 				'pen-vase-texture': 'images/texture/townhouse/homeoffice/pen-vase.jpg',
 				'rubberplant-texture': 'images/texture/townhouse/homeoffice/rubberplant.jpg',
 				'coffee-table-texture': 'images/texture/townhouse/homeoffice/coffee-table.jpg',
-				'coffeecup-texture': 'images/texture/townhouse/homeoffice/coffeecup.jpg',
 				'floor-lamp-texture': 'images/texture/townhouse/homeoffice/floor-lamp.jpg',
 				'ceiling-lamp-texture': 'images/texture/townhouse/homeoffice/ceiling-lamp.jpg',
 				'cup-texture': 'images/texture/townhouse/homeoffice/cup.jpg',
-				'floor-lamp-texture': 'images/texture/townhouse/homeoffice/floor-lamp.jpg',
 				'reading-lamp-1-texture': 'images/texture/townhouse/homeoffice/reading-lamp-1.jpg',
 				'reading-lamp-2-texture': 'images/texture/townhouse/homeoffice/reading-lamp-2.jpg',
 				'sofa-texture': 'images/texture/townhouse/homeoffice/sofa.jpg',
@@ -35772,9 +35769,6 @@ feng.models.View3D.Data = {
 			'armchair':	{
 				collidable: true,
 				texture: "townhouse.homeoffice.armchair-texture"
-			},
-			'coffeecup':	{
-				texture: "townhouse.homeoffice.coffeecup-texture"
 			},
 			'writing-desk':	{
 				collidable: true,
@@ -60092,6 +60086,12 @@ goog.require('feng.apps.Test');
 goog.require('feng.apps.PathEdit');
 
 
+/**
+ * @expose
+ */
+feng.version = '10.12.14';
+
+
 feng.Config = {};
 
 
@@ -60134,40 +60134,6 @@ feng.init = function( config ) {
 		feng.apps.Test.getInstance();
 		break;
 	};
-};
-
-
-feng.Color = {
-	TILEMAP_RED: 0xff0000,
-	TILEMAP_GREEN: 0x00ff00,
-	/**
-	 * @expose
-	 */
-	DARK_BLUE: '#1D435D',
-	/**
-	 * @expose
-	 */
-	CREAM: '#FFFDF1',
-	/**
-	 * @expose
-	 */
-	BROWN: '#D9CBB5',
-	/**
-	 * @expose
-	 */
-	GRAY: '#969696',
-	/**
-	 * @expose
-	 */
-	RED: '#e2443a',
-		/**
-	 * @expose
-	 */
-	YELLOW: '#e3cc76',
-	/**
-	 * @expose
-	 */
-	BLACK: '#3d3e39'
 };
 
 
