@@ -31,8 +31,6 @@
 		<script src="assets/js/thirdparty/createjs/preloadjs-0.4.1.min.js"></script>
 		<script src="assets/js/thirdparty/greensock/TweenMax.min.js"></script>
 		<script src="assets/js/thirdparty/greensock/utils/Draggable.min.js"></script>
-		<script src="assets/js/thirdparty/greensock/plugins/ScrollToPlugin.min.js"></script>
-		<script src="assets/js/thirdparty/greensock/plugins/ThrowPropsPlugin.min.js"></script>
 		
 		<script src="assets/js/thirdparty/threejs/build/three68.min.js"></script>
 
@@ -51,9 +49,7 @@
 		<script src="assets/js/thirdparty/threejs-utils/HueSaturationShader.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/ConvolutionShader.js"></script>
 		<script src="assets/js/thirdparty/threejs-utils/OrbitControls.js"></script>
-		<script src="assets/js/thirdparty/threejs-utils/DDSLoader.js"></script>
 		<script src="assets/js/thirdparty/pathfinding-browser.min.js"></script>
-		<script src="assets/js/thirdparty/perlin.js"></script>
 
 		<!-- project js -->
 		<?php

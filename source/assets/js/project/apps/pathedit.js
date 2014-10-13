@@ -198,13 +198,11 @@ feng.apps.PathEdit.prototype.onLoadComplete = function(e) {
 	goog.fx.anim.registerAnimation(this);
 
 	// create debugger
-	with(feng.views.debug.Debugger.Options) {
-		CAMERA = false;
-		PATHFINDING = false;
-		MANIPULATE = false;
-		ACHIEVEMENTS = false;
-		PATH_TRACK = true;
-	};
+	feng.views.debug.Debugger.Options.CAMERA = false;
+	feng.views.debug.Debugger.Options.PATHFINDING = false;
+	feng.views.debug.Debugger.Options.MANIPULATE = false;
+	feng.views.debug.Debugger.Options.ACHIEVEMENTS = false;
+	feng.views.debug.Debugger.Options.PATH_TRACK = true;
 	
 	feng.views.debug.Debugger.getInstance();
 

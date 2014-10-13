@@ -30,9 +30,6 @@ feng.models.Preload = function(){
 		'home': {
 
 		},
-		'outro': {
-
-		},
 		'accessories': {
 			'rubberplant-data': 'json/elements/rubberplant.json',
 			'rubberplant-texture': 'images/texture/rubberplant.png',
@@ -72,7 +69,7 @@ feng.models.Preload = function(){
 					'ypos': 'images/texture/studio/livingroom/skybox/pos-y.png',
 					'yneg': 'images/texture/studio/livingroom/skybox/neg-y.png',
 					'zpos': 'images/texture/studio/livingroom/skybox/pos-z.png',
-					'zneg': 'images/texture/studio/livingroom/skybox/neg-z.png',
+					'zneg': 'images/texture/studio/livingroom/skybox/neg-z.png'
 				}
 			},
 			'interior2': {
@@ -80,7 +77,7 @@ feng.models.Preload = function(){
 				'energyflow-data': 'json/energyflow/energyflow-2.json',
 				'pc-texture': 'images/texture/pc.jpg',
 				'screensaver-texture': 'images/texture/spritesheet/screensaver.png',
-				'cactus-texture': 'images/texture/cactus.png',
+				'cactus-texture': 'images/texture/cactus.png'
 			},
 			'livingroom': {
 				'scene-data': 'json/studio-livingroom.json',
@@ -144,7 +141,7 @@ feng.models.Preload = function(){
 					'ypos': 'images/texture/studio/livingroom/skybox/pos-y.png',
 					'yneg': 'images/texture/studio/livingroom/skybox/neg-y.png',
 					'zpos': 'images/texture/studio/livingroom/skybox/pos-z.png',
-					'zneg': 'images/texture/studio/livingroom/skybox/neg-z.png',
+					'zneg': 'images/texture/studio/livingroom/skybox/neg-z.png'
 				}
 			},
 			'bathroom': {
@@ -192,7 +189,7 @@ feng.models.Preload = function(){
 					'ypos': 'images/texture/studio/livingroom/skybox/pos-y.png',
 					'yneg': 'images/texture/studio/livingroom/skybox/neg-y.png',
 					'zpos': 'images/texture/studio/livingroom/skybox/pos-z.png',
-					'zneg': 'images/texture/studio/livingroom/skybox/neg-z.png',
+					'zneg': 'images/texture/studio/livingroom/skybox/neg-z.png'
 				}
 			}
 		},
@@ -277,7 +274,7 @@ feng.models.Preload = function(){
 					'ypos': 'images/texture/townhouse/boysroom/skybox/pos-y.png',
 					'yneg': 'images/texture/townhouse/boysroom/skybox/neg-y.png',
 					'zpos': 'images/texture/townhouse/boysroom/skybox/pos-z.png',
-					'zneg': 'images/texture/townhouse/boysroom/skybox/neg-z.png',
+					'zneg': 'images/texture/townhouse/boysroom/skybox/neg-z.png'
 				}
 			},
 			'homeoffice': {
@@ -338,7 +335,7 @@ feng.models.Preload = function(){
 					'ypos': 'images/texture/townhouse/boysroom/skybox/pos-y.png',
 					'yneg': 'images/texture/townhouse/boysroom/skybox/neg-y.png',
 					'zpos': 'images/texture/townhouse/boysroom/skybox/pos-z.png',
-					'zneg': 'images/texture/townhouse/boysroom/skybox/neg-z.png',
+					'zneg': 'images/texture/townhouse/boysroom/skybox/neg-z.png'
 				}
 			}
 		}

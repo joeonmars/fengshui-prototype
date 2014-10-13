@@ -106,7 +106,7 @@ feng.fx.CanvasSprite.prototype.setProgress = function( progress ) {
 
 feng.fx.CanvasSprite.prototype.gotoFrameById = function( frameId ) {
 
-	var frameIndex = goog.array.findIndex( this._frameIds, function(frameId) {
+	var frameIndex = goog.array.findIndex( this._frameIds, function(key) {
 		return (key === frameId);
 	});
 

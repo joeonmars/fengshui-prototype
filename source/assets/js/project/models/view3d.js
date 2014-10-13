@@ -12,7 +12,7 @@ feng.models.View3D.Data = {
 				collidable: true
 			},
 			'sofa': {
-				class: "tip",
+				Class: "tip",
 				collidable: true,
 				interactions: [
 					"move",
@@ -22,7 +22,7 @@ feng.models.View3D.Data = {
 				tipKey: 'studio.livingroom.chair'
 			},
 			'cabinet': {
-				class: "holder",
+				Class: "holder",
 				holderType: "accessory",
 				collidable: true,
 				texture: "studio.livingroom.cabinet-texture",
@@ -34,7 +34,7 @@ feng.models.View3D.Data = {
 				tipKey: 'studio.livingroom.chair'
 			},
 			'bed': {
-				class: "holder",
+				Class: "holder",
 				holderType: "accessory",
 				collidable: true,
 				texture: "studio.livingroom.bed-texture",
@@ -51,17 +51,17 @@ feng.models.View3D.Data = {
 				tipKey: 'studio.livingroom.chair'
 			},
 			'door': {
-				class: "gateway",
+				Class: "gateway",
 				collidable: true,
 				viewid: "interior2",
 				gatewayid: "door"
 			},
 			'stairsway': {
-				class: "stairs",
+				Class: "stairs",
 				collidable: true
 			},
 			'picture': {
-				class: 'picturedisplay',
+				Class: 'picturedisplay',
 				interactions: [
 					'change_picture'
 				],
@@ -116,11 +116,11 @@ feng.models.View3D.Data = {
 				]
 			},
 			'frame1': {
-				class: 'pictureframe',
+				Class: 'pictureframe',
 				defaultTexture: 'studio.livingroom.default-picture'
 			},
 			'frame2': {
-				class: 'pictureframe',
+				Class: 'pictureframe',
 				defaultTexture: 'studio.livingroom.default-picture'
 			}
 		},
@@ -129,7 +129,7 @@ feng.models.View3D.Data = {
 				receiveShadow: true
 			},
 			'door': {
-				class: "gateway",
+				Class: "gateway",
 				collidable: true,
 				viewid: "bathroom",
 				gatewayid: "door"
@@ -157,7 +157,7 @@ feng.models.View3D.Data = {
 		},
 		'livingroom': {
 			'studio-door': {
-				class: "gateway",
+				Class: "gateway",
 				viewid: "livingroom",
 				gatewayid: "studio-door",
 				castShadow: true,
@@ -175,7 +175,7 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.studio-door-frame-texture"
 			},
 			'bathroom-door': {
-				class: "gateway",
+				Class: "gateway",
 				viewid: "bathroom",
 				gatewayid: "bathroom-door",
 				castShadow: true,
@@ -224,7 +224,7 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.linen-cabinet-texture"
 			},
 			'mirror':	{
-				class: "mirror"
+				Class: "mirror"
 			},
 			'sofabed':	{
 				collidable: true,
@@ -242,7 +242,7 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.coffee-pot-texture"
 			},
 			'round-lamp':	{
-				class: 'lamp',
+				Class: 'lamp',
 				interactions: [
 					"move",
 					"rotate"
@@ -267,7 +267,7 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.microwave-texture"
 			},
 			'fruitplate':	{
-				class: 'fruitplate',
+				Class: 'fruitplate',
 				camera: {
 					position: new THREE.Vector3(-84, 80, -87),
 					rotation: new THREE.Euler(-0.59, 2.02, 0.00, 'YXZ'),
@@ -283,7 +283,7 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.dining-table-texture"
 			},
 			'dining-chair':	{
-				class: "movable",
+				Class: "movable",
 				collidable: true,
 				castShadow: true,
 				texture: "studio.livingroom.dining-chair-texture",
@@ -300,7 +300,7 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.window-books-texture"
 			},
 			'clock':	{
-				class: "tip",
+				Class: "tip",
 				texture: "studio.livingroom.clock-texture",
 				interactions: [
 				],
@@ -356,7 +356,7 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.carpet-texture"
 			},
 			'crystal':	{
-				class: "tip",
+				Class: "tip",
 				texture: "studio.livingroom.crystal-texture",
 				interactions: [
 				],
@@ -387,7 +387,7 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.refrigerator-texture"
 			},
 			'refrigerator-door': {
-				class: "refrigerator",
+				Class: "refrigerator",
 				texture: "studio.livingroom.refrigerator-door-texture",
 				interactions: [
 
@@ -398,7 +398,7 @@ feng.models.View3D.Data = {
 					fov: 40
 				},
 				tipInteraction: "change_object",
-				tipKey: 'studio.livingroom.refrigerator',
+				tipKey: 'studio.livingroom.refrigerator'
 			},
 			'apple': {
 				texture: "studio.livingroom.apple-texture"
@@ -437,7 +437,7 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.ceiling-lamps-texture"
 			},
 			'lotus': {
-				class: 'tip',
+				Class: 'tip',
 				interactions: [
 					"move",
 					"rotate"
@@ -450,7 +450,7 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.towel-texture"
 			},
 			'showerhead': {
-				class: 'tip',
+				Class: 'tip',
 				interactions: [
 					"move",
 					"rotate"
@@ -503,19 +503,19 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.jar-9-texture"
 			},
 			'bottles': {
-				texture: "studio.bathroom.bottles-texture",
+				texture: "studio.bathroom.bottles-texture"
 			},
 			'towel-roll': {
 				texture: "studio.bathroom.towel-roll-texture"
 			},
 			'cosmetic-bag': {
-				texture: "studio.bathroom.cosmetic-bag-texture",
+				texture: "studio.bathroom.cosmetic-bag-texture"
 			},
 			'closet': {
 				texture: "studio.bathroom.closet-texture"
 			},
 			'closet-door': {
-				class: "closet",
+				Class: "closet",
 				receiveShadow: true,
 				interactions: [
 
@@ -527,7 +527,7 @@ feng.models.View3D.Data = {
 				},
 				tipInteraction: "change_object",
 				tipKey: 'studio.bathroom.closet',
-				texture: "studio.bathroom.closet-door-texture",
+				texture: "studio.bathroom.closet-door-texture"
 			},
 			'trashcan': {
 				collidable: true,
@@ -571,7 +571,7 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.lamps-texture"
 			},
 			'bathroom-door': {
-				class: "gateway",
+				Class: "gateway",
 				viewid: "livingroom",
 				gatewayid: "bathroom-door",
 				castShadow: true,
@@ -692,7 +692,7 @@ feng.models.View3D.Data = {
 				texture: "townhouse.boysroom.pencil-vase-texture"
 			},
 			'boysroom-door': {
-				class: "gateway",
+				Class: "gateway",
 				viewid: "homeoffice",
 				gatewayid: "homeoffice-door",
 				castShadow: true,
@@ -741,7 +741,7 @@ feng.models.View3D.Data = {
 				texture: "townhouse.boysroom.drawer-texture"
 			},
 			'bear': {
-				class: 'tip',
+				Class: 'tip',
 				interactions: [
 					"move",
 					"rotate"
@@ -751,7 +751,7 @@ feng.models.View3D.Data = {
 				tipKey: 'townhouse.boysroom.bear'
 			},
 			'handheld': {
-				class: 'tip',
+				Class: 'tip',
 				interactions: [
 					"move",
 					"rotate"
@@ -793,7 +793,7 @@ feng.models.View3D.Data = {
 				texture: "townhouse.homeoffice.wall-outer-texture"
 			},
 			'homeoffice-door': {
-				class: "gateway",
+				Class: "gateway",
 				viewid: "boysroom",
 				gatewayid: "boysroom-door",
 				castShadow: true,
@@ -804,7 +804,7 @@ feng.models.View3D.Data = {
 				}
 			},
 			'swivel-chair': {
-				class: "movable",
+				Class: "movable",
 				collidable: true,
 				castShadow: true,
 				texture: "townhouse.homeoffice.swivel-chair-texture",
@@ -822,7 +822,7 @@ feng.models.View3D.Data = {
 				texture: "townhouse.homeoffice.storage-texture"
 			},
 			'setsquare': {
-				class: 'tip',
+				Class: 'tip',
 				interactions: [
 					"move",
 					"rotate"

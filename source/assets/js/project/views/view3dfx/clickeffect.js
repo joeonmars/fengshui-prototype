@@ -58,7 +58,7 @@ feng.views.view3dfx.ClickEffect.prototype.play = function( position, normal ) {
 
 	TweenMax.fromTo(this.scale, .8, {
 		'x': .5,
-		'y': .5,
+		'y': .5
 	}, {
 		'x': 1.5,
 		'y': 1.5,
@@ -66,7 +66,7 @@ feng.views.view3dfx.ClickEffect.prototype.play = function( position, normal ) {
 	});
 
 	TweenMax.fromTo(this.material, .8, {
-		'opacity': 1,
+		'opacity': 1
 	}, {
 		'opacity': 0,
 		'ease': Expo.easeOut

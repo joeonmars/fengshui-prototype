@@ -9,7 +9,6 @@ goog.require('goog.Uri');
  */
 feng.utils.Utils.setValueByKeys = function(key, val, obj) {
 	
-  if (!obj) obj = data;
   var ka = key.split(/\./);
   if (ka.length < 2) { 
     obj[ka[0]] = val;

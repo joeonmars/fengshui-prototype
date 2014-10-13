@@ -159,8 +159,8 @@ feng.fx.Renderer.prototype.setBlur = function( x, y ){
 	var blurinessX = x || 0;
 	var blurinessY = y || 0;
 
-	blurAmountX = blurinessX / 512;
-	blurAmountY = blurinessY / 512;
+	var blurAmountX = blurinessX / 512;
+	var blurAmountY = blurinessY / 512;
 
 	this._blurXPass.uniforms[ 'delta' ].value.x = blurAmountX;
 	this._blurYPass.uniforms[ 'delta' ].value.y = blurAmountY;

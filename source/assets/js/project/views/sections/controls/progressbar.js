@@ -153,7 +153,7 @@ feng.views.sections.controls.ProgressBar.prototype.goTipsOfView = function( view
 
   tweener3.add( tweeners, '+=0', 'start', .05 );
 
-  tweener4 = TweenMax.to(this._tipsEl, .25, {
+  var tweener4 = TweenMax.to(this._tipsEl, .25, {
     'opacity': 1,
     'display': 'block'
   });

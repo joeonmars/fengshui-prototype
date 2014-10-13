@@ -3,7 +3,6 @@ goog.provide('feng.controllers.view3d.PathfindingController');
 goog.require('goog.array');
 goog.require('goog.events.EventTarget');
 goog.require('goog.math.Box');
-goog.require('feng.views.debug.Pathfinding');
 
 /**
  * @constructor
@@ -53,7 +52,7 @@ feng.controllers.view3d.PathfindingController.prototype.getMatrixData = function
 	var matrixData = this._matrixData[ matrixId ];
 
 	if(!matrixData) {
-		matrixData = this.generateMatrix( matrixId, start, end, objects );
+		matrixData = this.generateMatrix( matrixId, objects );
 	}
 
 	return matrixData;

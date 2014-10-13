@@ -73,6 +73,35 @@ module.exports = function(grunt) {
       }
     },
 
+    concat: {
+      thirdparty: {
+        src: [
+          '<%= thirdPartyJsDir %>/howler.min.js',
+          '<%= thirdPartyJsDir %>/createjs/preloadjs-0.4.1.min.js',
+          '<%= thirdPartyJsDir %>/greensock/TweenMax.min.js',
+          '<%= thirdPartyJsDir %>/greensock/utils/Draggable.min.js',
+          '<%= thirdPartyJsDir %>/threejs/build/three68.min.js',
+          '<%= thirdPartyJsDir %>/threejs-utils/CombinedCamera.js',
+          '<%= thirdPartyJsDir %>/threejs-utils/EffectComposer.js',
+          '<%= thirdPartyJsDir %>/threejs-utils/RenderPass.js',
+          '<%= thirdPartyJsDir %>/threejs-utils/ShaderPass.js',
+          '<%= thirdPartyJsDir %>/threejs-utils/TexturePass.js',
+          '<%= thirdPartyJsDir %>/threejs-utils/MaskPass.js',
+          '<%= thirdPartyJsDir %>/threejs-utils/BloomPass.js',
+          '<%= thirdPartyJsDir %>/threejs-utils/CopyShader.js',
+          '<%= thirdPartyJsDir %>/threejs-utils/FXAAShader.js',
+          '<%= thirdPartyJsDir %>/threejs-utils/VignetteShader.js',
+          '<%= thirdPartyJsDir %>/threejs-utils/TriangleBlurShader.js',
+          '<%= thirdPartyJsDir %>/threejs-utils/BrightnessContrastShader.js',
+          '<%= thirdPartyJsDir %>/threejs-utils/HueSaturationShader.js',
+          '<%= thirdPartyJsDir %>/threejs-utils/ConvolutionShader.js',
+          '<%= thirdPartyJsDir %>/threejs-utils/OrbitControls.js',
+          '<%= thirdPartyJsDir %>/pathfinding-browser.min.js'
+          ],
+        dest: '<%= outputJsDir %>/thirdparty.js'
+      }
+    },
+
     compass: {
       development: {
         options: {
@@ -152,8 +181,7 @@ module.exports = function(grunt) {
         compilerOpts: {
            compilation_level: 'ADVANCED_OPTIMIZATIONS',//WHITESPACE_ONLY, SIMPLE_OPTIMIZATIONS, ADVANCED_OPTIMIZATIONS
            externs: [
-           '<%= projectJsDir %>/externs.js',
-           '<%= thirdPartyJsDir %>/greensock/TweenMax.min.js'
+           '<%= projectJsDir %>/externs.js'
             ],
            define: ["'goog.DEBUG=false'"],
            warning_level: 'verbose',
@@ -178,6 +206,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-closure-tools');
   grunt.loadNpmTasks('grunt-closure-soy');
   grunt.loadNpmTasks('grunt-contrib-compass');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-open');
   grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-webfont');
@@ -185,5 +214,5 @@ module.exports = function(grunt) {
   // Default task.
   grunt.registerTask('default', ['bower', 'compass', 'webfont', 'closureSoys', 'closureDepsWriter', 'open:dev', 'watch']);
   grunt.registerTask('dev', ['compass', 'webfont', 'closureSoys', 'closureDepsWriter', 'open:dev', 'watch']);
-  grunt.registerTask('build', ['compass', 'webfont', 'closureSoys', 'closureBuilder', 'closureCompiler', 'open:release']);
+  grunt.registerTask('build', ['compass', 'webfont', 'closureSoys', 'closureBuilder', 'closureCompiler', 'concat', 'open:release']);
 };

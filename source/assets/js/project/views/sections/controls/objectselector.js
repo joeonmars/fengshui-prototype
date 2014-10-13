@@ -104,7 +104,7 @@ feng.views.sections.controls.ObjectSelector.prototype.animateIn = function () {
 
 	TweenMax.fromTo(this.domElement, .25, {
 		'scale': 0,
-		'opacity': 0,
+		'opacity': 0
 	}, {
 		'scale': 1,
 		'opacity': 1,
