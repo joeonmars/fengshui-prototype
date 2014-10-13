@@ -40,13 +40,13 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 
 	this._tweener = TweenMax.to( prop, dur, {
 		t: 1,
-		ease: Sine.easeInOut,
-		onUpdate: this.onTransitionUpdate,
-		onUpdateParams: [prop],
-		onUpdateScope: this,
-		onComplete: this.onTransitionComplete,
-		onCompleteParams: [prop],
-		onCompleteScope: this
+		'ease': Sine.easeInOut,
+		'onUpdate': this.onTransitionUpdate,
+		'onUpdateParams': [prop],
+		'onUpdateScope': this,
+		'onComplete': this.onTransitionComplete,
+		'onCompleteParams': [prop],
+		'onCompleteScope': this
 	});
 
 	// toggle ground plane
@@ -139,7 +139,7 @@ feng.controllers.controls.TransitionControls.prototype.onTransitionComplete = fu
 			opacity: 1
 		}, {
 			opacity: 0,
-			onComplete: function() {
+			'onComplete': function() {
 				designPlane.removeFromScene();
 				skybox.addToScene();
 			}

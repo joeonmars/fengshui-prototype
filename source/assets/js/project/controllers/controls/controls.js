@@ -233,11 +233,11 @@ feng.controllers.controls.Controls.prototype.pause = function( pause ) {
 		TweenMax.to( this._pauseProps, .8, {
 			fov: this._pauseProps.oFov + 8,
 			z: 5,
-			ease: Quad.easeInOut,
-			onUpdate: this.onPauseAnimate,
-			onUpdateScope: this,
-			onStart: this.onPauseStart,
-			onStartScope: this
+			'ease': Quad.easeInOut,
+			'onUpdate': this.onPauseAnimate,
+			'onUpdateScope': this,
+			'onStart': this.onPauseStart,
+			'onStartScope': this
 		});
 
 	}else {
@@ -245,11 +245,11 @@ feng.controllers.controls.Controls.prototype.pause = function( pause ) {
 		TweenMax.to( this._pauseProps, .8, {
 			fov: this._pauseProps.oFov,
 			z: this._pauseProps.oZ,
-			ease: Quad.easeInOut,
-			onUpdate: this.onPauseAnimate,
-			onUpdateScope: this,
-			onComplete: this.onPauseResumed,
-			onCompleteScope: this
+			'ease': Quad.easeInOut,
+			'onUpdate': this.onPauseAnimate,
+			'onUpdateScope': this,
+			'onComplete': this.onPauseResumed,
+			'onCompleteScope': this
 		});
 	}
 

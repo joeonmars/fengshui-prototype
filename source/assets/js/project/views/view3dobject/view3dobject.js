@@ -206,6 +206,6 @@ feng.views.view3dobject.View3DObject.prototype.disableRender = function(){
 
 
 feng.views.view3dobject.View3DObject.ProxyMaterial = {
-  RED: new THREE.MeshBasicMaterial( {color: feng.Color.TILEMAP_RED} ),
-  GREEN: new THREE.MeshBasicMaterial( {color: feng.Color.TILEMAP_GREEN} )
+  RED: new THREE.MeshBasicMaterial( {color: 0xff0000} ),
+  GREEN: new THREE.MeshBasicMaterial( {color: 0x00ff00} )
 };

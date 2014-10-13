@@ -28,7 +28,6 @@ feng.views.sections.controls.HomeButton.prototype.activate = function(){
   if(!shouldActivate) return;
 
   this._eventHandler.listen( document.body, 'mousedown', this.onMouseDown, false, this );
-  this._eventHandler.listen( this._yesButtonEl, 'click', this.goHome, false, this );
   this._eventHandler.listen( this._noButtonEl, 'click', this.hidePrompt, false, this );
 };
 
@@ -58,12 +57,6 @@ feng.views.sections.controls.HomeButton.prototype.hidePrompt = function(){
 
 	goog.dom.classes.remove( this.domElement, 'disabled' );
 	goog.dom.classes.remove( this._promptEl, 'shown' );
-};
-
-
-feng.views.sections.controls.HomeButton.prototype.goHome = function(){
-
-
 };
 
 

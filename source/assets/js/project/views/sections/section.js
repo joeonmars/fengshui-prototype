@@ -19,15 +19,15 @@ feng.views.sections.Section = function(domElement){
   this.id = this.domElement.id;
 
   this._animateInTweener = new TimelineMax({
-  	paused: true,
-  	onComplete: this.onAnimatedIn,
-  	onCompleteScope: this
+  	'paused': true,
+  	'onComplete': this.onAnimatedIn,
+  	'onCompleteScope': this
   });
 
   this._animateOutTweener = new TimelineMax({
-  	paused: true,
-  	onComplete: this.onAnimatedOut,
-  	onCompleteScope: this
+  	'paused': true,
+  	'onComplete': this.onAnimatedOut,
+  	'onCompleteScope': this
   });
 
   // section loader
@@ -118,17 +118,17 @@ feng.views.sections.Section.prototype.load = function(){
 feng.views.sections.Section.prototype.setAnimations = function(){
 
 	var fadeInTweener = TweenMax.fromTo(this.domElement, .5, {
-		opacity: 0
+		'opacity': 0
 	}, {
-		opacity: 1
+		'opacity': 1
 	});
 
 	this._animateInTweener.add( fadeInTweener );
 
 	var fadeOutTweener = TweenMax.fromTo(this.domElement, .5, {
-		opacity: 1
+		'opacity': 1
 	}, {
-		opacity: 0
+		'opacity': 0
 	});
 
 	this._animateOutTweener.add( fadeOutTweener );

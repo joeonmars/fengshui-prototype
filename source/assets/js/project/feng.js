@@ -7,6 +7,12 @@ goog.require('feng.apps.Test');
 goog.require('feng.apps.PathEdit');
 
 
+/**
+ * @expose
+ */
+feng.version = '10.12.14';
+
+
 feng.Config = {};
 
 
@@ -49,40 +55,6 @@ feng.init = function( config ) {
 		feng.apps.Test.getInstance();
 		break;
 	};
-};
-
-
-feng.Color = {
-	TILEMAP_RED: 0xff0000,
-	TILEMAP_GREEN: 0x00ff00,
-	/**
-	 * @expose
-	 */
-	DARK_BLUE: '#1D435D',
-	/**
-	 * @expose
-	 */
-	CREAM: '#FFFDF1',
-	/**
-	 * @expose
-	 */
-	BROWN: '#D9CBB5',
-	/**
-	 * @expose
-	 */
-	GRAY: '#969696',
-	/**
-	 * @expose
-	 */
-	RED: '#e2443a',
-		/**
-	 * @expose
-	 */
-	YELLOW: '#e3cc76',
-	/**
-	 * @expose
-	 */
-	BLACK: '#3d3e39'
 };
 
 

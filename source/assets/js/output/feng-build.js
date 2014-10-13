@@ -24758,8 +24758,8 @@ feng.views.view3dobject.View3DObject.prototype.disableRender = function(){
 
 
 feng.views.view3dobject.View3DObject.ProxyMaterial = {
-  RED: new THREE.MeshBasicMaterial( {color: feng.Color.TILEMAP_RED} ),
-  GREEN: new THREE.MeshBasicMaterial( {color: feng.Color.TILEMAP_GREEN} )
+  RED: new THREE.MeshBasicMaterial( {color: 0xff0000} ),
+  GREEN: new THREE.MeshBasicMaterial( {color: 0x00ff00} )
 };goog.provide('feng.views.view3dobject.InteractiveObject');
 
 goog.require('goog.events.EventHandler');
@@ -29423,8 +29423,8 @@ feng.controllers.view3d.PathfindingController = function(){
 
   this._zoom = 1;
 
-  this._renderer = new THREE.CanvasRenderer();
-  this._renderer.setClearColor( feng.Color.TILEMAP_RED );
+  this._renderer = new THREE.CanvasRenderer();feng.views.view3dobject.View3DObject.ProxyMaterial
+  this._renderer.setClearColor( 0xff0000 );
   //document.body.appendChild( this._renderer.domElement );
 };
 goog.inherits(feng.controllers.view3d.PathfindingController, goog.events.EventTarget);
@@ -29708,8 +29708,8 @@ feng.controllers.view3d.PathfindingController.prototype.findPath = function( mat
 	var grid = new PF.Grid(numCols, numRows, matrix);
 
 	var finder = new PF.AStarFinder({
-		allowDiagonal: true,
-		heuristic: PF.Heuristic.euclidean
+		'allowDiagonal': true,
+		'heuristic': PF.Heuristic.euclidean
 	});
 
 	var path = finder.findPath(startTile[0], startTile[1], endTile[0], endTile[1], grid);
@@ -32787,7 +32787,6 @@ feng.models.Preload = function(){
 				'round-lamp-texture': 'images/texture/studio/livingroom/round-lamp.png',
 				'reading-lamp-texture': 'images/texture/studio/livingroom/reading-lamp.jpg',
 				'boxes-texture': 'images/texture/studio/livingroom/boxes.jpg',
-				'shoestorage-texture': 'images/texture/studio/livingroom/shoestorage.jpg',
 				'wardrobe-texture': 'images/texture/studio/livingroom/wardrobe.jpg',
 				'pictures-texture': 'images/texture/studio/livingroom/pictures.jpg',
 				'refrigerator-texture': 'images/texture/studio/livingroom/refrigerator.jpg',
@@ -32980,11 +32979,9 @@ feng.models.Preload = function(){
 				'pen-vase-texture': 'images/texture/townhouse/homeoffice/pen-vase.jpg',
 				'rubberplant-texture': 'images/texture/townhouse/homeoffice/rubberplant.jpg',
 				'coffee-table-texture': 'images/texture/townhouse/homeoffice/coffee-table.jpg',
-				'coffeecup-texture': 'images/texture/townhouse/homeoffice/coffeecup.jpg',
 				'floor-lamp-texture': 'images/texture/townhouse/homeoffice/floor-lamp.jpg',
 				'ceiling-lamp-texture': 'images/texture/townhouse/homeoffice/ceiling-lamp.jpg',
 				'cup-texture': 'images/texture/townhouse/homeoffice/cup.jpg',
-				'floor-lamp-texture': 'images/texture/townhouse/homeoffice/floor-lamp.jpg',
 				'reading-lamp-1-texture': 'images/texture/townhouse/homeoffice/reading-lamp-1.jpg',
 				'reading-lamp-2-texture': 'images/texture/townhouse/homeoffice/reading-lamp-2.jpg',
 				'sofa-texture': 'images/texture/townhouse/homeoffice/sofa.jpg',
@@ -35772,9 +35769,6 @@ feng.models.View3D.Data = {
 			'armchair':	{
 				collidable: true,
 				texture: "townhouse.homeoffice.armchair-texture"
-			},
-			'coffeecup':	{
-				texture: "townhouse.homeoffice.coffeecup-texture"
 			},
 			'writing-desk':	{
 				collidable: true,
@@ -38759,11 +38753,11 @@ feng.controllers.controls.Controls.prototype.pause = function( pause ) {
 		TweenMax.to( this._pauseProps, .8, {
 			fov: this._pauseProps.oFov + 8,
 			z: 5,
-			ease: Quad.easeInOut,
-			onUpdate: this.onPauseAnimate,
-			onUpdateScope: this,
-			onStart: this.onPauseStart,
-			onStartScope: this
+			'ease': Quad.easeInOut,
+			'onUpdate': this.onPauseAnimate,
+			'onUpdateScope': this,
+			'onStart': this.onPauseStart,
+			'onStartScope': this
 		});
 
 	}else {
@@ -38771,11 +38765,11 @@ feng.controllers.controls.Controls.prototype.pause = function( pause ) {
 		TweenMax.to( this._pauseProps, .8, {
 			fov: this._pauseProps.oFov,
 			z: this._pauseProps.oZ,
-			ease: Quad.easeInOut,
-			onUpdate: this.onPauseAnimate,
-			onUpdateScope: this,
-			onComplete: this.onPauseResumed,
-			onCompleteScope: this
+			'ease': Quad.easeInOut,
+			'onUpdate': this.onPauseAnimate,
+			'onUpdateScope': this,
+			'onComplete': this.onPauseResumed,
+			'onCompleteScope': this
 		});
 	}
 
@@ -40782,21 +40776,21 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
   var uTweener = TweenMax.to(uProp, duration, {
     u: distanceT,
     footstep: Math.PI * footsteps,
-    ease: Sine.easeInOut,
-    onUpdate: this.onPathUProgress,
-    onUpdateParams: [uProp],
-    onUpdateScope: this,
-    onComplete: this.onPathComplete,
-    onCompleteParams: [gateway, stairs, nextMode],
-    onCompleteScope: this
+    'ease': Sine.easeInOut,
+    'onUpdate': this.onPathUProgress,
+    'onUpdateParams': [uProp],
+    'onUpdateScope': this,
+    'onComplete': this.onPathComplete,
+    'onCompleteParams': [gateway, stairs, nextMode],
+    'onCompleteScope': this
   });
 
   var tTweener = TweenMax.to(tProp, duration, {
     t: 1,
-    ease: Quad.easeInOut,
-    onUpdate: this.onPathTProgress,
-    onUpdateParams: [tProp],
-    onUpdateScope: this
+    'ease': Quad.easeInOut,
+    'onUpdate': this.onPathTProgress,
+    'onUpdateParams': [tProp],
+    'onUpdateScope': this
   });
 
   this._tweener.clear();
@@ -40940,13 +40934,13 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 
 	this._tweener = TweenMax.to( prop, dur, {
 		t: 1,
-		ease: Sine.easeInOut,
-		onUpdate: this.onTransitionUpdate,
-		onUpdateParams: [prop],
-		onUpdateScope: this,
-		onComplete: this.onTransitionComplete,
-		onCompleteParams: [prop],
-		onCompleteScope: this
+		'ease': Sine.easeInOut,
+		'onUpdate': this.onTransitionUpdate,
+		'onUpdateParams': [prop],
+		'onUpdateScope': this,
+		'onComplete': this.onTransitionComplete,
+		'onCompleteParams': [prop],
+		'onCompleteScope': this
 	});
 
 	// toggle ground plane
@@ -41039,7 +41033,7 @@ feng.controllers.controls.TransitionControls.prototype.onTransitionComplete = fu
 			opacity: 1
 		}, {
 			opacity: 0,
-			onComplete: function() {
+			'onComplete': function() {
 				designPlane.removeFromScene();
 				skybox.addToScene();
 			}
@@ -43081,17 +43075,17 @@ feng.views.view3dfx.SelectEffect = function(){
 	// shader attributes
 	var dotAttributes = {
 
-	     alpha: { type: 'f', value: [] }
+	     alpha: { 'type': 'f', 'value': [] }
 	};
 
 	for( var i = 0; i < 12; i++ ) {
 
-	     dotAttributes.alpha.value[ i ] = .1 + Math.random() * (.9 - .1);
+	     dotAttributes['alpha']['value'][ i ] = .1 + Math.random() * (.9 - .1);
 	}
 
 	var lineAttributes = {
 
-		alpha: { type: 'f', value: null }
+		alpha: { 'type': 'f', 'value': null }
     };
 
 	var lineAlphas = new Float32Array( 60 );
@@ -43103,32 +43097,32 @@ feng.views.view3dfx.SelectEffect = function(){
 
 	// shader uniforms
 	this._uniforms = {
-        color: { type: "c", value: new THREE.Color( 0xffffff ) },
-        texture: { type: 't', value: texture },
-        time: { type: "f", value: 0 },
-        pulse: { type: "f", value: 1 },
-        globalAlpha: { type: "f", value: 0 }
+        'color': { 'type': "c", 'value': new THREE.Color( 0xffffff ) },
+        'texture': { 'type': 't', 'value': texture },
+        'time': { 'type': "f", 'value': 0 },
+        'pulse': { 'type': "f", 'value': 1 },
+        'globalAlpha': { 'type': "f", 'value': 0 }
     };
 
 	// shader materials
 	var dotMaterial = new THREE.ShaderMaterial( {
-		uniforms:       this._uniforms,
-		attributes:     dotAttributes,
-		vertexShader:   feng.shaders.getShader( 'dotsVertexShader' ),
-		fragmentShader: feng.shaders.getShader( 'dotsFragmentShader' ),
-		blending: THREE.AdditiveBlending,
-		depthTest: false,
-		transparent: true
+		'uniforms':       this._uniforms,
+		'attributes':     dotAttributes,
+		'vertexShader':   feng.shaders.getShader( 'dotsVertexShader' ),
+		'fragmentShader': feng.shaders.getShader( 'dotsFragmentShader' ),
+		'blending': THREE.AdditiveBlending,
+		'depthTest': false,
+		'transparent': true
 	});
 
 	var lineMaterial = new THREE.ShaderMaterial( {
-		uniforms:       this._uniforms,
-		attributes:     lineAttributes,
-		vertexShader:   feng.shaders.getShader( 'linesVertexShader' ),
-		fragmentShader: feng.shaders.getShader( 'linesFragmentShader' ),
-		blending: THREE.AdditiveBlending,
-		depthTest: false,
-		transparent: true
+		'uniforms':       this._uniforms,
+		'attributes':     lineAttributes,
+		'vertexShader':   feng.shaders.getShader( 'linesVertexShader' ),
+		'fragmentShader': feng.shaders.getShader( 'linesFragmentShader' ),
+		'blending': THREE.AdditiveBlending,
+		'depthTest': false,
+		'transparent': true
 	});
 
 	// create geometry
@@ -43155,14 +43149,14 @@ goog.inherits(feng.views.view3dfx.SelectEffect, THREE.Object3D);
 
 feng.views.view3dfx.SelectEffect.prototype.activate = function() {
 
-	this._uniforms.globalAlpha.value = 0;
+	this._uniforms['globalAlpha']['value'] = 0;
 	goog.fx.anim.registerAnimation( this._animTarget );
 };
 
 
 feng.views.view3dfx.SelectEffect.prototype.deactivate = function() {
 
-	this._uniforms.globalAlpha.value = 0;
+	this._uniforms['globalAlpha']['value'] = 0;
 	goog.fx.anim.unregisterAnimation( this._animTarget );
 };
 
@@ -43206,7 +43200,7 @@ feng.views.view3dfx.SelectEffect.prototype.animateOut = function( delay ) {
 		return;
 	}
 
-	var scale = this.scale.x * .5;console.log(scale)
+	var scale = this.scale.x * .5;
 
 	this._animateOutTweener = TweenMax.to(this.scale, .5, {
 		'x': scale,
@@ -43231,8 +43225,8 @@ feng.views.view3dfx.SelectEffect.prototype.onAnimationFrame = function(now) {
 	this.rotation.x = now * 0.0005;
 	this.rotation.y = now * 0.0002;
 
-	this._uniforms.time.value = Math.sin(now * 0.001) * .5 + .5;
-    this._uniforms.pulse.value = goog.math.lerp(.8, 1, Math.sin(now * 0.001) * .5 + .5);
+	this._uniforms['time']['value'] = Math.sin(now * 0.001) * .5 + .5;
+    this._uniforms['pulse']['value'] = goog.math.lerp(.8, 1, Math.sin(now * 0.001) * .5 + .5);
 };goog.provide('feng.views.view3dfx.ClickEffect');
 
 
@@ -43371,14 +43365,14 @@ feng.views.view3dobject.entities.Lamp.prototype.setColor = function(color) {
 
   TweenMax.to(prop, .8, {
   	t: 1,
-  	ease: Expo.easeOut,
-  	onUpdate: function() {
+  	'ease': Expo.easeOut,
+  	'onUpdate': function() {
   		var c = startColor.clone().lerp( color, prop.t );
   		this._color.copy( c );
   		this._light.color.copy( c );
   		this.object3d.material.color.copy( c );
   	},
-  	onUpdateScope: this
+  	'onUpdateScope': this
   });
 
   if(!color.equals( this._defaultColor )) {
@@ -49678,7 +49672,6 @@ feng.views.sections.controls.HomeButton.prototype.activate = function(){
   if(!shouldActivate) return;
 
   this._eventHandler.listen( document.body, 'mousedown', this.onMouseDown, false, this );
-  this._eventHandler.listen( this._yesButtonEl, 'click', this.goHome, false, this );
   this._eventHandler.listen( this._noButtonEl, 'click', this.hidePrompt, false, this );
 };
 
@@ -49708,12 +49701,6 @@ feng.views.sections.controls.HomeButton.prototype.hidePrompt = function(){
 
 	goog.dom.classes.remove( this.domElement, 'disabled' );
 	goog.dom.classes.remove( this._promptEl, 'shown' );
-};
-
-
-feng.views.sections.controls.HomeButton.prototype.goHome = function(){
-
-
 };
 
 
@@ -52051,15 +52038,15 @@ feng.views.sections.Section = function(domElement){
   this.id = this.domElement.id;
 
   this._animateInTweener = new TimelineMax({
-  	paused: true,
-  	onComplete: this.onAnimatedIn,
-  	onCompleteScope: this
+  	'paused': true,
+  	'onComplete': this.onAnimatedIn,
+  	'onCompleteScope': this
   });
 
   this._animateOutTweener = new TimelineMax({
-  	paused: true,
-  	onComplete: this.onAnimatedOut,
-  	onCompleteScope: this
+  	'paused': true,
+  	'onComplete': this.onAnimatedOut,
+  	'onCompleteScope': this
   });
 
   // section loader
@@ -52150,17 +52137,17 @@ feng.views.sections.Section.prototype.load = function(){
 feng.views.sections.Section.prototype.setAnimations = function(){
 
 	var fadeInTweener = TweenMax.fromTo(this.domElement, .5, {
-		opacity: 0
+		'opacity': 0
 	}, {
-		opacity: 1
+		'opacity': 1
 	});
 
 	this._animateInTweener.add( fadeInTweener );
 
 	var fadeOutTweener = TweenMax.fromTo(this.domElement, .5, {
-		opacity: 1
+		'opacity': 1
 	}, {
-		opacity: 0
+		'opacity': 0
 	});
 
 	this._animateOutTweener.add( fadeOutTweener );
@@ -60092,6 +60079,12 @@ goog.require('feng.apps.Test');
 goog.require('feng.apps.PathEdit');
 
 
+/**
+ * @expose
+ */
+feng.version = '10.12.14';
+
+
 feng.Config = {};
 
 
@@ -60134,40 +60127,6 @@ feng.init = function( config ) {
 		feng.apps.Test.getInstance();
 		break;
 	};
-};
-
-
-feng.Color = {
-	TILEMAP_RED: 0xff0000,
-	TILEMAP_GREEN: 0x00ff00,
-	/**
-	 * @expose
-	 */
-	DARK_BLUE: '#1D435D',
-	/**
-	 * @expose
-	 */
-	CREAM: '#FFFDF1',
-	/**
-	 * @expose
-	 */
-	BROWN: '#D9CBB5',
-	/**
-	 * @expose
-	 */
-	GRAY: '#969696',
-	/**
-	 * @expose
-	 */
-	RED: '#e2443a',
-		/**
-	 * @expose
-	 */
-	YELLOW: '#e3cc76',
-	/**
-	 * @expose
-	 */
-	BLACK: '#3d3e39'
 };
 
 
