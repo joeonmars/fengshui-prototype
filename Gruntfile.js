@@ -8,7 +8,8 @@ module.exports = function(grunt) {
     thirdPartyJsDir: 'source/assets/js/thirdparty',
     outputJsDir: 'source/assets/js/output',
     closureDir: 'source/assets/js/thirdparty/closure-library',
-
+    releaseDir: 'release',
+    
     bower: {
       install: {
         options: {
@@ -99,6 +100,27 @@ module.exports = function(grunt) {
           '<%= thirdPartyJsDir %>/pathfinding-browser.min.js'
           ],
         dest: '<%= outputJsDir %>/thirdparty.js'
+      }
+    },
+
+    copy: {
+      release: {
+        files: [
+          // includes files within path
+          {expand: true, cwd: 'source/', src: [
+            '**',
+            '!assets/js/project/**',
+            '!assets/js/output/feng-build.js',
+            '!assets/js/output/feng-deps.js',
+            '!assets/js/thirdparty/**',
+            '!assets/styles/scss/**',
+            '!assets/soy/**',
+            '!assets/images/icons/*',
+            '!assets/images/icons-2x/*',
+            '!assets/images/ui/*',
+            '!assets/images/ui-2x/*'
+            ], dest: '<%= releaseDir %>', filter: 'isFile'},
+        ]
       }
     },
 
@@ -224,6 +246,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-closure-soy');
   grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-open');
   grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-webfont');
@@ -231,5 +254,6 @@ module.exports = function(grunt) {
   // Default task.
   grunt.registerTask('default', ['bower', 'compass', 'webfont', 'closureSoys', 'closureDepsWriter', 'open:dev', 'watch']);
   grunt.registerTask('dev', ['compass', 'webfont', 'closureSoys', 'closureDepsWriter', 'open:dev', 'watch']);
-  grunt.registerTask('build', ['compass', 'webfont', 'closureSoys', 'closureBuilder', 'closureCompiler', 'concat', 'open:release']);
+  grunt.registerTask('build', ['compass', 'webfont', 'closureSoys', 'closureBuilder', 'closureCompiler', 'concat']);
+  grunt.registerTask('release', ['compass', 'webfont', 'closureSoys', 'closureBuilder', 'closureCompiler', 'concat', 'copy', 'open:release']);
 };
