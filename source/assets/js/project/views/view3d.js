@@ -598,7 +598,7 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 						texture.needsUpdate = true;
 
 					}else {
-
+						/*
 						var ddsLoader = new THREE.DDSLoader();           
             var dds = ddsLoader.parse( textureAsset );
 
@@ -611,6 +611,7 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
             texture.mipmaps = dds.mipmaps;
             texture.format = dds.format;
             texture.needsUpdate = true;
+            */
 					}
 
 			  	object.material.map = texture;
