@@ -117,21 +117,21 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
   var uTweener = TweenMax.to(uProp, duration, {
     u: distanceT,
     footstep: Math.PI * footsteps,
-    ease: Sine.easeInOut,
-    onUpdate: this.onPathUProgress,
-    onUpdateParams: [uProp],
-    onUpdateScope: this,
-    onComplete: this.onPathComplete,
-    onCompleteParams: [gateway, stairs, nextMode],
-    onCompleteScope: this
+    'ease': Sine.easeInOut,
+    'onUpdate': this.onPathUProgress,
+    'onUpdateParams': [uProp],
+    'onUpdateScope': this,
+    'onComplete': this.onPathComplete,
+    'onCompleteParams': [gateway, stairs, nextMode],
+    'onCompleteScope': this
   });
 
   var tTweener = TweenMax.to(tProp, duration, {
     t: 1,
-    ease: Quad.easeInOut,
-    onUpdate: this.onPathTProgress,
-    onUpdateParams: [tProp],
-    onUpdateScope: this
+    'ease': Quad.easeInOut,
+    'onUpdate': this.onPathTProgress,
+    'onUpdateParams': [tProp],
+    'onUpdateScope': this
   });
 
   this._tweener.clear();

@@ -29,17 +29,17 @@ feng.views.view3dfx.SelectEffect = function(){
 	// shader attributes
 	var dotAttributes = {
 
-	     alpha: { type: 'f', value: [] }
+	     alpha: { 'type': 'f', 'value': [] }
 	};
 
 	for( var i = 0; i < 12; i++ ) {
 
-	     dotAttributes.alpha.value[ i ] = .1 + Math.random() * (.9 - .1);
+	     dotAttributes['alpha']['value'][ i ] = .1 + Math.random() * (.9 - .1);
 	}
 
 	var lineAttributes = {
 
-		alpha: { type: 'f', value: null }
+		alpha: { 'type': 'f', 'value': null }
     };
 
 	var lineAlphas = new Float32Array( 60 );
@@ -51,32 +51,32 @@ feng.views.view3dfx.SelectEffect = function(){
 
 	// shader uniforms
 	this._uniforms = {
-        color: { type: "c", value: new THREE.Color( 0xffffff ) },
-        texture: { type: 't', value: texture },
-        time: { type: "f", value: 0 },
-        pulse: { type: "f", value: 1 },
-        globalAlpha: { type: "f", value: 0 }
+        'color': { 'type': "c", 'value': new THREE.Color( 0xffffff ) },
+        'texture': { 'type': 't', 'value': texture },
+        'time': { 'type': "f", 'value': 0 },
+        'pulse': { 'type': "f", 'value': 1 },
+        'globalAlpha': { 'type': "f", 'value': 0 }
     };
 
 	// shader materials
 	var dotMaterial = new THREE.ShaderMaterial( {
-		uniforms:       this._uniforms,
-		attributes:     dotAttributes,
-		vertexShader:   feng.shaders.getShader( 'dotsVertexShader' ),
-		fragmentShader: feng.shaders.getShader( 'dotsFragmentShader' ),
-		blending: THREE.AdditiveBlending,
-		depthTest: false,
-		transparent: true
+		'uniforms':       this._uniforms,
+		'attributes':     dotAttributes,
+		'vertexShader':   feng.shaders.getShader( 'dotsVertexShader' ),
+		'fragmentShader': feng.shaders.getShader( 'dotsFragmentShader' ),
+		'blending': THREE.AdditiveBlending,
+		'depthTest': false,
+		'transparent': true
 	});
 
 	var lineMaterial = new THREE.ShaderMaterial( {
-		uniforms:       this._uniforms,
-		attributes:     lineAttributes,
-		vertexShader:   feng.shaders.getShader( 'linesVertexShader' ),
-		fragmentShader: feng.shaders.getShader( 'linesFragmentShader' ),
-		blending: THREE.AdditiveBlending,
-		depthTest: false,
-		transparent: true
+		'uniforms':       this._uniforms,
+		'attributes':     lineAttributes,
+		'vertexShader':   feng.shaders.getShader( 'linesVertexShader' ),
+		'fragmentShader': feng.shaders.getShader( 'linesFragmentShader' ),
+		'blending': THREE.AdditiveBlending,
+		'depthTest': false,
+		'transparent': true
 	});
 
 	// create geometry
@@ -103,14 +103,14 @@ goog.inherits(feng.views.view3dfx.SelectEffect, THREE.Object3D);
 
 feng.views.view3dfx.SelectEffect.prototype.activate = function() {
 
-	this._uniforms.globalAlpha.value = 0;
+	this._uniforms['globalAlpha']['value'] = 0;
 	goog.fx.anim.registerAnimation( this._animTarget );
 };
 
 
 feng.views.view3dfx.SelectEffect.prototype.deactivate = function() {
 
-	this._uniforms.globalAlpha.value = 0;
+	this._uniforms['globalAlpha']['value'] = 0;
 	goog.fx.anim.unregisterAnimation( this._animTarget );
 };
 
@@ -154,7 +154,7 @@ feng.views.view3dfx.SelectEffect.prototype.animateOut = function( delay ) {
 		return;
 	}
 
-	var scale = this.scale.x * .5;console.log(scale)
+	var scale = this.scale.x * .5;
 
 	this._animateOutTweener = TweenMax.to(this.scale, .5, {
 		'x': scale,
@@ -179,6 +179,6 @@ feng.views.view3dfx.SelectEffect.prototype.onAnimationFrame = function(now) {
 	this.rotation.x = now * 0.0005;
 	this.rotation.y = now * 0.0002;
 
-	this._uniforms.time.value = Math.sin(now * 0.001) * .5 + .5;
-    this._uniforms.pulse.value = goog.math.lerp(.8, 1, Math.sin(now * 0.001) * .5 + .5);
+	this._uniforms['time']['value'] = Math.sin(now * 0.001) * .5 + .5;
+    this._uniforms['pulse']['value'] = goog.math.lerp(.8, 1, Math.sin(now * 0.001) * .5 + .5);
 };

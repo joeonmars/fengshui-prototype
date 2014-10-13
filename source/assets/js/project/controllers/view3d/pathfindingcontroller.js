@@ -324,8 +324,8 @@ feng.controllers.view3d.PathfindingController.prototype.findPath = function( mat
 	var grid = new PF.Grid(numCols, numRows, matrix);
 
 	var finder = new PF.AStarFinder({
-		allowDiagonal: true,
-		heuristic: PF.Heuristic.euclidean
+		'allowDiagonal': true,
+		'heuristic': PF.Heuristic.euclidean
 	});
 
 	var path = finder.findPath(startTile[0], startTile[1], endTile[0], endTile[1], grid);

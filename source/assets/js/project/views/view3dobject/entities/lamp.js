@@ -45,14 +45,14 @@ feng.views.view3dobject.entities.Lamp.prototype.setColor = function(color) {
 
   TweenMax.to(prop, .8, {
   	t: 1,
-  	ease: Expo.easeOut,
-  	onUpdate: function() {
+  	'ease': Expo.easeOut,
+  	'onUpdate': function() {
   		var c = startColor.clone().lerp( color, prop.t );
   		this._color.copy( c );
   		this._light.color.copy( c );
   		this.object3d.material.color.copy( c );
   	},
-  	onUpdateScope: this
+  	'onUpdateScope': this
   });
 
   if(!color.equals( this._defaultColor )) {
