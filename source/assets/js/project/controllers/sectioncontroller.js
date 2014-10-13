@@ -5,7 +5,6 @@ goog.require('goog.events');
 goog.require('feng.views.sections.Home');
 goog.require('feng.views.sections.Studio');
 goog.require('feng.views.sections.Townhouse');
-goog.require('feng.views.sections.Outro');
 
 
 /**
@@ -29,7 +28,6 @@ feng.controllers.SectionController.prototype.init = function(){
   
   this.addSection('studio');
   this.addSection('townhouse');
-  this.addSection('outro');
 
   this._eventHandler.listen(this, feng.events.EventType.ANIMATE_IN, this.onSectionAnimateIn, false, this);
   this._eventHandler.listen(this, feng.events.EventType.ANIMATE_OUT, this.onSectionAnimateOut, false, this);
@@ -65,10 +63,6 @@ feng.controllers.SectionController.prototype.addSection = function(id){
 
     case 'townhouse':
     section = new feng.views.sections.Townhouse;
-    break;
-
-    case 'outro':
-    section = new feng.views.sections.Outro;
     break;
   }
 

@@ -5,7 +5,6 @@ goog.require('goog.events.EventTarget');
 goog.require('feng.events');
 goog.require('feng.views.sections.Section');
 goog.require('feng.models.achievements.Achievements');
-goog.require('feng.controllers.SectionController');
 goog.require('feng.views.book.Book');
 goog.require('feng.views.sections.home.PreloadScreen');
 goog.require('feng.views.sections.home.IntroScreen');

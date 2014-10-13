@@ -239,14 +239,6 @@ body{
 	@import "home";
 }
 
-#outro{
-	padding: 10px 0;
-	@include box-sizing(border-box);
-	background-color: $darkblue;
-	
-	@import "outro";
-}
-
 .floatText{
 	margin: 200px;
 	width: 300px;

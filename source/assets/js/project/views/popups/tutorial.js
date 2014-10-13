@@ -130,7 +130,7 @@ feng.views.popups.Tutorial.prototype.showLoader = function(){
 
 	TweenMax.fromTo(this._loaderEl, .25, {
 		'opacity': 0,
-		'y': 20,
+		'y': 20
 	}, {
 		'opacity': 1,
 		'y': 0,

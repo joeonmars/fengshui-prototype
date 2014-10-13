@@ -43,7 +43,7 @@ feng.controllers.NavigationController.prototype.init = function(){
 
 feng.controllers.NavigationController.prototype.testToken = function( token, tokenToTest ){
 
-  var tokenArr = goog.isArray( token ) ? token : tokenString.split('/');
+  var tokenArr = goog.isArray( token ) ? token : token.split('/');
   var tokenToTestArr = tokenToTest.replace('#/', '').split('/');
 
   var result;

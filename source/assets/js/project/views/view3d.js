@@ -439,7 +439,7 @@ feng.views.View3D.prototype.initScene = function() {
 
 		var objectData = feng.models.View3D.getData(sectionId+'.'+sceneId+'.'+object.name);
 		var interactions = objectData.interactions || [];
-		var className = objectData.class;
+		var className = objectData.Class;
 
 		if(className) {
 

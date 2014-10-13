@@ -131,7 +131,7 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
     ease: Quad.easeInOut,
     onUpdate: this.onPathTProgress,
     onUpdateParams: [tProp],
-    onUpdateScope: this,
+    onUpdateScope: this
   });
 
   this._tweener.clear();

@@ -152,7 +152,7 @@ feng.views.sections.controls.Reminder.prototype.getCharacterAnimations = functio
 		});
 
 		var loopProp = {
-			frame: 0,
+			frame: 0
 		};
 
 		var numLoopFrames = loopKeys.length;
@@ -172,7 +172,7 @@ feng.views.sections.controls.Reminder.prototype.getCharacterAnimations = functio
 		});
 
 		var raiseProp = {
-			frame: 0,
+			frame: 0
 		};
 
 		var numRaiseFrames = raiseKeys.length;

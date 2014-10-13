@@ -2,7 +2,6 @@ goog.provide('feng.models.achievements.Tip');
 
 goog.require('goog.events.EventTarget');
 goog.require('feng.events');
-goog.require('feng.models.achievements.Achievements');
 goog.require('feng.controllers.NavigationController');
 
 /**
