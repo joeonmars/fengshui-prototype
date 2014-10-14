@@ -163,12 +163,14 @@
 
 					&.left{
 						margin-right: 20px;
-						@include font-awesome("fa-angle-left");
+						@extend .icon;
+						@extend .icon-prev;
 					}
 
 					&.right{
 						margin-left: 20px;
-						@include font-awesome("fa-angle-right");
+						@extend .icon;
+						@extend .icon-next;
 					}
 				}
 			}

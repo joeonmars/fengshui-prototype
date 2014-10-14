@@ -64,7 +64,8 @@
 
 					.icon{
 						left: -2px;
-						@include font-awesome("fa-chevron-left");
+						@extend .icon;
+						@extend .icon-prev;
 					}
 				}
 
@@ -73,7 +74,8 @@
 
 					.icon{
 						left: 2px;
-						@include font-awesome("fa-chevron-right");
+						@extend .icon;
+						@extend .icon-next;
 					}
 				}
 			}

@@ -46,10 +46,11 @@ $debug_border_style:  2px outset #d6d3ce;
 			right: 0;
 			font-size: 14px;
 			padding: 2px 4px;
-			@include font-awesome("fa-eye");
+			@extend .icon;
+			@extend .icon-eye-open;
 
 			&.invisible{
-				@include font-awesome("fa-eye-slash");
+				@extend .icon-eye-close;
 			}
 		}
 	}
@@ -69,10 +70,11 @@ $debug_border_style:  2px outset #d6d3ce;
 				right: 0;
 				font-size: 14px;
 				padding: 2px 4px;
-				@include font-awesome("fa-eye");
+				@extend .icon;
+				@extend .icon-eye-open;
 
 				&.invisible{
-					@include font-awesome("fa-eye-slash");
+					@extend .icon-eye-close;
 				}
 			}
 		}
@@ -113,10 +115,11 @@ $debug_border_style:  2px outset #d6d3ce;
 			>.visible{
 				display: inline-block;
 				width: 10%;
-				@include font-awesome("fa-eye");
+				@extend .icon;
+				@extend .icon-eye-open;
 
 				&.invisible{
-					@include font-awesome("fa-eye-slash");
+					@extend .icon-eye-close;
 				}
 			}
 
@@ -247,12 +250,14 @@ $debug_border_style:  2px outset #d6d3ce;
 			height: 30px;
 
 			&.add{
-				@include font-awesome("fa-plus");
+				@extend .icon;
+				@extend .icon-plus;
 				margin-left: 0;
 			}
 
 			&.remove{
-				@include font-awesome("fa-minus");
+				@extend .icon;
+				@extend .icon-minus;
 			}
 		}
 
@@ -292,11 +297,11 @@ $debug_border_style:  2px outset #d6d3ce;
 				height: 30px;
 				margin-right: 4px;
 				vertical-align: middle;
-				
-				@include font-awesome("fa-play");
+				@extend .icon;
+				@extend .icon-play;
 
 				&.paused{
-					@include font-awesome("fa-pause");
+					@extend .icon-pause;
 				}
 			}
 
@@ -305,11 +310,11 @@ $debug_border_style:  2px outset #d6d3ce;
 				height: 30px;
 				margin-right: 4px;
 				vertical-align: middle;
-
-				@include font-awesome("fa-video-camera");
+				@extend .icon;
+				@extend .icon-camera;
 
 				&.fly{
-					@include font-awesome("fa-plane");
+					@extend .icon-plane;
 				}
 			}
 

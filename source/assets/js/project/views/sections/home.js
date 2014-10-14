@@ -7,7 +7,6 @@ goog.require('feng.views.sections.Section');
 goog.require('feng.models.achievements.Achievements');
 goog.require('feng.views.book.Book');
 goog.require('feng.views.sections.home.PreloadScreen');
-goog.require('feng.views.sections.home.IntroScreen');
 goog.require('feng.views.sections.home.EpisodeScreen');
 
 
@@ -21,10 +20,6 @@ feng.views.sections.Home = function(){
 
   var preloadScreenEl = goog.dom.getElement('main-preloader');
   this._preloadScreen = new feng.views.sections.home.PreloadScreen( preloadScreenEl );
-
-  var introEl = goog.dom.getElement('main-intro');
-  this._introScreen = new feng.views.sections.home.IntroScreen( introEl );
-  this._introScreen.hide();
 
   var episodeScreenEl = goog.dom.getElement('main-episode-selection');
   this._episodeScreen = new feng.views.sections.home.EpisodeScreen( episodeScreenEl );
@@ -46,7 +41,6 @@ feng.views.sections.Home.prototype.activate = function(){
 	goog.base(this, 'activate');
 
 	this._eventHandler.listen( this._preloadScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
-	this._eventHandler.listen( this._introScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
 	this._eventHandler.listen( this._episodeScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
 	this._eventHandler.listen( this._episodeScreen, feng.events.EventType.COMPLETE, this.onEpisodeLoadComplete, false, this );
 };
@@ -57,7 +51,6 @@ feng.views.sections.Home.prototype.deactivate = function(){
 	goog.base(this, 'deactivate');
 
 	this._preloadScreen.deactivate();
-	this._introScreen.deactivate();
 	this._episodeScreen.deactivate();
 };
 
@@ -100,21 +93,15 @@ feng.views.sections.Home.prototype.onScreenClose = function(e){
 
 			feng.navigationController.setToken( feng.controllers.NavigationController.Token.STUDIO );
 		}
-		// animate in intro
+		// animate in episode selection
 		else {
 
-			this._introScreen.animateIn();
+			this._episodeScreen.animateIn();
 		}
-		break;
-
-		case this._introScreen:
-		this._introScreen.animateOut();
-		this._episodeScreen.animateIn();
 		break;
 
 		case this._episodeScreen:
 		this._episodeScreen.animateOut();
-		this._introScreen.animateIn();
 		break;
 	}
 };
