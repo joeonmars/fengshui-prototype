@@ -2,7 +2,6 @@
 	position: relative;
 	width: 100%;
 	height: 100%;
-	background-color: $darkblue;
 	
 	>section{
 		@include absoluteTopLeft;
@@ -12,53 +11,43 @@
 }
 
 #main-preloader{
+	display: table;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: #FDFCFC;
 	z-index: 2;
 
-	>.disc{
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		@include disc( 340px );
+	>.content{
+		display: table-cell;
+		vertical-align: middle;
+		text-align: center;
+		width: 100%;
+		height: 100%;
 
-		>.inner{
-			background-color: $cream;
-			@include box-shadow(none);
+		>h1{
+			font-family: $font_marineup_bold;
+			font-size: 24px;
+			text-transform: uppercase;
+			letter-spacing: 2px;
+			color: $darkgray-ui;
 		}
 
-		.content{
-			text-align: center;
+		>.house-logo{
+			width: 150px;
+			height: 150px;
+			margin: 2.5em 0 4em 0;
+		}
 
-			>.fengshui-logo{
-				width: 208px;
-				height: 160px;
-				margin: 0 auto;
-			}
+		>p{
+			color: $lightgray-ui;
+			font-size: 17px;
+			letter-spacing: 2px;
+			line-height: 1.65;
+			opacity: .5;
 
-			>.bar{
-				margin: 28px auto;
-				width: 257px;
-				height: 1px;
-				background-color: #F0E8D9;
-
-				>.fill{
-					margin: 0 auto;
-					width: 0;
-					height: 100%;
-					background-color: $darkblue;
-				}
-			}
-
-			>.counter{
-				font-family: $font_marineup_light;
-				font-size: 18px;
-				color: $darkblue;
-				line-height: 18px;
-				letter-spacing: 2px;
-
-				&:after{
-					content: "%";
-					font-size: 12px;
-				}
+			>span{
+				display: block;
 			}
 		}
 	}

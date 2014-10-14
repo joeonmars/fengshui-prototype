@@ -24,6 +24,7 @@ goog.addDependency('../../../../project/controllers/view3d/rendercontroller.js',
 goog.addDependency('../../../../project/controllers/view3d/view3dcontroller.js', ['feng.controllers.view3d.View3DController'], ['feng.events', 'goog.events.EventHandler', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/events/eventtype.js', ['feng.events'], []);
 goog.addDependency('../../../../project/feng.js', ['feng'], ['feng.apps.Demo', 'feng.apps.Main', 'feng.apps.PathEdit', 'feng.apps.Test', 'goog.Uri']);
+goog.addDependency('../../../../project/fx/animatedhouselogo.js', ['feng.fx.AnimatedHouseLogo'], ['feng.fx.CanvasSprite']);
 goog.addDependency('../../../../project/fx/animatedsprite.js', ['feng.fx.AnimatedSprite'], ['goog.math.Coordinate', 'goog.math.Size']);
 goog.addDependency('../../../../project/fx/canvassprite.js', ['feng.fx.CanvasSprite'], ['goog.dom', 'goog.events.KeyHandler']);
 goog.addDependency('../../../../project/fx/energyflow.js', ['feng.fx.EnergyFlow'], ['feng.fx.Leaf', 'feng.fx.PathTrack', 'feng.fx.Trail']);
@@ -88,7 +89,7 @@ goog.addDependency('../../../../project/views/sections/controls/zoomslider.js', 
 goog.addDependency('../../../../project/views/sections/episode.js', ['feng.views.sections.Episode'], ['feng.controllers.view3d.View3DController', 'feng.events', 'feng.views.View3D', 'feng.views.View3DHud', 'feng.views.sections.Section', 'goog.dom', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/views/sections/home.js', ['feng.views.sections.Home'], ['feng.events', 'feng.models.achievements.Achievements', 'feng.views.book.Book', 'feng.views.sections.Section', 'feng.views.sections.home.EpisodeScreen', 'feng.views.sections.home.PreloadScreen', 'goog.dom', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/views/sections/home/episodescreen.js', ['feng.views.sections.home.EpisodeScreen'], ['feng.views.sections.home.Screen']);
-goog.addDependency('../../../../project/views/sections/home/preloadscreen.js', ['feng.views.sections.home.PreloadScreen'], ['feng.views.Logo', 'feng.views.sections.home.Screen', 'goog.Timer']);
+goog.addDependency('../../../../project/views/sections/home/preloadscreen.js', ['feng.views.sections.home.PreloadScreen'], ['feng.fx.AnimatedHouseLogo', 'feng.views.sections.home.Screen', 'goog.Timer']);
 goog.addDependency('../../../../project/views/sections/home/screen.js', ['feng.views.sections.home.Screen'], ['goog.dom', 'goog.events.EventHandler', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/views/sections/overlay.js', ['feng.views.Overlay'], ['goog.events.EventHandler', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/views/sections/overlays/endingoverlay.js', ['feng.views.sections.overlays.EndingOverlay'], ['feng.models.Preload', 'feng.views.Overlay', 'feng.views.popups.Popup', 'goog.dom', 'goog.style']);

@@ -13,7 +13,7 @@ feng.fx.CanvasSprite = function( img, data, opt_canvas, opt_debug ) {
   	
   	this._sourceCanvas = goog.dom.createDom('canvas');
   	this._sourceCanvas.width = img.width;
-		this._sourceCanvas.height = img.height;
+	this._sourceCanvas.height = img.height;
   	this._sourceContext = this._sourceCanvas.getContext('2d');
   	this._sourceContext.drawImage( img, 0, 0 );
 
@@ -58,21 +58,27 @@ feng.fx.CanvasSprite.prototype.getCanvas = function() {
 };
 
 
-feng.fx.CanvasSprite.prototype.getTweener = function( fps, duration ) {
+feng.fx.CanvasSprite.prototype.getTweener = function( vars, fps, duration ) {
 
 	var fps = fps || 60;
-	var duration = duration || (this.numFrames / 60);
+	var duration = duration || (this.numFrames / fps);
 
-	var tweener = TweenMax.fromTo(this, duration, {
+	var fromVars = {
 		frameIndex: 0
-	}, {
+	};
+
+	var toVars = {
   	frameIndex: this.numFrames - 1,
   	'paused': true,
   	'ease': Linear.easeNone,
   	'repeat': -1,
   	'onUpdate': this.update,
   	'onUpdateScope': this
-  });
+	};
+
+	goog.object.extend(toVars, (vars || {}));
+
+	var tweener = TweenMax.fromTo(this, duration, fromVars, toVars);
 
   return tweener;
 };

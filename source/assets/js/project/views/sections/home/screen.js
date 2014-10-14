@@ -27,7 +27,7 @@ feng.views.sections.home.Screen.prototype.activate = function() {
 
 feng.views.sections.home.Screen.prototype.deactivate = function() {
 
-	
+	this._eventHandler.removeAll();
 };
 
 
