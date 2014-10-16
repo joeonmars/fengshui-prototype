@@ -42,12 +42,12 @@
 					<p></p>
 					{call feng.templates.common.PrimaryButton}
 						{param classname: 'continue' /}
-						{param icon: 'yes' /}
-						{param text: 'continue investigating' /}
+						{param icon: 'icon-yes' /}
+						{param text: 'Continue Investigating' /}
 					{/call}
 					{call feng.templates.common.PrimaryButton}
 						{param classname: 'visit' /}
-						{param icon: 'yes' /}
+						{param icon: 'icon-yes' /}
 						{param text: 'Next Challenge' /}
 					{/call}
 					<div class="character"></div>
@@ -64,7 +64,7 @@
 					<p></p>
 					{call feng.templates.common.PrimaryButton}
 						{param classname: 'ok' /}
-						{param icon: 'yes' /}
+						{param icon: 'icon-yes' /}
 						{param text: 'done' /}
 					{/call}
 				{/param}
@@ -124,54 +124,46 @@
 <div class="episode-selection">
 
 	<div class="scene studio">
-		<div class="background"></div>
 		<div class="shade"></div>
-		<div class="overlay">
-			<div class="prompt">
-				{call feng.templates.common.Disc}
-					{param content}
-						<div class="location">
-							<p>LOCATION</p>
-							<div class="line"></div>
-						</div>
-						<h1>Ollie's<br>Studio</h1>
-						<p>Ollie is a fashion designer.<br>She lives in a small studio in<br>the noisy downtown area.<br>Give her some Fengshui tips!</p>
-						
-						{call feng.templates.common.PrimaryButton}
-							{param href: $token.STUDIO /}
-							{param icon: 'yes' /}
-							{param text: 'start' /}
-						{/call}
-					{/param}
-				{/call}
-			</div>
-			<div class="people"></div>
+		<div class="prompt">
+			{call feng.templates.common.Disc}
+				{param content}
+					<div class="location">
+						<p>LOCATION</p>
+						<div class="line"></div>
+					</div>
+					<h1>Ollie's<br>Studio</h1>
+					<p>Ollie is a fashion designer.<br>She lives in a small studio in<br>the noisy downtown area.<br>Give her some Fengshui tips!</p>
+					
+					{call feng.templates.common.PrimaryButton}
+						{param href: $token.STUDIO /}
+						{param icon: 'icon-yes' /}
+						{param text: 'start' /}
+					{/call}
+				{/param}
+			{/call}
 		</div>
 	</div>
 
 	<div class="scene house">
-		<div class="background"></div>
 		<div class="shade"></div>
-		<div class="overlay">
-			<div class="prompt">
-				{call feng.templates.common.Disc}
-					{param content}
-						<div class="location">
-							<p>LOCATION</p>
-							<div class="line"></div>
-						</div>
-						<h1>Scott's<br>House</h1>
-						<p>The Scott's live in a house,<br>He married with<br>a preschool kid<br>both living at home.</p>
-						
-						{call feng.templates.common.PrimaryButton}
-							{param href: $token.HOUSE /}
-							{param icon: 'yes' /}
-							{param text: 'start' /}
-						{/call}
-					{/param}
-				{/call}
-			</div>
-			<div class="people"></div>
+		<div class="prompt">
+			{call feng.templates.common.Disc}
+				{param content}
+					<div class="location">
+						<p>LOCATION</p>
+						<div class="line"></div>
+					</div>
+					<h1>Scott's<br>House</h1>
+					<p>The Scott's live in a house,<br>He married with<br>a preschool kid<br>both living at home.</p>
+					
+					{call feng.templates.common.PrimaryButton}
+						{param href: $token.HOUSE /}
+						{param icon: 'icon-yes' /}
+						{param text: 'start' /}
+					{/call}
+				{/param}
+			{/call}
 		</div>
 	</div>
 

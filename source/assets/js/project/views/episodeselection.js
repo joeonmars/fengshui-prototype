@@ -50,9 +50,6 @@ feng.views.EpisodeSelection.prototype.init = function(){
   this._studioBackgroundEl = goog.dom.getElementByClass('background', this._studioEl);
   this._houseBackgroundEl = goog.dom.getElementByClass('background', this._houseEl);
 
-  this._studioShadeEl = goog.dom.getElementByClass('shade', this._studioEl);
-  this._houseShadeEl = goog.dom.getElementByClass('shade', this._houseEl);
-
   this._promptEl = goog.dom.query('> .prompt', this.domElement)[0];
 
   this._studioPromptEl = goog.dom.getElementByClass('prompt', this._studioEl);
@@ -108,6 +105,7 @@ feng.views.EpisodeSelection.prototype.init = function(){
   	'paused': true
   });
 
+  /*
   for(var i = 0; i < 2; i++) {
 
   	var el = els[i];
@@ -191,7 +189,8 @@ feng.views.EpisodeSelection.prototype.init = function(){
 	  	fadeInButton
 	  	]);
   };
-
+	*/
+	
   //
   this._activationDelay = 0;
   this._episodePromptAnimateInDelay = 0;
@@ -257,10 +256,14 @@ feng.views.EpisodeSelection.prototype.reset = function(){
 
 	goog.dom.removeNode( feng.tutorial.domElement );
 
+	goog.dom.classes.enable( this._studioEl, 'active', false );
+	goog.dom.classes.enable( this._studioEl, 'inactive', false );
+	goog.dom.classes.enable( this._houseEl, 'active', false );
+	goog.dom.classes.enable( this._houseEl, 'inactive', false );
+
+	/*
 	goog.style.setStyle( this._studioEl, 'width', '50%' );
 	goog.style.setStyle( this._houseEl, 'width', '50%' );
-	goog.style.setStyle( this._studioShadeEl, 'opacity', .5 );
-	goog.style.setStyle( this._houseShadeEl, 'opacity', .5 );
 	goog.style.setStyle( this._promptEl, 'left', '50%' );
 
 	TweenMax.set(this._studioPromptInnerDiscEl, {
@@ -307,6 +310,7 @@ feng.views.EpisodeSelection.prototype.reset = function(){
 		'display': 'none',
 		'alpha': 0
 	});
+	*/
 
   this._isAnimatedToMessage = false;
 	this._isAnimatedToCompass = false;
@@ -412,6 +416,28 @@ feng.views.EpisodeSelection.prototype.animatePromptToCompass = function(){
 
 feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
 
+	if(this._hoveredSceneEl === this._studioEl) {
+
+		goog.dom.classes.enable( this._studioEl, 'active', true );
+		goog.dom.classes.enable( this._studioEl, 'inactive', false );
+		goog.dom.classes.enable( this._houseEl, 'active', false );
+		goog.dom.classes.enable( this._houseEl, 'inactive', true );
+
+	}else if(this._hoveredSceneEl === this._houseEl) {
+
+		goog.dom.classes.enable( this._studioEl, 'active', false );
+		goog.dom.classes.enable( this._studioEl, 'inactive', true );
+		goog.dom.classes.enable( this._houseEl, 'active', true );
+		goog.dom.classes.enable( this._houseEl, 'inactive', false );
+
+	}else {
+
+		goog.dom.classes.enable( this._studioEl, 'active', false );
+		goog.dom.classes.enable( this._studioEl, 'inactive', false );
+		goog.dom.classes.enable( this._houseEl, 'active', false );
+		goog.dom.classes.enable( this._houseEl, 'inactive', false );
+	}
+	/*
 	goog.style.setStyle( this._studioEl, 'width', this._studioRatio * 100 + '%' );
 	goog.style.setStyle( this._houseEl, 'width', this._houseRatio * 100 + '%' );
 
@@ -419,14 +445,10 @@ feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
 
 	goog.Timer.clear( this._episodePromptAnimateInDelay );
 
-	var studioShadeOpacity, houseShadeOpacity;
 	var innersToAnimateOut = [];
 	var outersToAnimateOut = [];
 
 	if(this._studioRatio > this._houseRatio) {
-
-		studioShadeOpacity = 0;
-		houseShadeOpacity = .7;
 
 		var promptTweener = this._studioPromptAnimateInTweener;
 		this._episodePromptAnimateInDelay = goog.Timer.callOnce(promptTweener.restart, 400, promptTweener);
@@ -444,9 +466,6 @@ feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
 
 	}else if(this._studioRatio < this._houseRatio) {
 
-		studioShadeOpacity = .7;
-		houseShadeOpacity = 0;
-
 		var promptTweener = this._housePromptAnimateInTweener;
 		this._episodePromptAnimateInDelay = goog.Timer.callOnce(promptTweener.restart, 400, promptTweener);
 
@@ -462,9 +481,6 @@ feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
 	  feng.soundController.fadeAmbient( 'house', null, 1, 4 );
 
 	}else {
-
-		studioShadeOpacity = .5;
-		houseShadeOpacity = .5;
 
 		this._studioPromptAnimateInTweener.pause();
 		this._housePromptAnimateInTweener.pause();
@@ -492,9 +508,7 @@ feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
   	'autoAlpha': 0,
   	'ease': Power4.easeInOut
   });
-
-	goog.style.setStyle( this._studioShadeEl, 'opacity', studioShadeOpacity );
-	goog.style.setStyle( this._houseShadeEl, 'opacity', houseShadeOpacity );
+	*/
 };
 
 

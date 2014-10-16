@@ -1,22 +1,48 @@
 .episode-selection{
+	position: relative;
 	width: 100%;
 	height: 100%;
 
 	>.scene{
-		position: relative;
-		display: inline-block;
-		vertical-align: top;
+		position: absolute;
+		top: 0;
 		width: 50%;
 		height: 100%;
 		overflow: hidden;
-		@include single-transition(width, .5s, $easeInOutSine);
+		background-position: center center;
+		background-size: cover;
+		@include single-transition(width, .5s, ease-in-out);
 
-		>.background{
-			@include absoluteTopLeft;
-			width: 100%;
-			height: 100%;
-			background-position: center center;
-			background-size: cover;
+		&.studio{
+			left: 0;
+			background-image: image-url('scene-studio.jpg');
+		}
+
+		&.house{
+			right: 0;
+			background-image: image-url('scene-house.jpg');
+		}
+
+		&.active{
+			width: 70%;
+
+			>.shade{
+				opacity: 0;
+			}
+		}
+
+		&.inactive{
+			width: 30%;
+
+			>.shade{
+				opacity: .7;
+			}
+		}
+
+		&:not(.active, .inactive){
+			>.shade{
+				opacity: .5;
+			}
 		}
 
 		>.shade{
@@ -25,77 +51,63 @@
 			height: 100%;
 			background-color: #000;
 			opacity: .5;
-			@include single-transition(opacity, .5s, $easeInOutSine);
+			@include single-transition(opacity, .5s, ease-in-out);
 			@include translateZ(0);
 		}
 
-		>.overlay{
-			position: absolute;
-			top: 0;
+		>.prompt{
+			@include absoluteTopLeft;
+			top: 50%;
 			left: 50%;
-			margin-top: 0;
-			margin-left: -300px;
-			width: 600px;
-			height: 100%;
-			overflow: hidden;
 
-			>.prompt{
-				@include absoluteTopLeft;
-				top: 50%;
-				left: 50%;
+			>.disc{
+				@include disc( 300px );
+				@include translateZ(0);
 
-				>.disc{
-					@include disc( 300px );
+				.content{
+					text-align: center;
 
-					.content{
-						text-align: center;
-
-						>.location{
-							margin-top: -5px;
-
-							>p{
-								font-family: $font_marineup_light;
-								font-size: 10px;
-								color: $gray;
-								line-height: 11px;
-								letter-spacing: 1px;
-								opacity: .5;
-							}
-							>.line{
-								margin: 8px auto;
-								width: 100px;
-								height: 1px;
-								background-color: $gray;
-								opacity: .2;
-							}
-						}
-
-						>h1{
-							font-size: 18px;
-							color: $darkblue;
-							line-height: 24px;
-							letter-spacing: 1px;
-						}
+					>.location{
+						margin-top: -5px;
 
 						>p{
-							font-size: 13px;
+							font-family: $font_marineup_light;
+							font-size: 10px;
 							color: $gray;
-							line-height: 16px;
+							line-height: 11px;
 							letter-spacing: 1px;
-							margin: 18px auto;
+							opacity: .5;
 						}
-
-						>.primary-button{
-							margin: 0 auto;
-							width: 120px;
-							@include translateZ(0px);
+						>.line{
+							margin: 8px auto;
+							width: 100px;
+							height: 1px;
+							background-color: $gray;
+							opacity: .2;
 						}
 					}
+
+					>h1{
+						font-size: 18px;
+						color: $darkblue;
+						line-height: 24px;
+						letter-spacing: 1px;
+					}
+
+					>p{
+						font-size: 13px;
+						color: $gray;
+						line-height: 16px;
+						letter-spacing: 1px;
+						margin: 18px auto;
+					}
+
+					>.primary-button{
+						margin: 0 auto;
+						width: 120px;
+						@include translateZ(0px);
+					}
 				}
-			}
-
-			>.people{
-
 			}
 		}
 
@@ -105,18 +117,6 @@
 			top: 50%;
 			margin-left: -43em;
 			margin-top: -25em;
-		}
-
-		&.studio{
-			>.background{
-				background-image: image-url('scene-studio.jpg');
-			}
-		}
-
-		&.house{
-			>.background{
-				background-image: image-url('scene-house.jpg');
-			}
 		}
 
 	}

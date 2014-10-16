@@ -64,6 +64,10 @@ feng.views.book.Book = function() {
 	this._scrollTweener = null;
 
 	//
+	this._animateOut = goog.bind( this.animateOut, this );
+	this._enterKeyId = null;
+
+	//
 	this._mouseWheelHandler = new goog.events.MouseWheelHandler( this.domElement );
 	this._maxDelta = 30;
 	this._mouseWheelHandler.setMaxDeltaX( this._maxDelta );
@@ -89,6 +93,8 @@ feng.views.book.Book.prototype.activate = function() {
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this );
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this );
 
+	this._enterKeyId = feng.keyboardController.bind( this._animateOut, feng.keyboardController.key.ESC, true );
+
 	goog.array.forEach( this._tipModules, function(tipModule) {
 		tipModule.activate();
 	});
@@ -100,6 +106,8 @@ feng.views.book.Book.prototype.activate = function() {
 feng.views.book.Book.prototype.deactivate = function() {
 
 	this._eventHandler.removeAll();
+
+	feng.keyboardController.unbind( this._enterKeyId );
 
 	goog.array.forEach( this._tipModules, function(tipModule) {
 		tipModule.deactivate();
