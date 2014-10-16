@@ -1092,7 +1092,7 @@
 		}],
 	"object": {
 		"uuid": "EAD79C5A-5BD1-4D33-8CA4-CB23973670EB",
-		"name": "townhouse-homeoffice",
+		"name": "house-homeoffice",
 		"type": "Scene",
 		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
 		"children": [

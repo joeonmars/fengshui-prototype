@@ -3,7 +3,6 @@ goog.provide('feng.controllers.controls.CloseUpControls');
 goog.require('goog.events');
 goog.require('goog.math');
 goog.require('feng.controllers.controls.Controls');
-goog.require('feng.controllers.controls.InteractionResolver');
 
 
 /**
@@ -14,8 +13,6 @@ feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement)
   goog.base(this, camera, view3d, domElement);
 
   this._activeObject = null;
-
-  this._interactionResolver = feng.controllers.controls.InteractionResolver.getInstance();
 
   this._tempPosition = new THREE.Vector3();
 

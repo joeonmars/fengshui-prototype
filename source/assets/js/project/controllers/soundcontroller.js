@@ -70,7 +70,7 @@ feng.controllers.SoundController = function(){
       loop: true,
       onload: onSoundLoad
     },
-    'townhouse': {
+    'house': {
       urls: urls('ambient/subdivision'),
       volume: 0,
       loop: true,
@@ -163,19 +163,19 @@ feng.controllers.SoundController = function(){
       fadeAmbient: fadeAmbient,
       fadeLoop: fadeLoop
     },
-    'townhouse': {
+    'house': {
       position: 0,
       timer: new goog.Timer(25000),
       sounds: [
-        this.getAmbient('townhouse'),
+        this.getAmbient('house'),
         this.getLoop('optimize-loop-1'),
-        this.getAmbient('townhouse'),
+        this.getAmbient('house'),
         this.getLoop('trees'),
-        this.getAmbient('townhouse'),
+        this.getAmbient('house'),
         this.getLoop('serendipity'),
-        this.getAmbient('townhouse'),
+        this.getAmbient('house'),
         this.getLoop('first-class'),
-        this.getAmbient('townhouse'),
+        this.getAmbient('house'),
         this.getLoop('family-breakfast')
       ],
       fadeAmbient: fadeAmbient,

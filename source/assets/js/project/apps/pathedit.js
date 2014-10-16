@@ -28,8 +28,8 @@ feng.apps.PathEdit = function() {
 		'studio.livingroom',
 		'studio.interior2',
 		'studio.bathroom',
-		'townhouse.boysroom',
-		'townhouse.homeoffice'
+		'house.boysroom',
+		'house.homeoffice'
 	];
 
 	this._scene = null;

@@ -11,6 +11,7 @@ goog.require('goog.string');
  * @constructor
  */
 feng.controllers.NavigationController = function(){
+	
   goog.base(this);
 
   // a toggle of whether to use history API
@@ -173,7 +174,7 @@ feng.controllers.NavigationController.Implementation = (goog.history.Html5Histor
 feng.controllers.NavigationController.Token = {
 	HOME: '#/home',
 	STUDIO: '#/studio',
-	TOWNHOUSE: '#/townhouse',
+	HOUSE: '#/house',
 	BOOK: '#/book',
 	GLOSSARY: '#/book/glossary',
 	TIPS: '#/book/tips',

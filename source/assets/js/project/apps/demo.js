@@ -8,6 +8,7 @@ goog.require('feng.controllers.NavigationController');
 goog.require('feng.controllers.SectionController');
 goog.require('feng.controllers.StorageController');
 goog.require('feng.controllers.SoundController');
+goog.require('feng.controllers.KeyboardController');
 goog.require('feng.controllers.view3d.PathfindingController');
 goog.require('feng.views.debug.Debugger');
 goog.require('feng.views.MainOptions');
@@ -61,6 +62,8 @@ feng.apps.Demo = function() {
 	feng.shaders = feng.fx.Shaders.getInstance();
 
 	feng.sectionController = feng.controllers.SectionController.getInstance();
+
+	feng.keyboardController = feng.controllers.KeyboardController.getInstance();
 
 	feng.initialToken = feng.navigationController.getTokenArray();
 	

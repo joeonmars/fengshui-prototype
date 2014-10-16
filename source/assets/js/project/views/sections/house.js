@@ -1,4 +1,4 @@
-goog.provide('feng.views.sections.Townhouse');
+goog.provide('feng.views.sections.House');
 
 goog.require('goog.dom');
 goog.require('feng.events');
@@ -8,10 +8,10 @@ goog.require('feng.views.sections.Episode');
 /**
  * @constructor
  */
-feng.views.sections.Townhouse = function(){
+feng.views.sections.House = function(){
 
 	var viewIds = ['boysroom', 'homeoffice', 'livingroom'];
-	var sectionId = 'townhouse';
+	var sectionId = 'house';
 
 	var achievements = feng.models.achievements.Achievements.getInstance();
 	var tips = achievements.getTipsOfSection( sectionId );
@@ -35,4 +35,4 @@ feng.views.sections.Townhouse = function(){
   this._viewIds = viewIds;
   this._viewId = this._viewIds[0];
 };
-goog.inherits(feng.views.sections.Townhouse, feng.views.sections.Episode);
+goog.inherits(feng.views.sections.House, feng.views.sections.Episode);

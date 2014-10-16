@@ -583,7 +583,7 @@ feng.models.View3D.Data = {
 			}
 		}
 	},
-	'townhouse': {
+	'house': {
 		'livingroom': {
 			'ground': {
 				receiveShadow: true
@@ -593,103 +593,103 @@ feng.models.View3D.Data = {
 			},
 			'cabinet': {
 				collidable: true,
-				texture: "townhouse.livingroom.cabinet-texture"
+				texture: "house.livingroom.cabinet-texture"
 			},
 			'bed': {
 				collidable: true,
-				texture: "townhouse.livingroom.bed-texture"
+				texture: "house.livingroom.bed-texture"
 			}
 		},
 		'boysroom': {
 			'floor': {
-				texture: "townhouse.boysroom.floor-texture",
+				texture: "house.boysroom.floor-texture",
 				receiveShadow: true
 			},
 			'wall':	{
 				collidable: true,
 				castShadow: true,
-				texture: "townhouse.boysroom.wall-texture"
+				texture: "house.boysroom.wall-texture"
 			},
 			'wall-outer':	{
 				castShadow: true,
-				texture: "townhouse.boysroom.wall-outer-texture"
+				texture: "house.boysroom.wall-outer-texture"
 			},
 			'ceiling':	{
-				texture: "townhouse.boysroom.ceiling-texture"
+				texture: "house.boysroom.ceiling-texture"
 			},
 			'cabinet':	{
 				collidable: true,
-				texture: "townhouse.boysroom.cabinet-texture"
+				texture: "house.boysroom.cabinet-texture"
 			},
 			'bed': {
 				collidable: true,
-				texture: "townhouse.boysroom.bed-texture"
+				texture: "house.boysroom.bed-texture"
 			},
 			'big-frame': {
-				texture: "townhouse.boysroom.big-frame-texture"
+				texture: "house.boysroom.big-frame-texture"
 			},
 			'decoration-pictures': {
-				texture: "townhouse.boysroom.decoration-pictures-texture"
+				texture: "house.boysroom.decoration-pictures-texture"
 			},
 			'carpet':	{
-				texture: "townhouse.boysroom.carpet-texture"
+				texture: "house.boysroom.carpet-texture"
 			},
 			'stools': {
 				collidable: true,
-				texture: "townhouse.boysroom.stools-texture"
+				texture: "house.boysroom.stools-texture"
 			},
 			'football': {
 				collidable: true,
-				texture: "townhouse.boysroom.football-texture"
+				texture: "house.boysroom.football-texture"
 			},
 			'moon': {
-				texture: "townhouse.boysroom.moon-texture"
+				texture: "house.boysroom.moon-texture"
 			},
 			'shelf-stuff-1': {
-				texture: "townhouse.boysroom.shelf-stuff-1-texture"
+				texture: "house.boysroom.shelf-stuff-1-texture"
 			},
 			'shelf-stuff-2': {
-				texture: "townhouse.boysroom.shelf-stuff-2-texture"
+				texture: "house.boysroom.shelf-stuff-2-texture"
 			},
 			'shelf-stuff-3': {
-				texture: "townhouse.boysroom.shelf-stuff-3-texture"
+				texture: "house.boysroom.shelf-stuff-3-texture"
 			},
 			'shelf-stuff-4': {
-				texture: "townhouse.boysroom.shelf-stuff-4-texture"
+				texture: "house.boysroom.shelf-stuff-4-texture"
 			},
 			'shelf-stuff-5': {
-				texture: "townhouse.boysroom.shelf-stuff-5-texture"
+				texture: "house.boysroom.shelf-stuff-5-texture"
 			},
 			'shelf-stuff-6': {
-				texture: "townhouse.boysroom.shelf-stuff-6-texture"
+				texture: "house.boysroom.shelf-stuff-6-texture"
 			},
 			'toytrain': {
-				texture: "townhouse.boysroom.toytrain-texture"
+				texture: "house.boysroom.toytrain-texture"
 			},
 			'computer': {
-				texture: "townhouse.boysroom.computer-texture"
+				texture: "house.boysroom.computer-texture"
 			},
 			'desk': {
 				collidable: true,
-				texture: "townhouse.boysroom.desk-texture"
+				texture: "house.boysroom.desk-texture"
 			},
 			'table': {
 				collidable: true,
-				texture: "townhouse.boysroom.table-texture"
+				texture: "house.boysroom.table-texture"
 			},
 			'table-stuff': {
-				texture: "townhouse.boysroom.table-stuff-texture"
+				texture: "house.boysroom.table-stuff-texture"
 			},
 			'swivel-chair': {
 				collidable: true,
-				texture: "townhouse.boysroom.swivel-chair-texture"
+				texture: "house.boysroom.swivel-chair-texture"
 			},
 			'nightstand': {
 				collidable: true,
-				texture: "townhouse.boysroom.nightstand-texture"
+				texture: "house.boysroom.nightstand-texture"
 			},
 			'pencil-vase': {
-				texture: "townhouse.boysroom.pencil-vase-texture"
+				texture: "house.boysroom.pencil-vase-texture"
 			},
 			'boysroom-door': {
 				Class: "gateway",
@@ -703,42 +703,42 @@ feng.models.View3D.Data = {
 				}
 			},
 			'sketchpad': {
-				texture: "townhouse.boysroom.sketchpad-texture"
+				texture: "house.boysroom.sketchpad-texture"
 			},
 			'ceiling-lamps': {
-				texture: "townhouse.boysroom.ceiling-lamps-texture"
+				texture: "house.boysroom.ceiling-lamps-texture"
 			},
 			'nightstand-lamp': {
-				texture: "townhouse.boysroom.nightstand-lamp-texture"
+				texture: "house.boysroom.nightstand-lamp-texture"
 			},
 			'yellow-reading-lamp': {
-				texture: "townhouse.boysroom.yellow-reading-lamp-texture"
+				texture: "house.boysroom.yellow-reading-lamp-texture"
 			},
 			'blue-reading-lamp': {
-				texture: "townhouse.boysroom.blue-reading-lamp-texture"
+				texture: "house.boysroom.blue-reading-lamp-texture"
 			},
 			'bedding': {
-				texture: "townhouse.boysroom.bedding-texture"
+				texture: "house.boysroom.bedding-texture"
 			},
 			'chalkboard': {
-				texture: "townhouse.boysroom.chalkboard-texture"
+				texture: "house.boysroom.chalkboard-texture"
 			},
 			'slippers': {
-				texture: "townhouse.boysroom.slippers-texture"
+				texture: "house.boysroom.slippers-texture"
 			},
 			'table-books': {
-				texture: "townhouse.boysroom.table-books-texture"
+				texture: "house.boysroom.table-books-texture"
 			},
 			'shelf-left': {
 				collidable: true,
-				texture: "townhouse.boysroom.shelf-left-texture"
+				texture: "house.boysroom.shelf-left-texture"
 			},
 			'shelf-right': {
 				collidable: true,
-				texture: "townhouse.boysroom.shelf-right-texture"
+				texture: "house.boysroom.shelf-right-texture"
 			},
 			'drawer': {
-				texture: "townhouse.boysroom.drawer-texture"
+				texture: "house.boysroom.drawer-texture"
 			},
 			'bear': {
 				Class: 'tip',
@@ -746,9 +746,9 @@ feng.models.View3D.Data = {
 					"move",
 					"rotate"
 				],
-				texture: "townhouse.boysroom.bear-in-drawer-texture",
+				texture: "house.boysroom.bear-in-drawer-texture",
 				tipInteraction: "drop",
-				tipKey: 'townhouse.boysroom.bear'
+				tipKey: 'house.boysroom.bear'
 			},
 			'handheld': {
 				Class: 'tip',
@@ -761,36 +761,36 @@ feng.models.View3D.Data = {
 					rotation: new THREE.Euler(-0.70, 1.55, 0.00, 'YXZ'),
 					fov: 20
 				},
-				texture: "townhouse.boysroom.handheld-nightstand-texture",
+				texture: "house.boysroom.handheld-nightstand-texture",
 				tipInteraction: "drop",
-				tipKey: 'townhouse.boysroom.handheld'
+				tipKey: 'house.boysroom.handheld'
 			},
 			'window': {
-				texture: "townhouse.boysroom.window-texture"
+				texture: "house.boysroom.window-texture"
 			},
 			'window-frame': {
-				texture: "townhouse.boysroom.window-frame-texture"
+				texture: "house.boysroom.window-frame-texture"
 			},
 			'door-frame': {
-				texture: "townhouse.boysroom.door-frame-texture"
+				texture: "house.boysroom.door-frame-texture"
 			}
 		},
 		'homeoffice': {
 			'floor': {
-				texture: "townhouse.homeoffice.floor-texture",
+				texture: "house.homeoffice.floor-texture",
 				receiveShadow: true
 			},
 			'ceiling': {
-				texture: "townhouse.homeoffice.ceiling-texture"
+				texture: "house.homeoffice.ceiling-texture"
 			},
 			'wall':	{
 				collidable: true,
 				castShadow: true,
-				texture: "townhouse.homeoffice.wall-texture"
+				texture: "house.homeoffice.wall-texture"
 			},
 			'wall-outer':	{
 				castShadow: true,
-				texture: "townhouse.homeoffice.wall-outer-texture"
+				texture: "house.homeoffice.wall-outer-texture"
 			},
 			'homeoffice-door': {
 				Class: "gateway",
@@ -807,7 +807,7 @@ feng.models.View3D.Data = {
 				Class: "movable",
 				collidable: true,
 				castShadow: true,
-				texture: "townhouse.homeoffice.swivel-chair-texture",
+				texture: "house.homeoffice.swivel-chair-texture",
 				interactions: [
 					"move",
 					"rotate"
@@ -815,11 +815,11 @@ feng.models.View3D.Data = {
 				destination: new THREE.Vector3(0, 0, 0),
 				range: 80,
 				tipInteraction: "change_object",
-				tipKey: 'townhouse.homeoffice.chair'
+				tipKey: 'house.homeoffice.chair'
 			},
 			'storage': {
 				collidable: true,
-				texture: "townhouse.homeoffice.storage-texture"
+				texture: "house.homeoffice.storage-texture"
 			},
 			'setsquare': {
 				Class: 'tip',
@@ -827,141 +827,141 @@ feng.models.View3D.Data = {
 					"move",
 					"rotate"
 				],
-				texture: "townhouse.homeoffice.setsquare-texture",
+				texture: "house.homeoffice.setsquare-texture",
 				tipInteraction: "drop",
-				tipKey: 'townhouse.homeoffice.setsquare'
+				tipKey: 'house.homeoffice.setsquare'
 			},
 			'carpet': {
-				texture: "townhouse.homeoffice.carpet-texture"
+				texture: "house.homeoffice.carpet-texture"
 			},
 			'door-frame': {
-				texture: "townhouse.homeoffice.door-frame-texture"
+				texture: "house.homeoffice.door-frame-texture"
 			},
 			'display-shelf-lamp': {
-				texture: "townhouse.homeoffice.display-shelf-lamp-texture"
+				texture: "house.homeoffice.display-shelf-lamp-texture"
 			},
 			'bookshelf-lamps': {
-				texture: "townhouse.homeoffice.bookshelf-lamps-texture"
+				texture: "house.homeoffice.bookshelf-lamps-texture"
 			},
 			'picture-frame-1': {
-				texture: "townhouse.homeoffice.picture-frame-1-texture"
+				texture: "house.homeoffice.picture-frame-1-texture"
 			},
 			'picture-frame-2': {
-				texture: "townhouse.homeoffice.picture-frame-2-texture"
+				texture: "house.homeoffice.picture-frame-2-texture"
 			},
 			'picture-frame-3': {
-				texture: "townhouse.homeoffice.picture-frame-3-texture"
+				texture: "house.homeoffice.picture-frame-3-texture"
 			},
 			'picture-frame-4': {
-				texture: "townhouse.homeoffice.picture-frame-4-texture"
+				texture: "house.homeoffice.picture-frame-4-texture"
 			},
 			'block-shelf-1':	{
-				texture: "townhouse.homeoffice.block-shelf-1-texture"
+				texture: "house.homeoffice.block-shelf-1-texture"
 			},
 			'block-shelf-2':	{
-				texture: "townhouse.homeoffice.block-shelf-2-texture"
+				texture: "house.homeoffice.block-shelf-2-texture"
 			},
 			'block-stuff-1':	{
-				texture: "townhouse.homeoffice.block-stuff-1-texture"
+				texture: "house.homeoffice.block-stuff-1-texture"
 			},
 			'block-stuff-2':	{
-				texture: "townhouse.homeoffice.block-stuff-2-texture"
+				texture: "house.homeoffice.block-stuff-2-texture"
 			},
 			'books-1':	{
-				texture: "townhouse.homeoffice.books-1-texture"
+				texture: "house.homeoffice.books-1-texture"
 			},
 			'books-2':	{
-				texture: "townhouse.homeoffice.books-2-texture"
+				texture: "house.homeoffice.books-2-texture"
 			},
 			'round-lamp':	{
 				collidable: true,
-				texture: "townhouse.homeoffice.round-lamp-texture"
+				texture: "house.homeoffice.round-lamp-texture"
 			},
 			'calendar':	{
-				texture: "townhouse.homeoffice.calendar-texture"
+				texture: "house.homeoffice.calendar-texture"
 			},
 			'magazine':	{
-				texture: "townhouse.homeoffice.magazine-texture"
+				texture: "house.homeoffice.magazine-texture"
 			},
 			'window':	{
-				texture: "townhouse.homeoffice.window-texture"
+				texture: "house.homeoffice.window-texture"
 			},
 			'armchair':	{
 				collidable: true,
-				texture: "townhouse.homeoffice.armchair-texture"
+				texture: "house.homeoffice.armchair-texture"
 			},
 			'writing-desk':	{
 				collidable: true,
-				texture: "townhouse.homeoffice.writing-desk-texture"
+				texture: "house.homeoffice.writing-desk-texture"
 			},
 			'dracaena-fragrans': {
 				collidable: true,
-				texture: "townhouse.homeoffice.dracaena-fragrans-texture"
+				texture: "house.homeoffice.dracaena-fragrans-texture"
 			},
 			'handbag': {
-				texture: "townhouse.homeoffice.handbag-texture"
+				texture: "house.homeoffice.handbag-texture"
 			},
 			'pen-vase': {
-				texture: "townhouse.homeoffice.pen-vase-texture"
+				texture: "house.homeoffice.pen-vase-texture"
 			},
 			'rubberplant': {
-				texture: "townhouse.homeoffice.rubberplant-texture"
+				texture: "house.homeoffice.rubberplant-texture"
 			},
 			'coffee-table':	{
 				collidable: true,
-				texture: "townhouse.homeoffice.coffee-table-texture"
+				texture: "house.homeoffice.coffee-table-texture"
 			},
 			'coffeecup': {
-				texture: "townhouse.homeoffice.coffeecup-texture"
+				texture: "house.homeoffice.coffeecup-texture"
 			},
 			'floor-lamp': {
 				collidable: true,
-				texture: "townhouse.homeoffice.floor-lamp-texture"
+				texture: "house.homeoffice.floor-lamp-texture"
 			},
 			'ceiling-lamp': {
-				texture: "townhouse.homeoffice.ceiling-lamp-texture"
+				texture: "house.homeoffice.ceiling-lamp-texture"
 			},
 			'cup': {
-				texture: "townhouse.homeoffice.cup-texture"
+				texture: "house.homeoffice.cup-texture"
 			},
 			'reading-lamp-1': {
-				texture: "townhouse.homeoffice.reading-lamp-1-texture"
+				texture: "house.homeoffice.reading-lamp-1-texture"
 			},
 			'reading-lamp-2': {
-				texture: "townhouse.homeoffice.reading-lamp-2-texture"
+				texture: "house.homeoffice.reading-lamp-2-texture"
 			},
 			'sofa': {
 				collidable: true,
-				texture: "townhouse.homeoffice.sofa-texture"
+				texture: "house.homeoffice.sofa-texture"
 			},
 			'trash': {
-				texture: "townhouse.homeoffice.trash-texture"
+				texture: "house.homeoffice.trash-texture"
 			},
 			'display-shelf': {
 				collidable: true,
-				texture: "townhouse.homeoffice.display-shelf-texture"
+				texture: "house.homeoffice.display-shelf-texture"
 			},
 			'computer':	{
-				texture: "townhouse.homeoffice.computer-texture"
+				texture: "house.homeoffice.computer-texture"
 			},
 			'laptop':	{
-				texture: "townhouse.homeoffice.laptop-texture"
+				texture: "house.homeoffice.laptop-texture"
 			},
 			'curtain':	{
-				texture: "townhouse.homeoffice.curtain-texture"
+				texture: "house.homeoffice.curtain-texture"
 			},
 			'curtain-rod':	{
-				texture: "townhouse.homeoffice.curtain-rod-texture"
+				texture: "house.homeoffice.curtain-rod-texture"
 			},
 			'telephone':	{
-				texture: "townhouse.homeoffice.telephone-texture"
+				texture: "house.homeoffice.telephone-texture"
 			},
 			'bookshelf':	{
 				collidable: true,
-				texture: "townhouse.homeoffice.bookshelf-texture"
+				texture: "house.homeoffice.bookshelf-texture"
 			},
 			'bookshelf-stuff':	{
-				texture: "townhouse.homeoffice.bookshelf-stuff-texture"
+				texture: "house.homeoffice.bookshelf-stuff-texture"
 			}
 		}
 	}

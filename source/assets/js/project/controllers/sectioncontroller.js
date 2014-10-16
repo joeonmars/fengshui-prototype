@@ -4,7 +4,7 @@ goog.require('goog.events.EventTarget');
 goog.require('goog.events');
 goog.require('feng.views.sections.Home');
 goog.require('feng.views.sections.Studio');
-goog.require('feng.views.sections.Townhouse');
+goog.require('feng.views.sections.House');
 
 
 /**
@@ -27,7 +27,7 @@ goog.addSingletonGetter(feng.controllers.SectionController);
 feng.controllers.SectionController.prototype.init = function(){
   
   this.addSection('studio');
-  this.addSection('townhouse');
+  this.addSection('house');
 
   this._eventHandler.listen(this, feng.events.EventType.ANIMATE_IN, this.onSectionAnimateIn, false, this);
   this._eventHandler.listen(this, feng.events.EventType.ANIMATE_OUT, this.onSectionAnimateOut, false, this);
@@ -61,8 +61,8 @@ feng.controllers.SectionController.prototype.addSection = function(id){
     section = new feng.views.sections.Studio;
     break;
 
-    case 'townhouse':
-    section = new feng.views.sections.Townhouse;
+    case 'house':
+    section = new feng.views.sections.House;
     break;
   }
 

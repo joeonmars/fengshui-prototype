@@ -295,7 +295,7 @@
 		},
 		{
 			"id": "glassbowl",
-			"section": "townhouse",
+			"section": "house",
 			"view": "livingroom",
 			"name": "glassbowl",
 			"icon": "goldfish",
@@ -314,7 +314,7 @@
 		},
 		{
 			"id": "mirror",
-			"section": "townhouse",
+			"section": "house",
 			"view": "livingroom",
 			"name": "mirror",
 			"icon": "mirror",
@@ -333,7 +333,7 @@
 		},
 		{
 			"id": "cookingutensils",
-			"section": "townhouse",
+			"section": "house",
 			"view": "livingroom",
 			"name": "cookingutensils",
 			"icon": "cookingutensils",
@@ -352,7 +352,7 @@
 		},
 		{
 			"id": "drawer",
-			"section": "townhouse",
+			"section": "house",
 			"view": "livingroom",
 			"name": "drawer",
 			"icon": "cookingutensils",
@@ -371,7 +371,7 @@
 		},
 		{
 			"id": "centerofstairs",
-			"section": "townhouse",
+			"section": "house",
 			"view": "livingroom",
 			"name": "centerofstairs",
 			"icon": "stairs",
@@ -390,7 +390,7 @@
 		},
 		{
 			"id": "books",
-			"section": "townhouse",
+			"section": "house",
 			"view": "livingroom",
 			"name": "books",
 			"icon": "books",
@@ -407,7 +407,7 @@
 		},
 		{
 			"id": "handheld",
-			"section": "townhouse",
+			"section": "house",
 			"view": "boysroom",
 			"name": "electronic devices",
 			"icon": "mascot",
@@ -426,7 +426,7 @@
 		},
 		{
 			"id": "bear",
-			"section": "townhouse",
+			"section": "house",
 			"view": "boysroom",
 			"name": "bear",
 			"icon": "mascot",
@@ -445,7 +445,7 @@
 		},
 		{
 			"id": "bed",
-			"section": "townhouse",
+			"section": "house",
 			"view": "boysroom",
 			"name": "bed",
 			"icon": "bed",
@@ -464,7 +464,7 @@
 		},
 		{
 			"id": "pc",
-			"section": "townhouse",
+			"section": "house",
 			"view": "boysroom",
 			"name": "pc",
 			"icon": "computer",
@@ -483,7 +483,7 @@
 		},
 		{
 			"id": "picture",
-			"section": "townhouse",
+			"section": "house",
 			"view": "boysroom",
 			"name": "picture",
 			"icon": "pictures",
@@ -502,7 +502,7 @@
 		},
 		{
 			"id": "chair",
-			"section": "townhouse",
+			"section": "house",
 			"view": "homeoffice",
 			"name": "chair",
 			"icon": "chair",
@@ -521,7 +521,7 @@
 		},
 		{
 			"id": "photos",
-			"section": "townhouse",
+			"section": "house",
 			"view": "homeoffice",
 			"name": "photos",
 			"icon": "pictures",
@@ -540,7 +540,7 @@
 		},
 		{
 			"id": "setsquare",
-			"section": "townhouse",
+			"section": "house",
 			"view": "homeoffice",
 			"name": "set square",
 			"icon": "desk",
@@ -559,7 +559,7 @@
 		},
 		{
 			"id": "flower",
-			"section": "townhouse",
+			"section": "house",
 			"view": "homeoffice",
 			"name": "flower",
 			"icon": "flowers",
@@ -578,7 +578,7 @@
 		},
 		{
 			"id": "mascot",
-			"section": "townhouse",
+			"section": "house",
 			"view": "homeoffice",
 			"name": "mascot",
 			"icon": "mascot",
@@ -610,7 +610,7 @@
 					"paragraph": "After a whole day working, I really enjoy soaking in the bath in the early mornings and late nights.<br>Ideally, the bathroom should be serene, clean and comfortable. Somewhere totally relaxed. What can we do to make this a more refreshing place?"
 				}
 			},
-			"townhouse": {
+			"house": {
 				"livingroom": {
 					"character": "joanna",
 					"title": "Welcome to our house!",
@@ -634,7 +634,7 @@
 				"title": "Ollie says thank you!",
 				"paragraph": "You have helped me solve all the Feng Shui problems in my studio! We have replaced the cactus with a broadleaf plant, brightened the living area, and smoothed out the energy flow. The bathroom has no hidden areas now.<br>Thank you very much! It was a really pleasant experience!"
 			},
-			"townhouse": {
+			"house": {
 				"character": "joanna-scott-nick",
 				"title": "Thanks for your help!",
 				"paragraph": "Now we have a very pleasant living room with a delightful goldfish, a quiet, relaxed and efficient home office, and a fun learning environment for little Nick."

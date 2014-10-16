@@ -930,7 +930,7 @@
 		}],
 	"object": {
 		"uuid": "E9F8A49D-D4B2-4FA7-B7DE-49A16AC04C1E",
-		"name": "townhouse-boysroom",
+		"name": "house-boysroom",
 		"type": "Scene",
 		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
 		"children": [
