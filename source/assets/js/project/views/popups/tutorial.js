@@ -32,6 +32,9 @@ feng.views.popups.Tutorial = function(){
 	this._numLoaded = 0;
 	this._isLoaded = false;
 
+	this._enterKeyId = null;
+	this._animateOut = goog.bind(this.animateOut, this);
+
 	// loader
 	this._loaderEl = goog.dom.getElementByClass('loader', this.domElement);
 	this._fillEl = goog.dom.getElementByClass('fill', this.domElement);
@@ -102,6 +105,8 @@ feng.views.popups.Tutorial.prototype.activate = function(){
 
 	this._eventHandler.listen( this._skipButton, 'click', this.animateOut, false, this );
 
+	this._enterKeyId = feng.keyboardController.bind( this._animateOut, feng.keyboardController.key.ENTER, true );
+
 	if(!this._isLoaded) {
 
 		goog.array.forEach(this._videoEls, function(videoEl) {
@@ -123,6 +128,8 @@ feng.views.popups.Tutorial.prototype.deactivate = function(){
 	this._videoEl.pause();
 
 	this._eventHandler.removeAll();
+
+	feng.keyboardController.unbind( this._enterKeyId );
 };
 
 

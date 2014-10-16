@@ -3,6 +3,7 @@ goog.provide('feng.controllers.KeyboardController');
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.KeyHandler');
 goog.require('goog.object');
+goog.require('goog.string');
 
 /**
  * @constructor
@@ -43,7 +44,7 @@ goog.addSingletonGetter(feng.controllers.KeyboardController);
 feng.controllers.KeyboardController.prototype.bind = function(handler, keycode, once){
 
 	var duplicateId = goog.object.findKey( this._bindMappings, function(id, obj) {
-		return (obj.handler === handler && obj.keycode === keycode);
+		return (obj.handler === handler && obj.keycode === keycode && obj.once === once);
 	});
 
 	if(duplicateId) {
@@ -51,7 +52,7 @@ feng.controllers.KeyboardController.prototype.bind = function(handler, keycode, 
 	}
 
 	// add bind mapping
-	var id = goog.getUid( handler );
+	var id = goog.string.getRandomString();
 
 	var val = {
 		handler: handler,
@@ -59,11 +60,11 @@ feng.controllers.KeyboardController.prototype.bind = function(handler, keycode, 
 		once: once
 	};
 
-	goog.object.set(this._bindMappings, id, val);
+	goog.object.set( this._bindMappings, id, val );
 
 	// add keycode mapping
 	this._keycodeMappings[keycode] = this._keycodeMappings[keycode] || [];
-	this._keycodeMappings[keycode].push( id );
+	goog.array.insert( this._keycodeMappings[keycode], id );
 
 	return id;
 };

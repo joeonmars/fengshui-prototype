@@ -28,6 +28,10 @@ feng.views.sections.overlays.OpeningOverlay = function(domElement){
   this._viewId = null;
   this._shownOnce = {};
 
+  this._enterKeyId = null;
+	this._escKeyId = null;
+	this._onClickOK = goog.bind( this.onClickOK, this );
+
   this._preload = feng.models.Preload.getInstance();
 };
 goog.inherits(feng.views.sections.overlays.OpeningOverlay, feng.views.Overlay);
@@ -40,6 +44,18 @@ feng.views.sections.overlays.OpeningOverlay.prototype.activate = function(){
 
 	this._eventHandler.listenOnce( this._okButton, 'click', this.onClickOK, false, this );
 	this._eventHandler.listenOnce( this._popup, feng.events.EventType.ANIMATE_OUT, this.animateOut, false, this );
+
+	this._enterKeyId = feng.keyboardController.bind( this._onClickOK, feng.keyboardController.key.ENTER, true );
+	this._escKeyId = feng.keyboardController.bind( this._onClickOK, feng.keyboardController.key.ESC, true );
+};
+
+
+feng.views.sections.overlays.OpeningOverlay.prototype.deactivate = function(){
+
+	goog.base(this, 'deactivate');
+
+	feng.keyboardController.unbind( this._enterKeyId );
+	feng.keyboardController.unbind( this._escKeyId );
 };
 
 
