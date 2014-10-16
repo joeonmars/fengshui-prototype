@@ -26,6 +26,10 @@ feng.views.sections.captions.Caption = function( object, cameraController, rende
     position: 'right'
   };
 
+  this._closeKeyId = null;
+
+  this._close = goog.bind( this.close, this );
+
   // render HTML template
   this.domElement = soy.renderAsFragment(this._template, this._templateData);
 
@@ -57,8 +61,9 @@ feng.views.sections.captions.Caption.prototype.show = function() {
   
   // listen for unlock ready event from view3d object
   this._eventHandler.listen( this._object, feng.events.EventType.UNLOCK, this.updateStatus, false, this );
-
   this._eventHandler.listen( window, 'resize', this.onResize, false, this );
+
+  this._closeKeyId = feng.keyboardController.bind( this._close, feng.keyboardController.key.ESC, true );
 
   this.updateStatus();
 
@@ -71,6 +76,8 @@ feng.views.sections.captions.Caption.prototype.show = function() {
 feng.views.sections.captions.Caption.prototype.hide = function() {
 
   this._eventHandler.removeAll();
+
+  feng.keyboardController.unbind( this._closeKeyId );
 
   this._object.stopInteraction();
 

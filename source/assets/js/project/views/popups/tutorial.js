@@ -33,6 +33,7 @@ feng.views.popups.Tutorial = function(){
 	this._isLoaded = false;
 
 	this._enterKeyId = null;
+	this._escKeyId = null;
 	this._animateOut = goog.bind(this.animateOut, this);
 
 	// loader
@@ -106,6 +107,7 @@ feng.views.popups.Tutorial.prototype.activate = function(){
 	this._eventHandler.listen( this._skipButton, 'click', this.animateOut, false, this );
 
 	this._enterKeyId = feng.keyboardController.bind( this._animateOut, feng.keyboardController.key.ENTER, true );
+	this._escKeyId = feng.keyboardController.bind( this._animateOut, feng.keyboardController.key.ESC, true );
 
 	if(!this._isLoaded) {
 
@@ -130,6 +132,7 @@ feng.views.popups.Tutorial.prototype.deactivate = function(){
 	this._eventHandler.removeAll();
 
 	feng.keyboardController.unbind( this._enterKeyId );
+	feng.keyboardController.unbind( this._escKeyId );
 };
 
 
