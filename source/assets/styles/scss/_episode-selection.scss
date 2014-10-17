@@ -4,8 +4,9 @@
 	height: 100%;
 
 	>.scene{
-		position: absolute;
-		top: 0;
+		position: relative;
+		display: inline-block;
+		vertical-align: top;
 		width: 50%;
 		height: 100%;
 		overflow: hidden;
@@ -14,33 +15,82 @@
 		@include single-transition(width, .5s, ease-in-out);
 
 		&.studio{
-			left: 0;
 			background-image: image-url('scene-studio.jpg');
 		}
 
 		&.house{
-			right: 0;
 			background-image: image-url('scene-house.jpg');
 		}
 
 		&.active{
-			width: 70%;
+			width: 60%;
 
-			>.shade{
+			.shade{
 				opacity: 0;
+			}
+
+			.disc{
+				opacity: 1;
+				visibility: visible;
+				@include transition-delay(.20s);
+
+				.outer, .inner{
+					@include scale(1);
+				}
+
+				.outer{
+					@include transition-delay(.20s);
+				}
+
+				.inner{
+					@include transition-delay(.35s);
+
+					.content{
+						>.location{
+							@include animation( fade-in-up .75s $easeOutCubic both );
+							@include animation-delay(.45s);
+						}
+
+						>h1{
+							@include animation( fade-in-up .65s $easeOutCubic both );
+							@include animation-delay(.55s);
+						}
+
+						>p{
+							@include animation( fade-in-up .55s $easeOutCubic both );
+							@include animation-delay(.65s);
+						}
+
+						>.primary-button{
+							@include animation( fade-in-up .45s $easeOutCubic both );
+							@include animation-delay(.75s);
+						}
+					}
+				}
 			}
 		}
 
 		&.inactive{
-			width: 30%;
+			width: 40%;
 
-			>.shade{
+			.shade{
 				opacity: .7;
 			}
 		}
 
+		&:not(.active){
+			.disc{
+				opacity: 0;
+				visibility: hidden;
+
+				.outer, .inner{
+					@include scale(0);
+				}
+			}
+		}
+
 		&:not(.active, .inactive){
-			>.shade{
+			.shade{
 				opacity: .5;
 			}
 		}
@@ -51,7 +101,7 @@
 			height: 100%;
 			background-color: #000;
 			opacity: .5;
-			@include single-transition(opacity, .5s, ease-in-out);
+			@include single-transition(opacity, .75s, ease-out);
 			@include translateZ(0);
 		}
 
@@ -61,8 +111,25 @@
 			left: 50%;
 
 			>.disc{
-				@include disc( 300px );
+				@include disc( 400px );
 				@include translateZ(0);
+				@include transition-property(opacity, visibility);
+				@include transition-timing-function($easeInOutSine);
+				@include transition-duration(.50s);
+
+				.outer, .inner{
+					@include transition-property(transform);
+					@include transition-timing-function($easeInOutSine);
+				}
+
+				.outer{
+					@include transition-duration(.50s);
+				}
+
+				.inner{
+					background-color: rgba(255, 255, 255, .95);
+					@include transition-duration(.40s);
+				}
 
 				.content{
 					text-align: center;
@@ -72,10 +139,9 @@
 
 						>p{
 							font-family: $font_marineup_light;
-							font-size: 10px;
+							font-size: 1.2em;
 							color: $gray;
-							line-height: 11px;
-							letter-spacing: 1px;
+							line-height: 1.5;
 							opacity: .5;
 						}
 						>.line{
@@ -88,24 +154,22 @@
 					}
 
 					>h1{
-						font-size: 18px;
-						color: $darkblue;
-						line-height: 24px;
-						letter-spacing: 1px;
+						font-size: 3.8em;
+						color: $darkgray-ui;
 					}
 
 					>p{
-						font-size: 13px;
-						color: $gray;
-						line-height: 16px;
-						letter-spacing: 1px;
-						margin: 18px auto;
+						display: block;
+						margin: 1em auto 1.5em auto;
+						width: 280px;
+						font-size: 1.6em;
+						color: $lightgray-ui;
+						line-height: 1.6;
 					}
 
 					>.primary-button{
 						margin: 0 auto;
-						width: 120px;
-						@include translateZ(0px);
+						width: 180px;
 					}
 				}
 			}
@@ -127,52 +191,161 @@
 		left: 50%;
 		@include single-transition(left, .5s, $easeInOutSine);
 
+		&.active{
+
+			.disc{
+				opacity: 0;
+				visibility: hidden;
+
+				.outer, .inner{
+					@include scale(0);
+				}
+			}
+
+			&.studio{
+				left: 60%;
+			}
+
+			&.house{
+				left: 40%;
+			}
+
+			.question{
+				display: none;
+			}
+			
+			.arrows{
+				display: block;
+			}
+		}
+
+		&:not(.active){
+
+			.disc{
+				opacity: 1;
+				visibility: visible;
+				@include transition-delay(.20s);
+
+				.outer, .inner{
+					@include scale(1);
+				}
+
+				.outer{
+					@include transition-delay(.20s);
+				}
+
+				.inner{
+					@include transition-delay(.35s);
+					/*
+					.content{
+						>.location{
+							@include animation( fade-in-up .75s $easeOutCubic both );
+							@include animation-delay(.45s);
+						}
+
+						>h1{
+							@include animation( fade-in-up .65s $easeOutCubic both );
+							@include animation-delay(.55s);
+						}
+
+						>p{
+							@include animation( fade-in-up .55s $easeOutCubic both );
+							@include animation-delay(.65s);
+						}
+
+						>.primary-button{
+							@include animation( fade-in-up .45s $easeOutCubic both );
+							@include animation-delay(.75s);
+						}
+					}
+					*/
+				}
+			}
+
+			.question{
+				display: block;
+			}
+
+			.arrows{
+				display: none;
+			}
+		}
+
 		>.disc{
-			@include disc( 240px );
+			@include disc( 400px );
+			@include translateZ(0);
+			@include transition-property(opacity, visibility);
+			@include transition-timing-function($easeInOutSine);
+			@include transition-duration(.50s);
 			text-align: center;
 			color: $gray;
 
-			.fengshui-logo{
-				margin: -24px auto 18px auto;
-				width: 38px;
-				height: 38px;
+			.outer, .inner{
+				@include transition-property(transform);
+				@include transition-timing-function($easeInOutSine);
 			}
 
-			h1{
-				font-size: 18px;
-				line-height: 24px;
-				letter-spacing: 1px;
+			.outer{
+				@include transition-duration(.50s);
+			}
 
-				>a{
-					color: $darkblue;
+			.inner{
+				@include transition-duration(.40s);
+			}
+
+			.question{
+				.fengshui-logo{
+					margin: 0 auto 1em auto;
+					width: 5em;
+					height: 5em;
+					background-size: 100% 100%;
+					background-image: image-url('house-logo.png');
+				}
+
+				h1{
+					font-size: 2em;
+					line-height: 1.4;
+					font-family: $font_marine !important;
+
+					>b{
+						display: block;
+						font-size: 1.2em;
+						line-height: 2;
+						text-transform: uppercase;
+						color: $darkgray-ui;
+						font-family: $font_marineup !important;
+					}
+				}
+
+				h2{
+					font-size: 1.3em;
+					margin-top: 2em;
+
+					>.arrow{
+						position: relative;
+						display: inline-block;
+						vertical-align: top;
+						top: -1px;
+						font-size: 25px;
+						opacity: .4;
+
+						&.left{
+							margin-right: 20px;
+							@extend .icon;
+							@extend .icon-prev;
+						}
+
+						&.right{
+							margin-left: 20px;
+							@extend .icon;
+							@extend .icon-next;
+						}
+					}
 				}
 			}
 
-			h2{
-				margin-top: 13px;
-				font-size: 13px;
-				line-height: 24px;
+			.arrows{
 
-				>.arrow{
-					position: relative;
-					display: inline-block;
-					vertical-align: top;
-					top: -1px;
-					font-size: 25px;
-					opacity: .4;
-
-					&.left{
-						margin-right: 20px;
-						@extend .icon;
-						@extend .icon-prev;
-					}
-
-					&.right{
-						margin-left: 20px;
-						@extend .icon;
-						@extend .icon-next;
-					}
-				}
 			}
 		}
 
