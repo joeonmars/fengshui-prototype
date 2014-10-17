@@ -1,0 +1,26 @@
+{
+	"a": {
+	  "data": {
+	    "title": "Blog Post #1",
+	    "description": "Blog Post #111",
+	    "gists": ["5898072"]
+	  },
+	  "content": "This property is optional and would get passed into the `body` tag. But if you only need to pass the page\"s metadata to the layout then the content property is unnecessary."
+	},
+	"b": {
+	  "data": {
+	    "title": "Blog Post #2",
+	    "description": "Blog Post #222",
+	    "subtitle": "",
+	    "gists": ["5898077", "5898078"]
+	  },
+	  "content": "This project is brought to you by."
+	},
+	"c": {
+	  "data": {
+	    "title": "Blog Post #3",
+	    "description": "Blog Post #333",
+	    "gists": ["5909393"]
+	  }
+	}
+}

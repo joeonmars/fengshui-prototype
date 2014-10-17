@@ -103,6 +103,20 @@ module.exports = function(grunt) {
       }
     },
 
+    assemble: {
+      share: {
+        options: {
+          assets: 'source/assets/',
+          layout: 'source/assets/html/share/template/layout.hbs',
+          flatten: true,
+          pages: grunt.file.readJSON('source/assets/html/share/template/data.json')
+        },
+        files: {
+          'test/actual/pages_array/': ['test/fixtures/pages/blog/index.hbs']
+        }
+      }
+    },
+
     copy: {
       release: {
         files: [
@@ -250,6 +264,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-open');
   grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-webfont');
+  grunt.loadNpmTasks('assemble');
 
   // Default task.
   grunt.registerTask('default', ['bower', 'compass', 'webfont', 'closureSoys', 'closureDepsWriter', 'open:dev', 'watch']);
