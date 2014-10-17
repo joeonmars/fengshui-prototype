@@ -96,19 +96,36 @@
 }
 
 
-@include keyframes(bouncing-arrow) {
+@include keyframes(bouncing-left) {
   0%,
   20%,
   50%,
   80%,
   100% {
-    @include translateY(0);
+    @include translateX(0);
   }
   40% {
-    @include translateY(-10px);
+    @include translateX(10px);
   }
   60% {
-    @include translateY(-5px);
+    @include translateX(5px);
+  }
+}
+
+
+@include keyframes(bouncing-right) {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    @include translateX(0);
+  }
+  40% {
+    @include translateX(-10px);
+  }
+  60% {
+    @include translateX(-5px);
   }
 }
 /* -- end -- */

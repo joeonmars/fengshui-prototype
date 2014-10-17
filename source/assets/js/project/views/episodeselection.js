@@ -28,41 +28,13 @@ goog.addSingletonGetter(feng.views.EpisodeSelection);
 feng.views.EpisodeSelection.prototype.init = function(){
 
 	this._promptEl = goog.dom.query('> .prompt', this.domElement)[0];
-  this._promptInnerDiscEl = goog.dom.getElementByClass('inner', this._promptEl);
-  this._promptOuterDiscEl = goog.dom.getElementByClass('outer', this._promptEl);
-  this._promptContentEl = goog.dom.getElementByClass('content', this._promptEl);
 
   this._studioEl = goog.dom.getElementByClass('studio', this.domElement);
   this._houseEl = goog.dom.getElementByClass('house', this.domElement);
 
-  this._studioEnterButton = goog.dom.getElementByClass('primary-button', this._studioEl);
-  this._houseEnterButton = goog.dom.getElementByClass('primary-button', this._houseEl);
-
-  this._promptEl = goog.dom.query('> .prompt', this.domElement)[0];
-
-  this._studioPromptEl = goog.dom.getElementByClass('prompt', this._studioEl);
-  this._housePromptEl = goog.dom.getElementByClass('prompt', this._houseEl);
-
-  this._studioPromptInnerDiscEl = goog.dom.getElementByClass('inner', this._studioPromptEl);
-  this._studioPromptOuterDiscEl = goog.dom.getElementByClass('outer', this._studioPromptEl);
-  this._studioPromptLocationEl = goog.dom.query('.location', this._studioPromptInnerDiscEl)[0];
-  this._studioPromptLineEl = goog.dom.query('.location .line', this._studioPromptInnerDiscEl)[0];
-  this._studioPromptTitleEl = goog.dom.query('.content h1', this._studioPromptInnerDiscEl)[0];
-  this._studioPromptParaEl = goog.dom.query('.content > p', this._studioPromptInnerDiscEl)[0];
-
-  this._housePromptInnerDiscEl = goog.dom.getElementByClass('inner', this._housePromptEl);
-  this._housePromptOuterDiscEl = goog.dom.getElementByClass('outer', this._housePromptEl);
-  this._housePromptLocationEl = goog.dom.query('.location', this._housePromptInnerDiscEl)[0];
-  this._housePromptLineEl = goog.dom.query('.location .line', this._housePromptInnerDiscEl)[0];
-  this._housePromptTitleEl = goog.dom.query('.content h1', this._housePromptInnerDiscEl)[0];
-  this._housePromptParaEl = goog.dom.query('.content > p', this._housePromptInnerDiscEl)[0];
-
   //
   this._activationDelay = 0;
   this._episodePromptAnimateInDelay = 0;
-
-  this._isAnimatedToMessage = false;
-	this._isAnimatedToCompass = false;
 
   this._hoveredSceneEl = null;
 
@@ -119,13 +91,16 @@ feng.views.EpisodeSelection.prototype.reset = function(){
 
 	goog.dom.removeNode( feng.tutorial.domElement );
 
+	goog.dom.classes.enable( this._promptEl, 'hidden', false );
 	goog.dom.classes.enable( this._studioEl, 'active', false );
 	goog.dom.classes.enable( this._studioEl, 'inactive', false );
+	goog.dom.classes.enable( this._studioEl, 'loading', false );
+	goog.dom.classes.enable( this._studioEl, 'hidden', false );
 	goog.dom.classes.enable( this._houseEl, 'active', false );
 	goog.dom.classes.enable( this._houseEl, 'inactive', false );
+	goog.dom.classes.enable( this._houseEl, 'loading', false );
+	goog.dom.classes.enable( this._houseEl, 'hidden', false );
 
-  	this._isAnimatedToMessage = false;
-	this._isAnimatedToCompass = false;
 	this._hoveredSceneEl = null;
 };
 
@@ -133,8 +108,6 @@ feng.views.EpisodeSelection.prototype.reset = function(){
 feng.views.EpisodeSelection.prototype.animateIn = function(){
 
 	this.reset();
-
-	this.animatePromptToMessage();
 
 	this._activationDelay = goog.Timer.callOnce(this.activate, 2000, this);
 };
@@ -158,55 +131,6 @@ feng.views.EpisodeSelection.prototype.animateOutOnComplete = function( episodeId
 };
 
 
-feng.views.EpisodeSelection.prototype.animatePromptToMessage = function(){
-
-	this._isAnimatedToCompass = false;
-
-	if(this._isAnimatedToMessage) return;
-	else this._isAnimatedToMessage = true;
-
-	TweenMax.to(this._promptOuterDiscEl, 1, {
-		'scale': 1,
-		'ease': Power4.easeInOut
-	});
-
-	TweenMax.to(this._promptInnerDiscEl, 1, {
-		'delay': .1,
-		'scale': 1,
-		'ease': Power4.easeInOut
-	});
-
-	TweenMax.to(this._promptContentEl, .5, {
-		'delay': .1,
-		'autoAlpha': 1
-	});
-};
-
-
-feng.views.EpisodeSelection.prototype.animatePromptToCompass = function(){
-
-	this._isAnimatedToMessage = false;
-
-	if(this._isAnimatedToCompass) return;
-	else this._isAnimatedToCompass = true;
-
-	TweenMax.to(this._promptInnerDiscEl, 1, {
-		'scale': .43,
-		'ease': Power4.easeInOut
-	});
-
-	TweenMax.to(this._promptOuterDiscEl, 1, {
-		'delay': .1,
-		'scale': .45,
-		'ease': Power4.easeInOut
-	});
-
-	TweenMax.to(this._promptContentEl, .5, {
-		'autoAlpha': 0
-	});
-};
-
-
 feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
 
 	if(this._hoveredSceneEl === this._studioEl) {
@@ -216,11 +140,11 @@ feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
 		goog.dom.classes.enable( this._houseEl, 'active', false );
 		goog.dom.classes.enable( this._houseEl, 'inactive', true );
 
-		goog.dom.classes.enable( this._promptEl, 'active', true );
+		goog.dom.classes.enable( this._promptEl, 'hidden', true );
 		goog.dom.classes.addRemove( this._promptEl, 'house', 'studio' );
 
-	  	feng.soundController.fadeAmbient( 'studio', null, 1, 4 );
-	  	feng.soundController.fadeAmbient( 'house', null, 0, 4 );
+	  feng.soundController.fadeAmbient( 'studio', null, 1, 4 );
+	  feng.soundController.fadeAmbient( 'house', null, 0, 4 );
 
 	}else if(this._hoveredSceneEl === this._houseEl) {
 
@@ -229,11 +153,11 @@ feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
 		goog.dom.classes.enable( this._houseEl, 'active', true );
 		goog.dom.classes.enable( this._houseEl, 'inactive', false );
 
-		goog.dom.classes.enable( this._promptEl, 'active', true );
+		goog.dom.classes.enable( this._promptEl, 'hidden', true );
 		goog.dom.classes.addRemove( this._promptEl, 'studio', 'house' );
 
 		feng.soundController.fadeAmbient( 'studio', null, 0, 4 );
-	  	feng.soundController.fadeAmbient( 'house', null, 1, 4 );
+	  feng.soundController.fadeAmbient( 'house', null, 1, 4 );
 
 	}else {
 
@@ -242,12 +166,12 @@ feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
 		goog.dom.classes.enable( this._houseEl, 'active', false );
 		goog.dom.classes.enable( this._houseEl, 'inactive', false );
 
-		goog.dom.classes.enable( this._promptEl, 'active', false );
+		goog.dom.classes.enable( this._promptEl, 'hidden', false );
 		goog.dom.classes.remove( this._promptEl, 'studio' );
 		goog.dom.classes.remove( this._promptEl, 'house' );
 
 		feng.soundController.fadeAmbient( 'studio', null, 0, 4 );
-	  	feng.soundController.fadeAmbient( 'house', null, 0, 4 );
+	  feng.soundController.fadeAmbient( 'house', null, 0, 4 );
 	}
 };
 
@@ -332,16 +256,7 @@ feng.views.EpisodeSelection.prototype.onLoadStart = function(e){
 
 	this.deactivate();
 
-	TweenMax.to(this._promptInnerDiscEl, 1, {
-		'scale': 0,
-		'ease': Power4.easeInOut
-	});
-
-	TweenMax.to(this._promptOuterDiscEl, 1, {
-		'delay': .1,
-		'scale': 0,
-		'ease': Power4.easeInOut
-	});
+	goog.dom.classes.enable( this._promptEl, 'hidden', true );
 
 	feng.tutorial.showLoader();
 	feng.tutorial.enableAutoPlay( true );
@@ -349,25 +264,15 @@ feng.views.EpisodeSelection.prototype.onLoadStart = function(e){
 
 	if(this._episode.id === 'studio') {
 
-		goog.style.setStyle( this._studioEl, 'width', '100%' );
-		goog.style.setStyle( this._houseEl, 'width', '0%' );
-		goog.style.setStyle( this._promptEl, 'left', '100%' );
-
-		TweenMax.set(this._studioPromptEl, {
-			'display': 'none'
-		});
+		goog.dom.classes.enable( this._studioEl, 'loading', true );
+		goog.dom.classes.enable( this._houseEl, 'hidden', true );
 
 		goog.dom.appendChild( this._studioEl, feng.tutorial.domElement );
 
 	}else if(this._episode.id === 'house') {
 
-		goog.style.setStyle( this._studioEl, 'width', '0%' );
-		goog.style.setStyle( this._houseEl, 'width', '100%' );
-		goog.style.setStyle( this._promptEl, 'left', '0%' );
-
-		TweenMax.set(this._housePromptEl, {
-			'display': 'none'
-		});
+		goog.dom.classes.enable( this._studioEl, 'hidden', true );
+		goog.dom.classes.enable( this._houseEl, 'loading', true );
 
 		goog.dom.appendChild( this._houseEl, feng.tutorial.domElement );
 	}

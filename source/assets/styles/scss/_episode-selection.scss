@@ -78,6 +78,18 @@
 			}
 		}
 
+		&.loading{
+			width: 100% !important;
+
+			>.prompt{
+				display: none;
+			}
+		}
+
+		&.hidden{
+			width: 0 !important;
+		}
+
 		&:not(.active){
 			.disc{
 				opacity: 0;
@@ -191,7 +203,7 @@
 		left: 50%;
 		@include single-transition(left, .5s, $easeInOutSine);
 
-		&.active{
+		&.hidden{
 
 			.disc{
 				opacity: 0;
@@ -219,7 +231,7 @@
 			}
 		}
 
-		&:not(.active){
+		&:not(.hidden){
 
 			.disc{
 				opacity: 1;
@@ -236,9 +248,9 @@
 
 				.inner{
 					@include transition-delay(.35s);
-					/*
-					.content{
-						>.location{
+					
+					.question{
+						>.fengshui-logo{
 							@include animation( fade-in-up .75s $easeOutCubic both );
 							@include animation-delay(.45s);
 						}
@@ -248,26 +260,22 @@
 							@include animation-delay(.55s);
 						}
 
-						>p{
+						>h2{
 							@include animation( fade-in-up .55s $easeOutCubic both );
 							@include animation-delay(.65s);
 						}
 
-						>.primary-button{
+						>.arrows{
 							@include animation( fade-in-up .45s $easeOutCubic both );
 							@include animation-delay(.75s);
 						}
 					}
-					*/
+
 				}
 			}
 
 			.question{
 				display: block;
-			}
-
-			.arrows{
-				display: none;
 			}
 		}
 
@@ -333,19 +341,17 @@
 							margin-right: 20px;
 							@extend .icon;
 							@extend .icon-prev;
+							@include animation(bouncing-left 2s infinite);
 						}
 
 						&.right{
 							margin-left: 20px;
 							@extend .icon;
 							@extend .icon-next;
+							@include animation(bouncing-right 2s infinite);
 						}
 					}
 				}
-			}
-
-			.arrows{
-
 			}
 		}
 
