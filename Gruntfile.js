@@ -112,9 +112,13 @@ module.exports = function(grunt) {
           pages: grunt.file.readJSON('source/assets/html/share/template/data.json')
         },
         files: {
-          'test/actual/pages_array/': ['test/fixtures/pages/blog/index.hbs']
+          'source/assets/html/share/': []
         }
       }
+    },
+
+    clean: {
+      share: ["source/assets/html/share/*.html"]
     },
 
     copy: {
@@ -264,6 +268,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-open');
   grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-webfont');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('assemble');
 
   // Default task.
