@@ -70,8 +70,8 @@ feng.controllers.controls.Controls.prototype.getPosition = function () {
 
 feng.controllers.controls.Controls.prototype.getRotation = function () {
 
-	this._rotation.x = this._pitchObject.rotation.x;
-	this._rotation.y = this._yawObject.rotation.y;
+	this._rotation.x = this.getPitch();
+	this._rotation.y = this.getYaw();
 	return this._rotation;
 };
 

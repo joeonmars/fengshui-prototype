@@ -111,8 +111,6 @@ feng.views.View3DHud.prototype.setView3D = function( view3d ) {
   this.objectSelector.setView3D( view3d );
   this.dropButton.setView3D( view3d );
   this.tooltips.setView3D( view3d );
-
-  this._view3d.modeController.listen(feng.events.EventType.UPDATE, this.onUpdateView3D, false, this);
 };
 
 
@@ -135,10 +133,6 @@ feng.views.View3DHud.prototype.pause = function( shouldPause ) {
 
 feng.views.View3DHud.prototype.activate = function() {
 
-  if(this._view3d) {
-    this._view3d.modeController.listen(feng.events.EventType.UPDATE, this.onUpdateView3D, false, this);
-  }
-
   this._view3dController.listen(feng.events.EventType.SHOW, this.onShowView3D, false, this);
   this._view3dController.listen(feng.events.EventType.ANIMATED_IN, this.onAnimatedInView3D, false, this);
 
@@ -159,10 +153,6 @@ feng.views.View3DHud.prototype.activate = function() {
 
 
 feng.views.View3DHud.prototype.deactivate = function() {
-
-  if(this._view3d) {
-    this._view3d.modeController.unlisten(feng.events.EventType.UPDATE, this.onUpdateView3D, false, this);
-  }
 
   this._view3dController.removeAllListeners();
   feng.tutorial.removeAllListeners();
@@ -231,10 +221,4 @@ feng.views.View3DHud.prototype.onAnimatedInView3D = function( e ) {
  
   this.openingOverlay.updateContent( sectionId, viewId );
   this.openingOverlay.animateIn();
-};
-
-
-feng.views.View3DHud.prototype.onUpdateView3D = function( e ) {
-
-  this.compass.setRotation( e.rotationY );
 };

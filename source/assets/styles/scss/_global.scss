@@ -97,9 +97,17 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   height: $size;
   background-color: rgba(255, 255, 255, .25);
   @include border-radius(50%);
-  @include single-transition(opacity, .25s, ease-out);
 
-  &:hover{
+  &:not(.disabled){
+    &:hover{
+      >.outline{
+        @include scale(1);
+        opacity: 1;
+      }
+    }
+  }
+
+  &.pending{
     >.outline{
       @include scale(1);
       opacity: 1;
@@ -107,11 +115,7 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   }
 
   &.disabled{
-    opacity: .5;
 
-    >.outline{
-      opacity: 0;
-    }
   }
 
   >.outline{

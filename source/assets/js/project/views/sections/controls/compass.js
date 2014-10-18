@@ -25,11 +25,6 @@ feng.views.sections.controls.Compass = function(domElement){
   var img = feng.models.Preload.getInstance().getAsset('global.cube-design');
   this._designSprite = new feng.fx.AnimatedSprite(designEl, img, 12, 9, 100);
 
-  this._hitTestCanvas = goog.dom.createDom('canvas');
-  this._hitTestCanvas.width = this._browseSprite.size.width;
-  this._hitTestCanvas.height = this._browseSprite.size.height;
-  this._hitTestCanvasContext = this._hitTestCanvas.getContext('2d');
-
   this._dragger = new goog.fx.Dragger(this.domElement);
   this._dragger.setHysteresis( 2 );
   this._dragger.defaultAction = goog.bind(this.onDrag, this);
@@ -38,6 +33,7 @@ feng.views.sections.controls.Compass = function(domElement){
   this._hoveredBrowse = false;
 
   this._rotation = 0;
+  this._startRotation = 0;
 
   this._isInDesignMode = false;
 };
@@ -50,14 +46,13 @@ feng.views.sections.controls.Compass.prototype.activate = function(){
 
   if(!shouldActivate) return;
 
-	this._eventHandler.listen(this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
+  this._eventHandler.listen(this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
   this._eventHandler.listen(this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
   this._eventHandler.listen(this._cubeEl, 'mousemove', this.onMouseMove, false, this);
+  this._eventHandler.listen(this._cubeEl, 'mouseout', this.onMouseOut, false, this);
   this._eventHandler.listen(this._cubeEl, 'click', this.onClick, false, this);
 
   this._dragger.setEnabled( true );
-
-  this.updateHitTestCanvas();
 };
 
 
@@ -71,59 +66,44 @@ feng.views.sections.controls.Compass.prototype.deactivate = function(){
 };
 
 
-feng.views.sections.controls.Compass.prototype.calculateFractionOfPI = function(){
+feng.views.sections.controls.Compass.prototype.setView3D = function( view3d ){
+
+  goog.base(this, 'setView3D', view3d);
+
+  if(this._view3d) {
+    this._view3d.modeController.unlisten( feng.events.EventType.UPDATE, this.onView3dUpdate, false, this );
+  }
+
+  this._view3d.modeController.listen( feng.events.EventType.UPDATE, this.onView3dUpdate, false, this );
+};
+
+
+feng.views.sections.controls.Compass.prototype.calculateDraggedRotation = function(){
 
 	var deltaX = this._dragger.clientX - this._dragger.startX;
-	var distancePI = 160;
-	var fractionPI = deltaX / distancePI;
+	var distancePI2 = 200;
+	var fractionPI2 = deltaX / distancePI2;
 
-	fractionPI += (this._rotation / Math.PI);
-
-	return fractionPI;
+	var rotation = fractionPI2 * (2 * Math.PI);
+	return rotation;
 };
 
 
-feng.views.sections.controls.Compass.prototype.calculateRotation = function(fractionOfPI){
-
-	var fractionOfPI = goog.isNumber(fractionOfPI) ? fractionOfPI : this.calculateFractionOfPI();
-	return fractionOfPI * Math.PI;
-};
-
-
-feng.views.sections.controls.Compass.prototype.setProgress = function(fractionOfPI){
-
-	var fractionPI = goog.isNumber(fractionOfPI) ? fractionOfPI : this.calculateFractionOfPI();
-
-	var progress = fractionPI % 1;
-	progress = progress < 0 ? (progress + 1) : progress;
-	progress = 1 - progress;
+feng.views.sections.controls.Compass.prototype.setProgress = function(progress){
 
 	this._browseSprite.setProgress( progress );
 	this._designSprite.setProgress( progress );
-
-	this.updateHitTestCanvas();
 };
 
 
 feng.views.sections.controls.Compass.prototype.setRotation = function(rotation){
 
-	if(this._dragger.isDragging()) return;
+	this._rotation = goog.math.modulo( rotation, 2 * Math.PI );
 
-	this._rotation = rotation;
-	this.setProgress( this._rotation / Math.PI );
-};
+	var progress = this._rotation / (2 * Math.PI);
+	this.setProgress( progress );
 
-
-feng.views.sections.controls.Compass.prototype.updateHitTestCanvas = function(){
-
-	var framePosition = this._browseSprite.getFramePosition();
-	var x = framePosition.x;
-	var y = framePosition.y;
-	var w = this._browseSprite.size.width;
-	var h = this._browseSprite.size.height;
-
-	this._hitTestCanvasContext.clearRect( 0, 0, w, h );
-	this._hitTestCanvasContext.drawImage( this._browseSprite.image, x, y, w, h, 0, 0, w, h );
+	return this._rotation;
 };
 
 
@@ -134,27 +114,28 @@ feng.views.sections.controls.Compass.prototype.onDragStart = function(e){
 	goog.dom.classes.remove(this.domElement, 'hover-design');
 	this._hoveredDesign = false;
 	this._hoveredBrowse = false;
+
+	this._startRotation = this._rotation;
 };
 
 
 feng.views.sections.controls.Compass.prototype.onDragEnd = function(e){
 
 	goog.dom.classes.remove(this._mainEl, 'grabbing');
-
-	this._rotation = this.calculateRotation();
 };
 
 
 feng.views.sections.controls.Compass.prototype.onDrag = function(x, y){
 
-	var fractionPI = this.calculateFractionOfPI();
-	var rotation = this.calculateRotation( fractionPI );
+	var draggedRotation = this.calculateDraggedRotation();
 
-	this.setProgress( fractionPI );
+	var rotation = draggedRotation + this._startRotation;
+
+	var standardRotation = this.setRotation( rotation );
 
 	this.dispatchEvent({
 		type: feng.events.EventType.UPDATE,
-		rotation: rotation
+		rotation: standardRotation
 	});
 };
 
@@ -163,35 +144,33 @@ feng.views.sections.controls.Compass.prototype.onMouseMove = function(e){
 
 	if(this._dragger.isDragging()) return false;
 
-	var pixel = this._hitTestCanvasContext.getImageData( e.offsetX, e.offsetY, 1, 1 ).data;
-	var r = pixel[0], g = pixel[1], b = pixel[2], a = pixel[3];
+	if(e.offsetY > 40) {
 
-	if(a === 0) {
-
-		// transparent (default)
-		goog.dom.classes.remove(this.domElement, 'hover-browse');
-		goog.dom.classes.remove(this.domElement, 'hover-design');
-		this._hoveredDesign = false;
-		this._hoveredBrowse = false;
-
-	}else if(r < 200) {
-
-		// gray (ignore)
-
-	}else if(r === 255 && b === 255 && b === 255) {
-
-		// white (design mode)
-		goog.dom.classes.addRemove(this.domElement, 'hover-browse', 'hover-design');
-		this._hoveredDesign = true;
-		this._hoveredBrowse = false;
-
-	}else {
-
-		// yellow (browse mode)
+		// browse mode
 		goog.dom.classes.addRemove(this.domElement, 'hover-design', 'hover-browse');
 		this._hoveredDesign = false;
 		this._hoveredBrowse = true;
+
+	}else {
+
+		// design mode
+		goog.dom.classes.addRemove(this.domElement, 'hover-browse', 'hover-design');
+		this._hoveredDesign = true;
+		this._hoveredBrowse = false;
 	}
+};
+
+
+feng.views.sections.controls.Compass.prototype.onMouseOut = function(e){
+
+	if(e.relatedTarget && goog.dom.contains(e.currentTarget, e.relatedTarget)) {
+		return false;
+	}
+
+	goog.dom.classes.remove(this.domElement, 'hover-browse');
+	goog.dom.classes.remove(this.domElement, 'hover-design');
+	this._hoveredDesign = false;
+	this._hoveredBrowse = false;
 };
 
 
@@ -231,6 +210,12 @@ feng.views.sections.controls.Compass.prototype.onResize = function(e){
 
 	var viewportSize = goog.dom.getViewportSize();
 	goog.style.setPosition(this.domElement, viewportSize.width - 100 - 30, 30);
+};
+
+
+feng.views.sections.controls.Compass.prototype.onView3dUpdate = function(e){
+
+	this.setRotation( e.rotationY );
 };
 
 

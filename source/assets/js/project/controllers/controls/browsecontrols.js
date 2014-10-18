@@ -169,7 +169,7 @@ feng.controllers.controls.BrowseControls.prototype.update = function () {
 			this.setFov( defaultFov );
 		}
 	}
-
+	
 	//
 	this.dispatchEvent({
 		type: feng.events.EventType.UPDATE,

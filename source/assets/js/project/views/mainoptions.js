@@ -4,6 +4,7 @@ goog.require('goog.dom');
 goog.require('goog.dom.classes');
 goog.require('goog.dom.query');
 goog.require('goog.events');
+goog.require('feng.utils.Utils');
 
 
 /**
@@ -51,7 +52,7 @@ feng.views.MainOptions.prototype.onClick = function(e){
 		case this._facebookButton:
 		case this._twitterButton:
 		case this._googleButton:
-
+    feng.utils.Utils.popUp( e.currentTarget.href );
 		break;
 	}
 };

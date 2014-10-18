@@ -159,10 +159,14 @@ feng.controllers.controls.DesignControls.prototype.update = function () {
 
 	goog.base(this, 'update');
 
+	var position = this.getPosition();
+	var rotationY = goog.math.angle(position.x, position.z, this._focus.x, this._focus.z) + 90;
+	rotationY = goog.math.modulo( goog.math.toRadians(rotationY), 2 * Math.PI );
+
 	//
 	this.dispatchEvent({
 		type: feng.events.EventType.UPDATE,
-		rotationY: -this.getYaw()
+		rotationY: rotationY
 	});
 };
 
@@ -217,8 +221,8 @@ feng.controllers.controls.DesignControls.prototype.onUpdateHud = function(e){
 
 	if(e.target instanceof feng.views.sections.controls.Compass) {
 
-		var posX = (this._distance + this._focus.x) * Math.sin( -e.rotation );
-		var posZ = (this._distance + this._focus.z) * Math.cos( -e.rotation );
+		var posX = this._distance * Math.sin( -e.rotation ) + this._focus.x;
+		var posZ = this._distance * Math.cos( -e.rotation ) + this._focus.z;
 		var posY = this._distance;
 
 		this.setPosition( posX, posY, posZ );

@@ -66,7 +66,7 @@ goog.addDependency('../../../../project/views/debug/pathtrack.js', ['feng.views.
 goog.addDependency('../../../../project/views/episodeselection.js', ['feng.views.EpisodeSelection'], ['goog.dom', 'goog.dom.classes', 'goog.dom.query', 'goog.testing.events']);
 goog.addDependency('../../../../project/views/episodeselectionoverlay.js', ['feng.views.EpisodeSelectionOverlay'], ['feng.events', 'feng.views.Overlay', 'goog.dom', 'goog.math.Box', 'goog.style']);
 goog.addDependency('../../../../project/views/logo.js', ['feng.views.Logo'], ['goog.dom', 'goog.dom.classes', 'goog.dom.query', 'goog.math.Size', 'goog.style']);
-goog.addDependency('../../../../project/views/mainoptions.js', ['feng.views.MainOptions'], ['goog.dom', 'goog.dom.classes', 'goog.dom.query', 'goog.events']);
+goog.addDependency('../../../../project/views/mainoptions.js', ['feng.views.MainOptions'], ['feng.utils.Utils', 'goog.dom', 'goog.dom.classes', 'goog.dom.query', 'goog.events']);
 goog.addDependency('../../../../project/views/popups/popup.js', ['feng.views.popups.Popup'], ['goog.async.Delay', 'goog.dom', 'goog.events.EventHandler', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/views/popups/tutorial.js', ['feng.views.popups.Tutorial'], ['feng.templates.common', 'feng.views.popups.Popup']);
 goog.addDependency('../../../../project/views/preloader.js', ['feng.views.Preloader'], ['feng.events', 'feng.models.Preload', 'goog.events.EventTarget']);

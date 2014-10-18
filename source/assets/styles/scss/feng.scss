@@ -29,13 +29,12 @@ body{
 			position: relative;
 			width: 36px;
 			height: 36px;
-			background-color: rgba(255, 255, 255, .9);
+			background-color: #fff;
 			text-align: center;
 			font-size: 13px;
 			color: $darkgray-ui;
 			@include border-radius(50%);
-			@include transition(opacity .25s, background-color .25s, color .2s);
-			opacity: .67;
+			@include transition(background-color .25s, color .2s);
 			-webkit-font-smoothing: antialiased;
 
 			&:hover{
@@ -65,7 +64,6 @@ body{
 			&:hover{
 
 				>button{
-					opacity: 1;
 					background-color: $darkgray-ui;
 					color: #fff;
 				}
@@ -75,7 +73,7 @@ body{
 
 					>.buttons{
 						opacity: 1;
-						width: 85px;
+						width: 120px;
 					}
 				}
 			}
@@ -90,7 +88,8 @@ body{
 		>.slider{
 			position: absolute;
 			top: 0;
-			left: 13px;
+			left: 18px;
+			height: 36px;
 			white-space: nowrap;
 			opacity: 0;
 			@include single-transition(opacity, .2s);
@@ -99,30 +98,34 @@ body{
 				content: '';
 				display: inline-block;
 				vertical-align: top;
-				@include retina-ui("social-slider-end");
+				width: 18px;
+				height: 100%;
+				background-color: #fff;
+				@include border-radius(0 36px 36px 0);
 			}
 
 			>.buttons{
 				display: inline-block;
 				vertical-align: top;
+				height: 100%;
+				background-color: #fff;
 				overflow: hidden;
-				@include retina-ui("social-slider-fill");
 				@include single-transition(width, .2s);
 				width: 0;
 
 				>a{
 					display: inline-block;
 					vertical-align: middle;
-					width: 16px;
+					width: 20px;
 					text-align: center;
-					font-size: 15px;
+					font-size: 18px;
 					line-height: 36px !important;
 					margin: 0 5px;
 					color: $darkgray-ui;
 					@include single-transition(opacity, .25s);
 
 					&:first-child{
-						margin-left: 15px;
+						margin-left: 24px;
 					}
 
 					&:hover{
