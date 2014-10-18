@@ -1,55 +1,55 @@
 {
 	"frame": {
 	  "data": {
-	    "description": "This is the tip descriptio of Feng Shui tip - Frame.",
+	    "description": "This is the tip description of Feng Shui tip - Frame.",
 	    "image": "1.jpg"
 	  }
 	},
 	"chair": {
 	  "data": {
-	    "description": "This is the tip descriptio of Feng Shui tip - Chair.",
+	    "description": "This is the tip description of Feng Shui tip - Chair.",
 	    "image": "2.jpg"
 	  }
 	},
 	"lamp": {
 	  "data": {
-	    "description": "This is the tip descriptio of Feng Shui tip - Lamp.",
+	    "description": "This is the tip description of Feng Shui tip - Lamp.",
 	    "image": "3.jpg"
 	  }
 	},
 	"crystal": {
 	  "data": {
-	    "description": "This is the tip descriptio of Feng Shui tip - Crystal.",
-	    "image": "4.jpg"
+	    "description": "This is the tip description of Feng Shui tip - Crystal.",
+	    "image": "crystal.png"
 	  }
 	},
 	"clock": {
 	  "data": {
-	    "description": "This is the tip descriptio of Feng Shui tip - Clock.",
-	    "image": "5.jpg"
+	    "description": "This is the tip description of Feng Shui tip - Clock.",
+	    "image": "clock.png"
 	  }
 	},
 	"windows": {
 	  "data": {
-	    "description": "This is the tip descriptio of Feng Shui tip - Windows.",
+	    "description": "This is the tip description of Feng Shui tip - Windows.",
 	    "image": "6.jpg"
 	  }
 	},
 	"cactus": {
 	  "data": {
-	    "description": "This is the tip descriptio of Feng Shui tip - Cactus.",
+	    "description": "This is the tip description of Feng Shui tip - Cactus.",
 	    "image": "7.jpg"
 	  }
 	},
 	"sewingmachine": {
 	  "data": {
-	    "description": "This is the tip descriptio of Feng Shui tip - Sewing Machine.",
+	    "description": "This is the tip description of Feng Shui tip - Sewing Machine.",
 	    "image": "8.jpg"
 	  }
 	},
 	"fruitplate": {
 	  "data": {
-	    "description": "This is the tip descriptio of Feng Shui tip - Fruit Plate.",
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
 	    "image": "9.jpg"
 	  }
 	}

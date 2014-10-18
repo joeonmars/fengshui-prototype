@@ -118,7 +118,8 @@ module.exports = function(grunt) {
     },
 
     clean: {
-      share: ["source/assets/html/share/*.html"]
+      share: ["source/assets/html/share/*.html"],
+      release: ["<%= releaseDir %>/**/*", "!<%= releaseDir %>/deleteme"]
     },
 
     copy: {
@@ -127,6 +128,7 @@ module.exports = function(grunt) {
           // includes files within path
           {expand: true, cwd: 'source/', src: [
             '**',
+            '!assets/html/share/template/**',
             '!assets/js/project/**',
             '!assets/js/output/feng-build.js',
             '!assets/js/output/feng-deps.js',
@@ -254,6 +256,22 @@ module.exports = function(grunt) {
         src: '<%= outputJsDir %>/feng-build.js',
         dest: '<%= outputJsDir %>/feng-compiled.js'
       }
+    },
+
+    prettify: {
+      options: {
+        indent: 2,
+        indent_char: ' ',
+        wrap_line_length: 78,
+        brace_style: 'expand'
+      },
+      share: {
+        expand: true,
+        cwd: 'source/assets/html/share/',
+        ext: '.html',
+        src: ['*.html'],
+        dest: 'source/assets/html/share/'
+      }
     }
 
   });
@@ -265,15 +283,50 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-open');
   grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-webfont');
-  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-prettify');
   grunt.loadNpmTasks('assemble');
 
   // Default task.
-  grunt.registerTask('default', ['bower', 'compass', 'webfont', 'closureSoys', 'closureDepsWriter', 'open:dev', 'watch']);
-  grunt.registerTask('dev', ['compass', 'webfont', 'closureSoys', 'closureDepsWriter', 'open:dev', 'watch']);
-  grunt.registerTask('build', ['compass', 'webfont', 'closureSoys', 'closureBuilder', 'closureCompiler', 'concat']);
-  grunt.registerTask('release', ['compass', 'webfont', 'closureSoys', 'closureBuilder', 'closureCompiler', 'concat', 'copy', 'open:release']);
+  grunt.registerTask('default', [
+    'bower',
+    'compass',
+    'webfont',
+    'closureSoys',
+    'closureDepsWriter',
+    'open:dev',
+    'watch']);
+
+  grunt.registerTask('dev', [
+    'compass',
+    'webfont',
+    'closureSoys',
+    'closureDepsWriter',
+    'open:dev',
+    'watch']);
+
+  grunt.registerTask('build', [
+    'compass',
+    'webfont',
+    'closureSoys',
+    'closureBuilder',
+    'closureCompiler',
+    'concat']);
+
+  grunt.registerTask('release', [
+    'compass',
+    'webfont',
+    'clean:share',
+    'assemble:share',
+    'prettify:share',
+    'closureSoys',
+    'closureBuilder',
+    'closureCompiler',
+    'concat',
+    'clean:release',
+    'copy',
+    'open:release']);
 };

@@ -10,30 +10,21 @@
         <meta name="keywords" content="feng shui, feng shui tips, feng shui bedroom, feng shui colors, feng shui home, feng shui home decorating, feng shui house, feng shui theory, feng shui for health, feng shui for prosperity, feng shui for romance, feng shui office, feng shui decorating, feng shui guide by room, children feng shui, interior design with feng shui">
         <meta name="description" content="{{ ../data.description }}">
 
-        <meta content="http://fengshuirealtime.com/" property="og:url">
+        <meta content="http://fengshuirealtime.com/assets/html/share/{{ filename }}" property="og:url">
         <meta content="FengShui RealTime" property="og:title">
-        <meta content="Now discover tips and advices to give your home goog Feng Shui." property="og:description">
-        <meta content="{{assets}}images/misc/facebook.jpg" property="og:image">
+        <meta content="“{{ ../data.description }}” To discover more Feng Shui tips, visit fengshuirealtime.com" property="og:description">
+        <meta content="game" property="og:type">
+        <meta content="http://fengshuirealtime.com/assets/images/share/{{ ../data.image }}" property="og:image">
 
-        <link rel="shortcut icon" href="{{assets}}images/misc/favicon.ico">
-
-        <meta http-equiv="refresh" content="0;URL=http://fengshuirealtime.com/">
+        <link rel="shortcut icon" href="http://fengshuirealtime.com/assets/images/misc/favicon.ico">
     </head>
-    <body>
 
+    <body>
+        <script>
+            window.location = "http://fengshuirealtime.com/";
+        </script>
     </body>
 </html>
 
 {{/if_eq}}
 {{/each}}
-
-<!--
-<div class="docs-section">
-  <div class="docs-header" id="content">
-    <h1>{{../data.title}}</h1>
-  </div>
-  {{#each ../data.gists}}
-    {{gist this}}
-  {{/each}}
-</div>
--->

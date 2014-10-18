@@ -7,13 +7,14 @@
 		<title>FengShui RealTime</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1">
-		<meta name="keywords" content="">
-		<meta name="description" content="">
+        <meta name="keywords" content="feng shui, feng shui tips, feng shui bedroom, feng shui colors, feng shui home, feng shui home decorating, feng shui house, feng shui theory, feng shui for health, feng shui for prosperity, feng shui for romance, feng shui office, feng shui decorating, feng shui guide by room, children feng shui, interior design with feng shui">
+		<meta name="description" content="Now discover tips and advices to give your home good Feng Shui.">
 
-		<meta content="" property="og:url">
-		<meta content="" property="og:title">
-		<meta content="" property="og:description">
-		<meta content="assets/images/misc/facebook.png" property="og:image">
+		<meta content="http://fengshuirealtime.com/" property="og:url">
+		<meta content="FengShui RealTime" property="og:title">
+		<meta content="Now discover tips and advices to give your home good Feng Shui." property="og:description">
+		<meta content="game" property="og:type">
+		<meta content="http://fengshuirealtime.com/assets/images/misc/facebook.png" property="og:image">
 
 		<script>(function(w){var dpr=((w.devicePixelRatio===undefined)?1:w.devicePixelRatio);if(!!w.navigator.standalone){var r=new XMLHttpRequest();r.open('GET','assets/php/retinaimages.php?devicePixelRatio='+dpr,false);r.send()}else{document.cookie='devicePixelRatio='+dpr+'; path=/'}})(window)</script>
 

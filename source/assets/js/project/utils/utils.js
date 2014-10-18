@@ -1,7 +1,10 @@
 goog.provide('feng.utils.Utils');
 
+goog.require('goog.dom');
+goog.require('goog.string');
 goog.require('goog.style');
 goog.require('goog.Uri');
+goog.require('goog.window');
 
 
 /**
@@ -58,4 +61,44 @@ feng.utils.Utils.centerAlign = function(alignEl, relativeElOrSize) {
   var alignElY = Math.round( (relativeSize.height - alignElSize.height) / 2 );
 
   goog.style.setPosition( alignEl, alignElX, alignElY );
+};
+
+
+feng.utils.Utils.popUp = function(url) {
+
+  var width, height;
+
+  var isFacebook = goog.string.contains( url, 'facebook' );
+  var isTwitter = goog.string.contains( url, 'twitter' );
+  var isGoogle = goog.string.contains( url, 'google' );
+
+  if(isFacebook) {
+
+    width = 640;
+    height = 275;
+
+  }else if(isTwitter) {
+
+    width = 575;
+    height = 275;
+
+  }else if(isGoogle) {
+
+    width = 640;
+    height = 470;
+  }
+
+  var viewportSize = goog.dom.getViewportSize();
+
+  goog.window.open(url, {
+    'width': width,
+    'height': height,
+    'left': (window.screenLeft || window.screenX) + (viewportSize.width - width)/2,
+    'top': (window.screenTop || window.screenY) + (viewportSize.height - height)/2,
+    'toolbar': false,
+    'scrollbars': true,
+    'statusbar': false,
+    'menubar': false,
+    'resizable': true
+  });
 };

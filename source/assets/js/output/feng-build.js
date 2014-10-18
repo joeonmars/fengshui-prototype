@@ -20082,15 +20082,15 @@ feng.templates.debug.PathfindingDebugView = function(opt_data, opt_ignored) {
  */
 feng.templates.debug.AchievementsDebugView = function(opt_data, opt_ignored) {
   var output = '\t';
-  var param306 = '<div class="tipsPanel"><ul class="tips">';
-  var tipList308 = opt_data.tips;
-  var tipListLen308 = tipList308.length;
-  for (var tipIndex308 = 0; tipIndex308 < tipListLen308; tipIndex308++) {
-    var tipData308 = tipList308[tipIndex308];
-    param306 += '<li data-tip-id="' + tipData308.id + '" data-view-id="' + tipData308.view + '" data-section-id="' + tipData308.section + '"><div class="icon"></div><div class="caption"><p>' + tipData308.id + '</p><p>' + tipData308.view + '</p><p>' + tipData308.section + '</p></div></li>';
+  var param308 = '<div class="tipsPanel"><ul class="tips">';
+  var tipList310 = opt_data.tips;
+  var tipListLen310 = tipList310.length;
+  for (var tipIndex310 = 0; tipIndex310 < tipListLen310; tipIndex310++) {
+    var tipData310 = tipList310[tipIndex310];
+    param308 += '<li data-tip-id="' + tipData310.id + '" data-view-id="' + tipData310.view + '" data-section-id="' + tipData310.section + '"><div class="icon"></div><div class="caption"><p>' + tipData310.id + '</p><p>' + tipData310.view + '</p><p>' + tipData310.section + '</p></div></li>';
   }
-  param306 += '</ul></div>';
-  output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param306});
+  param308 += '</ul></div>';
+  output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param308});
   return output;
 };
 
@@ -23783,1175 +23783,7 @@ goog.events.EventHandler.prototype.disposeInternal = function() {
 goog.events.EventHandler.prototype.handleEvent = function(e) {
   throw Error('EventHandler.handleEvent not implemented');
 };
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview A utility class for representing a numeric box.
- */
-
-
-goog.provide('goog.math.Box');
-
-goog.require('goog.math.Coordinate');
-
-
-
-/**
- * Class for representing a box. A box is specified as a top, right, bottom,
- * and left. A box is useful for representing margins and padding.
- *
- * @param {number} top Top.
- * @param {number} right Right.
- * @param {number} bottom Bottom.
- * @param {number} left Left.
- * @constructor
- */
-goog.math.Box = function(top, right, bottom, left) {
-  /**
-   * Top
-   * @type {number}
-   */
-  this.top = top;
-
-  /**
-   * Right
-   * @type {number}
-   */
-  this.right = right;
-
-  /**
-   * Bottom
-   * @type {number}
-   */
-  this.bottom = bottom;
-
-  /**
-   * Left
-   * @type {number}
-   */
-  this.left = left;
-};
-
-
-/**
- * Creates a Box by bounding a collection of goog.math.Coordinate objects
- * @param {...goog.math.Coordinate} var_args Coordinates to be included inside
- *     the box.
- * @return {!goog.math.Box} A Box containing all the specified Coordinates.
- */
-goog.math.Box.boundingBox = function(var_args) {
-  var box = new goog.math.Box(arguments[0].y, arguments[0].x,
-                              arguments[0].y, arguments[0].x);
-  for (var i = 1; i < arguments.length; i++) {
-    var coord = arguments[i];
-    box.top = Math.min(box.top, coord.y);
-    box.right = Math.max(box.right, coord.x);
-    box.bottom = Math.max(box.bottom, coord.y);
-    box.left = Math.min(box.left, coord.x);
-  }
-  return box;
-};
-
-
-/**
- * Creates a copy of the box with the same dimensions.
- * @return {!goog.math.Box} A clone of this Box.
- */
-goog.math.Box.prototype.clone = function() {
-  return new goog.math.Box(this.top, this.right, this.bottom, this.left);
-};
-
-
-if (goog.DEBUG) {
-  /**
-   * Returns a nice string representing the box.
-   * @return {string} In the form (50t, 73r, 24b, 13l).
-   * @override
-   */
-  goog.math.Box.prototype.toString = function() {
-    return '(' + this.top + 't, ' + this.right + 'r, ' + this.bottom + 'b, ' +
-           this.left + 'l)';
-  };
-}
-
-
-/**
- * Returns whether the box contains a coordinate or another box.
- *
- * @param {goog.math.Coordinate|goog.math.Box} other A Coordinate or a Box.
- * @return {boolean} Whether the box contains the coordinate or other box.
- */
-goog.math.Box.prototype.contains = function(other) {
-  return goog.math.Box.contains(this, other);
-};
-
-
-/**
- * Expands box with the given margins.
- *
- * @param {number|goog.math.Box} top Top margin or box with all margins.
- * @param {number=} opt_right Right margin.
- * @param {number=} opt_bottom Bottom margin.
- * @param {number=} opt_left Left margin.
- * @return {!goog.math.Box} A reference to this Box.
- */
-goog.math.Box.prototype.expand = function(top, opt_right, opt_bottom,
-    opt_left) {
-  if (goog.isObject(top)) {
-    this.top -= top.top;
-    this.right += top.right;
-    this.bottom += top.bottom;
-    this.left -= top.left;
-  } else {
-    this.top -= top;
-    this.right += opt_right;
-    this.bottom += opt_bottom;
-    this.left -= opt_left;
-  }
-
-  return this;
-};
-
-
-/**
- * Expand this box to include another box.
- * NOTE(user): This is used in code that needs to be very fast, please don't
- * add functionality to this function at the expense of speed (variable
- * arguments, accepting multiple argument types, etc).
- * @param {goog.math.Box} box The box to include in this one.
- */
-goog.math.Box.prototype.expandToInclude = function(box) {
-  this.left = Math.min(this.left, box.left);
-  this.top = Math.min(this.top, box.top);
-  this.right = Math.max(this.right, box.right);
-  this.bottom = Math.max(this.bottom, box.bottom);
-};
-
-
-/**
- * Compares boxes for equality.
- * @param {goog.math.Box} a A Box.
- * @param {goog.math.Box} b A Box.
- * @return {boolean} True iff the boxes are equal, or if both are null.
- */
-goog.math.Box.equals = function(a, b) {
-  if (a == b) {
-    return true;
-  }
-  if (!a || !b) {
-    return false;
-  }
-  return a.top == b.top && a.right == b.right &&
-         a.bottom == b.bottom && a.left == b.left;
-};
-
-
-/**
- * Returns whether a box contains a coordinate or another box.
- *
- * @param {goog.math.Box} box A Box.
- * @param {goog.math.Coordinate|goog.math.Box} other A Coordinate or a Box.
- * @return {boolean} Whether the box contains the coordinate or other box.
- */
-goog.math.Box.contains = function(box, other) {
-  if (!box || !other) {
-    return false;
-  }
-
-  if (other instanceof goog.math.Box) {
-    return other.left >= box.left && other.right <= box.right &&
-        other.top >= box.top && other.bottom <= box.bottom;
-  }
-
-  // other is a Coordinate.
-  return other.x >= box.left && other.x <= box.right &&
-         other.y >= box.top && other.y <= box.bottom;
-};
-
-
-/**
- * Returns the relative x position of a coordinate compared to a box.  Returns
- * zero if the coordinate is inside the box.
- *
- * @param {goog.math.Box} box A Box.
- * @param {goog.math.Coordinate} coord A Coordinate.
- * @return {number} The x position of {@code coord} relative to the nearest
- *     side of {@code box}, or zero if {@code coord} is inside {@code box}.
- */
-goog.math.Box.relativePositionX = function(box, coord) {
-  if (coord.x < box.left) {
-    return coord.x - box.left;
-  } else if (coord.x > box.right) {
-    return coord.x - box.right;
-  }
-  return 0;
-};
-
-
-/**
- * Returns the relative y position of a coordinate compared to a box.  Returns
- * zero if the coordinate is inside the box.
- *
- * @param {goog.math.Box} box A Box.
- * @param {goog.math.Coordinate} coord A Coordinate.
- * @return {number} The y position of {@code coord} relative to the nearest
- *     side of {@code box}, or zero if {@code coord} is inside {@code box}.
- */
-goog.math.Box.relativePositionY = function(box, coord) {
-  if (coord.y < box.top) {
-    return coord.y - box.top;
-  } else if (coord.y > box.bottom) {
-    return coord.y - box.bottom;
-  }
-  return 0;
-};
-
-
-/**
- * Returns the distance between a coordinate and the nearest corner/side of a
- * box. Returns zero if the coordinate is inside the box.
- *
- * @param {goog.math.Box} box A Box.
- * @param {goog.math.Coordinate} coord A Coordinate.
- * @return {number} The distance between {@code coord} and the nearest
- *     corner/side of {@code box}, or zero if {@code coord} is inside
- *     {@code box}.
- */
-goog.math.Box.distance = function(box, coord) {
-  var x = goog.math.Box.relativePositionX(box, coord);
-  var y = goog.math.Box.relativePositionY(box, coord);
-  return Math.sqrt(x * x + y * y);
-};
-
-
-/**
- * Returns whether two boxes intersect.
- *
- * @param {goog.math.Box} a A Box.
- * @param {goog.math.Box} b A second Box.
- * @return {boolean} Whether the boxes intersect.
- */
-goog.math.Box.intersects = function(a, b) {
-  return (a.left <= b.right && b.left <= a.right &&
-          a.top <= b.bottom && b.top <= a.bottom);
-};
-
-
-/**
- * Returns whether two boxes would intersect with additional padding.
- *
- * @param {goog.math.Box} a A Box.
- * @param {goog.math.Box} b A second Box.
- * @param {number} padding The additional padding.
- * @return {boolean} Whether the boxes intersect.
- */
-goog.math.Box.intersectsWithPadding = function(a, b, padding) {
-  return (a.left <= b.right + padding && b.left <= a.right + padding &&
-          a.top <= b.bottom + padding && b.top <= a.bottom + padding);
-};
-
-
-/**
- * Rounds the fields to the next larger integer values.
- *
- * @return {!goog.math.Box} This box with ceil'd fields.
- */
-goog.math.Box.prototype.ceil = function() {
-  this.top = Math.ceil(this.top);
-  this.right = Math.ceil(this.right);
-  this.bottom = Math.ceil(this.bottom);
-  this.left = Math.ceil(this.left);
-  return this;
-};
-
-
-/**
- * Rounds the fields to the next smaller integer values.
- *
- * @return {!goog.math.Box} This box with floored fields.
- */
-goog.math.Box.prototype.floor = function() {
-  this.top = Math.floor(this.top);
-  this.right = Math.floor(this.right);
-  this.bottom = Math.floor(this.bottom);
-  this.left = Math.floor(this.left);
-  return this;
-};
-
-
-/**
- * Rounds the fields to nearest integer values.
- *
- * @return {!goog.math.Box} This box with rounded fields.
- */
-goog.math.Box.prototype.round = function() {
-  this.top = Math.round(this.top);
-  this.right = Math.round(this.right);
-  this.bottom = Math.round(this.bottom);
-  this.left = Math.round(this.left);
-  return this;
-};
-
-
-/**
- * Translates this box by the given offsets. If a {@code goog.math.Coordinate}
- * is given, then the left and right values are translated by the coordinate's
- * x value and the top and bottom values are translated by the coordinate's y
- * value.  Otherwise, {@code tx} and {@code opt_ty} are used to translate the x
- * and y dimension values.
- *
- * @param {number|goog.math.Coordinate} tx The value to translate the x
- *     dimension values by or the the coordinate to translate this box by.
- * @param {number=} opt_ty The value to translate y dimension values by.
- * @return {!goog.math.Box} This box after translating.
- */
-goog.math.Box.prototype.translate = function(tx, opt_ty) {
-  if (tx instanceof goog.math.Coordinate) {
-    this.left += tx.x;
-    this.right += tx.x;
-    this.top += tx.y;
-    this.bottom += tx.y;
-  } else {
-    this.left += tx;
-    this.right += tx;
-    if (goog.isNumber(opt_ty)) {
-      this.top += opt_ty;
-      this.bottom += opt_ty;
-    }
-  }
-  return this;
-};
-
-
-/**
- * Scales this coordinate by the given scale factors. The x and y dimension
- * values are scaled by {@code sx} and {@code opt_sy} respectively.
- * If {@code opt_sy} is not given, then {@code sx} is used for both x and y.
- *
- * @param {number} sx The scale factor to use for the x dimension.
- * @param {number=} opt_sy The scale factor to use for the y dimension.
- * @return {!goog.math.Box} This box after scaling.
- */
-goog.math.Box.prototype.scale = function(sx, opt_sy) {
-  var sy = goog.isNumber(opt_sy) ? opt_sy : sx;
-  this.left *= sx;
-  this.right *= sx;
-  this.top *= sy;
-  this.bottom *= sy;
-  return this;
-};
-// Copyright 2005 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview A disposable implementation of a custom
- * listenable/event target. See also: documentation for
- * {@code goog.events.Listenable}.
- *
- * @author arv@google.com (Erik Arvidsson) [Original implementation]
- * @author pupius@google.com (Daniel Pupius) [Port to use goog.events]
- * @see ../demos/eventtarget.html
- * @see goog.events.Listenable
- */
-
-goog.provide('goog.events.EventTarget');
-
-goog.require('goog.Disposable');
-goog.require('goog.array');
-goog.require('goog.asserts');
-goog.require('goog.events');
-goog.require('goog.events.Event');
-goog.require('goog.events.Listenable');
-goog.require('goog.events.ListenerMap');
-goog.require('goog.object');
-
-
-
-/**
- * An implementation of {@code goog.events.Listenable} with full W3C
- * EventTarget-like support (capture/bubble mechanism, stopping event
- * propagation, preventing default actions).
- *
- * You may subclass this class to turn your class into a Listenable.
- *
- * Unless propagation is stopped, an event dispatched by an
- * EventTarget will bubble to the parent returned by
- * {@code getParentEventTarget}. To set the parent, call
- * {@code setParentEventTarget}. Subclasses that don't support
- * changing the parent can override the setter to throw an error.
- *
- * Example usage:
- * <pre>
- *   var source = new goog.events.EventTarget();
- *   function handleEvent(e) {
- *     alert('Type: ' + e.type + '; Target: ' + e.target);
- *   }
- *   source.listen('foo', handleEvent);
- *   // Or: goog.events.listen(source, 'foo', handleEvent);
- *   ...
- *   source.dispatchEvent('foo');  // will call handleEvent
- *   ...
- *   source.unlisten('foo', handleEvent);
- *   // Or: goog.events.unlisten(source, 'foo', handleEvent);
- * </pre>
- *
- * @constructor
- * @extends {goog.Disposable}
- * @implements {goog.events.Listenable}
- */
-goog.events.EventTarget = function() {
-  goog.Disposable.call(this);
-
-  /**
-   * Maps of event type to an array of listeners.
-   * @private {!goog.events.ListenerMap}
-   */
-  this.eventTargetListeners_ = new goog.events.ListenerMap(this);
-
-  /**
-   * The object to use for event.target. Useful when mixing in an
-   * EventTarget to another object.
-   * @private {!Object}
-   */
-  this.actualEventTarget_ = this;
-};
-goog.inherits(goog.events.EventTarget, goog.Disposable);
-goog.events.Listenable.addImplementation(goog.events.EventTarget);
-
-
-/**
- * An artificial cap on the number of ancestors you can have. This is mainly
- * for loop detection.
- * @const {number}
- * @private
- */
-goog.events.EventTarget.MAX_ANCESTORS_ = 1000;
-
-
-/**
- * Parent event target, used during event bubbling.
- *
- * TODO(user): Change this to goog.events.Listenable. This
- * currently breaks people who expect getParentEventTarget to return
- * goog.events.EventTarget.
- *
- * @type {goog.events.EventTarget}
- * @private
- */
-goog.events.EventTarget.prototype.parentEventTarget_ = null;
-
-
-/**
- * Returns the parent of this event target to use for bubbling.
- *
- * @return {goog.events.EventTarget} The parent EventTarget or null if
- *     there is no parent.
- * @override
- */
-goog.events.EventTarget.prototype.getParentEventTarget = function() {
-  return this.parentEventTarget_;
-};
-
-
-/**
- * Sets the parent of this event target to use for capture/bubble
- * mechanism.
- * @param {goog.events.EventTarget} parent Parent listenable (null if none).
- */
-goog.events.EventTarget.prototype.setParentEventTarget = function(parent) {
-  this.parentEventTarget_ = parent;
-};
-
-
-/**
- * Adds an event listener to the event target. The same handler can only be
- * added once per the type. Even if you add the same handler multiple times
- * using the same type then it will only be called once when the event is
- * dispatched.
- *
- * @param {string} type The type of the event to listen for.
- * @param {function(?):?|{handleEvent:function(?):?}|null} handler The function
- *     to handle the event. The handler can also be an object that implements
- *     the handleEvent method which takes the event object as argument.
- * @param {boolean=} opt_capture In DOM-compliant browsers, this determines
- *     whether the listener is fired during the capture or bubble phase
- *     of the event.
- * @param {Object=} opt_handlerScope Object in whose scope to call
- *     the listener.
- * @deprecated Use {@code #listen} instead, when possible. Otherwise, use
- *     {@code goog.events.listen} if you are passing Object
- *     (instead of Function) as handler.
- */
-goog.events.EventTarget.prototype.addEventListener = function(
-    type, handler, opt_capture, opt_handlerScope) {
-  goog.events.listen(this, type, handler, opt_capture, opt_handlerScope);
-};
-
-
-/**
- * Removes an event listener from the event target. The handler must be the
- * same object as the one added. If the handler has not been added then
- * nothing is done.
- *
- * @param {string} type The type of the event to listen for.
- * @param {function(?):?|{handleEvent:function(?):?}|null} handler The function
- *     to handle the event. The handler can also be an object that implements
- *     the handleEvent method which takes the event object as argument.
- * @param {boolean=} opt_capture In DOM-compliant browsers, this determines
- *     whether the listener is fired during the capture or bubble phase
- *     of the event.
- * @param {Object=} opt_handlerScope Object in whose scope to call
- *     the listener.
- * @deprecated Use {@code #unlisten} instead, when possible. Otherwise, use
- *     {@code goog.events.unlisten} if you are passing Object
- *     (instead of Function) as handler.
- */
-goog.events.EventTarget.prototype.removeEventListener = function(
-    type, handler, opt_capture, opt_handlerScope) {
-  goog.events.unlisten(this, type, handler, opt_capture, opt_handlerScope);
-};
-
-
-/** @override */
-goog.events.EventTarget.prototype.dispatchEvent = function(e) {
-  this.assertInitialized_();
-
-  var ancestorsTree, ancestor = this.getParentEventTarget();
-  if (ancestor) {
-    ancestorsTree = [];
-    var ancestorCount = 1;
-    for (; ancestor; ancestor = ancestor.getParentEventTarget()) {
-      ancestorsTree.push(ancestor);
-      goog.asserts.assert(
-          (++ancestorCount < goog.events.EventTarget.MAX_ANCESTORS_),
-          'infinite loop');
-    }
-  }
-
-  return goog.events.EventTarget.dispatchEventInternal_(
-      this.actualEventTarget_, e, ancestorsTree);
-};
-
-
-/**
- * Removes listeners from this object.  Classes that extend EventTarget may
- * need to override this method in order to remove references to DOM Elements
- * and additional listeners.
- * @override
- */
-goog.events.EventTarget.prototype.disposeInternal = function() {
-  goog.events.EventTarget.superClass_.disposeInternal.call(this);
-
-  this.removeAllListeners();
-  this.parentEventTarget_ = null;
-};
-
-
-/** @override */
-goog.events.EventTarget.prototype.listen = function(
-    type, listener, opt_useCapture, opt_listenerScope) {
-  this.assertInitialized_();
-  return this.eventTargetListeners_.add(
-      String(type), listener, false /* callOnce */, opt_useCapture,
-      opt_listenerScope);
-};
-
-
-/** @override */
-goog.events.EventTarget.prototype.listenOnce = function(
-    type, listener, opt_useCapture, opt_listenerScope) {
-  return this.eventTargetListeners_.add(
-      String(type), listener, true /* callOnce */, opt_useCapture,
-      opt_listenerScope);
-};
-
-
-/** @override */
-goog.events.EventTarget.prototype.unlisten = function(
-    type, listener, opt_useCapture, opt_listenerScope) {
-  return this.eventTargetListeners_.remove(
-      String(type), listener, opt_useCapture, opt_listenerScope);
-};
-
-
-/** @override */
-goog.events.EventTarget.prototype.unlistenByKey = function(key) {
-  return this.eventTargetListeners_.removeByKey(key);
-};
-
-
-/** @override */
-goog.events.EventTarget.prototype.removeAllListeners = function(opt_type) {
-  // TODO(user): Previously, removeAllListeners can be called on
-  // uninitialized EventTarget, so we preserve that behavior. We
-  // should remove this when usages that rely on that fact are purged.
-  if (!this.eventTargetListeners_) {
-    return 0;
-  }
-  return this.eventTargetListeners_.removeAll(opt_type);
-};
-
-
-/** @override */
-goog.events.EventTarget.prototype.fireListeners = function(
-    type, capture, eventObject) {
-  // TODO(user): Original code avoids array creation when there
-  // is no listener, so we do the same. If this optimization turns
-  // out to be not required, we can replace this with
-  // getListeners(type, capture) instead, which is simpler.
-  var listenerArray = this.eventTargetListeners_.listeners[String(type)];
-  if (!listenerArray) {
-    return true;
-  }
-  listenerArray = goog.array.clone(listenerArray);
-
-  var rv = true;
-  for (var i = 0; i < listenerArray.length; ++i) {
-    var listener = listenerArray[i];
-    // We might not have a listener if the listener was removed.
-    if (listener && !listener.removed && listener.capture == capture) {
-      var listenerFn = listener.listener;
-      var listenerHandler = listener.handler || listener.src;
-
-      if (listener.callOnce) {
-        this.unlistenByKey(listener);
-      }
-      rv = listenerFn.call(listenerHandler, eventObject) !== false && rv;
-    }
-  }
-
-  return rv && eventObject.returnValue_ != false;
-};
-
-
-/** @override */
-goog.events.EventTarget.prototype.getListeners = function(type, capture) {
-  return this.eventTargetListeners_.getListeners(String(type), capture);
-};
-
-
-/** @override */
-goog.events.EventTarget.prototype.getListener = function(
-    type, listener, capture, opt_listenerScope) {
-  return this.eventTargetListeners_.getListener(
-      String(type), listener, capture, opt_listenerScope);
-};
-
-
-/** @override */
-goog.events.EventTarget.prototype.hasListener = function(
-    opt_type, opt_capture) {
-  var id = goog.isDef(opt_type) ? String(opt_type) : undefined;
-  return this.eventTargetListeners_.hasListener(id, opt_capture);
-};
-
-
-/**
- * Sets the target to be used for {@code event.target} when firing
- * event. Mainly used for testing. For example, see
- * {@code goog.testing.events.mixinListenable}.
- * @param {!Object} target The target.
- */
-goog.events.EventTarget.prototype.setTargetForTesting = function(target) {
-  this.actualEventTarget_ = target;
-};
-
-
-/**
- * Asserts that the event target instance is initialized properly.
- * @private
- */
-goog.events.EventTarget.prototype.assertInitialized_ = function() {
-  goog.asserts.assert(
-      this.eventTargetListeners_,
-      'Event target is not initialized. Did you call the superclass ' +
-      '(goog.events.EventTarget) constructor?');
-};
-
-
-/**
- * Dispatches the given event on the ancestorsTree.
- *
- * @param {!Object} target The target to dispatch on.
- * @param {goog.events.Event|Object|string} e The event object.
- * @param {Array.<goog.events.Listenable>=} opt_ancestorsTree The ancestors
- *     tree of the target, in reverse order from the closest ancestor
- *     to the root event target. May be null if the target has no ancestor.
- * @return {boolean} If anyone called preventDefault on the event object (or
- *     if any of the listeners returns false) this will also return false.
- * @private
- */
-goog.events.EventTarget.dispatchEventInternal_ = function(
-    target, e, opt_ancestorsTree) {
-  var type = e.type || /** @type {string} */ (e);
-
-  // If accepting a string or object, create a custom event object so that
-  // preventDefault and stopPropagation work with the event.
-  if (goog.isString(e)) {
-    e = new goog.events.Event(e, target);
-  } else if (!(e instanceof goog.events.Event)) {
-    var oldEvent = e;
-    e = new goog.events.Event(type, target);
-    goog.object.extend(e, oldEvent);
-  } else {
-    e.target = e.target || target;
-  }
-
-  var rv = true, currentTarget;
-
-  // Executes all capture listeners on the ancestors, if any.
-  if (opt_ancestorsTree) {
-    for (var i = opt_ancestorsTree.length - 1; !e.propagationStopped_ && i >= 0;
-         i--) {
-      currentTarget = e.currentTarget = opt_ancestorsTree[i];
-      rv = currentTarget.fireListeners(type, true, e) && rv;
-    }
-  }
-
-  // Executes capture and bubble listeners on the target.
-  if (!e.propagationStopped_) {
-    currentTarget = e.currentTarget = target;
-    rv = currentTarget.fireListeners(type, true, e) && rv;
-    if (!e.propagationStopped_) {
-      rv = currentTarget.fireListeners(type, false, e) && rv;
-    }
-  }
-
-  // Executes all bubble listeners on the ancestors, if any.
-  if (opt_ancestorsTree) {
-    for (i = 0; !e.propagationStopped_ && i < opt_ancestorsTree.length; i++) {
-      currentTarget = e.currentTarget = opt_ancestorsTree[i];
-      rv = currentTarget.fireListeners(type, false, e) && rv;
-    }
-  }
-
-  return rv;
-};
-goog.provide('feng.views.view3dobject.View3DObject');
-
-goog.require('goog.events.EventTarget');
-goog.require('goog.math.Box');
-
-/**
- * @constructor
- * A 3d object in view3d
- */
-feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
-
-  goog.base(this);
-
-  this.object3d = object3d;
-  this.object3d.userData = data;
-  this.object3d.view3dObject = this;
-
-  this.name = object3d.name;
-  this.data = data;
-
-  this._view3d = view3d;
-  this._boundingBox = new THREE.Box3();
-  this._boundingSphere = new THREE.Sphere();
-  this._center = new THREE.Vector3();
-
-  this._tilemapProxy = null;
-
-  this._proxyBox = new THREE.Mesh( new THREE.BoxGeometry(1,1,1) );
-  this._proxyBox.view3dObject = this;
-
-  this._canRender = this.object3d.visible;
-
-  //
-  this.registerToView3D();
-};
-goog.inherits(feng.views.view3dobject.View3DObject, goog.events.EventTarget);
-
-
-feng.views.view3dobject.View3DObject.prototype.registerToView3D = function(){
-
-  this._view3d.view3dObjects[ this.name ] = this;
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.init = function(){
-
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.isCollidable = function(){
-
-  return (this.data.collidable === true);
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.isFloor = function(){
-
-  return (goog.string.startsWith(this.name, 'floor'));
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.getProxyBox = function(){
-
-  var boundingBox = this.getBoundingBox();
-
-  boundingBox.size( this._proxyBox.scale );
-  boundingBox.center( this._proxyBox.position );
-  this._proxyBox.updateMatrixWorld();
-
-  return this._proxyBox;
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.getBoundingBox = function(){
-
-  this._boundingBox.setFromObject( this.object3d );
-  return this._boundingBox;
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.getBoundingSphere = function(){
-
-  this.getBoundingBox().getBoundingSphere( this._boundingSphere );
-  return this._boundingSphere;
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.getBox = function(){
-
-  var box3 = this.getBoundingBox();
-  var minX = box3.min.x;
-  var minZ = box3.min.z;
-  var maxX = box3.max.x;
-  var maxZ = box3.max.z;
-
-  var box2 = new goog.math.Box(minZ, maxX, maxZ, minX);
-
-  return box2;
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.getCenter = function(){
-
-  var box3 = this.getBoundingBox();
-  return box3.center();
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.getBoundingBoxParameters = function(){
-
-  var box3 = this.getBoundingBox();
-  
-  return {
-    width: Math.abs(box3.max.x - box3.min.x),
-    height: Math.abs(box3.max.y - box3.min.y),
-    length: Math.abs(box3.max.z - box3.min.z)
-  };
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.getHeight = function(){
-
-  return this.getBoundingBoxParameters().height;
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.getTilemapProxy = function(){
-
-  var clone = this._tilemapProxy;
-
-  if(!clone) {
-
-    clone = new THREE.Mesh( this.object3d.geometry.clone(), feng.views.view3dobject.View3DObject.ProxyMaterial.GREEN );
-    this._tilemapProxy = clone;
-  }
-
-  if(this.isCollidable()) {
-
-    clone.material = feng.views.view3dobject.View3DObject.ProxyMaterial.RED;
-
-  }else {
-
-    clone.material = feng.views.view3dobject.View3DObject.ProxyMaterial.GREEN;
-  }
-  
-  clone.material.overdraw = true;
-
-  clone.position.copy( this.object3d.position );
-  clone.rotation.copy( this.object3d.rotation );
-
-  return clone;
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.addToScene = function(){
-
-  this._view3d.scene.add( this.object3d );
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.removeFromScene = function(){
-
-  this._view3d.scene.remove( this.object3d );
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.enableRender = function(){
-
-  if(this._canRender) return;
-  else this._canRender = true;
-
-  // itself, its parent and its children should be renderable
-  this.object3d.visible = true;
-
-  var parent = this.object3d.parent;
-  var scene = this._view3d.scene;
-
-  while(parent && !(parent === scene)) {
-
-    if(parent.view3dObject) parent.view3dObject.enableRender();
-    else parent.visible = true;
-
-    parent = parent.parent;
-  }
-
-  this.object3d.traverse(function(child) {
-
-    if(child.view3dObject) child.view3dObject.enableRender();
-    else child.visible = true;
-  });
-
-  //console.log("SHOW:", this.object3d.name);
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.disableRender = function(){
-
-  if(!this._canRender) return;
-  else this._canRender = false;
-
-  // itself and its children should not be renderable
-  this.object3d.visible = false;
-
-  //console.log("HIDE:", this.object3d.name);
-};
-
-
-feng.views.view3dobject.View3DObject.ProxyMaterial = {
-  RED: new THREE.MeshBasicMaterial( {color: 0xff0000} ),
-  GREEN: new THREE.MeshBasicMaterial( {color: 0x00ff00} )
-};goog.provide('feng.views.view3dobject.InteractiveObject');
-
-goog.require('goog.events.EventHandler');
-goog.require('feng.views.view3dobject.View3DObject');
-
-/**
- * @constructor
- * A 3d object that can be interacted in view3d
- */
-feng.views.view3dobject.InteractiveObject = function( object3d, data, view3d ){
-
-  goog.base(this, object3d, data, view3d);
-
-  this.object3d.interactiveObject = this;
-  this.interactions = this.data.interactions || [];
-  this.isPhysical = true;
-  this.screenBox = new goog.math.Box(0, 0, 0, 0);
-
-  this.isSpecialCameraEnabled = data.camera ? true : false;
-  this.specialCameraSettings = data.camera || {};
-
-  this._interactionHandler = new goog.events.EventHandler(this);
-};
-goog.inherits(feng.views.view3dobject.InteractiveObject, feng.views.view3dobject.View3DObject);
-
-
-feng.views.view3dobject.InteractiveObject.prototype.registerToView3D = function(){
-
-  goog.base(this, 'registerToView3D');
-  
-  this._view3d.interactiveObjects[ this.name ] = this;
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.hasInteraction = function( interaction ){
-
-	return goog.array.contains(this.interactions, interaction);
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.activate = function(){
-
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.deactivate = function(){
-
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.startInteraction = function(){
-
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.stopInteraction = function(){
-
-  this._interactionHandler.removeAll();
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.enableSpecialCamera = function( position, rotation, fov ){
-
-  this.isSpecialCameraEnabled = position ? true : false;
-
-  if(this.isSpecialCameraEnabled) {
-
-    this.specialCameraSettings.position = position;
-    this.specialCameraSettings.rotation = rotation;
-    this.specialCameraSettings.fov = fov;
-  }
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.updateScreenBox = function(){
-
-  var box3 = this.getBoundingBox();
-  var camera = this._view3d.cameraController.activeCamera;
-  var viewSize = this._view3d.getViewSize();
-
-  this.screenBox = feng.utils.ThreeUtils.getRectangleFromBox3( box3, camera, viewSize, this.screenBox );
-
-  return this.screenBox;
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.onCameraIn = function(){
-
-  console.log('on camera in: ' + this.name);
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.onCameraOut = function(){
-
-  console.log('on camera out: ' + this.name);
-};
-
-
-/*
- * Interactions
- */
-feng.views.view3dobject.InteractiveObject.Interaction = {
-  ADVICE: 'advice',
-  MOVE: 'move',
-  ROTATE: 'rotate',
-  PICK: 'pick',
-  DROP: 'drop',
-  CHANGE_COLOR: 'change_color',
-  CHANGE_OBJECT: 'change_object',
-  CHANGE_PICTURE: 'change_picture',
-  CHANGE_ACCESSORY: 'change_accessory'
-};goog.provide('feng.controllers.controls.InteractionResolver');
-
-goog.require('goog.events.EventTarget');
-goog.require('goog.events.EventHandler');
-goog.require('feng.views.view3dobject.InteractiveObject');
-
-
-/**
- * @constructor
- */
-feng.controllers.controls.InteractionResolver = function(){
-
-	goog.base(this);
-
-	this._rotateTweener = null;
-
-	var _startInteraction = goog.bind(this.startInteraction, this);
-	var _endInteraction = goog.bind(this.endInteraction, this);
-
-  this._eventHandler = new goog.events.EventHandler( this );
-};
-goog.inherits(feng.controllers.controls.InteractionResolver, goog.events.EventTarget);
-goog.addSingletonGetter(feng.controllers.controls.InteractionResolver);
-
-
-feng.controllers.controls.InteractionResolver.prototype.resolve = function( object, interaction, options ){
-
-	this._object = object;
-
-	var isPhysical = this._object.isPhysical;
-	var object3d = this._object.object3d;
-
-	var type = feng.views.view3dobject.InteractiveObject.Interaction;
-
-	switch(interaction) {
-
-		case type.MOVE:
-
-			break;
-
-		case type.ROTATE:
-
-			break;
-
-		case type.CHANGE_ACCESSORY:
-			var accessory = (this._object instanceof feng.views.view3dobject.AccessoryObject)
-	  		? this._object
-	  		: this._object.accessory;
-
-      accessory.nextAccessory();
-
-      this.endInteraction( interaction );
-			break;
-
-		case type.ENTER:
-			this.endInteraction( interaction );
-			break;
-
-		case 'close':
-			this.endInteraction( interaction );
-			break;
-	}
-};
-
-
-feng.controllers.controls.InteractionResolver.prototype.startInteraction = function(interaction) {
-
-	this.dispatchEvent({
-		type: feng.events.EventType.START,
-		interaction: interaction
-	});
-};
-
-
-feng.controllers.controls.InteractionResolver.prototype.endInteraction = function(interaction) {
-
-	this.dispatchEvent({
-		type: feng.events.EventType.END,
-		interaction: interaction
-	});
-};// Copyright 2005-2009, The Dojo Foundation
+// Copyright 2005-2009, The Dojo Foundation
 // Modifications Copyright 2008 The Closure Library Authors.
 // All Rights Reserved.
 
@@ -26494,6 +25326,404 @@ goog.dom.query = (function() {
 // TODO(arv): Please don't export here since it clobbers dead code elimination.
 goog.exportSymbol('goog.dom.query', goog.dom.query);
 goog.exportSymbol('goog.dom.query.pseudos', goog.dom.query.pseudos);
+// Copyright 2005 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview A disposable implementation of a custom
+ * listenable/event target. See also: documentation for
+ * {@code goog.events.Listenable}.
+ *
+ * @author arv@google.com (Erik Arvidsson) [Original implementation]
+ * @author pupius@google.com (Daniel Pupius) [Port to use goog.events]
+ * @see ../demos/eventtarget.html
+ * @see goog.events.Listenable
+ */
+
+goog.provide('goog.events.EventTarget');
+
+goog.require('goog.Disposable');
+goog.require('goog.array');
+goog.require('goog.asserts');
+goog.require('goog.events');
+goog.require('goog.events.Event');
+goog.require('goog.events.Listenable');
+goog.require('goog.events.ListenerMap');
+goog.require('goog.object');
+
+
+
+/**
+ * An implementation of {@code goog.events.Listenable} with full W3C
+ * EventTarget-like support (capture/bubble mechanism, stopping event
+ * propagation, preventing default actions).
+ *
+ * You may subclass this class to turn your class into a Listenable.
+ *
+ * Unless propagation is stopped, an event dispatched by an
+ * EventTarget will bubble to the parent returned by
+ * {@code getParentEventTarget}. To set the parent, call
+ * {@code setParentEventTarget}. Subclasses that don't support
+ * changing the parent can override the setter to throw an error.
+ *
+ * Example usage:
+ * <pre>
+ *   var source = new goog.events.EventTarget();
+ *   function handleEvent(e) {
+ *     alert('Type: ' + e.type + '; Target: ' + e.target);
+ *   }
+ *   source.listen('foo', handleEvent);
+ *   // Or: goog.events.listen(source, 'foo', handleEvent);
+ *   ...
+ *   source.dispatchEvent('foo');  // will call handleEvent
+ *   ...
+ *   source.unlisten('foo', handleEvent);
+ *   // Or: goog.events.unlisten(source, 'foo', handleEvent);
+ * </pre>
+ *
+ * @constructor
+ * @extends {goog.Disposable}
+ * @implements {goog.events.Listenable}
+ */
+goog.events.EventTarget = function() {
+  goog.Disposable.call(this);
+
+  /**
+   * Maps of event type to an array of listeners.
+   * @private {!goog.events.ListenerMap}
+   */
+  this.eventTargetListeners_ = new goog.events.ListenerMap(this);
+
+  /**
+   * The object to use for event.target. Useful when mixing in an
+   * EventTarget to another object.
+   * @private {!Object}
+   */
+  this.actualEventTarget_ = this;
+};
+goog.inherits(goog.events.EventTarget, goog.Disposable);
+goog.events.Listenable.addImplementation(goog.events.EventTarget);
+
+
+/**
+ * An artificial cap on the number of ancestors you can have. This is mainly
+ * for loop detection.
+ * @const {number}
+ * @private
+ */
+goog.events.EventTarget.MAX_ANCESTORS_ = 1000;
+
+
+/**
+ * Parent event target, used during event bubbling.
+ *
+ * TODO(user): Change this to goog.events.Listenable. This
+ * currently breaks people who expect getParentEventTarget to return
+ * goog.events.EventTarget.
+ *
+ * @type {goog.events.EventTarget}
+ * @private
+ */
+goog.events.EventTarget.prototype.parentEventTarget_ = null;
+
+
+/**
+ * Returns the parent of this event target to use for bubbling.
+ *
+ * @return {goog.events.EventTarget} The parent EventTarget or null if
+ *     there is no parent.
+ * @override
+ */
+goog.events.EventTarget.prototype.getParentEventTarget = function() {
+  return this.parentEventTarget_;
+};
+
+
+/**
+ * Sets the parent of this event target to use for capture/bubble
+ * mechanism.
+ * @param {goog.events.EventTarget} parent Parent listenable (null if none).
+ */
+goog.events.EventTarget.prototype.setParentEventTarget = function(parent) {
+  this.parentEventTarget_ = parent;
+};
+
+
+/**
+ * Adds an event listener to the event target. The same handler can only be
+ * added once per the type. Even if you add the same handler multiple times
+ * using the same type then it will only be called once when the event is
+ * dispatched.
+ *
+ * @param {string} type The type of the event to listen for.
+ * @param {function(?):?|{handleEvent:function(?):?}|null} handler The function
+ *     to handle the event. The handler can also be an object that implements
+ *     the handleEvent method which takes the event object as argument.
+ * @param {boolean=} opt_capture In DOM-compliant browsers, this determines
+ *     whether the listener is fired during the capture or bubble phase
+ *     of the event.
+ * @param {Object=} opt_handlerScope Object in whose scope to call
+ *     the listener.
+ * @deprecated Use {@code #listen} instead, when possible. Otherwise, use
+ *     {@code goog.events.listen} if you are passing Object
+ *     (instead of Function) as handler.
+ */
+goog.events.EventTarget.prototype.addEventListener = function(
+    type, handler, opt_capture, opt_handlerScope) {
+  goog.events.listen(this, type, handler, opt_capture, opt_handlerScope);
+};
+
+
+/**
+ * Removes an event listener from the event target. The handler must be the
+ * same object as the one added. If the handler has not been added then
+ * nothing is done.
+ *
+ * @param {string} type The type of the event to listen for.
+ * @param {function(?):?|{handleEvent:function(?):?}|null} handler The function
+ *     to handle the event. The handler can also be an object that implements
+ *     the handleEvent method which takes the event object as argument.
+ * @param {boolean=} opt_capture In DOM-compliant browsers, this determines
+ *     whether the listener is fired during the capture or bubble phase
+ *     of the event.
+ * @param {Object=} opt_handlerScope Object in whose scope to call
+ *     the listener.
+ * @deprecated Use {@code #unlisten} instead, when possible. Otherwise, use
+ *     {@code goog.events.unlisten} if you are passing Object
+ *     (instead of Function) as handler.
+ */
+goog.events.EventTarget.prototype.removeEventListener = function(
+    type, handler, opt_capture, opt_handlerScope) {
+  goog.events.unlisten(this, type, handler, opt_capture, opt_handlerScope);
+};
+
+
+/** @override */
+goog.events.EventTarget.prototype.dispatchEvent = function(e) {
+  this.assertInitialized_();
+
+  var ancestorsTree, ancestor = this.getParentEventTarget();
+  if (ancestor) {
+    ancestorsTree = [];
+    var ancestorCount = 1;
+    for (; ancestor; ancestor = ancestor.getParentEventTarget()) {
+      ancestorsTree.push(ancestor);
+      goog.asserts.assert(
+          (++ancestorCount < goog.events.EventTarget.MAX_ANCESTORS_),
+          'infinite loop');
+    }
+  }
+
+  return goog.events.EventTarget.dispatchEventInternal_(
+      this.actualEventTarget_, e, ancestorsTree);
+};
+
+
+/**
+ * Removes listeners from this object.  Classes that extend EventTarget may
+ * need to override this method in order to remove references to DOM Elements
+ * and additional listeners.
+ * @override
+ */
+goog.events.EventTarget.prototype.disposeInternal = function() {
+  goog.events.EventTarget.superClass_.disposeInternal.call(this);
+
+  this.removeAllListeners();
+  this.parentEventTarget_ = null;
+};
+
+
+/** @override */
+goog.events.EventTarget.prototype.listen = function(
+    type, listener, opt_useCapture, opt_listenerScope) {
+  this.assertInitialized_();
+  return this.eventTargetListeners_.add(
+      String(type), listener, false /* callOnce */, opt_useCapture,
+      opt_listenerScope);
+};
+
+
+/** @override */
+goog.events.EventTarget.prototype.listenOnce = function(
+    type, listener, opt_useCapture, opt_listenerScope) {
+  return this.eventTargetListeners_.add(
+      String(type), listener, true /* callOnce */, opt_useCapture,
+      opt_listenerScope);
+};
+
+
+/** @override */
+goog.events.EventTarget.prototype.unlisten = function(
+    type, listener, opt_useCapture, opt_listenerScope) {
+  return this.eventTargetListeners_.remove(
+      String(type), listener, opt_useCapture, opt_listenerScope);
+};
+
+
+/** @override */
+goog.events.EventTarget.prototype.unlistenByKey = function(key) {
+  return this.eventTargetListeners_.removeByKey(key);
+};
+
+
+/** @override */
+goog.events.EventTarget.prototype.removeAllListeners = function(opt_type) {
+  // TODO(user): Previously, removeAllListeners can be called on
+  // uninitialized EventTarget, so we preserve that behavior. We
+  // should remove this when usages that rely on that fact are purged.
+  if (!this.eventTargetListeners_) {
+    return 0;
+  }
+  return this.eventTargetListeners_.removeAll(opt_type);
+};
+
+
+/** @override */
+goog.events.EventTarget.prototype.fireListeners = function(
+    type, capture, eventObject) {
+  // TODO(user): Original code avoids array creation when there
+  // is no listener, so we do the same. If this optimization turns
+  // out to be not required, we can replace this with
+  // getListeners(type, capture) instead, which is simpler.
+  var listenerArray = this.eventTargetListeners_.listeners[String(type)];
+  if (!listenerArray) {
+    return true;
+  }
+  listenerArray = goog.array.clone(listenerArray);
+
+  var rv = true;
+  for (var i = 0; i < listenerArray.length; ++i) {
+    var listener = listenerArray[i];
+    // We might not have a listener if the listener was removed.
+    if (listener && !listener.removed && listener.capture == capture) {
+      var listenerFn = listener.listener;
+      var listenerHandler = listener.handler || listener.src;
+
+      if (listener.callOnce) {
+        this.unlistenByKey(listener);
+      }
+      rv = listenerFn.call(listenerHandler, eventObject) !== false && rv;
+    }
+  }
+
+  return rv && eventObject.returnValue_ != false;
+};
+
+
+/** @override */
+goog.events.EventTarget.prototype.getListeners = function(type, capture) {
+  return this.eventTargetListeners_.getListeners(String(type), capture);
+};
+
+
+/** @override */
+goog.events.EventTarget.prototype.getListener = function(
+    type, listener, capture, opt_listenerScope) {
+  return this.eventTargetListeners_.getListener(
+      String(type), listener, capture, opt_listenerScope);
+};
+
+
+/** @override */
+goog.events.EventTarget.prototype.hasListener = function(
+    opt_type, opt_capture) {
+  var id = goog.isDef(opt_type) ? String(opt_type) : undefined;
+  return this.eventTargetListeners_.hasListener(id, opt_capture);
+};
+
+
+/**
+ * Sets the target to be used for {@code event.target} when firing
+ * event. Mainly used for testing. For example, see
+ * {@code goog.testing.events.mixinListenable}.
+ * @param {!Object} target The target.
+ */
+goog.events.EventTarget.prototype.setTargetForTesting = function(target) {
+  this.actualEventTarget_ = target;
+};
+
+
+/**
+ * Asserts that the event target instance is initialized properly.
+ * @private
+ */
+goog.events.EventTarget.prototype.assertInitialized_ = function() {
+  goog.asserts.assert(
+      this.eventTargetListeners_,
+      'Event target is not initialized. Did you call the superclass ' +
+      '(goog.events.EventTarget) constructor?');
+};
+
+
+/**
+ * Dispatches the given event on the ancestorsTree.
+ *
+ * @param {!Object} target The target to dispatch on.
+ * @param {goog.events.Event|Object|string} e The event object.
+ * @param {Array.<goog.events.Listenable>=} opt_ancestorsTree The ancestors
+ *     tree of the target, in reverse order from the closest ancestor
+ *     to the root event target. May be null if the target has no ancestor.
+ * @return {boolean} If anyone called preventDefault on the event object (or
+ *     if any of the listeners returns false) this will also return false.
+ * @private
+ */
+goog.events.EventTarget.dispatchEventInternal_ = function(
+    target, e, opt_ancestorsTree) {
+  var type = e.type || /** @type {string} */ (e);
+
+  // If accepting a string or object, create a custom event object so that
+  // preventDefault and stopPropagation work with the event.
+  if (goog.isString(e)) {
+    e = new goog.events.Event(e, target);
+  } else if (!(e instanceof goog.events.Event)) {
+    var oldEvent = e;
+    e = new goog.events.Event(type, target);
+    goog.object.extend(e, oldEvent);
+  } else {
+    e.target = e.target || target;
+  }
+
+  var rv = true, currentTarget;
+
+  // Executes all capture listeners on the ancestors, if any.
+  if (opt_ancestorsTree) {
+    for (var i = opt_ancestorsTree.length - 1; !e.propagationStopped_ && i >= 0;
+         i--) {
+      currentTarget = e.currentTarget = opt_ancestorsTree[i];
+      rv = currentTarget.fireListeners(type, true, e) && rv;
+    }
+  }
+
+  // Executes capture and bubble listeners on the target.
+  if (!e.propagationStopped_) {
+    currentTarget = e.currentTarget = target;
+    rv = currentTarget.fireListeners(type, true, e) && rv;
+    if (!e.propagationStopped_) {
+      rv = currentTarget.fireListeners(type, false, e) && rv;
+    }
+  }
+
+  // Executes all bubble listeners on the ancestors, if any.
+  if (opt_ancestorsTree) {
+    for (i = 0; !e.propagationStopped_ && i < opt_ancestorsTree.length; i++) {
+      currentTarget = e.currentTarget = opt_ancestorsTree[i];
+      rv = currentTarget.fireListeners(type, false, e) && rv;
+    }
+  }
+
+  return rv;
+};
 goog.provide('feng.views.debug.DebugView');
 
 goog.require('soy');
@@ -26572,7 +25802,6 @@ feng.views.debug.DebugView.prototype.onClick = function(e) {
 
 goog.require('feng.views.debug.DebugView');
 goog.require('feng.templates.debug');
-goog.require('feng.controllers.controls.InteractionResolver');
 
 
 /**
@@ -26583,18 +25812,9 @@ feng.views.debug.Manipulate = function(){
 
 	this._viewPanelDom = goog.dom.getElementByClass('viewPanel', this.domElement);
 
-	var interactionResolver = feng.controllers.controls.InteractionResolver.getInstance();
-	this._eventHandler.listen(interactionResolver, feng.events.EventType.START, this.onInteractionStart, false, this);
-
 	this.hide();
 };
-goog.inherits(feng.views.debug.Manipulate, feng.views.debug.DebugView);
-
-
-feng.views.debug.Manipulate.prototype.onInteractionStart = function(e){
-
-  
-};// Copyright 2010 The Closure Library Authors. All Rights Reserved.
+goog.inherits(feng.views.debug.Manipulate, feng.views.debug.DebugView);// Copyright 2010 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28391,6 +27611,7 @@ goog.require('goog.string');
  * @constructor
  */
 feng.controllers.NavigationController = function(){
+	
   goog.base(this);
 
   // a toggle of whether to use history API
@@ -28553,7 +27774,7 @@ feng.controllers.NavigationController.Implementation = (goog.history.Html5Histor
 feng.controllers.NavigationController.Token = {
 	HOME: '#/home',
 	STUDIO: '#/studio',
-	TOWNHOUSE: '#/townhouse',
+	HOUSE: '#/house',
 	BOOK: '#/book',
 	GLOSSARY: '#/book/glossary',
 	TIPS: '#/book/tips',
@@ -29382,7 +28603,376 @@ feng.views.debug.Camera.prototype.onAnimationFrame = function(now){
   this._rotationXInput.value = rotationX.toFixed(2);
   this._rotationYInput.value = rotationY.toFixed(2);
   this._rotationZInput.value = rotationZ.toFixed(2);
-};goog.provide('feng.controllers.view3d.PathfindingController');
+};// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview A utility class for representing a numeric box.
+ */
+
+
+goog.provide('goog.math.Box');
+
+goog.require('goog.math.Coordinate');
+
+
+
+/**
+ * Class for representing a box. A box is specified as a top, right, bottom,
+ * and left. A box is useful for representing margins and padding.
+ *
+ * @param {number} top Top.
+ * @param {number} right Right.
+ * @param {number} bottom Bottom.
+ * @param {number} left Left.
+ * @constructor
+ */
+goog.math.Box = function(top, right, bottom, left) {
+  /**
+   * Top
+   * @type {number}
+   */
+  this.top = top;
+
+  /**
+   * Right
+   * @type {number}
+   */
+  this.right = right;
+
+  /**
+   * Bottom
+   * @type {number}
+   */
+  this.bottom = bottom;
+
+  /**
+   * Left
+   * @type {number}
+   */
+  this.left = left;
+};
+
+
+/**
+ * Creates a Box by bounding a collection of goog.math.Coordinate objects
+ * @param {...goog.math.Coordinate} var_args Coordinates to be included inside
+ *     the box.
+ * @return {!goog.math.Box} A Box containing all the specified Coordinates.
+ */
+goog.math.Box.boundingBox = function(var_args) {
+  var box = new goog.math.Box(arguments[0].y, arguments[0].x,
+                              arguments[0].y, arguments[0].x);
+  for (var i = 1; i < arguments.length; i++) {
+    var coord = arguments[i];
+    box.top = Math.min(box.top, coord.y);
+    box.right = Math.max(box.right, coord.x);
+    box.bottom = Math.max(box.bottom, coord.y);
+    box.left = Math.min(box.left, coord.x);
+  }
+  return box;
+};
+
+
+/**
+ * Creates a copy of the box with the same dimensions.
+ * @return {!goog.math.Box} A clone of this Box.
+ */
+goog.math.Box.prototype.clone = function() {
+  return new goog.math.Box(this.top, this.right, this.bottom, this.left);
+};
+
+
+if (goog.DEBUG) {
+  /**
+   * Returns a nice string representing the box.
+   * @return {string} In the form (50t, 73r, 24b, 13l).
+   * @override
+   */
+  goog.math.Box.prototype.toString = function() {
+    return '(' + this.top + 't, ' + this.right + 'r, ' + this.bottom + 'b, ' +
+           this.left + 'l)';
+  };
+}
+
+
+/**
+ * Returns whether the box contains a coordinate or another box.
+ *
+ * @param {goog.math.Coordinate|goog.math.Box} other A Coordinate or a Box.
+ * @return {boolean} Whether the box contains the coordinate or other box.
+ */
+goog.math.Box.prototype.contains = function(other) {
+  return goog.math.Box.contains(this, other);
+};
+
+
+/**
+ * Expands box with the given margins.
+ *
+ * @param {number|goog.math.Box} top Top margin or box with all margins.
+ * @param {number=} opt_right Right margin.
+ * @param {number=} opt_bottom Bottom margin.
+ * @param {number=} opt_left Left margin.
+ * @return {!goog.math.Box} A reference to this Box.
+ */
+goog.math.Box.prototype.expand = function(top, opt_right, opt_bottom,
+    opt_left) {
+  if (goog.isObject(top)) {
+    this.top -= top.top;
+    this.right += top.right;
+    this.bottom += top.bottom;
+    this.left -= top.left;
+  } else {
+    this.top -= top;
+    this.right += opt_right;
+    this.bottom += opt_bottom;
+    this.left -= opt_left;
+  }
+
+  return this;
+};
+
+
+/**
+ * Expand this box to include another box.
+ * NOTE(user): This is used in code that needs to be very fast, please don't
+ * add functionality to this function at the expense of speed (variable
+ * arguments, accepting multiple argument types, etc).
+ * @param {goog.math.Box} box The box to include in this one.
+ */
+goog.math.Box.prototype.expandToInclude = function(box) {
+  this.left = Math.min(this.left, box.left);
+  this.top = Math.min(this.top, box.top);
+  this.right = Math.max(this.right, box.right);
+  this.bottom = Math.max(this.bottom, box.bottom);
+};
+
+
+/**
+ * Compares boxes for equality.
+ * @param {goog.math.Box} a A Box.
+ * @param {goog.math.Box} b A Box.
+ * @return {boolean} True iff the boxes are equal, or if both are null.
+ */
+goog.math.Box.equals = function(a, b) {
+  if (a == b) {
+    return true;
+  }
+  if (!a || !b) {
+    return false;
+  }
+  return a.top == b.top && a.right == b.right &&
+         a.bottom == b.bottom && a.left == b.left;
+};
+
+
+/**
+ * Returns whether a box contains a coordinate or another box.
+ *
+ * @param {goog.math.Box} box A Box.
+ * @param {goog.math.Coordinate|goog.math.Box} other A Coordinate or a Box.
+ * @return {boolean} Whether the box contains the coordinate or other box.
+ */
+goog.math.Box.contains = function(box, other) {
+  if (!box || !other) {
+    return false;
+  }
+
+  if (other instanceof goog.math.Box) {
+    return other.left >= box.left && other.right <= box.right &&
+        other.top >= box.top && other.bottom <= box.bottom;
+  }
+
+  // other is a Coordinate.
+  return other.x >= box.left && other.x <= box.right &&
+         other.y >= box.top && other.y <= box.bottom;
+};
+
+
+/**
+ * Returns the relative x position of a coordinate compared to a box.  Returns
+ * zero if the coordinate is inside the box.
+ *
+ * @param {goog.math.Box} box A Box.
+ * @param {goog.math.Coordinate} coord A Coordinate.
+ * @return {number} The x position of {@code coord} relative to the nearest
+ *     side of {@code box}, or zero if {@code coord} is inside {@code box}.
+ */
+goog.math.Box.relativePositionX = function(box, coord) {
+  if (coord.x < box.left) {
+    return coord.x - box.left;
+  } else if (coord.x > box.right) {
+    return coord.x - box.right;
+  }
+  return 0;
+};
+
+
+/**
+ * Returns the relative y position of a coordinate compared to a box.  Returns
+ * zero if the coordinate is inside the box.
+ *
+ * @param {goog.math.Box} box A Box.
+ * @param {goog.math.Coordinate} coord A Coordinate.
+ * @return {number} The y position of {@code coord} relative to the nearest
+ *     side of {@code box}, or zero if {@code coord} is inside {@code box}.
+ */
+goog.math.Box.relativePositionY = function(box, coord) {
+  if (coord.y < box.top) {
+    return coord.y - box.top;
+  } else if (coord.y > box.bottom) {
+    return coord.y - box.bottom;
+  }
+  return 0;
+};
+
+
+/**
+ * Returns the distance between a coordinate and the nearest corner/side of a
+ * box. Returns zero if the coordinate is inside the box.
+ *
+ * @param {goog.math.Box} box A Box.
+ * @param {goog.math.Coordinate} coord A Coordinate.
+ * @return {number} The distance between {@code coord} and the nearest
+ *     corner/side of {@code box}, or zero if {@code coord} is inside
+ *     {@code box}.
+ */
+goog.math.Box.distance = function(box, coord) {
+  var x = goog.math.Box.relativePositionX(box, coord);
+  var y = goog.math.Box.relativePositionY(box, coord);
+  return Math.sqrt(x * x + y * y);
+};
+
+
+/**
+ * Returns whether two boxes intersect.
+ *
+ * @param {goog.math.Box} a A Box.
+ * @param {goog.math.Box} b A second Box.
+ * @return {boolean} Whether the boxes intersect.
+ */
+goog.math.Box.intersects = function(a, b) {
+  return (a.left <= b.right && b.left <= a.right &&
+          a.top <= b.bottom && b.top <= a.bottom);
+};
+
+
+/**
+ * Returns whether two boxes would intersect with additional padding.
+ *
+ * @param {goog.math.Box} a A Box.
+ * @param {goog.math.Box} b A second Box.
+ * @param {number} padding The additional padding.
+ * @return {boolean} Whether the boxes intersect.
+ */
+goog.math.Box.intersectsWithPadding = function(a, b, padding) {
+  return (a.left <= b.right + padding && b.left <= a.right + padding &&
+          a.top <= b.bottom + padding && b.top <= a.bottom + padding);
+};
+
+
+/**
+ * Rounds the fields to the next larger integer values.
+ *
+ * @return {!goog.math.Box} This box with ceil'd fields.
+ */
+goog.math.Box.prototype.ceil = function() {
+  this.top = Math.ceil(this.top);
+  this.right = Math.ceil(this.right);
+  this.bottom = Math.ceil(this.bottom);
+  this.left = Math.ceil(this.left);
+  return this;
+};
+
+
+/**
+ * Rounds the fields to the next smaller integer values.
+ *
+ * @return {!goog.math.Box} This box with floored fields.
+ */
+goog.math.Box.prototype.floor = function() {
+  this.top = Math.floor(this.top);
+  this.right = Math.floor(this.right);
+  this.bottom = Math.floor(this.bottom);
+  this.left = Math.floor(this.left);
+  return this;
+};
+
+
+/**
+ * Rounds the fields to nearest integer values.
+ *
+ * @return {!goog.math.Box} This box with rounded fields.
+ */
+goog.math.Box.prototype.round = function() {
+  this.top = Math.round(this.top);
+  this.right = Math.round(this.right);
+  this.bottom = Math.round(this.bottom);
+  this.left = Math.round(this.left);
+  return this;
+};
+
+
+/**
+ * Translates this box by the given offsets. If a {@code goog.math.Coordinate}
+ * is given, then the left and right values are translated by the coordinate's
+ * x value and the top and bottom values are translated by the coordinate's y
+ * value.  Otherwise, {@code tx} and {@code opt_ty} are used to translate the x
+ * and y dimension values.
+ *
+ * @param {number|goog.math.Coordinate} tx The value to translate the x
+ *     dimension values by or the the coordinate to translate this box by.
+ * @param {number=} opt_ty The value to translate y dimension values by.
+ * @return {!goog.math.Box} This box after translating.
+ */
+goog.math.Box.prototype.translate = function(tx, opt_ty) {
+  if (tx instanceof goog.math.Coordinate) {
+    this.left += tx.x;
+    this.right += tx.x;
+    this.top += tx.y;
+    this.bottom += tx.y;
+  } else {
+    this.left += tx;
+    this.right += tx;
+    if (goog.isNumber(opt_ty)) {
+      this.top += opt_ty;
+      this.bottom += opt_ty;
+    }
+  }
+  return this;
+};
+
+
+/**
+ * Scales this coordinate by the given scale factors. The x and y dimension
+ * values are scaled by {@code sx} and {@code opt_sy} respectively.
+ * If {@code opt_sy} is not given, then {@code sx} is used for both x and y.
+ *
+ * @param {number} sx The scale factor to use for the x dimension.
+ * @param {number=} opt_sy The scale factor to use for the y dimension.
+ * @return {!goog.math.Box} This box after scaling.
+ */
+goog.math.Box.prototype.scale = function(sx, opt_sy) {
+  var sy = goog.isNumber(opt_sy) ? opt_sy : sx;
+  this.left *= sx;
+  this.right *= sx;
+  this.top *= sy;
+  this.bottom *= sy;
+  return this;
+};
+goog.provide('feng.controllers.view3d.PathfindingController');
 
 goog.require('goog.array');
 goog.require('goog.events.EventTarget');
@@ -32606,10 +32196,238 @@ goog.style.getCssTranslation = function(element) {
   return new goog.math.Coordinate(parseFloat(matches[1]),
                                   parseFloat(matches[2]));
 };
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Utilities for window manipulation.
+ */
+
+
+goog.provide('goog.window');
+
+goog.require('goog.string');
+goog.require('goog.userAgent');
+
+
+/**
+ * Default height for popup windows
+ * @type {number}
+ */
+goog.window.DEFAULT_POPUP_HEIGHT = 500;
+
+
+/**
+ * Default width for popup windows
+ * @type {number}
+ */
+goog.window.DEFAULT_POPUP_WIDTH = 690;
+
+
+/**
+ * Default target for popup windows
+ * @type {string}
+ */
+goog.window.DEFAULT_POPUP_TARGET = 'google_popup';
+
+
+/**
+ * Opens a new window.
+ *
+ * @param {string|Object} linkRef A string or an object that supports toString,
+ *     for example goog.Uri.  If this is an object with a 'href' attribute, such
+ *     as HTMLAnchorElement, it will be used instead.
+ *
+ * @param {Object=} opt_options supports the following options:
+ *  'target': (string) target (window name). If null, linkRef.target will
+ *          be used.
+ *  'width': (number) window width.
+ *  'height': (number) window height.
+ *  'top': (number) distance from top of screen
+ *  'left': (number) distance from left of screen
+ *  'toolbar': (boolean) show toolbar
+ *  'scrollbars': (boolean) show scrollbars
+ *  'location': (boolean) show location
+ *  'statusbar': (boolean) show statusbar
+ *  'menubar': (boolean) show menubar
+ *  'resizable': (boolean) resizable
+ *  'noreferrer': (boolean) whether to attempt to remove the referrer header
+ *      from the request headers. Does this by opening a blank window that
+ *      then redirects to the target url, so users may see some flickering.
+ *
+ * @param {Window=} opt_parentWin Parent window that should be used to open the
+ *                 new window.
+ *
+ * @return {Window} Returns the window object that was opened. This returns
+ *                  null if a popup blocker prevented the window from being
+ *                  opened.
+ */
+goog.window.open = function(linkRef, opt_options, opt_parentWin) {
+  if (!opt_options) {
+    opt_options = {};
+  }
+  var parentWin = opt_parentWin || window;
+
+  // HTMLAnchorElement has a toString() method with the same behavior as
+  // goog.Uri in all browsers except for Safari, which returns
+  // '[object HTMLAnchorElement]'.  We check for the href first, then
+  // assume that it's a goog.Uri or String otherwise.
+  var href = typeof linkRef.href != 'undefined' ? linkRef.href :
+      String(linkRef);
+  var target = opt_options.target || linkRef.target;
+
+  var sb = [];
+  for (var option in opt_options) {
+    switch (option) {
+      case 'width':
+      case 'height':
+      case 'top':
+      case 'left':
+        sb.push(option + '=' + opt_options[option]);
+        break;
+      case 'target':
+      case 'noreferrer':
+        break;
+      default:
+        sb.push(option + '=' + (opt_options[option] ? 1 : 0));
+    }
+  }
+  var optionString = sb.join(',');
+
+  var newWin;
+  if (opt_options['noreferrer']) {
+    // Use a meta-refresh to stop the referrer from being included in the
+    // request headers.
+    newWin = parentWin.open('', target, optionString);
+    if (newWin) {
+      if (goog.userAgent.IE) {
+        // IE has problems parsing the content attribute if the url contains
+        // a semicolon. We can fix this by adding quotes around the url, but
+        // then we can't parse quotes in the URL correctly. We take a
+        // best-effort approach.
+        //
+        // If the URL has semicolons, wrap it in single quotes to protect
+        // the semicolons.
+        // If the URL has semicolons and single quotes, url-encode the single
+        // quotes as well.
+        //
+        // This is imperfect. Notice that both ' and ; are reserved characters
+        // in URIs, so this could do the wrong thing, but at least it will
+        // do the wrong thing in only rare cases.
+        // ugh.
+        if (href.indexOf(';') != -1) {
+          href = "'" + href.replace(/'/g, '%27') + "'";
+        }
+      }
+      newWin.opener = null;
+      href = goog.string.htmlEscape(href);
+      newWin.document.write('<META HTTP-EQUIV="refresh" content="0; url=' +
+                            href + '">');
+      newWin.document.close();
+    }
+  } else {
+    newWin = parentWin.open(href, target, optionString);
+  }
+  // newWin is null if a popup blocker prevented the window open.
+  return newWin;
+};
+
+
+/**
+ * Opens a new window without any real content in it.
+ *
+ * This can be used to get around popup blockers if you need to open a window
+ * in response to a user event, but need to do asynchronous work to determine
+ * the URL to open, and then set the URL later.
+ *
+ * Example usage:
+ *
+ * var newWin = goog.window.openBlank('Loading...');
+ * setTimeout(
+ *     function() {
+ *       newWin.location.href = 'http://www.google.com';
+ *     }, 100);
+ *
+ * @param {string=} opt_message String to show in the new window. This string
+ *     will be HTML-escaped to avoid XSS issues.
+ * @param {Object=} opt_options Options to open window with.
+ *     {@see goog.window.open for exact option semantics}.
+ * @param {Window=} opt_parentWin Parent window that should be used to open the
+ *                 new window.
+ * @return {Window} Returns the window object that was opened. This returns
+ *                  null if a popup blocker prevented the window from being
+ *                  opened.
+ */
+goog.window.openBlank = function(opt_message, opt_options, opt_parentWin) {
+
+  // Open up a window with the loading message and nothing else.
+  // This will be interpreted as HTML content type with a missing doctype
+  // and html/body tags, but is otherwise acceptable.
+  var loadingMessage = opt_message ? goog.string.htmlEscape(opt_message) : '';
+  return /** @type {Window} */ (goog.window.open(
+      'javascript:"' + encodeURI(loadingMessage) + '"',
+      opt_options, opt_parentWin));
+};
+
+
+/**
+ * Raise a help popup window, defaulting to "Google standard" size and name.
+ *
+ * (If your project is using GXPs, consider using {@link PopUpLink.gxp}.)
+ *
+ * @param {string|Object} linkRef if this is a string, it will be used as the
+ * URL of the popped window; otherwise it's assumed to be an HTMLAnchorElement
+ * (or some other object with "target" and "href" properties).
+ *
+ * @param {Object=} opt_options Options to open window with.
+ *     {@see goog.window.open for exact option semantics}
+ *     Additional wrinkles to the options:
+ *     - if 'target' field is null, linkRef.target will be used. If *that's*
+ *     null, the default is "google_popup".
+ *     - if 'width' field is not specified, the default is 690.
+ *     - if 'height' field is not specified, the default is 500.
+ *
+ * @return {boolean} true if the window was not popped up, false if it was.
+ */
+goog.window.popup = function(linkRef, opt_options) {
+  if (!opt_options) {
+    opt_options = {};
+  }
+
+  // set default properties
+  opt_options['target'] = opt_options['target'] ||
+      linkRef['target'] || goog.window.DEFAULT_POPUP_TARGET;
+  opt_options['width'] = opt_options['width'] ||
+      goog.window.DEFAULT_POPUP_WIDTH;
+  opt_options['height'] = opt_options['height'] ||
+      goog.window.DEFAULT_POPUP_HEIGHT;
+
+  var newWin = goog.window.open(linkRef, opt_options);
+  if (!newWin) {
+    return true;
+  }
+  newWin.focus();
+
+  return false;
+};
 goog.provide('feng.utils.Utils');
 
+goog.require('goog.dom');
+goog.require('goog.string');
 goog.require('goog.style');
 goog.require('goog.Uri');
+goog.require('goog.window');
 
 
 /**
@@ -32666,6 +32484,46 @@ feng.utils.Utils.centerAlign = function(alignEl, relativeElOrSize) {
   var alignElY = Math.round( (relativeSize.height - alignElSize.height) / 2 );
 
   goog.style.setPosition( alignEl, alignElX, alignElY );
+};
+
+
+feng.utils.Utils.popUp = function(url) {
+
+  var width, height;
+
+  var isFacebook = goog.string.contains( url, 'facebook' );
+  var isTwitter = goog.string.contains( url, 'twitter' );
+  var isGoogle = goog.string.contains( url, 'google' );
+
+  if(isFacebook) {
+
+    width = 640;
+    height = 275;
+
+  }else if(isTwitter) {
+
+    width = 575;
+    height = 275;
+
+  }else if(isGoogle) {
+
+    width = 640;
+    height = 470;
+  }
+
+  var viewportSize = goog.dom.getViewportSize();
+
+  goog.window.open(url, {
+    'width': width,
+    'height': height,
+    'left': (window.screenLeft || window.screenX) + (viewportSize.width - width)/2,
+    'top': (window.screenTop || window.screenY) + (viewportSize.height - height)/2,
+    'toolbar': false,
+    'scrollbars': true,
+    'statusbar': false,
+    'menubar': false,
+    'resizable': true
+  });
 };goog.provide('feng.models.Preload');
 
 goog.require('goog.object');
@@ -32683,7 +32541,7 @@ feng.models.Preload = function(){
 			'spinner': 'images/spinner.png',
 			'spinner-data': 'json/spinner.json',
 			'scene-studio': 'images/scene-studio.jpg',
-			'scene-townhouse': 'images/scene-townhouse.jpg',
+			'scene-house': 'images/scene-house.jpg',
 			'circular-fill': 'images/circular-fill.png',
 			'book': 'images/book.png',
 			'cube-browse': 'images/cube-browse.png',
@@ -32860,7 +32718,7 @@ feng.models.Preload = function(){
 				}
 			}
 		},
-		'townhouse': {
+		'house': {
 			'global': {
 				'character': {
 					'joanna-data': 'json/characters/joanna.json',
@@ -32891,116 +32749,116 @@ feng.models.Preload = function(){
 				}
 			},
 			'boysroom': {
-				'scene-data': 'json/townhouse-boysroom.json',
-				'floor-texture': 'images/texture/townhouse/boysroom/floor.jpg',
-				'ceiling-texture': 'images/texture/townhouse/boysroom/ceiling.jpg',
-				'wall-texture': 'images/texture/townhouse/boysroom/wall.jpg',
-				'wall-outer-texture': 'images/texture/townhouse/boysroom/wall-outer.jpg',
-				'cabinet-texture': 'images/texture/townhouse/boysroom/cabinet.jpg',
-				'bed-texture': 'images/texture/townhouse/boysroom/bed.jpg',
-				'big-frame-texture': 'images/texture/townhouse/boysroom/big-frame.jpg',
-				'decoration-pictures-texture': 'images/texture/townhouse/boysroom/decoration-pictures.jpg',
-				'ceiling-lamps-texture': 'images/texture/townhouse/boysroom/ceiling-lamps.jpg',
-				'stools-texture': 'images/texture/townhouse/boysroom/stools.jpg',
-				'football-texture': 'images/texture/townhouse/boysroom/football.jpg',
-				'bear-in-drawer-texture': 'images/texture/townhouse/boysroom/bear-in-drawer.jpg',
-				'moon-texture': 'images/texture/townhouse/boysroom/moon.jpg',
-				'carpet-texture': 'images/texture/townhouse/boysroom/carpet.jpg',
-				'shelf-stuff-1-texture': 'images/texture/townhouse/boysroom/shelf-stuff-1.jpg',
-				'shelf-stuff-2-texture': 'images/texture/townhouse/boysroom/shelf-stuff-2.jpg',
-				'shelf-stuff-3-texture': 'images/texture/townhouse/boysroom/shelf-stuff-3.jpg',
-				'shelf-stuff-4-texture': 'images/texture/townhouse/boysroom/shelf-stuff-4.jpg',
-				'shelf-stuff-5-texture': 'images/texture/townhouse/boysroom/shelf-stuff-5.jpg',
-				'shelf-stuff-6-texture': 'images/texture/townhouse/boysroom/shelf-stuff-6.jpg',
-				'toytrain-texture': 'images/texture/townhouse/boysroom/toytrain.jpg',
-				'sketchpad-texture': 'images/texture/townhouse/boysroom/sketchpad.jpg',
-				'nightstand-lamp-texture': 'images/texture/townhouse/boysroom/nightstand-lamp.jpg',
-				'yellow-reading-lamp-texture': 'images/texture/townhouse/boysroom/yellow-reading-lamp.jpg',
-				'blue-reading-lamp-texture': 'images/texture/townhouse/boysroom/blue-reading-lamp.jpg',
-				'bedding-texture': 'images/texture/townhouse/boysroom/bedding.jpg',
-				'chalkboard-texture': 'images/texture/townhouse/boysroom/chalkboard.jpg',
-				'slippers-texture': 'images/texture/townhouse/boysroom/slippers.jpg',
-				'table-books-texture': 'images/texture/townhouse/boysroom/table-books.jpg',
-				'computer-texture': 'images/texture/townhouse/boysroom/computer.jpg',
-				'table-texture': 'images/texture/townhouse/boysroom/table.jpg',
-				'table-stuff-texture': 'images/texture/townhouse/boysroom/table-stuff.jpg',
-				'desk-texture': 'images/texture/townhouse/boysroom/desk.jpg',
-				'swivel-chair-texture': 'images/texture/townhouse/boysroom/swivel-chair.jpg',
-				'shelf-left-texture': 'images/texture/townhouse/boysroom/shelf-left.jpg',
-				'shelf-right-texture': 'images/texture/townhouse/boysroom/shelf-right.jpg',
-				'pencil-vase-texture': 'images/texture/townhouse/boysroom/pencil-vase.jpg',
-				'nightstand-texture': 'images/texture/townhouse/boysroom/nightstand.jpg',
-				'drawer-texture': 'images/texture/townhouse/boysroom/drawer.jpg',
-				'handheld-nightstand-texture': 'images/texture/townhouse/boysroom/handheld-nightstand.jpg',
-				'window-texture': 'images/texture/townhouse/boysroom/window.jpg',
-				'window-frame-texture': 'images/texture/townhouse/boysroom/window-frame.jpg',
-				'door-frame-texture': 'images/texture/townhouse/boysroom/door-frame.jpg',
+				'scene-data': 'json/house-boysroom.json',
+				'floor-texture': 'images/texture/house/boysroom/floor.jpg',
+				'ceiling-texture': 'images/texture/house/boysroom/ceiling.jpg',
+				'wall-texture': 'images/texture/house/boysroom/wall.jpg',
+				'wall-outer-texture': 'images/texture/house/boysroom/wall-outer.jpg',
+				'cabinet-texture': 'images/texture/house/boysroom/cabinet.jpg',
+				'bed-texture': 'images/texture/house/boysroom/bed.jpg',
+				'big-frame-texture': 'images/texture/house/boysroom/big-frame.jpg',
+				'decoration-pictures-texture': 'images/texture/house/boysroom/decoration-pictures.jpg',
+				'ceiling-lamps-texture': 'images/texture/house/boysroom/ceiling-lamps.jpg',
+				'stools-texture': 'images/texture/house/boysroom/stools.jpg',
+				'football-texture': 'images/texture/house/boysroom/football.jpg',
+				'bear-in-drawer-texture': 'images/texture/house/boysroom/bear-in-drawer.jpg',
+				'moon-texture': 'images/texture/house/boysroom/moon.jpg',
+				'carpet-texture': 'images/texture/house/boysroom/carpet.jpg',
+				'shelf-stuff-1-texture': 'images/texture/house/boysroom/shelf-stuff-1.jpg',
+				'shelf-stuff-2-texture': 'images/texture/house/boysroom/shelf-stuff-2.jpg',
+				'shelf-stuff-3-texture': 'images/texture/house/boysroom/shelf-stuff-3.jpg',
+				'shelf-stuff-4-texture': 'images/texture/house/boysroom/shelf-stuff-4.jpg',
+				'shelf-stuff-5-texture': 'images/texture/house/boysroom/shelf-stuff-5.jpg',
+				'shelf-stuff-6-texture': 'images/texture/house/boysroom/shelf-stuff-6.jpg',
+				'toytrain-texture': 'images/texture/house/boysroom/toytrain.jpg',
+				'sketchpad-texture': 'images/texture/house/boysroom/sketchpad.jpg',
+				'nightstand-lamp-texture': 'images/texture/house/boysroom/nightstand-lamp.jpg',
+				'yellow-reading-lamp-texture': 'images/texture/house/boysroom/yellow-reading-lamp.jpg',
+				'blue-reading-lamp-texture': 'images/texture/house/boysroom/blue-reading-lamp.jpg',
+				'bedding-texture': 'images/texture/house/boysroom/bedding.jpg',
+				'chalkboard-texture': 'images/texture/house/boysroom/chalkboard.jpg',
+				'slippers-texture': 'images/texture/house/boysroom/slippers.jpg',
+				'table-books-texture': 'images/texture/house/boysroom/table-books.jpg',
+				'computer-texture': 'images/texture/house/boysroom/computer.jpg',
+				'table-texture': 'images/texture/house/boysroom/table.jpg',
+				'table-stuff-texture': 'images/texture/house/boysroom/table-stuff.jpg',
+				'desk-texture': 'images/texture/house/boysroom/desk.jpg',
+				'swivel-chair-texture': 'images/texture/house/boysroom/swivel-chair.jpg',
+				'shelf-left-texture': 'images/texture/house/boysroom/shelf-left.jpg',
+				'shelf-right-texture': 'images/texture/house/boysroom/shelf-right.jpg',
+				'pencil-vase-texture': 'images/texture/house/boysroom/pencil-vase.jpg',
+				'nightstand-texture': 'images/texture/house/boysroom/nightstand.jpg',
+				'drawer-texture': 'images/texture/house/boysroom/drawer.jpg',
+				'handheld-nightstand-texture': 'images/texture/house/boysroom/handheld-nightstand.jpg',
+				'window-texture': 'images/texture/house/boysroom/window.jpg',
+				'window-frame-texture': 'images/texture/house/boysroom/window-frame.jpg',
+				'door-frame-texture': 'images/texture/house/boysroom/door-frame.jpg',
 				'skybox': {
-					'xpos': 'images/texture/townhouse/boysroom/skybox/pos-x.png',
-					'xneg': 'images/texture/townhouse/boysroom/skybox/neg-x.png',
-					'ypos': 'images/texture/townhouse/boysroom/skybox/pos-y.png',
-					'yneg': 'images/texture/townhouse/boysroom/skybox/neg-y.png',
-					'zpos': 'images/texture/townhouse/boysroom/skybox/pos-z.png',
-					'zneg': 'images/texture/townhouse/boysroom/skybox/neg-z.png'
+					'xpos': 'images/texture/house/boysroom/skybox/pos-x.png',
+					'xneg': 'images/texture/house/boysroom/skybox/neg-x.png',
+					'ypos': 'images/texture/house/boysroom/skybox/pos-y.png',
+					'yneg': 'images/texture/house/boysroom/skybox/neg-y.png',
+					'zpos': 'images/texture/house/boysroom/skybox/pos-z.png',
+					'zneg': 'images/texture/house/boysroom/skybox/neg-z.png'
 				}
 			},
 			'homeoffice': {
-				'scene-data': 'json/townhouse-homeoffice.json',
-				'floor-texture': 'images/texture/townhouse/homeoffice/floor.jpg',
-				'ceiling-texture': 'images/texture/townhouse/homeoffice/ceiling.jpg',
-				'wall-texture':	'images/texture/townhouse/homeoffice/wall.jpg',
-				'wall-outer-texture': 'images/texture/townhouse/homeoffice/wall-outer.jpg',
-				'swivel-chair-texture': 'images/texture/townhouse/homeoffice/swivel-chair.jpg',
-				'storage-texture': 'images/texture/townhouse/homeoffice/storage.jpg',
-				'setsquare-texture': 'images/texture/townhouse/homeoffice/setsquare.jpg',
-				'carpet-texture': 'images/texture/townhouse/homeoffice/carpet.jpg',
-				'door-frame-texture': 'images/texture/townhouse/homeoffice/door-frame.jpg',
-				'display-shelf-lamp-texture': 'images/texture/townhouse/homeoffice/display-shelf-lamp.jpg',
-				'bookshelf-lamps-texture': 'images/texture/townhouse/homeoffice/bookshelf-lamps.jpg',
-				'picture-frame-1-texture': 'images/texture/townhouse/homeoffice/picture-frame-1.jpg',
-				'picture-frame-2-texture': 'images/texture/townhouse/homeoffice/picture-frame-2.jpg',
-				'picture-frame-3-texture': 'images/texture/townhouse/homeoffice/picture-frame-3.jpg',
-				'picture-frame-4-texture': 'images/texture/townhouse/homeoffice/picture-frame-4.jpg',
-				'block-shelf-1-texture': 'images/texture/townhouse/homeoffice/block-shelf-1.jpg',
-				'block-shelf-2-texture': 'images/texture/townhouse/homeoffice/block-shelf-2.jpg',
-				'block-stuff-1-texture': 'images/texture/townhouse/homeoffice/block-stuff-1.jpg',
-				'block-stuff-2-texture': 'images/texture/townhouse/homeoffice/block-stuff-2.jpg',
-				'books-1-texture': 'images/texture/townhouse/homeoffice/books-1.jpg',
-				'books-2-texture': 'images/texture/townhouse/homeoffice/books-2.jpg',
-				'round-lamp-texture': 'images/texture/townhouse/homeoffice/round-lamp.jpg',
-				'calendar-texture': 'images/texture/townhouse/homeoffice/calendar.jpg',
-				'magazine-texture': 'images/texture/townhouse/homeoffice/magazine.jpg',
-				'window-texture': 'images/texture/townhouse/homeoffice/window.jpg',
-				'armchair-texture': 'images/texture/townhouse/homeoffice/armchair.jpg',
-				'coffeecup-texture': 'images/texture/townhouse/homeoffice/coffeecup.jpg',
-				'writing-desk-texture': 'images/texture/townhouse/homeoffice/writing-desk.jpg',
-				'dracaena-fragrans-texture': 'images/texture/townhouse/homeoffice/dracaena-fragrans.jpg',
-				'handbag-texture': 'images/texture/townhouse/homeoffice/handbag.jpg',
-				'pen-vase-texture': 'images/texture/townhouse/homeoffice/pen-vase.jpg',
-				'rubberplant-texture': 'images/texture/townhouse/homeoffice/rubberplant.jpg',
-				'coffee-table-texture': 'images/texture/townhouse/homeoffice/coffee-table.jpg',
-				'floor-lamp-texture': 'images/texture/townhouse/homeoffice/floor-lamp.jpg',
-				'ceiling-lamp-texture': 'images/texture/townhouse/homeoffice/ceiling-lamp.jpg',
-				'cup-texture': 'images/texture/townhouse/homeoffice/cup.jpg',
-				'reading-lamp-1-texture': 'images/texture/townhouse/homeoffice/reading-lamp-1.jpg',
-				'reading-lamp-2-texture': 'images/texture/townhouse/homeoffice/reading-lamp-2.jpg',
-				'sofa-texture': 'images/texture/townhouse/homeoffice/sofa.jpg',
-				'trash-texture': 'images/texture/townhouse/homeoffice/trash.jpg',
-				'display-shelf-texture': 'images/texture/townhouse/homeoffice/display-shelf.jpg',
-				'computer-texture': 'images/texture/townhouse/homeoffice/computer.jpg',
-				'laptop-texture': 'images/texture/townhouse/homeoffice/laptop.jpg',
-				'curtain-texture': 'images/texture/townhouse/homeoffice/curtain.jpg',
-				'curtain-rod-texture': 'images/texture/townhouse/homeoffice/curtain-rod.jpg',
-				'telephone-texture': 'images/texture/townhouse/homeoffice/telephone.jpg',
-				'bookshelf-texture': 'images/texture/townhouse/homeoffice/bookshelf.jpg',
-				'bookshelf-stuff-texture': 'images/texture/townhouse/homeoffice/bookshelf-stuff.jpg',
+				'scene-data': 'json/house-homeoffice.json',
+				'floor-texture': 'images/texture/house/homeoffice/floor.jpg',
+				'ceiling-texture': 'images/texture/house/homeoffice/ceiling.jpg',
+				'wall-texture':	'images/texture/house/homeoffice/wall.jpg',
+				'wall-outer-texture': 'images/texture/house/homeoffice/wall-outer.jpg',
+				'swivel-chair-texture': 'images/texture/house/homeoffice/swivel-chair.jpg',
+				'storage-texture': 'images/texture/house/homeoffice/storage.jpg',
+				'setsquare-texture': 'images/texture/house/homeoffice/setsquare.jpg',
+				'carpet-texture': 'images/texture/house/homeoffice/carpet.jpg',
+				'door-frame-texture': 'images/texture/house/homeoffice/door-frame.jpg',
+				'display-shelf-lamp-texture': 'images/texture/house/homeoffice/display-shelf-lamp.jpg',
+				'bookshelf-lamps-texture': 'images/texture/house/homeoffice/bookshelf-lamps.jpg',
+				'picture-frame-1-texture': 'images/texture/house/homeoffice/picture-frame-1.jpg',
+				'picture-frame-2-texture': 'images/texture/house/homeoffice/picture-frame-2.jpg',
+				'picture-frame-3-texture': 'images/texture/house/homeoffice/picture-frame-3.jpg',
+				'picture-frame-4-texture': 'images/texture/house/homeoffice/picture-frame-4.jpg',
+				'block-shelf-1-texture': 'images/texture/house/homeoffice/block-shelf-1.jpg',
+				'block-shelf-2-texture': 'images/texture/house/homeoffice/block-shelf-2.jpg',
+				'block-stuff-1-texture': 'images/texture/house/homeoffice/block-stuff-1.jpg',
+				'block-stuff-2-texture': 'images/texture/house/homeoffice/block-stuff-2.jpg',
+				'books-1-texture': 'images/texture/house/homeoffice/books-1.jpg',
+				'books-2-texture': 'images/texture/house/homeoffice/books-2.jpg',
+				'round-lamp-texture': 'images/texture/house/homeoffice/round-lamp.jpg',
+				'calendar-texture': 'images/texture/house/homeoffice/calendar.jpg',
+				'magazine-texture': 'images/texture/house/homeoffice/magazine.jpg',
+				'window-texture': 'images/texture/house/homeoffice/window.jpg',
+				'armchair-texture': 'images/texture/house/homeoffice/armchair.jpg',
+				'coffeecup-texture': 'images/texture/house/homeoffice/coffeecup.jpg',
+				'writing-desk-texture': 'images/texture/house/homeoffice/writing-desk.jpg',
+				'dracaena-fragrans-texture': 'images/texture/house/homeoffice/dracaena-fragrans.jpg',
+				'handbag-texture': 'images/texture/house/homeoffice/handbag.jpg',
+				'pen-vase-texture': 'images/texture/house/homeoffice/pen-vase.jpg',
+				'rubberplant-texture': 'images/texture/house/homeoffice/rubberplant.jpg',
+				'coffee-table-texture': 'images/texture/house/homeoffice/coffee-table.jpg',
+				'floor-lamp-texture': 'images/texture/house/homeoffice/floor-lamp.jpg',
+				'ceiling-lamp-texture': 'images/texture/house/homeoffice/ceiling-lamp.jpg',
+				'cup-texture': 'images/texture/house/homeoffice/cup.jpg',
+				'reading-lamp-1-texture': 'images/texture/house/homeoffice/reading-lamp-1.jpg',
+				'reading-lamp-2-texture': 'images/texture/house/homeoffice/reading-lamp-2.jpg',
+				'sofa-texture': 'images/texture/house/homeoffice/sofa.jpg',
+				'trash-texture': 'images/texture/house/homeoffice/trash.jpg',
+				'display-shelf-texture': 'images/texture/house/homeoffice/display-shelf.jpg',
+				'computer-texture': 'images/texture/house/homeoffice/computer.jpg',
+				'laptop-texture': 'images/texture/house/homeoffice/laptop.jpg',
+				'curtain-texture': 'images/texture/house/homeoffice/curtain.jpg',
+				'curtain-rod-texture': 'images/texture/house/homeoffice/curtain-rod.jpg',
+				'telephone-texture': 'images/texture/house/homeoffice/telephone.jpg',
+				'bookshelf-texture': 'images/texture/house/homeoffice/bookshelf.jpg',
+				'bookshelf-stuff-texture': 'images/texture/house/homeoffice/bookshelf-stuff.jpg',
 				'skybox': {
-					'xpos': 'images/texture/townhouse/boysroom/skybox/pos-x.png',
-					'xneg': 'images/texture/townhouse/boysroom/skybox/neg-x.png',
-					'ypos': 'images/texture/townhouse/boysroom/skybox/pos-y.png',
-					'yneg': 'images/texture/townhouse/boysroom/skybox/neg-y.png',
-					'zpos': 'images/texture/townhouse/boysroom/skybox/pos-z.png',
-					'zneg': 'images/texture/townhouse/boysroom/skybox/neg-z.png'
+					'xpos': 'images/texture/house/boysroom/skybox/pos-x.png',
+					'xneg': 'images/texture/house/boysroom/skybox/neg-x.png',
+					'ypos': 'images/texture/house/boysroom/skybox/pos-y.png',
+					'yneg': 'images/texture/house/boysroom/skybox/neg-y.png',
+					'zpos': 'images/texture/house/boysroom/skybox/pos-z.png',
+					'zneg': 'images/texture/house/boysroom/skybox/neg-z.png'
 				}
 			}
 		}
@@ -34047,11 +33905,11 @@ feng.templates.controls.Book = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.Reminder = function(opt_data, opt_ignored) {
   var output = '<div class="reminder"><div class="character">' + feng.templates.controls.RoundButton({content: '<canvas></canvas>'}) + '</div><div class="dialogue hint"><div class="wrapper"><button class="prev icon icon-prev"></button><ul class="hints">';
-  var tipList214 = opt_data.tips;
-  var tipListLen214 = tipList214.length;
-  for (var tipIndex214 = 0; tipIndex214 < tipListLen214; tipIndex214++) {
-    var tipData214 = tipList214[tipIndex214];
-    output += '<li data-tip-id="' + tipData214.id + '">' + tipData214.reminder + '</li>';
+  var tipList216 = opt_data.tips;
+  var tipListLen216 = tipList216.length;
+  for (var tipIndex216 = 0; tipIndex216 < tipListLen216; tipIndex216++) {
+    var tipData216 = tipList216[tipIndex216];
+    output += '<li data-tip-id="' + tipData216.id + '">' + tipData216.reminder + '</li>';
   }
   output += '</ul><button class="next icon icon-next"></button></div></div></div>';
   return output;
@@ -34099,16 +33957,16 @@ feng.templates.controls.Tooltip = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var output = '<div class="progressBar"><div class="inner"><button class="prev icon icon-prev"></button><button class="next icon icon-next"></button><div class="tips-wrapper">';
-  var viewIdList238 = soy.$$getMapKeys(opt_data.tipsOfViews);
-  var viewIdListLen238 = viewIdList238.length;
-  for (var viewIdIndex238 = 0; viewIdIndex238 < viewIdListLen238; viewIdIndex238++) {
-    var viewIdData238 = viewIdList238[viewIdIndex238];
-    output += '<ul class="tips" data-view-id="' + viewIdData238 + '">';
-    var tipList242 = opt_data.tipsOfViews[viewIdData238];
-    var tipListLen242 = tipList242.length;
-    for (var tipIndex242 = 0; tipIndex242 < tipListLen242; tipIndex242++) {
-      var tipData242 = tipList242[tipIndex242];
-      output += '<li class="tip" data-tip-id="' + tipData242.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content" href="' + tipData242.goTipToken + '"><div class="icon icon-' + tipData242.id + '" data-tip-id="' + tipData242.id + '" data-view-id="' + tipData242.viewId + '" data-section-id="' + tipData242.sectionId + '"></div><h6>' + tipData242.name + '</h6></a></div></li>';
+  var viewIdList240 = soy.$$getMapKeys(opt_data.tipsOfViews);
+  var viewIdListLen240 = viewIdList240.length;
+  for (var viewIdIndex240 = 0; viewIdIndex240 < viewIdListLen240; viewIdIndex240++) {
+    var viewIdData240 = viewIdList240[viewIdIndex240];
+    output += '<ul class="tips" data-view-id="' + viewIdData240 + '">';
+    var tipList244 = opt_data.tipsOfViews[viewIdData240];
+    var tipListLen244 = tipList244.length;
+    for (var tipIndex244 = 0; tipIndex244 < tipListLen244; tipIndex244++) {
+      var tipData244 = tipList244[tipIndex244];
+      output += '<li class="tip" data-tip-id="' + tipData244.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content" href="' + tipData244.goTipToken + '"><div class="icon icon-' + tipData244.id + '" data-tip-id="' + tipData244.id + '" data-view-id="' + tipData244.viewId + '" data-section-id="' + tipData244.sectionId + '"></div><h6>' + tipData244.name + '</h6></a></div></li>';
     }
     output += '</ul>';
   }
@@ -34134,12 +33992,12 @@ goog.require('feng.templates.debug');
  * @notypecheck
  */
 feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
-  var output = '<div class="section episode" id="' + opt_data.id + '"><div class="hud"><div class="overlays"><div class="tutorial-overlay"></div><div class="opening-overlay">' + feng.templates.common.Popup({classname: 'opening from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'icon-yes', text: 'I’d be glad to help!'}) + '<div class="character open"></div>'}) + '</div><div class="ending-overlay">' + feng.templates.common.Popup({classname: 'ending from-bottom', content: '<h1></h1><div class="line"></div><p></p>' + feng.templates.common.PrimaryButton({classname: 'continue', icon: 'yes', text: 'continue investigating'}) + feng.templates.common.PrimaryButton({classname: 'visit', icon: 'yes', text: 'Next Challenge'}) + '<div class="character"></div>'}) + '</div><div class="finale-overlay">' + feng.templates.common.Popup({classname: 'finale from-bottom', content: '<h1></h1><div class="line"></div><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'yes', text: 'done'})}) + '</div><div class="loader-overlay"><div class="loader"><canvas class="spinner"></canvas><p class="progress"></p></div></div></div><div class="controls">' + feng.templates.controls.HomeButton(opt_data) + feng.templates.controls.Compass(null) + feng.templates.controls.Book(null) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.DropButton(null) + feng.templates.controls.ProgressBar(opt_data) + feng.templates.controls.Reminder(opt_data) + '</div><div class="tooltips">';
-  var tipList383 = opt_data.tips;
-  var tipListLen383 = tipList383.length;
-  for (var tipIndex383 = 0; tipIndex383 < tipListLen383; tipIndex383++) {
-    var tipData383 = tipList383[tipIndex383];
-    output += feng.templates.controls.Tooltip({tip: tipData383});
+  var output = '<div class="section episode" id="' + opt_data.id + '"><div class="hud"><div class="overlays"><div class="tutorial-overlay"></div><div class="opening-overlay">' + feng.templates.common.Popup({classname: 'opening from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'icon-yes', text: 'I’d be glad to help!'}) + '<div class="character open"></div>'}) + '</div><div class="ending-overlay">' + feng.templates.common.Popup({classname: 'ending from-bottom', content: '<h1></h1><div class="line"></div><p></p>' + feng.templates.common.PrimaryButton({classname: 'continue', icon: 'icon-yes', text: 'Continue Investigating'}) + feng.templates.common.PrimaryButton({classname: 'visit', icon: 'icon-yes', text: 'Next Challenge'}) + '<div class="character"></div>'}) + '</div><div class="finale-overlay">' + feng.templates.common.Popup({classname: 'finale from-bottom', content: '<h1></h1><div class="line"></div><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'icon-yes', text: 'done'})}) + '</div><div class="loader-overlay"><div class="loader"><canvas class="spinner"></canvas><p class="progress"></p></div></div></div><div class="controls">' + feng.templates.controls.HomeButton(opt_data) + feng.templates.controls.Compass(null) + feng.templates.controls.Book(null) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.DropButton(null) + feng.templates.controls.ProgressBar(opt_data) + feng.templates.controls.Reminder(opt_data) + '</div><div class="tooltips">';
+  var tipList385 = opt_data.tips;
+  var tipListLen385 = tipList385.length;
+  for (var tipIndex385 = 0; tipIndex385 < tipListLen385; tipIndex385++) {
+    var tipData385 = tipList385[tipIndex385];
+    output += feng.templates.controls.Tooltip({tip: tipData385});
   }
   output += '</div><div class="captions"></div></div><div class="sceneContainer"></div></div>';
   return output;
@@ -34153,7 +34011,7 @@ feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.main.EpisodeSelection = function(opt_data, opt_ignored) {
-  return '<div class="episode-selection"><div class="scene studio"><div class="background"></div><div class="shade"></div><div class="overlay"><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Ollie\'s<br>Studio</h1><p>Ollie is a fashion designer.<br>She lives in a small studio in<br>the noisy downtown area.<br>Give her some Fengshui tips!</p>' + feng.templates.common.PrimaryButton({href: opt_data.token.STUDIO, icon: 'yes', text: 'start'})}) + '</div><div class="people"></div></div></div><div class="scene townhouse"><div class="background"></div><div class="shade"></div><div class="overlay"><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Ollie\'s<br>Townhouse</h1><p>Ollie lives in a Townhouse,<br>She was married with<br>a preschool kid<br>both living at home.</p>' + feng.templates.common.PrimaryButton({href: opt_data.token.TOWNHOUSE, icon: 'yes', text: 'start'})}) + '</div><div class="people"></div></div></div><div class="prompt">' + feng.templates.common.Disc({content: feng.templates.common.FengshuiLogo({noText: true}) + '<h1><a href="#glossary/about">FENGSHUI</a> HELP<br>NEEDED!</h1><h2><div class="arrow left"></div>CHOOSE ONE<div class="arrow right"></div></h2>'}) + feng.templates.common.FengshuiLogo({noText: true}) + '</div></div>';
+  return '<div class="episode-selection"><div class="scene studio"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Ollie\'s Studio</h1><p>Ollie lives in a small, delicate studio in downtown. How could we improve it\'s energy flow?</p>' + feng.templates.common.PrimaryButton({href: opt_data.token.STUDIO, icon: 'icon-yes', text: 'start'})}) + '</div></div><div class="scene house"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Scott\'s House</h1><p>Scott lives in a two story house, with his wife Joanna and son Nick. How could we improve it\'s energy flow?</p>' + feng.templates.common.PrimaryButton({href: opt_data.token.HOUSE, icon: 'icon-yes', text: 'start'})}) + '</div></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="question">' + feng.templates.common.FengshuiLogo({noText: true}) + '<h1><b>You\'ve got requests.</b>Please improve their<br>interior energy flow using<br>Feng Shui knowledge.</h1><h2><div class="arrow left"></div><span>CHOOSE ONE</span><div class="arrow right"></div></h2></div>'}) + '</div></div>';
 };
 
 
@@ -34164,7 +34022,7 @@ feng.templates.main.EpisodeSelection = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.main.Main = function(opt_data, opt_ignored) {
-  return '<div id="main"><div class="section" id="home"><div class="inner"><section id="main-preloader">' + feng.templates.common.Disc({content: feng.templates.common.FengshuiLogo(null) + '<div class="bar"><div class="fill"></div></div><p class="counter">00</p>'}) + '</section><section id="main-intro">' + feng.templates.common.PrimaryButton({icon: 'yes', text: 'continue'}) + '</section><section id="main-episode-selection"></section></div></div><ul id="main-options"><li><button class="howtoplay"></button></li><li><button class="sound"></button></li><li class="share"><button></button><div class="slider"><div class="buttons"><a class="facebook"></a><a class="twitter"></a><a class="google"></a></div></div></li></ul></div>' + ((opt_data.debug != false) ? feng.templates.debug.Debugger(null) : '');
+  return '<div id="main"><div class="section" id="home"><div class="inner"><section id="main-preloader"><div class="content"><h1>FengShui RealTime</h1><canvas class="house-logo"></canvas><p><span>A real-time experience to practice Feng shui.</span><span>Discovering tips for creating an optimal,</span><span>balanced interior environment.</span></p></div></section><section id="main-episode-selection"></section></div></div><ul id="main-options"><li><button class="howtoplay"></button></li><li><button class="sound"></button></li><li class="share"><button></button><div class="slider"><div class="buttons"><a class="facebook"></a><a class="twitter"></a><a class="google"></a></div></div></li></ul></div>' + ((opt_data.debug != false) ? feng.templates.debug.Debugger(null) : '');
 };
 
 
@@ -34665,6 +34523,327 @@ feng.controllers.view3d.CameraController.prototype.onResize = function(aspect){
     camera.aspect = aspect;
     camera.updateProjectionMatrix();
   }, this);
+};goog.provide('feng.views.view3dobject.View3DObject');
+
+goog.require('goog.events.EventTarget');
+goog.require('goog.math.Box');
+
+/**
+ * @constructor
+ * A 3d object in view3d
+ */
+feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
+
+  goog.base(this);
+
+  this.object3d = object3d;
+  this.object3d.userData = data;
+  this.object3d.view3dObject = this;
+
+  this.name = object3d.name;
+  this.data = data;
+
+  this._view3d = view3d;
+  this._boundingBox = new THREE.Box3();
+  this._boundingSphere = new THREE.Sphere();
+  this._center = new THREE.Vector3();
+
+  this._tilemapProxy = null;
+
+  this._proxyBox = new THREE.Mesh( new THREE.BoxGeometry(1,1,1) );
+  this._proxyBox.view3dObject = this;
+
+  this._canRender = this.object3d.visible;
+
+  //
+  this.registerToView3D();
+};
+goog.inherits(feng.views.view3dobject.View3DObject, goog.events.EventTarget);
+
+
+feng.views.view3dobject.View3DObject.prototype.registerToView3D = function(){
+
+  this._view3d.view3dObjects[ this.name ] = this;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.init = function(){
+
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.isCollidable = function(){
+
+  return (this.data.collidable === true);
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.isFloor = function(){
+
+  return (goog.string.startsWith(this.name, 'floor'));
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getProxyBox = function(){
+
+  var boundingBox = this.getBoundingBox();
+
+  boundingBox.size( this._proxyBox.scale );
+  boundingBox.center( this._proxyBox.position );
+  this._proxyBox.updateMatrixWorld();
+
+  return this._proxyBox;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getBoundingBox = function(){
+
+  this._boundingBox.setFromObject( this.object3d );
+  return this._boundingBox;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getBoundingSphere = function(){
+
+  this.getBoundingBox().getBoundingSphere( this._boundingSphere );
+  return this._boundingSphere;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getBox = function(){
+
+  var box3 = this.getBoundingBox();
+  var minX = box3.min.x;
+  var minZ = box3.min.z;
+  var maxX = box3.max.x;
+  var maxZ = box3.max.z;
+
+  var box2 = new goog.math.Box(minZ, maxX, maxZ, minX);
+
+  return box2;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getCenter = function(){
+
+  var box3 = this.getBoundingBox();
+  return box3.center();
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getBoundingBoxParameters = function(){
+
+  var box3 = this.getBoundingBox();
+  
+  return {
+    width: Math.abs(box3.max.x - box3.min.x),
+    height: Math.abs(box3.max.y - box3.min.y),
+    length: Math.abs(box3.max.z - box3.min.z)
+  };
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getHeight = function(){
+
+  return this.getBoundingBoxParameters().height;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getTilemapProxy = function(){
+
+  var clone = this._tilemapProxy;
+
+  if(!clone) {
+
+    clone = new THREE.Mesh( this.object3d.geometry.clone(), feng.views.view3dobject.View3DObject.ProxyMaterial.GREEN );
+    this._tilemapProxy = clone;
+  }
+
+  if(this.isCollidable()) {
+
+    clone.material = feng.views.view3dobject.View3DObject.ProxyMaterial.RED;
+
+  }else {
+
+    clone.material = feng.views.view3dobject.View3DObject.ProxyMaterial.GREEN;
+  }
+  
+  clone.material.overdraw = true;
+
+  clone.position.copy( this.object3d.position );
+  clone.rotation.copy( this.object3d.rotation );
+
+  return clone;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.addToScene = function(){
+
+  this._view3d.scene.add( this.object3d );
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.removeFromScene = function(){
+
+  this._view3d.scene.remove( this.object3d );
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.enableRender = function(){
+
+  if(this._canRender) return;
+  else this._canRender = true;
+
+  // itself, its parent and its children should be renderable
+  this.object3d.visible = true;
+
+  var parent = this.object3d.parent;
+  var scene = this._view3d.scene;
+
+  while(parent && !(parent === scene)) {
+
+    if(parent.view3dObject) parent.view3dObject.enableRender();
+    else parent.visible = true;
+
+    parent = parent.parent;
+  }
+
+  this.object3d.traverse(function(child) {
+
+    if(child.view3dObject) child.view3dObject.enableRender();
+    else child.visible = true;
+  });
+
+  //console.log("SHOW:", this.object3d.name);
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.disableRender = function(){
+
+  if(!this._canRender) return;
+  else this._canRender = false;
+
+  // itself and its children should not be renderable
+  this.object3d.visible = false;
+
+  //console.log("HIDE:", this.object3d.name);
+};
+
+
+feng.views.view3dobject.View3DObject.ProxyMaterial = {
+  RED: new THREE.MeshBasicMaterial( {color: 0xff0000} ),
+  GREEN: new THREE.MeshBasicMaterial( {color: 0x00ff00} )
+};goog.provide('feng.views.view3dobject.InteractiveObject');
+
+goog.require('goog.events.EventHandler');
+goog.require('feng.views.view3dobject.View3DObject');
+
+/**
+ * @constructor
+ * A 3d object that can be interacted in view3d
+ */
+feng.views.view3dobject.InteractiveObject = function( object3d, data, view3d ){
+
+  goog.base(this, object3d, data, view3d);
+
+  this.object3d.interactiveObject = this;
+  this.interactions = this.data.interactions || [];
+  this.isPhysical = true;
+  this.screenBox = new goog.math.Box(0, 0, 0, 0);
+
+  this.isSpecialCameraEnabled = data.camera ? true : false;
+  this.specialCameraSettings = data.camera || {};
+
+  this._interactionHandler = new goog.events.EventHandler(this);
+};
+goog.inherits(feng.views.view3dobject.InteractiveObject, feng.views.view3dobject.View3DObject);
+
+
+feng.views.view3dobject.InteractiveObject.prototype.registerToView3D = function(){
+
+  goog.base(this, 'registerToView3D');
+  
+  this._view3d.interactiveObjects[ this.name ] = this;
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.hasInteraction = function( interaction ){
+
+	return goog.array.contains(this.interactions, interaction);
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.activate = function(){
+
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.deactivate = function(){
+
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.startInteraction = function(){
+
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.stopInteraction = function(){
+
+  this._interactionHandler.removeAll();
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.enableSpecialCamera = function( position, rotation, fov ){
+
+  this.isSpecialCameraEnabled = position ? true : false;
+
+  if(this.isSpecialCameraEnabled) {
+
+    this.specialCameraSettings.position = position;
+    this.specialCameraSettings.rotation = rotation;
+    this.specialCameraSettings.fov = fov;
+  }
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.updateScreenBox = function(){
+
+  var box3 = this.getBoundingBox();
+  var camera = this._view3d.cameraController.activeCamera;
+  var viewSize = this._view3d.getViewSize();
+
+  this.screenBox = feng.utils.ThreeUtils.getRectangleFromBox3( box3, camera, viewSize, this.screenBox );
+
+  return this.screenBox;
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.onCameraIn = function(){
+
+  console.log('on camera in: ' + this.name);
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.onCameraOut = function(){
+
+  console.log('on camera out: ' + this.name);
+};
+
+
+/*
+ * Interactions
+ */
+feng.views.view3dobject.InteractiveObject.Interaction = {
+  ADVICE: 'advice',
+  MOVE: 'move',
+  ROTATE: 'rotate',
+  PICK: 'pick',
+  DROP: 'drop',
+  CHANGE_COLOR: 'change_color',
+  CHANGE_OBJECT: 'change_object',
+  CHANGE_PICTURE: 'change_picture',
+  CHANGE_ACCESSORY: 'change_accessory'
 };goog.provide('feng.views.view3dobject.TipObject');
 
 goog.require('feng.models.achievements.Achievements');
@@ -35463,7 +35642,7 @@ feng.models.View3D.Data = {
 			}
 		}
 	},
-	'townhouse': {
+	'house': {
 		'livingroom': {
 			'ground': {
 				receiveShadow: true
@@ -35473,103 +35652,103 @@ feng.models.View3D.Data = {
 			},
 			'cabinet': {
 				collidable: true,
-				texture: "townhouse.livingroom.cabinet-texture"
+				texture: "house.livingroom.cabinet-texture"
 			},
 			'bed': {
 				collidable: true,
-				texture: "townhouse.livingroom.bed-texture"
+				texture: "house.livingroom.bed-texture"
 			}
 		},
 		'boysroom': {
 			'floor': {
-				texture: "townhouse.boysroom.floor-texture",
+				texture: "house.boysroom.floor-texture",
 				receiveShadow: true
 			},
 			'wall':	{
 				collidable: true,
 				castShadow: true,
-				texture: "townhouse.boysroom.wall-texture"
+				texture: "house.boysroom.wall-texture"
 			},
 			'wall-outer':	{
 				castShadow: true,
-				texture: "townhouse.boysroom.wall-outer-texture"
+				texture: "house.boysroom.wall-outer-texture"
 			},
 			'ceiling':	{
-				texture: "townhouse.boysroom.ceiling-texture"
+				texture: "house.boysroom.ceiling-texture"
 			},
 			'cabinet':	{
 				collidable: true,
-				texture: "townhouse.boysroom.cabinet-texture"
+				texture: "house.boysroom.cabinet-texture"
 			},
 			'bed': {
 				collidable: true,
-				texture: "townhouse.boysroom.bed-texture"
+				texture: "house.boysroom.bed-texture"
 			},
 			'big-frame': {
-				texture: "townhouse.boysroom.big-frame-texture"
+				texture: "house.boysroom.big-frame-texture"
 			},
 			'decoration-pictures': {
-				texture: "townhouse.boysroom.decoration-pictures-texture"
+				texture: "house.boysroom.decoration-pictures-texture"
 			},
 			'carpet':	{
-				texture: "townhouse.boysroom.carpet-texture"
+				texture: "house.boysroom.carpet-texture"
 			},
 			'stools': {
 				collidable: true,
-				texture: "townhouse.boysroom.stools-texture"
+				texture: "house.boysroom.stools-texture"
 			},
 			'football': {
 				collidable: true,
-				texture: "townhouse.boysroom.football-texture"
+				texture: "house.boysroom.football-texture"
 			},
 			'moon': {
-				texture: "townhouse.boysroom.moon-texture"
+				texture: "house.boysroom.moon-texture"
 			},
 			'shelf-stuff-1': {
-				texture: "townhouse.boysroom.shelf-stuff-1-texture"
+				texture: "house.boysroom.shelf-stuff-1-texture"
 			},
 			'shelf-stuff-2': {
-				texture: "townhouse.boysroom.shelf-stuff-2-texture"
+				texture: "house.boysroom.shelf-stuff-2-texture"
 			},
 			'shelf-stuff-3': {
-				texture: "townhouse.boysroom.shelf-stuff-3-texture"
+				texture: "house.boysroom.shelf-stuff-3-texture"
 			},
 			'shelf-stuff-4': {
-				texture: "townhouse.boysroom.shelf-stuff-4-texture"
+				texture: "house.boysroom.shelf-stuff-4-texture"
 			},
 			'shelf-stuff-5': {
-				texture: "townhouse.boysroom.shelf-stuff-5-texture"
+				texture: "house.boysroom.shelf-stuff-5-texture"
 			},
 			'shelf-stuff-6': {
-				texture: "townhouse.boysroom.shelf-stuff-6-texture"
+				texture: "house.boysroom.shelf-stuff-6-texture"
 			},
 			'toytrain': {
-				texture: "townhouse.boysroom.toytrain-texture"
+				texture: "house.boysroom.toytrain-texture"
 			},
 			'computer': {
-				texture: "townhouse.boysroom.computer-texture"
+				texture: "house.boysroom.computer-texture"
 			},
 			'desk': {
 				collidable: true,
-				texture: "townhouse.boysroom.desk-texture"
+				texture: "house.boysroom.desk-texture"
 			},
 			'table': {
 				collidable: true,
-				texture: "townhouse.boysroom.table-texture"
+				texture: "house.boysroom.table-texture"
 			},
 			'table-stuff': {
-				texture: "townhouse.boysroom.table-stuff-texture"
+				texture: "house.boysroom.table-stuff-texture"
 			},
 			'swivel-chair': {
 				collidable: true,
-				texture: "townhouse.boysroom.swivel-chair-texture"
+				texture: "house.boysroom.swivel-chair-texture"
 			},
 			'nightstand': {
 				collidable: true,
-				texture: "townhouse.boysroom.nightstand-texture"
+				texture: "house.boysroom.nightstand-texture"
 			},
 			'pencil-vase': {
-				texture: "townhouse.boysroom.pencil-vase-texture"
+				texture: "house.boysroom.pencil-vase-texture"
 			},
 			'boysroom-door': {
 				Class: "gateway",
@@ -35583,42 +35762,42 @@ feng.models.View3D.Data = {
 				}
 			},
 			'sketchpad': {
-				texture: "townhouse.boysroom.sketchpad-texture"
+				texture: "house.boysroom.sketchpad-texture"
 			},
 			'ceiling-lamps': {
-				texture: "townhouse.boysroom.ceiling-lamps-texture"
+				texture: "house.boysroom.ceiling-lamps-texture"
 			},
 			'nightstand-lamp': {
-				texture: "townhouse.boysroom.nightstand-lamp-texture"
+				texture: "house.boysroom.nightstand-lamp-texture"
 			},
 			'yellow-reading-lamp': {
-				texture: "townhouse.boysroom.yellow-reading-lamp-texture"
+				texture: "house.boysroom.yellow-reading-lamp-texture"
 			},
 			'blue-reading-lamp': {
-				texture: "townhouse.boysroom.blue-reading-lamp-texture"
+				texture: "house.boysroom.blue-reading-lamp-texture"
 			},
 			'bedding': {
-				texture: "townhouse.boysroom.bedding-texture"
+				texture: "house.boysroom.bedding-texture"
 			},
 			'chalkboard': {
-				texture: "townhouse.boysroom.chalkboard-texture"
+				texture: "house.boysroom.chalkboard-texture"
 			},
 			'slippers': {
-				texture: "townhouse.boysroom.slippers-texture"
+				texture: "house.boysroom.slippers-texture"
 			},
 			'table-books': {
-				texture: "townhouse.boysroom.table-books-texture"
+				texture: "house.boysroom.table-books-texture"
 			},
 			'shelf-left': {
 				collidable: true,
-				texture: "townhouse.boysroom.shelf-left-texture"
+				texture: "house.boysroom.shelf-left-texture"
 			},
 			'shelf-right': {
 				collidable: true,
-				texture: "townhouse.boysroom.shelf-right-texture"
+				texture: "house.boysroom.shelf-right-texture"
 			},
 			'drawer': {
-				texture: "townhouse.boysroom.drawer-texture"
+				texture: "house.boysroom.drawer-texture"
 			},
 			'bear': {
 				Class: 'tip',
@@ -35626,9 +35805,9 @@ feng.models.View3D.Data = {
 					"move",
 					"rotate"
 				],
-				texture: "townhouse.boysroom.bear-in-drawer-texture",
+				texture: "house.boysroom.bear-in-drawer-texture",
 				tipInteraction: "drop",
-				tipKey: 'townhouse.boysroom.bear'
+				tipKey: 'house.boysroom.bear'
 			},
 			'handheld': {
 				Class: 'tip',
@@ -35641,36 +35820,36 @@ feng.models.View3D.Data = {
 					rotation: new THREE.Euler(-0.70, 1.55, 0.00, 'YXZ'),
 					fov: 20
 				},
-				texture: "townhouse.boysroom.handheld-nightstand-texture",
+				texture: "house.boysroom.handheld-nightstand-texture",
 				tipInteraction: "drop",
-				tipKey: 'townhouse.boysroom.handheld'
+				tipKey: 'house.boysroom.handheld'
 			},
 			'window': {
-				texture: "townhouse.boysroom.window-texture"
+				texture: "house.boysroom.window-texture"
 			},
 			'window-frame': {
-				texture: "townhouse.boysroom.window-frame-texture"
+				texture: "house.boysroom.window-frame-texture"
 			},
 			'door-frame': {
-				texture: "townhouse.boysroom.door-frame-texture"
+				texture: "house.boysroom.door-frame-texture"
 			}
 		},
 		'homeoffice': {
 			'floor': {
-				texture: "townhouse.homeoffice.floor-texture",
+				texture: "house.homeoffice.floor-texture",
 				receiveShadow: true
 			},
 			'ceiling': {
-				texture: "townhouse.homeoffice.ceiling-texture"
+				texture: "house.homeoffice.ceiling-texture"
 			},
 			'wall':	{
 				collidable: true,
 				castShadow: true,
-				texture: "townhouse.homeoffice.wall-texture"
+				texture: "house.homeoffice.wall-texture"
 			},
 			'wall-outer':	{
 				castShadow: true,
-				texture: "townhouse.homeoffice.wall-outer-texture"
+				texture: "house.homeoffice.wall-outer-texture"
 			},
 			'homeoffice-door': {
 				Class: "gateway",
@@ -35687,7 +35866,7 @@ feng.models.View3D.Data = {
 				Class: "movable",
 				collidable: true,
 				castShadow: true,
-				texture: "townhouse.homeoffice.swivel-chair-texture",
+				texture: "house.homeoffice.swivel-chair-texture",
 				interactions: [
 					"move",
 					"rotate"
@@ -35695,11 +35874,11 @@ feng.models.View3D.Data = {
 				destination: new THREE.Vector3(0, 0, 0),
 				range: 80,
 				tipInteraction: "change_object",
-				tipKey: 'townhouse.homeoffice.chair'
+				tipKey: 'house.homeoffice.chair'
 			},
 			'storage': {
 				collidable: true,
-				texture: "townhouse.homeoffice.storage-texture"
+				texture: "house.homeoffice.storage-texture"
 			},
 			'setsquare': {
 				Class: 'tip',
@@ -35707,141 +35886,141 @@ feng.models.View3D.Data = {
 					"move",
 					"rotate"
 				],
-				texture: "townhouse.homeoffice.setsquare-texture",
+				texture: "house.homeoffice.setsquare-texture",
 				tipInteraction: "drop",
-				tipKey: 'townhouse.homeoffice.setsquare'
+				tipKey: 'house.homeoffice.setsquare'
 			},
 			'carpet': {
-				texture: "townhouse.homeoffice.carpet-texture"
+				texture: "house.homeoffice.carpet-texture"
 			},
 			'door-frame': {
-				texture: "townhouse.homeoffice.door-frame-texture"
+				texture: "house.homeoffice.door-frame-texture"
 			},
 			'display-shelf-lamp': {
-				texture: "townhouse.homeoffice.display-shelf-lamp-texture"
+				texture: "house.homeoffice.display-shelf-lamp-texture"
 			},
 			'bookshelf-lamps': {
-				texture: "townhouse.homeoffice.bookshelf-lamps-texture"
+				texture: "house.homeoffice.bookshelf-lamps-texture"
 			},
 			'picture-frame-1': {
-				texture: "townhouse.homeoffice.picture-frame-1-texture"
+				texture: "house.homeoffice.picture-frame-1-texture"
 			},
 			'picture-frame-2': {
-				texture: "townhouse.homeoffice.picture-frame-2-texture"
+				texture: "house.homeoffice.picture-frame-2-texture"
 			},
 			'picture-frame-3': {
-				texture: "townhouse.homeoffice.picture-frame-3-texture"
+				texture: "house.homeoffice.picture-frame-3-texture"
 			},
 			'picture-frame-4': {
-				texture: "townhouse.homeoffice.picture-frame-4-texture"
+				texture: "house.homeoffice.picture-frame-4-texture"
 			},
 			'block-shelf-1':	{
-				texture: "townhouse.homeoffice.block-shelf-1-texture"
+				texture: "house.homeoffice.block-shelf-1-texture"
 			},
 			'block-shelf-2':	{
-				texture: "townhouse.homeoffice.block-shelf-2-texture"
+				texture: "house.homeoffice.block-shelf-2-texture"
 			},
 			'block-stuff-1':	{
-				texture: "townhouse.homeoffice.block-stuff-1-texture"
+				texture: "house.homeoffice.block-stuff-1-texture"
 			},
 			'block-stuff-2':	{
-				texture: "townhouse.homeoffice.block-stuff-2-texture"
+				texture: "house.homeoffice.block-stuff-2-texture"
 			},
 			'books-1':	{
-				texture: "townhouse.homeoffice.books-1-texture"
+				texture: "house.homeoffice.books-1-texture"
 			},
 			'books-2':	{
-				texture: "townhouse.homeoffice.books-2-texture"
+				texture: "house.homeoffice.books-2-texture"
 			},
 			'round-lamp':	{
 				collidable: true,
-				texture: "townhouse.homeoffice.round-lamp-texture"
+				texture: "house.homeoffice.round-lamp-texture"
 			},
 			'calendar':	{
-				texture: "townhouse.homeoffice.calendar-texture"
+				texture: "house.homeoffice.calendar-texture"
 			},
 			'magazine':	{
-				texture: "townhouse.homeoffice.magazine-texture"
+				texture: "house.homeoffice.magazine-texture"
 			},
 			'window':	{
-				texture: "townhouse.homeoffice.window-texture"
+				texture: "house.homeoffice.window-texture"
 			},
 			'armchair':	{
 				collidable: true,
-				texture: "townhouse.homeoffice.armchair-texture"
+				texture: "house.homeoffice.armchair-texture"
 			},
 			'writing-desk':	{
 				collidable: true,
-				texture: "townhouse.homeoffice.writing-desk-texture"
+				texture: "house.homeoffice.writing-desk-texture"
 			},
 			'dracaena-fragrans': {
 				collidable: true,
-				texture: "townhouse.homeoffice.dracaena-fragrans-texture"
+				texture: "house.homeoffice.dracaena-fragrans-texture"
 			},
 			'handbag': {
-				texture: "townhouse.homeoffice.handbag-texture"
+				texture: "house.homeoffice.handbag-texture"
 			},
 			'pen-vase': {
-				texture: "townhouse.homeoffice.pen-vase-texture"
+				texture: "house.homeoffice.pen-vase-texture"
 			},
 			'rubberplant': {
-				texture: "townhouse.homeoffice.rubberplant-texture"
+				texture: "house.homeoffice.rubberplant-texture"
 			},
 			'coffee-table':	{
 				collidable: true,
-				texture: "townhouse.homeoffice.coffee-table-texture"
+				texture: "house.homeoffice.coffee-table-texture"
 			},
 			'coffeecup': {
-				texture: "townhouse.homeoffice.coffeecup-texture"
+				texture: "house.homeoffice.coffeecup-texture"
 			},
 			'floor-lamp': {
 				collidable: true,
-				texture: "townhouse.homeoffice.floor-lamp-texture"
+				texture: "house.homeoffice.floor-lamp-texture"
 			},
 			'ceiling-lamp': {
-				texture: "townhouse.homeoffice.ceiling-lamp-texture"
+				texture: "house.homeoffice.ceiling-lamp-texture"
 			},
 			'cup': {
-				texture: "townhouse.homeoffice.cup-texture"
+				texture: "house.homeoffice.cup-texture"
 			},
 			'reading-lamp-1': {
-				texture: "townhouse.homeoffice.reading-lamp-1-texture"
+				texture: "house.homeoffice.reading-lamp-1-texture"
 			},
 			'reading-lamp-2': {
-				texture: "townhouse.homeoffice.reading-lamp-2-texture"
+				texture: "house.homeoffice.reading-lamp-2-texture"
 			},
 			'sofa': {
 				collidable: true,
-				texture: "townhouse.homeoffice.sofa-texture"
+				texture: "house.homeoffice.sofa-texture"
 			},
 			'trash': {
-				texture: "townhouse.homeoffice.trash-texture"
+				texture: "house.homeoffice.trash-texture"
 			},
 			'display-shelf': {
 				collidable: true,
-				texture: "townhouse.homeoffice.display-shelf-texture"
+				texture: "house.homeoffice.display-shelf-texture"
 			},
 			'computer':	{
-				texture: "townhouse.homeoffice.computer-texture"
+				texture: "house.homeoffice.computer-texture"
 			},
 			'laptop':	{
-				texture: "townhouse.homeoffice.laptop-texture"
+				texture: "house.homeoffice.laptop-texture"
 			},
 			'curtain':	{
-				texture: "townhouse.homeoffice.curtain-texture"
+				texture: "house.homeoffice.curtain-texture"
 			},
 			'curtain-rod':	{
-				texture: "townhouse.homeoffice.curtain-rod-texture"
+				texture: "house.homeoffice.curtain-rod-texture"
 			},
 			'telephone':	{
-				texture: "townhouse.homeoffice.telephone-texture"
+				texture: "house.homeoffice.telephone-texture"
 			},
 			'bookshelf':	{
 				collidable: true,
-				texture: "townhouse.homeoffice.bookshelf-texture"
+				texture: "house.homeoffice.bookshelf-texture"
 			},
 			'bookshelf-stuff':	{
-				texture: "townhouse.homeoffice.bookshelf-stuff-texture"
+				texture: "house.homeoffice.bookshelf-stuff-texture"
 			}
 		}
 	}
@@ -36902,7 +37081,7 @@ feng.templates.book.Book = function(opt_data, opt_ignored) {
   var tipListLen6 = tipList6.length;
   for (var tipIndex6 = 0; tipIndex6 < tipListLen6; tipIndex6++) {
     var tipData6 = tipList6[tipIndex6];
-    output += '<li class="tip-module" data-tip-id="' + tipData6.id + '"><figure class="cover" data-src="' + tipData6.cover + '"><div class="curtain"><div class="wrapper"><div class="icon icon-' + tipData6.id + '"></div><h1>' + tipData6.name + '</h1><h2><span>Found in</span> ' + tipData6.character + '\'s ' + tipData6.sectionId + '</h2></div></div><ul class="share"><li><a href="#" class="icon icon-facebook"></a></li><li><a href="#" class="icon icon-twitter"></a></li><li><a href="#" class="icon icon-google"></a></li></ul><button>View</button></figure><div class="details"><div class="wrapper"><article><h1>' + tipData6.name + '</h1><p>' + tipData6.description + '</p></article></div></div></li>';
+    output += '<li class="tip-module" data-tip-id="' + tipData6.id + '"><figure class="cover" data-src="' + tipData6.cover + '"><div class="curtain"><div class="wrapper"><div class="icon icon-' + tipData6.id + '"></div><h1>' + tipData6.name + '</h1><h2><span>Found in</span> ' + tipData6.character + '\'s ' + tipData6.sectionId + '</h2></div></div><ul class="share"><li><a href="#" class="icon icon-facebook"></a></li><li><a href="#" class="icon icon-twitter"></a></li><li><a href="#" class="icon icon-google"></a></li></ul><button>View</button></figure></li>';
   }
   output += '</ul></div></div></div><div class="scrubber"><div class="handle"></div></div></div>';
   return output;
@@ -36921,8 +37100,6 @@ feng.views.book.TipModule = function( domElement, index, widthChangeCallback ) {
 	
 	this.domElement = domElement;
 	this._coverEl = goog.dom.getElementByClass('cover', this.domElement);
-	this._detailsEl = goog.dom.getElementByClass('details', this.domElement);
-	this._detailsWrapperEl = goog.dom.getElementByClass('wrapper', this._detailsEl);
 
 	this.index = index;
 	
@@ -36935,16 +37112,9 @@ feng.views.book.TipModule = function( domElement, index, widthChangeCallback ) {
 
 	this._ratioOfWidth = feng.views.book.TipModule.RATIO_OF_WIDTH;
 	this._ratioOfMargin = feng.views.book.TipModule.RATIO_OF_MARGIN;
-	this._minDetailsWidth = feng.views.book.TipModule.MIN_DETAILS_WIDTH;
 
 	this._margin = 0;
 	this._coverWidth = 0;
-	this._detailsWidth = 0;
-
-	this._isOpened = false;
-
-	this._openTweener = new TimelineMax();
-	this._closeTweener = new TimelineMax();
 
 	this._eventHandler = new goog.events.EventHandler(this);
 };
@@ -36953,7 +37123,7 @@ goog.inherits(feng.views.book.TipModule, goog.events.EventTarget);
 
 feng.views.book.TipModule.prototype.activate = function() {
 
-	this._eventHandler.listen( this._coverEl, 'click', this.onClickCover, false, this );
+
 };
 
 
@@ -36965,8 +37135,7 @@ feng.views.book.TipModule.prototype.deactivate = function() {
 
 feng.views.book.TipModule.prototype.getFinalWidth = function() {
 
-	var detailsWidth = this._isOpened ? this._detailsWidth : 0;
-	return this._coverWidth + detailsWidth + this._margin * 2;
+	return this._coverWidth + this._margin * 2;
 };
 
 
@@ -36986,63 +37155,6 @@ feng.views.book.TipModule.prototype.setActive = function( isActive ) {
 };
 
 
-feng.views.book.TipModule.prototype.toggle = function() {
-
-	if(this._isOpened) this.close();
-	else this.open();
-};
-
-
-feng.views.book.TipModule.prototype.open = function() {
-
-	var openedWidth = this._coverWidth + this._detailsWidth + this._margin * 2;
-
-	this._isOpened = true;
-
-	var sizeTweener = TweenMax.to(this.size, .5, {
-		width: openedWidth,
-		'ease': Quad.easeInOut,
-		'onUpdate': this.updateWidth,
-		'onUpdateScope': this
-	});
-
-	var detailsTweener = TweenMax.to(this._detailsEl, .5, {
-		'width': this._detailsWidth,
-		'ease': Quad.easeInOut
-	});
-
-	this._openTweener.clear();
-	this._openTweener.add([sizeTweener, detailsTweener], '+=0', 'sequence');
-
-	this.dispatchEvent( feng.events.EventType.OPEN );
-};
-
-
-feng.views.book.TipModule.prototype.close = function() {
-
-	var defaultWidth = this._coverWidth + this._margin * 2;
-
-	this._isOpened = false;
-
-	var sizeTweener = TweenMax.to(this.size, .5, {
-		width: defaultWidth,
-		'ease': Quad.easeInOut,
-		'onUpdate': this.updateWidth,
-		'onUpdateScope': this
-	});
-
-	var detailsTweener = TweenMax.to(this._detailsEl, .5, {
-		'width': 0,
-		'ease': Quad.easeInOut
-	});
-
-	this._closeTweener.clear();
-	this._closeTweener.add([detailsTweener, sizeTweener], '+=0', 'start');
-
-	this.dispatchEvent( feng.events.EventType.CLOSE );
-};
-
-
 feng.views.book.TipModule.prototype.setX = function( x ) {
 
 	goog.style.setStyle( this.domElement, 'transform', 'translateX(' + x + 'px)' );
@@ -37056,20 +37168,13 @@ feng.views.book.TipModule.prototype.setSize = function( viewportSize ) {
 
 	var height = this._coverWidth / this._aspectRatio;
 
-	var detailsWidthRatio = this._minDetailsWidth / this._minSize.width;
-	this._detailsWidth = detailsWidthRatio * this._coverWidth;
-
-	var detailsWidth = this._isOpened ? this._detailsWidth : 0;
-
 	this._margin = viewportSize.width * this._ratioOfMargin;
-	var widthIncludeMargins = this._coverWidth + detailsWidth + this._margin * 2;
+	var widthIncludeMargins = this._coverWidth + this._margin * 2;
 
 	this.size.width = widthIncludeMargins;
 	this.size.height = height;
 
 	goog.style.setSize( this._coverEl, this._coverWidth, height );
-	goog.style.setSize( this._detailsEl, detailsWidth, height );
-	goog.style.setSize( this._detailsWrapperEl, this._detailsWidth, height );
 	goog.style.setSize( this.domElement, this.size );
 
 	return this.size;
@@ -37084,16 +37189,9 @@ feng.views.book.TipModule.prototype.updateWidth = function() {
 };
 
 
-feng.views.book.TipModule.prototype.onClickCover = function(e) {
-
-	this.dispatchEvent( feng.events.EventType.CHANGE );
-};
-
-
 feng.views.book.TipModule.RATIO_OF_WIDTH = 0.25;
 feng.views.book.TipModule.RATIO_OF_MARGIN = 0.045;
-feng.views.book.TipModule.MIN_SIZE = new goog.math.Size(300, 470);
-feng.views.book.TipModule.MIN_DETAILS_WIDTH = 580;// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+feng.views.book.TipModule.MIN_SIZE = new goog.math.Size(300, 470);// Copyright 2006 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37429,6 +37527,7 @@ feng.views.book.Book = function() {
 	this._handleWidth = 0;
 
 	this._dragger = new goog.fx.Dragger(this._handleEl);
+	this._dragger.setHysteresis( 10 );
 	this._draggerLimits = new goog.math.Rect(0, 0, 0, 0);
 
 	var tipModuleEls = goog.dom.getElementsByClass('tip-module', this.domElement);
@@ -37455,6 +37554,10 @@ feng.views.book.Book = function() {
 	this._scrollTweener = null;
 
 	//
+	this._animateOut = goog.bind( this.animateOut, this );
+	this._enterKeyId = null;
+
+	//
 	this._mouseWheelHandler = new goog.events.MouseWheelHandler( this.domElement );
 	this._maxDelta = 30;
 	this._mouseWheelHandler.setMaxDeltaX( this._maxDelta );
@@ -37472,25 +37575,24 @@ feng.views.book.Book.prototype.activate = function() {
 
 	this._eventHandler.listen( window, 'resize', this.resize, false, this );
 	this._eventHandler.listen( this._closeButton, 'click', this.animateOut, false, this );
-	this._eventHandler.listen( this, feng.events.EventType.OPEN, this.onTipModuleOpen, false, this );
-	this._eventHandler.listen( this, feng.events.EventType.CLOSE, this.onTipModuleClose, false, this );
-	this._eventHandler.listen( this, feng.events.EventType.CHANGE, this.onTipModuleChange, false, this );
 	this._eventHandler.listen( this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this );
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this );
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this );
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this );
 
+	this._enterKeyId = feng.keyboardController.bind( this._animateOut, feng.keyboardController.key.ESC, true );
+
 	goog.array.forEach( this._tipModules, function(tipModule) {
 		tipModule.activate();
 	});
-
-	this.scrollToTipModule( 0 );
 };
 
 
 feng.views.book.Book.prototype.deactivate = function() {
 
 	this._eventHandler.removeAll();
+
+	feng.keyboardController.unbind( this._enterKeyId );
 
 	goog.array.forEach( this._tipModules, function(tipModule) {
 		tipModule.deactivate();
@@ -37525,6 +37627,9 @@ feng.views.book.Book.prototype.resize = function( e ) {
 	goog.style.setStyle(this._handleEl, 'width', this._handleWidth + 'px');
 	this._draggerLimits.width = this._scrubberWidth - this._handleWidth;
 	this._dragger.setLimits( this._draggerLimits );
+
+	// lock to module
+	this.scrollToTipModule( (this._activeTipIndex || 0) );
 };
 
 
@@ -37548,9 +37653,9 @@ feng.views.book.Book.prototype.animateIn = function() {
 
 	goog.style.showElement(this.domElement, true);
 
-	this.resize();
-
 	this.activate();
+
+	this.resize();
 
 	this.dispatchEvent( feng.events.EventType.ANIMATE_IN );
 };
@@ -37558,9 +37663,9 @@ feng.views.book.Book.prototype.animateIn = function() {
 
 feng.views.book.Book.prototype.animateOut = function( instant ) {
 
-	this.deactivate();
-
 	goog.style.showElement(this.domElement, false);
+
+	this.deactivate();
 
 	//
 	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
@@ -37683,38 +37788,6 @@ feng.views.book.Book.prototype.applyScrollX = function() {
 };
 
 
-feng.views.book.Book.prototype.onTipModuleOpen = function(e) {
-
-	if(e.target === this._openedTipModule) return;
-
-	if(this._openedTipModule) {
-		this._openedTipModule.close();
-	}
-
-	this._openedTipModule = e.target;
-};
-
-
-feng.views.book.Book.prototype.onTipModuleClose = function(e) {
-
-	this._openedTipModule = null;
-};
-
-
-feng.views.book.Book.prototype.onTipModuleChange = function(e) {
-
-	var tipModule = e.target;
-	var tipModuleIndex = tipModule.index;
-
-	if(tipModuleIndex === this._activeTipIndex) {
-
-		tipModule.toggle();
-	}
-
-	this.scrollToTipModule( tipModuleIndex );
-};
-
-
 feng.views.book.Book.prototype.onDrag = function( e ) {
 
 	var ratio = Math.max(0, Math.min(1, this._dragger.deltaX / this._draggerLimits.width));
@@ -37799,7 +37872,7 @@ feng.models.Accessories.Data = {
 		'interior3': [],
 		'bathroom': []
 	},
-	'townhouse': {
+	'house': {
 		'livingroom': ['rubberplant', 'cactus', 'lotus'],
 		'boysroom': [],
 		'homeoffice': []
@@ -39532,7 +39605,6 @@ feng.controllers.controls.DesignControls.prototype.onNavigationChange = function
 goog.require('goog.events');
 goog.require('goog.math');
 goog.require('feng.controllers.controls.Controls');
-goog.require('feng.controllers.controls.InteractionResolver');
 
 
 /**
@@ -39543,8 +39615,6 @@ feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement)
   goog.base(this, camera, view3d, domElement);
 
   this._activeObject = null;
-
-  this._interactionResolver = feng.controllers.controls.InteractionResolver.getInstance();
 
   this._tempPosition = new THREE.Vector3();
 
@@ -45031,9 +45101,10 @@ feng.apps.PathEdit = function() {
 
 	this._sceneKeys = [
 		'studio.livingroom',
-		'studio.interior3',
 		'studio.interior2',
-		'studio.bathroom'
+		'studio.bathroom',
+		'house.boysroom',
+		'house.homeoffice'
 	];
 
 	this._scene = null;
@@ -46481,7 +46552,7 @@ goog.require('feng.templates.common');
  * @notypecheck
  */
 feng.templates.captions.Caption = function(opt_data, opt_ignored) {
-  return '<div class="caption ' + opt_data.position + '"><div class="popup-wrapper">' + feng.templates.common.Popup({classname: opt_data.position, content: '<h1>' + opt_data.tip.name + '</h1><div class="problem"><h2>Problem</h2><button class="icon icon-arrow-down"></button><div class="drawer"><p>' + opt_data.tip.problem + '</p></div></div><div class="hint"><p>' + opt_data.tip.hint + '</p>' + feng.templates.common.PrimaryButton({icon: 'icon-yes', classname: 'hint-button', text: 'I see'}) + '</div><div class="interaction">' + ((opt_data.interactionContent) ? opt_data.interactionContent : feng.templates.common.PrimaryButton({classname: 'interaction-button', icon: 'icon-yes', text: 'Solve the problem'})) + '</div><div class="advice"><h2>Your Tip</h2><button class="icon icon-arrow-down"></button><div class="drawer"><p>' + opt_data.tip.advice + '</p></div></div><div class="share"><h2>Share With Friends</h2><ul><li><a href="" target="_blank" class="icon icon-facebook"></a><li><a href="" target="_blank" class="icon icon-twitter"></a><li><a href="" target="_blank" class="icon icon-google"></a></ul></div>'}) + '</div></div>';
+  return '<div class="caption ' + opt_data.position + '"><div class="popup-wrapper">' + feng.templates.common.Popup({classname: opt_data.position, content: '<h1>' + opt_data.tip.name + '</h1><div class="problem"><h2>Problem</h2><button class="icon icon-arrow-down"></button><div class="drawer"><p>' + opt_data.tip.problem + '</p></div></div><div class="hint"><p>' + opt_data.tip.hint + '</p>' + feng.templates.common.PrimaryButton({icon: 'icon-yes', classname: 'hint-button', text: 'I see'}) + '</div><div class="interaction">' + ((opt_data.interactionContent) ? opt_data.interactionContent : feng.templates.common.PrimaryButton({classname: 'interaction-button', icon: 'icon-yes', text: 'Solve the problem'})) + '</div><div class="advice"><h2>Your Tip</h2><button class="icon icon-arrow-down"></button><div class="drawer"><p>' + opt_data.tip.advice + '</p></div></div><div class="share"><h2>Share With Friends</h2><ul><li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-facebook"></a><li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-twitter"></a><li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-google"></a></ul></div>'}) + '</div></div>';
 };
 
 
@@ -46503,15 +46574,15 @@ feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
-  var param62 = '<div class="change-color"><h2>Click on a color to change</h2><ul class="colors">';
-  var colorKeyList64 = soy.$$getMapKeys(opt_data.colors);
-  var colorKeyListLen64 = colorKeyList64.length;
-  for (var colorKeyIndex64 = 0; colorKeyIndex64 < colorKeyListLen64; colorKeyIndex64++) {
-    var colorKeyData64 = colorKeyList64[colorKeyIndex64];
-    param62 += '<li><button class="color" style="background-color: ' + opt_data.colors[colorKeyData64].hex + '" data-color="' + colorKeyData64 + '"></button></li>';
+  var param64 = '<div class="change-color"><h2>Click on a color to change</h2><ul class="colors">';
+  var colorKeyList66 = soy.$$getMapKeys(opt_data.colors);
+  var colorKeyListLen66 = colorKeyList66.length;
+  for (var colorKeyIndex66 = 0; colorKeyIndex66 < colorKeyListLen66; colorKeyIndex66++) {
+    var colorKeyData66 = colorKeyList66[colorKeyIndex66];
+    param64 += '<li><button class="color" style="background-color: ' + opt_data.colors[colorKeyData66].hex + '" data-color="' + colorKeyData66 + '"></button></li>';
   }
-  param62 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param62}));
+  param64 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param64}));
   return output;
 };
 
@@ -46523,22 +46594,22 @@ feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
-  var param74 = '<h2>Fill the plate with fruits</h2><div class="drop-fruits"><ul class="fruits">';
-  var fruitKeyList76 = soy.$$getMapKeys(opt_data.fruits);
-  var fruitKeyListLen76 = fruitKeyList76.length;
-  for (var fruitKeyIndex76 = 0; fruitKeyIndex76 < fruitKeyListLen76; fruitKeyIndex76++) {
-    var fruitKeyData76 = fruitKeyList76[fruitKeyIndex76];
-    param74 += '<li><button data-fruit-id="' + fruitKeyData76 + '"></button></li>';
+  var param76 = '<h2>Fill the plate with fruits</h2><div class="drop-fruits"><ul class="fruits">';
+  var fruitKeyList78 = soy.$$getMapKeys(opt_data.fruits);
+  var fruitKeyListLen78 = fruitKeyList78.length;
+  for (var fruitKeyIndex78 = 0; fruitKeyIndex78 < fruitKeyListLen78; fruitKeyIndex78++) {
+    var fruitKeyData78 = fruitKeyList78[fruitKeyIndex78];
+    param76 += '<li><button data-fruit-id="' + fruitKeyData78 + '"></button></li>';
   }
-  param74 += '</ul><ul class="descriptions">';
-  var fruitKeyList82 = soy.$$getMapKeys(opt_data.fruits);
-  var fruitKeyListLen82 = fruitKeyList82.length;
-  for (var fruitKeyIndex82 = 0; fruitKeyIndex82 < fruitKeyListLen82; fruitKeyIndex82++) {
-    var fruitKeyData82 = fruitKeyList82[fruitKeyIndex82];
-    param74 += '<li data-fruit-id="' + fruitKeyData82 + '"><p>' + opt_data.fruits[fruitKeyData82] + '</p></li>';
+  param76 += '</ul><ul class="descriptions">';
+  var fruitKeyList84 = soy.$$getMapKeys(opt_data.fruits);
+  var fruitKeyListLen84 = fruitKeyList84.length;
+  for (var fruitKeyIndex84 = 0; fruitKeyIndex84 < fruitKeyListLen84; fruitKeyIndex84++) {
+    var fruitKeyData84 = fruitKeyList84[fruitKeyIndex84];
+    param76 += '<li data-fruit-id="' + fruitKeyData84 + '"><p>' + opt_data.fruits[fruitKeyData84] + '</p></li>';
   }
-  param74 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param74}));
+  param76 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param76}));
   return output;
 };
 
@@ -46551,11 +46622,11 @@ feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
  */
 feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
   var output = '<p class="floatText">';
-  var lineList93 = opt_data.lines;
-  var lineListLen93 = lineList93.length;
-  for (var lineIndex93 = 0; lineIndex93 < lineListLen93; lineIndex93++) {
-    var lineData93 = lineList93[lineIndex93];
-    output += '<span>' + lineData93 + '</span>';
+  var lineList95 = opt_data.lines;
+  var lineListLen95 = lineList95.length;
+  for (var lineIndex95 = 0; lineIndex95 < lineListLen95; lineIndex95++) {
+    var lineData95 = lineList95[lineIndex95];
+    output += '<span>' + lineData95 + '</span>';
   }
   output += '</p>';
   return output;
@@ -48307,6 +48378,1327 @@ feng.controllers.StorageController.prototype.onTipUnlocked = function( tipId ){
 feng.controllers.StorageController.prototype.onSoundEnabled = function( enabled ){
   
   this.set( 'sound', enabled );
+};goog.provide('feng.views.sections.home.Screen');
+
+goog.require('goog.dom');
+goog.require('goog.events.EventTarget');
+goog.require('goog.events.EventHandler');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.home.Screen = function(domElement){
+
+	goog.base( this );
+
+  this.domElement = domElement;
+
+  this._eventHandler = new goog.events.EventHandler(this);
+};
+goog.inherits(feng.views.sections.home.Screen, goog.events.EventTarget);
+
+
+feng.views.sections.home.Screen.prototype.activate = function() {
+
+
+};
+
+
+feng.views.sections.home.Screen.prototype.deactivate = function() {
+
+	this._eventHandler.removeAll();
+};
+
+
+feng.views.sections.home.Screen.prototype.show = function() {
+
+	TweenMax.set(this.domElement, {
+		'display': 'block'
+	});
+};
+
+
+feng.views.sections.home.Screen.prototype.hide = function() {
+
+	TweenMax.set(this.domElement, {
+		'display': 'none'
+	});
+};
+
+
+feng.views.sections.home.Screen.prototype.animateIn = function() {
+
+	this.show();
+};
+
+
+feng.views.sections.home.Screen.prototype.animateOut = function() {
+
+	this.deactivate();
+};goog.provide('feng.views.sections.home.EpisodeScreen');
+
+goog.require('feng.views.sections.home.Screen');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.home.EpisodeScreen = function(domElement){
+
+	goog.base(this, domElement);
+
+	this._episodeSelection = feng.episodeSelection;
+	goog.dom.appendChild( this.domElement, this._episodeSelection.domElement );
+};
+goog.inherits(feng.views.sections.home.EpisodeScreen, feng.views.sections.home.Screen);
+
+
+feng.views.sections.home.EpisodeScreen.prototype.activate = function() {
+
+	goog.base(this, 'activate');
+
+	this._eventHandler.listen( this._episodeSelection, feng.events.EventType.COMPLETE, this.onLoadComplete, false, this );
+};
+
+
+feng.views.sections.home.EpisodeScreen.prototype.deactivate = function() {
+
+	goog.base(this, 'deactivate');
+
+	this._episodeSelection.deactivate();
+};
+
+
+
+feng.views.sections.home.EpisodeScreen.prototype.reset = function() {
+
+	this._episodeSelection.animateIn();
+};
+
+
+feng.views.sections.home.EpisodeScreen.prototype.animateIn = function() {
+
+	goog.base(this, 'animateIn');
+
+	this.activate();
+
+	this._episodeSelection.animateIn();
+};
+
+
+feng.views.sections.home.EpisodeScreen.prototype.animateOut = function() {
+
+	goog.base(this, 'animateOut');
+
+	this.deactivate();
+
+	this._episodeSelection.animateOut();
+};
+
+
+feng.views.sections.home.EpisodeScreen.prototype.onLoadComplete = function(e) {
+
+	this._episodeSelection.animateOutOnComplete( e.episode.id );
+
+	this.dispatchEvent( e );
+};goog.provide('feng.views.sections.Section');
+
+goog.require('goog.dom');
+goog.require('goog.dom.query');
+goog.require('goog.events.EventTarget');
+goog.require('goog.events.EventHandler');
+goog.require('feng.events');
+goog.require('feng.views.Preloader');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.Section = function(domElement){
+	
+  goog.base(this);
+
+  this.domElement = domElement;
+  this.id = this.domElement.id;
+
+  this._animateInTweener = new TimelineMax({
+  	'paused': true,
+  	'onComplete': this.onAnimatedIn,
+  	'onCompleteScope': this
+  });
+
+  this._animateOutTweener = new TimelineMax({
+  	'paused': true,
+  	'onComplete': this.onAnimatedOut,
+  	'onCompleteScope': this
+  });
+
+  // section loader
+  this._preloaderDom = goog.dom.query('.preloader', this.domElement)[0];
+  this._preloader = new feng.views.Preloader( this._preloaderDom, 2000 );
+  this._preloader.setParentEventTarget(this);
+
+  // permanent events
+  goog.events.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
+
+  // activatable events
+  this._eventHandler = new goog.events.EventHandler(this);
+
+  // asset keys
+  this._assetKeys = [];
+  this._loadedAssetKeys = [];
+};
+goog.inherits(feng.views.sections.Section, goog.events.EventTarget);
+
+
+feng.views.sections.Section.prototype.init = function(){
+
+  // hide section by default
+  this.hide();
+  
+	this.setAnimations();
+};
+
+
+feng.views.sections.Section.prototype.show = function(){
+
+	goog.style.showElement(this.domElement, true);
+
+	this.dispatchEvent({
+		type: feng.events.EventType.SHOW
+	});
+};
+
+
+feng.views.sections.Section.prototype.hide = function(){
+
+	goog.style.showElement(this.domElement, false);
+
+	this.dispatchEvent({
+		type: feng.events.EventType.HIDE
+	});
+};
+
+
+feng.views.sections.Section.prototype.isShown = function(){
+
+	return goog.style.isElementShown(this.domElement);
+};
+
+
+feng.views.sections.Section.prototype.activate = function(){
+
+};
+
+
+feng.views.sections.Section.prototype.deactivate = function(){
+
+	this._eventHandler.removeAll();
+};
+
+
+feng.views.sections.Section.prototype.addPreloadListeners = function(){
+
+	this.listen(feng.events.EventType.START, this.onLoadStart, false, this);
+	this.listen(feng.events.EventType.PROGRESS, this.onLoadProgress, false, this);
+	this.listen(feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this);
+	this.listen(feng.events.EventType.COMPLETE, this.onLoadAnimationComplete, false, this);
+};
+
+
+feng.views.sections.Section.prototype.load = function(){
+
+	this.addPreloadListeners();
+
+	this._assetKeys = goog.array.filter( this._assetKeys, function(key) {
+		return !goog.array.contains(this._loadedAssetKeys, key);
+	}, this);
+
+	this._preloader.load( this._assetKeys );
+};
+
+
+feng.views.sections.Section.prototype.setAnimations = function(){
+
+	var fadeInTweener = TweenMax.fromTo(this.domElement, .5, {
+		'opacity': 0
+	}, {
+		'opacity': 1
+	});
+
+	this._animateInTweener.add( fadeInTweener );
+
+	var fadeOutTweener = TweenMax.fromTo(this.domElement, .5, {
+		'opacity': 1
+	}, {
+		'opacity': 0
+	});
+
+	this._animateOutTweener.add( fadeOutTweener );
+};
+
+
+feng.views.sections.Section.prototype.animateIn = function(){
+
+	if(this.isShown()) return false;
+
+	this.show();
+	this.activate();
+	this._animateInTweener.restart();
+
+	this.dispatchEvent({
+		type: feng.events.EventType.ANIMATE_IN
+	});
+
+	return true;
+};
+
+
+feng.views.sections.Section.prototype.animateOut = function(){
+
+	if(!this.isShown()) return false;
+
+	this.deactivate();
+	this._animateOutTweener.restart();
+
+	this.dispatchEvent({
+		type: feng.events.EventType.ANIMATE_OUT
+	});
+
+	return true;
+};
+
+
+feng.views.sections.Section.prototype.doNavigate = function(){
+
+	this.load();
+};
+
+
+feng.views.sections.Section.prototype.onAnimatedIn = function(e){
+
+	this.dispatchEvent({
+		type: feng.events.EventType.ANIMATED_IN
+	});
+};
+
+
+feng.views.sections.Section.prototype.onAnimatedOut = function(e){
+
+	this.hide();
+
+	this.dispatchEvent({
+		type: feng.events.EventType.ANIMATED_OUT
+	});
+};
+
+
+feng.views.sections.Section.prototype.onLoadStart = function(e){
+
+	//console.log("section load start");
+};
+
+
+feng.views.sections.Section.prototype.onLoadProgress = function(e){
+
+	//console.log("section load progress: " + e.progress);
+};
+
+
+feng.views.sections.Section.prototype.onLoadComplete = function(e){
+	
+	//console.log("section load complete");
+
+	goog.array.forEach( this._assetKeys, function(key) {
+		goog.array.insert(this._loadedAssetKeys, key);
+	}, this);
+
+	goog.array.clear( this._assetKeys );
+};
+
+
+feng.views.sections.Section.prototype.onLoadAnimationComplete = function(e){
+	
+	//console.log("section load animation complete");
+};
+
+
+feng.views.sections.Section.prototype.onNavigationChange = function(e){
+
+	var shouldNavigate = (e.tokenArray && e.tokenArray[0] === this.id);
+
+	if(shouldNavigate) this.doNavigate();
+};goog.provide('feng.fx.CanvasSprite');
+
+goog.require('goog.dom');
+goog.require('goog.events.KeyHandler');
+
+
+feng.fx.CanvasSprite = function( img, data, opt_canvas, opt_debug ) {
+
+	this._canvasEl = opt_canvas || goog.dom.createDom('canvas');
+  	this._canvasContext = this._canvasEl.getContext('2d');
+
+  	this._size = new goog.math.Size( data['size']['w'], data['size']['h'] );
+  	
+  	this._sourceCanvas = goog.dom.createDom('canvas');
+  	this._sourceCanvas.width = img.width;
+	this._sourceCanvas.height = img.height;
+  	this._sourceContext = this._sourceCanvas.getContext('2d');
+  	this._sourceContext.drawImage( img, 0, 0 );
+
+	this._frameDic = data['frames'];
+
+	this._frameIds = goog.object.getKeys(this._frameDic).sort();
+
+	this._frames = goog.array.map(this._frameIds, function(frameId) {
+		return this._frameDic[frameId];
+	}, this);
+
+	this.frameIndex = 0;
+	this.numFrames = this._frames.length;
+
+	this.restoreSize();
+	this.update();
+
+	// added key events for debugging
+	if(opt_debug) {
+	
+		var keyHandler = new goog.events.KeyHandler( document );
+		goog.events.listen( keyHandler, goog.events.KeyHandler.EventType.KEY, function(e) {
+			switch(e.keyCode) {
+				case goog.events.KeyCodes.LEFT:
+				case goog.events.KeyCodes.UP:
+				this.prevFrame();
+				break;
+
+				case goog.events.KeyCodes.RIGHT:
+				case goog.events.KeyCodes.DOWN:
+				this.nextFrame();
+				break;
+			}
+		}, false, this);
+	}
+};
+
+
+feng.fx.CanvasSprite.prototype.getCanvas = function() {
+
+	return this._canvasEl;
+};
+
+
+feng.fx.CanvasSprite.prototype.getTweener = function( vars, fps, duration ) {
+
+	var fps = fps || 60;
+	var duration = duration || (this.numFrames / fps);
+
+	var fromVars = {
+		frameIndex: 0
+	};
+
+	var toVars = {
+  	frameIndex: this.numFrames - 1,
+  	'paused': true,
+  	'ease': Linear.easeNone,
+  	'repeat': -1,
+  	'onUpdate': this.update,
+  	'onUpdateScope': this
+	};
+
+	goog.object.extend(toVars, (vars || {}));
+
+	var tweener = TweenMax.fromTo(this, duration, fromVars, toVars);
+
+  return tweener;
+};
+
+
+feng.fx.CanvasSprite.prototype.restoreSize = function() {
+
+	this._canvasEl.width = this._size.width;
+	this._canvasEl.height = this._size.height;
+};
+
+
+feng.fx.CanvasSprite.prototype.getProgress = function() {
+
+	return this.frameIndex / (this.numFrames - 1);
+};
+
+
+feng.fx.CanvasSprite.prototype.getCurrentFrame = function() {
+
+	return this.frameIndex;
+};
+
+
+feng.fx.CanvasSprite.prototype.setProgress = function( progress ) {
+
+	var frameIndex = Math.round( (this.numFrames - 1) * progress );
+	this.gotoFrameByIndex( frameIndex );
+};
+
+
+feng.fx.CanvasSprite.prototype.gotoFrameById = function( frameId ) {
+
+	var frameIndex = goog.array.findIndex( this._frameIds, function(key) {
+		return (key === frameId);
+	});
+
+	this.gotoFrameByIndex( frameIndex );
+};
+
+
+feng.fx.CanvasSprite.prototype.gotoFrameByIndex = function( frameIndex ) {
+
+	this.frameIndex = Math.round(frameIndex);
+
+	var frameData = this._frames[ this.frameIndex ];
+
+	var sx = frameData['sx'], sy = frameData['sy'];
+	var sw = frameData['sw'], sh = frameData['sh'];
+	var x = frameData['x'], y = frameData['y'];
+
+	this._canvasContext.clearRect( 0, 0, this._canvasEl.width, this._canvasEl.height );
+
+	var imgData = this._sourceContext.getImageData( sx, sy, sw, sh );
+	this._canvasContext.putImageData( imgData, x, y );
+};
+
+
+feng.fx.CanvasSprite.prototype.prevFrame = function() {
+
+	this.frameIndex = Math.max(0, this.frameIndex - 1);
+	this.update();
+};
+
+
+feng.fx.CanvasSprite.prototype.nextFrame = function() {
+
+	this.frameIndex = Math.min(this.numFrames - 1, this.frameIndex + 1);
+	this.update();
+};
+
+
+feng.fx.CanvasSprite.prototype.update = function() {
+
+	this.gotoFrameByIndex( this.frameIndex );
+};goog.provide('feng.fx.AnimatedHouseLogo');
+
+goog.require('feng.fx.CanvasSprite');
+
+
+feng.fx.AnimatedHouseLogo = function( opt_canvas ) {
+
+    var img = feng.fx.AnimatedHouseLogo.Img;
+    var data = feng.fx.AnimatedHouseLogo.Data;
+
+    goog.base(this, img, data, opt_canvas);
+};
+goog.inherits(feng.fx.AnimatedHouseLogo, feng.fx.CanvasSprite);
+
+
+feng.fx.AnimatedHouseLogo.getImg = function() {
+
+    var img = feng.fx.AnimatedHouseLogo.Img;
+    img.src = feng.Config['assetsPath'] + 'images/house-logo-loop.png';
+
+    return img;
+};
+
+
+feng.fx.AnimatedHouseLogo.Img = new Image();
+
+
+feng.fx.AnimatedHouseLogo.Data = {
+    "frames": {
+        
+            "00": {
+                "sx": 842,
+                "sy": 496,
+                "sw": 120,
+                "sh": 124,
+                "x": 20,
+                "y": 15
+            }, 
+        
+            "01": {
+                "sx": 718,
+                "sy": 372,
+                "sw": 130,
+                "sh": 124,
+                "x": 15,
+                "y": 15
+            }, 
+        
+            "02": {
+                "sx": 448,
+                "sy": 496,
+                "sw": 138,
+                "sh": 124,
+                "x": 11,
+                "y": 15
+            }, 
+        
+            "03": {
+                "sx": 304,
+                "sy": 620,
+                "sw": 144,
+                "sh": 124,
+                "x": 8,
+                "y": 15
+            }, 
+        
+            "04": {
+                "sx": 154,
+                "sy": 620,
+                "sw": 150,
+                "sh": 124,
+                "x": 5,
+                "y": 15
+            }, 
+        
+            "05": {
+                "sx": 0,
+                "sy": 620,
+                "sw": 154,
+                "sh": 124,
+                "x": 3,
+                "y": 15
+            }, 
+        
+            "06": {
+                "sx": 780,
+                "sy": 124,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "07": {
+                "sx": 624,
+                "sy": 124,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "08": {
+                "sx": 468,
+                "sy": 124,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "09": {
+                "sx": 152,
+                "sy": 868,
+                "sw": 152,
+                "sh": 124,
+                "x": 4,
+                "y": 15
+            }, 
+        
+            "10": {
+                "sx": 748,
+                "sy": 248,
+                "sw": 148,
+                "sh": 124,
+                "x": 6,
+                "y": 15
+            }, 
+        
+            "11": {
+                "sx": 444,
+                "sy": 868,
+                "sw": 140,
+                "sh": 124,
+                "x": 10,
+                "y": 15
+            }, 
+        
+            "12": {
+                "sx": 586,
+                "sy": 496,
+                "sw": 132,
+                "sh": 124,
+                "x": 14,
+                "y": 15
+            }, 
+        
+            "13": {
+                "sx": 838,
+                "sy": 744,
+                "sw": 124,
+                "sh": 124,
+                "x": 18,
+                "y": 15
+            }, 
+        
+            "14": {
+                "sx": 848,
+                "sy": 372,
+                "sw": 112,
+                "sh": 124,
+                "x": 24,
+                "y": 15
+            }, 
+        
+            "15": {
+                "sx": 962,
+                "sy": 744,
+                "sw": 100,
+                "sh": 124,
+                "x": 30,
+                "y": 15
+            }, 
+        
+            "16": {
+                "sx": 962,
+                "sy": 496,
+                "sw": 112,
+                "sh": 124,
+                "x": 24,
+                "y": 15
+            }, 
+        
+            "17": {
+                "sx": 714,
+                "sy": 868,
+                "sw": 124,
+                "sh": 124,
+                "x": 18,
+                "y": 15
+            }, 
+        
+            "18": {
+                "sx": 586,
+                "sy": 372,
+                "sw": 132,
+                "sh": 124,
+                "x": 14,
+                "y": 15
+            }, 
+        
+            "19": {
+                "sx": 444,
+                "sy": 744,
+                "sw": 140,
+                "sh": 124,
+                "x": 10,
+                "y": 15
+            }, 
+        
+            "20": {
+                "sx": 600,
+                "sy": 248,
+                "sw": 148,
+                "sh": 124,
+                "x": 5,
+                "y": 15
+            }, 
+        
+            "21": {
+                "sx": 152,
+                "sy": 744,
+                "sw": 152,
+                "sh": 124,
+                "x": 4,
+                "y": 15
+            }, 
+        
+            "22": {
+                "sx": 312,
+                "sy": 124,
+                "sw": 156,
+                "sh": 124,
+                "x": 1,
+                "y": 15
+            }, 
+        
+            "23": {
+                "sx": 156,
+                "sy": 124,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "24": {
+                "sx": 0,
+                "sy": 124,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "25": {
+                "sx": 0,
+                "sy": 496,
+                "sw": 154,
+                "sh": 124,
+                "x": 3,
+                "y": 15
+            }, 
+        
+            "26": {
+                "sx": 154,
+                "sy": 496,
+                "sw": 150,
+                "sh": 124,
+                "x": 5,
+                "y": 15
+            }, 
+        
+            "27": {
+                "sx": 304,
+                "sy": 496,
+                "sw": 144,
+                "sh": 124,
+                "x": 8,
+                "y": 15
+            }, 
+        
+            "28": {
+                "sx": 448,
+                "sy": 372,
+                "sw": 138,
+                "sh": 124,
+                "x": 11,
+                "y": 15
+            }, 
+        
+            "29": {
+                "sx": 584,
+                "sy": 868,
+                "sw": 130,
+                "sh": 124,
+                "x": 14,
+                "y": 15
+            }, 
+        
+            "30": {
+                "sx": 842,
+                "sy": 620,
+                "sw": 120,
+                "sh": 124,
+                "x": 20,
+                "y": 15
+            }, 
+        
+            "31": {
+                "sx": 712,
+                "sy": 620,
+                "sw": 130,
+                "sh": 124,
+                "x": 14,
+                "y": 15
+            }, 
+        
+            "32": {
+                "sx": 936,
+                "sy": 124,
+                "sw": 138,
+                "sh": 124,
+                "x": 11,
+                "y": 15
+            }, 
+        
+            "33": {
+                "sx": 304,
+                "sy": 372,
+                "sw": 144,
+                "sh": 124,
+                "x": 8,
+                "y": 15
+            }, 
+        
+            "34": {
+                "sx": 154,
+                "sy": 372,
+                "sw": 150,
+                "sh": 124,
+                "x": 5,
+                "y": 15
+            }, 
+        
+            "35": {
+                "sx": 0,
+                "sy": 372,
+                "sw": 154,
+                "sh": 124,
+                "x": 3,
+                "y": 15
+            }, 
+        
+            "36": {
+                "sx": 780,
+                "sy": 0,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "37": {
+                "sx": 624,
+                "sy": 0,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "38": {
+                "sx": 468,
+                "sy": 0,
+                "sw": 156,
+                "sh": 124,
+                "x": 1,
+                "y": 15
+            }, 
+        
+            "39": {
+                "sx": 0,
+                "sy": 868,
+                "sw": 152,
+                "sh": 124,
+                "x": 4,
+                "y": 15
+            }, 
+        
+            "40": {
+                "sx": 452,
+                "sy": 248,
+                "sw": 148,
+                "sh": 124,
+                "x": 5,
+                "y": 15
+            }, 
+        
+            "41": {
+                "sx": 304,
+                "sy": 868,
+                "sw": 140,
+                "sh": 124,
+                "x": 10,
+                "y": 15
+            }, 
+        
+            "42": {
+                "sx": 580,
+                "sy": 620,
+                "sw": 132,
+                "sh": 124,
+                "x": 14,
+                "y": 15
+            }, 
+        
+            "43": {
+                "sx": 714,
+                "sy": 744,
+                "sw": 124,
+                "sh": 124,
+                "x": 18,
+                "y": 15
+            }, 
+        
+            "44": {
+                "sx": 962,
+                "sy": 372,
+                "sw": 112,
+                "sh": 124,
+                "x": 24,
+                "y": 15
+            }, 
+        
+            "45": {
+                "sx": 962,
+                "sy": 620,
+                "sw": 100,
+                "sh": 124,
+                "x": 30,
+                "y": 15
+            }, 
+        
+            "46": {
+                "sx": 958,
+                "sy": 868,
+                "sw": 112,
+                "sh": 124,
+                "x": 24,
+                "y": 15
+            }, 
+        
+            "47": {
+                "sx": 718,
+                "sy": 496,
+                "sw": 124,
+                "sh": 124,
+                "x": 18,
+                "y": 15
+            }, 
+        
+            "48": {
+                "sx": 448,
+                "sy": 620,
+                "sw": 132,
+                "sh": 124,
+                "x": 14,
+                "y": 15
+            }, 
+        
+            "49": {
+                "sx": 304,
+                "sy": 744,
+                "sw": 140,
+                "sh": 124,
+                "x": 10,
+                "y": 15
+            }, 
+        
+            "50": {
+                "sx": 304,
+                "sy": 248,
+                "sw": 148,
+                "sh": 124,
+                "x": 6,
+                "y": 15
+            }, 
+        
+            "51": {
+                "sx": 0,
+                "sy": 744,
+                "sw": 152,
+                "sh": 124,
+                "x": 4,
+                "y": 15
+            }, 
+        
+            "52": {
+                "sx": 312,
+                "sy": 0,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "53": {
+                "sx": 156,
+                "sy": 0,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "54": {
+                "sx": 0,
+                "sy": 0,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "55": {
+                "sx": 0,
+                "sy": 248,
+                "sw": 154,
+                "sh": 124,
+                "x": 3,
+                "y": 15
+            }, 
+        
+            "56": {
+                "sx": 154,
+                "sy": 248,
+                "sw": 150,
+                "sh": 124,
+                "x": 5,
+                "y": 15
+            }, 
+        
+            "57": {
+                "sx": 896,
+                "sy": 248,
+                "sw": 144,
+                "sh": 124,
+                "x": 8,
+                "y": 15
+            }, 
+        
+            "58": {
+                "sx": 936,
+                "sy": 0,
+                "sw": 138,
+                "sh": 124,
+                "x": 11,
+                "y": 15
+            }, 
+        
+            "59": {
+                "sx": 584,
+                "sy": 744,
+                "sw": 130,
+                "sh": 124,
+                "x": 15,
+                "y": 15
+            }, 
+        
+            "60": {
+                "sx": 838,
+                "sy": 868,
+                "sw": 120,
+                "sh": 124,
+                "x": 20,
+                "y": 15
+            }
+        
+    },
+    "size": {
+        "w": 160,
+        "h": 160
+    }
+};goog.provide('feng.views.sections.home.PreloadScreen');
+
+goog.require('goog.Timer');
+goog.require('feng.views.sections.home.Screen');
+goog.require('feng.fx.AnimatedHouseLogo');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.home.PreloadScreen = function(domElement){
+
+	goog.base(this, domElement);
+
+	this._houseLogo = null;
+	this._houseLogoTweener = null;
+};
+goog.inherits(feng.views.sections.home.PreloadScreen, feng.views.sections.home.Screen);
+
+
+feng.views.sections.home.PreloadScreen.prototype.activate = function() {
+
+	goog.base(this, 'activate');
+
+	var houseLogoImg = feng.fx.AnimatedHouseLogo.getImg();
+	this._eventHandler.listenOnce( houseLogoImg, goog.events.EventType.LOAD, this.createHouseLogo, false, this );
+};
+
+
+feng.views.sections.home.PreloadScreen.prototype.hide = function() {
+
+	goog.base(this, 'hide');
+
+	this._houseLogoTweener.pause();
+};
+
+
+feng.views.sections.home.PreloadScreen.prototype.createHouseLogo = function() {
+
+	var logoEl = goog.dom.getElementByClass('house-logo', this.domElement);
+	this._houseLogo = new feng.fx.AnimatedHouseLogo( logoEl );
+	this._houseLogoTweener = this._houseLogo.getTweener({
+		'repeat': -1,
+		'repeatDelay': 1.5,
+		'ease': Sine.easeInOut
+	}, 60);
+
+	this._houseLogoTweener.restart();
+};
+
+
+feng.views.sections.home.PreloadScreen.prototype.animateOut = function() {
+
+	goog.base(this, 'animateOut');
+
+	TweenMax.to(this.domElement, 1, {
+		'delay': .8,
+		'opacity': 0,
+		'ease': Strong.easeInOut,
+		'onComplete': this.hide,
+		'onCompleteScope': this
+	});
+};
+
+
+feng.views.sections.home.PreloadScreen.prototype.onLoadAnimationComplete = function(e){
+
+	goog.Timer.callOnce(function() {
+		this.dispatchEvent( feng.events.EventType.CLOSE );
+	}, 2000, this);
+};goog.provide('feng.views.sections.Home');
+
+goog.require('goog.dom');
+goog.require('goog.events.EventTarget');
+goog.require('feng.events');
+goog.require('feng.views.sections.Section');
+goog.require('feng.models.achievements.Achievements');
+goog.require('feng.views.book.Book');
+goog.require('feng.views.sections.home.PreloadScreen');
+goog.require('feng.views.sections.home.EpisodeScreen');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.Home = function(){
+
+	var domElement = goog.dom.getElement('home');
+  goog.base(this, domElement);
+
+  var preloadScreenEl = goog.dom.getElement('main-preloader');
+  this._preloadScreen = new feng.views.sections.home.PreloadScreen( preloadScreenEl );
+  this._preloadScreen.activate();
+
+  var episodeScreenEl = goog.dom.getElement('main-episode-selection');
+  this._episodeScreen = new feng.views.sections.home.EpisodeScreen( episodeScreenEl );
+  this._episodeScreen.hide();
+
+  this._hasLoadedOnce = false;
+};
+goog.inherits(feng.views.sections.Home, feng.views.sections.Section);
+
+
+feng.views.sections.Home.prototype.init = function(){
+
+	goog.base(this, 'init');
+};
+
+
+feng.views.sections.Home.prototype.activate = function(){
+
+	goog.base(this, 'activate');
+
+	this._eventHandler.listen( this._preloadScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
+	this._eventHandler.listen( this._episodeScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
+	this._eventHandler.listen( this._episodeScreen, feng.events.EventType.COMPLETE, this.onEpisodeLoadComplete, false, this );
+};
+
+
+feng.views.sections.Home.prototype.deactivate = function(){
+
+	goog.base(this, 'deactivate');
+
+	this._preloadScreen.deactivate();
+	this._episodeScreen.deactivate();
+};
+
+
+feng.views.sections.Home.prototype.load = function(){
+
+	this._assetKeys = [this.id, 'accessories', 'global'];
+	
+	goog.base(this, 'load');
+};
+
+
+feng.views.sections.Home.prototype.onAnimatedIn = function(e){
+
+	goog.base(this, 'onAnimatedIn', e);
+};
+
+
+feng.views.sections.Home.prototype.onScreenClose = function(e){
+
+	switch( e.target ) {
+		case this._preloadScreen:
+		this._preloadScreen.animateOut();
+
+		// for test tip
+		var testTipPattern = feng.controllers.NavigationController.Token.TEST_TIP;
+
+		if(feng.initialToken.length === 4 && goog.string.startsWith(testTipPattern.replace('#/', ''), feng.initialToken[0])) {
+
+			var sectionId = feng.initialToken[1];
+			var viewId = feng.initialToken[2];
+			var tipId = feng.initialToken[3];
+
+			var testTipToken = testTipPattern.replace('{sectionId}', sectionId).replace('{viewId}', viewId).replace('{tipId}', tipId);
+
+			console.log('parsed test tip token: ' + testTipToken);
+
+			this._episodeScreen.animateIn();
+			feng.episodeSelection.activate();
+
+			feng.navigationController.setToken( feng.controllers.NavigationController.Token.STUDIO );
+		}
+		// animate in episode selection
+		else {
+
+			this._episodeScreen.animateIn();
+		}
+		break;
+
+		case this._episodeScreen:
+		this._episodeScreen.animateOut();
+		break;
+	}
+};
+
+
+feng.views.sections.Home.prototype.onLoadStart = function(e){
+
+	goog.base(this, 'onLoadStart', e);
+
+	this.animateIn();
+};
+
+
+feng.views.sections.Home.prototype.onLoadComplete = function(e){
+
+	goog.base(this, 'onLoadComplete', e);
+
+	if(!this._hasLoadedOnce) {
+
+		// init main modules with loaded fengshui data
+		var globalAssets = e.target.model.getAsset('global');
+		var fsData = globalAssets['fengshui-data'];
+		var tipsData = fsData['tips'];
+
+		var achievements = feng.models.achievements.Achievements.getInstance();
+		achievements.init( tipsData );
+
+		var sectionController = feng.controllers.SectionController.getInstance();
+		sectionController.init();
+
+		var book = feng.views.book.Book.getInstance();
+
+		feng.pubsub.publish( feng.PubSub.Topic.MAIN_LOAD_COMPLETE, globalAssets );
+
+	}else {
+
+		this._episodeScreen.reset();
+	}
+
+	//
+	this._hasLoadedOnce = true;
+};
+
+
+feng.views.sections.Home.prototype.onLoadAnimationComplete = function(e){
+
+	goog.base(this, 'onLoadAnimationComplete', e);
+
+	this._preloadScreen.onLoadAnimationComplete();
+};
+
+
+feng.views.sections.Home.prototype.onEpisodeLoadComplete = function(e){
+
+	this.animateOut();
 };goog.provide('feng.views.Overlay');
 
 goog.require('goog.events.EventTarget');
@@ -48406,156 +49798,6 @@ feng.views.Overlay.prototype.animateOut = function(){
 feng.views.Overlay.prototype.onResize = function(e){
 
 
-};goog.provide('feng.fx.CanvasSprite');
-
-goog.require('goog.dom');
-goog.require('goog.events.KeyHandler');
-
-
-feng.fx.CanvasSprite = function( img, data, opt_canvas, opt_debug ) {
-
-	this._canvasEl = opt_canvas || goog.dom.createDom('canvas');
-  	this._canvasContext = this._canvasEl.getContext('2d');
-
-  	this._size = new goog.math.Size( data['size']['w'], data['size']['h'] );
-  	
-  	this._sourceCanvas = goog.dom.createDom('canvas');
-  	this._sourceCanvas.width = img.width;
-		this._sourceCanvas.height = img.height;
-  	this._sourceContext = this._sourceCanvas.getContext('2d');
-  	this._sourceContext.drawImage( img, 0, 0 );
-
-	this._frameDic = data['frames'];
-
-	this._frameIds = goog.object.getKeys(this._frameDic).sort();
-
-	this._frames = goog.array.map(this._frameIds, function(frameId) {
-		return this._frameDic[frameId];
-	}, this);
-
-	this.frameIndex = 0;
-	this.numFrames = this._frames.length;
-
-	this.restoreSize();
-	this.update();
-
-	// added key events for debugging
-	if(opt_debug) {
-	
-		var keyHandler = new goog.events.KeyHandler( document );
-		goog.events.listen( keyHandler, goog.events.KeyHandler.EventType.KEY, function(e) {
-			switch(e.keyCode) {
-				case goog.events.KeyCodes.LEFT:
-				case goog.events.KeyCodes.UP:
-				this.prevFrame();
-				break;
-
-				case goog.events.KeyCodes.RIGHT:
-				case goog.events.KeyCodes.DOWN:
-				this.nextFrame();
-				break;
-			}
-		}, false, this);
-	}
-};
-
-
-feng.fx.CanvasSprite.prototype.getCanvas = function() {
-
-	return this._canvasEl;
-};
-
-
-feng.fx.CanvasSprite.prototype.getTweener = function( fps, duration ) {
-
-	var fps = fps || 60;
-	var duration = duration || (this.numFrames / 60);
-
-	var tweener = TweenMax.fromTo(this, duration, {
-		frameIndex: 0
-	}, {
-  	frameIndex: this.numFrames - 1,
-  	'paused': true,
-  	'ease': Linear.easeNone,
-  	'repeat': -1,
-  	'onUpdate': this.update,
-  	'onUpdateScope': this
-  });
-
-  return tweener;
-};
-
-
-feng.fx.CanvasSprite.prototype.restoreSize = function() {
-
-	this._canvasEl.width = this._size.width;
-	this._canvasEl.height = this._size.height;
-};
-
-
-feng.fx.CanvasSprite.prototype.getProgress = function() {
-
-	return this.frameIndex / (this.numFrames - 1);
-};
-
-
-feng.fx.CanvasSprite.prototype.getCurrentFrame = function() {
-
-	return this.frameIndex;
-};
-
-
-feng.fx.CanvasSprite.prototype.setProgress = function( progress ) {
-
-	var frameIndex = Math.round( (this.numFrames - 1) * progress );
-	this.gotoFrameByIndex( frameIndex );
-};
-
-
-feng.fx.CanvasSprite.prototype.gotoFrameById = function( frameId ) {
-
-	var frameIndex = goog.array.findIndex( this._frameIds, function(key) {
-		return (key === frameId);
-	});
-
-	this.gotoFrameByIndex( frameIndex );
-};
-
-
-feng.fx.CanvasSprite.prototype.gotoFrameByIndex = function( frameIndex ) {
-
-	this.frameIndex = Math.round(frameIndex);
-
-	var frameData = this._frames[ this.frameIndex ];
-
-	var sx = frameData['sx'], sy = frameData['sy'];
-	var sw = frameData['sw'], sh = frameData['sh'];
-	var x = frameData['x'], y = frameData['y'];
-
-	this._canvasContext.clearRect( 0, 0, this._canvasEl.width, this._canvasEl.height );
-
-	var imgData = this._sourceContext.getImageData( sx, sy, sw, sh );
-	this._canvasContext.putImageData( imgData, x, y );
-};
-
-
-feng.fx.CanvasSprite.prototype.prevFrame = function() {
-
-	this.frameIndex = Math.max(0, this.frameIndex - 1);
-	this.update();
-};
-
-
-feng.fx.CanvasSprite.prototype.nextFrame = function() {
-
-	this.frameIndex = Math.min(this.numFrames - 1, this.frameIndex + 1);
-	this.update();
-};
-
-
-feng.fx.CanvasSprite.prototype.update = function() {
-
-	this.gotoFrameByIndex( this.frameIndex );
 };goog.provide('feng.views.sections.overlays.LoaderOverlay');
 
 goog.require('goog.dom');
@@ -48918,6 +50160,7 @@ feng.views.sections.overlays.FinaleOverlay.prototype.onResize = function(e){
 
 goog.require('goog.events.EventHandler');
 goog.require('feng.templates.captions');
+goog.require('feng.utils.Utils');
 
 
 /**
@@ -48942,6 +50185,10 @@ feng.views.sections.captions.Caption = function( object, cameraController, rende
     position: 'right'
   };
 
+  this._closeKeyId = null;
+
+  this._close = goog.bind( this.close, this );
+
   // render HTML template
   this.domElement = soy.renderAsFragment(this._template, this._templateData);
 
@@ -48955,6 +50202,7 @@ feng.views.sections.captions.Caption = function( object, cameraController, rende
   this._interactionEl = goog.dom.getElementByClass('interaction', this.domElement);
   this._adviceEl = goog.dom.getElementByClass('advice', this.domElement);
   this._shareEl = goog.dom.getElementByClass('share', this.domElement);
+  this._shareButtons = goog.dom.query('a', this._shareEl);
 
   // set elements status by tip
   this.updateStatus();
@@ -48973,8 +50221,15 @@ feng.views.sections.captions.Caption.prototype.show = function() {
   
   // listen for unlock ready event from view3d object
   this._eventHandler.listen( this._object, feng.events.EventType.UNLOCK, this.updateStatus, false, this );
-
   this._eventHandler.listen( window, 'resize', this.onResize, false, this );
+
+  // listen for share button click events
+  goog.array.forEach(this._shareButtons, function(shareButton) {
+    this._eventHandler.listen( shareButton, 'click', this.onClickShareButton, false, this );
+  }, this);
+
+  //
+  this._closeKeyId = feng.keyboardController.bind( this._close, feng.keyboardController.key.ESC, true );
 
   this.updateStatus();
 
@@ -48987,6 +50242,8 @@ feng.views.sections.captions.Caption.prototype.show = function() {
 feng.views.sections.captions.Caption.prototype.hide = function() {
 
   this._eventHandler.removeAll();
+
+  feng.keyboardController.unbind( this._closeKeyId );
 
   this._object.stopInteraction();
 
@@ -49066,6 +50323,14 @@ feng.views.sections.captions.Caption.prototype.onClick = function( e ) {
     break;
     */
   }
+};
+
+
+feng.views.sections.captions.Caption.prototype.onClickShareButton = function( e ) {
+
+  e.preventDefault();
+
+  feng.utils.Utils.popUp( e.currentTarget.href );
 };
 
 
@@ -50752,6 +52017,10 @@ feng.views.sections.overlays.OpeningOverlay = function(domElement){
   this._viewId = null;
   this._shownOnce = {};
 
+  this._enterKeyId = null;
+	this._escKeyId = null;
+	this._onClickOK = goog.bind( this.onClickOK, this );
+
   this._preload = feng.models.Preload.getInstance();
 };
 goog.inherits(feng.views.sections.overlays.OpeningOverlay, feng.views.Overlay);
@@ -50764,6 +52033,18 @@ feng.views.sections.overlays.OpeningOverlay.prototype.activate = function(){
 
 	this._eventHandler.listenOnce( this._okButton, 'click', this.onClickOK, false, this );
 	this._eventHandler.listenOnce( this._popup, feng.events.EventType.ANIMATE_OUT, this.animateOut, false, this );
+
+	this._enterKeyId = feng.keyboardController.bind( this._onClickOK, feng.keyboardController.key.ENTER, true );
+	this._escKeyId = feng.keyboardController.bind( this._onClickOK, feng.keyboardController.key.ESC, true );
+};
+
+
+feng.views.sections.overlays.OpeningOverlay.prototype.deactivate = function(){
+
+	goog.base(this, 'deactivate');
+
+	feng.keyboardController.unbind( this._enterKeyId );
+	feng.keyboardController.unbind( this._escKeyId );
 };
 
 
@@ -52017,233 +53298,6 @@ feng.views.View3DHud.prototype.onAnimatedInView3D = function( e ) {
 feng.views.View3DHud.prototype.onUpdateView3D = function( e ) {
 
   this.compass.setRotation( e.rotationY );
-};goog.provide('feng.views.sections.Section');
-
-goog.require('goog.dom');
-goog.require('goog.dom.query');
-goog.require('goog.events.EventTarget');
-goog.require('goog.events.EventHandler');
-goog.require('feng.events');
-goog.require('feng.views.Preloader');
-
-
-/**
- * @constructor
- */
-feng.views.sections.Section = function(domElement){
-	
-  goog.base(this);
-
-  this.domElement = domElement;
-  this.id = this.domElement.id;
-
-  this._animateInTweener = new TimelineMax({
-  	'paused': true,
-  	'onComplete': this.onAnimatedIn,
-  	'onCompleteScope': this
-  });
-
-  this._animateOutTweener = new TimelineMax({
-  	'paused': true,
-  	'onComplete': this.onAnimatedOut,
-  	'onCompleteScope': this
-  });
-
-  // section loader
-  this._preloaderDom = goog.dom.query('.preloader', this.domElement)[0];
-  this._preloader = new feng.views.Preloader( this._preloaderDom, 2000 );
-  this._preloader.setParentEventTarget(this);
-
-  // permanent events
-  goog.events.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
-
-  // activatable events
-  this._eventHandler = new goog.events.EventHandler(this);
-
-  // asset keys
-  this._assetKeys = [];
-  this._loadedAssetKeys = [];
-};
-goog.inherits(feng.views.sections.Section, goog.events.EventTarget);
-
-
-feng.views.sections.Section.prototype.init = function(){
-
-  // hide section by default
-  this.hide();
-  
-	this.setAnimations();
-};
-
-
-feng.views.sections.Section.prototype.show = function(){
-
-	goog.style.showElement(this.domElement, true);
-
-	this.dispatchEvent({
-		type: feng.events.EventType.SHOW
-	});
-};
-
-
-feng.views.sections.Section.prototype.hide = function(){
-
-	goog.style.showElement(this.domElement, false);
-
-	this.dispatchEvent({
-		type: feng.events.EventType.HIDE
-	});
-};
-
-
-feng.views.sections.Section.prototype.isShown = function(){
-
-	return goog.style.isElementShown(this.domElement);
-};
-
-
-feng.views.sections.Section.prototype.activate = function(){
-
-};
-
-
-feng.views.sections.Section.prototype.deactivate = function(){
-
-	this._eventHandler.removeAll();
-};
-
-
-feng.views.sections.Section.prototype.addPreloadListeners = function(){
-
-	this.listen(feng.events.EventType.START, this.onLoadStart, false, this);
-	this.listen(feng.events.EventType.PROGRESS, this.onLoadProgress, false, this);
-	this.listen(feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this);
-	this.listen(feng.events.EventType.COMPLETE, this.onLoadAnimationComplete, false, this);
-};
-
-
-feng.views.sections.Section.prototype.load = function(){
-
-	this.addPreloadListeners();
-
-	this._assetKeys = goog.array.filter( this._assetKeys, function(key) {
-		return !goog.array.contains(this._loadedAssetKeys, key);
-	}, this);
-
-	this._preloader.load( this._assetKeys );
-};
-
-
-feng.views.sections.Section.prototype.setAnimations = function(){
-
-	var fadeInTweener = TweenMax.fromTo(this.domElement, .5, {
-		'opacity': 0
-	}, {
-		'opacity': 1
-	});
-
-	this._animateInTweener.add( fadeInTweener );
-
-	var fadeOutTweener = TweenMax.fromTo(this.domElement, .5, {
-		'opacity': 1
-	}, {
-		'opacity': 0
-	});
-
-	this._animateOutTweener.add( fadeOutTweener );
-};
-
-
-feng.views.sections.Section.prototype.animateIn = function(){
-
-	if(this.isShown()) return false;
-
-	this.show();
-	this.activate();
-	this._animateInTweener.restart();
-
-	this.dispatchEvent({
-		type: feng.events.EventType.ANIMATE_IN
-	});
-
-	return true;
-};
-
-
-feng.views.sections.Section.prototype.animateOut = function(){
-
-	if(!this.isShown()) return false;
-
-	this.deactivate();
-	this._animateOutTweener.restart();
-
-	this.dispatchEvent({
-		type: feng.events.EventType.ANIMATE_OUT
-	});
-
-	return true;
-};
-
-
-feng.views.sections.Section.prototype.doNavigate = function(){
-
-	this.load();
-};
-
-
-feng.views.sections.Section.prototype.onAnimatedIn = function(e){
-
-	this.dispatchEvent({
-		type: feng.events.EventType.ANIMATED_IN
-	});
-};
-
-
-feng.views.sections.Section.prototype.onAnimatedOut = function(e){
-
-	this.hide();
-
-	this.dispatchEvent({
-		type: feng.events.EventType.ANIMATED_OUT
-	});
-};
-
-
-feng.views.sections.Section.prototype.onLoadStart = function(e){
-
-	//console.log("section load start");
-};
-
-
-feng.views.sections.Section.prototype.onLoadProgress = function(e){
-
-	//console.log("section load progress: " + e.progress);
-};
-
-
-feng.views.sections.Section.prototype.onLoadComplete = function(e){
-	
-	//console.log("section load complete");
-
-	goog.array.forEach( this._assetKeys, function(key) {
-		goog.array.insert(this._loadedAssetKeys, key);
-	}, this);
-
-	goog.array.clear( this._assetKeys );
-};
-
-
-feng.views.sections.Section.prototype.onLoadAnimationComplete = function(e){
-	
-	//console.log("section load animation complete");
-};
-
-
-feng.views.sections.Section.prototype.onNavigationChange = function(e){
-
-	var shouldNavigate = (e.tokenArray && e.tokenArray[0] === this.id);
-
-	if(shouldNavigate) this.doNavigate();
 };goog.provide('feng.controllers.view3d.View3DController');
 
 goog.require('goog.events.EventTarget');
@@ -52564,7 +53618,7 @@ feng.views.sections.Episode.prototype.onShowView3D = function(e){
 			object: object
 		});
 	}
-};goog.provide('feng.views.sections.Townhouse');
+};goog.provide('feng.views.sections.House');
 
 goog.require('goog.dom');
 goog.require('feng.events');
@@ -52574,10 +53628,10 @@ goog.require('feng.views.sections.Episode');
 /**
  * @constructor
  */
-feng.views.sections.Townhouse = function(){
+feng.views.sections.House = function(){
 
 	var viewIds = ['boysroom', 'homeoffice', 'livingroom'];
-	var sectionId = 'townhouse';
+	var sectionId = 'house';
 
 	var achievements = feng.models.achievements.Achievements.getInstance();
 	var tips = achievements.getTipsOfSection( sectionId );
@@ -52601,493 +53655,7 @@ feng.views.sections.Townhouse = function(){
   this._viewIds = viewIds;
   this._viewId = this._viewIds[0];
 };
-goog.inherits(feng.views.sections.Townhouse, feng.views.sections.Episode);goog.provide('feng.views.sections.home.Screen');
-
-goog.require('goog.dom');
-goog.require('goog.events.EventTarget');
-goog.require('goog.events.EventHandler');
-
-
-/**
- * @constructor
- */
-feng.views.sections.home.Screen = function(domElement){
-
-	goog.base( this );
-
-  this.domElement = domElement;
-
-  this._eventHandler = new goog.events.EventHandler(this);
-};
-goog.inherits(feng.views.sections.home.Screen, goog.events.EventTarget);
-
-
-feng.views.sections.home.Screen.prototype.activate = function() {
-
-
-};
-
-
-feng.views.sections.home.Screen.prototype.deactivate = function() {
-
-	
-};
-
-
-feng.views.sections.home.Screen.prototype.show = function() {
-
-	TweenMax.set(this.domElement, {
-		'display': 'block'
-	});
-};
-
-
-feng.views.sections.home.Screen.prototype.hide = function() {
-
-	TweenMax.set(this.domElement, {
-		'display': 'none'
-	});
-};
-
-
-feng.views.sections.home.Screen.prototype.animateIn = function() {
-
-	this.show();
-};
-
-
-feng.views.sections.home.Screen.prototype.animateOut = function() {
-
-	this.deactivate();
-};goog.provide('feng.views.sections.home.EpisodeScreen');
-
-goog.require('feng.views.sections.home.Screen');
-
-
-/**
- * @constructor
- */
-feng.views.sections.home.EpisodeScreen = function(domElement){
-
-	goog.base(this, domElement);
-
-	this._episodeSelection = feng.episodeSelection;
-	goog.dom.appendChild( this.domElement, this._episodeSelection.domElement );
-};
-goog.inherits(feng.views.sections.home.EpisodeScreen, feng.views.sections.home.Screen);
-
-
-feng.views.sections.home.EpisodeScreen.prototype.activate = function() {
-
-	goog.base(this, 'activate');
-
-	this._eventHandler.listen( this._episodeSelection, feng.events.EventType.COMPLETE, this.onLoadComplete, false, this );
-};
-
-
-feng.views.sections.home.EpisodeScreen.prototype.deactivate = function() {
-
-	goog.base(this, 'deactivate');
-
-	this._episodeSelection.deactivate();
-};
-
-
-
-feng.views.sections.home.EpisodeScreen.prototype.reset = function() {
-
-	this._episodeSelection.animateIn();
-};
-
-
-feng.views.sections.home.EpisodeScreen.prototype.animateIn = function() {
-
-	goog.base(this, 'animateIn');
-
-	this.activate();
-
-	this._episodeSelection.animateIn();
-};
-
-
-feng.views.sections.home.EpisodeScreen.prototype.animateOut = function() {
-
-	goog.base(this, 'animateOut');
-
-	this.deactivate();
-
-	this._episodeSelection.animateOut();
-};
-
-
-feng.views.sections.home.EpisodeScreen.prototype.onLoadComplete = function(e) {
-
-	this._episodeSelection.animateOutOnComplete( e.episode.id );
-
-	this.dispatchEvent( e );
-};goog.provide('feng.views.sections.home.IntroScreen');
-
-goog.require('feng.views.sections.home.Screen');
-
-
-/**
- * @constructor
- */
-feng.views.sections.home.IntroScreen = function(domElement){
-
-	goog.base(this, domElement);
-
-	this._continueButtonEl = goog.dom.getElementByClass('primary-button', this.domElement);
-};
-goog.inherits(feng.views.sections.home.IntroScreen, feng.views.sections.home.Screen);
-
-
-feng.views.sections.home.IntroScreen.prototype.activate = function() {
-
-	goog.base(this, 'activate');
-
-	this._eventHandler.listen( this._continueButtonEl, 'click', this.onClick, false, this );
-};
-
-
-feng.views.sections.home.IntroScreen.prototype.animateIn = function() {
-
-	goog.base(this, 'animateIn');
-
-	var size = goog.style.getSize( this.domElement );
-
-	TweenMax.fromTo( this.domElement, 1, {
-		'clip': 'rect(0px, ' + size.width + 'px, ' + size.height + 'px, ' + size.width + 'px)'
-	}, {
-		'clip': 'rect(0px, ' + size.width + 'px, ' + size.height + 'px, 0px)',
-		'clearProps': 'all',
-		'ease': Strong.easeInOut,
-		'onComplete': this.activate,
-		'onCompleteScope': this
-	});
-};
-
-
-feng.views.sections.home.IntroScreen.prototype.animateOut = function() {
-
-	goog.base(this, 'animateOut');
-
-	this.hide();
-};
-
-
-feng.views.sections.home.IntroScreen.prototype.onClick = function(e) {
-
-	this.dispatchEvent( feng.events.EventType.CLOSE );
-};goog.provide('feng.views.Logo');
-
-goog.require('goog.dom');
-goog.require('goog.dom.classes');
-goog.require('goog.dom.query');
-goog.require('goog.style');
-goog.require('goog.math.Size');
-
-
-/**
- * @constructor
- */
-feng.views.Logo = function( domElement, size ){
-
-  goog.base(this);
-
-  this.domElement = domElement;
-  this._symbolEl = goog.dom.getElementByClass('symbol', this.domElement);
-  this._frameEl = goog.dom.getElementByClass('frame', this._symbolEl);
-  this._needleEl = goog.dom.getElementByClass('needle', this._symbolEl);
-  
-  var textEl = goog.dom.query('h1', this.domElement);
-  this._hasText = (textEl.length > 0);
-
-  this._textEl = this._hasText ? textEl[0] : null;
-  this._line1El = this._hasText ? goog.dom.getElementByClass('line1', this._textEl) : null;
-  this._line2El = this._hasText ? goog.dom.getElementByClass('line2', this._textEl) : null;
-
-  var width = (this._hasText ? feng.views.Logo.Size.TEXT.width : feng.views.Logo.Size.SYMBOL.width);
-  var height = feng.views.Logo.Size.SYMBOL.height + (this._hasText ? feng.views.Logo.Size.TEXT.height : 0);
-  this._originalSize = new goog.math.Size(width, height);
-
-  var size = size || goog.style.getSize( this.domElement );
-  this.setSize( size );
-};
-goog.inherits(feng.views.Logo, goog.events.EventTarget);
-
-
-feng.views.Logo.prototype.setSize = function( size ){
-
-	var newSize = this._originalSize.clone().scaleToFit( size );
-  var ratio = newSize.width / this._originalSize.width;
-
-  var newSymbolSize = feng.views.Logo.Size.SYMBOL.clone().scale( ratio );
-  goog.style.setSize( this._symbolEl, newSymbolSize );
-
-  if(this._hasText) {
-    var newTextSize = feng.views.Logo.Size.TEXT.clone().scale( ratio );
-    goog.style.setSize( this._textEl, newTextSize );
-  }
-
-  goog.style.setSize( this.domElement, newSize );
-};
-
-
-feng.views.Logo.prototype.animateIn = function(){
-
-
-};
-
-
-feng.views.Logo.prototype.animateOut = function(){
-
-	
-};
-
-
-feng.views.Logo.prototype.rotateNeedleTo = function( degree ){
-
-	goog.style.setStyle(this._needleEl, 'transform', 'rotate(' + degree + 'deg)');
-};
-
-
-feng.views.Logo.Size = {
-  SYMBOL: new goog.math.Size(112, 112),
-  TEXT: new goog.math.Size(252, 80)
-};goog.provide('feng.views.sections.home.PreloadScreen');
-
-goog.require('goog.Timer');
-goog.require('feng.views.sections.home.Screen');
-goog.require('feng.views.Logo');
-
-
-/**
- * @constructor
- */
-feng.views.sections.home.PreloadScreen = function(domElement){
-
-	goog.base(this, domElement);
-
-	var logoEl = goog.dom.getElementByClass('fengshui-logo', this.domElement);
-	this._logo = new feng.views.Logo( logoEl );
-
-	this._fillEl = goog.dom.getElementByClass('fill', this.domElement);
-	this._counterEl = goog.dom.getElementByClass('counter', this.domElement);
-};
-goog.inherits(feng.views.sections.home.PreloadScreen, feng.views.sections.home.Screen);
-
-
-feng.views.sections.home.PreloadScreen.prototype.setProgress = function(progress) {
-
-	var progress = Math.round( progress * 100 );
-
-	goog.style.setStyle( this._fillEl, 'width', progress + '%' );
-
-	this._counterEl.innerHTML = (progress > 9) ? progress : ('0' + progress);
-};
-
-
-feng.views.sections.home.PreloadScreen.prototype.animateOut = function() {
-
-	goog.base(this, 'animateOut');
-
-	TweenMax.to(this.domElement, 1, {
-		'delay': .8,
-		'opacity': 0,
-		'ease': Strong.easeInOut,
-		'onComplete': this.hide,
-		'onCompleteScope': this
-	});
-};
-
-
-feng.views.sections.home.PreloadScreen.prototype.onLoadAnimationComplete = function(e){
-
-	goog.Timer.callOnce(function() {
-		this.dispatchEvent( feng.events.EventType.CLOSE );
-	}, 2000, this);
-};goog.provide('feng.views.sections.Home');
-
-goog.require('goog.dom');
-goog.require('goog.events.EventTarget');
-goog.require('feng.events');
-goog.require('feng.views.sections.Section');
-goog.require('feng.models.achievements.Achievements');
-goog.require('feng.views.book.Book');
-goog.require('feng.views.sections.home.PreloadScreen');
-goog.require('feng.views.sections.home.IntroScreen');
-goog.require('feng.views.sections.home.EpisodeScreen');
-
-
-/**
- * @constructor
- */
-feng.views.sections.Home = function(){
-
-	var domElement = goog.dom.getElement('home');
-  goog.base(this, domElement);
-
-  var preloadScreenEl = goog.dom.getElement('main-preloader');
-  this._preloadScreen = new feng.views.sections.home.PreloadScreen( preloadScreenEl );
-
-  var introEl = goog.dom.getElement('main-intro');
-  this._introScreen = new feng.views.sections.home.IntroScreen( introEl );
-  this._introScreen.hide();
-
-  var episodeScreenEl = goog.dom.getElement('main-episode-selection');
-  this._episodeScreen = new feng.views.sections.home.EpisodeScreen( episodeScreenEl );
-  this._episodeScreen.hide();
-
-  this._hasLoadedOnce = false;
-};
-goog.inherits(feng.views.sections.Home, feng.views.sections.Section);
-
-
-feng.views.sections.Home.prototype.init = function(){
-
-	goog.base(this, 'init');
-};
-
-
-feng.views.sections.Home.prototype.activate = function(){
-
-	goog.base(this, 'activate');
-
-	this._eventHandler.listen( this._preloadScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
-	this._eventHandler.listen( this._introScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
-	this._eventHandler.listen( this._episodeScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
-	this._eventHandler.listen( this._episodeScreen, feng.events.EventType.COMPLETE, this.onEpisodeLoadComplete, false, this );
-};
-
-
-feng.views.sections.Home.prototype.deactivate = function(){
-
-	goog.base(this, 'deactivate');
-
-	this._preloadScreen.deactivate();
-	this._introScreen.deactivate();
-	this._episodeScreen.deactivate();
-};
-
-
-feng.views.sections.Home.prototype.load = function(){
-
-	this._assetKeys = [this.id, 'accessories', 'global'];
-	
-	goog.base(this, 'load');
-};
-
-
-feng.views.sections.Home.prototype.onAnimatedIn = function(e){
-
-	goog.base(this, 'onAnimatedIn', e);
-};
-
-
-feng.views.sections.Home.prototype.onScreenClose = function(e){
-
-	switch( e.target ) {
-		case this._preloadScreen:
-		this._preloadScreen.animateOut();
-
-		// for test tip
-		var testTipPattern = feng.controllers.NavigationController.Token.TEST_TIP;
-
-		if(feng.initialToken.length === 4 && goog.string.startsWith(testTipPattern.replace('#/', ''), feng.initialToken[0])) {
-
-			var sectionId = feng.initialToken[1];
-			var viewId = feng.initialToken[2];
-			var tipId = feng.initialToken[3];
-
-			var testTipToken = testTipPattern.replace('{sectionId}', sectionId).replace('{viewId}', viewId).replace('{tipId}', tipId);
-
-			console.log('parsed test tip token: ' + testTipToken);
-
-			this._episodeScreen.animateIn();
-			feng.episodeSelection.activate();
-
-			feng.navigationController.setToken( feng.controllers.NavigationController.Token.STUDIO );
-		}
-		// animate in intro
-		else {
-
-			this._introScreen.animateIn();
-		}
-		break;
-
-		case this._introScreen:
-		this._introScreen.animateOut();
-		this._episodeScreen.animateIn();
-		break;
-
-		case this._episodeScreen:
-		this._episodeScreen.animateOut();
-		this._introScreen.animateIn();
-		break;
-	}
-};
-
-
-feng.views.sections.Home.prototype.onLoadStart = function(e){
-
-	goog.base(this, 'onLoadStart', e);
-
-	this.animateIn();
-};
-
-
-feng.views.sections.Home.prototype.onLoadProgress = function(e){
-
-	goog.base(this, 'onLoadProgress', e);
-
-	this._preloadScreen.setProgress( e.progress );
-};
-
-
-feng.views.sections.Home.prototype.onLoadComplete = function(e){
-
-	goog.base(this, 'onLoadComplete', e);
-
-	if(!this._hasLoadedOnce) {
-
-		// init main modules with loaded fengshui data
-		var globalAssets = e.target.model.getAsset('global');
-		var fsData = globalAssets['fengshui-data'];
-		var tipsData = fsData['tips'];
-
-		var achievements = feng.models.achievements.Achievements.getInstance();
-		achievements.init( tipsData );
-
-		var sectionController = feng.controllers.SectionController.getInstance();
-		sectionController.init();
-
-		var book = feng.views.book.Book.getInstance();
-
-		feng.pubsub.publish( feng.PubSub.Topic.MAIN_LOAD_COMPLETE, globalAssets );
-
-	}else {
-
-		this._episodeScreen.reset();
-	}
-
-	//
-	this._hasLoadedOnce = true;
-};
-
-
-feng.views.sections.Home.prototype.onLoadAnimationComplete = function(e){
-
-	goog.base(this, 'onLoadAnimationComplete', e);
-
-	this._preloadScreen.onLoadAnimationComplete();
-};
-
-
-feng.views.sections.Home.prototype.onEpisodeLoadComplete = function(e){
-
-	this.animateOut();
-};goog.provide('feng.views.sections.Studio');
+goog.inherits(feng.views.sections.House, feng.views.sections.Episode);goog.provide('feng.views.sections.Studio');
 
 goog.require('goog.dom');
 goog.require('feng.events');
@@ -53130,7 +53698,7 @@ goog.require('goog.events.EventTarget');
 goog.require('goog.events');
 goog.require('feng.views.sections.Home');
 goog.require('feng.views.sections.Studio');
-goog.require('feng.views.sections.Townhouse');
+goog.require('feng.views.sections.House');
 
 
 /**
@@ -53153,7 +53721,7 @@ goog.addSingletonGetter(feng.controllers.SectionController);
 feng.controllers.SectionController.prototype.init = function(){
   
   this.addSection('studio');
-  this.addSection('townhouse');
+  this.addSection('house');
 
   this._eventHandler.listen(this, feng.events.EventType.ANIMATE_IN, this.onSectionAnimateIn, false, this);
   this._eventHandler.listen(this, feng.events.EventType.ANIMATE_OUT, this.onSectionAnimateOut, false, this);
@@ -53187,8 +53755,8 @@ feng.controllers.SectionController.prototype.addSection = function(id){
     section = new feng.views.sections.Studio;
     break;
 
-    case 'townhouse':
-    section = new feng.views.sections.Townhouse;
+    case 'house':
+    section = new feng.views.sections.House;
     break;
   }
 
@@ -53260,6 +53828,10 @@ feng.views.popups.Tutorial = function(){
 	this._numLoaded = 0;
 	this._isLoaded = false;
 
+	this._enterKeyId = null;
+	this._escKeyId = null;
+	this._animateOut = goog.bind(this.animateOut, this);
+
 	// loader
 	this._loaderEl = goog.dom.getElementByClass('loader', this.domElement);
 	this._fillEl = goog.dom.getElementByClass('fill', this.domElement);
@@ -53330,6 +53902,9 @@ feng.views.popups.Tutorial.prototype.activate = function(){
 
 	this._eventHandler.listen( this._skipButton, 'click', this.animateOut, false, this );
 
+	this._enterKeyId = feng.keyboardController.bind( this._animateOut, feng.keyboardController.key.ENTER, true );
+	this._escKeyId = feng.keyboardController.bind( this._animateOut, feng.keyboardController.key.ESC, true );
+
 	if(!this._isLoaded) {
 
 		goog.array.forEach(this._videoEls, function(videoEl) {
@@ -53351,6 +53926,9 @@ feng.views.popups.Tutorial.prototype.deactivate = function(){
 	this._videoEl.pause();
 
 	this._eventHandler.removeAll();
+
+	feng.keyboardController.unbind( this._enterKeyId );
+	feng.keyboardController.unbind( this._escKeyId );
 };
 
 
@@ -53722,7 +54300,7 @@ feng.controllers.SoundController = function(){
       loop: true,
       onload: onSoundLoad
     },
-    'townhouse': {
+    'house': {
       urls: urls('ambient/subdivision'),
       volume: 0,
       loop: true,
@@ -53815,19 +54393,19 @@ feng.controllers.SoundController = function(){
       fadeAmbient: fadeAmbient,
       fadeLoop: fadeLoop
     },
-    'townhouse': {
+    'house': {
       position: 0,
       timer: new goog.Timer(25000),
       sounds: [
-        this.getAmbient('townhouse'),
+        this.getAmbient('house'),
         this.getLoop('optimize-loop-1'),
-        this.getAmbient('townhouse'),
+        this.getAmbient('house'),
         this.getLoop('trees'),
-        this.getAmbient('townhouse'),
+        this.getAmbient('house'),
         this.getLoop('serendipity'),
-        this.getAmbient('townhouse'),
+        this.getAmbient('house'),
         this.getLoop('first-class'),
-        this.getAmbient('townhouse'),
+        this.getAmbient('house'),
         this.getLoop('family-breakfast')
       ],
       fadeAmbient: fadeAmbient,
@@ -58585,6 +59163,107 @@ feng.fx.Shaders.prototype.onComplete = function( e ) {
 		// handling load errors
 
 	}
+};goog.provide('feng.controllers.KeyboardController');
+
+goog.require('goog.events.EventTarget');
+goog.require('goog.events.KeyHandler');
+goog.require('goog.object');
+goog.require('goog.string');
+
+/**
+ * @constructor
+ */
+feng.controllers.KeyboardController = function(){
+	
+  goog.base(this);
+
+  this.key = {
+  	ESC: goog.events.KeyCodes.ESC,
+  	ENTER: goog.events.KeyCodes.ENTER,
+  	LEFT: goog.events.KeyCodes.LEFT,
+  	RIGHT: goog.events.KeyCodes.RIGHT,
+  	UP: goog.events.KeyCodes.UP,
+  	DOWN: goog.events.KeyCodes.DOWN
+  };
+
+  this._bindMappings = {
+  	/*
+		'id': {'handler': function, 'keycode': number}
+  	*/
+  };
+
+  this._keycodeMappings = {
+  	/*
+		'keycode': [id, id...]
+  	*/
+  };
+
+  this._keyHandler = new goog.events.KeyHandler(document);
+
+  goog.events.listen( this._keyHandler, goog.events.KeyHandler.EventType.KEY, this.onKey, false, this);
+};
+goog.inherits(feng.controllers.KeyboardController, goog.events.EventTarget);
+goog.addSingletonGetter(feng.controllers.KeyboardController);
+
+
+feng.controllers.KeyboardController.prototype.bind = function(handler, keycode, once){
+
+	var duplicateId = goog.object.findKey( this._bindMappings, function(id, obj) {
+		return (obj.handler === handler && obj.keycode === keycode && obj.once === once);
+	});
+
+	if(duplicateId) {
+		return duplicateId;
+	}
+
+	// add bind mapping
+	var id = goog.string.getRandomString();
+
+	var val = {
+		handler: handler,
+		keycode: keycode,
+		once: once
+	};
+
+	goog.object.set( this._bindMappings, id, val );
+
+	// add keycode mapping
+	this._keycodeMappings[keycode] = this._keycodeMappings[keycode] || [];
+	goog.array.insert( this._keycodeMappings[keycode], id );
+
+	return id;
+};
+
+
+feng.controllers.KeyboardController.prototype.unbind = function(id){
+
+	var bindMapping = this._bindMappings[ id ];
+
+	if(!bindMapping) return;
+
+	var keycode = bindMapping.keycode;
+
+	goog.array.remove( this._keycodeMappings[keycode], id );
+
+	goog.object.remove( this._bindMappings, id );
+};
+
+
+feng.controllers.KeyboardController.prototype.onKey = function(e){
+
+  var bindIds = this._keycodeMappings[ e.keyCode ];
+
+  if(!bindIds || e.repeat) return false;
+
+  goog.array.forEach(bindIds, function(id) {
+
+  	var bindMapping = this._bindMappings[id];
+  	bindMapping.handler();
+
+  	if( bindMapping.once ) {
+  		this.unbind( id );
+  	}
+  }, this);
 };// Copyright 2008 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -59319,7 +59998,6 @@ goog.require('goog.dom');
 goog.require('goog.dom.classes');
 goog.require('goog.dom.query');
 goog.require('goog.testing.events');
-goog.require('feng.views.Logo');
 
 
 /**
@@ -59344,177 +60022,13 @@ goog.addSingletonGetter(feng.views.EpisodeSelection);
 feng.views.EpisodeSelection.prototype.init = function(){
 
 	this._promptEl = goog.dom.query('> .prompt', this.domElement)[0];
-  this._promptInnerDiscEl = goog.dom.getElementByClass('inner', this._promptEl);
-  this._promptOuterDiscEl = goog.dom.getElementByClass('outer', this._promptEl);
-  this._promptContentEl = goog.dom.getElementByClass('content', this._promptEl);
-
-	var promptSmallLogoEl = goog.dom.query('.disc .fengshui-logo', this._promptEl)[0];
-	var promptSmallLogoSize = new goog.math.Size(38, 38);
-	this._promptSmallLogo = new feng.views.Logo( promptSmallLogoEl, promptSmallLogoSize );
-
-	var promptLargeLogoEl = goog.dom.query('> .fengshui-logo', this._promptEl)[0];
-	var promptLargeLogoSize = new goog.math.Size(100, 100);
-	this._promptLargeLogo = new feng.views.Logo( promptLargeLogoEl, promptLargeLogoSize );
 
   this._studioEl = goog.dom.getElementByClass('studio', this.domElement);
-  this._townhouseEl = goog.dom.getElementByClass('townhouse', this.domElement);
-
-  this._studioBackgroundEl = goog.dom.getElementByClass('background', this._studioEl);
-  this._townhouseBackgroundEl = goog.dom.getElementByClass('background', this._townhouseEl);
-
-  this._studioShadeEl = goog.dom.getElementByClass('shade', this._studioEl);
-  this._townhouseShadeEl = goog.dom.getElementByClass('shade', this._townhouseEl);
-
-  this._promptEl = goog.dom.query('> .prompt', this.domElement)[0];
-
-  this._studioPromptEl = goog.dom.getElementByClass('prompt', this._studioEl);
-  this._townhousePromptEl = goog.dom.getElementByClass('prompt', this._townhouseEl);
-
-  this._studioPromptInnerDiscEl = goog.dom.getElementByClass('inner', this._studioPromptEl);
-  this._studioPromptOuterDiscEl = goog.dom.getElementByClass('outer', this._studioPromptEl);
-  this._studioPromptLocationEl = goog.dom.query('.location', this._studioPromptInnerDiscEl)[0];
-  this._studioPromptLineEl = goog.dom.query('.location .line', this._studioPromptInnerDiscEl)[0];
-  this._studioPromptTitleEl = goog.dom.query('.content h1', this._studioPromptInnerDiscEl)[0];
-  this._studioPromptParaEl = goog.dom.query('.content > p', this._studioPromptInnerDiscEl)[0];
-  this._studioPromptButtonEl = goog.dom.query('.content > a', this._studioPromptInnerDiscEl)[0];
-
-  this._townhousePromptInnerDiscEl = goog.dom.getElementByClass('inner', this._townhousePromptEl);
-  this._townhousePromptOuterDiscEl = goog.dom.getElementByClass('outer', this._townhousePromptEl);
-  this._townhousePromptLocationEl = goog.dom.query('.location', this._townhousePromptInnerDiscEl)[0];
-  this._townhousePromptLineEl = goog.dom.query('.location .line', this._townhousePromptInnerDiscEl)[0];
-  this._townhousePromptTitleEl = goog.dom.query('.content h1', this._townhousePromptInnerDiscEl)[0];
-  this._townhousePromptParaEl = goog.dom.query('.content > p', this._townhousePromptInnerDiscEl)[0];
-  this._townhousePromptButtonEl = goog.dom.query('.content > a', this._townhousePromptInnerDiscEl)[0];
-
-  var els = [
-  {
-  	outer: this._studioPromptOuterDiscEl,
-  	inner: this._studioPromptInnerDiscEl,
-  	location: this._studioPromptLocationEl,
-  	line: this._studioPromptLineEl,
-  	title: this._studioPromptTitleEl,
-  	para: this._studioPromptParaEl,
-  	button: this._studioPromptButtonEl
-  },
-  {
-  	outer: this._townhousePromptOuterDiscEl,
-  	inner: this._townhousePromptInnerDiscEl,
-  	location: this._townhousePromptLocationEl,
-  	line: this._townhousePromptLineEl,
-  	title: this._townhousePromptTitleEl,
-  	para: this._townhousePromptParaEl,
-  	button: this._townhousePromptButtonEl
-  }];
-
-  this._studioPromptAnimateInTweener = new TimelineMax({
-  	'paused': true
-  });
-
-  this._townhousePromptAnimateInTweener = new TimelineMax({
-  	'paused': true
-  });
-
-  this._studioPromptAnimateOutTweener = new TimelineMax({
-  	'paused': true
-  });
-
-  this._townhousePromptAnimateOutTweener = new TimelineMax({
-  	'paused': true
-  });
-
-  for(var i = 0; i < 2; i++) {
-
-  	var el = els[i];
-  	var outer = el.outer;
-  	var inner = el.inner;
-  	var location = el.location;
-  	var line = el.line;
-  	var title = el.title;
-  	var para = el.para;
-  	var button = el.button;
-
-  	var animateInTweener = (i === 0) ? this._studioPromptAnimateInTweener : this._townhousePromptAnimateInTweener;
-
-		var scaleUpOuter = TweenMax.fromTo(outer, 1, {
-	  	'scale': 0,
-	  	'autoAlpha': 0
-	  }, {
-	  	'scale': 1,
-	  	'autoAlpha': 1,
-	  	'clearProps': 'all',
-	  	'ease': Power4.easeInOut
-	  });
-
-	  var scaleUpInner = TweenMax.fromTo(inner, 1, {
-	  	'scale': 0,
-	  	'autoAlpha': 0
-	  }, {
-	  	'delay': .1,
-	  	'scale': 1,
-	  	'autoAlpha': 1,
-	  	'clearProps': 'all',
-	  	'ease': Power4.easeInOut
-	  });
-
-	  var fadeInLocation = TweenMax.fromTo(location, .8, {
-	  	'opacity': 0
-	  }, {
-	  	'delay': .5,
-	  	'opacity': 1
-	  });
-
-	  var expandLine = TweenMax.fromTo(line, .8, {
-	  	'width': 0
-	  }, {
-	  	'delay': .75,
-	  	'width': 100,
-	  	'ease': Strong.easeInOut
-	  });
-
-	  var fadeInTitle = TweenMax.fromTo(title, .8, {
-	  	'opacity': 0
-	  }, {
-	  	'delay': .75,
-	  	'opacity': 1,
-	  	'ease': Sine.easeInOut
-	  });
-
-	  var fadeInPara = TweenMax.fromTo(para, .8, {
-	  	'opacity': 0
-	  }, {
-	  	'delay': 1,
-	  	'opacity': 1,
-	  	'ease': Sine.easeInOut
-	  });
-
-	  var fadeInButton = TweenMax.fromTo(button, .8, {
-	  	'opacity': 0
-	  }, {
-	  	'delay': 1.25,
-	  	'opacity': 1,
-	  	'ease': Sine.easeInOut
-	  });
-
-	  animateInTweener.add([
-	  	scaleUpOuter,
-	  	scaleUpInner,
-	  	fadeInLocation,
-	  	expandLine,
-	  	fadeInTitle,
-	  	fadeInPara,
-	  	fadeInButton
-	  	]);
-  };
+  this._houseEl = goog.dom.getElementByClass('house', this.domElement);
 
   //
   this._activationDelay = 0;
   this._episodePromptAnimateInDelay = 0;
-
-  this._isAnimatedToMessage = false;
-	this._isAnimatedToCompass = false;
-
-  this._studioRatio = .5;
-  this._townhouseRatio = .5;
 
   this._hoveredSceneEl = null;
 
@@ -59522,6 +60036,14 @@ feng.views.EpisodeSelection.prototype.init = function(){
   this._oldEpisode = null;
 
   this._eventHandler = new goog.events.EventHandler(this);
+
+  this._hoverStudio = goog.bind(this.hoverStudio, this);
+  this._hoverHouse = goog.bind(this.hoverHouse, this);
+  this._onPressEnter = goog.bind(this.onPressEnter, this);
+
+	this._hoverStudioKeyId = null;
+	this._hoverHouseKeyId = null;
+	this._enterKeyId = null;
 
 	//
 	this.reset();
@@ -59532,13 +60054,17 @@ feng.views.EpisodeSelection.prototype.activate = function(){
 
 	this._eventHandler.listenOnce( this.domElement, 'mousemove', this.onMouseMoveOnce, false, this );
 	this._eventHandler.listen( this._studioEl, 'mouseover', this.onMouseOver, false, this );
-	this._eventHandler.listen( this._townhouseEl, 'mouseover', this.onMouseOver, false, this );
+	this._eventHandler.listen( this._houseEl, 'mouseover', this.onMouseOver, false, this );
 	this._eventHandler.listen( this._studioEl, 'mouseout', this.onMouseOut, false, this );
-	this._eventHandler.listen( this._townhouseEl, 'mouseout', this.onMouseOut, false, this );
+	this._eventHandler.listen( this._houseEl, 'mouseout', this.onMouseOut, false, this );
 
 	feng.sectionController.listen( feng.events.EventType.START, this.onLoadStart, false, this );
 	feng.sectionController.listen( feng.events.EventType.PROGRESS, this.onLoadProgress, false, this );
 	feng.sectionController.listen( feng.events.EventType.COMPLETE, this.onLoadComplete, false, this );
+
+	this._hoverStudioKeyId = feng.keyboardController.bind( this._hoverStudio, feng.keyboardController.key.LEFT );
+	this._hoverHouseKeyId = feng.keyboardController.bind( this._hoverHouse, feng.keyboardController.key.RIGHT );
+	this._enterKeyId = feng.keyboardController.bind( this._onPressEnter, feng.keyboardController.key.ENTER, true );
 };
 
 
@@ -59548,6 +60074,10 @@ feng.views.EpisodeSelection.prototype.deactivate = function(){
 
 	goog.Timer.clear( this._activationDelay );
 	goog.Timer.clear( this._episodePromptAnimateInDelay );
+
+	feng.keyboardController.unbind( this._hoverStudioKeyId );
+	feng.keyboardController.unbind( this._hoverHouseKeyId );
+	feng.keyboardController.unbind( this._enterKeyId );
 };
 
 
@@ -59555,59 +60085,16 @@ feng.views.EpisodeSelection.prototype.reset = function(){
 
 	goog.dom.removeNode( feng.tutorial.domElement );
 
-	goog.style.setStyle( this._studioEl, 'width', '50%' );
-	goog.style.setStyle( this._townhouseEl, 'width', '50%' );
-	goog.style.setStyle( this._studioShadeEl, 'opacity', .5 );
-	goog.style.setStyle( this._townhouseShadeEl, 'opacity', .5 );
-	goog.style.setStyle( this._promptEl, 'left', '50%' );
+	goog.dom.classes.enable( this._promptEl, 'hidden', false );
+	goog.dom.classes.enable( this._studioEl, 'active', false );
+	goog.dom.classes.enable( this._studioEl, 'inactive', false );
+	goog.dom.classes.enable( this._studioEl, 'loading', false );
+	goog.dom.classes.enable( this._studioEl, 'hidden', false );
+	goog.dom.classes.enable( this._houseEl, 'active', false );
+	goog.dom.classes.enable( this._houseEl, 'inactive', false );
+	goog.dom.classes.enable( this._houseEl, 'loading', false );
+	goog.dom.classes.enable( this._houseEl, 'hidden', false );
 
-	TweenMax.set(this._studioPromptInnerDiscEl, {
-  	'scale': 0,
-  	'autoAlpha': 0
-  });
-
-	TweenMax.set(this._studioPromptOuterDiscEl, {
-  	'scale': 0,
-  	'autoAlpha': 0
-  });
-
-	TweenMax.set(this._townhousePromptInnerDiscEl, {
-  	'scale': 0,
-  	'autoAlpha': 0
-  });
-
-	TweenMax.set(this._townhousePromptOuterDiscEl, {
-  	'scale': 0,
-  	'autoAlpha': 0
-  });
-
-	TweenMax.set(this._studioPromptEl, {
-		'display': 'block'
-	});
-
-	TweenMax.set(this._townhousePromptEl, {
-		'display': 'block'
-	});
-
-	TweenMax.set(this._promptOuterDiscEl, {
-		'scale': 0
-	});
-
-	TweenMax.set(this._promptInnerDiscEl, {
-		'scale': 0
-	});
-
-	TweenMax.set(this._promptContentEl, {
-		'autoAlpha': 0
-	});
-
-	TweenMax.set(this._promptLargeLogo.domElement, {
-		'display': 'none',
-		'alpha': 0
-	});
-
-  this._isAnimatedToMessage = false;
-	this._isAnimatedToCompass = false;
 	this._hoveredSceneEl = null;
 };
 
@@ -59615,8 +60102,6 @@ feng.views.EpisodeSelection.prototype.reset = function(){
 feng.views.EpisodeSelection.prototype.animateIn = function(){
 
 	this.reset();
-
-	this.animatePromptToMessage();
 
 	this._activationDelay = goog.Timer.callOnce(this.activate, 2000, this);
 };
@@ -59627,7 +60112,7 @@ feng.views.EpisodeSelection.prototype.animateOut = function(){
 	this.deactivate();
 
 	feng.soundController.fadeAmbient( 'studio', null, 0, 4, true );
-	feng.soundController.fadeAmbient( 'townhouse', null, 0, 4, true );
+	feng.soundController.fadeAmbient( 'house', null, 0, 4, true );
 };
 
 
@@ -59636,183 +60121,98 @@ feng.views.EpisodeSelection.prototype.animateOutOnComplete = function( episodeId
 	this.deactivate();
 
 	feng.soundController.fadeAmbient( 'studio', null, 0, 4, true );
-	feng.soundController.fadeAmbient( 'townhouse', null, 0, 4, true );
-	
-	var backgroundEl = (episodeId === 'studio') ? this._studioBackgroundEl : this._townhouseBackgroundEl;
-
-	TweenMax.to(backgroundEl, .5, {
-		'scale': 1.2,
-		'clearProps': 'all',
-		'ease': Strong.easeInOut
-	});
-};
-
-
-feng.views.EpisodeSelection.prototype.animatePromptToMessage = function(){
-
-	this._isAnimatedToCompass = false;
-
-	if(this._isAnimatedToMessage) return;
-	else this._isAnimatedToMessage = true;
-
-	TweenMax.to(this._promptOuterDiscEl, 1, {
-		'scale': 1,
-		'ease': Power4.easeInOut
-	});
-
-	TweenMax.to(this._promptInnerDiscEl, 1, {
-		'delay': .1,
-		'scale': 1,
-		'ease': Power4.easeInOut
-	});
-
-	TweenMax.to(this._promptContentEl, .5, {
-		'delay': .1,
-		'autoAlpha': 1
-	});
-
-	TweenMax.to(this._promptLargeLogo.domElement, .5, {
-		'display': 'none',
-		'alpha': 0
-	});
-};
-
-
-feng.views.EpisodeSelection.prototype.animatePromptToCompass = function(){
-
-	this._isAnimatedToMessage = false;
-
-	if(this._isAnimatedToCompass) return;
-	else this._isAnimatedToCompass = true;
-
-	TweenMax.to(this._promptInnerDiscEl, 1, {
-		'scale': .43,
-		'ease': Power4.easeInOut
-	});
-
-	TweenMax.to(this._promptOuterDiscEl, 1, {
-		'delay': .1,
-		'scale': .45,
-		'ease': Power4.easeInOut
-	});
-
-	TweenMax.to(this._promptContentEl, .5, {
-		'autoAlpha': 0
-	});
-
-	TweenMax.to(this._promptLargeLogo.domElement, .5, {
-		'delay': .1,
-		'display': 'block',
-		'alpha': 1
-	});
+	feng.soundController.fadeAmbient( 'house', null, 0, 4, true );
 };
 
 
 feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
 
-	goog.style.setStyle( this._studioEl, 'width', this._studioRatio * 100 + '%' );
-	goog.style.setStyle( this._townhouseEl, 'width', this._townhouseRatio * 100 + '%' );
+	if(this._hoveredSceneEl === this._studioEl) {
 
-	goog.style.setStyle( this._promptEl, 'left', this._studioRatio * 100 + '%' );
+		goog.dom.classes.enable( this._studioEl, 'active', true );
+		goog.dom.classes.enable( this._studioEl, 'inactive', false );
+		goog.dom.classes.enable( this._houseEl, 'active', false );
+		goog.dom.classes.enable( this._houseEl, 'inactive', true );
 
-	goog.Timer.clear( this._episodePromptAnimateInDelay );
-
-	var studioShadeOpacity, townhouseShadeOpacity;
-	var innersToAnimateOut = [];
-	var outersToAnimateOut = [];
-
-	if(this._studioRatio > this._townhouseRatio) {
-
-		studioShadeOpacity = 0;
-		townhouseShadeOpacity = .7;
-
-		var promptTweener = this._studioPromptAnimateInTweener;
-		this._episodePromptAnimateInDelay = goog.Timer.callOnce(promptTweener.restart, 400, promptTweener);
-
-		this._townhousePromptAnimateInTweener.pause();
-
-		innersToAnimateOut.push( this._townhousePromptInnerDiscEl );
-	  outersToAnimateOut.push( this._townhousePromptOuterDiscEl );
-
-	  this.animatePromptToCompass();
-	  this._promptLargeLogo.rotateNeedleTo( -45 );
+		goog.dom.classes.enable( this._promptEl, 'hidden', true );
+		goog.dom.classes.addRemove( this._promptEl, 'house', 'studio' );
 
 	  feng.soundController.fadeAmbient( 'studio', null, 1, 4 );
-	  feng.soundController.fadeAmbient( 'townhouse', null, 0, 4 );
+	  feng.soundController.fadeAmbient( 'house', null, 0, 4 );
 
-	}else if(this._studioRatio < this._townhouseRatio) {
+	}else if(this._hoveredSceneEl === this._houseEl) {
 
-		studioShadeOpacity = .7;
-		townhouseShadeOpacity = 0;
+		goog.dom.classes.enable( this._studioEl, 'active', false );
+		goog.dom.classes.enable( this._studioEl, 'inactive', true );
+		goog.dom.classes.enable( this._houseEl, 'active', true );
+		goog.dom.classes.enable( this._houseEl, 'inactive', false );
 
-		var promptTweener = this._townhousePromptAnimateInTweener;
-		this._episodePromptAnimateInDelay = goog.Timer.callOnce(promptTweener.restart, 400, promptTweener);
+		goog.dom.classes.enable( this._promptEl, 'hidden', true );
+		goog.dom.classes.addRemove( this._promptEl, 'studio', 'house' );
 
-		this._studioPromptAnimateInTweener.pause();
-
-		innersToAnimateOut.push( this._studioPromptInnerDiscEl );
-	  outersToAnimateOut.push( this._studioPromptOuterDiscEl );
-
-	  this.animatePromptToCompass();
-	  this._promptLargeLogo.rotateNeedleTo( 45 );
-
-	  feng.soundController.fadeAmbient( 'studio', null, 0, 4 );
-	  feng.soundController.fadeAmbient( 'townhouse', null, 1, 4 );
+		feng.soundController.fadeAmbient( 'studio', null, 0, 4 );
+	  feng.soundController.fadeAmbient( 'house', null, 1, 4 );
 
 	}else {
 
-		studioShadeOpacity = .5;
-		townhouseShadeOpacity = .5;
+		goog.dom.classes.enable( this._studioEl, 'active', false );
+		goog.dom.classes.enable( this._studioEl, 'inactive', false );
+		goog.dom.classes.enable( this._houseEl, 'active', false );
+		goog.dom.classes.enable( this._houseEl, 'inactive', false );
 
-		this._studioPromptAnimateInTweener.pause();
-		this._townhousePromptAnimateInTweener.pause();
+		goog.dom.classes.enable( this._promptEl, 'hidden', false );
+		goog.dom.classes.remove( this._promptEl, 'studio' );
+		goog.dom.classes.remove( this._promptEl, 'house' );
 
-		innersToAnimateOut.push( this._studioPromptInnerDiscEl );
-		innersToAnimateOut.push( this._townhousePromptInnerDiscEl );
-		outersToAnimateOut.push( this._studioPromptOuterDiscEl );
-	  outersToAnimateOut.push( this._townhousePromptOuterDiscEl );
-
-	  this.animatePromptToMessage();
-	  this._promptLargeLogo.rotateNeedleTo( 0 );
-
-	  feng.soundController.fadeAmbient( 'studio', null, 0, 4 );
-	  feng.soundController.fadeAmbient( 'townhouse', null, 0, 4 );
+		feng.soundController.fadeAmbient( 'studio', null, 0, 4 );
+	  feng.soundController.fadeAmbient( 'house', null, 0, 4 );
 	}
+};
 
-  TweenMax.to(innersToAnimateOut, 1, {
-  	'scale': 0,
-  	'autoAlpha': 0,
-  	'ease': Power4.easeInOut
-  });
 
-	TweenMax.to(outersToAnimateOut, 1, {
-  	'scale': 0,
-  	'autoAlpha': 0,
-  	'ease': Power4.easeInOut
-  });
+feng.views.EpisodeSelection.prototype.hoverStudio = function(){
 
-	goog.style.setStyle( this._studioShadeEl, 'opacity', studioShadeOpacity );
-	goog.style.setStyle( this._townhouseShadeEl, 'opacity', townhouseShadeOpacity );
+	if(this._hoveredSceneEl === this._studioEl) return;
+	else this._hoveredSceneEl = this._studioEl;
+
+	this.updateSceneStatus();
+};
+
+
+feng.views.EpisodeSelection.prototype.hoverHouse = function(){
+
+	if(this._hoveredSceneEl === this._houseEl) return;
+	else this._hoveredSceneEl = this._houseEl;
+
+	this.updateSceneStatus();
+};
+
+
+feng.views.EpisodeSelection.prototype.onPressEnter = function(){
+
+	if(this._hoveredSceneEl === this._studioEl) {
+
+		feng.navigationController.setToken( feng.controllers.NavigationController.Token.STUDIO );
+
+	}else if(this._hoveredSceneEl === this._houseEl) {
+
+		feng.navigationController.setToken( feng.controllers.NavigationController.Token.HOUSE );
+	}
 };
 
 
 feng.views.EpisodeSelection.prototype.onMouseOver = function(e){
 
 	if(e.currentTarget === this._hoveredSceneEl) return false;
-	else this._hoveredSceneEl = e.currentTarget;
 
 	switch(e.currentTarget) {
 
 		case this._studioEl:
-		this._studioRatio = .8;
-		this._townhouseRatio = .2;
-		this.updateSceneStatus();
+		this.hoverStudio();
 		break;
 
-		case this._townhouseEl:
-		this._studioRatio = .2;
-		this._townhouseRatio = .8;
-		this.updateSceneStatus();
+		case this._houseEl:
+		this.hoverHouse();
 		break;
 	}
 };
@@ -59823,8 +60223,6 @@ feng.views.EpisodeSelection.prototype.onMouseOut = function(e){
   if(!e.relatedTarget || !goog.dom.contains(this.domElement, e.relatedTarget)) {
 
   	this._hoveredSceneEl = null;
-  	this._studioRatio = .5;
-		this._townhouseRatio = .5;
 		this.updateSceneStatus();
   }
 };
@@ -59836,9 +60234,9 @@ feng.views.EpisodeSelection.prototype.onMouseMoveOnce = function(e){
 
   	goog.testing.events.fireMouseOverEvent( this._studioEl );
 
-  }else if(goog.dom.contains(this._townhouseEl, e.target)) {
+  }else if(goog.dom.contains(this._houseEl, e.target)) {
 
-  	goog.testing.events.fireMouseOverEvent( this._townhouseEl );
+  	goog.testing.events.fireMouseOverEvent( this._houseEl );
   }
 };
 
@@ -59852,21 +60250,7 @@ feng.views.EpisodeSelection.prototype.onLoadStart = function(e){
 
 	this.deactivate();
 
-	TweenMax.to(this._promptInnerDiscEl, 1, {
-		'scale': 0,
-		'ease': Power4.easeInOut
-	});
-
-	TweenMax.to(this._promptOuterDiscEl, 1, {
-		'delay': .1,
-		'scale': 0,
-		'ease': Power4.easeInOut
-	});
-
-	TweenMax.to(this._promptLargeLogo.domElement, .5, {
-		'display': 'none',
-		'alpha': 0
-	});
+	goog.dom.classes.enable( this._promptEl, 'hidden', true );
 
 	feng.tutorial.showLoader();
 	feng.tutorial.enableAutoPlay( true );
@@ -59874,27 +60258,17 @@ feng.views.EpisodeSelection.prototype.onLoadStart = function(e){
 
 	if(this._episode.id === 'studio') {
 
-		goog.style.setStyle( this._studioEl, 'width', '100%' );
-		goog.style.setStyle( this._townhouseEl, 'width', '0%' );
-		goog.style.setStyle( this._promptEl, 'left', '100%' );
-
-		TweenMax.set(this._studioPromptEl, {
-			'display': 'none'
-		});
+		goog.dom.classes.enable( this._studioEl, 'loading', true );
+		goog.dom.classes.enable( this._houseEl, 'hidden', true );
 
 		goog.dom.appendChild( this._studioEl, feng.tutorial.domElement );
 
-	}else if(this._episode.id === 'townhouse') {
+	}else if(this._episode.id === 'house') {
 
-		goog.style.setStyle( this._studioEl, 'width', '0%' );
-		goog.style.setStyle( this._townhouseEl, 'width', '100%' );
-		goog.style.setStyle( this._promptEl, 'left', '0%' );
+		goog.dom.classes.enable( this._studioEl, 'hidden', true );
+		goog.dom.classes.enable( this._houseEl, 'loading', true );
 
-		TweenMax.set(this._townhousePromptEl, {
-			'display': 'none'
-		});
-
-		goog.dom.appendChild( this._townhouseEl, feng.tutorial.domElement );
+		goog.dom.appendChild( this._houseEl, feng.tutorial.domElement );
 	}
 };
 
@@ -60010,6 +60384,7 @@ goog.require('feng.controllers.NavigationController');
 goog.require('feng.controllers.SectionController');
 goog.require('feng.controllers.StorageController');
 goog.require('feng.controllers.SoundController');
+goog.require('feng.controllers.KeyboardController');
 goog.require('feng.controllers.view3d.PathfindingController');
 goog.require('feng.views.debug.Debugger');
 goog.require('feng.views.MainOptions');
@@ -60063,6 +60438,8 @@ feng.apps.Demo = function() {
 	feng.shaders = feng.fx.Shaders.getInstance();
 
 	feng.sectionController = feng.controllers.SectionController.getInstance();
+
+	feng.keyboardController = feng.controllers.KeyboardController.getInstance();
 
 	feng.initialToken = feng.navigationController.getTokenArray();
 	

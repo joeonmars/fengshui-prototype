@@ -2,6 +2,7 @@ goog.provide('feng.views.sections.captions.Caption');
 
 goog.require('goog.events.EventHandler');
 goog.require('feng.templates.captions');
+goog.require('feng.utils.Utils');
 
 
 /**
@@ -43,6 +44,7 @@ feng.views.sections.captions.Caption = function( object, cameraController, rende
   this._interactionEl = goog.dom.getElementByClass('interaction', this.domElement);
   this._adviceEl = goog.dom.getElementByClass('advice', this.domElement);
   this._shareEl = goog.dom.getElementByClass('share', this.domElement);
+  this._shareButtons = goog.dom.query('a', this._shareEl);
 
   // set elements status by tip
   this.updateStatus();
@@ -63,6 +65,12 @@ feng.views.sections.captions.Caption.prototype.show = function() {
   this._eventHandler.listen( this._object, feng.events.EventType.UNLOCK, this.updateStatus, false, this );
   this._eventHandler.listen( window, 'resize', this.onResize, false, this );
 
+  // listen for share button click events
+  goog.array.forEach(this._shareButtons, function(shareButton) {
+    this._eventHandler.listen( shareButton, 'click', this.onClickShareButton, false, this );
+  }, this);
+
+  //
   this._closeKeyId = feng.keyboardController.bind( this._close, feng.keyboardController.key.ESC, true );
 
   this.updateStatus();
@@ -157,6 +165,14 @@ feng.views.sections.captions.Caption.prototype.onClick = function( e ) {
     break;
     */
   }
+};
+
+
+feng.views.sections.captions.Caption.prototype.onClickShareButton = function( e ) {
+
+  e.preventDefault();
+
+  feng.utils.Utils.popUp( e.currentTarget.href );
 };
 
 
