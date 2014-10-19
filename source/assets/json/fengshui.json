@@ -53,7 +53,6 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be warm, friendly, happy",
 			"character": "ollie",
-			"response": "Thank you.",
 			"reminder": "I love taking photos and display them above my bed!"
 		},
 		{
@@ -72,7 +71,6 @@
 			"problem": "What is around you when sitting? Make sure your body is not in alignment with a door, between two doors, or a window and door. This is too much Yang activity around your body. Over time, your energy will be depleted.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
-			"response": "Thank you.",
 			"reminder": "Oh, sorry! The chair in the middle of the room blocks your way. Maybe I should move it somewhere else."
 		},
 		{
@@ -91,7 +89,6 @@
 			"problem": "It is not advisable to use cold color light in dining areas. These adverse situations will create mental tension in the occupants of the dwelling and can result in stress.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
-			"response": "Thank you.",
 			"reminder": "I love novels and makeup magazines, but sometimes I feel tired after reading for a while."
 		},
 		{
@@ -110,7 +107,6 @@
 			"problem": null,
 			"advice": "In Feng Shui, crystals are considered powerful Feng Shui cures and are used to improve the Feng Shui energy flow in various areas of the house or office, as well as to improve one's own energy.<br>The best place for the crystal is near a window. On sunny days, the crystal captures energy and sunlight and redirects lots of rainbow beams in the room creating a positive energy.",
 			"character": "ollie",
-			"response": "Thank you.",
 			"reminder": "I got a crystal as a gift, does it has any Feng Shui function? I display it above the vanity cabinet."
 		},
 		{
@@ -129,7 +125,6 @@
 			"problem": null,
 			"advice": "This is an advice for selecting a clock.",
 			"character": "ollie",
-			"response": "Thank you.",
 			"reminder": "What time is it now?"
 		},
 		{
@@ -148,7 +143,6 @@
 			"problem": "Identifying the flow of energy in your home is easy if you visualize energy, flowing into your home as water. Would the water flow smoothly and nourish all areas of your home or will it get blocked and stagnant in many areas?",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
-			"response": "Thank you.",
 			"reminder": "My room is small, so I try to open the windows more often, but I still feel suffocated."
 		},
 		{
@@ -167,7 +161,6 @@
 			"problem": "Plants are always excellent Feng Shui for a home or office because they bring vibrant energy into one's space. But the cactus plant is a classic example of a so-called bad Feng Shui plant, because its energy is very spiky.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
-			"response": "Thank you.",
 			"reminder": "I love my “little green”, and cactus leaves also offer health benefits, right?"
 		},
 		{
@@ -186,7 +179,6 @@
 			"problem": "It is not advisable to display any reflective items or sharp and pointed objects in the interior of the dwelling. Under accepted FENG SHUI principles sharp objects are known as [sha energy].<br>These adverse situations will create mental tension in the occupants of the dwelling and can result in stress and even increase in blood pressure.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
-			"response": "Thank you.",
 			"reminder": "Fashion design and handcrafts are my favorites. I especially enjoy working with a sewing machine."
 		},
 		{
@@ -205,7 +197,6 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
-			"response": "Thank you.",
 			"reminder": "How do you like fresh fruit? I have some stored in the refrigerator."
 		},
 		{
@@ -224,8 +215,7 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
-			"response": "Thank you.",
-			"reminder": "How do you like fresh fruit? I have some stored in the refrigerator.",
+			"reminder": "I recently bought a new fruit plate.",
 			"hint": "Something is missing on the fruit plate...",
 			"details": {
 				"descriptions": {
@@ -252,7 +242,6 @@
 			"problem": "You cannot cover, conceal or pretend not to see low energy, because in the world of Feng Shui energy, there are no boundaries.<br>Here is the thing about closets - most people think of closets as an out of sight, out of mind deal. Clutter should be clean and organized.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
-			"response": "Thank you.",
 			"reminder": "I always have a really rushed morning. I don’t have time to organize the closet."
 		},
 		{
@@ -271,7 +260,6 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
-			"response": "Thank you.",
 			"reminder": "Do you like my flower vase? I think it brings a fresh mood to the bathroom."
 		},
 		{
@@ -290,7 +278,6 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
-			"response": "Thank you.",
 			"reminder": "Oh... somewhere is leaking? Maybe I should have tap the shower head!"
 		},
 		{
@@ -309,7 +296,6 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "joanna",
-			"response": "Thank you.",
 			"reminder": "We had a goldfish, but it passed away a few months ago. We left the empty aquarium near the sofa."
 		},
 		{
@@ -328,7 +314,6 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "joanna",
-			"response": "Thank you.",
 			"reminder": "I heard that mirrors have some unexpected Feng Shui influences. Is that true? Have I used it correctly?"
 		},
 		{
@@ -347,7 +332,6 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "joanna",
-			"response": "Thank you.",
 			"reminder": "My husband Scott always displays cooking utensils on the countertop. But I really like to keep them organized in a drawer."
 		},
 		{
@@ -366,7 +350,6 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "joanna",
-			"response": "Thank you.",
 			"reminder": "My husband Scott always displays cooking utensils on the countertop. But I really like to keep them organized in a drawer."
 		},
 		{
@@ -385,7 +368,6 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "joanna",
-			"response": "Thank you.",
 			"reminder": "The stairs to up to the second floor are narrow and sometimes make me uncomfortable. Can we check it out?"
 		},
 		{
@@ -402,7 +384,6 @@
 			"problem": null,
 			"advice": "Be loremipsum, loremipsum",
 			"character": "joanna",
-			"response": "Thank you.",
 			"reminder": "The half-wall book stack shelf is the most significant decoration in our living room, but we actually seldom read those books."
 		},
 		{
@@ -421,7 +402,6 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "nick",
-			"response": "Thank you.",
 			"reminder": "I love to play with my handheld console! I put it near my bed so I can reach it at night!"
 		},
 		{
@@ -440,7 +420,6 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "nick",
-			"response": "Thank you.",
 			"reminder": "Dad said I need to clean my room, so I threw my bear, Nick King, into a drawer, but I don’t think he liked it."
 		},
 		{
@@ -459,8 +438,7 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "nick",
-			"response": "Thank you.",
-			"reminder": "Don't forget to check the bed!"
+			"reminder": "Could Nick King be with me while I am sleeping?"
 		},
 		{
 			"id": "pc",
@@ -478,7 +456,6 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "nick",
-			"response": "Thank you.",
 			"reminder": "There is a playground outside my window. I hope I can finish my homework soon and join Tom and Ryan."
 		},
 		{
@@ -497,8 +474,7 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "nick",
-			"response": "Thank you.",
-			"reminder": "Don't forget to check the picture!"
+			"reminder": "Do you like that picture hanging on my wall?"
 		},
 		{
 			"id": "chair",
@@ -516,7 +492,6 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "scott",
-			"response": "Thank you.",
 			"reminder": "Have a seat! Try this desk chair, it’s very comfortable! But I don’t know why I sometimes get backaches."
 		},
 		{
@@ -535,7 +510,6 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "scott",
-			"response": "Thank you.",
 			"reminder": "Any suggestions on the picture wall? I’ve heard that Feng Shui can help with my career."
 		},
 		{
@@ -554,7 +528,6 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "scott",
-			"response": "Thank you.",
 			"reminder": "I always need set square. Do you think it is in a good position now? I want to keep it at hand."
 		},
 		{
@@ -573,7 +546,6 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "scott",
-			"response": "Thank you.",
 			"reminder": "I love having some plants in the room. Do you think I have made a wise choice?"
 		},
 		{
@@ -592,7 +564,6 @@
 			"problem": "This is a statement about this object's fengshui problem.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "scott",
-			"response": "Thank you.",
 			"reminder": "Don't forget to check the mascot!"
 		}
 	],

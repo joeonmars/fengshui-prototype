@@ -18,7 +18,6 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId, data ){
   this.isMandatory = data['mandatory'];
   this.isFinal = data['final'];
   this.reminder = data['reminder'];
-  this.response = data['response'];
   this.character = data['character'];
   this.name = data['name'];
   this.advice = data['advice'];

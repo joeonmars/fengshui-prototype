@@ -18,6 +18,9 @@ feng.views.book.Book = function() {
 	
 	var glossary = feng.models.Preload.getInstance().getAsset('global.fengshui-data')['glossary'];
 	var tips = feng.models.achievements.Achievements.getInstance().getAllTips();
+	tips = goog.array.filter(tips, function(tip) {
+		return (!tip.getProvidedTip());
+	});
 
 	this.domElement = soy.renderAsFragment(feng.templates.book.Book, {
 		tips: tips,

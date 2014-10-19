@@ -45,6 +45,10 @@ feng.views.sections.controls.Reminder.prototype.init = function(){
 
 	goog.base(this, 'init');
 
+	goog.array.forEach(this._tips, function(tip) {
+		tip.listenOnce(feng.events.EventType.UNLOCK, this.onTipUnlock, false, this);
+	}, this);
+
 	this._characterAnimations = this.getCharacterAnimations();
 };
 
@@ -55,9 +59,11 @@ feng.views.sections.controls.Reminder.prototype.getLockedTipsOfView = function()
   this._currentTips = achievements.getTipsOfView( this._view3d.id, this._view3d.sectionId );
 
   this._currentTips = goog.array.filter(this._currentTips, function(tip) {
-  	return (tip.unlocked === false);
+  	var requiredTip = tip.getRequiredTip();
+  	var requiredTipUnlocked = requiredTip ? requiredTip.unlocked : true;
+  	return (!tip.unlocked && requiredTipUnlocked);
   });
-
+  
   this._numHints = this._currentTips.length;
 
   return this._currentTips;
@@ -104,10 +110,6 @@ feng.views.sections.controls.Reminder.prototype.activate = function(){
 	this._eventHandler.listen(this._hintDialogueEl, 'mouseout', this.onMouseOut, false, this);
 	this._eventHandler.listen(this._hintTimer, 'tick', this.onHintTick, false, this);
 
-	goog.array.forEach(this._tips, function(tip) {
-		tip.listen(feng.events.EventType.UNLOCK, this.onTipUnlock, false, this);
-	}, this);
-
 	this._hintTimer.start();
 
 	goog.dom.classes.enable(this.domElement, 'hidden', false);
@@ -119,10 +121,6 @@ feng.views.sections.controls.Reminder.prototype.deactivate = function(){
   var shouldDeactivate = goog.base(this, 'deactivate');
 
   if(!shouldDeactivate) return;
-
-	goog.array.forEach(this._tips, function(tip) {
-		tip.unlisten(feng.events.EventType.UNLOCK, this.onTipUnlock, false, this);
-	}, this);
 
 	this._hintTimer.stop();
 
