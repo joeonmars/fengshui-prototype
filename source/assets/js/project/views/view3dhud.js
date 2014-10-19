@@ -127,6 +127,8 @@ feng.views.View3DHud.prototype.pause = function( shouldPause ) {
   goog.dom.classes.enable( this._controlsEl, 'paused', shouldPause );
 
   goog.dom.classes.enable( this._controlsEl, 'hidden', shouldPause );
+
+  feng.mainOptions.showHelpButton( !shouldPause );
 };
 
 
@@ -174,6 +176,8 @@ feng.views.View3DHud.prototype.activateControls = function() {
   this.book.activate();
   this.reminder.activate();
   this.progressBar.activate();
+
+  feng.mainOptions.showHelpButton( true );
 };
 
 
@@ -184,6 +188,8 @@ feng.views.View3DHud.prototype.deactivateControls = function() {
   this.book.deactivate();
   this.reminder.deactivate();
   this.progressBar.deactivate();
+
+  feng.mainOptions.showHelpButton( false );
 };
 
 
@@ -246,6 +252,8 @@ feng.views.View3DHud.prototype.onModeChange = function( e ) {
   if(e.gateway) {
     shouldShowControls = false;
   }
+
+  feng.mainOptions.showHelpButton( shouldShowControls );
 
   this.showControls( shouldShowControls );
 };

@@ -55,7 +55,7 @@ feng.views.book.Book = function() {
 	this._tipModuleWidths = [];
 	this._openedTipModule = null;
 	this._activeTipModule = null;
-	this._activeTipIndex = null;
+	this._activeTipIndex = 0;
 
 	this._viewportSize = null;
 	this._scrollX = 0;
@@ -64,9 +64,16 @@ feng.views.book.Book = function() {
 
 	this._scrollTweener = null;
 
+	this._animateInTweener = new TimelineMax();
+
 	//
 	this._animateOut = goog.bind( this.animateOut, this );
+	this._prevTipModule = goog.bind( this.prevTipModule, this );
+	this._nextTipModule = goog.bind( this.nextTipModule, this );
+
 	this._enterKeyId = null;
+	this._leftKeyId = null;
+	this._rightKeyId = null;
 
 	//
 	this._mouseWheelHandler = new goog.events.MouseWheelHandler( this.domElement );
@@ -84,14 +91,17 @@ goog.addSingletonGetter(feng.views.book.Book);
 
 feng.views.book.Book.prototype.activate = function() {
 
-	this._eventHandler.listen( window, 'resize', this.resize, false, this );
+	this._eventHandler.listen( window, 'resize', this.onResize, false, this );
 	this._eventHandler.listen( this._closeButton, 'click', this.animateOut, false, this );
+	this._eventHandler.listen( this, feng.events.EventType.CHANGE, this.onTipModuleChange, false, this );
 	this._eventHandler.listen( this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this );
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this );
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this );
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this );
 
 	this._enterKeyId = feng.keyboardController.bind( this._animateOut, feng.keyboardController.key.ESC, true );
+	this._leftKeyId = feng.keyboardController.bind( this._prevTipModule, feng.keyboardController.key.LEFT );
+	this._rightKeyId = feng.keyboardController.bind( this._nextTipModule, feng.keyboardController.key.RIGHT );
 
 	goog.array.forEach( this._tipModules, function(tipModule) {
 		tipModule.activate();
@@ -104,6 +114,8 @@ feng.views.book.Book.prototype.deactivate = function() {
 	this._eventHandler.removeAll();
 
 	feng.keyboardController.unbind( this._enterKeyId );
+	feng.keyboardController.unbind( this._leftKeyId );
+	feng.keyboardController.unbind( this._rightKeyId );
 
 	goog.array.forEach( this._tipModules, function(tipModule) {
 		tipModule.deactivate();
@@ -111,7 +123,7 @@ feng.views.book.Book.prototype.deactivate = function() {
 };
 
 
-feng.views.book.Book.prototype.resize = function( e ) {
+feng.views.book.Book.prototype.resize = function() {
 
 	this._viewportSize = goog.dom.getViewportSize();
 
@@ -138,9 +150,6 @@ feng.views.book.Book.prototype.resize = function( e ) {
 	goog.style.setStyle(this._handleEl, 'width', this._handleWidth + 'px');
 	this._draggerLimits.width = this._scrubberWidth - this._handleWidth;
 	this._dragger.setLimits( this._draggerLimits );
-
-	// lock to module
-	this.scrollToTipModule( (this._activeTipIndex || 0) );
 };
 
 
@@ -168,7 +177,43 @@ feng.views.book.Book.prototype.animateIn = function() {
 
 	this.resize();
 
+	var scrollInfo = this.getScrollInfo();
+
+	this._activeTipIndex = 0;
+	this._scrollX = scrollInfo.leftX;
+	this._targetScrollX = scrollInfo.leftX;
+
+	this.applyScrollX();
+
 	this.dispatchEvent( feng.events.EventType.ANIMATE_IN );
+
+	// animate in
+	this._animateInTweener.clear();
+
+	var tipTweeners = [];
+
+	var i, l = Math.min(5, this._tipModules.length);
+
+	for( i = 0; i < l; i ++ ) {
+
+		var tipModule = this._tipModules[i];
+		var el = tipModule.domElement;
+		var tweener = TweenMax.fromTo( el, 1.2, {
+			'x': this._viewportSize.width,
+			'rotationY': 45,
+			'transformPerspective': 1000,
+			'transformStyle': 'preserve-3d'
+		}, {
+			'x': tipModule.x,
+			'rotationY': 0,
+			'ease': Strong.easeOut
+		});
+
+		tipTweeners.push( tweener );
+	}
+
+	this._animateInTweener.add( tipTweeners, '+=0', 'start', .15 );
+	this._animateInTweener.play();
 };
 
 
@@ -270,12 +315,20 @@ feng.views.book.Book.prototype.scrollToTipModule = function( index ) {
 
 feng.views.book.Book.prototype.prevTipModule = function() {
 
+	if(this._scrollTweener && this._scrollTweener.isActive()) {
+		return;
+	}
+
 	var index = Math.max(0, this._activeTipIndex - 1);
 	this.scrollToTipModule( index );
 };
 
 
 feng.views.book.Book.prototype.nextTipModule = function() {
+
+	if(this._scrollTweener && this._scrollTweener.isActive()) {
+		return;
+	}
 
 	var index = Math.min(this._tipModules.length - 1, this._activeTipIndex + 1);
 	this.scrollToTipModule( index );
@@ -328,6 +381,12 @@ feng.views.book.Book.prototype.onDragEnd = function( e ) {
 };
 
 
+feng.views.book.Book.prototype.onTipModuleChange = function(e) {
+ 
+	this.scrollToTipModule( e.target.index );
+};
+
+
 feng.views.book.Book.prototype.onMouseWheel = function( e ) {
 
 	var delta = e.deltaX || e.deltaY;
@@ -364,4 +423,12 @@ feng.views.book.Book.prototype.onAnimationFrame = function( now ) {
 		var tipModuleIndex = this.getTipModuleIndexByX( this._scrollX );
 		this.scrollToTipModule( tipModuleIndex );
 	}
+};
+
+feng.views.book.Book.prototype.onResize = function( e ) {
+
+	this.resize();
+
+	// lock to module
+	this.scrollToTipModule( (this._activeTipIndex || 0) );
 };

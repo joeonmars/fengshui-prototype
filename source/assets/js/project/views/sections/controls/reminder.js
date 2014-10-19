@@ -72,6 +72,11 @@ feng.views.sections.controls.Reminder.prototype.setView3D = function( view3d ){
 
   this._hintEls = goog.dom.query('.hints li', this._hintDialogueEl);
 
+  if(this._characterAnimation) {
+  	this._characterAnimation.loop.pause();
+  	this._characterAnimation.raise.pause();
+  }
+
   this._characterAnimation = goog.object.findValue(this._characterAnimations, function(data) {
   	return (data.viewId === view3d.id);
   });

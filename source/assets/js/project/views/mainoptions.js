@@ -22,6 +22,8 @@ feng.views.MainOptions = function(){
   this._twitterButton = goog.dom.query('.twitter', this.domElement)[0];
   this._googleButton = goog.dom.query('.google', this.domElement)[0];
 
+  this.showHelpButton( false );
+
   if( !feng.storageController.isSoundEnabled() ) {
   	this.onMute();
   }
@@ -36,6 +38,12 @@ feng.views.MainOptions = function(){
   feng.soundController.listen( feng.events.EventType.UNMUTE, this.onUnmute, false, this);
 };
 goog.inherits(feng.views.MainOptions, goog.events.EventTarget);
+
+
+feng.views.MainOptions.prototype.showHelpButton = function( shouldShow ){
+
+  goog.style.showElement( this._howtoplayButton, shouldShow );
+};
 
 
 feng.views.MainOptions.prototype.onClick = function(e){
