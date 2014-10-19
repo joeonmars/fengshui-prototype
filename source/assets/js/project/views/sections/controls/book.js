@@ -84,14 +84,12 @@ feng.views.sections.controls.Book.prototype.onModeChange = function(e){
 
     case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
 	if(this._isActivated) {
-		goog.style.showElement(this.domElement, false);
 		this.deactivate();
 	}
     break;
 
     default:
     if(!this._isActivated) {
-		goog.style.showElement(this.domElement, true);
 		this.activate();
     }
     break;

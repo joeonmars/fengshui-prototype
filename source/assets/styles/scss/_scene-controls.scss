@@ -2,6 +2,79 @@ $circle_size: 100px;
 $cube_size: 80px;
 $border_size: 7px;
 
+&.hidden{
+	>.home-button{
+		visibility: hidden;
+	}
+
+	>.home-button-prompt{
+		visibility: hidden;
+	}
+
+	>.compass{
+		visibility: hidden;
+	}
+
+	>.book{
+		visibility: hidden;
+	}
+
+	>.objectSelector{
+		visibility: hidden;
+	}
+
+	>.dropButton{
+		visibility: hidden;
+	}
+
+	>.progressBar{
+		visibility: hidden;
+	}
+
+	>.reminder{
+		visibility: hidden;
+	}
+}
+
+&:not(.hidden) {
+	>.home-button{
+		@include animation( bounce-in-left 1000ms linear both );
+		@include animation-delay(0s);
+	}
+
+	>.home-button-prompt{
+		visibility: visible;
+	}
+
+	>.compass{
+		@include animation( bounce-in-right 1000ms linear both );
+		@include animation-delay(.05s);
+	}
+
+	>.book{
+		@include animation( bounce-in-right 1000ms linear both );
+		@include animation-delay(.10s);
+	}
+
+	>.objectSelector{
+		visibility: visible;
+	}
+
+	>.dropButton{
+		visibility: visible;
+	}
+
+	>.progressBar{
+		@include animation( bounce-in-bottom 1000ms linear both );
+		@include animation-delay(.30s);
+	}
+
+	>.reminder{
+		@include animation( bounce-in-right 1000ms linear both );
+		@include animation-delay(.15s);
+	}
+}
+
 >.home-button{
 
 	position: absolute;

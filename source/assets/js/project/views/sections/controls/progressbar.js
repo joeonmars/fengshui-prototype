@@ -288,12 +288,10 @@ feng.views.sections.controls.ProgressBar.prototype.onModeChange = function(e){
 
     case feng.controllers.view3d.ModeController.Mode.BROWSE:
     case feng.controllers.view3d.ModeController.Mode.WALK:
-    goog.style.showElement(this.domElement, true);
     this.activate();
     break;
 
     default:
-    goog.style.showElement(this.domElement, false);
     this.deactivate();
     break;
   }

@@ -102,7 +102,13 @@ feng.views.View3DHud.prototype.init = function() {
 
 feng.views.View3DHud.prototype.setView3D = function( view3d ) {
 
+  if(this._view3d) {
+    this._view3d.modeController.unlisten( feng.events.EventType.CHANGE, this.onModeChange, false, this );
+  }
+
   this._view3d = view3d;
+
+  this._view3d.modeController.listen( feng.events.EventType.CHANGE, this.onModeChange, false, this );
 
   this.compass.setView3D( view3d );
   this.book.setView3D( view3d );
@@ -116,18 +122,11 @@ feng.views.View3DHud.prototype.setView3D = function( view3d ) {
 
 feng.views.View3DHud.prototype.pause = function( shouldPause ) {
 
-  if(shouldPause) {
+  goog.dom.classes.enable( this._captionsEl, 'paused', shouldPause );
+  goog.dom.classes.enable( this._tooltipsEl, 'paused', shouldPause );
+  goog.dom.classes.enable( this._controlsEl, 'paused', shouldPause );
 
-    goog.dom.classes.add( this._captionsEl, 'paused' );
-    goog.dom.classes.add( this._tooltipsEl, 'paused' );
-    goog.dom.classes.add( this._controlsEl, 'paused' );
-
-  }else {
-
-    goog.dom.classes.remove( this._captionsEl, 'paused' );
-    goog.dom.classes.remove( this._tooltipsEl, 'paused' );
-    goog.dom.classes.remove( this._controlsEl, 'paused' );
-  }
+  goog.dom.classes.enable( this._controlsEl, 'hidden', shouldPause );
 };
 
 
@@ -154,6 +153,7 @@ feng.views.View3DHud.prototype.activate = function() {
 
 feng.views.View3DHud.prototype.deactivate = function() {
 
+  this._view3d.modeController.removeAllListeners();
   this._view3dController.removeAllListeners();
   feng.tutorial.removeAllListeners();
   this._episode.removeAllListeners();
@@ -202,6 +202,32 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls, type ) {
 	goog.dom.appendChild( this._captionsEl, caption.domElement );
 
 	return caption;
+};
+
+
+feng.views.View3DHud.prototype.onModeChange = function( e ) {
+
+  var mode = e.nextMode || e.mode;
+  var shouldHideControls = false;
+
+  switch(mode) {
+
+    case feng.controllers.view3d.ModeController.Mode.ENTRY:
+    case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
+    case null:
+    shouldHideControls = true;
+    break;
+
+    default:
+    shouldHideControls = false;
+    break;
+  }
+
+  if(e.gateway) {
+    shouldHideControls = true;
+  }
+
+  goog.dom.classes.enable( this._controlsEl, 'hidden', shouldHideControls );
 };
 
 

@@ -239,12 +239,10 @@ feng.views.sections.controls.Compass.prototype.onModeChange = function(e){
   switch(e.mode) {
 
     case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
-	goog.style.showElement(this.domElement, false);
 	this.deactivate();
     break;
 
     default:
-    goog.style.showElement(this.domElement, true);
 	this.activate();
     break;
   }
