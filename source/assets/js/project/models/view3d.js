@@ -253,7 +253,7 @@ feng.models.View3D.Data = {
 					"orange"
 				],
 				tipInteraction: "change_color",
-				tipKey: 'studio.livingroom.lamp',
+				tipKey: 'studio.livingroom.readinglamp',
 				texture: "studio.livingroom.round-lamp-texture",
 				captionClass: 'changecolor'
 			},
@@ -294,7 +294,7 @@ feng.models.View3D.Data = {
 				destination: new THREE.Vector3(0, 0, 0),
 				range: 80,
 				tipInteraction: "change_object",
-				tipKey: 'studio.livingroom.chair'
+				tipKey: 'studio.livingroom.diningchair'
 			},
 			'window-books':	{
 				texture: "studio.livingroom.window-books-texture"
@@ -815,7 +815,7 @@ feng.models.View3D.Data = {
 				destination: new THREE.Vector3(0, 0, 0),
 				range: 80,
 				tipInteraction: "change_object",
-				tipKey: 'house.homeoffice.chair'
+				tipKey: 'house.homeoffice.deskchair'
 			},
 			'storage': {
 				collidable: true,
