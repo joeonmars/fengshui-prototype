@@ -31,13 +31,13 @@ feng.controllers.controls.EntryControls.prototype.start = function () {
 	var entryDirection = (new THREE.Vector3()).subVectors(entryOriginPosition, entryPosition).setY(0).normalize().negate();
 
 	var endPosition = entryOriginPosition.clone().setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT );
-	var startPosition = entryPosition.clone().setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT ).add( entryDirection.clone().multiplyScalar(150) );
-	var stepInPosition = startPosition.clone().add( entryDirection.clone().multiplyScalar(-100) );
+	var startPosition = entryPosition.clone().setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT ).add( entryDirection.clone().multiplyScalar(120) );
+	var stepInPosition = startPosition.clone().add( entryDirection.clone().multiplyScalar(-70) );
 
 	var endRotation = entryOriginRotation.clone();
 	var startRotation = new THREE.Euler(0, 0, 0, 'YXZ');
 	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(startPosition, entryPosition);
-  startRotation.setFromQuaternion( quaternion );
+	startRotation.setFromQuaternion( quaternion );
 
 	var endFov = feng.controllers.controls.Controls.Default.FOV;
 	var startFov = endFov + 20;
@@ -55,7 +55,7 @@ feng.controllers.controls.EntryControls.prototype.start = function () {
 		endPosition: stepInPosition
 	};
 
-	var stepCloseTweener = TweenMax.to(prop, 4, {
+	var stepCloseTweener = TweenMax.to(prop, 3, {
 		t: 1,
 		'ease': Sine.easeInOut,
 		'onUpdate': this.onStepCloseUpdate,
@@ -88,21 +88,6 @@ feng.controllers.controls.EntryControls.prototype.start = function () {
 
 	this._timeline.add( stepCloseTweener );
 	this._timeline.add( arriveInTweener );
-
-	this._timeline.addCallback( this.showOverlay, 3.5, [], this );
-};
-
-
-feng.controllers.controls.EntryControls.prototype.showOverlay = function () {
-
-	var hud = this._view3d.hud;
-  var viewId = this._view3d.id;
-  var sectionId = this._view3d.sectionId;
-
-  hud.openingOverlay.updateContent( sectionId, viewId );
-  hud.openingOverlay.animateIn();
-
-  goog.events.listenOnce( hud.openingOverlay, feng.events.EventType.ANIMATE_OUT, this.openDoor, false, this );
 };
 
 
@@ -133,6 +118,15 @@ feng.controllers.controls.EntryControls.prototype.onStepCloseUpdate = function (
 feng.controllers.controls.EntryControls.prototype.onStepCloseComplete = function () {
 
 	this._timeline.pause();
+
+	var hud = this._view3d.hud;
+	var viewId = this._view3d.id;
+	var sectionId = this._view3d.sectionId;
+
+	hud.openingOverlay.updateContent( sectionId, viewId );
+	hud.openingOverlay.animateIn();
+
+	goog.events.listenOnce( hud.openingOverlay, feng.events.EventType.ANIMATE_OUT, this.openDoor, false, this );
 };
 
 
@@ -149,16 +143,19 @@ feng.controllers.controls.EntryControls.prototype.onArriveInUpdate = function (p
 	var startRotation = prop.startRotation;
 	var endRotation = prop.endRotation;
 
-	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(startPosition, endPosition);
-  this._cameraRotation.setFromQuaternion( quaternion );
+	var rx = goog.math.lerp(startRotation.x, endRotation.x, t);
+	var ry = goog.math.lerp(startRotation.y, endRotation.y, t);
+	var rz = goog.math.lerp(startRotation.z, endRotation.z, t);
+	
+	this._cameraRotation.set( rx, ry, rz, 'YXZ' );
 
-  this.setRotation( this._cameraRotation );
+	this.setRotation( this._cameraRotation );
 
-  var startFov = prop.startFov;
-  var endFov = prop.endFov;
-  var fov = goog.math.lerp( startFov, endFov, t );
+	var startFov = prop.startFov;
+	var endFov = prop.endFov;
+	var fov = goog.math.lerp( startFov, endFov, t );
 
-  this.setFov( fov );
+	this.setFov( fov );
 };
 
 

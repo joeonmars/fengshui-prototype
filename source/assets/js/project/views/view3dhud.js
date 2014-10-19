@@ -268,13 +268,16 @@ feng.views.View3DHud.prototype.onShowView3D = function( e ) {
 
 
 feng.views.View3DHud.prototype.onAnimatedInView3D = function( e ) {
- 
-  var view3d = e.target;
-  var viewId = view3d.id;
-  var sectionId = view3d.sectionId;
- 
-  this.openingOverlay.updateContent( sectionId, viewId );
-  this.openingOverlay.animateIn();
+
+  // pop up opening overlay for only once
+  if(this._view3d.modeController.getMode() === feng.controllers.view3d.ModeController.Mode.BROWSE) {
+    var view3d = e.target;
+    var viewId = view3d.id;
+    var sectionId = view3d.sectionId;
+   
+    this.openingOverlay.updateContent( sectionId, viewId );
+    this.openingOverlay.animateIn();
+  }
 };
 
 
