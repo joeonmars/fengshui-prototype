@@ -104,6 +104,8 @@ feng.views.sections.controls.Reminder.prototype.activate = function(){
 	}, this);
 
 	this._hintTimer.start();
+
+	goog.dom.classes.enable(this.domElement, 'hidden', false);
 };
 
 
@@ -118,6 +120,8 @@ feng.views.sections.controls.Reminder.prototype.deactivate = function(){
 	}, this);
 
 	this._hintTimer.stop();
+
+	goog.dom.classes.enable(this.domElement, 'hidden', true);
 };
 
 
@@ -370,7 +374,9 @@ feng.views.sections.controls.Reminder.prototype.onModeChange = function(e){
 
 	goog.base(this, 'onModeChange', e);
 	
-	switch(e.mode) {
+	var mode = e.nextMode || e.mode;
+
+	switch(mode) {
 
 		case feng.controllers.view3d.ModeController.Mode.BROWSE:
 		case feng.controllers.view3d.ModeController.Mode.WALK:

@@ -28,11 +28,11 @@ $border_size: 7px;
 	}
 
 	>.progressBar{
-		visibility: hidden;
+		visibility: hidden !important;
 	}
 
 	>.reminder{
-		visibility: hidden;
+		visibility: hidden !important;
 	}
 }
 
@@ -62,16 +62,6 @@ $border_size: 7px;
 
 	>.dropButton{
 		visibility: visible;
-	}
-
-	>.progressBar{
-		@include animation( bounce-in-bottom 1000ms linear both );
-		@include animation-delay(.30s);
-	}
-
-	>.reminder{
-		@include animation( bounce-in-right 1000ms linear both );
-		@include animation-delay(.15s);
 	}
 }
 
@@ -221,6 +211,16 @@ $border_size: 7px;
 	$border_size: 5px;
 	@include absoluteTopLeft;
 
+	&.hidden{
+		visibility: hidden;
+	}
+
+	&:not(.hidden){
+		visibility: visible;
+		@include animation( bounce-in-right 1000ms linear both );
+		@include animation-delay(.15s);
+	}
+
 	&.active{
 		>.character{
 			>.roundButton{
@@ -340,6 +340,16 @@ $border_size: 7px;
 	width: 100%;
 	height: 0;
 	text-align: center;
+
+	&.hidden{
+		visibility: hidden;
+	}
+
+	&:not(.hidden){
+		visibility: visible;
+		@include animation( bounce-in-bottom 1000ms linear both );
+		@include animation-delay(.30s);
+	}
 
 	>.inner{
 		position: relative;

@@ -142,12 +142,12 @@ feng.views.View3DHud.prototype.activate = function() {
   this._episode.listen(feng.events.EventType.PROGRESS, this.loaderOverlay.onLoadProgress, false, this.loaderOverlay);
   this._episode.listen(feng.events.EventType.COMPLETE, this.loaderOverlay.onLoadComplete, false, this.loaderOverlay);
 
-  this.homeButton.activate();
-  this.compass.activate();
-  this.book.activate();
-  this.reminder.activate();
-  this.progressBar.activate();
+  this.openingOverlay.listen(feng.events.EventType.ANIMATE_IN, this.onOpeningOverlayAnimateIn, false, this);
+  this.openingOverlay.listen(feng.events.EventType.ANIMATE_OUT, this.onOpeningOverlayAnimateOut, false, this);
+
   this.tutorialOverlay.activate();
+
+  this.activateControls();
 };
 
 
@@ -157,15 +157,33 @@ feng.views.View3DHud.prototype.deactivate = function() {
   this._view3dController.removeAllListeners();
   feng.tutorial.removeAllListeners();
   this._episode.removeAllListeners();
+  this.openingOverlay.removeAllListeners();
+
+  this.dropButton.deactivate();
+  this.tooltips.deactivate();
+  this.tutorialOverlay.deactivate();
+
+  this.deactivateControls();
+};
+
+
+feng.views.View3DHud.prototype.activateControls = function() {
+
+  this.homeButton.activate();
+  this.compass.activate();
+  this.book.activate();
+  this.reminder.activate();
+  this.progressBar.activate();
+};
+
+
+feng.views.View3DHud.prototype.deactivateControls = function() {
 
   this.homeButton.deactivate();
   this.compass.deactivate();
   this.book.deactivate();
   this.reminder.deactivate();
   this.progressBar.deactivate();
-  this.dropButton.deactivate();
-  this.tooltips.deactivate();
-  this.tutorialOverlay.deactivate();
 };
 
 
@@ -205,29 +223,31 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls, type ) {
 };
 
 
+feng.views.View3DHud.prototype.showControls = function( shouldShow ) {
+
+  goog.dom.classes.enable( this._controlsEl, 'hidden', !shouldShow );
+};
+
+
 feng.views.View3DHud.prototype.onModeChange = function( e ) {
 
   var mode = e.nextMode || e.mode;
-  var shouldHideControls = false;
+  var shouldShowControls = true;
 
   switch(mode) {
 
     case feng.controllers.view3d.ModeController.Mode.ENTRY:
     case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
     case null:
-    shouldHideControls = true;
-    break;
-
-    default:
-    shouldHideControls = false;
+    shouldShowControls = false;
     break;
   }
 
   if(e.gateway) {
-    shouldHideControls = true;
+    shouldShowControls = false;
   }
 
-  goog.dom.classes.enable( this._controlsEl, 'hidden', shouldHideControls );
+  this.showControls( shouldShowControls );
 };
 
 
@@ -247,4 +267,18 @@ feng.views.View3DHud.prototype.onAnimatedInView3D = function( e ) {
  
   this.openingOverlay.updateContent( sectionId, viewId );
   this.openingOverlay.animateIn();
+};
+
+
+feng.views.View3DHud.prototype.onOpeningOverlayAnimateIn = function( e ) {
+ 
+  this.deactivateControls();
+  this.showControls( false );
+};
+
+
+feng.views.View3DHud.prototype.onOpeningOverlayAnimateOut = function( e ) {
+ 
+  this.activateControls();
+  this.showControls( true );
 };

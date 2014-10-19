@@ -91,6 +91,8 @@ feng.views.sections.controls.ProgressBar.prototype.activate = function() {
   }, this);
 
   this._detectNearbyThrottle.fire();
+
+  goog.dom.classes.enable(this.domElement, 'hidden', false);
 };
 
 
@@ -107,6 +109,8 @@ feng.views.sections.controls.ProgressBar.prototype.deactivate = function() {
   this._detectNearbyThrottle.stop();
 
   this._tweener.kill();
+
+  goog.dom.classes.enable(this.domElement, 'hidden', true);
 };
 
 
@@ -284,7 +288,9 @@ feng.views.sections.controls.ProgressBar.prototype.onModeChange = function(e){
 
   goog.base(this, 'onModeChange', e);
 
-  switch(e.mode) {
+  var mode = e.nextMode || e.mode;
+
+  switch(mode) {
 
     case feng.controllers.view3d.ModeController.Mode.BROWSE:
     case feng.controllers.view3d.ModeController.Mode.WALK:
