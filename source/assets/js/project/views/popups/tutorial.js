@@ -21,6 +21,10 @@ feng.views.popups.Tutorial = function(){
 	this._videoEls = goog.dom.query('video', this.domElement);
 	this._stepEls = goog.dom.query('.steps li', this.domElement);
 
+	goog.array.forEach(this._videoEls, function(videoEl) {
+		goog.style.setStyle( videoEl, 'visibility', 'hidden' );
+	}, this);
+
 	this._step = 0;
 	this._totalSteps = this._stepEls.length;
 
@@ -113,7 +117,7 @@ feng.views.popups.Tutorial.prototype.activate = function(){
 
 		goog.array.forEach(this._videoEls, function(videoEl) {
 			videoEl.load();
-			goog.events.listenOnce( videoEl, 'canplay', this.onVideoCanPlay, false, this );
+			this._eventHandler.listenOnce( videoEl, 'canplay', this.onVideoCanPlay, false, this );
 		}, this);
 
 	}else {
@@ -200,6 +204,8 @@ feng.views.popups.Tutorial.prototype.onVideoCanPlay = function(e){
 			this.gotoStep( 0 );
 		}
 	}
+
+	goog.style.setStyle( e.currentTarget, 'visibility', 'visible' );
 };
 
 
