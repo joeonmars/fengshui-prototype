@@ -27,8 +27,14 @@ feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement)
 goog.inherits(feng.controllers.controls.CloseUpControls, feng.controllers.controls.Controls);
 
 
-feng.controllers.controls.CloseUpControls.prototype.setCamera = function( position, rotation, fov, object ) {
+feng.controllers.controls.CloseUpControls.prototype.setCamera = function( object ) {
 	
+	// from
+	var browseControls = this._view3d.modeController.getModeControl(feng.controllers.view3d.ModeController.Mode.BROWSE);
+	var position = browseControls.getPosition();
+	var rotation = browseControls.getRotation();
+	var fov = browseControls.getFov();
+
 	// get special camera settings from object
 	var cameraSettings = object.isSpecialCameraEnabled ? object.specialCameraSettings : null;
 	console.log( 'set close up by special camera settings: ', cameraSettings );

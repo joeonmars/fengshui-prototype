@@ -370,7 +370,7 @@ feng.controllers.SoundController.prototype.stopMix = function( mixId ){
 
 feng.controllers.SoundController.prototype.fade = function( tweener, from, to, duration, stopAfterComplete ){
 
-  tweener.volume = from || tweener.sound.volume();
+  tweener.volume = goog.isNumber(from) ? from : tweener.sound.volume();
   tweener.stopAfterComplete = stopAfterComplete;
 
   var duration = duration || 1;

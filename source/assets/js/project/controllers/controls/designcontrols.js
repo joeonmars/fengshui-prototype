@@ -171,35 +171,6 @@ feng.controllers.controls.DesignControls.prototype.update = function () {
 };
 
 
-feng.controllers.controls.DesignControls.prototype.close = function () {
-
-	var closeUpControls = this._view3d.modeController.getModeControl(feng.controllers.view3d.ModeController.Mode.CLOSE_UP);
-	var closeUpCameraPosition = closeUpControls.getPosition();
-	var objectPosition = this._activeObject.object3d.position;
-
-	var originalDistanceToObject = closeUpControls.distanceToObject;
-
-	var cameraPosition = new THREE.Vector3();
-	cameraPosition.subVectors( closeUpCameraPosition, objectPosition ).normalize().multiplyScalar( originalDistanceToObject );
-	cameraPosition = objectPosition.clone().add( cameraPosition );
-	cameraPosition.y = closeUpCameraPosition.y;
-
-	var cameraRotation = new THREE.Euler(0, 0, 0, 'YXZ');
-	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(cameraPosition, objectPosition);
-	cameraRotation.setFromQuaternion( quaternion );
-
-	this.dispatchEvent({
-		type: feng.events.EventType.CHANGE,
-		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-		nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-		toPosition: cameraPosition,
-		toRotation: cameraRotation,
-		toFov: feng.controllers.controls.Controls.Default.FOV,
-		object: this._activeObject
-	});
-};
-
-
 feng.controllers.controls.DesignControls.prototype.onClickView = function(e){
 
 	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition(
@@ -305,6 +276,11 @@ feng.controllers.controls.DesignControls.prototype.onNavigationChange = function
 
 		this._activeObject = this._view3d.getObjectByTip( tip );
 
-		this.close();
+		this.dispatchEvent({
+			type: feng.events.EventType.CHANGE,
+			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
+			object: this._activeObject
+		});
 	}
 };

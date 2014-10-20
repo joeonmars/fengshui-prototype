@@ -228,7 +228,7 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 			break;
 
 			case this._closeUpControls:
-			this._closeUpControls.setCamera( fromPosition, fromRotation, fromFov, e.object );
+			this._closeUpControls.setCamera( e.object );
 			shouldUpdateToPosition = true;
 			shouldUpdateToRotation = true;
 			shouldUpdateToFov = true;

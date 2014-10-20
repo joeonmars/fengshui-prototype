@@ -222,7 +222,11 @@ feng.views.sections.Section.prototype.onLoadAnimationComplete = function(e){
 
 feng.views.sections.Section.prototype.onNavigationChange = function(e){
 
-	var shouldNavigate = (e.tokenArray && e.tokenArray[0] === this.id);
+	var navController = e.target;
 
-	if(shouldNavigate) this.doNavigate();
+	var sectionResult = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.SECTION );
+
+	if(sectionResult && (sectionResult.sectionId === this.id)) {
+		this.doNavigate();
+	}
 };
