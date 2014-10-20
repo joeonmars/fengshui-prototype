@@ -206,10 +206,11 @@
 												position: relative;
 												width: 100%;
 												background-color: $lightgray-ui;
-												@include single-transition(background-color, .25s);
+												opacity: .8;
+												@include single-transition(opacity, .25s);
 
 												&:hover, &:active{
-													background-color: $darkgray-ui;
+													opacity: 1;
 												}
 											}
 										}
