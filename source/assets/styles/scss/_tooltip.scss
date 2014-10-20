@@ -3,13 +3,13 @@
 	@include keyframes(fade-in-tooltip) {
 	  0%{
 	  	visibility: visible;
-			opacity: 0;
-			@include translateY(20px);
+		opacity: 0;
+		@include translateY(40px);
 	  }
 	  100%{
 	  	visibility: visible;
-			opacity: 1;
-			@include translateY(0px);
+		opacity: 1;
+		@include translateY(0px);
 	  }
 	}
 
@@ -17,16 +17,91 @@
 	@include keyframes(fade-out-tooltip) {
 	  0%{
 	  	visibility: visible;
-			opacity: 1;
-			@include translateY(0px);
+		opacity: 1;
+		@include translateY(0px);
 	  }
 	  100%{
 	  	visibility: hidden;
-			opacity: 0;
-			@include translateY(20px);
+		opacity: 0;
+		@include translateY(40px);
 	  }
 	}
 
+}
+
+>.fadeIn{
+	&:nth-child(1) {
+		>.bar{
+			@include animation-delay( .000s );
+		}
+	}
+
+	&:nth-child(2) {
+		>.bar{
+			@include animation-delay( .025s );
+		}
+	}
+
+	&:nth-child(3) {
+		>.bar{
+			@include animation-delay( .050s );
+		}
+	}
+
+	&:nth-child(4) {
+		>.bar{
+			@include animation-delay( .055s );
+		}
+	}
+
+	&:nth-child(5) {
+		>.bar{
+			@include animation-delay( .010s );
+		}
+	}
+
+	&:nth-child(6) {
+		>.bar{
+			@include animation-delay( .015s );
+		}
+	}
+
+	&:nth-child(7) {
+		>.bar{
+			@include animation-delay( .020s );
+		}
+	}
+
+	&:nth-child(8) {
+		>.bar{
+			@include animation-delay( .025s );
+		}
+	}
+
+	&:nth-child(9) {
+		>.bar{
+			@include animation-delay( .300s );
+		}
+	}
+
+	&:nth-child(10) {
+		>.bar{
+			@include animation-delay( .350s );
+		}
+	}
+}
+
+
+>.fadeIn{
+	>.bar{
+		@include animation(fade-in-tooltip .5s $easeOutCubic both);
+	}
+}
+
+>.fadeOut{
+	>.bar{
+		@include animation(fade-out-tooltip .5s $easeOutCubic both);
+	}
 }
 
 
@@ -87,18 +162,6 @@
 			>.icon{
 				color: #000;
 			}
-		}
-	}
-
-	&.fadeIn{
-		>.bar{
-			@include animation(fade-in-tooltip .25s forwards $easeOutExpo);
-		}
-	}
-
-	&.fadeOut{
-		>.bar{
-			@include animation(fade-out-tooltip .25s forwards $easeOutExpo);
 		}
 	}
 

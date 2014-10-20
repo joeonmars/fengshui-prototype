@@ -34,7 +34,14 @@
 									</div>
 									<div class="advice">
 										<h3>{ $tip.name }</h3>
-										<p>{ $tip.advice }</p>
+										<div class="scroller">
+											<div class="content">
+												<p>{ $tip.advice }</p>
+											</div>
+											<div class="scrollbar">
+												<button class="handle"></button>
+											</div>
+										</div>
 										<ul class="share">
 											<li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-facebook"></a></li>
 											<li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-twitter"></a></li>

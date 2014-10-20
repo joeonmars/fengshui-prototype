@@ -161,25 +161,63 @@
 
 									>h3{
 										font-size: 3em;
-										padding: .25em 0 .5em 0;
+										line-height: 1.4;
 										color: $darkgray-ui;
 										text-transform: capitalize;
 									}
 
-									>p{
-										font-size: 1.5em;
-										line-height: 1.6;
-										color: $darkgray-ui;
+									>.scroller{
+										@include absoluteTopLeft;
+										padding: 80px 2.5em 90px 2.5em;
+										width: 100%;
+										height: 100%;
+										overflow: hidden;
+										@include box-sizing(border-box);
 
-										>br{
-											line-height: 3em;
+										>.content{
+											display: block;
+											width: 100%;
+											height: 100%;
+											padding-right: 50px;
+											overflow-x: hidden;
+											overflow-y: scroll;
+
+											>p{
+												font-size: 1.5em;
+												line-height: 1.6;
+												color: $darkgray-ui;
+												@include box-sizing(border-box);
+
+												>br{
+													line-height: 3em;
+												}
+											}
+										}
+
+										>.scrollbar{
+											position: absolute;
+											top: 0;
+											right: 0;
+											width: 5px;
+											height: 100%;
+											background-color: rgba(0,0,0,0.05);
+
+											>.handle{
+												position: relative;
+												width: 100%;
+												background-color: $lightgray-ui;
+												@include single-transition(background-color, .25s);
+
+												&:hover, &:active{
+													background-color: $darkgray-ui;
+												}
+											}
 										}
 									}
 
 									>.share{
 										position: absolute;
 										bottom: 2.5em;
-										width: 100%;
 										text-align: left;
 
 										>li{

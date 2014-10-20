@@ -398,6 +398,16 @@ feng.views.book.Book.prototype.onTipModuleChange = function(e) {
 
 feng.views.book.Book.prototype.onMouseWheel = function( e ) {
 
+	// skip mousewheel if hovering on a tip module scroller
+	var hoveringScroller = goog.array.find(this._tipModules, function(tipModule) {
+		return (tipModule.isHoveringScroller === true);
+	});
+
+	if(hoveringScroller) {
+		return false;
+	}
+
+	//
 	var delta = e.deltaX || e.deltaY;
 	var scrollDist = goog.math.lerp( 0, this._viewportSize.width/4, delta/this._maxDelta );
 
