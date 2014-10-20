@@ -73,15 +73,16 @@
 
 /**
  * Book Button
+ * @param token the navigation token collection
  */
 {template .Book}
-<div class="book">
+<a class="book" href="{ $token.BOOK }">
 	{call .RoundButton}
 	{param content}
 		<div class="icon"></div>
 	{/param}
 	{/call}
-</div>
+</a>
 {/template}
 
 
@@ -169,7 +170,7 @@
 								<div class="inner"></div>
 							</div>
 							<div class="dialog">
-								<a class="content" href="{ $tip.goTipToken }">
+								<a class="content" href="{ $tip.readTipToken }">
 									<div class="icon icon-{ $tip.id }" data-tip-id="{ $tip.id }" data-view-id="{ $tip.viewId }" data-section-id="{ $tip.sectionId }"></div>
 									<h6>{ $tip.name }</h6>
 								</a>

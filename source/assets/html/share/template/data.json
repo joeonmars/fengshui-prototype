@@ -20,13 +20,13 @@
 	"crystal": {
 	  "data": {
 	    "description": "This is the tip description of Feng Shui tip - Crystal.",
-	    "image": "crystal.png"
+	    "image": "crystal.jpg"
 	  }
 	},
 	"clock": {
 	  "data": {
 	    "description": "This is the tip description of Feng Shui tip - Clock.",
-	    "image": "clock.png"
+	    "image": "clock.jpg"
 	  }
 	},
 	"windows": {

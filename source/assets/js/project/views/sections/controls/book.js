@@ -44,7 +44,6 @@ feng.views.sections.controls.Book.prototype.activate = function(){
 
   if(!shouldActivate) return;
 
-	this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
 	this._eventHandler.listen(this.domElement, 'mouseover', this.onMouseOver, false, this);
 	this._eventHandler.listen(this.domElement, 'mouseout', this.onMouseOut, false, this);
 };
@@ -59,13 +58,6 @@ feng.views.sections.controls.Book.prototype.onMouseOver = function(e){
 feng.views.sections.controls.Book.prototype.onMouseOut = function(e){
 
 	this._bookTweener.reverse();
-};
-
-
-feng.views.sections.controls.Book.prototype.onClick = function(e){
-
-	var book = feng.views.book.Book.getInstance();
-	book.animateIn();
 };
 
 

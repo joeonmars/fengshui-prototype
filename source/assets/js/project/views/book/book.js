@@ -16,15 +16,13 @@ feng.views.book.Book = function() {
 
 	goog.base(this);
 	
-	var glossary = feng.models.Preload.getInstance().getAsset('global.fengshui-data')['glossary'];
 	var tips = feng.models.achievements.Achievements.getInstance().getAllTips();
 	tips = goog.array.filter(tips, function(tip) {
 		return (!tip.getProvidedTip());
 	});
 
 	this.domElement = soy.renderAsFragment(feng.templates.book.Book, {
-		tips: tips,
-		glossary: glossary
+		tips: tips
 	});
 
 	goog.dom.appendChild(goog.dom.getElement('main'), this.domElement);
@@ -85,6 +83,8 @@ feng.views.book.Book = function() {
 	this._mouseWheelHandler.setMaxDeltaY( this._maxDelta );
 
 	this._eventHandler = new goog.events.EventHandler( this );
+
+	goog.events.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
 
 	this.animateOut( true );
 };
@@ -172,7 +172,7 @@ feng.views.book.Book.prototype.updateFromTipModuleIndex = function( tipModuleInd
 };
 
 
-feng.views.book.Book.prototype.animateIn = function() {
+feng.views.book.Book.prototype.animateIn = function( tipId ) {
 
 	goog.style.showElement(this.domElement, true);
 
@@ -180,13 +180,18 @@ feng.views.book.Book.prototype.animateIn = function() {
 
 	this.resize();
 
-	var scrollInfo = this.getScrollInfo();
+	// lock to tip if id supplied
+	var tipModuleIndex = 0;
 
-	this._activeTipIndex = 0;
-	this._scrollX = scrollInfo.leftX;
-	this._targetScrollX = scrollInfo.leftX;
+	if(tipId) {
 
-	this.applyScrollX();
+		tipModuleIndex = goog.array.findIndex(this._tipModules, function(tipModule) {
+			var el = tipModule.domElement;
+			return (el.getAttribute('data-tip-id') === tipId);
+		});
+	}
+
+	this.scrollToTipModule( tipModuleIndex, true );
 
 	this.dispatchEvent( feng.events.EventType.ANIMATE_IN );
 
@@ -195,27 +200,24 @@ feng.views.book.Book.prototype.animateIn = function() {
 
 	var tipTweeners = [];
 
-	var i, l = Math.min(5, this._tipModules.length);
+	var i = Math.max(0, tipModuleIndex - 2);
+	var l = Math.min(tipModuleIndex + 2, this._tipModules.length);
 
-	for( i = 0; i < l; i ++ ) {
+	for( i = i; i <= l; i ++ ) {
 
 		var tipModule = this._tipModules[i];
 		var el = tipModule.domElement;
 		var tweener = TweenMax.fromTo( el, 1.2, {
-			'x': this._viewportSize.width,
-			'rotationY': 45,
-			'transformPerspective': 1000,
-			'transformStyle': 'preserve-3d'
+			'x': tipModule.x + this._viewportSize.width
 		}, {
 			'x': tipModule.x,
-			'rotationY': 0,
 			'ease': Strong.easeOut
 		});
 
 		tipTweeners.push( tweener );
 	}
 
-	this._animateInTweener.add( tipTweeners, '+=0', 'start', .15 );
+	this._animateInTweener.add( tipTweeners, '+=0', 'start', .10 );
 	this._animateInTweener.play();
 };
 
@@ -227,6 +229,8 @@ feng.views.book.Book.prototype.animateOut = function( instant ) {
 	this.deactivate();
 
 	//
+	feng.navigationController.replaceToken('');
+
 	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
 };
 
@@ -283,7 +287,7 @@ feng.views.book.Book.prototype.getTipModuleIndexByX = function( x ) {
 };
 
 
-feng.views.book.Book.prototype.scrollToTipModule = function( index ) {
+feng.views.book.Book.prototype.scrollToTipModule = function( index, instant ) {
 
 	goog.fx.anim.unregisterAnimation( this );
 
@@ -306,7 +310,9 @@ feng.views.book.Book.prototype.scrollToTipModule = function( index ) {
 
 	var scrollX = tipModuleX - (this._viewportSize.width - tipModuleWidth) / 2;
 
-	this._scrollTweener = TweenMax.to(this, .5, {
+	var duration = instant ? 0 : .5;
+
+	this._scrollTweener = TweenMax.to(this, duration, {
 		_scrollX: scrollX,
 		_targetScrollX: scrollX,
 		'ease': Quad.easeInOut,
@@ -427,6 +433,26 @@ feng.views.book.Book.prototype.onAnimationFrame = function( now ) {
 		this.scrollToTipModule( tipModuleIndex );
 	}
 };
+
+
+feng.views.book.Book.prototype.onNavigationChange = function( e ) {
+
+	var navController = e.target;
+
+	var shouldOpenBook = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.BOOK );
+	var tipToken = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.READ_TIP );
+	
+	var tipId = tipToken ? tipToken.tipId : null;
+
+	if(tipId) {
+		shouldOpenBook = true;
+	}
+
+	if(shouldOpenBook) {
+		this.animateIn( tipId );
+	}
+};
+
 
 feng.views.book.Book.prototype.onResize = function( e ) {
 

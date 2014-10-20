@@ -176,10 +176,7 @@ feng.controllers.NavigationController.Token = {
 	STUDIO: '#/studio',
 	HOUSE: '#/house',
 	BOOK: '#/book',
-	GLOSSARY: '#/book/glossary',
-	TIPS: '#/book/tips',
-	ABOUT: '#/book/about',
+	READ_TIP: '#/book/{tipId}',
 	GO_TIP: '#/{sectionId}/{viewId}/{tipId}',
-	TEST_TIP: '#/testtip/{sectionId}/{viewId}/{tipId}',
-	READ_TIP: '#/book/tips/{tipId}'
+	TEST_TIP: '#/testtip/{sectionId}/{viewId}/{tipId}'
 };

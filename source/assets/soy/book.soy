@@ -17,7 +17,7 @@
 					<ul>
 						{foreach $tip in $tips}
 						<li class="tip-module" data-tip-id="{ $tip.id }">
-							<figure class="cover" data-src="{ $tip.cover }">
+							<div class="card">
 								<div class="curtain">
 									<div class="wrapper">
 										<div class="icon icon-{ $tip.icon }"></div>
@@ -25,13 +25,24 @@
 										<h2><span>Found in</span> { $tip.character }'s { $tip.sectionId }</h2>
 									</div>
 								</div>
-								<ul class="share">
-									<li><a href="#" class="icon icon-facebook"></a></li>
-									<li><a href="#" class="icon icon-twitter"></a></li>
-									<li><a href="#" class="icon icon-google"></a></li>
-								</ul>
-								<button>View</button>
-							</figure>
+								<div class="detail">
+									<div class="screen" data-src="{ $tip.shareImageUrl }">
+										<div class="loader"></div>
+										<div class="overlay">
+											<a class="icon icon-eye-open" href="{ $tip.goTipToken }"></a>
+										</div>
+									</div>
+									<div class="advice">
+										<h3>{ $tip.name }</h3>
+										<p>{ $tip.advice }</p>
+										<ul class="share">
+											<li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-facebook"></a></li>
+											<li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-twitter"></a></li>
+											<li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-google"></a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
 						</li>
 						{/foreach}
 					</ul>
