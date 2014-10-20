@@ -97,6 +97,7 @@ feng.views.book.Book.prototype.activate = function() {
 	this._eventHandler.listen( window, 'resize', this.onResize, false, this );
 	this._eventHandler.listen( this._closeButton, 'click', this.animateOut, false, this );
 	this._eventHandler.listen( this, feng.events.EventType.CHANGE, this.onTipModuleChange, false, this );
+	this._eventHandler.listen( this, feng.events.EventType.CLOSE, this.onTipModuleClose, false, this );
 	this._eventHandler.listen( this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this );
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this );
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this );
@@ -393,6 +394,12 @@ feng.views.book.Book.prototype.onDragEnd = function( e ) {
 feng.views.book.Book.prototype.onTipModuleChange = function(e) {
  
 	this.scrollToTipModule( e.target.index );
+};
+
+
+feng.views.book.Book.prototype.onTipModuleClose = function(e) {
+ 
+ 	this.animateOut();
 };
 
 
