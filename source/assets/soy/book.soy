@@ -36,7 +36,22 @@
 										<h3>{ $tip.name }</h3>
 										<div class="scroller">
 											<div class="content">
-												<p>{ $tip.advice }</p>
+												<p>
+													{if $tip.problem}
+														{ $tip.problem }
+														<br>
+													{/if}
+													{if $tip.advice}
+														{ $tip.advice }
+														<br>
+													{/if}
+													{if $tip.details['descriptions']}
+													{foreach $key in keys($tip.details['descriptions'])}
+														{ $tip.details['descriptions'][ $key ] }
+														</br>
+													{/foreach}
+													{/if}
+												</p>
 											</div>
 											<div class="scrollbar">
 												<button class="handle"></button>

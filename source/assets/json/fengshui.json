@@ -67,7 +67,7 @@
 			"provide": null,
 			"final": true,
 			"problem": "What is around you when sitting? Make sure your body is not in alignment with a door, between two doors, or a window and door. This is too much Yang activity around your body. Over time, your energy will be depleted.",
-			"advice": "Be loremipsum, loremipsum",
+			"advice": "Relocate the chair to a quiet place.",
 			"character": "ollie",
 			"reminder": "Oh, sorry! The chair in the middle of the room blocks your way. Maybe I should move it somewhere else."
 		},
@@ -84,7 +84,7 @@
 			"provide": null,
 			"final": true,
 			"problem": "It is not advisable to use cold color light in dining areas. These adverse situations will create mental tension in the occupants of the dwelling and can result in stress.",
-			"advice": "Be loremipsum, loremipsum",
+			"advice": "Pink light came to be associated with health, abundance and longevity. In the Feng shui philosophy, pink symbolizes love. A pink light may reignite feelings of love and passion in a relationship. (Do not use reddish-pink colors because red is a stimulating color.)<br>The Feng shui color of sunlight, cheerful and uplifting yellow vibes always lighten and brighten a reading area, as well as create a cozy, welcoming feeling.Color orange is often called the “social” color, as it creates the Feng shui energy to promote lively conversations and good times in your home. In the winter it reminds us of summertime dreams and adventures.",
 			"character": "ollie",
 			"reminder": "I love novels and makeup magazines, but sometimes I feel tired after reading for a while."
 		},
@@ -154,7 +154,14 @@
 			"problem": "Plants are always excellent Feng Shui for a home or office because they bring vibrant energy into one's space. But the cactus plant is a classic example of a so-called bad Feng Shui plant, because its energy is very spiky.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
-			"reminder": "I love my “little green”, and cactus leaves also offer health benefits, right?"
+			"reminder": "I love my “little green”, and cactus leaves also offer health benefits, right?",
+			"details": {
+				"descriptions": {
+					"luckybamboo": "So why is Lucky Bamboo considered lucky in Feng shui? Bamboo in itself is an amazing plant with a very peaceful and wise energy. It teaches the ultimate wisdom: how to be flexible and hollow (open) on the inside, so that the spirit can freely flow and heal your being.",
+					"orchid": "So why is Lucky Bamboo considered lucky in Feng shui? Bamboo in itself is an amazing plant with a very peaceful and wise energy. It teaches the ultimate wisdom: how to be flexible and hollow (open) on the inside, so that the spirit can freely flow and heal your being.",
+					"rubberplant": "So why is Lucky Bamboo considered lucky in Feng shui? Bamboo in itself is an amazing plant with a very peaceful and wise energy. It teaches the ultimate wisdom: how to be flexible and hollow (open) on the inside, so that the spirit can freely flow and heal your being."
+				}
+			}
 		},
 		{
 			"id": "sewingmachine",
@@ -169,7 +176,7 @@
 			"provide": null,
 			"final": true,
 			"problem": "It is not advisable to display any reflective items or sharp and pointed objects in the interior of the dwelling. Under accepted FENG SHUI principles sharp objects are known as [sha energy].<br>These adverse situations will create mental tension in the occupants of the dwelling and can result in stress and even increase in blood pressure.",
-			"advice": "Be loremipsum, loremipsum",
+			"advice": "Add a cover.",
 			"character": "ollie",
 			"reminder": "Fashion design and handcrafts are my favorites. I especially enjoy working with a sewing machine."
 		},
@@ -186,7 +193,7 @@
 			"provide": "fruitplate",
 			"final": false,
 			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
+			"advice": "",
 			"character": "ollie",
 			"reminder": "How do you like fresh fruit? I have some stored in the refrigerator."
 		},
@@ -202,17 +209,17 @@
 			"require": "refrigerator",
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
+			"problem": "The use of specific fruits in traditional Feng shui applications is often dictated by classifications from ancient texts as being specific symbols of longevity, wealth, prosperity, fertility, etc.<br>Display fruit in your home is much better than hiding them.",
+			"advice": null,
 			"character": "ollie",
 			"reminder": "I recently bought a new fruit plate.",
 			"hint": "Something is missing on the fruit plate...",
 			"details": {
 				"descriptions": {
-					"apple": "This is the description of an apple in Feng Shui principles.",
-					"pineapple": "This is the description of a pineapple in Feng Shui principles.",
-					"peach": "This is the description of a peach in Feng Shui principles.",
-					"orange": "This is the description of an orange in Feng Shui principles."
+					"apple": "Apple has always been associated with peace and harmony in one's home.",
+					"pineapple": "The sound of the Chinese word for pineapple is close to the sound of “good luck coming your way”.",
+					"peach": "Peach came to be associated with health, abundance and longevity.",
+					"orange": "Oranges in Feng shui is explained by the refreshing odor, as well as the [yang] quality of the orange color."
 				}
 			}
 		},
@@ -229,7 +236,7 @@
 			"provide": null,
 			"final": true,
 			"problem": "You cannot cover, conceal or pretend not to see low energy, because in the world of Feng Shui energy, there are no boundaries.<br>Here is the thing about closets - most people think of closets as an out of sight, out of mind deal. Clutter should be clean and organized.",
-			"advice": "Be loremipsum, loremipsum",
+			"advice": "Rearrange the items to the similar amount for each level.",
 			"character": "ollie",
 			"reminder": "I always have a really rushed morning. I don’t have time to organize the closet."
 		},
@@ -279,8 +286,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
+			"problem": "The symbology of fish, in general, is closely associated with the energy of water. Feng shui adds the dimension of prosperity and abundance to the meaning of [water].<br>Besides, the aspect of wealthy also comes from the ability of fish to quickly reproduce in quite big quantities.",
+			"advice": "The recommend types of fish are Arowana, Koi and gold fish; the ideal quantity will be Odd number, especially 9.",
 			"character": "joanna",
 			"reminder": "We had a goldfish, but it passed away a few months ago. We left the empty aquarium near the sofa."
 		},
@@ -296,8 +303,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
+			"problem": "Usually, Feng shui mirror has some restrictions, but just remember: mirror should always reflect something attractive.",
+			"advice": "In this case, the images wall is good. However, place a mirror here is even better:  in this way, the mirror will reflects pleasant dishes, amplifies the natural light in the room and enhances the healthy [Chi] energy that can bring riches for the whole family.",
 			"character": "joanna",
 			"reminder": "I heard that mirrors have some unexpected Feng Shui influences. Is that true? Have I used it correctly?"
 		},
@@ -313,8 +320,8 @@
 			"require": null,
 			"provide": "drawer",
 			"final": false,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
+			"problem": "Knives are inherently as “Sha” (bad luck) in Feng shui so it will disturb” the energy flow in your kitchen. You should never keep knives out on the countertop or hanging on the wall in your home if you have young children.",
+			"advice": "Ideally, knives are best kept in drawers. Yes, they probably came in a beautiful counter top knife block, but it is not good Feng shui to have knives so easily accessible.",
 			"character": "joanna",
 			"reminder": "My husband Scott always displays cooking utensils on the countertop. But I really like to keep them organized in a drawer."
 		},
@@ -330,8 +337,8 @@
 			"require": "cookingutensils",
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
+			"problem": "Knives are inherently as “Sha” (bad luck) in Feng shui so it will disturb” the energy flow in your kitchen. You should never keep knives out on the countertop or hanging on the wall in your home if you have young children.",
+			"advice": "Ideally, knives are best kept in drawers. Yes, they probably came in a beautiful counter top knife block, but it is not good Feng shui to have knives so easily accessible.",
 			"character": "joanna",
 			"reminder": "My husband Scott always displays cooking utensils on the countertop. But I really like to keep them organized in a drawer."
 		},
@@ -346,7 +353,7 @@
 			"mandatory": false,
 			"require": null,
 			"problem": null,
-			"advice": "Be loremipsum, loremipsum",
+			"advice": "Books should be organized well. This kind of a small library, properly stacked on a shelf, is a good example.<br>Usually, books in the living room are not bad Feng shui, as long as you do not have too many of them overflowing and take all over the space. Always let air flow between books and stacks and leave several empty lattices.",
 			"character": "joanna",
 			"reminder": "The half-wall book stack shelf is the most significant decoration in our living room, but we actually seldom read those books."
 		},
@@ -362,8 +369,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
+			"problem": "In Feng shui, modern digital devices can be classified as [JIN] element. In a bedroom environment, JIN element will cause dangers because its represent pointy metal.",
+			"advice": "It is especially important for children’s sleep quality that digital devices are not used before bed time and that they should be kept in a different location overnight to stop children from using the devices straight before, during and after sleep.",
 			"character": "nick",
 			"reminder": "I love to play with my handheld console! I put it near my bed so I can reach it at night!"
 		},
@@ -379,8 +386,8 @@
 			"require": null,
 			"provide": "bed",
 			"final": false,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
+			"problem": "In Feng shui, dolls are symbolism as human and they should be view as friends. It also suggested that the number of dolls should be limited, otherwise the owners will get involved in a complex relationships.",
+			"advice": "Further more, Keep dolls closed in a cabinet is not a wise way to organize the toys. Instead, they should be arranged to an open area and let them breath.",
 			"character": "nick",
 			"reminder": "Dad said I need to clean my room, so I threw my bear, Nick King, into a drawer, but I don’t think he liked it."
 		},
@@ -396,8 +403,8 @@
 			"require": "bear",
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
+			"problem": "In Feng shui, dolls are symbolism as human and they should be view as friends. It also suggested that the number of dolls should be limited, otherwise the owners will get involved in a complex relationships.",
+			"advice": "Further more, Keep dolls closed in a cabinet is not a wise way to organize the toys. Instead, they should be arranged to an open area and let them breath.",
 			"character": "nick",
 			"reminder": "Could Nick King be with me while I am sleeping?"
 		},
@@ -413,8 +420,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
+			"problem": "Nick’s table is confronting windows - this set he up to be attracted by the activities going on ahead of them.",
+			"advice": "For study purposes, it is best to have a child’s back is to a wall with the desk facing into the room.<br>The shift helps children feel more empowered and on top of their work and that they are less affected by distractions.",
 			"character": "nick",
 			"reminder": "There is a playground outside my window. I hope I can finish my homework soon and join Tom and Ryan."
 		},
@@ -430,7 +437,7 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
+			"problem": "Feng shui believes that children and parents can enjoy success in life and healthy relationships if the environment supports them. Also very important, be sure to eliminate images of ferocious or dangerous animals or violence.",
 			"advice": "Be loremipsum, loremipsum",
 			"character": "nick",
 			"reminder": "Do you like that picture hanging on my wall?"
@@ -447,8 +454,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
+			"problem": "Sit as far away from the door as possible. A Feng shui commanding position means you do not have your back to the door; try to move the chair to a better position first.",
+			"advice": "If you are unable to position your desk in this manner, hang a an appropriate reflective surface (like a mirror) on the wall in front of you so that you can see the entryway, you may also need to think about choose a high back chair in the future.",
 			"character": "scott",
 			"reminder": "Have a seat! Try this desk chair, it’s very comfortable! But I don’t know why I sometimes get backaches."
 		},
@@ -464,8 +471,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
+			"problem": "To create a nurturing Feng shui home office hangs pictures, mottos, or images that symbolize what you want to accomplish.",
+			"advice": "Acknowledge your sources of support by placing a few photos of family members and mentors but being careful! Too many images of your family will actually be an interruption into your home office. It is more important to place images that are connected to your business and that inspire you.",
 			"character": "scott",
 			"reminder": "Any suggestions on the picture wall? I’ve heard that Feng Shui can help with my career."
 		},
@@ -481,8 +488,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
+			"problem": "Sha Chi travels in straight lines. If you have some sharp angles and corners around you, pointed you or near to where you spend most of your time, these can be considered sources of harmful influences.",
+			"advice": "You can dramatically improve the Feng shui of this situation by moving around those sharp objects.",
 			"character": "scott",
 			"reminder": "I always need set square. Do you think it is in a good position now? I want to keep it at hand."
 		},
@@ -493,13 +500,13 @@
 			"name": "office plants",
 			"icon": "officeplant",
 			"interaction": "trim",
-			"unlocked": false,
+			"unlocked": true,
 			"mandatory": false,
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
+			"problem": null,
+			"advice": "If you have to face a wall in your workspace, you can dramatically improve the Feng shui of this situation by having vibrant bright art with some depth, or perspective to it. Making the wall disappear is your goal and be sure this is possible with appropriate Feng shui cures.",
 			"character": "scott",
 			"reminder": "I love having some plants in the room. Do you think I have made a wise choice?"
 		},

@@ -114,6 +114,7 @@
 										background-color: #fff;
 										opacity: 1;
 										visibility: visible;
+										backface-visibility: hidden;
 										@include transition(opacity .4s, visibility .4s);
 										@include transition-delay(.5s);
 									}
@@ -126,6 +127,7 @@
 										background-color: rgba(0, 0, 0, .45);
 										opacity: 0;
 										@include transition(opacity .25s);
+										backface-visibility: hidden;
 
 										&:hover{
 											opacity: 1;

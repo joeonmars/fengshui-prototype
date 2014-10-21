@@ -37,15 +37,15 @@ feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
-  var param76 = '<div class="change-color"><h2>Click on a color to change</h2><ul class="colors">';
-  var colorKeyList78 = soy.$$getMapKeys(opt_data.colors);
-  var colorKeyListLen78 = colorKeyList78.length;
-  for (var colorKeyIndex78 = 0; colorKeyIndex78 < colorKeyListLen78; colorKeyIndex78++) {
-    var colorKeyData78 = colorKeyList78[colorKeyIndex78];
-    param76 += '<li><button class="color" style="background-color: ' + opt_data.colors[colorKeyData78].hex + '" data-color="' + colorKeyData78 + '"></button></li>';
+  var param89 = '<div class="change-color"><h2>Click on a color to change</h2><ul class="colors">';
+  var colorKeyList91 = soy.$$getMapKeys(opt_data.colors);
+  var colorKeyListLen91 = colorKeyList91.length;
+  for (var colorKeyIndex91 = 0; colorKeyIndex91 < colorKeyListLen91; colorKeyIndex91++) {
+    var colorKeyData91 = colorKeyList91[colorKeyIndex91];
+    param89 += '<li><button class="color" style="background-color: ' + opt_data.colors[colorKeyData91].hex + '" data-color="' + colorKeyData91 + '"></button></li>';
   }
-  param76 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param76}));
+  param89 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param89}));
   return output;
 };
 
@@ -57,22 +57,22 @@ feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
-  var param88 = '<h2>Fill the plate with fruits</h2><div class="drop-fruits"><ul class="fruits">';
-  var fruitKeyList90 = soy.$$getMapKeys(opt_data.fruits);
-  var fruitKeyListLen90 = fruitKeyList90.length;
-  for (var fruitKeyIndex90 = 0; fruitKeyIndex90 < fruitKeyListLen90; fruitKeyIndex90++) {
-    var fruitKeyData90 = fruitKeyList90[fruitKeyIndex90];
-    param88 += '<li><button data-fruit-id="' + fruitKeyData90 + '"></button></li>';
+  var param101 = '<h2>Fill the plate with fruits</h2><div class="drop-fruits"><ul class="fruits">';
+  var fruitKeyList103 = soy.$$getMapKeys(opt_data.fruits);
+  var fruitKeyListLen103 = fruitKeyList103.length;
+  for (var fruitKeyIndex103 = 0; fruitKeyIndex103 < fruitKeyListLen103; fruitKeyIndex103++) {
+    var fruitKeyData103 = fruitKeyList103[fruitKeyIndex103];
+    param101 += '<li><button data-fruit-id="' + fruitKeyData103 + '"></button></li>';
   }
-  param88 += '</ul><ul class="descriptions">';
-  var fruitKeyList96 = soy.$$getMapKeys(opt_data.fruits);
-  var fruitKeyListLen96 = fruitKeyList96.length;
-  for (var fruitKeyIndex96 = 0; fruitKeyIndex96 < fruitKeyListLen96; fruitKeyIndex96++) {
-    var fruitKeyData96 = fruitKeyList96[fruitKeyIndex96];
-    param88 += '<li data-fruit-id="' + fruitKeyData96 + '"><p>' + opt_data.fruits[fruitKeyData96] + '</p></li>';
+  param101 += '</ul><ul class="descriptions">';
+  var fruitKeyList109 = soy.$$getMapKeys(opt_data.fruits);
+  var fruitKeyListLen109 = fruitKeyList109.length;
+  for (var fruitKeyIndex109 = 0; fruitKeyIndex109 < fruitKeyListLen109; fruitKeyIndex109++) {
+    var fruitKeyData109 = fruitKeyList109[fruitKeyIndex109];
+    param101 += '<li data-fruit-id="' + fruitKeyData109 + '"><p>' + opt_data.fruits[fruitKeyData109] + '</p></li>';
   }
-  param88 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param88}));
+  param101 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param101}));
   return output;
 };
 
@@ -85,11 +85,11 @@ feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
  */
 feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
   var output = '<p class="floatText">';
-  var lineList107 = opt_data.lines;
-  var lineListLen107 = lineList107.length;
-  for (var lineIndex107 = 0; lineIndex107 < lineListLen107; lineIndex107++) {
-    var lineData107 = lineList107[lineIndex107];
-    output += '<span>' + lineData107 + '</span>';
+  var lineList120 = opt_data.lines;
+  var lineListLen120 = lineList120.length;
+  for (var lineIndex120 = 0; lineIndex120 < lineListLen120; lineIndex120++) {
+    var lineData120 = lineList120[lineIndex120];
+    output += '<span>' + lineData120 + '</span>';
   }
   output += '</p>';
   return output;
