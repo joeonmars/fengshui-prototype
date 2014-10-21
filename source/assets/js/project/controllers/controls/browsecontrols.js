@@ -6,7 +6,6 @@ goog.require('goog.math.Box');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.utils.ThreeUtils');
 goog.require('feng.views.view3dobject.GatewayObject');
-goog.require('feng.views.view3dobject.StairsObject');
 
 /**
  * @constructor
@@ -196,24 +195,12 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 		// check if clicked on any particular object
 		var clickedObject = intersects[0].object.view3dObject;
 
-		if ( clickedObject instanceof feng.views.view3dobject.StairsObject ) {
-
-			var stairsObject = clickedObject;
-			var toPosition = stairsObject.lowerPosition;
-
-			this.dispatchEvent({
-				type: feng.events.EventType.CHANGE,
-				mode: feng.controllers.view3d.ModeController.Mode.WALK,
-				nextMode: feng.controllers.view3d.ModeController.Mode.CLIMB,
-				toPosition: toPosition,
-				toRotation: this.getRotation(),
-				toFov: this.getFov(),
-				stairs: stairsObject,
-				viewDistance: 0
-			});
+		/*
+		if ( clickedObject instanceof /// ) {
 
 			return true;
 		}
+		*/
 
 		// otherwise walk to the object
 		var toPosition = intersects[0].point;

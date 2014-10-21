@@ -23,7 +23,6 @@ goog.require('feng.views.view3dobject.DesignPlane');
 goog.require('feng.views.view3dobject.HolderObject');
 goog.require('feng.views.view3dobject.MovableObject');
 goog.require('feng.views.view3dobject.GatewayObject');
-goog.require('feng.views.view3dobject.StairsObject');
 goog.require('feng.views.view3dobject.Skybox');
 goog.require('feng.views.view3dobject.Mirror');
 goog.require('feng.views.view3dobject.AccessoryObject');
@@ -415,7 +414,6 @@ feng.views.View3D.prototype.initScene = function() {
 		'holder': feng.views.view3dobject.HolderObject,
 		'movable': feng.views.view3dobject.MovableObject,
 		'gateway': feng.views.view3dobject.GatewayObject,
-		'stairs': feng.views.view3dobject.StairsObject,
 		'mirror': feng.views.view3dobject.Mirror,
 		'closet': feng.views.view3dobject.entities.Closet,
 		'picturedisplay': feng.views.view3dobject.entities.PictureDisplay,

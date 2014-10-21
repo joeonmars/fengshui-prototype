@@ -171,8 +171,17 @@ feng.views.book.TipModule.prototype.updateWidth = function() {
 feng.views.book.TipModule.prototype.onClick = function(e) {
 
 	if(e.currentTarget === this._viewButton) {
+
+		e.preventDefault();
+
 		this.dispatchEvent( feng.events.EventType.CLOSE );
+
+		goog.Timer.callOnce(function() {
+			window.location = this._viewButton.href; 
+		}, 1000, this);
+
 	}else {
+
 		this.dispatchEvent( feng.events.EventType.CHANGE );
 	}
 };

@@ -10,7 +10,6 @@ goog.require('feng.controllers.controls.CloseUpControls');
 goog.require('feng.controllers.controls.EntryControls');
 goog.require('feng.controllers.controls.DesignControls');
 goog.require('feng.controllers.controls.WalkControls');
-goog.require('feng.controllers.controls.ClimbControls');
 goog.require('feng.controllers.controls.TransitionControls');
 
 
@@ -50,7 +49,6 @@ feng.controllers.view3d.ModeController.prototype.init = function(){
 	this._designControls = this.createControls( feng.controllers.view3d.ModeController.Mode.DESIGN );
 	this._entryControls = this.createControls( feng.controllers.view3d.ModeController.Mode.ENTRY );
 	this._walkControls = this.createControls( feng.controllers.view3d.ModeController.Mode.WALK );
-	this._climbControls = this.createControls( feng.controllers.view3d.ModeController.Mode.CLIMB );
 	this._transitionControls = this.createControls( feng.controllers.view3d.ModeController.Mode.TRANSITION );
 
 	//
@@ -60,7 +58,8 @@ feng.controllers.view3d.ModeController.prototype.init = function(){
 
 feng.controllers.view3d.ModeController.prototype.activate = function(){
 
-	this._eventHandler.listen(this, feng.events.EventType.CHANGE, this.onModeChange, false, this);
+	this._eventHandler.listen( this, feng.events.EventType.CHANGE, this.onModeChange, false, this );
+	this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
 };
 
 
@@ -122,10 +121,6 @@ feng.controllers.view3d.ModeController.prototype.createControls = function( mode
 
 		case feng.controllers.view3d.ModeController.Mode.WALK:
 		ControlClass = feng.controllers.controls.WalkControls;
-		break;
-
-		case feng.controllers.view3d.ModeController.Mode.CLIMB:
-		ControlClass = feng.controllers.controls.ClimbControls;
 		break;
 
 		case feng.controllers.view3d.ModeController.Mode.TRANSITION:
@@ -256,7 +251,6 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 			break;
 
 		case feng.controllers.view3d.ModeController.Mode.WALK:
-		case feng.controllers.view3d.ModeController.Mode.CLIMB:
 		case feng.controllers.view3d.ModeController.Mode.TRANSITION:
 			this.control.start( e );
 			break;
@@ -267,6 +261,28 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 
 	// update renderer
 	this._renderController.updateByMode(this._mode, e.nextMode);
+};
+
+
+feng.controllers.view3d.ModeController.prototype.onNavigationChange = function(e) {
+
+	var navController = e.target;
+
+	var goTipResult = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.GO_TIP );
+
+	if(goTipResult) {
+
+		var achievements = feng.models.achievements.Achievements.getInstance();
+		var tip = achievements.getTip( goTipResult.tipId, goTipResult.viewId, goTipResult.sectionId );
+
+		var object = this._view3d.getObjectByTip( tip );
+
+		this.setMode({
+			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
+			object: object
+		});
+	}
 };
 
 
