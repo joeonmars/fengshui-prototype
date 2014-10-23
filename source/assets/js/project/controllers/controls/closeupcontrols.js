@@ -133,7 +133,7 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 		this._activeObject.onCameraIn();
 
 		// test...
-		var type = this._activeObject.tipInteraction || 'change_object';
+		var type = this._activeObject.interaction || 'change_object';
 		var caption = this._view3d.hud.getCaption( this._activeObject, this, type );
 		caption.setParentEventTarget(this);
 		caption.show();
@@ -141,7 +141,7 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 	}else  {
 		
 		// test...
-		var type = this._activeObject.tipInteraction || 'change_object';
+		var type = this._activeObject.interaction || 'change_object';
 		var caption = this._view3d.hud.getCaption( this._activeObject, this, type );
 		caption.setParentEventTarget(this);
 		caption.hide();

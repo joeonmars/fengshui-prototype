@@ -201,12 +201,16 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls, type ) {
 		return this._captions[key];
 	}
 
-  var captionClass = feng.views.sections.captions.Caption;;
+  var captionClass = feng.views.sections.captions.Caption;
 
   // get the caption if specified by object
   switch(object.captionClass) {
     case 'changecolor':
     captionClass = feng.views.sections.captions.ChangeColorCaption;
+    break;
+
+    case 'changepicture':
+    captionClass = feng.views.sections.captions.ChangePictureCaption;
     break;
 
     case 'dropfruits':

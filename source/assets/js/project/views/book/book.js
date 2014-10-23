@@ -459,7 +459,7 @@ feng.views.book.Book.prototype.onNavigationChange = function( e ) {
 	var shouldOpenBook = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.BOOK );
 	var tipToken = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.READ_TIP );
 	
-	var tipId = tipToken ? tipToken.tipId : null;
+	var tipId = tipToken ? tipToken['tipId'] : null;
 
 	if(tipId) {
 		shouldOpenBook = true;

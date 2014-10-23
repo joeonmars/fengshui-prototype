@@ -12,7 +12,7 @@ feng.views.view3dobject.InteractiveObject = function( object3d, data, view3d ){
   goog.base(this, object3d, data, view3d);
 
   this.object3d.interactiveObject = this;
-  this.interactions = this.data.interactions || [];
+  this.interaction = null;
   this.isPhysical = true;
   this.screenBox = new goog.math.Box(0, 0, 0, 0);
 
@@ -34,7 +34,7 @@ feng.views.view3dobject.InteractiveObject.prototype.registerToView3D = function(
 
 feng.views.view3dobject.InteractiveObject.prototype.hasInteraction = function( interaction ){
 
-	return goog.array.contains(this.interactions, interaction);
+	return (this.interaction === interaction);
 };
 
 
@@ -97,7 +97,7 @@ feng.views.view3dobject.InteractiveObject.prototype.onCameraOut = function(){
 
 
 /*
- * Interactions
+ * Interaction Types
  */
 feng.views.view3dobject.InteractiveObject.Interaction = {
   ADVICE: 'advice',

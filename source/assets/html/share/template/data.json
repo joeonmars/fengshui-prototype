@@ -1,20 +1,20 @@
 {
-	"frame": {
+	"glamourphoto": {
 	  "data": {
 	    "description": "This is the tip description of Feng Shui tip - Frame.",
 	    "image": "1.jpg"
 	  }
 	},
-	"chair": {
+	"diningchair": {
 	  "data": {
 	    "description": "This is the tip description of Feng Shui tip - Chair.",
-	    "image": "2.jpg"
+	    "image": "diningchair.jpg"
 	  }
 	},
-	"lamp": {
+	"readinglamp": {
 	  "data": {
 	    "description": "This is the tip description of Feng Shui tip - Lamp.",
-	    "image": "3.jpg"
+	    "image": "readinglamp.jpg"
 	  }
 	},
 	"crystal": {
@@ -32,25 +32,133 @@
 	"windows": {
 	  "data": {
 	    "description": "This is the tip description of Feng Shui tip - Windows.",
-	    "image": "6.jpg"
+	    "image": "windows.jpg"
 	  }
 	},
 	"cactus": {
 	  "data": {
 	    "description": "This is the tip description of Feng Shui tip - Cactus.",
-	    "image": "7.jpg"
+	    "image": "cactus.jpg"
 	  }
 	},
 	"sewingmachine": {
 	  "data": {
 	    "description": "This is the tip description of Feng Shui tip - Sewing Machine.",
-	    "image": "8.jpg"
+	    "image": "sewingmachine.jpg"
 	  }
 	},
 	"fruitplate": {
 	  "data": {
 	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
-	    "image": "9.jpg"
+	    "image": "fruitplate.jpg"
+	  }
+	},
+	"closet": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "closet.jpg"
+	  }
+	},
+	"lotus": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "lotus.jpg"
+	  }
+	},
+	"showerhead": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "showerhead.jpg"
+	  }
+	},
+	"glassbowl": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "glassbowl.jpg"
+	  }
+	},
+	"mirror": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "mirror.jpg"
+	  }
+	},
+	"cookingutensils": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "cookingutensils.jpg"
+	  }
+	},
+	"drawer": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "drawer.jpg"
+	  }
+	},
+	"books": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "books.jpg"
+	  }
+	},
+	"handheld": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "handheld.jpg"
+	  }
+	},
+	"bear": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "bear.jpg"
+	  }
+	},
+	"bed": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "bed.jpg"
+	  }
+	},
+	"computer": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "computer.jpg"
+	  }
+	},
+	"poster": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "poster.jpg"
+	  }
+	},
+	"deskchair": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "deskchair.jpg"
+	  }
+	},
+	"photodisplay": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "photodisplay.jpg"
+	  }
+	},
+	"setsquare": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "setsquare.jpg"
+	  }
+	},
+	"officeplant": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "officeplant.jpg"
+	  }
+	},
+	"desktopwallpaper": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "image": "desktopwallpaper.jpg"
 	  }
 	}
 }

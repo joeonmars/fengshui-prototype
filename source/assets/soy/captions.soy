@@ -73,7 +73,7 @@
 
 /**
  * Change picture caption
- * @/param pictures pictures
+ * @param pictures pictures
  * @param tip the tip
  * @param? position the caption's position
  */
@@ -83,64 +83,18 @@
 
 	{param interactionContent}
 
-	/*
-	<div class="draggerContainer">
-		<img class="dragger" draggable="false">
-	</div>
+		<div class="change-picture">
+			<h2>Click on a picture to change</h2>
 
-	<div class="popup-wrapper">
-	{call feng.templates.common.Popup}
-
-		{param classname: 'from-left' /}
-
-		{param content}
-
-			<h1>{ $tip.name }</h1>
-
-			{call .DetailContent}
-				{param problem: $tip.problem /}
-			{/call}
-
-			{call .LockedContent}
-			{/call}
-
-			{call .UnlockedContent}
-			{/call}
-		{/param}
-
-	{/call}
-	</div>
-
-	<div class="bottom">
-
-		<div class="pictureSelector">
-			{call feng.templates.controls.RoundButton}
-			{param content}
-				<div class="icon"></div>
-			{/param}
-			{param classname: 'prev'/}
-			{/call}
-			<div class="pictureView">
-				<div class="carousel">
-					<ul>
-					{foreach $picture in $pictures}
-						<li data-id="{index($picture)}">
-							<div class="thumbnail" style="background-image: url({$picture.src})" data-id="{index($picture)}">
-						</li>
-					{/foreach}
-					</ul>
-				</div>
-			</div>
-			{call feng.templates.controls.RoundButton}
-			{param content}
-				<div class="icon"></div>
-			{/param}
-			{param classname: 'next'/}
-			{/call}
+			<ul class="pictures">
+				{foreach $pictureKey in keys($pictures)}
+					<li>
+						<button class="picture" data-picture="{$pictureKey}"></button>
+					</li>
+				{/foreach}
+			</ul>
 		</div>
 
-	</div>
-	*/
 	{/param}
 
 {/call}

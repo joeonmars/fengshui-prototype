@@ -46,74 +46,70 @@ feng.controllers.SoundController = function(){
 
   this._data[ feng.controllers.SoundController.SoundType.SFX ] = {
     'click': {
-      urls: urls('sfx/click'),
-      onload: onSoundLoad
-    },
-    'page-flip': {
-      urls: urls('sfx/page-flip'),
-      onload: onSoundLoad
+      'urls': urls('sfx/click'),
+      'onload': onSoundLoad
     },
     'refrigerator-open': {
-      urls: urls('sfx/refrigerator-open'),
-      onload: onSoundLoad
+      'urls': urls('sfx/refrigerator-open'),
+      'onload': onSoundLoad
     },
     'refrigerator-close': {
-      urls: urls('sfx/refrigerator-close'),
-      onload: onSoundLoad
+      'urls': urls('sfx/refrigerator-close'),
+      'onload': onSoundLoad
     }
   };
 
   this._data[ feng.controllers.SoundController.SoundType.AMBIENT ] = {
     'studio': {
-      urls: urls('ambient/city-distant-traffic'),
-      volume: 0,
-      loop: true,
-      onload: onSoundLoad
+      'urls': urls('ambient/city-distant-traffic'),
+      'volume': 0,
+      'loop': true,
+      'onload': onSoundLoad
     },
     'house': {
-      urls: urls('ambient/subdivision'),
-      volume: 0,
-      loop: true,
-      onload: onSoundLoad
+      'urls': urls('ambient/subdivision'),
+      'volume': 0,
+      'loop': true,
+      'onload': onSoundLoad
     }
   };
 
   this._data[ feng.controllers.SoundController.SoundType.LOOP ] = {
     'family-breakfast': {
-      urls: urls('loop/family-breakfast'),
-      volume: 0,
-      loop: true,
-      onload: onSoundLoad
+      'urls': urls('loop/family-breakfast'),
+      'volume': 0,
+      'loop': true,
+      'onload': onSoundLoad
     },
     'first-class': {
-      urls: urls('loop/first-class'),
-      volume: 0,
-      loop: true,
-      onload: onSoundLoad
+      'urls': urls('loop/first-class'),
+      'volume': 0,
+      'loop': true,
+      'onload': onSoundLoad
     },
     'optimize-loop-1': {
-      urls: urls('loop/optimize-loop-1'),
-      volume: 0,
-      loop: true,
-      onload: onSoundLoad
+      'urls': urls('loop/optimize-loop-1'),
+      'volume': 0,
+      'loop': true,
+      'onload': onSoundLoad
     },
     'serendipity': {
-      urls: urls('loop/serendipity'),
-      volume: 0,
-      loop: true,
-      onload: onSoundLoad
+      'urls': urls('loop/serendipity'),
+      'volume': 0,
+      'loop': true,
+      'onload': onSoundLoad
     },
     'trees': {
-      urls: urls('loop/trees'),
-      volume: 0,
-      loop: true,
-      onload: onSoundLoad
+      'urls': urls('loop/trees'),
+      'volume': 0,
+      'loop': true,
+      'onload': onSoundLoad
     },
     'closeup': {
-      urls: urls('loop/optimize-loop-7'),
-      volume: 0,
-      loop: true,
-      onload: onSoundLoad
+      'urls': urls('loop/optimize-loop-7'),
+      'volume': 0,
+      'loop': true,
+      'onload': onSoundLoad
     }
   };
 

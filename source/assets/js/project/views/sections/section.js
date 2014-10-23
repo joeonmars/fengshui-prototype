@@ -226,7 +226,7 @@ feng.views.sections.Section.prototype.onNavigationChange = function(e){
 
 	var sectionResult = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.SECTION );
 
-	if(sectionResult && (sectionResult.sectionId === this.id)) {
+	if(sectionResult && (sectionResult['sectionId'] === this.id)) {
 		this.doNavigate();
 	}
 };

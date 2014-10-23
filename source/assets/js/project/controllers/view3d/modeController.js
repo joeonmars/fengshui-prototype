@@ -273,9 +273,14 @@ feng.controllers.view3d.ModeController.prototype.onNavigationChange = function(e
 	if(goTipResult) {
 
 		var achievements = feng.models.achievements.Achievements.getInstance();
-		var tip = achievements.getTip( goTipResult.tipId, goTipResult.viewId, goTipResult.sectionId );
+		var tip = achievements.getTip( goTipResult['tipId'], goTipResult['viewId'], goTipResult['sectionId'] );
 
 		var object = this._view3d.getObjectByTip( tip );
+
+		if(!object) {
+			console.log('tip object currently not available');
+			return false;
+		}
 
 		this.setMode({
 			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,

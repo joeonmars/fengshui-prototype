@@ -30,8 +30,7 @@ goog.require('feng.views.view3dobject.TipObject');
 goog.require('feng.views.view3dobject.entities.Lamp');
 goog.require('feng.views.view3dobject.entities.Computer');
 goog.require('feng.views.view3dobject.entities.Closet');
-goog.require('feng.views.view3dobject.entities.PictureDisplay');
-goog.require('feng.views.view3dobject.entities.PictureFrame');
+goog.require('feng.views.view3dobject.entities.Pictures');
 goog.require('feng.views.view3dobject.entities.Refrigerator');
 goog.require('feng.views.view3dobject.entities.FruitPlate');
 goog.require('feng.views.view3dobject.entities.Windows');
@@ -416,8 +415,7 @@ feng.views.View3D.prototype.initScene = function() {
 		'gateway': feng.views.view3dobject.GatewayObject,
 		'mirror': feng.views.view3dobject.Mirror,
 		'closet': feng.views.view3dobject.entities.Closet,
-		'picturedisplay': feng.views.view3dobject.entities.PictureDisplay,
-		'pictureframe': feng.views.view3dobject.entities.PictureFrame,
+		'pictures': feng.views.view3dobject.entities.Pictures,
 		'computer': feng.views.view3dobject.entities.Computer,
 		'lamp': feng.views.view3dobject.entities.Lamp,
 		'refrigerator': feng.views.view3dobject.entities.Refrigerator,
@@ -436,18 +434,12 @@ feng.views.View3D.prototype.initScene = function() {
 		if(!(object instanceof THREE.Object3D)) return;
 
 		var objectData = feng.models.View3D.getData(sectionId+'.'+sceneId+'.'+object.name);
-		var interactions = objectData.interactions || [];
 		var className = objectData.Class;
 
 		if(className) {
 
 			// create specific class object
 			var classObject = new objectClass[className](object, objectData, this);
-
-		}else if(interactions.length > 0) {
-
-			// create interactive object
-			var interactiveObject = new feng.views.view3dobject.InteractiveObject( object, objectData, this);
 
 		}else {
 

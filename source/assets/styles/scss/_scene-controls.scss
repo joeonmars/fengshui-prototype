@@ -470,8 +470,10 @@ $border_size: 7px;
 							>h6{
 								position: relative;
 								display: block;
-								width: 100%;
+								width: (13.2em / 1.6em);
 								text-align: center;
+								overflow: hidden;
+								text-overflow: ellipsis;
 								margin-top: .65em;
 								font-size: 1.6em;
 								color: inherit;

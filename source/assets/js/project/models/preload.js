@@ -134,6 +134,12 @@ feng.models.Preload = function(){
 				'window-left-switch-texture': 'images/texture/studio/livingroom/window-left-switch.jpg',
 				'window-right-texture': 'images/texture/studio/livingroom/window-right.jpg',
 				'window-right-switch-texture': 'images/texture/studio/livingroom/window-right-switch.jpg',
+				'pictures': {
+					'1': 'images/texture/studio/livingroom/pictures/1.jpg',
+					'2': 'images/texture/studio/livingroom/pictures/2.jpg',
+					'3': 'images/texture/studio/livingroom/pictures/3.jpg',
+					'4': 'images/texture/studio/livingroom/pictures/4.jpg'
+				},
 				'skybox': {
 					'xpos': 'images/texture/studio/livingroom/skybox/pos-x.png',
 					'xneg': 'images/texture/studio/livingroom/skybox/neg-x.png',
@@ -267,6 +273,11 @@ feng.models.Preload = function(){
 				'window-texture': 'images/texture/house/boysroom/window.jpg',
 				'window-frame-texture': 'images/texture/house/boysroom/window-frame.jpg',
 				'door-frame-texture': 'images/texture/house/boysroom/door-frame.jpg',
+				'pictures': {
+					'1': 'images/texture/house/boysroom/pictures/1.jpg',
+					'2': 'images/texture/house/boysroom/pictures/2.jpg',
+					'3': 'images/texture/house/boysroom/pictures/3.jpg'
+				},
 				'skybox': {
 					'xpos': 'images/texture/house/boysroom/skybox/pos-x.png',
 					'xneg': 'images/texture/house/boysroom/skybox/neg-x.png',
@@ -326,6 +337,12 @@ feng.models.Preload = function(){
 				'telephone-texture': 'images/texture/house/homeoffice/telephone.jpg',
 				'bookshelf-texture': 'images/texture/house/homeoffice/bookshelf.jpg',
 				'bookshelf-stuff-texture': 'images/texture/house/homeoffice/bookshelf-stuff.jpg',
+				'pictures': {
+					'1': 'images/texture/house/homeoffice/pictures/1.jpg',
+					'2': 'images/texture/house/homeoffice/pictures/2.jpg',
+					'3': 'images/texture/house/homeoffice/pictures/3.jpg',
+					'4': 'images/texture/house/homeoffice/pictures/4.jpg'
+				},
 				'skybox': {
 					'xpos': 'images/texture/house/boysroom/skybox/pos-x.png',
 					'xneg': 'images/texture/house/boysroom/skybox/neg-x.png',

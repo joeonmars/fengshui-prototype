@@ -14,11 +14,6 @@ feng.models.View3D.Data = {
 			'sofa': {
 				Class: "tip",
 				collidable: true,
-				interactions: [
-					"move",
-					"rotate"
-				],
-				tipInteraction: "change_color",
 				tipKey: 'studio.livingroom.chair'
 			},
 			'cabinet': {
@@ -26,11 +21,6 @@ feng.models.View3D.Data = {
 				holderType: "accessory",
 				collidable: true,
 				texture: "studio.livingroom.cabinet-texture",
-				interactions: [
-					"move",
-					"rotate"
-				],
-				tipInteraction: "change_color",
 				tipKey: 'studio.livingroom.chair'
 			},
 			'bed': {
@@ -38,16 +28,11 @@ feng.models.View3D.Data = {
 				holderType: "accessory",
 				collidable: true,
 				texture: "studio.livingroom.bed-texture",
-				interactions: [
-					"move",
-					"rotate"
-				],
 				camera: {
 					position: new THREE.Vector3(-105.44, 89.50, 116.23),
 					rotation: new THREE.Euler(-0.34, -0.80, 0.00, 'YXZ'),
 					fov: 60
 				},
-				tipInteraction: "change_color",
 				tipKey: 'studio.livingroom.chair'
 			},
 			'door': {
@@ -62,11 +47,7 @@ feng.models.View3D.Data = {
 			},
 			'picture': {
 				Class: 'picturedisplay',
-				interactions: [
-					'change_picture'
-				],
-				tipInteraction: 'change_picture',
-				tipKey: 'studio.livingroom.frame',
+				tipKey: 'studio.livingroom.glamourphoto',
 				camera: {
 					position: new THREE.Vector3(57.56, 90.49, -16.61),
 					rotation: new THREE.Euler(-0.24, -1.68, 0.00, 'YXZ'),
@@ -136,11 +117,7 @@ feng.models.View3D.Data = {
 			},
 			'pc': {
 				collidable: true,
-				texture: "studio.interior2.pc-texture",
-				interactions: [
-					"move",
-					"rotate"
-				]
+				texture: "studio.interior2.pc-texture"
 			},
 			'screen': {
 				texture: {
@@ -167,6 +144,31 @@ feng.models.View3D.Data = {
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
 				},
 				texture: "studio.livingroom.studio-door-texture"
+			},
+			'glamour-photo': {
+				Class: 'pictures',
+				captionClass: 'changepicture',
+				tipKey: 'studio.livingroom.glamourphoto',
+				texture: 'studio.livingroom.fruitplate-texture',
+				camera: {
+					position: new THREE.Vector3(59, 80, 62),
+					rotation: new THREE.Euler(0.13, -3.10, 0.00, 'YXZ'),
+					fov: 40
+				},
+				pictures: {
+					'1':{
+						description: 'This is a dummy picture. Its name is 1.'
+					},
+					'2':{
+						description: 'This is a dummy picture. Its name is 2.'
+					},
+					'3':{
+						description: 'This is a dummy picture. Its name is 3.'
+					},
+					'4':{
+						description: 'This is a dummy picture. Its name is 4.'
+					}
+				}
 			},
 			'studio-door-handle': {
 				texture: "studio.livingroom.studio-door-handle-texture"
@@ -243,16 +245,11 @@ feng.models.View3D.Data = {
 			},
 			'round-lamp':	{
 				Class: 'lamp',
-				interactions: [
-					"move",
-					"rotate"
-				],
 				colors: [
 					"pink",
 					"yellow",
 					"orange"
 				],
-				tipInteraction: "change_color",
 				tipKey: 'studio.livingroom.readinglamp',
 				texture: "studio.livingroom.round-lamp-texture",
 				captionClass: 'changecolor'
@@ -274,7 +271,6 @@ feng.models.View3D.Data = {
 					fov: 40
 				},
 				texture: "studio.livingroom.fruitplate-texture",
-				tipInteraction: "drop",
 				tipKey: 'studio.livingroom.fruitplate',
 				captionClass: 'dropfruits'
 			},
@@ -287,13 +283,8 @@ feng.models.View3D.Data = {
 				collidable: true,
 				castShadow: true,
 				texture: "studio.livingroom.dining-chair-texture",
-				interactions: [
-					"move",
-					"rotate"
-				],
 				destination: new THREE.Vector3(0, 0, 0),
 				range: 80,
-				tipInteraction: "change_object",
 				tipKey: 'studio.livingroom.diningchair'
 			},
 			'window-books':	{
@@ -302,9 +293,6 @@ feng.models.View3D.Data = {
 			'clock':	{
 				Class: "tip",
 				texture: "studio.livingroom.clock-texture",
-				interactions: [
-				],
-				tipInteraction: "",
 				tipKey: 'studio.livingroom.clock'
 			},
 			'seasoning':	{
@@ -358,9 +346,6 @@ feng.models.View3D.Data = {
 			'crystal':	{
 				Class: "tip",
 				texture: "studio.livingroom.crystal-texture",
-				interactions: [
-				],
-				tipInteraction: "",
 				tipKey: 'studio.livingroom.crystal'
 			},
 			'laptop':	{
@@ -389,15 +374,11 @@ feng.models.View3D.Data = {
 			'refrigerator-door': {
 				Class: "refrigerator",
 				texture: "studio.livingroom.refrigerator-door-texture",
-				interactions: [
-
-				],
 				camera: {
 					position: new THREE.Vector3(-110, 80, -120),
 					rotation: new THREE.Euler(-0.64, -1.57, 0.00, 'YXZ'),
 					fov: 40
 				},
-				tipInteraction: "change_object",
 				tipKey: 'studio.livingroom.refrigerator'
 			},
 			'apple': {
@@ -438,12 +419,7 @@ feng.models.View3D.Data = {
 			},
 			'lotus': {
 				Class: 'tip',
-				interactions: [
-					"move",
-					"rotate"
-				],
 				texture: "studio.bathroom.lotus-texture",
-				tipInteraction: "drop",
 				tipKey: 'studio.bathroom.lotus'
 			},
 			'towel': {
@@ -451,12 +427,7 @@ feng.models.View3D.Data = {
 			},
 			'showerhead': {
 				Class: 'tip',
-				interactions: [
-					"move",
-					"rotate"
-				],
 				texture: "studio.bathroom.showerhead-texture",
-				tipInteraction: "drop",
 				tipKey: 'studio.bathroom.showerhead'
 			},
 			'shower-handle': {
@@ -517,15 +488,11 @@ feng.models.View3D.Data = {
 			'closet-door': {
 				Class: "closet",
 				receiveShadow: true,
-				interactions: [
-
-				],
 				camera: {
 					position: new THREE.Vector3(35, 81, -47),
 					rotation: new THREE.Euler(-0.07, 1.70, 0.00, 'YXZ'),
 					fov: 40
 				},
-				tipInteraction: "change_object",
 				tipKey: 'studio.bathroom.closet',
 				texture: "studio.bathroom.closet-door-texture"
 			},
@@ -628,6 +595,28 @@ feng.models.View3D.Data = {
 			'big-frame': {
 				texture: "house.boysroom.big-frame-texture"
 			},
+			'big-frame-picture': {
+				Class: 'pictures',
+				captionClass: 'changepicture',
+				tipKey: 'house.boysroom.poster',
+				texture: "house.boysroom.handheld-nightstand-texture",
+				camera: {
+					position: new THREE.Vector3(21.1, 80, -26.46),
+					rotation: new THREE.Euler(-0.03, 1.55, 0.00, 'YXZ'),
+					fov: 40
+				},
+				pictures: {
+					'1':{
+						description: 'This is a dummy picture. Its name is 1.'
+					},
+					'2':{
+						description: 'This is a dummy picture. Its name is 2.'
+					},
+					'3':{
+						description: 'This is a dummy picture. Its name is 3.'
+					}
+				}
+			},
 			'decoration-pictures': {
 				texture: "house.boysroom.decoration-pictures-texture"
 			},
@@ -667,7 +656,13 @@ feng.models.View3D.Data = {
 				texture: "house.boysroom.toytrain-texture"
 			},
 			'computer': {
-				texture: "house.boysroom.computer-texture"
+				Class: "movable",
+				collidable: true,
+				castShadow: true,
+				texture: "house.boysroom.computer-texture",
+				destination: new THREE.Vector3(0, 0, 0),
+				range: 80,
+				tipKey: 'house.boysroom.computer'
 			},
 			'desk': {
 				collidable: true,
@@ -742,27 +737,17 @@ feng.models.View3D.Data = {
 			},
 			'bear': {
 				Class: 'tip',
-				interactions: [
-					"move",
-					"rotate"
-				],
 				texture: "house.boysroom.bear-in-drawer-texture",
-				tipInteraction: "drop",
 				tipKey: 'house.boysroom.bear'
 			},
 			'handheld': {
 				Class: 'tip',
-				interactions: [
-					"move",
-					"rotate"
-				],
 				camera: {
 					position: new THREE.Vector3(-29, 56, 16),
 					rotation: new THREE.Euler(-0.70, 1.55, 0.00, 'YXZ'),
 					fov: 20
 				},
 				texture: "house.boysroom.handheld-nightstand-texture",
-				tipInteraction: "drop",
 				tipKey: 'house.boysroom.handheld'
 			},
 			'window': {
@@ -808,13 +793,8 @@ feng.models.View3D.Data = {
 				collidable: true,
 				castShadow: true,
 				texture: "house.homeoffice.swivel-chair-texture",
-				interactions: [
-					"move",
-					"rotate"
-				],
 				destination: new THREE.Vector3(0, 0, 0),
 				range: 80,
-				tipInteraction: "change_object",
 				tipKey: 'house.homeoffice.deskchair'
 			},
 			'storage': {
@@ -823,12 +803,7 @@ feng.models.View3D.Data = {
 			},
 			'setsquare': {
 				Class: 'tip',
-				interactions: [
-					"move",
-					"rotate"
-				],
 				texture: "house.homeoffice.setsquare-texture",
-				tipInteraction: "drop",
 				tipKey: 'house.homeoffice.setsquare'
 			},
 			'carpet': {
@@ -854,6 +829,18 @@ feng.models.View3D.Data = {
 			},
 			'picture-frame-4': {
 				texture: "house.homeoffice.picture-frame-4-texture"
+			},
+			'picture-1': {
+				texture: "house.homeoffice.calendar-texture"
+			},
+			'picture-2': {
+				texture: "house.homeoffice.calendar-texture"
+			},
+			'picture-3': {
+				texture: "house.homeoffice.calendar-texture"
+			},
+			'picture-4': {
+				texture: "house.homeoffice.calendar-texture"
 			},
 			'block-shelf-1':	{
 				texture: "house.homeoffice.block-shelf-1-texture"
@@ -905,7 +892,9 @@ feng.models.View3D.Data = {
 				texture: "house.homeoffice.pen-vase-texture"
 			},
 			'rubberplant': {
-				texture: "house.homeoffice.rubberplant-texture"
+				Class: "tip",
+				texture: "house.homeoffice.rubberplant-texture",
+				tipKey: 'house.homeoffice.officeplant'
 			},
 			'coffee-table':	{
 				collidable: true,
@@ -938,8 +927,30 @@ feng.models.View3D.Data = {
 				texture: "house.homeoffice.trash-texture"
 			},
 			'display-shelf': {
+				Class: 'pictures',
 				collidable: true,
-				texture: "house.homeoffice.display-shelf-texture"
+				captionClass: 'changepicture',
+				tipKey: 'house.homeoffice.photodisplay',
+				texture: "house.homeoffice.display-shelf-texture",
+				camera: {
+					position: new THREE.Vector3(23, 80, -60),
+					rotation: new THREE.Euler(0.01, 0.07, 0.00, 'YXZ'),
+					fov: 40
+				},
+				pictures: {
+					'1':{
+						description: 'This is a dummy picture. Its name is 1.'
+					},
+					'2':{
+						description: 'This is a dummy picture. Its name is 2.'
+					},
+					'3':{
+						description: 'This is a dummy picture. Its name is 3.'
+					},
+					'4':{
+						description: 'This is a dummy picture. Its name is 4.'
+					}
+				}
 			},
 			'computer':	{
 				texture: "house.homeoffice.computer-texture"

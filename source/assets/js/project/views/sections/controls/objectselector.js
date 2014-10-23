@@ -247,9 +247,11 @@ feng.views.sections.controls.ObjectSelector.prototype.onAnimationFrame = functio
 
 feng.views.sections.controls.ObjectSelector.findObjectDelegation = function( object ) {
 
+	/*
 	if(object instanceof feng.views.view3dobject.entities.PictureFrame) {
 		return object.object3d.parent.interactiveObject;
 	}
-
+	*/
+	
 	return object;
 };

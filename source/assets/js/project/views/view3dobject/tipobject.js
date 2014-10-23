@@ -11,8 +11,6 @@ feng.views.view3dobject.TipObject = function( object3d, data, view3d ){
 
   goog.base(this, object3d, data, view3d);
 
-  this.tipInteraction = data.tipInteraction;
-
   // get tip model and listen to unlock event
   var tipKeys = data.tipKey.split('.');
   var tipId = tipKeys[2];

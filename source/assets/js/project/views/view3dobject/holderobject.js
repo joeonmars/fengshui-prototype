@@ -26,7 +26,6 @@ feng.views.view3dobject.HolderObject = function( object3d, data, view3d ){
 		this.accessory = new feng.views.view3dobject.AccessoryObject( accessories, this, defaultAccessory, view3d );
 		
 		var changeAccessory = feng.views.view3dobject.InteractiveObject.Interaction.CHANGE_ACCESSORY;
-		this.interactions.push(changeAccessory);
 
 	}else if(this._type === feng.views.view3dobject.HolderObject.Type.OBJECT) {
 

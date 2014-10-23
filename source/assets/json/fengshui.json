@@ -409,7 +409,7 @@
 			"reminder": "Could Nick King be with me while I am sleeping?"
 		},
 		{
-			"id": "pc",
+			"id": "computer",
 			"section": "house",
 			"view": "boysroom",
 			"name": "computer",
@@ -494,7 +494,7 @@
 			"reminder": "I always need set square. Do you think it is in a good position now? I want to keep it at hand."
 		},
 		{
-			"id": "flower",
+			"id": "officeplant",
 			"section": "house",
 			"view": "homeoffice",
 			"name": "office plants",
