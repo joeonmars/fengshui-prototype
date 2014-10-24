@@ -23,8 +23,8 @@ goog.inherits(feng.views.view3dobject.MovableObject, feng.views.view3dobject.Tip
 
 feng.views.view3dobject.MovableObject.prototype.updateTilesRange = function(){
 
-  // get available tiles by destination and range (in view3d unit)
-  var destPos = this.data.destination;
+  // get available tiles by destination position and range (in view3d unit)
+  var destPos = this.data.position;
   var range = this.data.range;
 
   var matrixId = this._view3d.getMatrixId();
@@ -91,8 +91,8 @@ feng.views.view3dobject.MovableObject.prototype.drop = function(){
 
   var position = this.getPositionIfAvailable();
 
-  this.object3d.position.copy( position ).setY( this._view3d.getFloorY() );
-  this.object3d.rotation.set( 0, 0, 0 );
+  this.object3d.position.copy( this.data.position );
+  this.object3d.rotation.copy( this.data.rotation );
   this.addToScene();
 
   var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
@@ -104,7 +104,7 @@ feng.views.view3dobject.MovableObject.prototype.drop = function(){
     object: this
   });
 
-  this.unlockReady();
+  this.unlock();
 };
 
 

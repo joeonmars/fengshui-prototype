@@ -45,33 +45,6 @@ feng.models.Preload = function(){
 					'ollie': 'images/characters/ollie.png'
 				}
 			},
-			'livingroom-test': {
-				'scene-data': 'json/scene-interior1.json',
-				'energyflow-data': 'json/energyflow/energyflow-1.json',
-				'bed-texture': 'images/texture/bed.jpg',
-				'cabinet-texture': 'images/texture/cabinet.jpg',
-				'default-picture': 'images/texture/studio/pictures/0.jpg',
-				'pictures': {
-					'1': 'images/texture/studio/pictures/1.jpg',
-					'2': 'images/texture/studio/pictures/2.jpg',
-					'3': 'images/texture/studio/pictures/3.jpg',
-					'4': 'images/texture/studio/pictures/4.jpg',
-					'5': 'images/texture/studio/pictures/5.jpg',
-					'6': 'images/texture/studio/pictures/6.jpg',
-					'7': 'images/texture/studio/pictures/7.jpg',
-					'8': 'images/texture/studio/pictures/8.jpg',
-					'9': 'images/texture/studio/pictures/9.jpg',
-					'10': 'images/texture/studio/pictures/10.jpg'
-				},
-				'skybox': {
-					'xpos': 'images/texture/studio/livingroom/skybox/pos-x.png',
-					'xneg': 'images/texture/studio/livingroom/skybox/neg-x.png',
-					'ypos': 'images/texture/studio/livingroom/skybox/pos-y.png',
-					'yneg': 'images/texture/studio/livingroom/skybox/neg-y.png',
-					'zpos': 'images/texture/studio/livingroom/skybox/pos-z.png',
-					'zneg': 'images/texture/studio/livingroom/skybox/neg-z.png'
-				}
-			},
 			'interior2': {
 				'scene-data': 'json/scene-interior2.json',
 				'energyflow-data': 'json/energyflow/energyflow-2.json',
@@ -242,6 +215,7 @@ feng.models.Preload = function(){
 				'stools-texture': 'images/texture/house/boysroom/stools.jpg',
 				'football-texture': 'images/texture/house/boysroom/football.jpg',
 				'bear-in-drawer-texture': 'images/texture/house/boysroom/bear-in-drawer.jpg',
+				'bear-on-bed-texture': 'images/texture/house/boysroom/bear-on-bed.jpg',
 				'moon-texture': 'images/texture/house/boysroom/moon.jpg',
 				'carpet-texture': 'images/texture/house/boysroom/carpet.jpg',
 				'shelf-stuff-1-texture': 'images/texture/house/boysroom/shelf-stuff-1.jpg',

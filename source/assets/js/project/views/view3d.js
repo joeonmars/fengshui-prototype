@@ -27,6 +27,7 @@ goog.require('feng.views.view3dobject.Skybox');
 goog.require('feng.views.view3dobject.Mirror');
 goog.require('feng.views.view3dobject.AccessoryObject');
 goog.require('feng.views.view3dobject.TipObject');
+goog.require('feng.views.view3dobject.entities.Bear');
 goog.require('feng.views.view3dobject.entities.Lamp');
 goog.require('feng.views.view3dobject.entities.Computer');
 goog.require('feng.views.view3dobject.entities.Closet');
@@ -418,6 +419,7 @@ feng.views.View3D.prototype.initScene = function() {
 		'pictures': feng.views.view3dobject.entities.Pictures,
 		'computer': feng.views.view3dobject.entities.Computer,
 		'lamp': feng.views.view3dobject.entities.Lamp,
+		'bear': feng.views.view3dobject.entities.Bear,
 		'refrigerator': feng.views.view3dobject.entities.Refrigerator,
 		'windows': feng.views.view3dobject.entities.Windows,
 		'fruitplate': feng.views.view3dobject.entities.FruitPlate

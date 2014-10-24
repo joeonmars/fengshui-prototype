@@ -99,5 +99,9 @@ feng.views.view3dobject.Arms.Orientations = {
   'dining-chair': {
     position: new THREE.Vector3(5, -25, -20),
     rotation: new THREE.Euler(0, 0, 0.17)
+  },
+  'bear': {
+    position: new THREE.Vector3(0.47, 0, -5),
+    rotation: new THREE.Euler(-0.26, 3.49, 0.02)
   }
 };

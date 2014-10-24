@@ -4,107 +4,6 @@ goog.provide('feng.models.View3D');
 feng.models.View3D.Data = {
 
 	'studio': {
-		'livingroom-test': {
-			'ground': {
-				receiveShadow: true
-			},
-			'wall':	{
-				collidable: true
-			},
-			'sofa': {
-				Class: "tip",
-				collidable: true,
-				tipKey: 'studio.livingroom.chair'
-			},
-			'cabinet': {
-				Class: "holder",
-				holderType: "accessory",
-				collidable: true,
-				texture: "studio.livingroom.cabinet-texture",
-				tipKey: 'studio.livingroom.chair'
-			},
-			'bed': {
-				Class: "holder",
-				holderType: "accessory",
-				collidable: true,
-				texture: "studio.livingroom.bed-texture",
-				camera: {
-					position: new THREE.Vector3(-105.44, 89.50, 116.23),
-					rotation: new THREE.Euler(-0.34, -0.80, 0.00, 'YXZ'),
-					fov: 60
-				},
-				tipKey: 'studio.livingroom.chair'
-			},
-			'door': {
-				Class: "gateway",
-				collidable: true,
-				viewid: "interior2",
-				gatewayid: "door"
-			},
-			'stairsway': {
-				Class: "stairs",
-				collidable: true
-			},
-			'picture': {
-				Class: 'picturedisplay',
-				tipKey: 'studio.livingroom.glamourphoto',
-				camera: {
-					position: new THREE.Vector3(57.56, 90.49, -16.61),
-					rotation: new THREE.Euler(-0.24, -1.68, 0.00, 'YXZ'),
-					fov: 40
-				},
-				pictures: [
-					{
-						id: 'studio.livingroom.pictures.1',
-						description: 'This is a dummy picture. Its name is picture 1.'
-					},
-					{
-						id: 'studio.livingroom.pictures.2',
-						description: 'This is a dummy picture. Its name is picture 2.'
-					},
-					{
-						id: 'studio.livingroom.pictures.3',
-						description: 'This is a dummy picture. Its name is picture 3.'
-					},
-					{
-						id: 'studio.livingroom.pictures.4',
-						description: 'This is a dummy picture. Its name is picture 4.'
-					},
-					{
-						id: 'studio.livingroom.pictures.5',
-						description: 'This is a dummy picture. Its name is picture 5.'
-					},
-					{
-						id: 'studio.livingroom.pictures.6',
-						description: 'This is a dummy picture. Its name is picture 6.'
-					},
-					{
-						id: 'studio.livingroom.pictures.7',
-						description: 'This is a dummy picture. Its name is picture 7.'
-					},
-					{
-						id: 'studio.livingroom.pictures.8',
-						description: 'This is a dummy picture. Its name is picture 8.'
-					},
-					{
-						id: 'studio.livingroom.pictures.9',
-						description: 'This is a dummy picture. Its name is picture 9.'
-					},
-					{
-						id: 'studio.livingroom.pictures.10',
-						description: 'This is a dummy picture. Its name is picture 10.'
-					}
-				]
-			},
-			'frame1': {
-				Class: 'pictureframe',
-				defaultTexture: 'studio.livingroom.default-picture'
-			},
-			'frame2': {
-				Class: 'pictureframe',
-				defaultTexture: 'studio.livingroom.default-picture'
-			}
-		},
 		'interior2': {
 			'ground': {
 				receiveShadow: true
@@ -283,8 +182,9 @@ feng.models.View3D.Data = {
 				collidable: true,
 				castShadow: true,
 				texture: "studio.livingroom.dining-chair-texture",
-				destination: new THREE.Vector3(0, 0, 0),
-				range: 80,
+				position: new THREE.Vector3(-47.69, 0, -54.87),
+				rotation: new THREE.Euler(0, 0, 0),
+				range: 25,
 				tipKey: 'studio.livingroom.diningchair'
 			},
 			'window-books':	{
@@ -582,6 +482,7 @@ feng.models.View3D.Data = {
 				texture: "house.boysroom.wall-outer-texture"
 			},
 			'ceiling':	{
+				castShadow: true,
 				texture: "house.boysroom.ceiling-texture"
 			},
 			'cabinet':	{
@@ -590,6 +491,7 @@ feng.models.View3D.Data = {
 			},
 			'bed': {
 				collidable: true,
+				receiveShadow: true,
 				texture: "house.boysroom.bed-texture"
 			},
 			'big-frame': {
@@ -713,6 +615,7 @@ feng.models.View3D.Data = {
 				texture: "house.boysroom.blue-reading-lamp-texture"
 			},
 			'bedding': {
+				receiveShadow: true,
 				texture: "house.boysroom.bedding-texture"
 			},
 			'chalkboard': {
@@ -736,8 +639,12 @@ feng.models.View3D.Data = {
 				texture: "house.boysroom.drawer-texture"
 			},
 			'bear': {
-				Class: 'tip',
+				Class: "bear",
+				castShadow: true,
 				texture: "house.boysroom.bear-in-drawer-texture",
+				position: new THREE.Vector3(-50.04, 33.70, -27.77),
+				rotation: new THREE.Euler(0, -1.57, 0),
+				range: 25,
 				tipKey: 'house.boysroom.bear'
 			},
 			'handheld': {
