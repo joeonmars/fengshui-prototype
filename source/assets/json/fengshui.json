@@ -384,29 +384,12 @@
 			"unlocked": false,
 			"mandatory": true,
 			"require": null,
-			"provide": "bed",
-			"final": false,
-			"problem": "In Feng shui, dolls are symbolism as human and they should be view as friends. It also suggested that the number of dolls should be limited, otherwise the owners will get involved in a complex relationships.",
-			"advice": "Further more, Keep dolls closed in a cabinet is not a wise way to organize the toys. Instead, they should be arranged to an open area and let them breath.",
-			"character": "nick",
-			"reminder": "Dad said I need to clean my room, so I threw my bear, Nick King, into a drawer, but I don’t think he liked it."
-		},
-		{
-			"id": "bed",
-			"section": "house",
-			"view": "boysroom",
-			"name": "plush toys",
-			"icon": "bear",
-			"interaction": "put",
-			"unlocked": false,
-			"mandatory": true,
-			"require": "bear",
 			"provide": null,
 			"final": true,
 			"problem": "In Feng shui, dolls are symbolism as human and they should be view as friends. It also suggested that the number of dolls should be limited, otherwise the owners will get involved in a complex relationships.",
 			"advice": "Further more, Keep dolls closed in a cabinet is not a wise way to organize the toys. Instead, they should be arranged to an open area and let them breath.",
 			"character": "nick",
-			"reminder": "Could Nick King be with me while I am sleeping?"
+			"reminder": "Dad said I need to clean my room, so I threw my bear, Nick King, into a drawer, but I don’t think he liked it."
 		},
 		{
 			"id": "computer",

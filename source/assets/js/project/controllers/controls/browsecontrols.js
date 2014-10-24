@@ -93,7 +93,11 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 			this._detectorRay.set( cameraPosition, rayDirection );
 
 			var intersects = this._detectorRay.intersectObjects( object3ds );
-			var canReach = (intersects.length > 0) ? (intersects[0].object === tipObject.object3d) : false;
+
+			var canReach =
+				(intersects.length > 0) ?
+				(intersects[0].object === tipObject.object3d || goog.array.contains(tipObject.object3d.children, intersects[0].object)) :
+				false;
 
 			//console.log(tipObject.name + ' withinRange: ' + withinRange + ', locked: ' + locked + ', canReach: ' + canReach, (intersects.length > 0 ? intersects[0].object : null));
 

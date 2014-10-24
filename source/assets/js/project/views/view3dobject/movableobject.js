@@ -95,6 +95,11 @@ feng.views.view3dobject.MovableObject.prototype.drop = function(){
   this.object3d.rotation.copy( this.data.rotation );
   this.addToScene();
 
+  if(this.data.parent) {
+    var parentView3dObject = this._view3d.getView3dObject( this.data.parent );
+    parentView3dObject.object3d.add( this.object3d );
+  }
+
   var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
   
   browseControls.dispatchEvent({

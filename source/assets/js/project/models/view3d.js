@@ -558,16 +558,18 @@ feng.models.View3D.Data = {
 				texture: "house.boysroom.toytrain-texture"
 			},
 			'computer': {
-				Class: "movable",
+				Class: "computer",
 				collidable: true,
 				castShadow: true,
-				texture: "house.boysroom.computer-texture",
-				destination: new THREE.Vector3(0, 0, 0),
-				range: 80,
+				texture: "house.boysroom.computer-on-table-texture",
+				position: new THREE.Vector3(63.04, 37.75, -97.24),
+				rotation: new THREE.Euler(0, 3.14, 0),
+				range: 25,
 				tipKey: 'house.boysroom.computer'
 			},
 			'desk': {
 				collidable: true,
+				receiveShadow: true,
 				texture: "house.boysroom.desk-texture"
 			},
 			'table': {
@@ -645,6 +647,7 @@ feng.models.View3D.Data = {
 				position: new THREE.Vector3(-50.04, 33.70, -27.77),
 				rotation: new THREE.Euler(0, -1.57, 0),
 				range: 25,
+				parent: 'bed',
 				tipKey: 'house.boysroom.bear'
 			},
 			'handheld': {
@@ -700,8 +703,9 @@ feng.models.View3D.Data = {
 				collidable: true,
 				castShadow: true,
 				texture: "house.homeoffice.swivel-chair-texture",
-				destination: new THREE.Vector3(0, 0, 0),
-				range: 80,
+				position: new THREE.Vector3(-40, 0, 9),
+				rotation: new THREE.Euler(0, 0, 0),
+				range: 25,
 				tipKey: 'house.homeoffice.deskchair'
 			},
 			'storage': {
@@ -709,9 +713,15 @@ feng.models.View3D.Data = {
 				texture: "house.homeoffice.storage-texture"
 			},
 			'setsquare': {
-				Class: 'tip',
+				Class: "movable",
+				collidable: true,
+				castShadow: true,
 				texture: "house.homeoffice.setsquare-texture",
-				tipKey: 'house.homeoffice.setsquare'
+				tipKey: 'house.homeoffice.setsquare',
+				position: new THREE.Vector3(-36.95, 107.05, 137.10),
+				rotation: new THREE.Euler(0, 1.57, 0.18),
+				range: 50,
+				parent: 'block-shelf-1'
 			},
 			'carpet': {
 				texture: "house.homeoffice.carpet-texture"
