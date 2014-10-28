@@ -39,7 +39,7 @@ feng.controllers.view3d.PathfindingController = function(){
 
   this._zoom = 1;
 
-  this._renderer = new THREE.CanvasRenderer();feng.views.view3dobject.View3DObject.ProxyMaterial
+  this._renderer = new THREE.CanvasRenderer();
   this._renderer.setClearColor( 0xff0000 );
   //document.body.appendChild( this._renderer.domElement );
 };

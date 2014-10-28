@@ -130,7 +130,7 @@ feng.views.view3dobject.View3DObject.prototype.getTilemapProxy = function(){
 
   if(!clone) {
 
-    clone = new THREE.Mesh( this.object3d.geometry.clone(), feng.views.view3dobject.View3DObject.ProxyMaterial.GREEN );
+    clone = new THREE.Mesh( this.object3d.geometry, feng.views.view3dobject.View3DObject.ProxyMaterial.GREEN );
     this._tilemapProxy = clone;
   }
 
