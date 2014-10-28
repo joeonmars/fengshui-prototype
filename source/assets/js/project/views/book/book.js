@@ -16,18 +16,28 @@ feng.views.book.Book = function() {
 
 	goog.base(this);
 	
+	// retrieve final tips
 	var tips = feng.models.achievements.Achievements.getInstance().getAllTips();
-	tips = goog.array.filter(tips, function(tip) {
-		return (!tip.getProvidedTip());
-	});
+
+	this._tips = goog.array.filter(tips, function(tip) {
+
+		if( tip.isFinal ) {
+			tip.listen( feng.events.EventType.UNLOCK, this.onTipUnlock, false, this );
+		}
+
+		return tip.isFinal;
+	}, this);
 
 	this.domElement = soy.renderAsFragment(feng.templates.book.Book, {
-		tips: tips
+		tips: this._tips
 	});
 
 	goog.dom.appendChild(goog.dom.getElement('main'), this.domElement);
 
 	this._closeButton = goog.dom.getElementByClass('close-button', this.domElement);
+
+	this._tipCounterEl = goog.dom.getElementByClass('tip-counter', this.domElement);
+	this.updateTipCounter();
 
 	this._scrollerEl = goog.dom.getElementByClass('scroller', this.domElement);
 	this._scrollerInnerEl = goog.dom.getElementByClass('inner', this._scrollerEl);
@@ -50,7 +60,6 @@ feng.views.book.Book = function() {
 		var tipModule = new feng.views.book.TipModule( tipModuleEl, index, widthChangeCallback );
 		tipModule.setParentEventTarget( this );
 		return tipModule;
-
 	}, this);
 
 	this._tipModuleWidths = [];
@@ -362,6 +371,16 @@ feng.views.book.Book.prototype.applyScrollX = function() {
 };
 
 
+feng.views.book.Book.prototype.updateTipCounter = function() {
+
+	var numUnlocked = goog.array.count(this._tips, function(tip) {
+		return tip.unlocked;
+	});
+
+	this._tipCounterEl.innerHTML = numUnlocked + '/' + this._tips.length;
+};
+
+
 feng.views.book.Book.prototype.onDrag = function( e ) {
 
 	var ratio = Math.max(0, Math.min(1, this._dragger.deltaX / this._draggerLimits.width));
@@ -468,6 +487,12 @@ feng.views.book.Book.prototype.onNavigationChange = function( e ) {
 	if(shouldOpenBook) {
 		this.animateIn( tipId );
 	}
+};
+
+
+feng.views.book.Book.prototype.onTipUnlock = function( e ) {
+
+	this.updateTipCounter();
 };
 
 
