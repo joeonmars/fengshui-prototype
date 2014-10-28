@@ -136,8 +136,6 @@ feng.controllers.controls.DesignControls.prototype.activate = function () {
 
 	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this);
 
-	this._eventHandler.listen(this._view3d.domElement, 'click', this.onClickView, false, this);
-
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this);
 	
@@ -166,23 +164,6 @@ feng.controllers.controls.DesignControls.prototype.update = function () {
 		type: feng.events.EventType.UPDATE,
 		rotationY: rotationY
 	});
-};
-
-
-feng.controllers.controls.DesignControls.prototype.onClickView = function(e){
-
-	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition(
-		e.clientX,
-		e.clientY,
-		this._view3d.tipObjects,
-		this._camera,
-		this._view3d.getViewSize());
-
-	if(intersects.length === 0) {
-		return false;
-	}
-
-	this._activeObject = this._view3d.interactiveObjects[ intersects[0].object.name ];
 };
 
 

@@ -16,7 +16,7 @@ feng.fx.Trail = function(timeOffset, color, length, blendMode, jiggleFrequency, 
 
 	this._color = ( new THREE.Color() ).set( color );
 	this._baseHSL = this._color.getHSL();
-
+	
 	this._geometry = new THREE.PlaneGeometry(30, 30, 1, this._numSegments);
 
 	this._material = this.createMaterial( color );

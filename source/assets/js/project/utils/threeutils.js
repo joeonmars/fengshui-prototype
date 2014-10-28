@@ -14,9 +14,7 @@ feng.utils.ThreeUtils.getObjectsBy2DPosition = function ( clientX, clientY, obje
 	position.applyMatrix4( camera.matrixWorld );
 
 	var vector = new THREE.Vector3( ( clientX / viewSize.width ) * 2 - 1, - ( clientY / viewSize.height ) * 2 + 1, 0.5 );
-	
-	var projector = feng.utils.ThreeUtils.projector;
-	projector.unprojectVector( vector, camera );
+	vector.unproject( camera );
 
 	var raycaster = feng.utils.ThreeUtils.raycaster;
 	raycaster.set( position, vector.sub( position ).normalize() );
@@ -77,17 +75,14 @@ feng.utils.ThreeUtils.getQuaternionByLookAt = function( vecFrom, vecTo, vecUp ) 
 feng.utils.ThreeUtils.get2DCoordinates = function( position, camera, renderElementSize ) {
 
 	// this will give us position relative to the world
-	var p = position.clone();
-
-	// projectVector will translate position to 2d
-	var projector = feng.utils.ThreeUtils.projector;
-	var v = projector.projectVector(p, camera);
+	// project will translate position to 2d
+	var p = position.clone().project( camera );
 
 	// translate our vector so that percX=0 represents
 	// the left edge, percX=1 is the right edge,
 	// percY=0 is the top edge, and percY=1 is the bottom edge.
-	var percX = (v.x + 1) / 2;
-	var percY = (-v.y + 1) / 2;
+	var percX = (p.x + 1) / 2;
+	var percY = (-p.y + 1) / 2;
 
 	// scale these values to our viewport size
 	var x = percX * renderElementSize.width;

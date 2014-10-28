@@ -45,6 +45,10 @@ feng.views.view3dfx.ClickEffect = function(){
   THREE.Mesh.call( this, geometry, material );
 
   this._lookAtPosition = new THREE.Vector3();
+
+	TweenMax.set(this.material, {
+		'opacity': 0
+	});
 };
 goog.inherits(feng.views.view3dfx.ClickEffect, THREE.Mesh);
 

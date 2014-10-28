@@ -49,8 +49,10 @@
 					<script src="assets/js/thirdparty/greensock/TweenMax.min.js"></script>
 					<script src="assets/js/thirdparty/greensock/utils/Draggable.min.js"></script>
 					
-					<script src="assets/js/thirdparty/threejs/build/three68.min.js"></script>
+					<script src="assets/js/thirdparty/threejs/build/three69.min.js"></script>
 
+					<script src="assets/js/thirdparty/threejs-utils/Projector.js"></script>
+					<script src="assets/js/thirdparty/threejs-utils/CanvasRenderer.js"></script>
 					<script src="assets/js/thirdparty/threejs-utils/CombinedCamera.js"></script>
 					<script src="assets/js/thirdparty/threejs-utils/EffectComposer.js"></script>
 					<script src="assets/js/thirdparty/threejs-utils/RenderPass.js"></script>
