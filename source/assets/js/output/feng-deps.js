@@ -91,7 +91,7 @@ goog.addDependency('../../../../project/views/sections/home/preloadscreen.js', [
 goog.addDependency('../../../../project/views/sections/home/screen.js', ['feng.views.sections.home.Screen'], ['goog.dom', 'goog.events.EventHandler', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/views/sections/house.js', ['feng.views.sections.House'], ['feng.events', 'feng.views.sections.Episode', 'goog.dom']);
 goog.addDependency('../../../../project/views/sections/overlay.js', ['feng.views.Overlay'], ['goog.events.EventHandler', 'goog.events.EventTarget']);
-goog.addDependency('../../../../project/views/sections/overlays/endingoverlay.js', ['feng.views.sections.overlays.EndingOverlay'], ['feng.models.Preload', 'feng.views.Overlay', 'feng.views.popups.Popup', 'goog.dom', 'goog.style']);
+goog.addDependency('../../../../project/views/sections/overlays/endingoverlay.js', ['feng.views.sections.overlays.EndingOverlay'], ['feng.models.Preload', 'feng.utils.Utils', 'feng.views.Overlay', 'feng.views.popups.Popup', 'goog.dom', 'goog.style']);
 goog.addDependency('../../../../project/views/sections/overlays/finaleoverlay.js', ['feng.views.sections.overlays.FinaleOverlay'], ['feng.models.Preload', 'feng.views.Overlay', 'feng.views.popups.Popup', 'goog.dom', 'goog.style']);
 goog.addDependency('../../../../project/views/sections/overlays/loaderoverlay.js', ['feng.views.sections.overlays.LoaderOverlay'], ['feng.fx.CanvasSprite', 'feng.models.Preload', 'feng.views.Overlay', 'goog.dom', 'goog.style']);
 goog.addDependency('../../../../project/views/sections/overlays/openingoverlay.js', ['feng.views.sections.overlays.OpeningOverlay'], ['feng.models.Preload', 'feng.utils.Utils', 'feng.views.Overlay', 'feng.views.popups.Popup', 'goog.dom', 'goog.style']);

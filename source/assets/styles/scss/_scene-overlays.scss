@@ -14,34 +14,26 @@
 	}
 }
 
->.opening-overlay{
-	@include absoluteTopLeft;
-	background-color: rgba(0, 0, 0, .65);
-}
-
->.ending-overlay{
-	@include absoluteTopLeft;
-	background-color: rgba(0, 0, 0, .65);
-
-	>.ending{
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		margin-left: -32em;
-		margin-top: -19.5em;
-	}
-}
-
+>.opening-overlay,
+>.ending-overlay,
 >.finale-overlay{
 	@include absoluteTopLeft;
 	background-color: rgba(0, 0, 0, .65);
 
-	>.ending{
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		margin-left: -32em;
-		margin-top: -19.5em;
+	.close-button{
+		display: none;
+	}
+
+	.content{
+		>.primary-button{
+			display: inline-block;
+			vertical-align: top;
+			margin: 0 10px;
+
+			&.stay{
+				margin-left: 0;
+			}
+		}
 	}
 }
 

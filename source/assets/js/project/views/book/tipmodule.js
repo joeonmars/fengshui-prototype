@@ -18,7 +18,6 @@ feng.views.book.TipModule = function( domElement, index, widthChangeCallback ) {
 	this._scrollerContentEl = goog.dom.getElementByClass('content', this._scrollerEl);
 	this._scrollBarEl = goog.dom.getElementByClass('scrollbar', this._scrollerEl);
 	this._handleEl = goog.dom.getElementByClass('handle', this._scrollerEl);
-	this._viewButton = goog.dom.query('.overlay a', this.domElement)[0];
 	this._shareButtons = goog.dom.query('.share a', this.domElement);
 
 	this._draggerLimits = new goog.math.Rect(0, 0, 0, 0);
@@ -93,8 +92,6 @@ feng.views.book.TipModule.prototype.setActive = function( isActive ) {
 		}
 
 		// activate inner events
-		this._innerEventHandler.listen( this._viewButton, 'click', this.onClick, false, this );
-
 		this._innerEventHandler.listen( this._scrollerContentEl, 'scroll', this.onScrollerScroll, false, this );
 		this._innerEventHandler.listen( this._scrollerContentEl, 'mouseover', this.onMouseOverScroller, false, this );
 		this._innerEventHandler.listen( this._scrollerContentEl, 'mouseout', this.onMouseOutScroller, false, this );
@@ -170,20 +167,7 @@ feng.views.book.TipModule.prototype.updateWidth = function() {
 
 feng.views.book.TipModule.prototype.onClick = function(e) {
 
-	if(e.currentTarget === this._viewButton) {
-
-		e.preventDefault();
-
-		this.dispatchEvent( feng.events.EventType.CLOSE );
-
-		goog.Timer.callOnce(function() {
-			window.location = this._viewButton.href; 
-		}, 1000, this);
-
-	}else {
-
-		this.dispatchEvent( feng.events.EventType.CHANGE );
-	}
+	this.dispatchEvent( feng.events.EventType.CHANGE );
 };
 
 

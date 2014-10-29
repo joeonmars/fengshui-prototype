@@ -233,8 +233,14 @@ feng.views.View3D.prototype.activate = function(){
 
  	this._eventHandler.listen( window, 'resize', this.onResize, false, this );
  	this._eventHandler.listen( this.cameraController, feng.events.EventType.CHANGE, this.onCameraChange, false, this );
- 	this._eventHandler.listen( this.hud.tutorialOverlay, feng.events.EventType.ANIMATE_IN, this.pause, false, this );
- 	this._eventHandler.listen( this.hud.tutorialOverlay, feng.events.EventType.ANIMATE_OUT, this.resume, false, this );
+ 	
+ 	var tutorialOverlay = this.hud.tutorialOverlay;
+ 	this._eventHandler.listen( tutorialOverlay, feng.events.EventType.ANIMATE_IN, this.pause, false, this );
+ 	this._eventHandler.listen( tutorialOverlay, feng.events.EventType.ANIMATE_OUT, this.resume, false, this );
+
+ 	var endingOverlay = this.hud.endingOverlay;
+ 	this._eventHandler.listen( endingOverlay, feng.events.EventType.ANIMATE_IN, this.pause, false, this );
+ 	this._eventHandler.listen( endingOverlay, feng.events.EventType.ANIMATE_OUT, this.resume, false, this );
 
  	var book = feng.views.book.Book.getInstance();
 	this._eventHandler.listen( book, feng.events.EventType.ANIMATE_IN, this.pause, false, this );

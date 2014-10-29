@@ -5,6 +5,7 @@ goog.require('goog.style');
 goog.require('feng.views.Overlay');
 goog.require('feng.views.popups.Popup');
 goog.require('feng.models.Preload');
+goog.require('feng.utils.Utils');
 
 
 /**
@@ -19,11 +20,18 @@ feng.views.sections.overlays.EndingOverlay = function(domElement){
   var popupEl = goog.dom.getElementByClass('popup', this.domElement);
   this._popup = new feng.views.popups.Popup( popupEl );
 
+  this._stayButton = goog.dom.getElementByClass('stay', popupEl);
+  this._nextButton = goog.dom.getElementByClass('next', popupEl);
+
+	this._sectionId = null;
+  this._shownOnce = {};
+
   this._character = '';
 
-  this._sectionId = null;
-  this._isFinished = null;
-  this._shownOnce = {};
+  this._enterKeyId = null;
+	this._escKeyId = null;
+	this._onClickNext = goog.bind( this.onClickNext, this );
+	this._onClickStay = goog.bind( this.onClickStay, this );
 
   this._preload = feng.models.Preload.getInstance();
 };
@@ -31,13 +39,33 @@ goog.inherits(feng.views.sections.overlays.EndingOverlay, feng.views.Overlay);
 goog.addSingletonGetter(feng.views.sections.overlays.EndingOverlay);
 
 
-feng.views.sections.overlays.EndingOverlay.prototype.updateContent = function( sectionId, isFinished ){
+feng.views.sections.overlays.EndingOverlay.prototype.activate = function(){
+
+	goog.base(this, 'activate');
+
+	this._eventHandler.listenOnce( this._stayButton, 'click', this.onClickStay, false, this );
+	this._eventHandler.listenOnce( this._nextButton, 'click', this.onClickNext, false, this );
+	this._eventHandler.listenOnce( this._popup, feng.events.EventType.ANIMATE_OUT, this.animateOut, false, this );
+
+	this._enterKeyId = feng.keyboardController.bind( this._onClickNext, feng.keyboardController.key.ENTER, true );
+	this._escKeyId = feng.keyboardController.bind( this._onClickStay, feng.keyboardController.key.ESC, true );
+};
+
+
+feng.views.sections.overlays.EndingOverlay.prototype.deactivate = function(){
+
+	goog.base(this, 'deactivate');
+
+	feng.keyboardController.unbind( this._enterKeyId );
+	feng.keyboardController.unbind( this._escKeyId );
+};
+
+
+feng.views.sections.overlays.EndingOverlay.prototype.updateContent = function( sectionId ){
 
 	this._sectionId = sectionId;
-	this._isFinished = isFinished;
 
 	var copy = this._preload.getAsset('global.fengshui-data')['dialog']['ending'][sectionId];
-	copy = isFinished ? copy['finished'] : copy['unfinished'];
 
 	var character = copy['character'];
 	var title = copy['title'];
@@ -50,28 +78,21 @@ feng.views.sections.overlays.EndingOverlay.prototype.updateContent = function( s
 	titleEl.innerHTML = title;
 	paragraphEl.innerHTML = paragraph;
 
-	goog.dom.classes.add( characterEl, this._character, character );
+	goog.dom.classes.addRemove( characterEl, this._character, character );
 	this._character = character;
 };
 
 
 feng.views.sections.overlays.EndingOverlay.prototype.animateIn = function(){
 
-	goog.base(this, 'animateIn');
+	if( !this._shownOnce[this._sectionId] ) {
 
-	var shouldAnimateIn;
+		this._shownOnce[this._sectionId] = true;
 
-	if(!this._shownOnce[this._sectionId]) {
-	
-		shouldAnimateIn = true;
-	
 	}else {
 
-		if(this._isFinished) shouldAnimateIn = (this._shownOnce[this._sectionId].finished !== true);
-		else shouldAnimateIn = (this._shownOnce[this._sectionId].unfinished !== true);
+		return false;
 	}
-
-	if(!shouldAnimateIn) return false;
 
 	goog.base(this, 'animateIn');
 
@@ -83,20 +104,12 @@ feng.views.sections.overlays.EndingOverlay.prototype.animateIn = function(){
 	});
 
 	this._popup.animateIn();
-
-	this._shownOnce[this._sectionId] = this._shownOnce[this._sectionId] || {};
-
-	if(this._isFinished === false) {
-		this._shownOnce[this._sectionId].unfinished = true;
-	}else {
-		this._shownOnce[this._sectionId].finished = true;
-	}
 };
 
 
 feng.views.sections.overlays.EndingOverlay.prototype.animateOut = function(){
 
-	goog.base(this, 'animateOut');
+	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
 
 	TweenMax.to(this.domElement, .8, {
 		'delay': .25,
@@ -106,6 +119,16 @@ feng.views.sections.overlays.EndingOverlay.prototype.animateOut = function(){
 		'onCompleteParams': [ true ],
 		'onCompleteScope': this
 	});
+};
+
+
+feng.views.sections.overlays.EndingOverlay.prototype.onClickStay = function(e){
+
+	this._popup.animateOut();
+};
+
+
+feng.views.sections.overlays.EndingOverlay.prototype.onClickNext = function(e){
 
 	this._popup.animateOut();
 };
@@ -115,5 +138,9 @@ feng.views.sections.overlays.EndingOverlay.prototype.onResize = function(e){
 
 	goog.base(this, 'onResize', e);
 
-	goog.style.setSize(this.domElement, goog.dom.getViewportSize());
+	var viewportSize = goog.dom.getViewportSize();
+
+	goog.style.setSize(this.domElement, viewportSize);
+
+	feng.utils.Utils.centerAlign( this._popup.domElement, viewportSize );
 };

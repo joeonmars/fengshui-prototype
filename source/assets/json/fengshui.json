@@ -547,12 +547,12 @@
 			"studio": {
 				"character": "ollie",
 				"title": "Ollie says thank you!",
-				"paragraph": "You have helped me solve all the Feng Shui problems in my studio! We have replaced the cactus with a broadleaf plant, brightened the living area, and smoothed out the energy flow. The bathroom has no hidden areas now.<br>Thank you very much! It was a really pleasant experience!"
+				"paragraph": "You have helped me solve all the Feng Shui problems in my studio! We have replaced the cactus with a broadleaf plant, brightened the living area, and smoothed out the energy flow. The bathroom has no hidden areas now.<br>Thank you very much! It was a really pleasant experience!<br>So now, would you like to stay for a review, or are you up to visit the next location?"
 			},
 			"house": {
-				"character": "joanna-scott-nick",
+				"character": "family",
 				"title": "Thanks for your help!",
-				"paragraph": "Now we have a very pleasant living room with a delightful goldfish, a quiet, relaxed and efficient home office, and a fun learning environment for little Nick."
+				"paragraph": "Now we have a very pleasant living room with a delightful goldfish, a quiet, relaxed and efficient home office, and a fun learning environment for little Nick.<br>So now, would you like to stay for a review, or are you up to visit the next location?"
 			}
 		},
 		"finale": {

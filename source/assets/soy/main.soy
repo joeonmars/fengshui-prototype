@@ -28,7 +28,7 @@
 						{param icon: 'icon-yes' /}
 						{param text: 'I’d be glad to help!' /}
 					{/call}
-					<div class="character open"></div>
+					<div class="character"></div>
 				{/param}
 			{/call}
 			</div>
@@ -38,17 +38,17 @@
 				{param classname: 'ending from-bottom' /}
 				{param content}
 					<h1></h1>
-					<div class="line"></div>
 					<p></p>
 					{call feng.templates.common.PrimaryButton}
-						{param classname: 'continue' /}
+						{param classname: 'stay' /}
 						{param icon: 'icon-yes' /}
-						{param text: 'Continue Investigating' /}
+						{param text: 'Stay' /}
 					{/call}
 					{call feng.templates.common.PrimaryButton}
-						{param classname: 'visit' /}
+						{param classname: 'next' /}
 						{param icon: 'icon-yes' /}
-						{param text: 'Next Challenge' /}
+						{param text: 'Next Location' /}
+						{param href: $token.HOME /}
 					{/call}
 					<div class="character"></div>
 				{/param}

@@ -34,6 +34,8 @@ feng.views.View3DHud = function( hudEl, view3dController, tips, episode ){
 
   this._episode = episode;
 
+  this._tips = tips;
+
   // create a captions collection
   this._captions = {};
 
@@ -144,8 +146,11 @@ feng.views.View3DHud.prototype.activate = function() {
   this._episode.listen(feng.events.EventType.PROGRESS, this.loaderOverlay.onLoadProgress, false, this.loaderOverlay);
   this._episode.listen(feng.events.EventType.COMPLETE, this.loaderOverlay.onLoadComplete, false, this.loaderOverlay);
 
-  this.openingOverlay.listen(feng.events.EventType.ANIMATE_IN, this.onOpeningOverlayAnimateIn, false, this);
-  this.openingOverlay.listen(feng.events.EventType.ANIMATE_OUT, this.onOpeningOverlayAnimateOut, false, this);
+  this.openingOverlay.listen(feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this);
+  this.openingOverlay.listen(feng.events.EventType.ANIMATE_OUT, this.onOverlayAnimateOut, false, this);
+
+  this.endingOverlay.listen(feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this);
+  this.endingOverlay.listen(feng.events.EventType.ANIMATE_OUT, this.onOverlayAnimateOut, false, this);
 
   this.tutorialOverlay.activate();
 
@@ -246,6 +251,16 @@ feng.views.View3DHud.prototype.onModeChange = function( e ) {
 
   switch(mode) {
 
+    case feng.controllers.view3d.ModeController.Mode.BROWSE:
+    var numUnlocked = goog.array.count(this._tips, function(tip) {
+      return tip.unlocked;
+    });
+    if(numUnlocked === this._tips.length) {
+      this.endingOverlay.updateContent( this._view3d.sectionId );
+      this.endingOverlay.animateIn();
+    }
+    break;
+
     case feng.controllers.view3d.ModeController.Mode.ENTRY:
     case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
     case null:
@@ -275,6 +290,7 @@ feng.views.View3DHud.prototype.onAnimatedInView3D = function( e ) {
 
   // pop up opening overlay for only once
   if(this._view3d.modeController.getMode() === feng.controllers.view3d.ModeController.Mode.BROWSE) {
+
     var view3d = e.target;
     var viewId = view3d.id;
     var sectionId = view3d.sectionId;
@@ -285,14 +301,14 @@ feng.views.View3DHud.prototype.onAnimatedInView3D = function( e ) {
 };
 
 
-feng.views.View3DHud.prototype.onOpeningOverlayAnimateIn = function( e ) {
+feng.views.View3DHud.prototype.onOverlayAnimateIn = function( e ) {
  
   this.deactivateControls();
   this.showControls( false );
 };
 
 
-feng.views.View3DHud.prototype.onOpeningOverlayAnimateOut = function( e ) {
+feng.views.View3DHud.prototype.onOverlayAnimateOut = function( e ) {
  
   this.activateControls();
   this.showControls( true );

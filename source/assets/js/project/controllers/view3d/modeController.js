@@ -297,6 +297,5 @@ feng.controllers.view3d.ModeController.Mode = {
 	DESIGN: 'design', // isometrix view for ease of positioning/rotating control
 	ENTRY: 'entry', //first-time enter a residence
 	WALK: 'walk',	// walk along a path
-	CLIMB: 'climb',	// climb stairs
 	TRANSITION: 'transition' // transition between different cameras for the above mode
 };

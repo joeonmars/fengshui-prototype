@@ -140,7 +140,7 @@
 	}
 }
 
-&.opening{
+&.opening, &.ending{
 	width: 80em;
 	min-height: 40em;
 
@@ -175,30 +175,42 @@
 			background-position: center bottom;
 			background-repeat: no-repeat;
 			background-size: auto 95%;
+		}
+	}
+}
+
+&.opening{
+
+	.character{
 
 			&.ollie{
-				&.open{
-					background-image: image-url('characters/ollie-open.png');
-				}
+				background-image: image-url('characters/ollie-open.png');
 			}
 
 			&.nick{
-				&.open{
-					background-image: image-url('characters/nick-open.png');
-				}
+				background-image: image-url('characters/nick-open.png');
 			}
 
 			&.joanna{
-				&.open{
-					background-image: image-url('characters/joanna-open.png');
-				}
+				background-image: image-url('characters/joanna-open.png');
 			}
 
 			&.scott{
-				&.open{
-					background-image: image-url('characters/scott-open.png');
-				}
+				background-image: image-url('characters/scott-open.png');
 			}
-		}
+	}
+}
+
+&.ending{
+
+	.character{
+		
+			&.ollie{
+				background-image: image-url('characters/ollie-open.png');
+			}
+
+			&.family{
+				background-image: image-url('characters/nick-open.png');
+			}
 	}
 }
