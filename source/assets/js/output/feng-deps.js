@@ -21,7 +21,7 @@ goog.addDependency('../../../../project/controllers/view3d/modeController.js', [
 goog.addDependency('../../../../project/controllers/view3d/pathfindingcontroller.js', ['feng.controllers.view3d.PathfindingController'], ['goog.array', 'goog.events.EventTarget', 'goog.math.Box']);
 goog.addDependency('../../../../project/controllers/view3d/rendercontroller.js', ['feng.controllers.view3d.RenderController'], ['goog.events.EventTarget']);
 goog.addDependency('../../../../project/controllers/view3d/view3dcontroller.js', ['feng.controllers.view3d.View3DController'], ['feng.events', 'goog.events.EventHandler', 'goog.events.EventTarget']);
-goog.addDependency('../../../../project/events/eventtype.js', ['feng.events'], []);
+goog.addDependency('../../../../project/events/eventtype.js', ['feng.events'], ['goog.userAgent']);
 goog.addDependency('../../../../project/feng.js', ['feng'], ['feng.apps.Demo', 'feng.apps.Main', 'feng.apps.PathEdit', 'feng.apps.Test', 'goog.Uri']);
 goog.addDependency('../../../../project/fx/animatedhouselogo.js', ['feng.fx.AnimatedHouseLogo'], ['feng.fx.CanvasSprite']);
 goog.addDependency('../../../../project/fx/animatedsprite.js', ['feng.fx.AnimatedSprite'], ['goog.math.Coordinate', 'goog.math.Size']);
