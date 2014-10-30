@@ -31,6 +31,8 @@ feng.views.sections.controls.DropButton.prototype.activate = function( movableOb
 
 	this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
 	this._eventHandler.listen(this._detectTimer, goog.Timer.TICK, this.detect, false, this);
+
+	goog.fx.anim.registerAnimation( this );
 };
 
 
@@ -43,6 +45,8 @@ feng.views.sections.controls.DropButton.prototype.deactivate = function(){
   this._movableObject = null;
 
   this._detectTimer.stop();
+
+  goog.fx.anim.unregisterAnimation( this );
 };
 
 
@@ -83,8 +87,13 @@ feng.views.sections.controls.DropButton.prototype.onClick = function(e){
 };
 
 
-feng.views.sections.controls.DropButton.prototype.onResize = function(e){
+feng.views.sections.controls.DropButton.prototype.onAnimationFrame = function(now) {
 
-	var viewportSize = goog.dom.getViewportSize();
-	goog.style.setPosition( this.domElement, viewportSize.width * .5, viewportSize.height * .75 );
+  var camera = this._cameraController.activeCamera;
+  var viewSize = this._viewSize;
+
+  var pos3d = this._movableObject.getDestination();
+  var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, camera, viewSize );
+  
+  goog.style.setStyle( this.domElement, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)' );
 };

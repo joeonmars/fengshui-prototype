@@ -72,12 +72,10 @@
   0%{
   	visibility: visible;
 		opacity: 0;
-		@include translateY(20px);
   }
   100%{
   	visibility: visible;
 		opacity: 1;
-		@include translateY(0px);
   }
 }
 
@@ -86,12 +84,23 @@
   0%{
   	visibility: visible;
 		opacity: 1;
-		@include translateY(0px);
   }
   100%{
   	visibility: hidden;
 		opacity: 0;
-		@include translateY(20px);
+  }
+}
+
+
+@include keyframes(bouncing-arrow) {
+  0%, 20%, 50%, 80%, 100% {
+    @include translateY(0);
+  }
+  40% {
+    @include translateY(-30px);
+  }
+  60% {
+    @include translateY(-15px);
   }
 }
 

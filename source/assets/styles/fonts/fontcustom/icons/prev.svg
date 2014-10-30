@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="42px" height="74px" viewBox="0 0 42 74" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+<svg width="43px" height="76px" viewBox="0 0 43 76" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
     <!-- Generator: Sketch 3.1 (8751) - http://www.bohemiancoding.com/sketch -->
-    <title>next</title>
+    <title>prev</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-        <g id="next" sketch:type="MSLayerGroup" transform="translate(21.000000, 37.000000) scale(-1, 1) translate(-21.000000, -37.000000) " fill="#000000">
-            <path d="M40.746,40.696 L8.646,72.795 C6.604,74.837 3.294,74.837 1.253,72.795 C-0.788,70.754 -0.788,67.443 1.253,65.402 L29.656,37 L1.254,8.598 C-0.787,6.556 -0.787,3.246 1.254,1.205 C3.295,-0.837 6.605,-0.837 8.647,1.205 L40.747,33.304 C41.767,34.325 42.277,35.662 42.277,37 C42.277,38.338 41.766,39.676 40.746,40.696 L40.746,40.696 Z" id="Shape" sketch:type="MSShapeGroup"></path>
-        </g>
+        <path d="M1.80875,34.304 L33.90875,2.205 C35.95075,0.163 39.26075,0.163 41.30175,2.205 C43.34275,4.246 43.34275,7.557 41.30175,9.598 L12.89875,38 L41.30075,66.402 C43.34175,68.444 43.34175,71.754 41.30075,73.795 C39.25975,75.837 35.94975,75.837 33.90775,73.795 L1.80775,41.696 C0.78775,40.675 0.27775,39.338 0.27775,38 C0.27775,36.662 0.78875,35.324 1.80875,34.304 L1.80875,34.304 Z" id="Shape" fill="#000000" sketch:type="MSShapeGroup"></path>
     </g>
 </svg>

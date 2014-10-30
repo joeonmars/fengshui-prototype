@@ -21,6 +21,12 @@ feng.views.view3dobject.MovableObject = function( object3d, data, view3d ){
 goog.inherits(feng.views.view3dobject.MovableObject, feng.views.view3dobject.TipObject);
 
 
+feng.views.view3dobject.MovableObject.prototype.getDestination = function(){
+
+  return this.data.position;
+};
+
+
 feng.views.view3dobject.MovableObject.prototype.updateTilesRange = function(){
 
   // get available tiles by destination position and range (in view3d unit)
