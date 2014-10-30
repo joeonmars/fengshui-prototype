@@ -103,10 +103,11 @@
 		{param title}Achievements{/param}
 		{param body}
 			<div class="tipsPanel">
+				<button class="unlock-all">Unlock All</button>
 				<ul class="tips">
 					{foreach $tip in $tips}
 						<li data-tip-id="{ $tip.id }" data-view-id="{ $tip.view }" data-section-id="{ $tip.section }">
-							<div class="icon"></div>
+							<div class="icon icon-{ $tip.icon }"></div>
 							<div class="caption">
 								<p>{ $tip.id }</p>
 								<p>{ $tip.view }</p>

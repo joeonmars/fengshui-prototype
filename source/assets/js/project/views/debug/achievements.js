@@ -13,7 +13,7 @@ feng.views.debug.Achievements = function( tipsData ){
 
   this._achievementsModel = feng.models.achievements.Achievements.getInstance();
 
-  var tips = this._achievementsModel.getAllTips();
+  this._tips = this._achievementsModel.getAllTips();
 
   var templateData = {
     tips: tipsData
@@ -21,13 +21,17 @@ feng.views.debug.Achievements = function( tipsData ){
 
   goog.base(this, feng.templates.debug.AchievementsDebugView, templateData);
 
+  this._unlockAllButton = goog.dom.query('.unlock-all', this.domElement)[0];
+
+  this._eventHandler.listen( this._unlockAllButton, 'click', this.onClickUnlockAll, false, this );
+
   this._tipEls = goog.dom.query('.tips li', this.domElement);
 
   goog.array.forEach(this._tipEls, function(tipEl) {
     this._eventHandler.listen(tipEl, 'click', this.onClickTip, false, this);
   }, this);
 
-  goog.array.forEach(tips, function(tip) {
+  goog.array.forEach(this._tips, function(tip) {
     this._eventHandler.listen(tip, feng.events.EventType.UNLOCK, this.onUnlock, false, this);
   }, this);
 };
@@ -71,4 +75,12 @@ feng.views.debug.Achievements.prototype.onClickTip = function(e){
     var requireTipEl = goog.dom.query('.tips li[data-tip-id="' + requiredTip.id + '"]')[0];
     goog.dom.classes.add(requireTipEl, 'required');
   }
+};
+
+
+feng.views.debug.Achievements.prototype.onClickUnlockAll = function(e){
+
+  goog.array.forEach(this._tips, function(tip) {
+    tip.unlock();
+  }, this);
 };

@@ -316,6 +316,20 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
     background-color: $color;
   }
 }
+
+%round-social-button{
+  display: inline-block;
+  vertical-align: top;
+  padding: .5em .25em;
+  border: 2px solid rgba(0, 0, 0, .05);
+  color: $darkgray-ui;
+  @include border-radius(50%);
+  @include box-sizing(border-box);
+
+  &:hover{
+    border-color: $yellow-ui;
+  }
+}
 //
 
 

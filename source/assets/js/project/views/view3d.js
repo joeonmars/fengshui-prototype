@@ -242,6 +242,10 @@ feng.views.View3D.prototype.activate = function(){
  	this._eventHandler.listen( endingOverlay, feng.events.EventType.ANIMATE_IN, this.pause, false, this );
  	this._eventHandler.listen( endingOverlay, feng.events.EventType.ANIMATE_OUT, this.resume, false, this );
 
+ 	var finaleOverlay = this.hud.finaleOverlay;
+ 	this._eventHandler.listen( finaleOverlay, feng.events.EventType.ANIMATE_IN, this.pause, false, this );
+ 	this._eventHandler.listen( finaleOverlay, feng.events.EventType.ANIMATE_OUT, this.resume, false, this );
+
  	var book = feng.views.book.Book.getInstance();
 	this._eventHandler.listen( book, feng.events.EventType.ANIMATE_IN, this.pause, false, this );
 	this._eventHandler.listen( book, feng.events.EventType.ANIMATE_OUT, this.resume, false, this );

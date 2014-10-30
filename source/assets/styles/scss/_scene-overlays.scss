@@ -20,10 +20,6 @@
 	@include absoluteTopLeft;
 	background-color: rgba(0, 0, 0, .65);
 
-	.close-button{
-		display: none;
-	}
-
 	.content{
 		>.primary-button{
 			display: inline-block;
@@ -33,6 +29,40 @@
 			&.stay{
 				margin-left: 0;
 			}
+		}
+	}
+}
+
+>.opening-overlay,
+>.ending-overlay{
+	.close-button{
+		display: none;
+	}
+}
+
+>.finale-overlay{
+
+	h1{
+		line-height: 2;
+	}
+
+	h1, h2, p, ul{
+		text-align: center;
+		margin: 0 auto;
+	}
+
+	li{
+		display: inline-block;
+		vertical-align: top;
+		margin: 1.5em .65em;
+
+		&:first-child{
+			margin-left: 0;
+		}
+
+		>a{
+			@extend %round-social-button;
+			font-size: 3em;
 		}
 	}
 }

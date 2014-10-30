@@ -7,6 +7,12 @@
 			text-transform: capitalize;
 		}
 
+		h2{
+			font-size: 2em;
+			line-height: 1.2;
+			text-transform: uppercase;
+		}
+
 		p{
 			font-size: 1.6em;
 			color: $lightgray-ui;
@@ -140,7 +146,7 @@
 	}
 }
 
-&.opening, &.ending{
+&.opening, &.ending, &.finale{
 	width: 80em;
 	min-height: 40em;
 
@@ -153,9 +159,15 @@
 			width: 65%;
 		}
 
-		>p{
+		>h2{
 			position: relative;
 			z-index: 2;
+			width: 65%;
+		}
+
+		>p{
+			position: relative;
+			z-index: 3;
 			width: 65%;
 			padding: 1em 0 2em 0;
 		}

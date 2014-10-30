@@ -152,7 +152,7 @@
 									@include box-sizing(border-box);
 
 									>h3{
-										font-size: 3em;
+										font-size: 2.8em;
 										line-height: 1.4;
 										color: $darkgray-ui;
 										text-transform: capitalize;
@@ -224,17 +224,8 @@
 											}
 
 											>a{
-												display: block;
-												padding: .5em .25em;
+												@extend %round-social-button;
 												font-size: 2.2em;
-												border: 2px solid rgba(0, 0, 0, .05);
-												color: $darkgray-ui;
-												@include border-radius(50%);
-												@include box-sizing(border-box);
-
-												&:hover{
-													border-color: $yellow-ui;
-												}
 											}
 										}
 									}

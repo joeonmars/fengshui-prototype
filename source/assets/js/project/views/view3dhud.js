@@ -309,7 +309,34 @@ feng.views.View3DHud.prototype.onOverlayAnimateIn = function( e ) {
 
 
 feng.views.View3DHud.prototype.onOverlayAnimateOut = function( e ) {
- 
-  this.activateControls();
-  this.showControls( true );
+
+  var shouldShowFinaleOverlay;
+
+  // if ending overlay is just closed, detect if any tip is still locked,
+  // otherwise show finale overlay
+  if(e.currentTarget === this.endingOverlay) {
+
+    shouldShowFinaleOverlay = true;
+
+    var achievements = feng.models.achievements.Achievements.getInstance();
+    var allTips = achievements.getAllTips();
+    var i, l = allTips.length;
+
+    for(i = 0; i < l; i ++) {
+      if(!allTips[i].unlocked) {
+        shouldShowFinaleOverlay = false;
+        break;
+      }
+    }
+  }
+
+  if( shouldShowFinaleOverlay ) {
+
+    this.finaleOverlay.animateIn();
+
+  }else {
+
+    this.activateControls();
+    this.showControls( true );
+  }
 };

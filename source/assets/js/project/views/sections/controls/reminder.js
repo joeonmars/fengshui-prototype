@@ -328,7 +328,10 @@ feng.views.sections.controls.Reminder.prototype.onClick = function(e){
 		}else {
 
 			var tip = this.getCurrentTip();
-			this.showHint( tip.id );
+			
+			if(tip) {
+				this.showHint( tip.id );
+			}
 		}
 		break;
 	}
@@ -358,7 +361,10 @@ feng.views.sections.controls.Reminder.prototype.onMouseOut = function(e){
 feng.views.sections.controls.Reminder.prototype.onHintTick = function(e){
 
 	var tip = this.getCurrentTip();
-	this.showHint( tip.id );
+
+	if(tip) {
+		this.showHint( tip.id );
+	}
 };
 
 

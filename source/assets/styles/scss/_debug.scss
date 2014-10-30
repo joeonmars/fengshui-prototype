@@ -166,6 +166,7 @@ $debug_border_style:  2px outset #d6d3ce;
 		@extend .debugPanel;
 
 		>ul{
+			margin-top: 10px;
 			width: 100%;
 			max-height: 400px;
 			overflow: auto;
@@ -194,9 +195,12 @@ $debug_border_style:  2px outset #d6d3ce;
 				}
 
 				>.icon{
+					font-size: 40px;
+					line-height: 80px;
+					text-align: center;
 					width: 80px;
 					height: 80px;
-					background: #999;
+					background: #ddd;
 					@include box-sizing(border-box);
 				}
 
