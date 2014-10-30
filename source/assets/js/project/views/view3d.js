@@ -235,20 +235,16 @@ feng.views.View3D.prototype.activate = function(){
  	this._eventHandler.listen( this.cameraController, feng.events.EventType.CHANGE, this.onCameraChange, false, this );
  	
  	var tutorialOverlay = this.hud.tutorialOverlay;
- 	this._eventHandler.listen( tutorialOverlay, feng.events.EventType.ANIMATE_IN, this.pause, false, this );
- 	this._eventHandler.listen( tutorialOverlay, feng.events.EventType.ANIMATE_OUT, this.resume, false, this );
+ 	this._eventHandler.listen( tutorialOverlay, feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this );
 
  	var endingOverlay = this.hud.endingOverlay;
- 	this._eventHandler.listen( endingOverlay, feng.events.EventType.ANIMATE_IN, this.pause, false, this );
- 	this._eventHandler.listen( endingOverlay, feng.events.EventType.ANIMATE_OUT, this.resume, false, this );
+ 	this._eventHandler.listen( endingOverlay, feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this );
 
  	var finaleOverlay = this.hud.finaleOverlay;
- 	this._eventHandler.listen( finaleOverlay, feng.events.EventType.ANIMATE_IN, this.pause, false, this );
- 	this._eventHandler.listen( finaleOverlay, feng.events.EventType.ANIMATE_OUT, this.resume, false, this );
+ 	this._eventHandler.listen( finaleOverlay, feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this );
 
  	var book = feng.views.book.Book.getInstance();
-	this._eventHandler.listen( book, feng.events.EventType.ANIMATE_IN, this.pause, false, this );
-	this._eventHandler.listen( book, feng.events.EventType.ANIMATE_OUT, this.resume, false, this );
+	this._eventHandler.listen( book, feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this );
 
  	goog.object.forEach(this.interactiveObjects, function(interactiveObject) {
  		interactiveObject.activate();
@@ -540,6 +536,35 @@ feng.views.View3D.prototype.onAnimationFrame = function(now){
 feng.views.View3D.prototype.onCameraChange = function(e){
 
 	this.renderer.setCamera( e.camera );
+};
+
+
+feng.views.View3D.prototype.onOverlayAnimateIn = function(e){
+
+	this.pause();
+
+	var shouldAddAnimateOutCallback = true;
+
+	var overlay = e.currentTarget;
+
+	if(overlay === this.hud.endingOverlay) {
+
+    	var achievements = feng.models.achievements.Achievements.getInstance();
+    	
+    	if(achievements.isAllUnlocked()) {
+    		shouldAddAnimateOutCallback = false;
+    	}
+	}
+	
+	if(shouldAddAnimateOutCallback) {
+		this._eventHandler.listenOnce( overlay, feng.events.EventType.ANIMATE_OUT, this.onOverlayAnimateOut, false, this );
+	}
+};
+
+
+feng.views.View3D.prototype.onOverlayAnimateOut = function(e){
+
+	this.resume();
 };
 
 

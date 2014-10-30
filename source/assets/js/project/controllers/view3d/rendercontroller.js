@@ -131,7 +131,11 @@ feng.controllers.view3d.RenderController.prototype.updateByPause = function( pau
 
 	if(pause) {
 
-		this._brightnessTweener.restart();
+		if(this._brightnessTweener.isActive()) {
+			this._brightnessTweener.play();
+		}else {
+			this._brightnessTweener.restart();
+		}
 
 	}else {
 

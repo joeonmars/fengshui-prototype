@@ -110,3 +110,18 @@ feng.models.achievements.Achievements.prototype.getAllTips = function() {
 
   return tips;
 };
+
+
+feng.models.achievements.Achievements.prototype.isAllUnlocked = function(){
+
+  var allTips = this.getAllTips();
+  var i, l = allTips.length;
+
+  for(i = 0; i < l; i ++) {
+    if(!allTips[i].unlocked) {
+      return false;
+    }
+  }
+
+  return true;
+};

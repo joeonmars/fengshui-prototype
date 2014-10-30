@@ -246,11 +246,20 @@ feng.views.View3DHud.prototype.showControls = function( shouldShow ) {
 
 feng.views.View3DHud.prototype.onModeChange = function( e ) {
 
-  var mode = e.nextMode || e.mode;
+  var anyMode = e.nextMode || e.mode;
   var shouldShowControls = true;
 
-  switch(mode) {
+  switch(anyMode) {
 
+    case feng.controllers.view3d.ModeController.Mode.ENTRY:
+    case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
+    case null:
+    shouldShowControls = false;
+    break;
+  }
+
+  switch(e.mode) {
+    
     case feng.controllers.view3d.ModeController.Mode.BROWSE:
     var numUnlocked = goog.array.count(this._tips, function(tip) {
       return tip.unlocked;
@@ -259,12 +268,6 @@ feng.views.View3DHud.prototype.onModeChange = function( e ) {
       this.endingOverlay.updateContent( this._view3d.sectionId );
       this.endingOverlay.animateIn();
     }
-    break;
-
-    case feng.controllers.view3d.ModeController.Mode.ENTRY:
-    case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
-    case null:
-    shouldShowControls = false;
     break;
   }
 
@@ -316,18 +319,8 @@ feng.views.View3DHud.prototype.onOverlayAnimateOut = function( e ) {
   // otherwise show finale overlay
   if(e.currentTarget === this.endingOverlay) {
 
-    shouldShowFinaleOverlay = true;
-
     var achievements = feng.models.achievements.Achievements.getInstance();
-    var allTips = achievements.getAllTips();
-    var i, l = allTips.length;
-
-    for(i = 0; i < l; i ++) {
-      if(!allTips[i].unlocked) {
-        shouldShowFinaleOverlay = false;
-        break;
-      }
-    }
+    shouldShowFinaleOverlay = achievements.isAllUnlocked();
   }
 
   if( shouldShowFinaleOverlay ) {
