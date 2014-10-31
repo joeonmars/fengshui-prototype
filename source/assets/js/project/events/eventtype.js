@@ -37,5 +37,6 @@ feng.events.EventType = {
 	UNMUTE: 'unmute',
 	INPUT_DOWN: (goog.userAgent.MOBILE) ? goog.events.EventType.TOUCHSTART : goog.events.EventType.MOUSEDOWN,
 	INPUT_MOVE: (goog.userAgent.MOBILE) ? goog.events.EventType.TOUCHMOVE : goog.events.EventType.MOUSEMOVE,
-	INPUT_UP: (goog.userAgent.MOBILE) ? [goog.events.EventType.TOUCHEND, goog.events.EventType.TOUCHCANCEL] : goog.events.EventType.MOUSEUP
+	INPUT_UP: (goog.userAgent.MOBILE) ? [goog.events.EventType.TOUCHEND, goog.events.EventType.TOUCHCANCEL] : goog.events.EventType.MOUSEUP,
+	INPUT_OVER: (goog.userAgent.MOBILE) ? goog.events.EventType.TOUCHSTART : goog.events.EventType.MOUSEOVER
 };

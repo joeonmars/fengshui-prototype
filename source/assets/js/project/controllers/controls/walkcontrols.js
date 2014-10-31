@@ -188,9 +188,9 @@ feng.controllers.controls.WalkControls.prototype.onPathComplete = function ( gat
 };
 
 
-feng.controllers.controls.WalkControls.prototype.onMouseDown = function ( e ) {
+feng.controllers.controls.WalkControls.prototype.onInputDown = function ( e ) {
 
-	goog.base(this, 'onMouseDown', e);
+	goog.base(this, 'onInputDown', e);
 
 	this._tweener.kill();
 

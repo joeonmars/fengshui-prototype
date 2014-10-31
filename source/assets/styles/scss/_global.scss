@@ -339,15 +339,13 @@ html, body{
   height: 100%;
   overflow: auto;
   font-family: $font_system;
-  
-  &.touch{
-    *{
-      outline: none;
-      outline-style: none;
-      -webkit-touch-callout: none;
-      -webkit-tap-highlight-color: transparent;
-      @include user-select('none');
-    }
+
+  *{
+    outline: none;
+    outline-style: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    @include user-select('none');
   }
 }
 

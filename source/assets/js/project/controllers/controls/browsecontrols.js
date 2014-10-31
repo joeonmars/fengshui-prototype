@@ -61,7 +61,7 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 	if(shouldEnable) {
 
 		if(mouseEventToTrigger) {
-			this.onMouseDown( mouseEventToTrigger );
+			this.onInputDown( mouseEventToTrigger );
 		}
 
 		this._targetRotationY = this._yawObject.rotation.y;
@@ -228,9 +228,9 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 };
 
 
-feng.controllers.controls.BrowseControls.prototype.onMouseDown = function ( e ) {
+feng.controllers.controls.BrowseControls.prototype.onInputDown = function ( e ) {
 
-	goog.base(this, 'onMouseDown', e);
+	goog.base(this, 'onInputDown', e);
 
 	this._shouldIgnoreClick = false;
 
@@ -239,9 +239,9 @@ feng.controllers.controls.BrowseControls.prototype.onMouseDown = function ( e ) 
 };
 
 
-feng.controllers.controls.BrowseControls.prototype.onMouseMove = function ( e ) {
+feng.controllers.controls.BrowseControls.prototype.onInputMove = function ( e ) {
 
-	goog.base(this, 'onMouseMove', e);
+	goog.base(this, 'onInputMove', e);
 
 	this._shouldIgnoreClick = true;
 

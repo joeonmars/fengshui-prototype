@@ -181,7 +181,7 @@ feng.controllers.controls.Controls.prototype.reset = function () {
 feng.controllers.controls.Controls.prototype.activate = function() {
 
 	this._eventHandler.listen(this._domElement, 'click', this.onClick, false, this);
-	this._eventHandler.listen(this._domElement, 'mousedown', this.onMouseDown, false, this);
+	this._eventHandler.listen(this._domElement, feng.events.EventType.INPUT_DOWN, this.onInputDown, false, this);
 
 	goog.fx.anim.registerAnimation(this);
 
@@ -309,23 +309,29 @@ feng.controllers.controls.Controls.prototype.onClick = function ( e ) {
 };
 
 
-feng.controllers.controls.Controls.prototype.onMouseDown = function ( e ) {
+feng.controllers.controls.Controls.prototype.onInputDown = function ( e ) {
 
-	this._eventHandler.listen(this._domElement, 'mousemove', this.onMouseMove, false, this);
-	this._eventHandler.listen(document, 'mouseup', this.onMouseUp, false, this);
+	e.preventDefault();
+	
+	this._eventHandler.listen(this._domElement, feng.events.EventType.INPUT_MOVE, this.onInputMove, false, this);
+	this._eventHandler.listen(document, feng.events.EventType.INPUT_UP, this.onInputUp, false, this);
 };
 
 
-feng.controllers.controls.Controls.prototype.onMouseUp = function ( e ) {
+feng.controllers.controls.Controls.prototype.onInputUp = function ( e ) {
 
-	this._eventHandler.unlisten(this._domElement, 'mousemove', this.onMouseMove, false, this);
-	this._eventHandler.unlisten(document, 'mouseup', this.onMouseUp, false, this);
+	e.preventDefault();
+
+	this._eventHandler.unlisten(this._domElement, feng.events.EventType.INPUT_MOVE, this.onInputMove, false, this);
+	this._eventHandler.unlisten(document, feng.events.EventType.INPUT_UP, this.onInputUp, false, this);
 
 	goog.dom.classes.remove(this._mainEl, 'grabbing');
 };
 
 
-feng.controllers.controls.Controls.prototype.onMouseMove = function ( e ) {
+feng.controllers.controls.Controls.prototype.onInputMove = function ( e ) {
+
+	e.preventDefault();
 
 	goog.dom.classes.add(this._mainEl, 'grabbing');
 };

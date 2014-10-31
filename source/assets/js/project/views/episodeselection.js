@@ -59,8 +59,8 @@ feng.views.EpisodeSelection.prototype.init = function(){
 feng.views.EpisodeSelection.prototype.activate = function(){
 
 	this._eventHandler.listenOnce( this.domElement, 'mousemove', this.onMouseMoveOnce, false, this );
-	this._eventHandler.listen( this._studioEl, 'mouseover', this.onMouseOver, false, this );
-	this._eventHandler.listen( this._houseEl, 'mouseover', this.onMouseOver, false, this );
+	this._eventHandler.listen( this._studioEl, feng.events.EventType.INPUT_OVER, this.onInputOver, false, this );
+	this._eventHandler.listen( this._houseEl, feng.events.EventType.INPUT_OVER, this.onInputOver, false, this );
 	this._eventHandler.listen( this._studioEl, 'mouseout', this.onMouseOut, false, this );
 	this._eventHandler.listen( this._houseEl, 'mouseout', this.onMouseOut, false, this );
 
@@ -100,7 +100,7 @@ feng.views.EpisodeSelection.prototype.reset = function(){
 	goog.dom.classes.enable( this._houseEl, 'inactive', false );
 	goog.dom.classes.enable( this._houseEl, 'loading', false );
 	goog.dom.classes.enable( this._houseEl, 'hidden', false );
-
+	
 	this._hoveredSceneEl = null;
 };
 
@@ -207,7 +207,7 @@ feng.views.EpisodeSelection.prototype.onPressEnter = function(){
 };
 
 
-feng.views.EpisodeSelection.prototype.onMouseOver = function(e){
+feng.views.EpisodeSelection.prototype.onInputOver = function(e){
 
 	if(e.currentTarget === this._hoveredSceneEl) return false;
 
