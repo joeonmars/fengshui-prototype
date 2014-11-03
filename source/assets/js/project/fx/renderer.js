@@ -19,11 +19,10 @@ feng.fx.Renderer = function(canvas, scene, camera){
 
 	this._renderer.gammaInput = true;
 	this._renderer.gammaOutput = true;
-	this._renderer.physicallyBasedShading = true;
 	this._renderer.autoClear = false;
 	this._renderer.setClearColor( 0xffffff, 0 );
 
-	this._renderer.shadowMapEnabled = true;
+	this._renderer.shadowMapEnabled = true; // WIP: comment this off to resolve WEBGL warnings
 	this._renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
 	// callbacks

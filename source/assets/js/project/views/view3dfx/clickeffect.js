@@ -6,7 +6,7 @@ goog.provide('feng.views.view3dfx.ClickEffect');
  */
 feng.views.view3dfx.ClickEffect = function(){
 
-	var geometry = new THREE.PlaneGeometry( 10, 10 );
+	var geometry = new THREE.PlaneBufferGeometry( 10, 10 );
 
 	var canvas = goog.dom.createDom('canvas');
 	canvas.width = canvas.height = 128;
