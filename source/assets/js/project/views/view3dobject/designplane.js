@@ -23,7 +23,7 @@ feng.views.view3dobject.DesignPlane = function( view3d ){
   texture.repeat.set(8000, 8000);
   texture.needsUpdate = true;
 
-  var planeGeometry = new THREE.PlaneGeometry( 100000, 100000, 1, 1 );
+  var planeGeometry = new THREE.PlaneBufferGeometry( 100000, 100000, 1, 1 );
   var planeMaterial = new THREE.MeshLambertMaterial( {
     map: texture,
     transparent: true

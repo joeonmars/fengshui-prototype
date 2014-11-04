@@ -452,19 +452,20 @@ feng.models.View3D.Data = {
 	},
 	'house': {
 		'livingroom': {
-			'ground': {
+			'livingroom-door': {
+				Class: "gateway",
+				viewid: "livingroom",
+				gatewayid: "livingroom-door",
+				castShadow: true,
+				isEntry: true,
+				origin: {
+					position: new THREE.Vector3(110, 0, 0),
+					rotation: new THREE.Euler(0, Math.PI/2, 0)
+				},
+				texture: "house.livingroom.livingroom-door-texture"
+			},
+			'floor': {
 				receiveShadow: true
-			},
-			'wall':	{
-				collidable: true
-			},
-			'cabinet': {
-				collidable: true,
-				texture: "house.livingroom.cabinet-texture"
-			},
-			'bed': {
-				collidable: true,
-				texture: "house.livingroom.bed-texture"
 			}
 		},
 		'boysroom': {

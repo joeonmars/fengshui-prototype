@@ -10,7 +10,7 @@ goog.require('feng.views.sections.Episode');
  */
 feng.views.sections.House = function(){
 
-	var viewIds = ['homeoffice', 'boysroom', 'livingroom'];
+	var viewIds = ['livingroom', 'homeoffice', 'boysroom'];
 	var sectionId = 'house';
 
 	var achievements = feng.models.achievements.Achievements.getInstance();
