@@ -468,6 +468,33 @@ feng.models.View3D.Data = {
 				receiveShadow: true
 			}
 		},
+		'corridor': {
+			'boysroom-door': {
+				Class: "gateway",
+				viewid: "boysroom",
+				gatewayid: "boysroom-door",
+				castShadow: true,
+				isEntry: false,
+				origin: {
+					position: new THREE.Vector3(110, 0, 0),
+					rotation: new THREE.Euler(0, Math.PI/2, 0)
+				}
+			},
+			'homeoffice-door': {
+				Class: "gateway",
+				viewid: "homeoffice",
+				gatewayid: "homeoffice-door",
+				castShadow: true,
+				isEntry: true,
+				origin: {
+					position: new THREE.Vector3(60, 0, 225),
+					rotation: new THREE.Euler(0, 0, 0)
+				}
+			},
+			'floor': {
+				receiveShadow: true
+			}
+		},
 		'boysroom': {
 			'floor': {
 				texture: "house.boysroom.floor-texture",
@@ -593,8 +620,8 @@ feng.models.View3D.Data = {
 			},
 			'boysroom-door': {
 				Class: "gateway",
-				viewid: "homeoffice",
-				gatewayid: "homeoffice-door",
+				viewid: "corridor",
+				gatewayid: "boysroom-door",
 				castShadow: true,
 				isEntry: true,
 				origin: {
@@ -690,8 +717,8 @@ feng.models.View3D.Data = {
 			},
 			'homeoffice-door': {
 				Class: "gateway",
-				viewid: "boysroom",
-				gatewayid: "boysroom-door",
+				viewid: "corridor",
+				gatewayid: "homeoffice-door",
 				castShadow: true,
 				isEntry: true,
 				origin: {

@@ -509,6 +509,23 @@
 			"advice": "Be loremipsum, loremipsum",
 			"character": "scott",
 			"reminder": "Do you like my desktop wallpaper?"
+		},
+		{
+			"id": "cat",
+			"section": "house",
+			"view": "corridor",
+			"name": "pet's bed",
+			"icon": "cat",
+			"interaction": null,
+			"unlocked": true,
+			"mandatory": false,
+			"require": null,
+			"provide": null,
+			"final": true,
+			"problem": "This is a statement about this object's fengshui problem.",
+			"advice": "Be loremipsum, loremipsum",
+			"character": "joanna",
+			"reminder": "Did you hear the sweet snozzing sound? That's our kitty Tom!"
 		}
 	],
 	"dialog": {
@@ -530,6 +547,11 @@
 					"character": "joanna",
 					"title": "Welcome to our house!",
 					"paragraph": "My name is Joanna. Welcome to our house. Isn’t it a very nice living room? How can we make it even better?<br>We spend a great deal of time here, and I hope that the living room can provide more wealth and prosperity for my family. We would also like to improve my husband’s workplace and provide a positive learning environment for Nick."
+				},
+				"corridor": {
+					"character": "joanna",
+					"title": "Say Hello to Scott and Nick!",
+					"paragraph": "Hi, there! Feel free to investigate the second floor.<br>Walk through the corridor you will find my husband Scott's office and my lovely boy, Nick."
 				},
 				"boysroom": {
 					"character": "nick",

@@ -195,6 +195,17 @@ feng.models.Preload = function(){
 					'zneg': 'images/texture/house/boysroom/skybox/neg-z.png'
 				},
 			},
+			'corridor': {
+				'scene-data': 'json/house-corridor.json',
+				'skybox': {
+					'xpos': 'images/texture/house/boysroom/skybox/pos-x.png',
+					'xneg': 'images/texture/house/boysroom/skybox/neg-x.png',
+					'ypos': 'images/texture/house/boysroom/skybox/pos-y.png',
+					'yneg': 'images/texture/house/boysroom/skybox/neg-y.png',
+					'zpos': 'images/texture/house/boysroom/skybox/pos-z.png',
+					'zneg': 'images/texture/house/boysroom/skybox/neg-z.png'
+				},
+			},
 			'boysroom': {
 				'scene-data': 'json/house-boysroom.json',
 				'floor-texture': 'images/texture/house/boysroom/floor.jpg',
