@@ -48,7 +48,7 @@ feng.models.View3D.Data = {
 				Class: 'pictures',
 				captionClass: 'changepicture',
 				tipKey: 'studio.livingroom.glamourphoto',
-				texture: 'studio.livingroom.fruitplate-texture',
+				texture: 'studio.livingroom.glamour-photo-texture',
 				camera: {
 					position: new THREE.Vector3(59, 80, 62),
 					rotation: new THREE.Euler(0.13, -3.10, 0.00, 'YXZ'),

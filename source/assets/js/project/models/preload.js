@@ -70,6 +70,7 @@ feng.models.Preload = function(){
 				'kitchen-storage-texture': 'images/texture/studio/livingroom/kitchen-storage.jpg',
 				'microwave-texture': 'images/texture/studio/livingroom/microwave.jpg',
 				'fruitplate-texture': 'images/texture/studio/livingroom/fruitplate.jpg',
+				'glamour-photo-texture': 'images/texture/studio/livingroom/glamour-photo.jpg',
 				'dining-table-texture': 'images/texture/studio/livingroom/dining-table.jpg',
 				'dining-chair-texture': 'images/texture/studio/livingroom/dining-chair.jpg',
 				'window-books-texture': 'images/texture/studio/livingroom/window-books.jpg',
