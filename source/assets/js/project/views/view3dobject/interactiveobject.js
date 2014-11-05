@@ -12,7 +12,6 @@ feng.views.view3dobject.InteractiveObject = function( object3d, data, view3d ){
   goog.base(this, object3d, data, view3d);
 
   this.object3d.interactiveObject = this;
-  this.interaction = null;
   this.isPhysical = true;
   this.screenBox = new goog.math.Box(0, 0, 0, 0);
 
@@ -29,12 +28,6 @@ feng.views.view3dobject.InteractiveObject.prototype.registerToView3D = function(
   goog.base(this, 'registerToView3D');
   
   this._view3d.interactiveObjects[ this.name ] = this;
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.hasInteraction = function( interaction ){
-
-	return (this.interaction === interaction);
 };
 
 
@@ -93,20 +86,4 @@ feng.views.view3dobject.InteractiveObject.prototype.onCameraIn = function(){
 feng.views.view3dobject.InteractiveObject.prototype.onCameraOut = function(){
 
   console.log('on camera out: ' + this.name);
-};
-
-
-/*
- * Interaction Types
- */
-feng.views.view3dobject.InteractiveObject.Interaction = {
-  ADVICE: 'advice',
-  MOVE: 'move',
-  ROTATE: 'rotate',
-  PICK: 'pick',
-  DROP: 'drop',
-  CHANGE_COLOR: 'change_color',
-  CHANGE_OBJECT: 'change_object',
-  CHANGE_PICTURE: 'change_picture',
-  CHANGE_ACCESSORY: 'change_accessory'
 };

@@ -25,13 +25,20 @@ feng.views.sections.controls.Tooltips = function( domElement ){
   var tooltipEls = goog.dom.getChildren( this.domElement );
 
   goog.array.forEach( tooltipEls, function(tooltipEl) {
-    this._tooltips[ tooltipEl.getAttribute('data-id') ] = tooltipEl;
+    var tipId = tooltipEl.getAttribute('data-id');
+    this._tooltips[ tipId ] = tooltipEl;
   }, this);
 
-  // active tooltips of view3d
-  this._activeTooltips = {};
+  // tooltips of current view3d
+  this._currentTooltips = {};
 };
 goog.inherits(feng.views.sections.controls.Tooltips, feng.views.sections.controls.Controls);
+
+
+feng.views.sections.controls.Tooltips.prototype.getTooltip = function( tipId ){
+
+  return goog.dom.query('.tooltip[data-id=' + tipId + ']', this.domElement)[0];
+};
 
 
 feng.views.sections.controls.Tooltips.prototype.setView3D = function( view3d ){
@@ -39,11 +46,17 @@ feng.views.sections.controls.Tooltips.prototype.setView3D = function( view3d ){
   goog.base(this, 'setView3D', view3d);
 
   // set active tooltips of view3d
-  this._activeTooltips = {};
+  this._currentTooltips = {};
 
   goog.object.forEach( view3d.tipObjects, function(tipObject) {
-    var tipId = tipObject.tip.id;
-    this._activeTooltips[ tipId ] = this._tooltips[ tipId ];
+
+    var tip = tipObject.tip;
+    var tipId = tip.id;
+    this._currentTooltips[ tipId ] = this._tooltips[ tipId ];
+
+    if(!tip.unlocked) {
+      goog.events.listenOnce( tip, feng.events.EventType.UNLOCK, this.onTipUnlock, false, this );
+    }
   }, this);
 
   // check objects to detect blocking
@@ -64,7 +77,7 @@ feng.views.sections.controls.Tooltips.prototype.activate = function(){
 
   if(!shouldActivate) return;
 
-  goog.object.forEach( this._activeTooltips, function(tooltip) {
+  goog.object.forEach( this._currentTooltips, function(tooltip) {
     goog.dom.classes.addRemove( tooltip, 'fadeOut', 'fadeIn' );
   });
 
@@ -78,7 +91,7 @@ feng.views.sections.controls.Tooltips.prototype.deactivate = function(){
 
   if(!shouldDeactivate) return;
 
-  goog.object.forEach( this._activeTooltips, function(tooltip) {
+  goog.object.forEach( this._currentTooltips, function(tooltip) {
     goog.dom.classes.addRemove( tooltip, 'fadeIn', 'fadeOut' );
   });
 
@@ -98,7 +111,7 @@ feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
     this._raycaster.set( controlPosition, direction );
     
     var intersects = this._raycaster.intersectObjects( this._detectObjects );
-    var tooltip = this._activeTooltips[ tipObject.tip.id ];
+    var tooltip = this._currentTooltips[ tipObject.tip.id ];
 
     if(intersects.length > 0 && intersects[0].object.view3dObject === proxyBox.view3dObject) {
 
@@ -111,6 +124,15 @@ feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
       goog.dom.classes.add( tooltip, 'blocked');
     }
   }, this);
+};
+
+
+feng.views.sections.controls.Tooltips.prototype.onTipUnlock = function(e){
+
+  var tipId = e.tip.id;
+  var tooltipEl = this.getTooltip( tipId );
+
+  goog.dom.classes.remove( tooltipEl, 'locked' );
 };
 
 
@@ -142,7 +164,7 @@ feng.views.sections.controls.Tooltips.prototype.onAnimationFrame = function(now)
     var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, camera, viewSize );
     
     var tipId = tipObject.tip.id;
-    var tooltip = this._activeTooltips[ tipId ];
+    var tooltip = this._currentTooltips[ tipId ];
     goog.style.setStyle( tooltip, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px) scale(' + zoomFraction + ')' );
 
   }, this);

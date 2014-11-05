@@ -198,9 +198,9 @@ feng.views.View3DHud.prototype.deactivateControls = function() {
 };
 
 
-feng.views.View3DHud.prototype.getCaption = function( object, controls, type ) {
+feng.views.View3DHud.prototype.getCaption = function( object, controls ) {
 
-	var key = goog.getUid(object) + '-' + type;
+	var key = goog.getUid(object);
 
 	if(this._captions[key]) {
 		return this._captions[key];
