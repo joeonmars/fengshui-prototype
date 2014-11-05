@@ -101,7 +101,7 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 
 			//console.log(tipObject.name + ' withinRange: ' + withinRange + ', locked: ' + locked + ', canReach: ' + canReach, (intersects.length > 0 ? intersects[0].object : null));
 
-			if(/*locked && */withinRange && canReach) {
+			if(locked && withinRange && canReach) {
 				selectableObjects.push( tipObject );
 			}
 		}, this);

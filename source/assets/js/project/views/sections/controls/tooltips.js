@@ -52,9 +52,12 @@ feng.views.sections.controls.Tooltips.prototype.setView3D = function( view3d ){
 
     var tip = tipObject.tip;
     var tipId = tip.id;
-    this._currentTooltips[ tipId ] = this._tooltips[ tipId ];
+    var tooltipEl = this._tooltips[ tipId ];
+    this._currentTooltips[ tipId ] = tooltipEl;
 
-    if(!tip.unlocked) {
+    goog.dom.classes.enable( tooltipEl, 'locked', !(tip.unlocked && tip.isFinal) );
+
+    if(!tip.unlocked && tip.isFinal) {
       goog.events.listenOnce( tip, feng.events.EventType.UNLOCK, this.onTipUnlock, false, this );
     }
   }, this);
@@ -117,7 +120,7 @@ feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
 
     var objectDirection = proxyBox.position.clone().sub( controlPosition ).normalize();
     var dot = objectDirection.dot( controlDirection );
-    
+
     if(dot >= thresholdDot) {
 
       goog.dom.classes.enable( tooltip, 'hidden', false );
@@ -170,9 +173,6 @@ feng.views.sections.controls.Tooltips.prototype.onAnimationFrame = function(now)
   var tipObjects = this._view3d.tipObjects;
   var camera = this._cameraController.activeCamera;
   var viewSize = this._viewSize;
-  //var zoomFraction = goog.math.lerp( 1, .25, this._view3d.modeController.control.getZoomFraction() );
-
-  var zoomFraction = 1;
 
   goog.object.forEach( tipObjects, function(tipObject) {
 
@@ -181,7 +181,7 @@ feng.views.sections.controls.Tooltips.prototype.onAnimationFrame = function(now)
     
     var tipId = tipObject.tip.id;
     var tooltip = this._currentTooltips[ tipId ];
-    goog.style.setStyle( tooltip, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px) scale(' + zoomFraction + ')' );
+    goog.style.setStyle( tooltip, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)' );
 
   }, this);
 

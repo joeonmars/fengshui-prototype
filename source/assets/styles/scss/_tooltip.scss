@@ -107,6 +107,7 @@
 
 >.tooltip{
 	position: absolute;
+	display: block;
 	opacity: 1;
 	visibility: visible;
 	@include transition( opacity .5s ease-in-out, visibility .5s );
@@ -122,49 +123,62 @@
 		width: 100px;
 		height: 100px;
 		overflow: hidden;
-		background-color: rgba(0, 0, 0, .7);
+		background-color: rgba(255, 255, 255, .95);
+		@include single-box-shadow(1px, 1px, 3px, 0px, rgba(0, 0, 0, .25));
 		@include border-radius(50px);
-		@include transition( width .4s ease-in-out, left .4s ease-in-out, background-color .4s ease-out );
+		@include transition( width .4s $easeOutCubic, left .4s $easeOutCubic, background-color .4s ease-out );
 
-		>.icon{
+		>.symbol{
 			width: 100px;
 			height: 100px;
 			top: 0;
 			left: 0;
-			text-align: center;
-			line-height: 100px !important;
-			color: #fff;
-			font-size: 50px;
-			@include single-transition(color, .25s);
+			overflow: hidden;
+
+			>.inner{
+				white-space: nowrap;
+				@include single-transition(transform, .25s);
+				@include translateY(-100px);
+
+				>.icon{
+					display: block;
+					width: 100px;
+					height: 100px;
+					text-align: center;
+					line-height: 100px !important;
+					color: $gray-ui;
+					font-size: 50px;
+				}
+
+				>.icon-eye-open{
+					font-size: 30px;
+					color: $yellow-ui;
+				}
+			}
 		}
 
 		>h6{
 			display: block;
 			position: absolute;
 			top: 0;
-			left: ((500px - 250px) / 2);
-			width: 250px;
-			line-height: 100px !important;
+			left: 60px;
+			width: 300px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			line-height: 100px;
 			text-align: center;
 			text-transform: capitalize;
-			color: #000;
+			color: #fff;
 			font-size: 30px;
 		}
 
-		>a{
-			display: block;
-			position: absolute;
-			left: (500px - 100px) !important;
-			color: #000 !important;
-		}
-
 		&:hover{
-			width: 500px;
-			left: -250px;
-			background-color: rgba(255, 255, 255, .9);
+			width: 400px;
+			left: -200px;
+			background-color: $gray-ui;
 
-			>.icon{
-				color: #000;
+			.inner{
+				@include translateY(0px);
 			}
 		}
 	}
@@ -176,6 +190,6 @@
 	}
 
 	&.locked{
-
+		display: none;
 	}
 }

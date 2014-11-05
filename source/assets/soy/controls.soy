@@ -141,13 +141,17 @@
  * @param tip the tip
  */
 {template .Tooltip}
-<div class="tooltip fadeOut locked" data-id="{ $tip.id }">
+<a class="tooltip fadeOut locked" data-id="{ $tip.id }" href="{ $tip.goTipToken }">
 	<div class="bar">
-		<div class="icon icon-{ $tip.icon }"></div>
+		<div class="symbol">
+			<div class="inner">
+				<div class="icon icon-eye-open"></div>
+				<div class="icon icon-{ $tip.icon }"></div>
+			</div>
+		</div>
 		<h6>{ $tip.name }</h6>
-		<a class="icon icon-go" href="{ $tip.goTipToken }"></a>
 	</div>
-</div>
+</a>
 {/template}
 
 
