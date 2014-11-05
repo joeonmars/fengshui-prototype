@@ -106,31 +106,35 @@
 
 
 >.tooltip{
-
 	position: absolute;
 	opacity: 1;
-	@include transition( opacity .5s ease-in-out );
+	visibility: visible;
+	@include transition( opacity .5s ease-in-out, visibility .5s );
+
+	&:hover{
+		z-index: 20;
+	}
 
 	>.bar{
 		position: absolute;
-		top: -150px;
-		left: -75px;
-		width: 150px;
-		height: 150px;
+		top: -100px;
+		left: -50px;
+		width: 100px;
+		height: 100px;
 		overflow: hidden;
-		background-color: rgba(0, 0, 0, .8);
-		@include border-radius(75px);
+		background-color: rgba(0, 0, 0, .7);
+		@include border-radius(50px);
 		@include transition( width .4s ease-in-out, left .4s ease-in-out, background-color .4s ease-out );
 
 		>.icon{
-			width: 150px;
-			height: 150px;
+			width: 100px;
+			height: 100px;
 			top: 0;
 			left: 0;
 			text-align: center;
-			line-height: 150px !important;
+			line-height: 100px !important;
 			color: #fff;
-			font-size: 75px;
+			font-size: 50px;
 			@include single-transition(color, .25s);
 		}
 
@@ -138,26 +142,26 @@
 			display: block;
 			position: absolute;
 			top: 0;
-			left: ((600px - 300px) / 2);
-			width: 300px;
-			line-height: 150px !important;
+			left: ((500px - 250px) / 2);
+			width: 250px;
+			line-height: 100px !important;
 			text-align: center;
-			text-transform: uppercase;
+			text-transform: capitalize;
 			color: #000;
-			font-size: 40px;
+			font-size: 30px;
 		}
 
 		>a{
 			display: block;
 			position: absolute;
-			left: (600px - 150px) !important;
+			left: (500px - 100px) !important;
 			color: #000 !important;
 		}
 
 		&:hover{
-			width: 600px;
-			left: -300px;
-			background-color: #fff;
+			width: 500px;
+			left: -250px;
+			background-color: rgba(255, 255, 255, .9);
 
 			>.icon{
 				color: #000;
@@ -165,12 +169,10 @@
 		}
 	}
 
-	&.blocked{
-		opacity: .1;
-	}
-
-	&.unlocked{
-
+	&.hidden{
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
 	}
 
 	&.locked{

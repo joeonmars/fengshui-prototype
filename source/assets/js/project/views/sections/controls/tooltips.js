@@ -102,27 +102,38 @@ feng.views.sections.controls.Tooltips.prototype.deactivate = function(){
 feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
 
   var tipObjects = this._view3d.tipObjects;
-  var controlPosition = this._view3d.modeController.control.getPosition();
+  var control = this._view3d.modeController.control;
+  var controlPosition = control.getPosition();
+  var controlDirection = control.getForwardVector( true );
+  var thresholdDot = Math.cos( THREE.Math.degToRad(45) );
 
   goog.object.forEach( tipObjects, function(tipObject) {
+
+    var tooltip = this._currentTooltips[ tipObject.tip.id ];
 
     var proxyBox = tipObject.getProxyBox();
     var direction = this._rayDirection.subVectors( proxyBox.position, controlPosition ).normalize();
     this._raycaster.set( controlPosition, direction );
+
+    var objectDirection = proxyBox.position.clone().sub( controlPosition ).normalize();
+    var dot = objectDirection.dot( controlDirection );
     
-    var intersects = this._raycaster.intersectObjects( this._detectObjects );
-    var tooltip = this._currentTooltips[ tipObject.tip.id ];
+    if(dot >= thresholdDot) {
 
-    if(intersects.length > 0 && intersects[0].object.view3dObject === proxyBox.view3dObject) {
-
-      // not blocked
-      goog.dom.classes.remove( tooltip, 'blocked');
+      goog.dom.classes.enable( tooltip, 'hidden', false );
 
     }else {
 
-      // blocked
-      goog.dom.classes.add( tooltip, 'blocked');
+      goog.dom.classes.enable( tooltip, 'hidden', true );
+      return;
     }
+    
+    var intersects = this._raycaster.intersectObjects( this._detectObjects );
+
+    var shouldShow = (intersects.length > 0 && intersects[0].object.view3dObject === proxyBox.view3dObject);
+    
+    goog.dom.classes.enable( tooltip, 'hidden', !shouldShow );
+
   }, this);
 };
 
@@ -140,13 +151,16 @@ feng.views.sections.controls.Tooltips.prototype.onModeChange = function(e){
 
   goog.base(this, 'onModeChange', e);
 
-  if(e.mode === feng.controllers.view3d.ModeController.Mode.DESIGN) {
-
+  switch(e.mode) {
+    case feng.controllers.view3d.ModeController.Mode.BROWSE:
+    case feng.controllers.view3d.ModeController.Mode.DESIGN:
+    case feng.controllers.view3d.ModeController.Mode.WALK:
     this.activate();
+    break;
 
-  }else {
-
+    default:
     this.deactivate();
+    break;
   }
 };
 
@@ -156,7 +170,9 @@ feng.views.sections.controls.Tooltips.prototype.onAnimationFrame = function(now)
   var tipObjects = this._view3d.tipObjects;
   var camera = this._cameraController.activeCamera;
   var viewSize = this._viewSize;
-  var zoomFraction = goog.math.lerp( 1, .25, this._view3d.modeController.control.getZoomFraction() );
+  //var zoomFraction = goog.math.lerp( 1, .25, this._view3d.modeController.control.getZoomFraction() );
+
+  var zoomFraction = 1;
 
   goog.object.forEach( tipObjects, function(tipObject) {
 
