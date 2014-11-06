@@ -5,7 +5,6 @@ goog.require('goog.events.MouseWheelHandler');
 goog.require('goog.math.Box');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.utils.ThreeUtils');
-goog.require('feng.views.view3dobject.GatewayObject');
 
 /**
  * @constructor
@@ -108,9 +107,6 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 
 		//
 		var nearbyObjects = selectableObjects.concat();
-
-		var gatewayObjects = this._view3d.getGatewayObjects();
-		var selectableObjects = ([]).concat(gatewayObjects).concat(selectableObjects);
 		
 		this._objectSelector.setSelectableObjects( selectableObjects );
 		this._progressBar.setNearbyObjects( nearbyObjects );
@@ -294,24 +290,6 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelectStart = functio
 feng.controllers.controls.BrowseControls.prototype.onObjectSelectComplete = function ( object ) {
 
 	console.log('Object selected: ' + object.object3d.name);
-	
-	// check if it should open and head to the door directly
-	var isGatewayObject = (object instanceof feng.views.view3dobject.GatewayObject);
-	
-	if(isGatewayObject) {
-
-		var center = object.getCenter();
-		
-		this.dispatchEvent({
-			type: feng.events.EventType.CHANGE,
-			mode: feng.controllers.view3d.ModeController.Mode.WALK,
-			nextMode: null,
-			gateway: object,
-			toPosition: center
-		});
-
-		return;
-	}
 
 	//
 	this.dispatchEvent({

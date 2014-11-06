@@ -29,6 +29,7 @@ feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
   this._proxyBox.view3dObject = this;
 
   this._canRender = this.object3d.visible;
+  this._isRenderEnabled = this._canRender;
 
   //
   this.registerToView3D();
@@ -166,8 +167,10 @@ feng.views.view3dobject.View3DObject.prototype.removeFromScene = function(){
 
 feng.views.view3dobject.View3DObject.prototype.enableRender = function(){
 
-  if(this._canRender) return;
-  else this._canRender = true;
+  if(!this._canRender) return;
+
+  if(this._isRenderEnabled) return;
+  else this._isRenderEnabled = true;
 
   // itself, its parent and its children should be renderable
   this.object3d.visible = true;
@@ -195,8 +198,8 @@ feng.views.view3dobject.View3DObject.prototype.enableRender = function(){
 
 feng.views.view3dobject.View3DObject.prototype.disableRender = function(){
 
-  if(!this._canRender) return;
-  else this._canRender = false;
+  if(!this._isRenderEnabled) return;
+  else this._isRenderEnabled = false;
 
   // itself and its children should not be renderable
   this.object3d.visible = false;

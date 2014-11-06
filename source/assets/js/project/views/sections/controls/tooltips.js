@@ -19,25 +19,54 @@ feng.views.sections.controls.Tooltips = function( domElement ){
   this._rayDirection = new THREE.Vector3();
   this._detectObjects = [];
 
-  // collect tooltips by id
   this._tooltips = {};
-
-  var tooltipEls = goog.dom.getChildren( this.domElement );
-
-  goog.array.forEach( tooltipEls, function(tooltipEl) {
-    var tipId = tooltipEl.getAttribute('data-id');
-    this._tooltips[ tipId ] = tooltipEl;
-  }, this);
 
   // tooltips of current view3d
   this._currentTooltips = {};
+  this._tooltipObjects = [];
 };
 goog.inherits(feng.views.sections.controls.Tooltips, feng.views.sections.controls.Controls);
 
 
-feng.views.sections.controls.Tooltips.prototype.getTooltip = function( tipId ){
+feng.views.sections.controls.Tooltips.prototype.createTooltips = function( view3d ){
 
-  return goog.dom.query('.tooltip[data-id=' + tipId + ']', this.domElement)[0];
+  // create tip tooltips
+  goog.object.forEach( view3d.tipObjects, function(tipObject) {
+
+    var tip = tipObject.tip;
+
+    if(!this._tooltips[tip.id]) {
+
+      var tooltipEl = soy.renderAsFragment(feng.templates.controls.TipTooltip, {
+        tip: tipObject.tip
+      });
+
+      goog.dom.appendChild( this.domElement, tooltipEl );
+
+      this._tooltips[tip.id] = tooltipEl;
+    }
+  }, this);
+
+  // create gateway tooltips
+  goog.object.forEach( view3d.getGatewayObjects(), function(gatewayObject) {
+
+    if(!this._tooltips[gatewayObject.gatewayId]) {
+
+      var tooltipEl = soy.renderAsFragment(feng.templates.controls.GatewayTooltip, {
+        gateway: gatewayObject
+      });
+
+      goog.dom.appendChild( this.domElement, tooltipEl );
+
+      this._tooltips[gatewayObject.gatewayId] = tooltipEl;
+    }
+  }, this);
+};
+
+
+feng.views.sections.controls.Tooltips.prototype.getTooltip = function( id ){
+
+  return goog.dom.query('.tooltip[data-id=' + id + ']', this.domElement)[0];
 };
 
 
@@ -45,21 +74,42 @@ feng.views.sections.controls.Tooltips.prototype.setView3D = function( view3d ){
 
   goog.base(this, 'setView3D', view3d);
 
-  // set active tooltips of view3d
+  // create tooltips if not
+  this.createTooltips( view3d );
+
+  // find tooltip objects of view3d
+  var tipObjects = goog.object.getValues( view3d.tipObjects );
+  var gatewayObjects = view3d.getGatewayObjects();
+  this._tooltipObjects = ([]).concat( tipObjects, gatewayObjects );
+
+  // set current tooltips from objects
   this._currentTooltips = {};
 
-  goog.object.forEach( view3d.tipObjects, function(tipObject) {
+  goog.array.forEach( this._tooltipObjects, function(object) {
+
+    var id = object.tip ? object.tip.id : object.gatewayId;
+    this._currentTooltips[ id ] = this._tooltips[ id ];
+  }, this);
+
+  // listen to tip unlock event
+  goog.array.forEach( tipObjects, function(tipObject) {
 
     var tip = tipObject.tip;
-    var tipId = tip.id;
-    var tooltipEl = this._tooltips[ tipId ];
-    this._currentTooltips[ tipId ] = tooltipEl;
+    var tooltipEl = this._tooltips[ tip.id ];
 
     goog.dom.classes.enable( tooltipEl, 'locked', !(tip.unlocked && tip.isFinal) );
 
     if(!tip.unlocked && tip.isFinal) {
       goog.events.listenOnce( tip, feng.events.EventType.UNLOCK, this.onTipUnlock, false, this );
     }
+  }, this);
+
+  // listen to click event of gateway tooltip
+  goog.array.forEach( gatewayObjects, function(gatewayObject) {
+
+    var tooltipEl = this._tooltips[  gatewayObject.gatewayId ];
+
+    goog.events.listenOnce( tooltipEl, 'click', this.onClickGatewayTooltip, false, this );
   }, this);
 
   // check objects to detect blocking
@@ -104,17 +154,18 @@ feng.views.sections.controls.Tooltips.prototype.deactivate = function(){
 
 feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
 
-  var tipObjects = this._view3d.tipObjects;
   var control = this._view3d.modeController.control;
   var controlPosition = control.getPosition();
   var controlDirection = control.getForwardVector( true );
   var thresholdDot = Math.cos( THREE.Math.degToRad(45) );
 
-  goog.object.forEach( tipObjects, function(tipObject) {
+  goog.array.forEach( this._tooltipObjects, function(object) {
 
-    var tooltip = this._currentTooltips[ tipObject.tip.id ];
+    var id = object.tip ? object.tip.id : object.gatewayId;
 
-    var proxyBox = tipObject.getProxyBox();
+    var tooltip = this._currentTooltips[ id ];
+
+    var proxyBox = object.getProxyBox();
     var direction = this._rayDirection.subVectors( proxyBox.position, controlPosition ).normalize();
     this._raycaster.set( controlPosition, direction );
 
@@ -150,6 +201,21 @@ feng.views.sections.controls.Tooltips.prototype.onTipUnlock = function(e){
 };
 
 
+feng.views.sections.controls.Tooltips.prototype.onClickGatewayTooltip = function(e){
+
+  e.preventDefault();
+
+  var gatewayId = e.currentTarget.getAttribute('data-id');
+  var gateway = this._view3d.getView3dObject( gatewayId );
+
+  this._view3d.modeController.setMode({
+    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+    nextMode: feng.controllers.view3d.ModeController.Mode.EXIT,
+    gateway: gateway
+  });
+};
+
+
 feng.views.sections.controls.Tooltips.prototype.onModeChange = function(e){
 
   goog.base(this, 'onModeChange', e);
@@ -170,17 +236,16 @@ feng.views.sections.controls.Tooltips.prototype.onModeChange = function(e){
 
 feng.views.sections.controls.Tooltips.prototype.onAnimationFrame = function(now) {
 
-  var tipObjects = this._view3d.tipObjects;
   var camera = this._cameraController.activeCamera;
   var viewSize = this._viewSize;
 
-  goog.object.forEach( tipObjects, function(tipObject) {
+  goog.array.forEach( this._tooltipObjects, function(object) {
 
-    var pos3d = tipObject.getCenter();
+    var pos3d = object.getCenter();
     var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, camera, viewSize );
     
-    var tipId = tipObject.tip.id;
-    var tooltip = this._currentTooltips[ tipId ];
+    var id = object.tip ? object.tip.id : object.gatewayId;
+    var tooltip = this._currentTooltips[ id ];
     goog.style.setStyle( tooltip, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)' );
 
   }, this);

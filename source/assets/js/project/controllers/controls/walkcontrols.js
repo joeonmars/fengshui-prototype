@@ -17,27 +17,8 @@ feng.controllers.controls.WalkControls = function(camera, view3d, domElement){
 	this._pathTrack = null;
 
 	this._cameraRotation = new THREE.Euler(0, 0, 0, 'YXZ');
-
-	this._gateway = null;
 };
 goog.inherits(feng.controllers.controls.WalkControls, feng.controllers.controls.Controls);
-
-
-feng.controllers.controls.WalkControls.prototype.enable = function( enable ) {
-
-	var shouldEnable = goog.base(this, 'enable', enable);
-
-	if(shouldEnable) {
-
-
-	}else  {
-
-		if(this._gateway) {
-			this._gateway.close();
-			this._gateway = null;
-		}
-	}	
-};
 
 
 feng.controllers.controls.WalkControls.prototype.pause = function ( pause ) {
@@ -62,12 +43,6 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 	var nextMode = ev.nextMode;
 
 	var viewDistance = (ev.viewDistance >= 0) ? ev.viewDistance : 50;
-	var gateway = ev.gateway;
-	var stairs = ev.stairs;
-
-	if(gateway) {
-		this._gateway = gateway;
-	}
 
 	//
 	var pathfinder = feng.pathfinder;
@@ -80,7 +55,7 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 	
 	if(!coordinates) {
 
-		this.onPathComplete( gateway, nextMode );
+		this.onPathComplete( nextMode );
 		return;
 	}
 
@@ -97,7 +72,7 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 	var distanceT = Math.max(0, distance / length);
 	
 	// adult walking speed is 1.564 meter per second
-	var speed = 1.000 * 100 * (gateway ? 2 : 1);
+	var speed = 1.000 * 100;
 	var duration = distance / (speed / 2);
 
 	var footstepLength = 20;
@@ -122,7 +97,7 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
     'onUpdateParams': [uProp],
     'onUpdateScope': this,
     'onComplete': this.onPathComplete,
-    'onCompleteParams': [gateway, stairs, nextMode],
+    'onCompleteParams': [nextMode],
     'onCompleteScope': this
   });
 
@@ -171,19 +146,11 @@ feng.controllers.controls.WalkControls.prototype.onPathTProgress = function ( pr
 };
 
 
-feng.controllers.controls.WalkControls.prototype.onPathComplete = function ( gateway, stairs, nextMode ) {
-
-	if(gateway) {
-
-		gateway.open();
-		gateway.listenOnce( feng.events.EventType.PAUSE, this.onGatewayPause, false, this );
-		gateway.listenOnce( feng.events.EventType.COMPLETE, this.onGatewayOpenComplete, false, this );
-	}
+feng.controllers.controls.WalkControls.prototype.onPathComplete = function ( nextMode ) {
 
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
-		mode: nextMode,
-		stairs: stairs
+		mode: nextMode
 	});
 };
 
@@ -198,39 +165,5 @@ feng.controllers.controls.WalkControls.prototype.onInputDown = function ( e ) {
 		type: feng.events.EventType.CHANGE,
 		mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
 		eventToTrigger: e
-	});
-};
-
-
-feng.controllers.controls.WalkControls.prototype.onGatewayPause = function ( e ) {
-
-	var gateway = e.target;
-	var viewId = gateway.viewId;
-
-	// start to load the go-to view3d of this episode
-	this._view3d.episode.load( viewId );
-
-	// listen to episode load complete event to resume after load
-	this._eventHandler.listenOnce( this._view3d.episode, feng.events.EventType.COMPLETE, function() {
-
-		// resume gateway
-		gateway.resume();
-		
-		// disable mouse events after pause
-		this._eventHandler.removeAll();
-
-	}, false, this);
-};
-
-
-feng.controllers.controls.WalkControls.prototype.onGatewayOpenComplete = function ( e ) {
-
-	var gateway = e.target;
-
-	this._view3d.dispatchEvent({
-		type: feng.events.EventType.CHANGE,
-		sectionId: this._view3d.sectionId,
-		viewId: gateway.viewId,
-		gatewayId: gateway.gatewayId
 	});
 };

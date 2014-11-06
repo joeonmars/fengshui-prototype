@@ -80,14 +80,13 @@ feng.models.View3D.Data = {
 				viewid: "bathroom",
 				gatewayid: "bathroom-door",
 				castShadow: true,
-				isEntry: false,
+				isEntry: true,
 				origin: {
 					position: new THREE.Vector3(-240, 0, 34),
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
 				}
 			},
 			'wall':	{
-				collidable: true,
 				castShadow: true,
 				texture: "studio.livingroom.wall-texture"
 			},
@@ -300,7 +299,6 @@ feng.models.View3D.Data = {
 				receiveShadow: true
 			},
 			'wall':	{
-				collidable: true,
 				castShadow: true,
 				texture: "studio.bathroom.wall-texture"
 			},
@@ -442,7 +440,6 @@ feng.models.View3D.Data = {
 				viewid: "livingroom",
 				gatewayid: "bathroom-door",
 				castShadow: true,
-				isEntry: true,
 				origin: {
 					position: new THREE.Vector3(12, 0, -60),
 					rotation: new THREE.Euler(0, Math.PI, 0)
@@ -464,11 +461,19 @@ feng.models.View3D.Data = {
 				},
 				texture: "house.livingroom.livingroom-door-texture"
 			},
+			'stairways-door': {
+				Class: "gateway",
+				viewid: "corridor",
+				gatewayid: "stairways-door",
+				origin: {
+					position: new THREE.Vector3(-125, 0, 50),
+					rotation: new THREE.Euler(0, -Math.PI/2, 0)
+				}
+			},
 			'floor': {
 				receiveShadow: true
 			},
 			'wall':	{
-				collidable: true,
 				castShadow: true
 			},
 			'wall-outer':	{
@@ -485,6 +490,9 @@ feng.models.View3D.Data = {
 			},
 			'kitchen-top': {
 				texture: "house.livingroom.kitchen-top-texture"
+			},
+			'kitchen-bottom': {
+				collidable: true
 			},
 			'kitchen-stuff': {
 				texture: "house.livingroom.kitchen-stuff-texture"
@@ -548,15 +556,24 @@ feng.models.View3D.Data = {
 			}
 		},
 		'corridor': {
+			'stairways-door': {
+				Class: "gateway",
+				viewid: "livingroom",
+				gatewayid: "stairways-door",
+				isEntry: true,
+				origin: {
+					position: new THREE.Vector3(20, 0, -50),
+					rotation: new THREE.Euler(0, Math.PI, 0)
+				}
+			},
 			'boysroom-door': {
 				Class: "gateway",
 				viewid: "boysroom",
 				gatewayid: "boysroom-door",
 				castShadow: true,
-				isEntry: false,
 				origin: {
-					position: new THREE.Vector3(110, 0, 0),
-					rotation: new THREE.Euler(0, Math.PI/2, 0)
+					position: new THREE.Vector3(60, 0, -170),
+					rotation: new THREE.Euler(0, 0, 0)
 				}
 			},
 			'homeoffice-door': {
@@ -564,7 +581,6 @@ feng.models.View3D.Data = {
 				viewid: "homeoffice",
 				gatewayid: "homeoffice-door",
 				castShadow: true,
-				isEntry: true,
 				origin: {
 					position: new THREE.Vector3(60, 0, 225),
 					rotation: new THREE.Euler(0, 0, 0)
@@ -572,6 +588,15 @@ feng.models.View3D.Data = {
 			},
 			'floor': {
 				receiveShadow: true
+			},
+			'wall':	{
+				castShadow: true
+			},
+			'wall-outer':	{
+				castShadow: true
+			},
+			'ceiling':	{
+				castShadow: true
 			}
 		},
 		'boysroom': {
@@ -580,7 +605,6 @@ feng.models.View3D.Data = {
 				receiveShadow: true
 			},
 			'wall':	{
-				collidable: true,
 				castShadow: true,
 				texture: "house.boysroom.wall-texture"
 			},
@@ -786,7 +810,6 @@ feng.models.View3D.Data = {
 				texture: "house.homeoffice.ceiling-texture"
 			},
 			'wall':	{
-				collidable: true,
 				castShadow: true,
 				texture: "house.homeoffice.wall-texture"
 			},

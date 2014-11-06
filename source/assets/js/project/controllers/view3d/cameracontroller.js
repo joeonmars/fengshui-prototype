@@ -32,6 +32,7 @@ feng.controllers.view3d.CameraController.prototype.init = function( scene ){
   this.addCamera(feng.controllers.view3d.ModeController.Mode.BROWSE);
   this.addCamera(feng.controllers.view3d.ModeController.Mode.CLOSE_UP);
   this.addCamera(feng.controllers.view3d.ModeController.Mode.ENTRY);
+  this.addCamera(feng.controllers.view3d.ModeController.Mode.EXIT);
   this.addCamera(feng.controllers.view3d.ModeController.Mode.DESIGN);
   this.addCamera(feng.controllers.view3d.ModeController.Mode.WALK);
   this.addCamera(feng.controllers.view3d.ModeController.Mode.TRANSITION);

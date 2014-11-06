@@ -137,11 +137,11 @@
 
 
 /**
- * Tooltip in design control
+ * Tooltip on tip object
  * @param tip the tip
  */
-{template .Tooltip}
-<a class="tooltip fadeOut locked" data-id="{ $tip.id }" href="{ $tip.goTipToken }">
+{template .TipTooltip}
+<a class="tooltip fadeOut tip locked" data-id="{ $tip.id }" href="{ $tip.goTipToken }">
 	<div class="bar">
 		<div class="symbol">
 			<div class="inner">
@@ -150,6 +150,25 @@
 			</div>
 		</div>
 		<h6>{ $tip.name }</h6>
+	</div>
+</a>
+{/template}
+
+
+/**
+ * Tooltip on gateway
+ * @param gateway the gateway object
+ */
+{template .GatewayTooltip}
+<a class="tooltip fadeOut gateway" data-id="{ $gateway.gatewayId }">
+	<div class="bar">
+		<div class="symbol">
+			<div class="inner">
+				<div class="icon icon-eye-open"></div>
+				<div class="loader"></div>
+			</div>
+		</div>
+		<h6>To { $gateway.viewId }</h6>
 	</div>
 </a>
 {/template}

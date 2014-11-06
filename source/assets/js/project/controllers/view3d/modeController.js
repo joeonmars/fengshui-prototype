@@ -8,6 +8,7 @@ goog.require('feng.events');
 goog.require('feng.controllers.controls.BrowseControls');
 goog.require('feng.controllers.controls.CloseUpControls');
 goog.require('feng.controllers.controls.EntryControls');
+goog.require('feng.controllers.controls.ExitControls');
 goog.require('feng.controllers.controls.DesignControls');
 goog.require('feng.controllers.controls.WalkControls');
 goog.require('feng.controllers.controls.TransitionControls');
@@ -48,6 +49,7 @@ feng.controllers.view3d.ModeController.prototype.init = function(){
 	this._closeUpControls = this.createControls( feng.controllers.view3d.ModeController.Mode.CLOSE_UP );
 	this._designControls = this.createControls( feng.controllers.view3d.ModeController.Mode.DESIGN );
 	this._entryControls = this.createControls( feng.controllers.view3d.ModeController.Mode.ENTRY );
+	this._exitControls = this.createControls( feng.controllers.view3d.ModeController.Mode.EXIT );
 	this._walkControls = this.createControls( feng.controllers.view3d.ModeController.Mode.WALK );
 	this._transitionControls = this.createControls( feng.controllers.view3d.ModeController.Mode.TRANSITION );
 
@@ -117,6 +119,10 @@ feng.controllers.view3d.ModeController.prototype.createControls = function( mode
 
 		case feng.controllers.view3d.ModeController.Mode.ENTRY:
 		ControlClass = feng.controllers.controls.EntryControls;
+		break;
+
+		case feng.controllers.view3d.ModeController.Mode.EXIT:
+		ControlClass = feng.controllers.controls.ExitControls;
 		break;
 
 		case feng.controllers.view3d.ModeController.Mode.WALK:
@@ -222,6 +228,14 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 			}
 			break;
 
+			case this._exitControls:
+			this._exitControls.setCamera( e.gateway );
+			shouldUpdateToPosition = true;
+			shouldUpdateToRotation = true;
+			shouldUpdateToFov = true;
+			shouldUpdateToTarget = true;
+			break;
+
 			case this._closeUpControls:
 			this._closeUpControls.setCamera( e.object );
 			shouldUpdateToPosition = true;
@@ -296,6 +310,7 @@ feng.controllers.view3d.ModeController.Mode = {
 	CLOSE_UP: 'close_up', //a locked perspective viewing a specific object
 	DESIGN: 'design', // isometrix view for ease of positioning/rotating control
 	ENTRY: 'entry', //first-time enter a residence
+	EXIT: 'exit', //head out of the current view
 	WALK: 'walk',	// walk along a path
 	TRANSITION: 'transition' // transition between different cameras for the above mode
 };

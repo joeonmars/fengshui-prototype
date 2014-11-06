@@ -35,7 +35,7 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 		toTarget: ev.toTarget,
 		nextMode: ev.nextMode
 	};
-
+	
 	var dur = goog.math.clamp( 1, 2, goog.math.lerp( 1, 2, fromPosition.distanceTo( toPosition ) / 1000 ));
 
 	this._tweener = TweenMax.to( prop, dur, {
