@@ -48,7 +48,7 @@ feng.controllers.controls.ExitControls.prototype.activate = function () {
 
 
 feng.controllers.controls.ExitControls.prototype.onLoadComplete = function () {
-
+	
 	this._view3d.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		sectionId: this._view3d.sectionId,

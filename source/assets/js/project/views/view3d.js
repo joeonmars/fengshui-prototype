@@ -81,6 +81,8 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud, episode){
 	this.floorObjects = [];
 	this._floorMatrixIds = [];
 
+	this.startGateway = null;
+
 	this.renderer = null;
 
 	this._eventHandler = new goog.events.EventHandler(this);

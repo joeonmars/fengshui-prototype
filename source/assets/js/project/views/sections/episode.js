@@ -173,7 +173,7 @@ feng.views.sections.Episode.prototype.onShowView3D = function(e){
 		
 	}else {
 
-		var gatewayObject = view3d.getEntry();
+		var gatewayObject = view3d.startGateway || view3d.getEntry();
 		var position = gatewayObject.origin.position;
 		var rotation = gatewayObject.origin.rotation;
 	  	

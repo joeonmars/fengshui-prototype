@@ -84,11 +84,12 @@ feng.controllers.view3d.View3DController.prototype.onChangeView3D = function(e){
 	from.fadeOut();
 
 	this._view3dToFadeIn = this.getView3D( e.sectionId, e.viewId );
+	this._view3dToFadeIn.startGateway = this._view3dToFadeIn.view3dObjects[ e.gatewayId ];
 
-	//var gateway = this._view3dToFadeIn.interactiveObjects[ e.gatewayId ];
-	//var origin = gateway.origin;
-
-	console.log('Change View3D from: ' + e.target.id + ' to ' + this._view3dToFadeIn.id);
+	console.log(
+		'Change View3D from: ' + e.target.id + 
+		' to ' + this._view3dToFadeIn.id + 
+		' start gateway: ' + this._view3dToFadeIn.startGateway.gatewayId);
 };
 
 
@@ -111,6 +112,6 @@ feng.controllers.view3d.View3DController.prototype.onAnimatedInView3D = function
 feng.controllers.view3d.View3DController.prototype.onAnimatedOutView3D = function(e){
 
 	if(this._view3dToFadeIn) {
-		this._view3dToFadeIn.fadeIn();
+		this._view3dToFadeIn.fadeIn( this._startGateway );
 	}
 };

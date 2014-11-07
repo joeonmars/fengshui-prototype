@@ -80,7 +80,6 @@ feng.models.View3D.Data = {
 				viewid: "bathroom",
 				gatewayid: "bathroom-door",
 				castShadow: true,
-				isEntry: true,
 				origin: {
 					position: new THREE.Vector3(-240, 0, 34),
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
@@ -440,6 +439,7 @@ feng.models.View3D.Data = {
 				viewid: "livingroom",
 				gatewayid: "bathroom-door",
 				castShadow: true,
+				isEntry: true,
 				origin: {
 					position: new THREE.Vector3(12, 0, -60),
 					rotation: new THREE.Euler(0, Math.PI, 0)
@@ -562,8 +562,8 @@ feng.models.View3D.Data = {
 				gatewayid: "stairways-door",
 				isEntry: true,
 				origin: {
-					position: new THREE.Vector3(20, 0, -50),
-					rotation: new THREE.Euler(0, Math.PI, 0)
+					position: new THREE.Vector3(50, 0, 225),
+					rotation: new THREE.Euler(0, 0, 0)
 				}
 			},
 			'boysroom-door': {
@@ -582,7 +582,7 @@ feng.models.View3D.Data = {
 				gatewayid: "homeoffice-door",
 				castShadow: true,
 				origin: {
-					position: new THREE.Vector3(60, 0, 225),
+					position: new THREE.Vector3(20, 0, -50),
 					rotation: new THREE.Euler(0, 0, 0)
 				}
 			},
