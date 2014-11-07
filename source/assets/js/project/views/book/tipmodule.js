@@ -123,7 +123,7 @@ feng.views.book.TipModule.prototype.setSize = function( viewportSize ) {
 	this._coverWidth = viewportSize.width * this._ratioOfWidth;
 	this._coverWidth = Math.max(this._minSize.width, this._coverWidth);
 
-	var maxHeight = Math.max(450, viewportSize.height * .7);
+	var maxHeight = Math.max(450, viewportSize.height * .6);
 	var height = Math.min(maxHeight, this._coverWidth / this._aspectRatio);
 
 	this._coverWidth = height * this._aspectRatio;
@@ -218,4 +218,4 @@ feng.views.book.TipModule.prototype.onClickShareButton = function(e) {
 
 feng.views.book.TipModule.RATIO_OF_WIDTH = 0.25;
 feng.views.book.TipModule.RATIO_OF_MARGIN = 0.045;
-feng.views.book.TipModule.MIN_SIZE = new goog.math.Size(300, 470);
+feng.views.book.TipModule.MIN_SIZE = new goog.math.Size(300, 440);
