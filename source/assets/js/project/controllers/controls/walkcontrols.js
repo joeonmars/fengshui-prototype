@@ -60,12 +60,15 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 	}
 
 	// create path track
-	if(this._pathTrack) {
+	if(feng.debug && this._pathTrack) {
 		this._scene.remove( this._pathTrack );
 	}
 
-	this._pathTrack = new feng.fx.PathTrack( coordinates, 0 );
-	this._scene.add( this._pathTrack );
+	this._pathTrack = new feng.fx.PathTrack( coordinates, 0, false, null, feng.debug );
+
+	if(feng.debug) {
+		this._scene.add( this._pathTrack );
+	}
 
 	var length = this._pathTrack.spline.getLength();
 	var distance = length - viewDistance;

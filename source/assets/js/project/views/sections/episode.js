@@ -65,6 +65,7 @@ feng.views.sections.Episode.prototype.activate = function(){
 feng.views.sections.Episode.prototype.activateView = function(){
 
 	if(this._view3d) {
+
 		this._view3d.activate();
 	}
 };
@@ -182,25 +183,6 @@ feng.views.sections.Episode.prototype.onShowView3D = function(e){
 			fromPosition: position,
 			fromRotation: rotation,
 			fromFov: feng.controllers.controls.Controls.Default.FOV
-		});
-	}
-	
-	// test mode
-	if(feng.utils.Utils.hasQuery('interaction', 'true')) {
-
-		var objectName = feng.utils.Utils.getQuery('object');
-
-		var object = view3d.getInteractiveObject( objectName );
-		var cameraSettings = object.specialCameraSettings;
-
-		view3d.modeController.onModeChange({
-			type: feng.events.EventType.CHANGE,
-			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-			toPosition: cameraSettings.position,
-			toRotation: cameraSettings.rotation,
-			toFov: cameraSettings.fov,
-			object: object
 		});
 	}
 };

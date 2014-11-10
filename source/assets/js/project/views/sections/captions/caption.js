@@ -34,11 +34,13 @@ feng.views.sections.captions.Caption = function( object, cameraController, rende
   // render HTML template
   this.domElement = soy.renderAsFragment(this._template, this._templateData);
 
+  this._shadeEl = goog.dom.getElementByClass('shade', this.domElement);
+  this._panelEl = goog.dom.getElementByClass('panel', this.domElement);
+
   this._closeButton = goog.dom.getElementByClass('close-button', this.domElement);
   this._hintButton = goog.dom.getElementByClass('hint-button', this.domElement);
   this._interactionButton = goog.dom.getElementByClass('interaction-button', this.domElement);
 
-  this._popupEl = goog.dom.getElementByClass('popup', this.domElement);
   this._problemEl = goog.dom.getElementByClass('problem', this.domElement);
   this._hintEl = goog.dom.getElementByClass('hint', this.domElement);
   this._interactionEl = goog.dom.getElementByClass('interaction', this.domElement);
@@ -78,6 +80,14 @@ feng.views.sections.captions.Caption.prototype.show = function() {
   goog.style.showElement( this.domElement, true );
 
   this.onResize();
+
+  // animate in
+  TweenMax.to( this._renderSize, .65, {
+    ratioX: .7,
+    'ease': Quad.easeInOut,
+    'onUpdate': this._renderSize.update,
+    'onUpdateScope': this._renderSize
+  });
 };
 
 
@@ -89,7 +99,17 @@ feng.views.sections.captions.Caption.prototype.hide = function() {
 
   this._object.stopInteraction();
 
-  goog.style.showElement( this.domElement, false );
+  // animate out
+  TweenMax.to( this._renderSize, .65, {
+    ratioX: 1,
+    'ease': Quad.easeInOut,
+    'onUpdate': this._renderSize.update,
+    'onUpdateScope': this._renderSize,
+    'onComplete': function() {
+      goog.style.showElement( this.domElement, false );
+    },
+    'onCompleteScope': this
+  });
 };
 
 
@@ -121,7 +141,10 @@ feng.views.sections.captions.Caption.prototype.updateStatus = function() {
   var requiredTip = tip.getRequiredTip();
   var hasLockedRequiredTip = (requiredTip && !requiredTip.unlocked);
   goog.style.showElement( this._hintEl, hasLockedRequiredTip );
-  goog.style.showElement( this._interactionEl, !hasLockedRequiredTip );
+
+  if(this._interactionEl) {
+    goog.style.showElement( this._interactionEl, !hasLockedRequiredTip );
+  }
 
   if(!tip.problem || hasLockedRequiredTip) {
     goog.style.showElement( this._problemEl, false );
@@ -142,7 +165,9 @@ feng.views.sections.captions.Caption.prototype.updateStatus = function() {
 
     goog.dom.classes.remove( this._adviceEl, 'closed' );
 
-    goog.dom.classes.add( this._interactionEl, 'unlocked' );
+    if(this._interactionEl) {
+      goog.dom.classes.add( this._interactionEl, 'unlocked' );
+    }
   }
 };
 
@@ -178,6 +203,6 @@ feng.views.sections.captions.Caption.prototype.onClickShareButton = function( e 
 
 feng.views.sections.captions.Caption.prototype.onResize = function( e ) {
 
-  var viewportSize = goog.dom.getViewportSize();
-  goog.style.setStyle( this.domElement, 'height', viewportSize.height + 'px' );
+  goog.style.setStyle( this._shadeEl, 'height', this._renderSize.height + 'px' );
+  goog.style.setStyle( this._panelEl, 'height', this._renderSize.height + 'px' );
 };

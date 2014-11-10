@@ -38,12 +38,19 @@ feng.controllers.controls.ExitControls.prototype.activate = function () {
 
 	goog.base(this, 'activate');
 
-	// start to load the go-to view3d of this episode
-	var viewId = this._gateway.viewId;
-	this._view3d.episode.load( viewId );
+	if(this._gateway.shouldGoHome()) {
 
-	// listen to episode load complete event to resume after load
-	this._eventHandler.listenOnce( this._view3d.episode, feng.events.EventType.COMPLETE, this.onLoadComplete, false, this);
+		feng.navigationController.setToken( feng.controllers.NavigationController.Token.HOME );
+
+	}else {
+
+		// start to load the go-to view3d of this episode
+		var viewId = this._gateway.viewId;
+		this._view3d.episode.load( viewId );
+
+		// listen to episode load complete event to resume after load
+		this._eventHandler.listenOnce( this._view3d.episode, feng.events.EventType.COMPLETE, this.onLoadComplete, false, this);
+	}
 };
 
 

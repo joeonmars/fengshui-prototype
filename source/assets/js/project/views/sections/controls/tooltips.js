@@ -113,11 +113,9 @@ feng.views.sections.controls.Tooltips.prototype.setView3D = function( view3d ){
   }, this);
 
   // check objects to detect blocking
-  this._detectObjects = [];
-
-  goog.object.forEach(this._view3d.view3dObjects, function(object) {
-    this._detectObjects.push( object.object3d );
-  }, this);
+  this._detectObjects = goog.array.map(this._view3d.getSolidObjects(), function(object) {
+    return object.object3d;
+  });
 
   goog.array.remove( this._detectObjects, this._view3d.designPlane.object3d );
   goog.array.remove( this._detectObjects, this._view3d.skybox.object3d );
@@ -165,11 +163,11 @@ feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
 
     var tooltip = this._currentTooltips[ id ];
 
-    var proxyBox = object.getProxyBox();
-    var direction = this._rayDirection.subVectors( proxyBox.position, controlPosition ).normalize();
+    var objectCenter = object.getCenter();
+    var direction = this._rayDirection.subVectors( objectCenter, controlPosition ).normalize();
     this._raycaster.set( controlPosition, direction );
 
-    var objectDirection = proxyBox.position.clone().sub( controlPosition ).normalize();
+    var objectDirection = objectCenter.clone().sub( controlPosition ).normalize();
     var dot = objectDirection.dot( controlDirection );
 
     if(dot >= thresholdDot) {
@@ -184,8 +182,10 @@ feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
     
     var intersects = this._raycaster.intersectObjects( this._detectObjects );
 
-    var shouldShow = (intersects.length > 0 && intersects[0].object.view3dObject === proxyBox.view3dObject);
-    
+    var shouldShow = (intersects.length > 0 && 
+      (intersects[0].object.view3dObject === object || intersects[0].object.parent.view3dObject === object || goog.array.contains(intersects[0].object.children, object.object3d))
+      );
+
     goog.dom.classes.enable( tooltip, 'hidden', !shouldShow );
 
   }, this);

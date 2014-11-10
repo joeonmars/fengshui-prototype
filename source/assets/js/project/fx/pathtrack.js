@@ -6,7 +6,7 @@ goog.require('feng.utils.Randomizer');
  * @constructor
  * Based on http://mrdoob.github.io/three.js/examples/webgl_geometry_extrude_splines.html
  */
-feng.fx.PathTrack = function(controlPoints, offset, isClosed, color, debug){
+feng.fx.PathTrack = function(controlPoints, offset, isClosed, color){
 
   goog.base(this);
 
@@ -30,12 +30,8 @@ feng.fx.PathTrack = function(controlPoints, offset, isClosed, color, debug){
   this._up = new THREE.Vector3(0, 1, 0);
   this._offset = 0;
 
-  this._debug = (debug === false) ? false : true;
-  
-  if(this._debug) {
-  	this._debugObject = new THREE.Object3D();
-  	this.add( this._debugObject );
-  }
+  this._debugObject = new THREE.Object3D();
+  this.add( this._debugObject );
 
   this.create( controlPoints, offset, isClosed, color );
 };
@@ -52,9 +48,7 @@ feng.fx.PathTrack.prototype.create = function(controlPoints, offset, isClosed, c
 
   this._offset = goog.isNumber(offset) ? offset : -15;
 
-  if(this._debug) {
-  	this.updateTrack();
-  }
+  this.updateTrack();
 };
 
 

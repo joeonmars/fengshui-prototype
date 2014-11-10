@@ -20,8 +20,6 @@ feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement)
   this._proxyBox = new THREE.Mesh( new THREE.BoxGeometry(1,1,1), new THREE.MeshBasicMaterial( { color: 0xffffff, wireframe: true, wireframeLinewidth: 2 } ) );
   this._raycaster = new THREE.Raycaster();
 
-  this._cameraOffsetX = 0;
-
   this.distanceToObject = 0;
 };
 goog.inherits(feng.controllers.controls.CloseUpControls, feng.controllers.controls.Controls);
@@ -78,45 +76,6 @@ feng.controllers.controls.CloseUpControls.prototype.setCamera = function( object
 	this.setFov( cameraSettings.fov );
 
 	this._activeObject = object;
-};
-
-
-feng.controllers.controls.CloseUpControls.prototype.calculateCameraOffset = function () {
-
-	var viewSize = this._view3d.viewSize;
-	var fov = this.getFov();
-
-	var visibleHeight = 2 * Math.tan( fov * Math.PI / 180 / 2 ) * this.distanceToObject;
-	var sizeFraction = viewSize.height / visibleHeight;
-	var offsetScreenWidth = viewSize.width / 5;
-	var offsetDistance = offsetScreenWidth / sizeFraction;
-
-	return offsetDistance;
-};
-
-
-feng.controllers.controls.CloseUpControls.prototype.shiftCameraToLeft = function () {
-
-	this._cameraOffsetX = this.calculateCameraOffset();
-	this.shiftCamera( - this._cameraOffsetX );
-};
-
-
-feng.controllers.controls.CloseUpControls.prototype.shiftCameraToRight = function () {
-
-	this._cameraOffsetX = this.calculateCameraOffset();
-	this.shiftCamera( this._cameraOffsetX );
-};
-
-
-feng.controllers.controls.CloseUpControls.prototype.shiftCamera = function ( x ) {
-
-	var camera = this.getCamera();
-
-	TweenMax.to(camera.position, .5, {
-		x: x,
-		'ease': Sine.easeInOut
-	});
 };
 
 

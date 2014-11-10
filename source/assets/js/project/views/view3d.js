@@ -11,6 +11,7 @@ goog.require('feng.controllers.view3d.ModeController');
 goog.require('feng.controllers.view3d.RenderController');
 goog.require('feng.fx.EnergyFlow');
 goog.require('feng.fx.Renderer');
+goog.require('feng.fx.View3DSize');
 goog.require('feng.models.Preload');
 goog.require('feng.models.View3D');
 goog.require('feng.models.Accessories');
@@ -28,6 +29,10 @@ goog.require('feng.views.view3dobject.Mirror');
 goog.require('feng.views.view3dobject.AccessoryObject');
 goog.require('feng.views.view3dobject.TipObject');
 goog.require('feng.views.view3dobject.entities.Bear');
+goog.require('feng.views.view3dobject.entities.Cat');
+goog.require('feng.views.view3dobject.entities.DiningMirror');
+goog.require('feng.views.view3dobject.entities.Drawer');
+goog.require('feng.views.view3dobject.entities.Knife');
 goog.require('feng.views.view3dobject.entities.Lamp');
 goog.require('feng.views.view3dobject.entities.Computer');
 goog.require('feng.views.view3dobject.entities.Closet');
@@ -75,7 +80,7 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud, episode){
 
 	this.accessories = [];
 
-	this.viewSize = new goog.math.Size(0, 0);
+	this.viewSize = new feng.fx.View3DSize(0, 0);
 
 	this.floorIndex = 0;
 	this.floorObjects = [];
@@ -113,9 +118,7 @@ feng.views.View3D.prototype.init = function(){
 feng.views.View3D.prototype.getViewSize = function(){
 
 	if(this.viewSize.isEmpty()) {
-		var viewSize = goog.dom.getViewportSize();
-		this.viewSize.width = viewSize.width;
-		this.viewSize.height = viewSize.height;
+		this.viewSize = this.viewSize.update();
 	}
 
 	return this.viewSize;
@@ -233,7 +236,7 @@ feng.views.View3D.prototype.getObjectsByClass = function( objectClass ){
 
 feng.views.View3D.prototype.activate = function(){
 
- 	this._eventHandler.listen( window, 'resize', this.onResize, false, this );
+ 	this._eventHandler.listen( this.viewSize, goog.events.EventType.RESIZE, this.onResize, false, this );
  	this._eventHandler.listen( this.cameraController, feng.events.EventType.CHANGE, this.onCameraChange, false, this );
  	
  	var tutorialOverlay = this.hud.tutorialOverlay;
@@ -423,11 +426,15 @@ feng.views.View3D.prototype.initScene = function() {
 		'movable': feng.views.view3dobject.MovableObject,
 		'gateway': feng.views.view3dobject.GatewayObject,
 		'mirror': feng.views.view3dobject.Mirror,
+		'diningmirror': feng.views.view3dobject.entities.DiningMirror,
 		'closet': feng.views.view3dobject.entities.Closet,
 		'pictures': feng.views.view3dobject.entities.Pictures,
 		'computer': feng.views.view3dobject.entities.Computer,
 		'lamp': feng.views.view3dobject.entities.Lamp,
 		'bear': feng.views.view3dobject.entities.Bear,
+		'cat': feng.views.view3dobject.entities.Cat,
+		'drawer': feng.views.view3dobject.entities.Drawer,
+		'knife': feng.views.view3dobject.entities.Knife,
 		'refrigerator': feng.views.view3dobject.entities.Refrigerator,
 		'windows': feng.views.view3dobject.entities.Windows,
 		'fruitplate': feng.views.view3dobject.entities.FruitPlate
@@ -571,10 +578,6 @@ feng.views.View3D.prototype.onOverlayAnimateOut = function(e){
 
 
 feng.views.View3D.prototype.onResize = function(e){
-
-	var viewSize = goog.dom.getViewportSize();
-	this.viewSize.width = viewSize.width;
-	this.viewSize.height = viewSize.height;
 
 	this.cameraController.onResize( this.viewSize.aspectRatio() );
 

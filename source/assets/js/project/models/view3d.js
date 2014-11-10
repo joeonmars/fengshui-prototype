@@ -37,6 +37,7 @@ feng.models.View3D.Data = {
 				viewid: "livingroom",
 				gatewayid: "studio-door",
 				castShadow: true,
+				toHome: true,
 				isEntry: true,
 				origin: {
 					position: new THREE.Vector3(-240, 0, 34),
@@ -454,6 +455,7 @@ feng.models.View3D.Data = {
 				viewid: "livingroom",
 				gatewayid: "livingroom-door",
 				castShadow: true,
+				toHome: true,
 				isEntry: true,
 				origin: {
 					position: new THREE.Vector3(110, 0, 0),
@@ -470,38 +472,86 @@ feng.models.View3D.Data = {
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
 				}
 			},
+			'stairways': {
+				collidable: true
+			},
+			'door-frame': {
+				texture: "house.livingroom.door-frame-texture"
+			},
 			'floor': {
-				receiveShadow: true
+				receiveShadow: true,
+				texture: "house.livingroom.floor-texture"
 			},
 			'wall':	{
-				castShadow: true
+				castShadow: true,
+				texture: "house.livingroom.wall-texture"
 			},
 			'wall-outer':	{
-				castShadow: true
+				castShadow: true,
+				texture: "house.livingroom.wall-outer-texture"
 			},
 			'ceiling':	{
+				castShadow: true,
+				texture: "house.livingroom.ceiling-texture"
+			},
+			'ceiling-lamp-1':	{
+				texture: "house.livingroom.ceiling-lamp-1-texture"
+			},
+			'ceiling-lamp-2':	{
+				texture: "house.livingroom.ceiling-lamp-2-texture"
+			},
+			'windows':	{
 				castShadow: true
 			},
 			'mirror':	{
-				Class: "mirror"
+				Class: "diningmirror",
+				camera: {
+					position: new THREE.Vector3(-9, 75, -118),
+					rotation: new THREE.Euler(-0.4, 0, 0, 'YXZ'),
+					fov: 40
+				},
+				tipKey: 'house.livingroom.mirror'
+			},
+			'drawer': {
+				Class: "drawer",
+				texture: "house.livingroom.drawer-texture",
+				camera: {
+					position: new THREE.Vector3(-8, 97, -203),
+					rotation: new THREE.Euler(-1.5, 0, 0, 'YXZ'),
+					fov: 25
+				},
+				tipKey: 'house.livingroom.drawer'
 			},
 			'knife': {
-				texture: "house.livingroom.knife-texture"
+				Class: "knife",
+				texture: "house.livingroom.knife-on-cabinet-texture",
+				position: new THREE.Vector3(-6.87, -2.21, 10.82),
+				rotation: new THREE.Euler(0, 0, 0),
+				range: 50,
+				parent: 'drawer',
+				tipKey: 'house.livingroom.knife'
 			},
 			'kitchen-top': {
 				texture: "house.livingroom.kitchen-top-texture"
 			},
 			'kitchen-bottom': {
-				collidable: true
+				collidable: true,
+				texture: "house.livingroom.kitchen-bottom-texture"
 			},
 			'kitchen-stuff': {
 				texture: "house.livingroom.kitchen-stuff-texture"
+			},
+			'windows': {
+				texture: "house.livingroom.windows-texture"
 			},
 			'windowsill-stuff': {
 				texture: "house.livingroom.windowsill-stuff-texture"
 			},
 			'basin': {
 				texture: "house.livingroom.basin-texture"
+			},
+			'ladder': {
+				texture: "house.livingroom.ladder-texture"
 			},
 			'cooktop': {
 				texture: "house.livingroom.cooktop-texture"
@@ -514,8 +564,18 @@ feng.models.View3D.Data = {
 				texture: "house.livingroom.clock-texture"
 			},
 			'bookshelf': {
+				Class: "tip",
 				collidable: true,
-				texture: "house.livingroom.bookshelf-texture"
+				texture: "house.livingroom.bookshelf-texture",
+				camera: {
+					position: new THREE.Vector3(-22, 80, 0),
+					rotation: new THREE.Euler(0.05, 1.58, 0, 'YXZ'),
+					fov: 30
+				},
+				tipKey: 'house.livingroom.books'
+			},
+			'bookshelf-lamps': {
+				texture: "house.livingroom.bookshelf-lamps-texture"
 			},
 			'round-table': {
 				collidable: true,
@@ -543,16 +603,56 @@ feng.models.View3D.Data = {
 				collidable: true,
 				texture: "house.livingroom.dining-chairs-texture"
 			},
+			'dining-lamps': {
+				texture: "house.livingroom.dining-lamps-texture"
+			},
 			'divider': {
 				collidable: true,
 				texture: "house.livingroom.divider-texture"
 			},
+			'curtain-left': {
+				collidable: true,
+				texture: "house.livingroom.curtain-left-texture"
+			},
+			'curtain-right': {
+				collidable: true,
+				texture: "house.livingroom.curtain-right-texture"
+			},
 			'fruitplate': {
 				texture: "house.livingroom.fruitplate-texture"
+			},
+			'refrigerator': {
+				collidable: true,
+				texture: "house.livingroom.refrigerator-texture"
+			},
+			'white-sofa': {
+				collidable: true,
+				texture: "house.livingroom.white-sofa-texture"
+			},
+			'fish-bowl-stand': {
+				collidable: true,
+				texture: "house.livingroom.fish-bowl-stand-texture"
 			},
 			'tv-stand': {
 				collidable: true,
 				texture: "house.livingroom.tv-stand-texture"
+			},
+			'window-blinds': {
+				texture: "house.livingroom.window-blinds-texture"
+			},
+			'cupboard': {
+				collidable: true,
+				texture: "house.livingroom.cupboard-texture"
+			},
+			'living-area-lamp': {
+				collidable: true,
+				texture: "house.livingroom.living-area-lamp-texture"
+			},
+			'living-area-carpet': {
+				texture: "house.livingroom.living-area-carpet-texture"
+			},
+			'heater': {
+				texture: "house.livingroom.heater-texture"
 			}
 		},
 		'corridor': {
@@ -586,6 +686,23 @@ feng.models.View3D.Data = {
 					rotation: new THREE.Euler(0, 0, 0)
 				}
 			},
+			'display-table': {
+				texture: "house.corridor.display-table-texture"
+			},
+			'cat': {
+				texture: "house.corridor.cat-texture"
+			},
+			'cat-bed': {
+				Class: "cat",
+				collidable: true,
+				texture: "house.corridor.cat-bed-texture",
+				/*camera: {
+					position: new THREE.Vector3(-22, 80, 0),
+					rotation: new THREE.Euler(0.05, 1.58, 0, 'YXZ'),
+					fov: 30
+				},*/
+				tipKey: 'house.corridor.cat'
+			},
 			'floor': {
 				receiveShadow: true
 			},
@@ -593,10 +710,18 @@ feng.models.View3D.Data = {
 				castShadow: true
 			},
 			'wall-outer':	{
-				castShadow: true
+				castShadow: true,
+				texture: "house.corridor.wall-outer-texture"
+			},
+			'door-frames':	{
+				texture: "house.corridor.door-frames-texture"
 			},
 			'ceiling':	{
-				castShadow: true
+				castShadow: true,
+				texture: "house.corridor.ceiling-texture"
+			},
+			'window-plant':	{
+				texture: "house.corridor.window-plant-texture"
 			}
 		},
 		'boysroom': {

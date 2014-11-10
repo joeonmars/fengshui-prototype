@@ -34,8 +34,6 @@ feng.views.sections.captions.ChangeColorCaption.prototype.show = function() {
   }, this);
 
   this._object.startInteraction();
-
-  this._controls.shiftCameraToRight();
 };
 
 
@@ -48,8 +46,6 @@ feng.views.sections.captions.ChangeColorCaption.prototype.hide = function() {
 
 
 feng.views.sections.captions.ChangeColorCaption.prototype.close = function() {
-
-  this._controls.shiftCamera( 0 );
 
   goog.Timer.callOnce(this.doClose, 600, this);
 };

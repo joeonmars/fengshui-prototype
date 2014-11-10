@@ -81,6 +81,7 @@ module.exports = function(grunt) {
           '<%= thirdPartyJsDir %>/createjs/preloadjs-0.4.1.min.js',
           '<%= thirdPartyJsDir %>/greensock/TweenMax.min.js',
           '<%= thirdPartyJsDir %>/greensock/utils/Draggable.min.js',
+          '<%= thirdPartyJsDir %>/greensock/plugins/ThrowPropsPlugin.min.js',
           '<%= thirdPartyJsDir %>/threejs/build/three69.min.js',
           '<%= thirdPartyJsDir %>/threejs-utils/Projector.js',
           '<%= thirdPartyJsDir %>/threejs-utils/CanvasRenderer.js',

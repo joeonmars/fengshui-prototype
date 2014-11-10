@@ -42,7 +42,7 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement){
 	this._targetRotationY = 0;
 
 	this._maxRotationX = THREE.Math.degToRad(40);
-	this._minRotationX = THREE.Math.degToRad(-40);
+	this._minRotationX = THREE.Math.degToRad(-60);
 };
 goog.inherits(feng.controllers.controls.BrowseControls, feng.controllers.controls.Controls);
 
@@ -86,21 +86,12 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 			if(isUnlockedRequiredTip) return;
 
 			var withinRange = this._detectorSphere.intersectsSphere( tipObject.getBoundingSphere() );
-			var canReach = false;
 
-			var rayDirection = new THREE.Vector3().subVectors( tipObject.getCenter(), cameraPosition ).normalize();
-			this._detectorRay.set( cameraPosition, rayDirection );
+			var inArms = this._view3d.arms.hasObject( tipObject );
 
-			var intersects = this._detectorRay.intersectObjects( object3ds );
+			//console.log(tipObject.name + ' withinRange: ' + withinRange + ', locked: ' + locked);
 
-			var canReach =
-				(intersects.length > 0) ?
-				(intersects[0].object === tipObject.object3d || goog.array.contains(tipObject.object3d.children, intersects[0].object)) :
-				false;
-
-			//console.log(tipObject.name + ' withinRange: ' + withinRange + ', locked: ' + locked + ', canReach: ' + canReach, (intersects.length > 0 ? intersects[0].object : null));
-
-			if(locked && withinRange && canReach) {
+			if(locked && withinRange && !inArms) {
 				selectableObjects.push( tipObject );
 			}
 		}, this);

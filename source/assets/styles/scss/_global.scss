@@ -478,65 +478,6 @@ body{
     }
   }
 
-  .close-button{
-    width: 40px;
-    height: 40px;
-
-    >div{
-      @include absoluteTopLeft;
-
-      &.circle{
-        @include retina-ui("close-circle");
-        @include single-transition(transform, .25s, ease-out);
-        @include scale(0);
-      }
-
-      &.icon{
-        width: 100%;
-        height: 100%;
-        @include single-transition(transform, .5s);
-        @include scale(1);
-
-        >div{
-          @include absoluteTopLeft;
-          @include single-transition(opacity, .25s, ease-out);
-
-          &:first-child{
-            @include retina-ui("close");
-            opacity: 1;
-          }
-
-          &.lighter{
-            @include retina-ui("close-lighter");
-            opacity: 0;
-          }
-        }
-      }
-    }
-
-    &:hover{
-      >div{
-        &.circle{
-          @include scale(1);
-        }
-
-        &.icon{
-          @include scale(.8);
-
-          >div{
-            &:first-child{
-              opacity: 0;
-            }
-
-            &.lighter{
-              opacity: 1;
-            }
-          }
-        }
-      }
-    }
-  }
-
   .fengshui-logo{
 
     >.symbol{

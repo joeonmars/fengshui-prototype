@@ -122,25 +122,6 @@ feng.utils.ThreeUtils.getShortestRotation = function( from, to ) {
 };
 
 
-feng.utils.ThreeUtils.getWorldPosition = function( object, position ) {
-
-	// the renderer calls updateMatrixWorld() in each render loop.
-	// however here we force to do it in case the render loop hasn't began
-	var parentObj = object.parent;
-
-	while(parentObj) {
-
-		parentObj.updateMatrixWorld();
-		parentObj = parentObj.parent;
-	}
-
-	var vector = position || new THREE.Vector3();
-	vector.setFromMatrixPosition( object.matrixWorld );
-
-	return vector;
-};
-
-
 feng.utils.ThreeUtils.lerpBetween = function( a, b, x ) {
 
 	var newObj = a.clone();

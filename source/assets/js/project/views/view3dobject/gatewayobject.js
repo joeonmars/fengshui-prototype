@@ -35,6 +35,12 @@ feng.views.view3dobject.GatewayObject = function( object3d, data, view3d ){
 goog.inherits(feng.views.view3dobject.GatewayObject, feng.views.view3dobject.InteractiveObject);
 
 
+feng.views.view3dobject.GatewayObject.prototype.shouldGoHome = function() {
+
+	return (this.data.toHome === true);
+};
+
+
 feng.views.view3dobject.GatewayObject.prototype.getEndRotationY = function( inversed ) {
 
 	var direction = inversed ? -1 : 1;
