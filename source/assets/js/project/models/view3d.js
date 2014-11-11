@@ -473,7 +473,11 @@ feng.models.View3D.Data = {
 				}
 			},
 			'stairways': {
-				collidable: true
+				collidable: true,
+				texture: "house.livingroom.stairways-texture"
+			},
+			'stairways-handrail': {
+				texture: "house.livingroom.stairways-handrail-texture"
 			},
 			'door-frame': {
 				texture: "house.livingroom.door-frame-texture"
@@ -499,9 +503,6 @@ feng.models.View3D.Data = {
 			},
 			'ceiling-lamp-2':	{
 				texture: "house.livingroom.ceiling-lamp-2-texture"
-			},
-			'windows':	{
-				castShadow: true
 			},
 			'mirror':	{
 				Class: "diningmirror",
@@ -542,6 +543,7 @@ feng.models.View3D.Data = {
 				texture: "house.livingroom.kitchen-stuff-texture"
 			},
 			'windows': {
+				castShadow: true,
 				texture: "house.livingroom.windows-texture"
 			},
 			'windowsill-stuff': {
@@ -638,6 +640,7 @@ feng.models.View3D.Data = {
 				texture: "house.livingroom.tv-stand-texture"
 			},
 			'window-blinds': {
+				castShadow: true,
 				texture: "house.livingroom.window-blinds-texture"
 			},
 			'cupboard': {
@@ -656,6 +659,12 @@ feng.models.View3D.Data = {
 			}
 		},
 		'corridor': {
+			'stairways': {
+				texture: "house.livingroom.stairways-texture"
+			},
+			'stairways-handrail': {
+				texture: "house.livingroom.stairways-handrail-texture"
+			},
 			'stairways-door': {
 				Class: "gateway",
 				viewid: "livingroom",
@@ -719,6 +728,10 @@ feng.models.View3D.Data = {
 			'ceiling':	{
 				castShadow: true,
 				texture: "house.corridor.ceiling-texture"
+			},
+			'corridor-window':	{
+				castShadow: true,
+				texture: "house.corridor.corridor-window-texture"
 			},
 			'window-plant':	{
 				texture: "house.corridor.window-plant-texture"

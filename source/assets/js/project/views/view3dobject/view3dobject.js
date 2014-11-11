@@ -16,6 +16,7 @@ feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
   this.object3d.view3dObject = this;
 
   this.name = object3d.name;
+  this.id = object3d.name + '-' + object3d.uuid;
   this.data = data;
 
   this._view3d = view3d;

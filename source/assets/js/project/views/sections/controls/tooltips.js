@@ -13,7 +13,7 @@ feng.views.sections.controls.Tooltips = function( domElement ){
 
   goog.base(this, domElement);
 
-  this._detectBlockingThrottle = new goog.async.Throttle( this.detectBlocking, 1000/15, this );
+  this._detectBlockingThrottle = new goog.async.Throttle( this.detectBlocking, 200, this );
 
   this._raycaster = new THREE.Raycaster();
   this._rayDirection = new THREE.Vector3();
@@ -35,7 +35,7 @@ feng.views.sections.controls.Tooltips.prototype.createTooltips = function( view3
 
     var tip = tipObject.tip;
 
-    if(!this._tooltips[tip.id]) {
+    if(!this._tooltips[ tip.id ]) {
 
       var tooltipEl = soy.renderAsFragment(feng.templates.controls.TipTooltip, {
         tip: tipObject.tip
@@ -43,14 +43,14 @@ feng.views.sections.controls.Tooltips.prototype.createTooltips = function( view3
 
       goog.dom.appendChild( this.domElement, tooltipEl );
 
-      this._tooltips[tip.id] = tooltipEl;
+      this._tooltips[ tip.id ] = tooltipEl;
     }
   }, this);
 
   // create gateway tooltips
   goog.object.forEach( view3d.getGatewayObjects(), function(gatewayObject) {
 
-    if(!this._tooltips[gatewayObject.gatewayId]) {
+    if(!this._tooltips[ gatewayObject.id ]) {
 
       var tooltipEl = soy.renderAsFragment(feng.templates.controls.GatewayTooltip, {
         gateway: gatewayObject
@@ -58,7 +58,7 @@ feng.views.sections.controls.Tooltips.prototype.createTooltips = function( view3
 
       goog.dom.appendChild( this.domElement, tooltipEl );
 
-      this._tooltips[gatewayObject.gatewayId] = tooltipEl;
+      this._tooltips[ gatewayObject.id ] = tooltipEl;
     }
   }, this);
 };
@@ -87,7 +87,7 @@ feng.views.sections.controls.Tooltips.prototype.setView3D = function( view3d ){
 
   goog.array.forEach( this._tooltipObjects, function(object) {
 
-    var id = object.tip ? object.tip.id : object.gatewayId;
+    var id = object.tip ? object.tip.id : object.id;
     this._currentTooltips[ id ] = this._tooltips[ id ];
   }, this);
 
@@ -107,7 +107,7 @@ feng.views.sections.controls.Tooltips.prototype.setView3D = function( view3d ){
   // listen to click event of gateway tooltip
   goog.array.forEach( gatewayObjects, function(gatewayObject) {
 
-    var tooltipEl = this._tooltips[  gatewayObject.gatewayId ];
+    var tooltipEl = this._tooltips[ gatewayObject.id ];
 
     goog.events.listenOnce( tooltipEl, 'click', this.onClickGatewayTooltip, false, this );
   }, this);
@@ -159,7 +159,7 @@ feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
 
   goog.array.forEach( this._tooltipObjects, function(object) {
 
-    var id = object.tip ? object.tip.id : object.gatewayId;
+    var id = object.tip ? object.tip.id : object.id;
 
     var tooltip = this._currentTooltips[ id ];
 
@@ -223,7 +223,7 @@ feng.views.sections.controls.Tooltips.prototype.onModeChange = function(e){
   switch(e.mode) {
     case feng.controllers.view3d.ModeController.Mode.BROWSE:
     case feng.controllers.view3d.ModeController.Mode.DESIGN:
-    case feng.controllers.view3d.ModeController.Mode.WALK:
+    //case feng.controllers.view3d.ModeController.Mode.WALK:
     this.activate();
     break;
 
@@ -244,7 +244,7 @@ feng.views.sections.controls.Tooltips.prototype.onAnimationFrame = function(now)
     var pos3d = object.getCenter();
     var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, camera, viewSize );
     
-    var id = object.tip ? object.tip.id : object.gatewayId;
+    var id = object.tip ? object.tip.id : object.id;
     var tooltip = this._currentTooltips[ id ];
     goog.style.setStyle( tooltip, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)' );
 

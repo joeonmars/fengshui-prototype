@@ -187,6 +187,8 @@ feng.models.Preload = function(){
 				'scene-data': 'json/house-livingroom.json',
 				'wall-texture': 'images/texture/house/livingroom/wall.jpg',
 				'wall-outer-texture': 'images/texture/house/livingroom/wall-outer.jpg',
+				'stairways-texture': 'images/texture/house/livingroom/stairways.jpg',
+				'stairways-handrail-texture': 'images/texture/house/livingroom/stairways-handrail.jpg',
 				'ceiling-texture': 'images/texture/house/livingroom/ceiling.jpg',
 				'ceiling-lamp-1-texture': 'images/texture/house/livingroom/ceiling-lamp-1.jpg',
 				'ceiling-lamp-2-texture': 'images/texture/house/livingroom/ceiling-lamp-2.jpg',
@@ -246,6 +248,7 @@ feng.models.Preload = function(){
 				'display-table-texture': 'images/texture/house/corridor/display-table.jpg',
 				'cat-bed-texture': 'images/texture/house/corridor/cat-bed.jpg',
 				'cat-texture': 'images/texture/house/corridor/cat.jpg',
+				'corridor-window-texture': 'images/texture/house/corridor/corridor-window.jpg',
 				'window-plant-texture': 'images/texture/house/corridor/window-plant.jpg',
 				'skybox': {
 					'xpos': 'images/texture/house/boysroom/skybox/pos-x.png',
