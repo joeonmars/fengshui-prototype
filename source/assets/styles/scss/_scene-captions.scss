@@ -6,20 +6,72 @@
 	&.left{
 		>.panel{
 			left: 0;
+
+			>.panel-button{
+				@extend .icon-prev;
+				right: -50px;
+				@include animation(bouncing-left 2s infinite);
+			}
 		}
 
 		>.shade{
-			@include background-image(linear-gradient(to right, rgba(0,0,0,.9) 460px, rgba(0,0,0,0) 100%));
+			@include background-image(linear-gradient(to right, rgba(0,0,0,.9) 40%, rgba(0,0,0,0) 100%));
+		}
+
+		&.hide-panel{
+			>.panel{
+				@include translateX(-100%);
+
+				>.panel-button{
+					@extend .icon-next;
+					@include animation(bouncing-right 2s infinite);
+				}
+			}
 		}
 	}
 
 	&.right{
 		>.panel{
 			right: 0;
+
+			>.panel-button{
+				@extend .icon-next;
+				left: -50px;
+				@include animation(bouncing-right 2s infinite);
+			}
 		}
 
 		>.shade{
-			@include background-image(linear-gradient(to left, rgba(0,0,0,.9) 460px, rgba(0,0,0,0) 100%));
+			@include background-image(linear-gradient(to left, rgba(0,0,0,.9) 40%, rgba(0,0,0,0) 100%));
+		}
+
+		&.hide-panel{
+			>.panel{
+				@include translateX(100%);
+
+				>.panel-button{
+					@extend .icon-prev;
+					@include animation(bouncing-left 2s infinite);
+				}
+			}
+		}
+	}
+
+	&.hide-panel{
+		>.shade{
+			visibility: hidden;
+			opacity: 0;
+		}
+
+		>.panel{
+			>.panel-button{
+				opacity: 1;
+			}
+
+			>.panel-content{
+				opacity: 0;
+				visibility: hidden;
+			}
 		}
 	}
 
@@ -27,25 +79,29 @@
 		@include absoluteTopLeft;
 		width: 100%;
 		height: 100%;
+		@include transition(opacity .5s $easeInOutQuad, visibility .5s);
 	}
 
 	>.panel{
 		position: absolute;
 		top: 0;
 		width: 40%;
-		min-width: 460px;
 		height: 100%;
 		padding: 20em 50px 0 50px;
 		@include box-sizing(border-box);
 		color: #fff;
+		opacity: 1;
+		@include transition(opacity .5s $easeInOutQuad, transform .5s $easeInOutQuad);
 
-		>.close-button{
+		>.panel-button{
 			position: absolute;
-			top: 50px;
-			right: 50px;
+			margin-top: -20px;
+			margin-left: -20px;
+			top: 50%;
 			color: #fff;
 			font-size: 40px;
-			z-index: 1;
+			opacity: .25;
+			@include transition(opacity .5s, transform .5s $easeInOutCubic);
 		}
 
 		>.panel-content{
@@ -54,6 +110,9 @@
 			height: 100%;
 			max-width: 460px;
 			margin: 0 auto;
+			visibility: visible;
+			opacity: 1;
+			@include transition(opacity .5s $easeInOutQuad, visibility .5s);
 		}
 
 		h1{
@@ -130,6 +189,14 @@
 				}
 			}
 		}
+	}
+
+	>.close-button{
+		position: absolute;
+		top: 50px;
+		right: 50px;
+		color: #fff;
+		font-size: 40px;
 	}
 }
 

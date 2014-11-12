@@ -45,12 +45,6 @@ feng.views.sections.captions.ChangeColorCaption.prototype.hide = function() {
 };
 
 
-feng.views.sections.captions.ChangeColorCaption.prototype.close = function() {
-
-  goog.Timer.callOnce(this.doClose, 600, this);
-};
-
-
 feng.views.sections.captions.ChangeColorCaption.prototype.onClickColor = function(e) {
 
   var colorName = e.currentTarget.getAttribute("data-color");

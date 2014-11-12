@@ -625,7 +625,7 @@
 		{
 			"uuid": "0B126930-1E74-43FD-9DCB-F707DD97D3AB",
 			"type": "MeshLambertMaterial",
-			"color": 5329233,
+			"color": 16777215,
 			"ambient": 16777215,
 			"emissive": 0
 		},
@@ -640,9 +640,10 @@
 		{
 			"uuid": "B443CEE7-E625-456F-95FD-92EDE2BFE6A1",
 			"type": "MeshLambertMaterial",
-			"color": 2697513,
+			"color": 16777215,
 			"ambient": 16777215,
-			"emissive": 0
+			"emissive": 0,
+			"side": 2
 		},
 		{
 			"uuid": "0C083DA1-0BCC-4610-A4D1-BF183428FE58",
@@ -654,7 +655,7 @@
 		{
 			"uuid": "86597BA7-554C-4ECB-91DD-127DA64514B9",
 			"type": "MeshLambertMaterial",
-			"color": 3355443,
+			"color": 16777215,
 			"ambient": 16777215,
 			"emissive": 0
 		},
@@ -668,7 +669,7 @@
 		{
 			"uuid": "89720169-A246-47EF-A083-E174040688B1",
 			"type": "MeshLambertMaterial",
-			"color": 1907997,
+			"color": 16777215,
 			"ambient": 16777215,
 			"emissive": 0
 		},
@@ -717,7 +718,7 @@
 		{
 			"uuid": "D9E5F88A-DBD9-47A2-80FB-73BF66D13709",
 			"type": "MeshLambertMaterial",
-			"color": 11172162,
+			"color": 16777215,
 			"ambient": 16777215,
 			"emissive": 0
 		},
@@ -745,16 +746,17 @@
 		{
 			"uuid": "11AF004B-32B6-478A-A496-306A9AEC24F6",
 			"type": "MeshLambertMaterial",
-			"color": 5329233,
+			"color": 16777215,
 			"ambient": 16777215,
 			"emissive": 0
 		},
 		{
 			"uuid": "FE021169-14F6-4607-A330-BC0A2A31E05D",
 			"type": "MeshLambertMaterial",
-			"color": 5329233,
+			"color": 16777215,
 			"ambient": 16777215,
-			"emissive": 0
+			"emissive": 0,
+			"side": 2
 		},
 		{
 			"uuid": "C80E61AD-791A-43E1-9FC3-2BE7E931A38B",
@@ -785,7 +787,7 @@
 			"emissive": 0
 		}],
 	"object": {
-		"uuid": "4C861597-16A6-4C00-A5BA-F44C329E2630",
+		"uuid": "E00541C8-BB58-435F-BD15-7646EAB59DDC",
 		"type": "Scene",
 		"name": "house-corridor",
 		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],

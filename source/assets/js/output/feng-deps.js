@@ -71,7 +71,7 @@ goog.addDependency('../../../../project/views/mainoptions.js', ['feng.views.Main
 goog.addDependency('../../../../project/views/popups/popup.js', ['feng.views.popups.Popup'], ['goog.async.Delay', 'goog.dom', 'goog.events.EventHandler', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/views/popups/tutorial.js', ['feng.views.popups.Tutorial'], ['feng.templates.common', 'feng.views.popups.Popup']);
 goog.addDependency('../../../../project/views/preloader.js', ['feng.views.Preloader'], ['feng.events', 'feng.models.Preload', 'goog.events.EventTarget']);
-goog.addDependency('../../../../project/views/sections/captions/caption.js', ['feng.views.sections.captions.Caption'], ['feng.templates.captions', 'feng.utils.Utils', 'goog.events.EventHandler']);
+goog.addDependency('../../../../project/views/sections/captions/caption.js', ['feng.views.sections.captions.Caption'], ['feng.templates.captions', 'feng.utils.Utils', 'goog.async.Delay', 'goog.events.EventHandler']);
 goog.addDependency('../../../../project/views/sections/captions/changecolorcaption.js', ['feng.views.sections.captions.ChangeColorCaption'], ['feng.templates.captions', 'feng.views.sections.captions.Caption', 'goog.soy']);
 goog.addDependency('../../../../project/views/sections/captions/changeobjectcaption.js', ['feng.views.sections.captions.ChangeObjectCaption'], ['feng.templates.captions', 'feng.views.sections.captions.Caption', 'goog.soy']);
 goog.addDependency('../../../../project/views/sections/captions/changepicturecaption.js', ['feng.views.sections.captions.ChangePictureCaption'], ['feng.templates.captions', 'feng.views.sections.captions.Caption', 'goog.soy']);

@@ -82,7 +82,7 @@ feng.models.View3D.Data = {
 				gatewayid: "bathroom-door",
 				castShadow: true,
 				origin: {
-					position: new THREE.Vector3(-240, 0, 34),
+					position: new THREE.Vector3(-176, 0, 20),
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
 				}
 			},
@@ -654,11 +654,18 @@ feng.models.View3D.Data = {
 			'living-area-carpet': {
 				texture: "house.livingroom.living-area-carpet-texture"
 			},
+			'stairway-lamps': {
+				texture: "house.livingroom.stairway-lamps-texture"
+			},
 			'heater': {
 				texture: "house.livingroom.heater-texture"
 			}
 		},
 		'corridor': {
+			'floor': {
+				receiveShadow: true,
+				texture: "house.corridor.floor-texture"
+			},
 			'stairways': {
 				texture: "house.livingroom.stairways-texture"
 			},
@@ -674,6 +681,18 @@ feng.models.View3D.Data = {
 					position: new THREE.Vector3(50, 0, 225),
 					rotation: new THREE.Euler(0, 0, 0)
 				}
+			},
+			'ceiling-lamp': {
+				texture: "house.corridor.ceiling-lamp-texture"
+			},
+			'ceiling-lamps': {
+				texture: "house.corridor.ceiling-lamps-texture"
+			},
+			'stairway-lamps': {
+				texture: "house.livingroom.stairway-lamps-texture"
+			},
+			'nick-photo': {
+				texture: "house.corridor.nick-photo-texture"
 			},
 			'boysroom-door': {
 				Class: "gateway",
@@ -695,6 +714,9 @@ feng.models.View3D.Data = {
 					rotation: new THREE.Euler(0, 0, 0)
 				}
 			},
+			'picture-wall': {
+				texture: "house.corridor.picture-wall-texture"
+			},
 			'display-table': {
 				texture: "house.corridor.display-table-texture"
 			},
@@ -705,18 +727,11 @@ feng.models.View3D.Data = {
 				Class: "cat",
 				collidable: true,
 				texture: "house.corridor.cat-bed-texture",
-				/*camera: {
-					position: new THREE.Vector3(-22, 80, 0),
-					rotation: new THREE.Euler(0.05, 1.58, 0, 'YXZ'),
-					fov: 30
-				},*/
 				tipKey: 'house.corridor.cat'
 			},
-			'floor': {
-				receiveShadow: true
-			},
 			'wall':	{
-				castShadow: true
+				castShadow: true,
+				texture: "house.corridor.wall-texture"
 			},
 			'wall-outer':	{
 				castShadow: true,
@@ -732,6 +747,9 @@ feng.models.View3D.Data = {
 			'corridor-window':	{
 				castShadow: true,
 				texture: "house.corridor.corridor-window-texture"
+			},
+			'corridor-stuff':	{
+				texture: "house.corridor.corridor-stuff-texture"
 			},
 			'window-plant':	{
 				texture: "house.corridor.window-plant-texture"
