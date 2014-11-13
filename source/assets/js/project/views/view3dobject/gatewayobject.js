@@ -20,11 +20,10 @@ feng.views.view3dobject.GatewayObject = function( object3d, data, view3d ){
 
   this._startRotationY = this.object3d.rotation.y;
 
-	this._openTweener = TweenMax.fromTo( this.object3d.rotation, 2, {
+	this._openTweener = TweenMax.fromTo( this.object3d.rotation, 2.5, {
 		'y': this._startRotationY
 	}, {
 		'y': this.getEndRotationY(),
-		'ease': Strong.easeOut,
 		'paused': true,
 		'onComplete': this.onOpenComplete,
 		'onCompleteScope': this

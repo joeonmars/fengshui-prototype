@@ -166,12 +166,12 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   &.from-bottom{
     opacity: 0;
     visibility: hidden;
-    @include animation( popup-to-bottom .25s ease-out both );
+    @include animation( popup-to-bottom .5s ease-out both );
 
     &.shown{
       opacity: 1;
       visibility: visible;
-      @include animation( popup-from-bottom 1000ms linear both );
+      @include animation( popup-from-bottom 1.5s linear both );
     }
   }
 }
@@ -421,7 +421,7 @@ body{
 
     >.close-button{
       position: absolute;
-      top: 23px;
+      top: 20px;
       right: 20px;
       z-index: 10;
     }

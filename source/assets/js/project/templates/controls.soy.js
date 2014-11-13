@@ -16,7 +16,7 @@ goog.require('feng.templates.common');
  */
 feng.templates.controls.RoundButton = function(opt_data, opt_ignored) {
   opt_data = opt_data || {};
-  return '<button class="roundButton ' + opt_data.classname + '"><div class="outline"></div><div class="circle"><div class="circle-content">' + ((opt_data.content) ? opt_data.content : '') + '</div></div></button>';
+  return '<button class="roundButton ' + ((opt_data.classname) ? opt_data.classname : '') + '"><div class="outline"></div><div class="circle"><div class="circle-content">' + ((opt_data.content) ? opt_data.content : '') + '</div></div></button>';
 };
 
 
@@ -61,11 +61,11 @@ feng.templates.controls.Book = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.Reminder = function(opt_data, opt_ignored) {
   var output = '<div class="reminder"><div class="character">' + feng.templates.controls.RoundButton({content: '<canvas></canvas>'}) + '</div><div class="dialogue hint"><div class="wrapper"><button class="prev icon icon-prev"></button><ul class="hints">';
-  var tipList245 = opt_data.tips;
-  var tipListLen245 = tipList245.length;
-  for (var tipIndex245 = 0; tipIndex245 < tipListLen245; tipIndex245++) {
-    var tipData245 = tipList245[tipIndex245];
-    output += '<li data-tip-id="' + tipData245.id + '">' + tipData245.reminder + '</li>';
+  var tipList247 = opt_data.tips;
+  var tipListLen247 = tipList247.length;
+  for (var tipIndex247 = 0; tipIndex247 < tipListLen247; tipIndex247++) {
+    var tipData247 = tipList247[tipIndex247];
+    output += '<li data-tip-id="' + tipData247.id + '">' + tipData247.reminder + '</li>';
   }
   output += '</ul><button class="next icon icon-next"></button></div></div></div>';
   return output;
@@ -124,16 +124,16 @@ feng.templates.controls.GatewayTooltip = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var output = '<div class="progressBar"><div class="inner"><button class="prev icon icon-prev"></button><button class="next icon icon-next"></button><div class="tips-wrapper">';
-  var viewIdList275 = soy.$$getMapKeys(opt_data.tipsOfViews);
-  var viewIdListLen275 = viewIdList275.length;
-  for (var viewIdIndex275 = 0; viewIdIndex275 < viewIdListLen275; viewIdIndex275++) {
-    var viewIdData275 = viewIdList275[viewIdIndex275];
-    output += '<ul class="tips" data-view-id="' + viewIdData275 + '">';
-    var tipList279 = opt_data.tipsOfViews[viewIdData275];
-    var tipListLen279 = tipList279.length;
-    for (var tipIndex279 = 0; tipIndex279 < tipListLen279; tipIndex279++) {
-      var tipData279 = tipList279[tipIndex279];
-      output += '<li class="tip" data-tip-id="' + tipData279.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content" href="' + tipData279.readTipToken + '"><div class="icon icon-' + tipData279.icon + '" data-tip-id="' + tipData279.id + '" data-view-id="' + tipData279.viewId + '" data-section-id="' + tipData279.sectionId + '"></div><h6>' + tipData279.name + '</h6></a></div></li>';
+  var viewIdList277 = soy.$$getMapKeys(opt_data.tipsOfViews);
+  var viewIdListLen277 = viewIdList277.length;
+  for (var viewIdIndex277 = 0; viewIdIndex277 < viewIdListLen277; viewIdIndex277++) {
+    var viewIdData277 = viewIdList277[viewIdIndex277];
+    output += '<ul class="tips" data-view-id="' + viewIdData277 + '">';
+    var tipList281 = opt_data.tipsOfViews[viewIdData277];
+    var tipListLen281 = tipList281.length;
+    for (var tipIndex281 = 0; tipIndex281 < tipListLen281; tipIndex281++) {
+      var tipData281 = tipList281[tipIndex281];
+      output += '<li class="tip" data-tip-id="' + tipData281.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content" href="' + tipData281.readTipToken + '"><div class="icon icon-' + tipData281.icon + '" data-tip-id="' + tipData281.id + '" data-view-id="' + tipData281.viewId + '" data-section-id="' + tipData281.sectionId + '"></div><h6>' + tipData281.name + '</h6></a></div></li>';
     }
     output += '</ul>';
   }

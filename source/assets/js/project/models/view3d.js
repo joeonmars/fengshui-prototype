@@ -702,7 +702,8 @@ feng.models.View3D.Data = {
 				origin: {
 					position: new THREE.Vector3(60, 0, -170),
 					rotation: new THREE.Euler(0, 0, 0)
-				}
+				},
+				texture: "house.corridor.boysroom-door-texture"
 			},
 			'homeoffice-door': {
 				Class: "gateway",
@@ -712,7 +713,14 @@ feng.models.View3D.Data = {
 				origin: {
 					position: new THREE.Vector3(20, 0, -50),
 					rotation: new THREE.Euler(0, 0, 0)
-				}
+				},
+				texture: "house.corridor.homeoffice-door-texture"
+			},
+			'bathroom-door': {
+				texture: "house.corridor.bathroom-door-texture"
+			},
+			'bedroom-door': {
+				texture: "house.corridor.bedroom-door-texture"
 			},
 			'picture-wall': {
 				texture: "house.corridor.picture-wall-texture"

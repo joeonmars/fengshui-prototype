@@ -491,7 +491,7 @@
 			"section": "house",
 			"view": "corridor",
 			"name": "pet beds",
-			"icon": "cat",
+			"icon": "petbeds",
 			"unlocked": true,
 			"mandatory": false,
 			"require": null,

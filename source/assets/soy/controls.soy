@@ -7,7 +7,7 @@
  * @param? classname button classname
  */
 {template .RoundButton}
-<button class="roundButton {$classname}">
+<button class="roundButton {if $classname}{$classname}{/if}">
 	<div class="outline"></div>
 	<div class="circle">
 		<div class="circle-content">

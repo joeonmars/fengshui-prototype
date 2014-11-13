@@ -32,7 +32,7 @@ $border_size: 7px;
 	}
 
 	>.reminder{
-		visibility: hidden !important;
+		@extend .hidden;
 	}
 }
 
@@ -213,15 +213,19 @@ $border_size: 7px;
 
 	&.hidden{
 		visibility: hidden;
+
+		>.dialogue{
+			visibility: hidden;
+		}
 	}
 
 	&:not(.hidden){
-		visibility: visible;
 		@include animation( bounce-in-right 1000ms linear both );
 		@include animation-delay(.15s);
 	}
 
 	&.active{
+
 		>.character{
 			>.roundButton{
 				>.outline{
@@ -232,7 +236,16 @@ $border_size: 7px;
 		}
 
 		>.dialogue{
+			visibility: inherit;
 			@include animation( reminder-popup 1000ms linear both );
+		}
+	}
+
+	&.inactive{
+
+		>.dialogue{
+			visibility: inherit;
+			@include animation( fade-out .25s ease-in-out both, reminder-drop .25s ease-in-out );
 		}
 	}
 
@@ -251,15 +264,15 @@ $border_size: 7px;
 	>.dialogue{
 		position: absolute;
 		display: table;
-		bottom: 130px;
+		bottom: 13em;
 		@extend %bordered-ui;
 		@extend %arrow-bottom-right;
-		@include animation( fade-out .25s ease-in-out both, reminder-drop .25s ease-in-out );
 		right: 0;
 		width: 40em;
-		height: 7em;
+		height: 10em;
 		padding: 2.7em 2em;
 		text-align: center;
+		visibility: hidden;
 
 		>.wrapper{
 			display: table-cell;
@@ -280,7 +293,7 @@ $border_size: 7px;
 
 					&.shown{
 						display: block;
-						@include animation( fade-in .25s ease-out both );
+						@include animation( fade-in .25s ease-out );
 					}
 				}
 			}

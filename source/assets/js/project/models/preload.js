@@ -258,6 +258,10 @@ feng.models.Preload = function(){
 				'corridor-stuff-texture': 'images/texture/house/corridor/corridor-stuff.jpg',
 				'nick-photo-texture': 'images/texture/house/corridor/nick-photo.jpg',
 				'window-plant-texture': 'images/texture/house/corridor/window-plant.jpg',
+				'homeoffice-door-texture': 'images/texture/house/corridor/homeoffice-door.png',
+				'bedroom-door-texture': 'images/texture/house/corridor/bedroom-door.png',
+				'boysroom-door-texture': 'images/texture/house/corridor/boysroom-door.png',
+				'bathroom-door-texture': 'images/texture/house/corridor/bathroom-door.png',
 				'skybox': {
 					'xpos': 'images/texture/house/boysroom/skybox/pos-x.png',
 					'xneg': 'images/texture/house/boysroom/skybox/neg-x.png',

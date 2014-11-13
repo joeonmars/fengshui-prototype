@@ -36,7 +36,7 @@ feng.templates.common.PrimaryButton = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.common.CloseButton = function(opt_data, opt_ignored) {
-  return '<button class="close-button"><div class="circle"></div><div class="icon"><div></div><div class="lighter"></div></div></button>';
+  return '<button class="close-button"><div class="circle"></div><div class="icon icon-close"></div></button>';
 };
 
 

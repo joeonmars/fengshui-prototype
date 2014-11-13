@@ -126,7 +126,7 @@ feng.controllers.controls.EntryControls.prototype.onStepCloseComplete = function
 	hud.openingOverlay.updateContent( sectionId, viewId );
 	hud.openingOverlay.animateIn();
 
-	goog.events.listenOnce( hud.openingOverlay, feng.events.EventType.ANIMATE_OUT, this.openDoor, false, this );
+	goog.events.listenOnce( hud.openingOverlay, feng.events.EventType.HIDE, this.openDoor, false, this );
 };
 
 

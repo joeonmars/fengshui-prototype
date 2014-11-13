@@ -134,6 +134,9 @@ feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
 	this._view3d.fx.selectEffect.animateOut( 1 );
 
 	//
+	feng.navigationController.replaceToken("");
+
+	//
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,

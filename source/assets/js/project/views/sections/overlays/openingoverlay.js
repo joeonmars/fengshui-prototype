@@ -115,7 +115,7 @@ feng.views.sections.overlays.OpeningOverlay.prototype.animateIn = function(){
 		'ease': Strong.easeInOut
 	});
 
-	this._popup.animateIn();
+	this._popup.animateIn( 800 );
 
 	this._shownOnce[this._sectionId] = this._shownOnce[this._sectionId] || {};
 	this._shownOnce[this._sectionId][this._viewId] = true;

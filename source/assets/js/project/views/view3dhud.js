@@ -255,6 +255,7 @@ feng.views.View3DHud.prototype.onModeChange = function( e ) {
   switch(anyMode) {
 
     case feng.controllers.view3d.ModeController.Mode.ENTRY:
+    case feng.controllers.view3d.ModeController.Mode.EXIT:
     case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
     case null:
     shouldShowControls = false;
@@ -279,7 +280,7 @@ feng.views.View3DHud.prototype.onModeChange = function( e ) {
   }
 
   var willShowOpeningOverlay = this.openingOverlay.shouldShow( this._view3d.sectionId, this._view3d.id );
-  
+
   if(willShowOpeningOverlay) {
 
     shouldShowControls = false;
