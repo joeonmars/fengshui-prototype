@@ -183,17 +183,7 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 
 	if ( intersects.length > 0 ) {
 
-		// check if clicked on any particular object
-		var clickedObject = intersects[0].object.view3dObject;
-
-		/*
-		if ( clickedObject instanceof /// ) {
-
-			return true;
-		}
-		*/
-
-		// otherwise walk to the object
+		// walk to the object
 		var toPosition = intersects[0].point;
 		toPosition.y = toPosition.y < 10 ? this.getPosition().y : toPosition.y;
 

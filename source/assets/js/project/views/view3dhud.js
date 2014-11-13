@@ -241,6 +241,9 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls ) {
 feng.views.View3DHud.prototype.showControls = function( shouldShow ) {
 
   goog.dom.classes.enable( this._controlsEl, 'hidden', !shouldShow );
+  goog.dom.classes.enable( this._tooltipsEl, 'hidden', !shouldShow );
+
+  feng.mainOptions.showHelpButton( shouldShow );
 };
 
 
@@ -275,7 +278,12 @@ feng.views.View3DHud.prototype.onModeChange = function( e ) {
     shouldShowControls = false;
   }
 
-  feng.mainOptions.showHelpButton( shouldShowControls );
+  var willShowOpeningOverlay = this.openingOverlay.shouldShow( this._view3d.sectionId, this._view3d.id );
+  
+  if(willShowOpeningOverlay) {
+
+    shouldShowControls = false;
+  }
 
   this.showControls( shouldShowControls );
 };

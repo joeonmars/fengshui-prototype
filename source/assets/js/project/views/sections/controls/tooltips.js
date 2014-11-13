@@ -13,7 +13,7 @@ feng.views.sections.controls.Tooltips = function( domElement ){
 
   goog.base(this, domElement);
 
-  this._detectBlockingThrottle = new goog.async.Throttle( this.detectBlocking, 200, this );
+  this._detectBlockingThrottle = new goog.async.Throttle( this.detectBlocking, 400, this );
 
   this._raycaster = new THREE.Raycaster();
   this._rayDirection = new THREE.Vector3();
@@ -223,7 +223,6 @@ feng.views.sections.controls.Tooltips.prototype.onModeChange = function(e){
   switch(e.mode) {
     case feng.controllers.view3d.ModeController.Mode.BROWSE:
     case feng.controllers.view3d.ModeController.Mode.DESIGN:
-    //case feng.controllers.view3d.ModeController.Mode.WALK:
     this.activate();
     break;
 

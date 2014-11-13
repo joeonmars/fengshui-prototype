@@ -112,7 +112,7 @@ feng.templates.controls.TipTooltip = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.controls.GatewayTooltip = function(opt_data, opt_ignored) {
-  return '<a class="tooltip fadeOut gateway" data-id="' + opt_data.gateway.gatewayId + '"><div class="bar"><div class="symbol"><div class="inner"><div class="icon icon-eye-open"></div><div class="loader"></div></div></div><h6>To ' + opt_data.gateway.viewId + '</h6></div></a>';
+  return '<a class="tooltip fadeOut gateway" data-id="' + opt_data.gateway.gatewayId + '"><div class="bar"><div class="symbol"><div class="inner"><div class="icon icon-eye-open"></div><div class="icon icon-enter"></div></div></div><h6>To ' + opt_data.gateway.viewId + '</h6></div></a>';
 };
 
 

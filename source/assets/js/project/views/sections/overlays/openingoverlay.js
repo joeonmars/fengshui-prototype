@@ -59,6 +59,24 @@ feng.views.sections.overlays.OpeningOverlay.prototype.deactivate = function(){
 };
 
 
+feng.views.sections.overlays.OpeningOverlay.prototype.shouldShow = function( sectionId, viewId ){
+
+	var shouldShow;
+
+	if( !this._shownOnce[sectionId] ) {
+
+		shouldShow = true;
+
+	}else {
+
+		if( this._shownOnce[sectionId][viewId] !== true ) shouldShow = true;
+		else shouldShow = false;
+	}
+
+	return shouldShow;
+};
+
+
 feng.views.sections.overlays.OpeningOverlay.prototype.updateContent = function( sectionId, viewId ){
 
 	this._sectionId = sectionId;
@@ -84,19 +102,9 @@ feng.views.sections.overlays.OpeningOverlay.prototype.updateContent = function( 
 
 feng.views.sections.overlays.OpeningOverlay.prototype.animateIn = function(){
 
-	var shouldAnimateIn;
+	var shouldShow = this.shouldShow( this._sectionId, this._viewId );
 
-	if( !this._shownOnce[this._sectionId] ) {
-
-		shouldAnimateIn = true;
-
-	}else {
-
-		if( this._shownOnce[this._sectionId][this._viewId] !== true ) shouldAnimateIn = true;
-		else shouldAnimateIn = false;
-	}
-
-	if(!shouldAnimateIn) return false;
+	if(!shouldShow) return false;
 
 	goog.base(this, 'animateIn');
 
