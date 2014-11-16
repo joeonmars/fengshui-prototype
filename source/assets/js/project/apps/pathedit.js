@@ -26,8 +26,9 @@ feng.apps.PathEdit = function() {
 
 	this._sceneKeys = [
 		'studio.livingroom',
-		'studio.interior2',
 		'studio.bathroom',
+		'house.livingroom',
+		'house.corridor',
 		'house.boysroom',
 		'house.homeoffice'
 	];

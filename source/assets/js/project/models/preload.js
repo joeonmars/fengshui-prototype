@@ -41,19 +41,12 @@ feng.models.Preload = function(){
 		'studio': {
 			'global': {
 				'character': {
-					'ollie-data': 'json/characters/ollie.json',
-					'ollie': 'images/characters/ollie.png'
+					'ollie-data': 'json/character/ollie.json',
+					'ollie': 'images/character/ollie.png'
 				}
 			},
-			'interior2': {
-				'scene-data': 'json/scene-interior2.json',
-				'energyflow-data': 'json/energyflow/energyflow-2.json',
-				'pc-texture': 'images/texture/pc.jpg',
-				'screensaver-texture': 'images/texture/spritesheet/screensaver.png',
-				'cactus-texture': 'images/texture/cactus.png'
-			},
 			'livingroom': {
-				'scene-data': 'json/studio-livingroom.json',
+				'scene-data': 'json/scene/studio-livingroom.json',
 				'floor-texture': 'images/texture/studio/livingroom/floor.jpg',
 				'wall-texture': 'images/texture/studio/livingroom/wall.jpg',
 				'wall-outer-texture': 'images/texture/studio/livingroom/wall-outer.jpg',
@@ -124,7 +117,7 @@ feng.models.Preload = function(){
 				}
 			},
 			'bathroom': {
-				'scene-data': 'json/studio-bathroom.json',
+				'scene-data': 'json/scene/studio-bathroom.json',
 				'floor-texture': 'images/texture/studio/bathroom/floor.jpg',
 				'ceiling-texture': 'images/texture/studio/bathroom/ceiling.jpg',
 				'wall-texture': 'images/texture/studio/bathroom/wall.jpg',
@@ -175,16 +168,16 @@ feng.models.Preload = function(){
 		'house': {
 			'global': {
 				'character': {
-					'joanna-data': 'json/characters/joanna.json',
-					'joanna': 'images/characters/joanna.png',
-					'scott-data': 'json/characters/scott.json',
-					'scott': 'images/characters/scott.png',
-					'nick-data': 'json/characters/nick.json',
-					'nick': 'images/characters/nick.png'
+					'joanna-data': 'json/character/joanna.json',
+					'joanna': 'images/character/joanna.png',
+					'scott-data': 'json/character/scott.json',
+					'scott': 'images/character/scott.png',
+					'nick-data': 'json/character/nick.json',
+					'nick': 'images/character/nick.png'
 				}
 			},
 			'livingroom': {
-				'scene-data': 'json/house-livingroom.json',
+				'scene-data': 'json/scene/house-livingroom.json',
 				'wall-texture': 'images/texture/house/livingroom/wall.jpg',
 				'wall-outer-texture': 'images/texture/house/livingroom/wall-outer.jpg',
 				'stairways-texture': 'images/texture/house/livingroom/stairways.jpg',
@@ -242,7 +235,7 @@ feng.models.Preload = function(){
 				},
 			},
 			'corridor': {
-				'scene-data': 'json/house-corridor.json',
+				'scene-data': 'json/scene/house-corridor.json',
 				'ceiling-texture': 'images/texture/house/corridor/ceiling.jpg',
 				'ceiling-lamp-texture': 'images/texture/house/corridor/ceiling-lamp.jpg',
 				'ceiling-lamps-texture': 'images/texture/house/corridor/ceiling-lamps.jpg',
@@ -272,7 +265,7 @@ feng.models.Preload = function(){
 				},
 			},
 			'boysroom': {
-				'scene-data': 'json/house-boysroom.json',
+				'scene-data': 'json/scene/house-boysroom.json',
 				'floor-texture': 'images/texture/house/boysroom/floor.jpg',
 				'ceiling-texture': 'images/texture/house/boysroom/ceiling.jpg',
 				'wall-texture': 'images/texture/house/boysroom/wall.jpg',
@@ -333,7 +326,7 @@ feng.models.Preload = function(){
 				}
 			},
 			'homeoffice': {
-				'scene-data': 'json/house-homeoffice.json',
+				'scene-data': 'json/scene/house-homeoffice.json',
 				'floor-texture': 'images/texture/house/homeoffice/floor.jpg',
 				'ceiling-texture': 'images/texture/house/homeoffice/ceiling.jpg',
 				'wall-texture':	'images/texture/house/homeoffice/wall.jpg',
@@ -343,6 +336,7 @@ feng.models.Preload = function(){
 				'setsquare-texture': 'images/texture/house/homeoffice/setsquare.jpg',
 				'carpet-texture': 'images/texture/house/homeoffice/carpet.jpg',
 				'door-frame-texture': 'images/texture/house/homeoffice/door-frame.jpg',
+				'homeoffice-door-texture': 'images/texture/house/homeoffice/homeoffice-door.jpg',
 				'display-shelf-lamp-texture': 'images/texture/house/homeoffice/display-shelf-lamp.jpg',
 				'bookshelf-lamps-texture': 'images/texture/house/homeoffice/bookshelf-lamps.jpg',
 				'picture-frame-1-texture': 'images/texture/house/homeoffice/picture-frame-1.jpg',

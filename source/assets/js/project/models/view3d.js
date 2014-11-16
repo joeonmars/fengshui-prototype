@@ -4,33 +4,6 @@ goog.provide('feng.models.View3D');
 feng.models.View3D.Data = {
 
 	'studio': {
-		'interior2': {
-			'ground': {
-				receiveShadow: true
-			},
-			'door': {
-				Class: "gateway",
-				collidable: true,
-				viewid: "bathroom",
-				gatewayid: "door"
-			},
-			'pc': {
-				collidable: true,
-				texture: "studio.interior2.pc-texture"
-			},
-			'screen': {
-				texture: {
-					defaultTexture: "studio.interior2.screensaver-texture",
-					htiles: 45,
-					vtiles: 1,
-					ntiles: 45,
-					duration: 100
-				}
-			},
-			'cactus': {
-				texture: "studio.interior2.cactus-texture"
-			}
-		},
 		'livingroom': {
 			'studio-door': {
 				Class: "gateway",
@@ -990,7 +963,8 @@ feng.models.View3D.Data = {
 				origin: {
 					position: new THREE.Vector3(68, 0, -53),
 					rotation: new THREE.Euler(0, Math.PI/2, 0)
-				}
+				},
+				texture: "house.homeoffice.homeoffice-door-texture"
 			},
 			'swivel-chair': {
 				Class: "movable",
