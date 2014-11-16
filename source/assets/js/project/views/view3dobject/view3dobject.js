@@ -2,6 +2,8 @@ goog.provide('feng.views.view3dobject.View3DObject');
 
 goog.require('goog.events.EventTarget');
 goog.require('goog.math.Box');
+goog.require('feng.models.Preload');
+goog.require('feng.models.View3D');
 
 /**
  * @constructor
@@ -31,6 +33,7 @@ feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
 
   this._canRender = this.object3d.visible;
   this._isRenderEnabled = this._canRender;
+  this._isTextureCreated = false;
 
   //
   this.registerToView3D();
@@ -46,6 +49,113 @@ feng.views.view3dobject.View3DObject.prototype.registerToView3D = function(){
 
 feng.views.view3dobject.View3DObject.prototype.init = function(){
 
+  // assign object model data
+  var preloadModel = feng.models.Preload.getInstance();
+  var sectionId = this._view3d.sectionId;
+  var viewId = this._view3d.id;
+
+  this.object3d.traverse(function(object) {
+
+    var data = feng.models.View3D.getData(sectionId+'.'+viewId+'.'+object.name);
+
+    if(object instanceof THREE.Object3D) {
+      object.castShadow = data.castShadow || false;
+      object.receiveShadow = data.receiveShadow || false;
+
+      if(object.material) {
+        object.material.shading = THREE.FlatShading;
+        object.material.fog = false;
+      }
+    }
+  });
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.createTextures = function(){
+
+  if(this._isTextureCreated) {
+
+    return false;
+
+  }else {
+
+    this._isTextureCreated = true;
+  }
+
+  var preloadModel = feng.models.Preload.getInstance();
+  var sectionId = this._view3d.sectionId;
+  var viewId = this._view3d.id;
+
+  this.object3d.traverse(function(object) {
+
+    var data = feng.models.View3D.getData(sectionId+'.'+viewId+'.'+object.name);
+
+    if(object instanceof THREE.Object3D) {
+
+      var textureData = data.texture;
+
+      if(goog.isString(textureData) && !object.material.map) {
+
+          var textureAsset = preloadModel.getAsset( textureData );
+          var texture;
+
+          if(textureAsset.src) {
+
+            texture = new THREE.Texture( textureAsset );
+            texture.needsUpdate = true;
+
+          }else {
+            /*
+            var ddsLoader = new THREE.DDSLoader();           
+            var dds = ddsLoader.parse( textureAsset );
+
+            texture = new THREE.CompressedTexture();
+            texture.image = [];
+            texture.flipY = false;
+            texture.generateMipmaps = false;
+            texture.image.width = dds.width;
+            texture.image.height = dds.height;
+            texture.mipmaps = dds.mipmaps;
+            texture.format = dds.format;
+            texture.needsUpdate = true;
+            */
+          }
+
+          object.material.map = texture;
+          object.material.needsUpdate = true;
+      }
+    }
+  });
+
+  return true;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.disposeTextures = function(){
+
+  if(!this._isTextureCreated) {
+
+    return false;
+
+  }else {
+
+    this._isTextureCreated = false;
+  }
+
+  this.object3d.traverse(function(object) {
+
+    if(object instanceof THREE.Mesh) {
+
+      if(object.material.map) {
+
+        object.material.map.dispose();
+        object.material.map = null;
+        object.material.needsUpdate = true;
+      }
+    }
+  });
+
+  return true;
 };
 
 

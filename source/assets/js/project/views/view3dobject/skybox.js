@@ -8,39 +8,28 @@ goog.require('feng.views.view3dobject.View3DObject');
  */
 feng.views.view3dobject.Skybox = function( assets, view3d ){
 
-  var directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
+  this._assets = assets;
 
-  var skyGeometry = new THREE.BoxGeometry( 150000, 150000, 150000 );
-  
   var materials = [];
 
   for (var i = 0; i < 6; i++) {
 
-    var asset = assets[ directions[i] ];
-
-    var material;
-
-    if(asset) {
-
-      var texture = new THREE.Texture( asset );
-      texture.needsUpdate = true;
-
-      material = new THREE.MeshBasicMaterial({
-        map: texture,
-        side: THREE.BackSide
-      });
-      material.shading = THREE.FlatShading;
-      material.fog = false;
-    }
+    var material = new THREE.MeshBasicMaterial({
+      side: THREE.BackSide
+    });
+    material.shading = THREE.FlatShading;
+    material.fog = false;
 
     materials.push( material );
   }
 
-  var skyMaterial = new THREE.MeshFaceMaterial( materials );
-  skyMaterial.shading = THREE.FlatShading;
-  skyMaterial.fog = false;
+  var skyGeometry = new THREE.BoxGeometry( 150000, 150000, 150000 );
 
-  var skybox = new THREE.Mesh( skyGeometry, skyMaterial );
+  this._material = new THREE.MeshFaceMaterial( materials );
+  this._material.shading = THREE.FlatShading;
+  this._material.fog = false;
+
+  var skybox = new THREE.Mesh( skyGeometry, this._material );
   skybox.position.y = -8000;
   skybox.name = 'skybox';
 
@@ -49,3 +38,41 @@ feng.views.view3dobject.Skybox = function( assets, view3d ){
   this.addToScene();
 };
 goog.inherits(feng.views.view3dobject.Skybox, feng.views.view3dobject.View3DObject);
+
+
+feng.views.view3dobject.Skybox.prototype.createTextures = function(){
+
+  var shouldCreate = goog.base(this, 'createTextures');
+
+  if(!shouldCreate) return;
+
+  var directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
+
+  goog.array.forEach(this._material.materials, function(material, i) {
+
+    var asset = this._assets[ directions[i] ];
+
+    var texture = new THREE.Texture( asset );
+    texture.needsUpdate = true;
+
+    material.map = texture;
+    material.needsUpdate = true;
+
+  }, this);
+};
+
+
+feng.views.view3dobject.Skybox.prototype.disposeTextures = function(){
+
+  var shouldDispose = goog.base(this, 'disposeTextures');
+
+  if(!shouldDispose) return;
+
+  goog.array.forEach(this._material.materials, function(material, i) {
+
+    material.map.dispose();
+    material.map = null;
+    material.needsUpdate = true;
+
+  }, this);
+};

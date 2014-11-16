@@ -66,6 +66,7 @@ feng.views.sections.Episode.prototype.activateView = function(){
 
 	if(this._view3d) {
 
+		this._view3d.createResources();
 		this._view3d.activate();
 	}
 };
@@ -82,14 +83,16 @@ feng.views.sections.Episode.prototype.deactivate = function(){
 	this._view3dController.unlisten(feng.events.EventType.SHOW, this.onShowView3D, false, this);
 
 	if(this._view3d) {
+
 		this._view3d.deactivate();
+		this._view3d.disposeResources();
 	}
 };
 
 
 feng.views.sections.Episode.prototype.load = function( viewId ){
 
-	this._viewId = viewId || this._viewIds[0];
+	this._viewId = viewId || this._viewId || this._viewIds[0];
 
 	var globalAssetsKey = this.id + '.global';
 	var view3dAssetsKey = this.id + '.' + this._viewId;
@@ -119,9 +122,6 @@ feng.views.sections.Episode.prototype.animateOut = function(){
 	if(!shouldDo) return false;
 
 	feng.soundController.stopMix( this.id );
-
-	this._viewId = null;
-	this._view3d = null;
 };
 
 
@@ -151,11 +151,8 @@ feng.views.sections.Episode.prototype.onLoadComplete = function(e){
 		this._view3ds.push( view3d );
 	}
 
-	if(!this._view3d) {
-
-		this._view3d = this._view3dController.getView3D( sectionId, viewId );
-		this.activateView();
-	}
+	this._view3d = this._view3dController.getView3D( sectionId, viewId );
+	this.activateView();
 };
 
 

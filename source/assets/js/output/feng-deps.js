@@ -128,4 +128,4 @@ goog.addDependency('../../../../project/views/view3dobject/mirror.js', ['feng.vi
 goog.addDependency('../../../../project/views/view3dobject/movableobject.js', ['feng.views.view3dobject.MovableObject'], ['feng.utils.ThreeUtils', 'feng.views.view3dobject.TipObject']);
 goog.addDependency('../../../../project/views/view3dobject/skybox.js', ['feng.views.view3dobject.Skybox'], ['feng.views.view3dobject.View3DObject']);
 goog.addDependency('../../../../project/views/view3dobject/tipobject.js', ['feng.views.view3dobject.TipObject'], ['feng.models.achievements.Achievements', 'feng.views.view3dobject.InteractiveObject']);
-goog.addDependency('../../../../project/views/view3dobject/view3dobject.js', ['feng.views.view3dobject.View3DObject'], ['goog.events.EventTarget', 'goog.math.Box']);
+goog.addDependency('../../../../project/views/view3dobject/view3dobject.js', ['feng.views.view3dobject.View3DObject'], ['feng.models.Preload', 'feng.models.View3D', 'goog.events.EventTarget', 'goog.math.Box']);

@@ -20,6 +20,8 @@ goog.inherits(feng.views.view3dobject.entities.Windows, feng.views.view3dobject.
 
 feng.views.view3dobject.entities.Windows.prototype.init = function(){
 
+	goog.base(this, 'init');
+	
   this._windowLeft = this.object3d.getObjectByName('window-left').view3dObject;
   this._windowRight = this.object3d.getObjectByName('window-right').view3dObject;
 };

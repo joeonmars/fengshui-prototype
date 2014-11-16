@@ -8,6 +8,29 @@ goog.require('feng.views.view3dobject.View3DObject');
  */
 feng.views.view3dobject.DesignPlane = function( view3d ){
 
+  var planeGeometry = new THREE.PlaneBufferGeometry( 100000, 100000, 1, 1 );
+  var planeMaterial = new THREE.MeshLambertMaterial( {
+    transparent: true
+  } );
+  planeMaterial.shading = THREE.FlatShading;
+
+  var designPlane = new THREE.Mesh( planeGeometry, planeMaterial );
+  designPlane.name = 'design-plane';
+  designPlane.rotation.x = -Math.PI/2;
+  designPlane.position.y = -.5;
+  designPlane.receiveShadow = true;
+
+  goog.base( this, designPlane, {}, view3d );
+};
+goog.inherits(feng.views.view3dobject.DesignPlane, feng.views.view3dobject.View3DObject);
+
+
+feng.views.view3dobject.DesignPlane.prototype.createTextures = function(){
+
+  var shouldCreate = goog.base(this, 'createTextures');
+
+  if(!shouldCreate) return;
+
   var size = 128;
   var canvas = goog.dom.createDom('canvas');
   canvas.width = size;
@@ -23,19 +46,6 @@ feng.views.view3dobject.DesignPlane = function( view3d ){
   texture.repeat.set(8000, 8000);
   texture.needsUpdate = true;
 
-  var planeGeometry = new THREE.PlaneBufferGeometry( 100000, 100000, 1, 1 );
-  var planeMaterial = new THREE.MeshLambertMaterial( {
-    map: texture,
-    transparent: true
-  } );
-  planeMaterial.shading = THREE.FlatShading;
-
-  var designPlane = new THREE.Mesh( planeGeometry, planeMaterial );
-  designPlane.name = 'design-plane';
-  designPlane.rotation.x = -Math.PI/2;
-  designPlane.position.y = -.5;
-  designPlane.receiveShadow = true;
-
-  goog.base( this, designPlane, {}, view3d );
+  this.object3d.material.map = texture;
+  this.object3d.material.needsUpdate = true;
 };
-goog.inherits(feng.views.view3dobject.DesignPlane, feng.views.view3dobject.View3DObject);

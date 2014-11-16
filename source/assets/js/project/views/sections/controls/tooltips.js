@@ -16,7 +16,10 @@ feng.views.sections.controls.Tooltips = function( domElement ){
   this._detectBlockingThrottle = new goog.async.Throttle( this.detectBlocking, 400, this );
 
   this._raycaster = new THREE.Raycaster();
+  this._raycaster.far = 400/2;
+
   this._rayDirection = new THREE.Vector3();
+
   this._detectObjects = [];
 
   this._tooltips = {};

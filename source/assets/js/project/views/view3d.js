@@ -52,12 +52,12 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud, episode){
   this.id = viewId;
   this.sectionId = sectionId;
 
-  this.isShown = true;
+  this.isShown = false;
+  this.isActivated = false;
 
   this.containerElement = containerElement;
 
   this.domElement = goog.dom.createDom('canvas');
-  goog.dom.appendChild( this.containerElement, this.domElement );
 
   this.hud = hud;
 
@@ -112,6 +112,24 @@ feng.views.View3D.prototype.init = function(){
 	this.modeController.init();
 
 	this.hide();
+};
+
+
+feng.views.View3D.prototype.createResources = function(){
+
+	goog.object.forEach(this.view3dObjects, function(object) {
+		object.createTextures();
+	});
+};
+
+
+feng.views.View3D.prototype.disposeResources = function(){
+	
+	console.log(this.id + ' DISPOSED!');
+	
+	goog.object.forEach(this.view3dObjects, function(object) {
+		object.disposeTextures();
+	});
 };
 
 
@@ -236,6 +254,9 @@ feng.views.View3D.prototype.getObjectsByClass = function( objectClass ){
 
 feng.views.View3D.prototype.activate = function(){
 
+	if(this.isActivated) return;
+	else this.isActivated = true;
+
  	this._eventHandler.listen( this.viewSize, goog.events.EventType.RESIZE, this.onResize, false, this );
  	this._eventHandler.listen( this.cameraController, feng.events.EventType.CHANGE, this.onCameraChange, false, this );
  	
@@ -263,6 +284,9 @@ feng.views.View3D.prototype.activate = function(){
  
 feng.views.View3D.prototype.deactivate = function(){
  
+ 	if(!this.isActivated) return;
+	else this.isActivated = false;
+
 	this._eventHandler.removeAll();
 
  	goog.object.forEach(this.interactiveObjects, function(interactiveObject) {
@@ -280,6 +304,8 @@ feng.views.View3D.prototype.show = function(){
 	if(this.isShown) return;
 	else this.isShown = true;
 
+	goog.dom.appendChild( this.containerElement, this.domElement );
+	
 	TweenMax.set(this.domElement, {
 		'opacity': 0,
 		'display': 'block'
@@ -318,7 +344,7 @@ feng.views.View3D.prototype.fadeIn = function(){
  	var tweener = TweenMax.to(this.domElement, 1, {
  		'delay': 1,
  		'opacity': 1,
- 		'clearProps': 'all'
+ 		'clearProps': 'opacity'
  	});
 
 	this.dispatchEvent({
@@ -610,62 +636,7 @@ feng.views.View3D.constructScene = function(sectionId, sceneId) {
 	var sceneData = preloadModel.getAsset(sectionId+'.'+sceneId+'.scene-data');
 	var scene = loader.parse( sceneData );
 
-	// parse scene children
-	var parse = function(object) {
-
-		var objectData = feng.models.View3D.getData(sectionId+'.'+sceneId+'.'+object.name);
-
-		if(object instanceof THREE.Object3D) {
-
-			var textureData = objectData.texture;
-
-			if(goog.isString(textureData)) {
-
-					var textureAsset = preloadModel.getAsset( textureData );
-					var texture;
-
-					if(textureAsset.src) {
-
-						texture = new THREE.Texture( textureAsset );
-						texture.needsUpdate = true;
-
-					}else {
-						/*
-						var ddsLoader = new THREE.DDSLoader();           
-            var dds = ddsLoader.parse( textureAsset );
-
-            texture = new THREE.CompressedTexture();
-            texture.image = [];
-            texture.flipY = false;
-            texture.generateMipmaps = false;
-            texture.image.width = dds.width;
-            texture.image.height = dds.height;
-            texture.mipmaps = dds.mipmaps;
-            texture.format = dds.format;
-            texture.needsUpdate = true;
-            */
-					}
-
-			  	object.material.map = texture;
-			}
-
-			if(object instanceof THREE.Mesh) {
-				object.castShadow = objectData.castShadow || false;
-				object.receiveShadow = objectData.receiveShadow || false;
-
-				if(object.material) {
-					object.material.shading = THREE.FlatShading;
-					object.material.fog = false;
-				}
-			}
-		}
-  };
-
-	goog.array.forEach(scene.children, function(child) {
-		feng.views.View3D.parseChildren(child, parse);
-	});
-
-  return {
-  	scene: scene
-  };
+	return {
+		scene: scene
+	};
 };

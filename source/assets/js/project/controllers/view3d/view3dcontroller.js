@@ -69,12 +69,14 @@ feng.controllers.view3d.View3DController.prototype.onHideView3D = function(e){
 
 feng.controllers.view3d.View3DController.prototype.onShowView3D = function(e){
 
-	console.log('Show View3D: ', e.target.id);
-
 	this.view3d = e.target;
+
+	console.log('Show View3D: ', this.view3d.id);
+
+	this.view3d.createResources();
 	this.view3d.activate();
 
-	feng.pubsub.publish( feng.PubSub.Topic.SHOW_VIEW3D, e.target );
+	feng.pubsub.publish( feng.PubSub.Topic.SHOW_VIEW3D, this.view3d );
 };
 
 
@@ -100,7 +102,9 @@ feng.controllers.view3d.View3DController.prototype.onAnimateInView3D = function(
 
 feng.controllers.view3d.View3DController.prototype.onAnimateOutView3D = function(e){
 
-	e.target.deactivate();
+	var view3d = e.target;
+	view3d.deactivate();
+	view3d.disposeResources();
 };
 
 
