@@ -21,7 +21,7 @@ goog.require('feng.views.view3dobject.View3DObject');
 goog.require('feng.views.view3dobject.InteractiveObject');
 goog.require('feng.views.view3dobject.Arms');
 goog.require('feng.views.view3dobject.DesignPlane');
-goog.require('feng.views.view3dobject.HolderObject');
+goog.require('feng.views.view3dobject.ReplaceableObject');
 goog.require('feng.views.view3dobject.MovableObject');
 goog.require('feng.views.view3dobject.GatewayObject');
 goog.require('feng.views.view3dobject.Skybox');
@@ -305,7 +305,7 @@ feng.views.View3D.prototype.show = function(){
 	else this.isShown = true;
 
 	goog.dom.appendChild( this.containerElement, this.domElement );
-	
+
 	TweenMax.set(this.domElement, {
 		'opacity': 0,
 		'display': 'block'
@@ -448,7 +448,7 @@ feng.views.View3D.prototype.initScene = function() {
 	 */
 	var objectClass = {
 		'tip': feng.views.view3dobject.TipObject,
-		'holder': feng.views.view3dobject.HolderObject,
+		'replaceable': feng.views.view3dobject.ReplaceableObject,
 		'movable': feng.views.view3dobject.MovableObject,
 		'gateway': feng.views.view3dobject.GatewayObject,
 		'mirror': feng.views.view3dobject.Mirror,

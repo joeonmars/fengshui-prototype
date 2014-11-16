@@ -50,13 +50,9 @@ feng.views.sections.captions.Caption = function( object, cameraController, rende
   this._shareEl = goog.dom.getElementByClass('share', this.domElement);
   this._shareButtons = goog.dom.query('a', this._shareEl);
 
-  goog.style.showElement(this._panelButton, false);
-
   this._showPanelDelay = new goog.async.Delay(this.animateInPanel, 1000, this);
 
   // set default status
-  this._problemShownOnce = false;
-  this._tipShownOnce = false;
   this._isPanelAnimatedOut = true;
   goog.dom.classes.enable( this.domElement, 'hide-panel', this._isPanelAnimatedOut );
 
@@ -109,13 +105,9 @@ feng.views.sections.captions.Caption.prototype.activate = function() {
 
   this.updateStatus();
 
-  if(!this._tipShownOnce && this._object.tip.unlocked) {
-    this._showPanelDelay.start();
-  }
-    
-  if(!this._problemShownOnce) {
-    this._showPanelDelay.start();
-  }
+  goog.style.showElement(this._panelButton, false);
+  
+  this._showPanelDelay.start();
 };
 
 
@@ -132,12 +124,6 @@ feng.views.sections.captions.Caption.prototype.deactivate = function() {
 
 
 feng.views.sections.captions.Caption.prototype.animateInPanel = function() {
-
-  this._problemShownOnce = true;
-
-  if(this._object.tip.unlocked) {
-    this._tipShownOnce = true;
-  }
 
   if(this._isPanelAnimatedOut) {
 

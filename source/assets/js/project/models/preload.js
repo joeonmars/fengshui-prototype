@@ -56,6 +56,7 @@ feng.models.Preload = function(){
 				'studio-door-texture': 'images/texture/studio/livingroom/studio-door.jpg',
 				'studio-door-handle-texture': 'images/texture/studio/livingroom/studio-door-handle.jpg',
 				'studio-door-frame-texture': 'images/texture/studio/livingroom/studio-door-frame.jpg',
+				'cactus-texture': 'images/texture/studio/livingroom/cactus.jpg',
 				'bed-texture': 'images/texture/studio/livingroom/bed.jpg',
 				'shoestorage-texture': 'images/texture/studio/livingroom/shoestorage.jpg',
 				'sofabed-cabinet-texture': 'images/texture/studio/livingroom/sofabed-cabinet.jpg',

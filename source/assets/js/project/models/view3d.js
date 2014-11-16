@@ -81,6 +81,19 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.floor-texture",
 				receiveShadow: true
 			},
+			'plant': {
+				Class: "replaceable",
+				tipKey: 'studio.livingroom.cactus',
+				camera: {
+					position: new THREE.Vector3(60, 60, -58.5),
+					rotation: new THREE.Euler(-0.30, -1.50, 0.00, 'YXZ'),
+					fov: 20
+				},
+				//captionClass: 'replaceable'
+			},
+			'cactus': {
+				texture: "studio.livingroom.cactus-texture"
+			},
 			'bed':	{
 				collidable: true,
 				texture: "studio.livingroom.bed-texture"

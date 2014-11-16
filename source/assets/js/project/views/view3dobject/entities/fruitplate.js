@@ -1,11 +1,11 @@
 goog.provide('feng.views.view3dobject.entities.FruitPlate');
 
-goog.require('feng.views.view3dobject.HolderObject');
+goog.require('feng.views.view3dobject.TipObject');
 
 
 /**
  * @constructor
- * A fruit plate that can hold fruits
+ * A fruit plate that will contain fruits
  */
 feng.views.view3dobject.entities.FruitPlate = function( object3d, data, view3d ){
 
@@ -18,15 +18,7 @@ feng.views.view3dobject.entities.FruitPlate = function( object3d, data, view3d )
     'peach': false
   };
 };
-goog.inherits(feng.views.view3dobject.entities.FruitPlate, feng.views.view3dobject.HolderObject);
-
-
-feng.views.view3dobject.entities.FruitPlate.prototype.createHolder = function(){
-
-  goog.base(this, 'createHolder');
-
-  this._holder.position.set( -115.01, 50.36, -67.80 );
-};
+goog.inherits(feng.views.view3dobject.entities.FruitPlate, feng.views.view3dobject.TipObject);
 
 
 feng.views.view3dobject.entities.FruitPlate.prototype.drop = function( view3dObject ){
@@ -41,7 +33,7 @@ feng.views.view3dobject.entities.FruitPlate.prototype.drop = function( view3dObj
   object3d.position.copy( orientation.position );
   object3d.rotation.copy( orientation.rotation );
 
-  this._holder.add( object3d );
+  this.object3d.add( object3d );
 
   // check all fruits status for unlock
   var isDone = this._fruits['apple'] && this._fruits['orange'] && this._fruits['pineapple'] && this._fruits['peach'];
