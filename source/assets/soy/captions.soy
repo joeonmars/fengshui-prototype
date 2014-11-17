@@ -141,6 +141,37 @@
 
 
 /**
+ * Change object caption
+ * @param objects objects
+ * @param tip the tip
+ * @param? position the caption's position
+ */
+{template .ChangeObjectCaption}
+
+{call .Caption data="all"}
+
+	{param interactionContent}
+
+		<div class="change-object">
+			<h2>Click on an object to change</h2>
+
+			<ul class="objects">
+				{foreach $objectKey in keys($objects)}
+					<li>
+						<button class="object" data-object="{$objectKey}"></button>
+					</li>
+				{/foreach}
+			</ul>
+		</div>
+
+	{/param}
+
+{/call}
+
+{/template}
+
+
+/**
  * Drop fruits caption
  * @param fruits fruits
  * @param tip the tip

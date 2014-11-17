@@ -40,7 +40,7 @@ feng.fx.Shaders.prototype.onComplete = function( e ) {
 			return el;
 		});
 
-		console.log( 'shaders load complete', this.shaderEls );
+		//console.log( 'shaders load complete', this.shaderEls );
 
 	}else {
 

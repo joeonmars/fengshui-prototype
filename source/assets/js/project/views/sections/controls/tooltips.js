@@ -16,7 +16,6 @@ feng.views.sections.controls.Tooltips = function( domElement ){
   this._detectBlockingThrottle = new goog.async.Throttle( this.detectBlocking, 400, this );
 
   this._raycaster = new THREE.Raycaster();
-  this._raycaster.far = 400/2;
 
   this._rayDirection = new THREE.Vector3();
 
@@ -115,13 +114,7 @@ feng.views.sections.controls.Tooltips.prototype.setView3D = function( view3d ){
     goog.events.listenOnce( tooltipEl, 'click', this.onClickGatewayTooltip, false, this );
   }, this);
 
-  // check objects to detect blocking
-  this._detectObjects = goog.array.map(this._view3d.getSolidObjects(), function(object) {
-    return object.object3d;
-  });
-
-  goog.array.remove( this._detectObjects, this._view3d.designPlane.object3d );
-  goog.array.remove( this._detectObjects, this._view3d.skybox.object3d );
+  this.updateDetectObjects();
 };
 
 
@@ -134,6 +127,8 @@ feng.views.sections.controls.Tooltips.prototype.activate = function(){
   goog.object.forEach( this._currentTooltips, function(tooltip) {
     goog.dom.classes.addRemove( tooltip, 'fadeOut', 'fadeIn' );
   });
+
+  this.updateDetectObjects();
 
   goog.fx.anim.registerAnimation( this );
 };
@@ -150,6 +145,20 @@ feng.views.sections.controls.Tooltips.prototype.deactivate = function(){
   });
 
   goog.fx.anim.unregisterAnimation( this );
+};
+
+
+feng.views.sections.controls.Tooltips.prototype.updateDetectObjects = function(){
+
+  if(!this._view3d) return;
+
+  // check objects to detect blocking
+  this._detectObjects = goog.array.map(this._view3d.getSolidObjects(), function(object) {
+    return object.object3d;
+  });
+  
+  goog.array.remove( this._detectObjects, this._view3d.designPlane.object3d );
+  goog.array.remove( this._detectObjects, this._view3d.skybox.object3d );
 };
 
 
@@ -225,8 +234,13 @@ feng.views.sections.controls.Tooltips.prototype.onModeChange = function(e){
 
   switch(e.mode) {
     case feng.controllers.view3d.ModeController.Mode.BROWSE:
+    this.activate();
+    this._raycaster.far = 400/2;
+    break;
+
     case feng.controllers.view3d.ModeController.Mode.DESIGN:
     this.activate();
+    this._raycaster.far = Infinity;
     break;
 
     default:

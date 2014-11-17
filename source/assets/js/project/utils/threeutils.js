@@ -222,3 +222,4 @@ feng.utils.ThreeUtils.getRectangleFromBox3 = function( box3, camera, rendererSiz
 
 feng.utils.ThreeUtils.projector = new THREE.Projector();
 feng.utils.ThreeUtils.raycaster = new THREE.Raycaster();
+feng.utils.ThreeUtils.loader = new THREE.ObjectLoader();

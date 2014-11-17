@@ -218,6 +218,10 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls ) {
     captionClass = feng.views.sections.captions.ChangePictureCaption;
     break;
 
+    case 'changeobject':
+    captionClass = feng.views.sections.captions.ChangeObjectCaption;
+    break;
+
     case 'dropfruits':
     captionClass = feng.views.sections.captions.DropFruitsCaption;
     break;

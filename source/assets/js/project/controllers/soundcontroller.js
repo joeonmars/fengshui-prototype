@@ -31,13 +31,21 @@ feng.controllers.SoundController = function(){
 
   // define sound data to load
   var onSoundLoad = goog.bind(this.onSoundLoad, this);
+  var self = this;
 
-  var urls = function(filename) {
-    var result = [
-      feng.Config['assetsPath'] + 'audio/' + filename + '.mp3',
-      feng.Config['assetsPath'] + 'audio/' + filename + '.ogg',
-      feng.Config['assetsPath'] + 'audio/' + filename + '.wav'
-    ];
+  var urls = function(filename, forcedFormat) {
+
+    var result = [];
+
+    if(forcedFormat) {
+
+      result[0] = feng.Config['assetsPath'] + 'audio/' + filename + '.' + forcedFormat;
+
+    }else {
+
+      result[0] = feng.Config['assetsPath'] + 'audio/' + filename + '.mp3';
+      result[1] = feng.Config['assetsPath'] + 'audio/' + filename + '.ogg';
+    }
 
     return result;
   };
@@ -63,52 +71,46 @@ feng.controllers.SoundController = function(){
     'studio': {
       'urls': urls('ambient/city-distant-traffic'),
       'volume': 0,
-      'loop': true,
+      'onend': goog.bind(this.replaySound, self, 'studio', 'ambient'),
       'onload': onSoundLoad
     },
     'house': {
       'urls': urls('ambient/subdivision'),
       'volume': 0,
-      'loop': true,
+      'onend': goog.bind(this.replaySound, self, 'house', 'ambient'),
       'onload': onSoundLoad
     }
   };
 
   this._data[ feng.controllers.SoundController.SoundType.LOOP ] = {
-    'family-breakfast': {
-      'urls': urls('loop/family-breakfast'),
-      'volume': 0,
-      'loop': true,
-      'onload': onSoundLoad
-    },
     'first-class': {
       'urls': urls('loop/first-class'),
       'volume': 0,
-      'loop': true,
+      'onend': goog.bind(this.replaySound, self, 'first-class', 'loop'),
       'onload': onSoundLoad
     },
     'optimize-loop-1': {
       'urls': urls('loop/optimize-loop-1'),
       'volume': 0,
-      'loop': true,
+      'onend': goog.bind(this.replaySound, self, 'optimize-loop-1', 'loop'),
       'onload': onSoundLoad
     },
     'serendipity': {
       'urls': urls('loop/serendipity'),
       'volume': 0,
-      'loop': true,
-      'onload': onSoundLoad
-    },
-    'trees': {
-      'urls': urls('loop/trees'),
-      'volume': 0,
-      'loop': true,
+      'onend': goog.bind(this.replaySound, self, 'serendipity', 'loop'),
       'onload': onSoundLoad
     },
     'closeup': {
       'urls': urls('loop/optimize-loop-7'),
       'volume': 0,
-      'loop': true,
+      'onend': goog.bind(this.replaySound, self, 'closeup', 'loop'),
+      'onload': onSoundLoad
+    },
+    'book': {
+      'urls': urls('loop/optimize-loop-8'),
+      'volume': 0,
+      'onend': goog.bind(this.replaySound, self, 'book', 'loop'),
       'onload': onSoundLoad
     }
   };
@@ -145,16 +147,12 @@ feng.controllers.SoundController = function(){
       position: 0,
       timer: new goog.Timer(25000),
       sounds: [
-        this.getAmbient('studio'),
         this.getLoop('optimize-loop-1'),
-        this.getAmbient('studio'),
-        this.getLoop('trees'),
         this.getAmbient('studio'),
         this.getLoop('serendipity'),
         this.getAmbient('studio'),
         this.getLoop('first-class'),
-        this.getAmbient('studio'),
-        this.getLoop('family-breakfast')
+        this.getAmbient('studio')
       ],
       fadeAmbient: fadeAmbient,
       fadeLoop: fadeLoop
@@ -163,16 +161,12 @@ feng.controllers.SoundController = function(){
       position: 0,
       timer: new goog.Timer(25000),
       sounds: [
-        this.getAmbient('house'),
         this.getLoop('optimize-loop-1'),
-        this.getAmbient('house'),
-        this.getLoop('trees'),
         this.getAmbient('house'),
         this.getLoop('serendipity'),
         this.getAmbient('house'),
         this.getLoop('first-class'),
-        this.getAmbient('house'),
-        this.getLoop('family-breakfast')
+        this.getAmbient('house')
       ],
       fadeAmbient: fadeAmbient,
       fadeLoop: fadeLoop
@@ -203,9 +197,25 @@ goog.inherits(feng.controllers.SoundController, goog.events.EventTarget);
 goog.addSingletonGetter(feng.controllers.SoundController);
 
 
-feng.controllers.SoundController.prototype.getSound = function( id ){
-  
-  return this._sounds[ id ];
+feng.controllers.SoundController.prototype.replaySound = function( soundId, soundType ){
+
+  var sound;
+
+  switch(soundType) {
+    case feng.controllers.SoundController.SoundType.AMBIENT:
+    sound = this.getAmbient( soundId );
+    break;
+
+    case feng.controllers.SoundController.SoundType.LOOP:
+    sound = this.getLoop( soundId );
+    break;
+
+    case feng.controllers.SoundController.SoundType.SFX:
+    sound = this.getSfx( soundId );
+    break;
+  }
+
+  sound.play();
 };
 
 
@@ -328,7 +338,7 @@ feng.controllers.SoundController.prototype.playLoop = function( id ){
 };
 
 
-feng.controllers.SoundController.prototype.playMix = function( mixId ){
+feng.controllers.SoundController.prototype.playMix = function( mixId, duration ){
   
   var mix = this._mix[ mixId ];
 
@@ -338,7 +348,17 @@ feng.controllers.SoundController.prototype.playMix = function( mixId ){
   mix.position = 0;
 
   var sound = mix.sounds[ mix.position ];
-  this.fadeAmbient( sound.soundId, 0, 1, 5 );
+
+  var fadeDuration = goog.isNumber(duration) ? duration : 5;
+
+  if(sound.soundType === feng.controllers.SoundController.SoundType.AMBIENT) {
+
+    this.fadeAmbient( sound.soundId, 0, 1, fadeDuration );
+
+  }else if(sound.soundType === feng.controllers.SoundController.SoundType.LOOP) {
+
+    this.fadeLoop( sound.soundId, 0, 1, fadeDuration );
+  }
 };
 
 

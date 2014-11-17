@@ -85,11 +85,15 @@ feng.models.View3D.Data = {
 				Class: "replaceable",
 				tipKey: 'studio.livingroom.cactus',
 				camera: {
-					position: new THREE.Vector3(60, 60, -58.5),
+					position: new THREE.Vector3(60, 64, -58.5),
 					rotation: new THREE.Euler(-0.30, -1.50, 0.00, 'YXZ'),
-					fov: 20
+					fov: 25
 				},
-				//captionClass: 'replaceable'
+				captionClass: 'changeobject',
+				objects: [
+					'lucky-bamboo',
+					'rubberplant'
+				]
 			},
 			'cactus': {
 				texture: "studio.livingroom.cactus-texture"

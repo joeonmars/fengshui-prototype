@@ -65,20 +65,13 @@ feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
  * @return {string}
  * @notypecheck
  */
-feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
-  var param103 = '<h2>Fill the plate with fruits</h2><div class="drop-fruits"><ul class="fruits">';
-  var fruitKeyList105 = soy.$$getMapKeys(opt_data.fruits);
-  var fruitKeyListLen105 = fruitKeyList105.length;
-  for (var fruitKeyIndex105 = 0; fruitKeyIndex105 < fruitKeyListLen105; fruitKeyIndex105++) {
-    var fruitKeyData105 = fruitKeyList105[fruitKeyIndex105];
-    param103 += '<li><button data-fruit-id="' + fruitKeyData105 + '"></button></li>';
-  }
-  param103 += '</ul><ul class="descriptions">';
-  var fruitKeyList111 = soy.$$getMapKeys(opt_data.fruits);
-  var fruitKeyListLen111 = fruitKeyList111.length;
-  for (var fruitKeyIndex111 = 0; fruitKeyIndex111 < fruitKeyListLen111; fruitKeyIndex111++) {
-    var fruitKeyData111 = fruitKeyList111[fruitKeyIndex111];
-    param103 += '<li data-fruit-id="' + fruitKeyData111 + '"><p>' + opt_data.fruits[fruitKeyData111] + '</p></li>';
+feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
+  var param103 = '<div class="change-object"><h2>Click on an object to change</h2><ul class="objects">';
+  var objectKeyList105 = soy.$$getMapKeys(opt_data.objects);
+  var objectKeyListLen105 = objectKeyList105.length;
+  for (var objectKeyIndex105 = 0; objectKeyIndex105 < objectKeyListLen105; objectKeyIndex105++) {
+    var objectKeyData105 = objectKeyList105[objectKeyIndex105];
+    param103 += '<li><button class="object" data-object="' + objectKeyData105 + '"></button></li>';
   }
   param103 += '</ul></div>';
   var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param103}));
@@ -92,13 +85,40 @@ feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
  * @return {string}
  * @notypecheck
  */
+feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
+  var param113 = '<h2>Fill the plate with fruits</h2><div class="drop-fruits"><ul class="fruits">';
+  var fruitKeyList115 = soy.$$getMapKeys(opt_data.fruits);
+  var fruitKeyListLen115 = fruitKeyList115.length;
+  for (var fruitKeyIndex115 = 0; fruitKeyIndex115 < fruitKeyListLen115; fruitKeyIndex115++) {
+    var fruitKeyData115 = fruitKeyList115[fruitKeyIndex115];
+    param113 += '<li><button data-fruit-id="' + fruitKeyData115 + '"></button></li>';
+  }
+  param113 += '</ul><ul class="descriptions">';
+  var fruitKeyList121 = soy.$$getMapKeys(opt_data.fruits);
+  var fruitKeyListLen121 = fruitKeyList121.length;
+  for (var fruitKeyIndex121 = 0; fruitKeyIndex121 < fruitKeyListLen121; fruitKeyIndex121++) {
+    var fruitKeyData121 = fruitKeyList121[fruitKeyIndex121];
+    param113 += '<li data-fruit-id="' + fruitKeyData121 + '"><p>' + opt_data.fruits[fruitKeyData121] + '</p></li>';
+  }
+  param113 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param113}));
+  return output;
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
 feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
   var output = '<p class="floatText">';
-  var lineList122 = opt_data.lines;
-  var lineListLen122 = lineList122.length;
-  for (var lineIndex122 = 0; lineIndex122 < lineListLen122; lineIndex122++) {
-    var lineData122 = lineList122[lineIndex122];
-    output += '<span>' + lineData122 + '</span>';
+  var lineList132 = opt_data.lines;
+  var lineListLen132 = lineList132.length;
+  for (var lineIndex132 = 0; lineIndex132 < lineListLen132; lineIndex132++) {
+    var lineData132 = lineList132[lineIndex132];
+    output += '<span>' + lineData132 + '</span>';
   }
   output += '</p>';
   return output;

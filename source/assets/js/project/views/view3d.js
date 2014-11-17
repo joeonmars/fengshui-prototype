@@ -14,7 +14,6 @@ goog.require('feng.fx.Renderer');
 goog.require('feng.fx.View3DSize');
 goog.require('feng.models.Preload');
 goog.require('feng.models.View3D');
-goog.require('feng.models.Accessories');
 goog.require('feng.views.book.Book');
 goog.require('feng.views.view3dfx.FX');
 goog.require('feng.views.view3dobject.View3DObject');
@@ -26,7 +25,6 @@ goog.require('feng.views.view3dobject.MovableObject');
 goog.require('feng.views.view3dobject.GatewayObject');
 goog.require('feng.views.view3dobject.Skybox');
 goog.require('feng.views.view3dobject.Mirror');
-goog.require('feng.views.view3dobject.AccessoryObject');
 goog.require('feng.views.view3dobject.TipObject');
 goog.require('feng.views.view3dobject.entities.Bear');
 goog.require('feng.views.view3dobject.entities.Cat');
@@ -77,8 +75,6 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud, episode){
 	this.view3dObjects = {};
 	this.interactiveObjects = {};
 	this.tipObjects = {};
-
-	this.accessories = [];
 
 	this.viewSize = new feng.fx.View3DSize(0, 0);
 
@@ -182,6 +178,10 @@ feng.views.View3D.prototype.getSolidObjects = function(){
 	goog.array.remove( objects, this.arms );
 	goog.array.remove( objects, this.designPlane );
 
+	objects = goog.array.filter(objects, function(object) {
+		return goog.isDefAndNotNull( object.object3d.parent );
+	});
+
   return objects;
 };
 
@@ -270,7 +270,8 @@ feng.views.View3D.prototype.activate = function(){
  	this._eventHandler.listen( finaleOverlay, feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this );
 
  	var book = feng.views.book.Book.getInstance();
-	this._eventHandler.listen( book, feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this );
+	this._eventHandler.listen( book, feng.events.EventType.ANIMATE_IN, this.onBookAnimateIn, false, this );
+	this._eventHandler.listen( book, feng.events.EventType.ANIMATE_OUT, this.onBookAnimateOut, false, this );
 
  	goog.object.forEach(this.interactiveObjects, function(interactiveObject) {
  		interactiveObject.activate();
@@ -470,8 +471,6 @@ feng.views.View3D.prototype.initScene = function() {
 	var sectionId = this.sectionId;
 	var sceneId = this.id;
 
-	this.accessories = feng.models.Accessories.getInstance().getAccessories(sectionId, sceneId);
-
 	var parse = goog.bind( function(object) {
 
 		if(!(object instanceof THREE.Object3D)) return;
@@ -603,6 +602,24 @@ feng.views.View3D.prototype.onOverlayAnimateOut = function(e){
 };
 
 
+feng.views.View3D.prototype.onBookAnimateIn = function(e){
+
+	this.pause();
+
+	feng.soundController.stopMix( this.sectionId );
+	feng.soundController.fadeLoop( 'book', 0, 1, 2, false );
+};
+
+
+feng.views.View3D.prototype.onBookAnimateOut = function(e){
+
+	this.resume();
+
+	feng.soundController.playMix( this.sectionId );
+  	feng.soundController.fadeLoop( 'book', null, 0, 2, true );
+};
+
+
 feng.views.View3D.prototype.onResize = function(e){
 
 	this.cameraController.onResize( this.viewSize.aspectRatio() );
@@ -628,13 +645,10 @@ feng.views.View3D.parseChildren = function(object, parseFunc) {
 
 feng.views.View3D.constructScene = function(sectionId, sceneId) {
 
-	// create a threejs loader just for parsing scene data
-	var loader = new THREE.ObjectLoader();
-
 	// get scene data
 	var preloadModel = feng.models.Preload.getInstance();
 	var sceneData = preloadModel.getAsset(sectionId+'.'+sceneId+'.scene-data');
-	var scene = loader.parse( sceneData );
+	var scene = feng.utils.ThreeUtils.loader.parse( sceneData );
 
 	return {
 		scene: scene

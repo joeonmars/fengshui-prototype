@@ -151,8 +151,8 @@
 			"details": {
 				"descriptions": {
 					"luckybamboo": "So why is Lucky Bamboo considered lucky in Feng shui? Bamboo in itself is an amazing plant with a very peaceful and wise energy. It teaches the ultimate wisdom: how to be flexible and hollow (open) on the inside, so that the spirit can freely flow and heal your being.",
-					"orchid": "So why is Lucky Bamboo considered lucky in Feng shui? Bamboo in itself is an amazing plant with a very peaceful and wise energy. It teaches the ultimate wisdom: how to be flexible and hollow (open) on the inside, so that the spirit can freely flow and heal your being.",
-					"rubberplant": "So why is Lucky Bamboo considered lucky in Feng shui? Bamboo in itself is an amazing plant with a very peaceful and wise energy. It teaches the ultimate wisdom: how to be flexible and hollow (open) on the inside, so that the spirit can freely flow and heal your being."
+					"orchid": "Orchids are graceful flowering plants. The flowers are long lasting and come in a variety of shapes, sizes, and colors. They can bloom all year round, even in the coldest winter. Orchids not only absorb carbon dioxide but they release oxygen at night, which make them ideal for bedrooms. They can also help us sleep better because of this fact. For feng shui purposes, we often use orchids for relationship adjustments. While the bamboo can be used for a current or prospective relationship, the orchid is more often used to find a new partner.",
+					"rubberplant": "Ivy, because of its ability to attach itself so securely to structures and objects, stands for friendship and is an expression of constancy and patience. One of Its specialty is taking care of benzene found in plastics and inks. It also helps control formaldehyde from carpets and paint."
 				}
 			}
 		},
@@ -410,7 +410,7 @@
 			"id": "deskchair",
 			"section": "house",
 			"view": "homeoffice",
-			"name": "desk chair",
+			"name": "sitting area",
 			"icon": "chair",
 			"unlocked": false,
 			"mandatory": true,
@@ -442,7 +442,7 @@
 			"id": "setsquare",
 			"section": "house",
 			"view": "homeoffice",
-			"name": "objects above the desk",
+			"name": "overhead objects",
 			"icon": "setsquare",
 			"unlocked": false,
 			"mandatory": true,
@@ -490,15 +490,15 @@
 			"id": "cat",
 			"section": "house",
 			"view": "corridor",
-			"name": "pet beds",
+			"name": "pet",
 			"icon": "petbeds",
 			"unlocked": true,
 			"mandatory": false,
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
+			"problem": null,
+			"advice": "Cats are smart and, after observing us over the years, have developed their own practice for becoming a fortunate felines symbol in feng shui.<br>Give your cat a special area that's just for them. Whether it's a bed or cushion, this will honor your pet in a way that benefits your whole household. Make sure your pet's area is always clean and well maintained. The best spots for an animal's perch are the near left corner or the center portion of the far wall of your home. When you designate a special spot for your animals, it will be easier to be recognized for your own talents and contributions.",
 			"character": "joanna",
 			"reminder": "Did you hear the sweet snozzing sound? That's our kitty Tom!"
 		}

@@ -121,6 +121,8 @@ feng.views.view3dobject.View3DObject.prototype.createTextures = function(){
             */
           }
 
+          object.material.shading = THREE.FlatShading;
+          object.material.fog = false;
           object.material.map = texture;
           object.material.needsUpdate = true;
       }
