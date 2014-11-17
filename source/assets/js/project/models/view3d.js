@@ -12,6 +12,7 @@ feng.models.View3D.Data = {
 				castShadow: true,
 				toHome: true,
 				isEntry: true,
+				inversed: true,
 				origin: {
 					position: new THREE.Vector3(-240, 0, 34),
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
@@ -786,7 +787,7 @@ feng.models.View3D.Data = {
 				Class: 'pictures',
 				captionClass: 'changepicture',
 				tipKey: 'house.boysroom.poster',
-				texture: "house.boysroom.handheld-nightstand-texture",
+				texture: "house.boysroom.big-frame-picture-texture",
 				camera: {
 					position: new THREE.Vector3(21.1, 80, -26.46),
 					rotation: new THREE.Euler(-0.03, 1.55, 0.00, 'YXZ'),

@@ -266,6 +266,7 @@ feng.models.Preload = function(){
 				'cabinet-texture': 'images/texture/house/boysroom/cabinet.jpg',
 				'bed-texture': 'images/texture/house/boysroom/bed.jpg',
 				'big-frame-texture': 'images/texture/house/boysroom/big-frame.jpg',
+				'big-frame-picture-texture': 'images/texture/house/boysroom/pictures/shark.jpg',
 				'decoration-pictures-texture': 'images/texture/house/boysroom/decoration-pictures.jpg',
 				'ceiling-lamps-texture': 'images/texture/house/boysroom/ceiling-lamps.jpg',
 				'stools-texture': 'images/texture/house/boysroom/stools.jpg',

@@ -40,17 +40,19 @@ feng.views.view3dobject.GatewayObject.prototype.shouldGoHome = function() {
 };
 
 
-feng.views.view3dobject.GatewayObject.prototype.getEndRotationY = function( inversed ) {
+feng.views.view3dobject.GatewayObject.prototype.getEndRotationY = function() {
 
-	var direction = inversed ? -1 : 1;
-	return (this._startRotationY + goog.math.toRadians( 90 * direction ));
+	var direction = this.data.inversed ? -1 : 1;
+	var rotation = (this._startRotationY + goog.math.toRadians( -90 * direction ));
+
+	return rotation;
 };
 
 
-feng.views.view3dobject.GatewayObject.prototype.open = function( skipPause, inversed ) {
+feng.views.view3dobject.GatewayObject.prototype.open = function( skipPause ) {
 
 	this._openTweener.updateTo({
-		'y': this.getEndRotationY( inversed )
+		'y': this.getEndRotationY()
 	}, true);
 
 	this._openTweener.restart();
