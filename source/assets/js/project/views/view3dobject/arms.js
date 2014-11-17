@@ -12,6 +12,10 @@ feng.views.view3dobject.Arms = function( view3d ){
   var object3d = new THREE.Object3D();
   object3d.name = 'arms';
 
+  // a dummy object3d for generating world orientation
+  this._orientationTester = new THREE.Object3D();
+  object3d.add( this._orientationTester );
+
   // -- test
   /*
   var geometry = new THREE.BoxGeometry( 10, 10, 10 );
@@ -33,6 +37,27 @@ feng.views.view3dobject.Arms = function( view3d ){
   this.addToScene();
 };
 goog.inherits(feng.views.view3dobject.Arms, feng.views.view3dobject.InteractiveObject);
+
+
+feng.views.view3dobject.Arms.prototype.getWorldOrientation = function( id, opt_pos, opt_rot ){
+
+  var worldPos = opt_pos || new THREE.Vector3();
+  var worldRot = opt_rot || new THREE.Euler();
+
+  var localOrientation = feng.views.view3dobject.Arms.Orientations[ id ];
+  this._orientationTester.position.copy( localOrientation.position );
+  this._orientationTester.rotation.copy( localOrientation.rotation );
+
+  worldPos = this._orientationTester.getWorldPosition( worldPos );
+  worldRot = this._orientationTester.getWorldRotation( worldRot );
+
+  var worldOrientation = {
+    position: worldPos,
+    rotation: worldRot
+  };
+
+  return worldOrientation;
+};
 
 
 feng.views.view3dobject.Arms.prototype.hasObject = function( view3dObject ){

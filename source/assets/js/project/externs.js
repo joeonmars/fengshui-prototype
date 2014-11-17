@@ -46,6 +46,7 @@ Quad.easeInOut = {};
 Quad.easeOut = {};
 
 var Sine = {};
+Sine.easeIn = {};
 Sine.easeInOut = {};
 
 var Strong = {};
@@ -62,6 +63,9 @@ Linear.easeNone = {};
 
 var Power4 = {};
 Power4.easeInOut = {};
+
+var Bounce = {};
+Bounce.easeOut = {};
 
 var Expo = {};
 Expo.easeInOut = {};
