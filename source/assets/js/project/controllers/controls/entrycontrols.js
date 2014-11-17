@@ -31,8 +31,8 @@ feng.controllers.controls.EntryControls.prototype.start = function () {
 	var entryDirection = (new THREE.Vector3()).subVectors(entryOriginPosition, entryPosition).setY(0).normalize().negate();
 
 	var endPosition = entryOriginPosition.clone().setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT );
-	var startPosition = entryPosition.clone().setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT ).add( entryDirection.clone().multiplyScalar(120) );
-	var stepInPosition = startPosition.clone().add( entryDirection.clone().multiplyScalar(-70) );
+	var startPosition = entryPosition.clone().setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT ).add( entryDirection.clone().multiplyScalar(150) );
+	var stepInPosition = startPosition.clone().add( entryDirection.clone().multiplyScalar(-80) );
 
 	var endRotation = entryOriginRotation.clone();
 	var startRotation = new THREE.Euler(0, 0, 0, 'YXZ');
@@ -77,6 +77,7 @@ feng.controllers.controls.EntryControls.prototype.start = function () {
 
 	var arriveInTweener = TweenMax.to(prop, 3, {
 		t: 1,
+		'delay': 1,
 		'ease': Quad.easeInOut,
 		'onUpdate': this.onArriveInUpdate,
 		'onUpdateParams': [prop],
@@ -94,8 +95,7 @@ feng.controllers.controls.EntryControls.prototype.start = function () {
 feng.controllers.controls.EntryControls.prototype.openDoor = function () {
 
 	var skipPause = true;
-	var inversed = true;
-	this._entry.open( skipPause, inversed );
+	this._entry.open( skipPause );
 
 	var designPlane = this._view3d.designPlane;
 	designPlane.removeFromScene();
@@ -126,7 +126,7 @@ feng.controllers.controls.EntryControls.prototype.onStepCloseComplete = function
 	hud.openingOverlay.updateContent( sectionId, viewId );
 	hud.openingOverlay.animateIn();
 
-	goog.events.listenOnce( hud.openingOverlay, feng.events.EventType.ANIMATE_OUT, this.openDoor, false, this );
+	goog.events.listenOnce( hud.openingOverlay, feng.events.EventType.HIDE, this.openDoor, false, this );
 };
 
 

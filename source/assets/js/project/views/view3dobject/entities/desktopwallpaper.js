@@ -24,6 +24,8 @@ goog.inherits(feng.views.view3dobject.entities.DesktopWallpaper, feng.views.view
 
 feng.views.view3dobject.entities.DesktopWallpaper.prototype.init = function() {
 
+  goog.base(this, 'init');
+  
   this._screenObject = this.object3d.getObjectByName('screen');
 
   var textureData = this._screenObject.userData.texture;

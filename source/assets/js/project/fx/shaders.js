@@ -34,9 +34,13 @@ feng.fx.Shaders.prototype.onComplete = function( e ) {
 		var dom = goog.dom.createDom('div');
 		dom.innerHTML = e.target.getResponseText();
 
-		this.shaderEls = goog.dom.getChildren( dom );
+		var shaderEls = goog.dom.getChildren( dom );
 
-		console.log( 'shaders load complete' );
+		this.shaderEls = goog.array.map(shaderEls, function(el) {
+			return el;
+		});
+
+		//console.log( 'shaders load complete', this.shaderEls );
 
 	}else {
 

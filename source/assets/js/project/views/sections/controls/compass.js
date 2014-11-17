@@ -15,7 +15,6 @@ feng.views.sections.controls.Compass = function(domElement){
   goog.base(this, domElement);
 
   this._mainEl = goog.dom.getElement('main');
-  this._cubeEl = goog.dom.getElementByClass('cube', this.domElement);
   
   var browseEl = goog.dom.getElementByClass('browse', this.domElement);
   var img = feng.models.Preload.getInstance().getAsset('global.cube-browse');
@@ -48,9 +47,9 @@ feng.views.sections.controls.Compass.prototype.activate = function(){
 
   this._eventHandler.listen(this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
   this._eventHandler.listen(this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
-  this._eventHandler.listen(this._cubeEl, 'mousemove', this.onMouseMove, false, this);
-  this._eventHandler.listen(this._cubeEl, 'mouseout', this.onMouseOut, false, this);
-  this._eventHandler.listen(this._cubeEl, 'click', this.onClick, false, this);
+  this._eventHandler.listen(this.domElement, 'mousemove', this.onMouseMove, false, this);
+  this._eventHandler.listen(this.domElement, 'mouseout', this.onMouseOut, false, this);
+  this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
 
   this._dragger.setEnabled( true );
 };

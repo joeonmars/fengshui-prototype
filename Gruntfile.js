@@ -81,6 +81,7 @@ module.exports = function(grunt) {
           '<%= thirdPartyJsDir %>/createjs/preloadjs-0.4.1.min.js',
           '<%= thirdPartyJsDir %>/greensock/TweenMax.min.js',
           '<%= thirdPartyJsDir %>/greensock/utils/Draggable.min.js',
+          '<%= thirdPartyJsDir %>/greensock/plugins/ThrowPropsPlugin.min.js',
           '<%= thirdPartyJsDir %>/threejs/build/three69.min.js',
           '<%= thirdPartyJsDir %>/threejs-utils/Projector.js',
           '<%= thirdPartyJsDir %>/threejs-utils/CanvasRenderer.js',
@@ -228,6 +229,8 @@ module.exports = function(grunt) {
            externs: [
             '<%= projectJsDir %>/externs.js',
             '<%= thirdPartyJsDir %>/threejs/build/three69.min.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/Projector.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/CanvasRenderer.js',
             '<%= thirdPartyJsDir %>/threejs-utils/CombinedCamera.js',
             '<%= thirdPartyJsDir %>/threejs-utils/EffectComposer.js',
             '<%= thirdPartyJsDir %>/threejs-utils/RenderPass.js',
@@ -274,6 +277,14 @@ module.exports = function(grunt) {
         src: ['*.html'],
         dest: 'source/assets/html/share/'
       }
+    },
+
+    uglify: {
+      release: {
+        files: {
+          '<%= outputJsDir %>/thirdparty.js': ['<%= outputJsDir %>/thirdparty.js']
+        }
+      }
     }
 
   });
@@ -286,6 +297,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-open');
   grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-webfont');
@@ -328,6 +340,7 @@ module.exports = function(grunt) {
     'closureBuilder',
     'closureCompiler',
     'concat',
+    'uglify:release',
     'clean:release',
     'copy',
     'open:release']);

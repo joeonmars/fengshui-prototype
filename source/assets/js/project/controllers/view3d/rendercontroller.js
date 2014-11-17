@@ -20,16 +20,17 @@ feng.controllers.view3d.RenderController = function( view3d ){
   this._maskedObject = null;
 
   //
+  this._maxBlur = 20;
+  this._minBrightness = -.25;
+  this._minContrast = -.40;
+  this._minVignette = 1;
+  this._maxVignette = 3;
+
   this._blur = 0;
   this._brightness = 0;
   this._contrast = 0;
   this._saturation = 0;
-  this._vignette = 0;
-
-  this._maxBlur = 50;
-  this._minBrightness = -.5;
-  this._minContrast = -.5;
-  this._maxVignette = 1;
+  this._vignette = this._minVignette;
 
   this._closeUpTweener = TweenMax.fromTo(this, .5, {
   	_blur: 0,
@@ -48,7 +49,7 @@ feng.controllers.view3d.RenderController = function( view3d ){
   });
 
   this._vignetteTweener = TweenMax.fromTo(this, 1, {
-  	_vignette: 0
+  	_vignette: this._minVignette
   }, {
   	_vignette: this._maxVignette,
   	'paused': true
@@ -62,7 +63,7 @@ feng.controllers.view3d.RenderController = function( view3d ){
   }, {
   	_brightness: -.65,
   	_contrast: -.2,
-  	_blur: this._maxBlur / 8,
+  	_blur: 6,
   	_saturation: -.65,
   	'ease': Quad.easeInOut,
   	'paused': true,
@@ -106,7 +107,7 @@ feng.controllers.view3d.RenderController.prototype.updateByMode = function(mode,
 
 	if(modeToCloseUp || modeToDesign) {
 
-		if(!this._vignetteTweener.isActive() && this._vignette < 1) {
+		if(!this._vignetteTweener.isActive() && this._vignette < this._maxVignette) {
 			this._vignetteTweener.play();
 		}
 	}
@@ -120,7 +121,7 @@ feng.controllers.view3d.RenderController.prototype.updateByMode = function(mode,
 
 	if(notCloseUp && notDesign) {
 
-		if(!this._vignetteTweener.reversed() && this._vignette > 0) {
+		if(!this._vignetteTweener.reversed() && this._vignette > this._minVignette) {
 			this._vignetteTweener.reverse();
 		}
 	}

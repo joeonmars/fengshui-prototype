@@ -86,8 +86,12 @@ createjs.LoadQueue.loadTimeout = {};
 createjs.LoadQueue.progress = {};
 createjs.LoadQueue.on = {};
 createjs.LoadQueue.off = {};
+createjs.LoadQueue.removeAll = {};
 createjs.LoadQueue.setMaxConnections = {};
 createjs.LoadQueue.loadManifest = {};
+createjs.LoadQueue.getResult = {};
+createjs.LoadQueue.addEventListener = {};
+createjs.LoadQueue.hasEventListener = {};
 createjs.LoadQueue.removeAllEventListeners = {};
 
 /* Pathfinding */

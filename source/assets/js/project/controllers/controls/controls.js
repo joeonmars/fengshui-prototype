@@ -112,7 +112,7 @@ feng.controllers.controls.Controls.prototype.getForwardVector = function (dontFo
 feng.controllers.controls.Controls.prototype.getTarget = function () {
 
 	var raycaster = new THREE.Raycaster(this.getPosition(), this.getForwardVector(true));
-	var intersects = raycaster.intersectObjects( this._view3d.scene.children );
+	var intersects = raycaster.intersectObject( this._view3d.skybox.object3d );
 	var intersectPosition = intersects.length > 0 ? intersects[0].point : this._view3d.scene.position;
 
 	return intersectPosition;

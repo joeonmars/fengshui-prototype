@@ -218,6 +218,10 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls ) {
     captionClass = feng.views.sections.captions.ChangePictureCaption;
     break;
 
+    case 'changeobject':
+    captionClass = feng.views.sections.captions.ChangeObjectCaption;
+    break;
+
     case 'dropfruits':
     captionClass = feng.views.sections.captions.DropFruitsCaption;
     break;
@@ -241,6 +245,9 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls ) {
 feng.views.View3DHud.prototype.showControls = function( shouldShow ) {
 
   goog.dom.classes.enable( this._controlsEl, 'hidden', !shouldShow );
+  goog.dom.classes.enable( this._tooltipsEl, 'hidden', !shouldShow );
+
+  feng.mainOptions.showHelpButton( shouldShow );
 };
 
 
@@ -252,6 +259,7 @@ feng.views.View3DHud.prototype.onModeChange = function( e ) {
   switch(anyMode) {
 
     case feng.controllers.view3d.ModeController.Mode.ENTRY:
+    case feng.controllers.view3d.ModeController.Mode.EXIT:
     case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
     case null:
     shouldShowControls = false;
@@ -275,7 +283,12 @@ feng.views.View3DHud.prototype.onModeChange = function( e ) {
     shouldShowControls = false;
   }
 
-  feng.mainOptions.showHelpButton( shouldShowControls );
+  var willShowOpeningOverlay = this.openingOverlay.shouldShow( this._view3d.sectionId, this._view3d.id );
+
+  if(willShowOpeningOverlay) {
+
+    shouldShowControls = false;
+  }
 
   this.showControls( shouldShowControls );
 };

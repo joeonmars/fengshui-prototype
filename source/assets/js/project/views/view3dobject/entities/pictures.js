@@ -51,7 +51,8 @@ feng.views.view3dobject.entities.Pictures.prototype.startInteraction = function(
 
   goog.base(this, 'startInteraction');
 
-  this._interactionHandler.listen(this._view3d.domElement, 'click', this.onClick, false, this);
+  // disable free picture selection for now...
+  //this._interactionHandler.listen(this._view3d.domElement, 'click', this.onClick, false, this);
 
   this.setActivePicture( this._pictureObject3ds[0] );
 };
@@ -112,7 +113,7 @@ feng.views.view3dobject.entities.Pictures.prototype.setPicture = function( id ){
   }
 };
 
-
+/*
 feng.views.view3dobject.entities.Pictures.prototype.onClick = function(e){
 
   var camera = this._view3d.cameraController.activeCamera;
@@ -124,3 +125,4 @@ feng.views.view3dobject.entities.Pictures.prototype.onClick = function(e){
     this.setActivePicture( picture );
   }
 };
+*/

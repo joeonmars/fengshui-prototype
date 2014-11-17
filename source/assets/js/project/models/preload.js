@@ -30,30 +30,15 @@ feng.models.Preload = function(){
 		'home': {
 
 		},
-		'accessories': {
-			'rubberplant-data': 'json/elements/rubberplant.json',
-			'rubberplant-texture': 'images/texture/rubberplant.png',
-			'cactus-data': 'json/elements/cactus.json',
-			'cactus-texture': 'images/texture/cactus.png',
-			'lotus-data': 'json/elements/lotus.json',
-			'lotus-texture': 'images/texture/lotus.png'
-		},
 		'studio': {
 			'global': {
 				'character': {
-					'ollie-data': 'json/characters/ollie.json',
-					'ollie': 'images/characters/ollie.png'
+					'ollie-data': 'json/character/ollie.json',
+					'ollie': 'images/character/ollie.png'
 				}
 			},
-			'interior2': {
-				'scene-data': 'json/scene-interior2.json',
-				'energyflow-data': 'json/energyflow/energyflow-2.json',
-				'pc-texture': 'images/texture/pc.jpg',
-				'screensaver-texture': 'images/texture/spritesheet/screensaver.png',
-				'cactus-texture': 'images/texture/cactus.png'
-			},
 			'livingroom': {
-				'scene-data': 'json/studio-livingroom.json',
+				'scene-data': 'json/scene/studio-livingroom.json',
 				'floor-texture': 'images/texture/studio/livingroom/floor.jpg',
 				'wall-texture': 'images/texture/studio/livingroom/wall.jpg',
 				'wall-outer-texture': 'images/texture/studio/livingroom/wall-outer.jpg',
@@ -63,6 +48,7 @@ feng.models.Preload = function(){
 				'studio-door-texture': 'images/texture/studio/livingroom/studio-door.jpg',
 				'studio-door-handle-texture': 'images/texture/studio/livingroom/studio-door-handle.jpg',
 				'studio-door-frame-texture': 'images/texture/studio/livingroom/studio-door-frame.jpg',
+				'cactus-texture': 'images/texture/studio/livingroom/cactus.jpg',
 				'bed-texture': 'images/texture/studio/livingroom/bed.jpg',
 				'shoestorage-texture': 'images/texture/studio/livingroom/shoestorage.jpg',
 				'sofabed-cabinet-texture': 'images/texture/studio/livingroom/sofabed-cabinet.jpg',
@@ -124,7 +110,7 @@ feng.models.Preload = function(){
 				}
 			},
 			'bathroom': {
-				'scene-data': 'json/studio-bathroom.json',
+				'scene-data': 'json/scene/studio-bathroom.json',
 				'floor-texture': 'images/texture/studio/bathroom/floor.jpg',
 				'ceiling-texture': 'images/texture/studio/bathroom/ceiling.jpg',
 				'wall-texture': 'images/texture/studio/bathroom/wall.jpg',
@@ -175,36 +161,63 @@ feng.models.Preload = function(){
 		'house': {
 			'global': {
 				'character': {
-					'joanna-data': 'json/characters/joanna.json',
-					'joanna': 'images/characters/joanna.png',
-					'scott-data': 'json/characters/scott.json',
-					'scott': 'images/characters/scott.png',
-					'nick-data': 'json/characters/nick.json',
-					'nick': 'images/characters/nick.png'
+					'joanna-data': 'json/character/joanna.json',
+					'joanna': 'images/character/joanna.png',
+					'scott-data': 'json/character/scott.json',
+					'scott': 'images/character/scott.png',
+					'nick-data': 'json/character/nick.json',
+					'nick': 'images/character/nick.png'
 				}
 			},
 			'livingroom': {
-				'scene-data': 'json/house-livingroom.json',
+				'scene-data': 'json/scene/house-livingroom.json',
+				'wall-texture': 'images/texture/house/livingroom/wall.jpg',
+				'wall-outer-texture': 'images/texture/house/livingroom/wall-outer.jpg',
+				'stairways-texture': 'images/texture/house/livingroom/stairways.jpg',
+				'stairways-handrail-texture': 'images/texture/house/livingroom/stairways-handrail.jpg',
+				'stairway-lamps-texture': 'images/texture/house/livingroom/stairway-lamps.jpg',
+				'ceiling-texture': 'images/texture/house/livingroom/ceiling.jpg',
+				'ceiling-lamp-1-texture': 'images/texture/house/livingroom/ceiling-lamp-1.jpg',
+				'ceiling-lamp-2-texture': 'images/texture/house/livingroom/ceiling-lamp-2.jpg',
+				'floor-texture': 'images/texture/house/livingroom/floor.jpg',
+				'door-frame-texture': 'images/texture/house/livingroom/door-frame.jpg',
 				'livingroom-door-texture': 'images/texture/house/livingroom/livingroom-door.jpg',
-				'windowsill-stuff-texture': 'images/texture/house/livingroom/windowsill-stuff.jpg',
-				'knife-texture': 'images/texture/house/livingroom/knife.jpg',
+				'windows-texture': 'images/texture/house/livingroom/windows.jpg',
+				'knife-on-cabinet-texture': 'images/texture/house/livingroom/knife-on-cabinet.jpg',
+				'knife-in-drawer-texture': 'images/texture/house/livingroom/knife-in-drawer.jpg',
 				'kitchen-top-texture': 'images/texture/house/livingroom/kitchen-top.jpg',
+				'kitchen-bottom-texture': 'images/texture/house/livingroom/kitchen-bottom.jpg',
 				'kitchen-stuff-texture': 'images/texture/house/livingroom/kitchen-stuff.jpg',
 				'long-table-texture': 'images/texture/house/livingroom/long-table.jpg',
 				'round-table-texture': 'images/texture/house/livingroom/round-table.jpg',
 				'clock-texture': 'images/texture/house/livingroom/clock.jpg',
 				'bookshelf-texture': 'images/texture/house/livingroom/bookshelf.jpg',
+				'bookshelf-lamps-texture': 'images/texture/house/livingroom/bookshelf-lamps.jpg',
 				'window-stand-texture': 'images/texture/house/livingroom/window-stand.jpg',
 				'basin-texture': 'images/texture/house/livingroom/basin.jpg',
 				'cooktop-texture': 'images/texture/house/livingroom/cooktop.jpg',
+				'ladder-texture': 'images/texture/house/livingroom/ladder.jpg',
+				'white-sofa-texture': 'images/texture/house/livingroom/white-sofa.jpg',
+				'window-blinds-texture': 'images/texture/house/livingroom/window-blinds.jpg',
 				'tv-stand-texture': 'images/texture/house/livingroom/tv-stand.jpg',
 				'entrance-stuff-texture': 'images/texture/house/livingroom/entrance-stuff.jpg',
 				'blue-sofa-texture': 'images/texture/house/livingroom/blue-sofa.jpg',
 				'pads-texture': 'images/texture/house/livingroom/pads.jpg',
 				'dining-table-texture': 'images/texture/house/livingroom/dining-table.jpg',
 				'dining-chairs-texture': 'images/texture/house/livingroom/dining-chairs.jpg',
+				'dining-lamps-texture': 'images/texture/house/livingroom/dining-lamps.jpg',
 				'divider-texture': 'images/texture/house/livingroom/divider.jpg',
+				'curtain-left-texture': 'images/texture/house/livingroom/curtain-left.jpg',
+				'curtain-right-texture': 'images/texture/house/livingroom/curtain-right.jpg',
 				'fruitplate-texture': 'images/texture/house/livingroom/fruitplate.jpg',
+				'refrigerator-texture': 'images/texture/house/livingroom/refrigerator.jpg',
+				'living-area-lamp-texture': 'images/texture/house/livingroom/living-area-lamp.jpg',
+				'living-area-carpet-texture': 'images/texture/house/livingroom/living-area-carpet.jpg',
+				'cupboard-texture': 'images/texture/house/livingroom/cupboard.jpg',
+				'heater-texture': 'images/texture/house/livingroom/heater.jpg',
+				'drawer-texture': 'images/texture/house/livingroom/drawer.jpg',
+				'windowsill-stuff-texture': 'images/texture/house/livingroom/windowsill-stuff.jpg',
+				'fish-bowl-stand-texture': 'images/texture/house/livingroom/fish-bowl-stand.jpg',
 				'skybox': {
 					'xpos': 'images/texture/house/boysroom/skybox/pos-x.png',
 					'xneg': 'images/texture/house/boysroom/skybox/neg-x.png',
@@ -215,7 +228,26 @@ feng.models.Preload = function(){
 				},
 			},
 			'corridor': {
-				'scene-data': 'json/house-corridor.json',
+				'scene-data': 'json/scene/house-corridor.json',
+				'ceiling-texture': 'images/texture/house/corridor/ceiling.jpg',
+				'ceiling-lamp-texture': 'images/texture/house/corridor/ceiling-lamp.jpg',
+				'ceiling-lamps-texture': 'images/texture/house/corridor/ceiling-lamps.jpg',
+				'floor-texture': 'images/texture/house/corridor/floor.jpg',
+				'wall-texture': 'images/texture/house/corridor/wall.jpg',
+				'wall-outer-texture': 'images/texture/house/corridor/wall-outer.jpg',
+				'picture-wall-texture': 'images/texture/house/corridor/picture-wall.jpg',
+				'door-frames-texture': 'images/texture/house/corridor/door-frames.jpg',
+				'display-table-texture': 'images/texture/house/corridor/display-table.jpg',
+				'cat-bed-texture': 'images/texture/house/corridor/cat-bed.jpg',
+				'cat-texture': 'images/texture/house/corridor/cat.jpg',
+				'corridor-window-texture': 'images/texture/house/corridor/corridor-window.jpg',
+				'corridor-stuff-texture': 'images/texture/house/corridor/corridor-stuff.jpg',
+				'nick-photo-texture': 'images/texture/house/corridor/nick-photo.jpg',
+				'window-plant-texture': 'images/texture/house/corridor/window-plant.jpg',
+				'homeoffice-door-texture': 'images/texture/house/corridor/homeoffice-door.png',
+				'bedroom-door-texture': 'images/texture/house/corridor/bedroom-door.png',
+				'boysroom-door-texture': 'images/texture/house/corridor/boysroom-door.png',
+				'bathroom-door-texture': 'images/texture/house/corridor/bathroom-door.png',
 				'skybox': {
 					'xpos': 'images/texture/house/boysroom/skybox/pos-x.png',
 					'xneg': 'images/texture/house/boysroom/skybox/neg-x.png',
@@ -226,7 +258,7 @@ feng.models.Preload = function(){
 				},
 			},
 			'boysroom': {
-				'scene-data': 'json/house-boysroom.json',
+				'scene-data': 'json/scene/house-boysroom.json',
 				'floor-texture': 'images/texture/house/boysroom/floor.jpg',
 				'ceiling-texture': 'images/texture/house/boysroom/ceiling.jpg',
 				'wall-texture': 'images/texture/house/boysroom/wall.jpg',
@@ -234,6 +266,7 @@ feng.models.Preload = function(){
 				'cabinet-texture': 'images/texture/house/boysroom/cabinet.jpg',
 				'bed-texture': 'images/texture/house/boysroom/bed.jpg',
 				'big-frame-texture': 'images/texture/house/boysroom/big-frame.jpg',
+				'big-frame-picture-texture': 'images/texture/house/boysroom/pictures/shark.jpg',
 				'decoration-pictures-texture': 'images/texture/house/boysroom/decoration-pictures.jpg',
 				'ceiling-lamps-texture': 'images/texture/house/boysroom/ceiling-lamps.jpg',
 				'stools-texture': 'images/texture/house/boysroom/stools.jpg',
@@ -287,7 +320,7 @@ feng.models.Preload = function(){
 				}
 			},
 			'homeoffice': {
-				'scene-data': 'json/house-homeoffice.json',
+				'scene-data': 'json/scene/house-homeoffice.json',
 				'floor-texture': 'images/texture/house/homeoffice/floor.jpg',
 				'ceiling-texture': 'images/texture/house/homeoffice/ceiling.jpg',
 				'wall-texture':	'images/texture/house/homeoffice/wall.jpg',
@@ -297,6 +330,7 @@ feng.models.Preload = function(){
 				'setsquare-texture': 'images/texture/house/homeoffice/setsquare.jpg',
 				'carpet-texture': 'images/texture/house/homeoffice/carpet.jpg',
 				'door-frame-texture': 'images/texture/house/homeoffice/door-frame.jpg',
+				'homeoffice-door-texture': 'images/texture/house/homeoffice/homeoffice-door.jpg',
 				'display-shelf-lamp-texture': 'images/texture/house/homeoffice/display-shelf-lamp.jpg',
 				'bookshelf-lamps-texture': 'images/texture/house/homeoffice/bookshelf-lamps.jpg',
 				'picture-frame-1-texture': 'images/texture/house/homeoffice/picture-frame-1.jpg',

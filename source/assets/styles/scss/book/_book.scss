@@ -7,9 +7,13 @@
 
 	>.close-button{
 		position: absolute;
-		top: 20px;
-		right: 20px;
+		top: 5%;
+		right: 40px;
+		margin-top: -5px;
 		z-index: 2;
+		color: #fff;
+		font-size: 40px;
+		line-height: 0;
 	}
 
 	>h2{

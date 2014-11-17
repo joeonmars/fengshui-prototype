@@ -54,19 +54,10 @@ feng.views.sections.controls.ObjectSelector.prototype.setSelectableObjects = fun
 
 	this._selectableObjects = objects;
 
-	var hitTestMeshes = [];
+	this._hitTestMeshes = goog.array.map(this._selectableObjects, function(object) {
 
-	goog.array.forEach(this._selectableObjects, function(object) {
-
-		object.object3d.traverse(function(obj) {
-			if(obj.interactiveObject) {
-				hitTestMeshes.push( obj );
-			}
-		});
-
+		return object.getProxyBox();
 	}, this);
-
-	this._hitTestMeshes = hitTestMeshes;
 };
 
 
@@ -192,7 +183,7 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e
 		return false;
 	}
 
-	this._downObject = intersects[0].object.interactiveObject;
+	this._downObject = intersects[0].object.view3dObject;
 	this.setPosition( e.clientX, e.clientY );
 
 	this._eventHandler.listen(document, 'mousemove', this.onMouseDownCancel, false, this);

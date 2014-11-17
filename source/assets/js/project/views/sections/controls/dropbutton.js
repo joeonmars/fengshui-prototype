@@ -1,6 +1,5 @@
 goog.provide('feng.views.sections.controls.DropButton');
 
-goog.require('goog.Timer');
 goog.require('feng.views.sections.controls.Controls');
 
 
@@ -12,7 +11,6 @@ feng.views.sections.controls.DropButton = function(domElement){
   goog.base(this, domElement);
 
   this._movableObject = null;
-  this._detectTimer = new goog.Timer( 1000/30 );
 
   this.fadeOut();
 };
@@ -27,10 +25,9 @@ feng.views.sections.controls.DropButton.prototype.activate = function( movableOb
 
   this._movableObject = movableObject;
 
-  this._detectTimer.start();
+  this.fadeIn();
 
 	this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
-	this._eventHandler.listen(this._detectTimer, goog.Timer.TICK, this.detect, false, this);
 
 	goog.fx.anim.registerAnimation( this );
 };
@@ -44,24 +41,7 @@ feng.views.sections.controls.DropButton.prototype.deactivate = function(){
 
   this._movableObject = null;
 
-  this._detectTimer.stop();
-
   goog.fx.anim.unregisterAnimation( this );
-};
-
-
-feng.views.sections.controls.DropButton.prototype.detect = function(){
-
-	var dropPosition = this._movableObject.getPositionIfAvailable();
-
-	if(dropPosition) {
-
-		this.fadeIn();
-
-	}else {
-
-		this.fadeOut();
-	}
 };
 
 

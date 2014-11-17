@@ -1,18 +1,18 @@
 /* -- simple fades -- */
 @include keyframes(fade-in) {
   0%{
-  	visibility: visible;
+  	visibility: inherit;
 		opacity: 0;
   }
   100%{
-  	visibility: visible;
+  	visibility: inherit;
 		opacity: 1;
   }
 }
 
 @include keyframes(fade-out) {
   0%{
-  	visibility: visible;
+  	visibility: inherit;
 		opacity: 1;
   }
   100%{
@@ -70,11 +70,11 @@
 /* -- drop button -- */
 @include keyframes(fade-in-drop) {
   0%{
-  	visibility: visible;
+  	visibility: inherit;
 		opacity: 0;
   }
   100%{
-  	visibility: visible;
+  	visibility: inherit;
 		opacity: 1;
   }
 }
@@ -82,7 +82,7 @@
 
 @include keyframes(fade-out-drop) {
   0%{
-  	visibility: visible;
+  	visibility: inherit;
 		opacity: 1;
   }
   100%{

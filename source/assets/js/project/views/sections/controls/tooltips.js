@@ -13,31 +13,62 @@ feng.views.sections.controls.Tooltips = function( domElement ){
 
   goog.base(this, domElement);
 
-  this._detectBlockingThrottle = new goog.async.Throttle( this.detectBlocking, 1000/15, this );
+  this._detectBlockingThrottle = new goog.async.Throttle( this.detectBlocking, 400, this );
 
   this._raycaster = new THREE.Raycaster();
+
   this._rayDirection = new THREE.Vector3();
+
   this._detectObjects = [];
 
-  // collect tooltips by id
   this._tooltips = {};
-
-  var tooltipEls = goog.dom.getChildren( this.domElement );
-
-  goog.array.forEach( tooltipEls, function(tooltipEl) {
-    var tipId = tooltipEl.getAttribute('data-id');
-    this._tooltips[ tipId ] = tooltipEl;
-  }, this);
 
   // tooltips of current view3d
   this._currentTooltips = {};
+  this._tooltipObjects = [];
 };
 goog.inherits(feng.views.sections.controls.Tooltips, feng.views.sections.controls.Controls);
 
 
-feng.views.sections.controls.Tooltips.prototype.getTooltip = function( tipId ){
+feng.views.sections.controls.Tooltips.prototype.createTooltips = function( view3d ){
 
-  return goog.dom.query('.tooltip[data-id=' + tipId + ']', this.domElement)[0];
+  // create tip tooltips
+  goog.object.forEach( view3d.tipObjects, function(tipObject) {
+
+    var tip = tipObject.tip;
+
+    if(!this._tooltips[ tip.id ]) {
+
+      var tooltipEl = soy.renderAsFragment(feng.templates.controls.TipTooltip, {
+        tip: tipObject.tip
+      });
+
+      goog.dom.appendChild( this.domElement, tooltipEl );
+
+      this._tooltips[ tip.id ] = tooltipEl;
+    }
+  }, this);
+
+  // create gateway tooltips
+  goog.object.forEach( view3d.getGatewayObjects(), function(gatewayObject) {
+
+    if(!this._tooltips[ gatewayObject.id ]) {
+
+      var tooltipEl = soy.renderAsFragment(feng.templates.controls.GatewayTooltip, {
+        gateway: gatewayObject
+      });
+
+      goog.dom.appendChild( this.domElement, tooltipEl );
+
+      this._tooltips[ gatewayObject.id ] = tooltipEl;
+    }
+  }, this);
+};
+
+
+feng.views.sections.controls.Tooltips.prototype.getTooltip = function( id ){
+
+  return goog.dom.query('.tooltip[data-id=' + id + ']', this.domElement)[0];
 };
 
 
@@ -45,15 +76,28 @@ feng.views.sections.controls.Tooltips.prototype.setView3D = function( view3d ){
 
   goog.base(this, 'setView3D', view3d);
 
-  // set active tooltips of view3d
+  // create tooltips if not
+  this.createTooltips( view3d );
+
+  // find tooltip objects of view3d
+  var tipObjects = goog.object.getValues( view3d.tipObjects );
+  var gatewayObjects = view3d.getGatewayObjects();
+  this._tooltipObjects = ([]).concat( tipObjects, gatewayObjects );
+
+  // set current tooltips from objects
   this._currentTooltips = {};
 
-  goog.object.forEach( view3d.tipObjects, function(tipObject) {
+  goog.array.forEach( this._tooltipObjects, function(object) {
+
+    var id = object.tip ? object.tip.id : object.id;
+    this._currentTooltips[ id ] = this._tooltips[ id ];
+  }, this);
+
+  // listen to tip unlock event
+  goog.array.forEach( tipObjects, function(tipObject) {
 
     var tip = tipObject.tip;
-    var tipId = tip.id;
-    var tooltipEl = this._tooltips[ tipId ];
-    this._currentTooltips[ tipId ] = tooltipEl;
+    var tooltipEl = this._tooltips[ tip.id ];
 
     goog.dom.classes.enable( tooltipEl, 'locked', !(tip.unlocked && tip.isFinal) );
 
@@ -62,15 +106,15 @@ feng.views.sections.controls.Tooltips.prototype.setView3D = function( view3d ){
     }
   }, this);
 
-  // check objects to detect blocking
-  this._detectObjects = [];
+  // listen to click event of gateway tooltip
+  goog.array.forEach( gatewayObjects, function(gatewayObject) {
 
-  goog.object.forEach(this._view3d.view3dObjects, function(object) {
-    this._detectObjects.push( object.object3d );
+    var tooltipEl = this._tooltips[ gatewayObject.id ];
+
+    goog.events.listenOnce( tooltipEl, 'click', this.onClickGatewayTooltip, false, this );
   }, this);
 
-  goog.array.remove( this._detectObjects, this._view3d.designPlane.object3d );
-  goog.array.remove( this._detectObjects, this._view3d.skybox.object3d );
+  this.updateDetectObjects();
 };
 
 
@@ -83,6 +127,8 @@ feng.views.sections.controls.Tooltips.prototype.activate = function(){
   goog.object.forEach( this._currentTooltips, function(tooltip) {
     goog.dom.classes.addRemove( tooltip, 'fadeOut', 'fadeIn' );
   });
+
+  this.updateDetectObjects();
 
   goog.fx.anim.registerAnimation( this );
 };
@@ -102,23 +148,38 @@ feng.views.sections.controls.Tooltips.prototype.deactivate = function(){
 };
 
 
+feng.views.sections.controls.Tooltips.prototype.updateDetectObjects = function(){
+
+  if(!this._view3d) return;
+
+  // check objects to detect blocking
+  this._detectObjects = goog.array.map(this._view3d.getSolidObjects(), function(object) {
+    return object.object3d;
+  });
+  
+  goog.array.remove( this._detectObjects, this._view3d.designPlane.object3d );
+  goog.array.remove( this._detectObjects, this._view3d.skybox.object3d );
+};
+
+
 feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
 
-  var tipObjects = this._view3d.tipObjects;
   var control = this._view3d.modeController.control;
   var controlPosition = control.getPosition();
   var controlDirection = control.getForwardVector( true );
   var thresholdDot = Math.cos( THREE.Math.degToRad(45) );
 
-  goog.object.forEach( tipObjects, function(tipObject) {
+  goog.array.forEach( this._tooltipObjects, function(object) {
 
-    var tooltip = this._currentTooltips[ tipObject.tip.id ];
+    var id = object.tip ? object.tip.id : object.id;
 
-    var proxyBox = tipObject.getProxyBox();
-    var direction = this._rayDirection.subVectors( proxyBox.position, controlPosition ).normalize();
+    var tooltip = this._currentTooltips[ id ];
+
+    var objectCenter = object.getCenter();
+    var direction = this._rayDirection.subVectors( objectCenter, controlPosition ).normalize();
     this._raycaster.set( controlPosition, direction );
 
-    var objectDirection = proxyBox.position.clone().sub( controlPosition ).normalize();
+    var objectDirection = objectCenter.clone().sub( controlPosition ).normalize();
     var dot = objectDirection.dot( controlDirection );
 
     if(dot >= thresholdDot) {
@@ -133,8 +194,10 @@ feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
     
     var intersects = this._raycaster.intersectObjects( this._detectObjects );
 
-    var shouldShow = (intersects.length > 0 && intersects[0].object.view3dObject === proxyBox.view3dObject);
-    
+    var shouldShow = (intersects.length > 0 && 
+      (intersects[0].object.view3dObject === object || intersects[0].object.parent.view3dObject === object || goog.array.contains(intersects[0].object.children, object.object3d))
+      );
+
     goog.dom.classes.enable( tooltip, 'hidden', !shouldShow );
 
   }, this);
@@ -150,15 +213,34 @@ feng.views.sections.controls.Tooltips.prototype.onTipUnlock = function(e){
 };
 
 
+feng.views.sections.controls.Tooltips.prototype.onClickGatewayTooltip = function(e){
+
+  e.preventDefault();
+
+  var gatewayId = e.currentTarget.getAttribute('data-id');
+  var gateway = this._view3d.getView3dObject( gatewayId );
+
+  this._view3d.modeController.setMode({
+    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+    nextMode: feng.controllers.view3d.ModeController.Mode.EXIT,
+    gateway: gateway
+  });
+};
+
+
 feng.views.sections.controls.Tooltips.prototype.onModeChange = function(e){
 
   goog.base(this, 'onModeChange', e);
 
   switch(e.mode) {
     case feng.controllers.view3d.ModeController.Mode.BROWSE:
-    case feng.controllers.view3d.ModeController.Mode.DESIGN:
-    case feng.controllers.view3d.ModeController.Mode.WALK:
     this.activate();
+    this._raycaster.far = 400/2;
+    break;
+
+    case feng.controllers.view3d.ModeController.Mode.DESIGN:
+    this.activate();
+    this._raycaster.far = Infinity;
     break;
 
     default:
@@ -170,17 +252,16 @@ feng.views.sections.controls.Tooltips.prototype.onModeChange = function(e){
 
 feng.views.sections.controls.Tooltips.prototype.onAnimationFrame = function(now) {
 
-  var tipObjects = this._view3d.tipObjects;
   var camera = this._cameraController.activeCamera;
   var viewSize = this._viewSize;
 
-  goog.object.forEach( tipObjects, function(tipObject) {
+  goog.array.forEach( this._tooltipObjects, function(object) {
 
-    var pos3d = tipObject.getCenter();
+    var pos3d = object.getCenter();
     var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, camera, viewSize );
     
-    var tipId = tipObject.tip.id;
-    var tooltip = this._currentTooltips[ tipId ];
+    var id = object.tip ? object.tip.id : object.id;
+    var tooltip = this._currentTooltips[ id ];
     goog.style.setStyle( tooltip, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)' );
 
   }, this);

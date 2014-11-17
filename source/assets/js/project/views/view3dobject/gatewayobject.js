@@ -12,7 +12,7 @@ feng.views.view3dobject.GatewayObject = function( object3d, data, view3d ){
 
   this.viewId = this.data.viewid;
   this.gatewayId = this.data.gatewayid;
-
+  
   this.isEntry = this.data.isEntry;
 
   this.origin = this.data.origin;
@@ -20,11 +20,10 @@ feng.views.view3dobject.GatewayObject = function( object3d, data, view3d ){
 
   this._startRotationY = this.object3d.rotation.y;
 
-  this._openTweener = TweenMax.fromTo( this.object3d.rotation, 2, {
+	this._openTweener = TweenMax.fromTo( this.object3d.rotation, 2.5, {
 		'y': this._startRotationY
 	}, {
 		'y': this.getEndRotationY(),
-		'ease': Strong.easeOut,
 		'paused': true,
 		'onComplete': this.onOpenComplete,
 		'onCompleteScope': this
@@ -35,17 +34,25 @@ feng.views.view3dobject.GatewayObject = function( object3d, data, view3d ){
 goog.inherits(feng.views.view3dobject.GatewayObject, feng.views.view3dobject.InteractiveObject);
 
 
-feng.views.view3dobject.GatewayObject.prototype.getEndRotationY = function( inversed ) {
+feng.views.view3dobject.GatewayObject.prototype.shouldGoHome = function() {
 
-	var direction = inversed ? -1 : 1;
-	return (this._startRotationY + goog.math.toRadians( 90 * direction ));
+	return (this.data.toHome === true);
 };
 
 
-feng.views.view3dobject.GatewayObject.prototype.open = function( skipPause, inversed ) {
+feng.views.view3dobject.GatewayObject.prototype.getEndRotationY = function() {
+
+	var direction = this.data.inversed ? -1 : 1;
+	var rotation = (this._startRotationY + goog.math.toRadians( -90 * direction ));
+
+	return rotation;
+};
+
+
+feng.views.view3dobject.GatewayObject.prototype.open = function( skipPause ) {
 
 	this._openTweener.updateTo({
-		'y': this.getEndRotationY( inversed )
+		'y': this.getEndRotationY()
 	}, true);
 
 	this._openTweener.restart();

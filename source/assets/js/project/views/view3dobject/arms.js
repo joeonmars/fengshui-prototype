@@ -35,6 +35,12 @@ feng.views.view3dobject.Arms = function( view3d ){
 goog.inherits(feng.views.view3dobject.Arms, feng.views.view3dobject.InteractiveObject);
 
 
+feng.views.view3dobject.Arms.prototype.hasObject = function( view3dObject ){
+
+  return goog.array.contains( this.object3d.children, view3dObject.object3d );
+};
+
+
 feng.views.view3dobject.Arms.prototype.addItem = function( view3dObject ){
 
   goog.array.insert( this._items, view3dObject );
@@ -115,5 +121,9 @@ feng.views.view3dobject.Arms.Orientations = {
   'setsquare': {
     position: new THREE.Vector3(0.47, -2, -10),
     rotation: new THREE.Euler(-0.78, -1.57, 0.02)
+  },
+  'knife': {
+    position: new THREE.Vector3(0, 8, -2),
+    rotation: new THREE.Euler(0.05, -0.09, -0.25)
   }
 };

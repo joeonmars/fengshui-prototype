@@ -65,6 +65,8 @@ feng.views.sections.Episode.prototype.activate = function(){
 feng.views.sections.Episode.prototype.activateView = function(){
 
 	if(this._view3d) {
+
+		this._view3d.createResources();
 		this._view3d.activate();
 	}
 };
@@ -81,14 +83,16 @@ feng.views.sections.Episode.prototype.deactivate = function(){
 	this._view3dController.unlisten(feng.events.EventType.SHOW, this.onShowView3D, false, this);
 
 	if(this._view3d) {
+
 		this._view3d.deactivate();
+		this._view3d.disposeResources();
 	}
 };
 
 
 feng.views.sections.Episode.prototype.load = function( viewId ){
 
-	this._viewId = viewId || this._viewIds[0];
+	this._viewId = viewId || this._viewId || this._viewIds[0];
 
 	var globalAssetsKey = this.id + '.global';
 	var view3dAssetsKey = this.id + '.' + this._viewId;
@@ -118,9 +122,6 @@ feng.views.sections.Episode.prototype.animateOut = function(){
 	if(!shouldDo) return false;
 
 	feng.soundController.stopMix( this.id );
-
-	this._viewId = null;
-	this._view3d = null;
 };
 
 
@@ -150,11 +151,8 @@ feng.views.sections.Episode.prototype.onLoadComplete = function(e){
 		this._view3ds.push( view3d );
 	}
 
-	if(!this._view3d) {
-
-		this._view3d = this._view3dController.getView3D( sectionId, viewId );
-		this.activateView();
-	}
+	this._view3d = this._view3dController.getView3D( sectionId, viewId );
+	this.activateView();
 };
 
 
@@ -173,7 +171,7 @@ feng.views.sections.Episode.prototype.onShowView3D = function(e){
 		
 	}else {
 
-		var gatewayObject = view3d.getEntry();
+		var gatewayObject = view3d.startGateway || view3d.getEntry();
 		var position = gatewayObject.origin.position;
 		var rotation = gatewayObject.origin.rotation;
 	  	
@@ -182,25 +180,6 @@ feng.views.sections.Episode.prototype.onShowView3D = function(e){
 			fromPosition: position,
 			fromRotation: rotation,
 			fromFov: feng.controllers.controls.Controls.Default.FOV
-		});
-	}
-	
-	// test mode
-	if(feng.utils.Utils.hasQuery('interaction', 'true')) {
-
-		var objectName = feng.utils.Utils.getQuery('object');
-
-		var object = view3d.getInteractiveObject( objectName );
-		var cameraSettings = object.specialCameraSettings;
-
-		view3d.modeController.onModeChange({
-			type: feng.events.EventType.CHANGE,
-			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-			toPosition: cameraSettings.position,
-			toRotation: cameraSettings.rotation,
-			toFov: cameraSettings.fov,
-			object: object
 		});
 	}
 };

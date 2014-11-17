@@ -69,12 +69,14 @@ feng.controllers.view3d.View3DController.prototype.onHideView3D = function(e){
 
 feng.controllers.view3d.View3DController.prototype.onShowView3D = function(e){
 
-	console.log('Show View3D: ', e.target.id);
-
 	this.view3d = e.target;
+
+	console.log('Show View3D: ', this.view3d.id);
+
+	this.view3d.createResources();
 	this.view3d.activate();
 
-	feng.pubsub.publish( feng.PubSub.Topic.SHOW_VIEW3D, e.target );
+	feng.pubsub.publish( feng.PubSub.Topic.SHOW_VIEW3D, this.view3d );
 };
 
 
@@ -84,11 +86,12 @@ feng.controllers.view3d.View3DController.prototype.onChangeView3D = function(e){
 	from.fadeOut();
 
 	this._view3dToFadeIn = this.getView3D( e.sectionId, e.viewId );
+	this._view3dToFadeIn.startGateway = this._view3dToFadeIn.view3dObjects[ e.gatewayId ];
 
-	//var gateway = this._view3dToFadeIn.interactiveObjects[ e.gatewayId ];
-	//var origin = gateway.origin;
-
-	console.log('Change View3D from: ' + e.target.id + ' to ' + this._view3dToFadeIn.id);
+	console.log(
+		'Change View3D from: ' + e.target.id + 
+		' to ' + this._view3dToFadeIn.id + 
+		' start gateway: ' + this._view3dToFadeIn.startGateway.gatewayId);
 };
 
 
@@ -99,7 +102,9 @@ feng.controllers.view3d.View3DController.prototype.onAnimateInView3D = function(
 
 feng.controllers.view3d.View3DController.prototype.onAnimateOutView3D = function(e){
 
-	e.target.deactivate();
+	var view3d = e.target;
+	view3d.deactivate();
+	view3d.disposeResources();
 };
 
 
@@ -111,6 +116,6 @@ feng.controllers.view3d.View3DController.prototype.onAnimatedInView3D = function
 feng.controllers.view3d.View3DController.prototype.onAnimatedOutView3D = function(e){
 
 	if(this._view3dToFadeIn) {
-		this._view3dToFadeIn.fadeIn();
+		this._view3dToFadeIn.fadeIn( this._startGateway );
 	}
 };

@@ -9,64 +9,71 @@
 {template .Caption}
 <div class="caption {$position}">
 
-	<div class="popup-wrapper">
-	{call feng.templates.common.Popup}
+		<div class="shade"></div>
 
-		{param classname: $position /}
+		<div class="panel">
+			<button class="icon panel-button"></button>
 
-		{param content}
-			<h1>{ $tip.name }</h1>
+			<div class="panel-content">
 
-			<div class="problem">
-				<h2>Problem</h2>
-				<button class="icon icon-arrow-down"></button>
-				<div class="drawer">
-					<p>{ $tip.problem }</p>
+				<div class="heading">
+
+					<div class="share">
+						<ul>
+							<li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-facebook"></a>
+							<li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-twitter"></a>
+							<li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-google"></a>
+						</ul>
+					</div>
+
+					<h1>{ $tip.name }</h1>
 				</div>
-			</div>
 
-			<div class="hint">
-				<p>{ $tip.hint }</p>
-				{call feng.templates.common.PrimaryButton}
-					{param icon: 'icon-yes' /}
-					{param classname: 'hint-button' /}
-					{param text: 'I see' /}
-				{/call}
-			</div>
+				<div class="content">
+					<div class="scroller">
 
-			<div class="interaction">
-				{if $interactionContent}
-					{ $interactionContent }
-				{else}
-					{call feng.templates.common.PrimaryButton}
-						{param classname: 'interaction-button' /}
-						{param icon: 'icon-yes' /}
-						{param text: 'Solve the problem' /}
-					{/call}
-				{/if}
-			</div>
+						<div class="scroller-inner">
 
-			<div class="advice">
-				<h2>Tips</h2>
-				<button class="icon icon-arrow-down"></button>
-				<div class="drawer">
-					<p>{ $tip.advice }</p>
+							<section class="hint">
+								<p>{ $tip.hint }</p>
+								{call feng.templates.common.PrimaryButton}
+									{param icon: 'icon-yes' /}
+									{param classname: 'hint-button' /}
+									{param text: 'I see' /}
+								{/call}
+							</section>
+
+							<section class="problem">
+								<p>{ $tip.problem }</p>
+
+								<!-- either close to interact, or scroll down to go interaction section if available -->
+								{call feng.templates.common.PrimaryButton}
+									{param classname: 'interaction-button' /}
+									{param icon: 'icon-yes' /}
+									{param text: 'Solve the problem' /}
+								{/call}
+							</section>
+
+							{if $interactionContent}
+							<section class="interaction">
+								{ $interactionContent }
+							</section>
+							{/if}
+
+							<section class="advice">
+								<h2>Tips</h2>
+								<p>{ $tip.advice }</p>
+							</section>
+
+						</div>
+
+					</div>
 				</div>
+
 			</div>
+		</div>
 
-			<div class="share">
-				<h2>Share With Friends</h2>
-				<ul>
-					<li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-facebook"></a>
-					<li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-twitter"></a>
-					<li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-google"></a>
-				</ul>
-			</div>
-		{/param}
-
-	{/call}
-	</div>
-
+		<button class="icon icon-close close-button"></button>
 </div>
 {/template}
 
@@ -121,6 +128,37 @@
 				{foreach $colorKey in keys($colors)}
 					<li>
 						<button class="color" style="background-color: {$colors[$colorKey].hex}" data-color="{$colorKey}"></button>
+					</li>
+				{/foreach}
+			</ul>
+		</div>
+
+	{/param}
+
+{/call}
+
+{/template}
+
+
+/**
+ * Change object caption
+ * @param objects objects
+ * @param tip the tip
+ * @param? position the caption's position
+ */
+{template .ChangeObjectCaption}
+
+{call .Caption data="all"}
+
+	{param interactionContent}
+
+		<div class="change-object">
+			<h2>Click on an object to change</h2>
+
+			<ul class="objects">
+				{foreach $objectKey in keys($objects)}
+					<li>
+						<button class="object" data-object="{$objectKey}"></button>
 					</li>
 				{/foreach}
 			</ul>

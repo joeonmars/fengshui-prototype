@@ -1,32 +1,5 @@
-@at-root {
-
-	@include keyframes(fade-in-tooltip) {
-	  0%{
-	  	visibility: visible;
-		opacity: 0;
-		@include translateY(40px);
-	  }
-	  100%{
-	  	visibility: visible;
-		opacity: 1;
-		@include translateY(0px);
-	  }
-	}
-
-
-	@include keyframes(fade-out-tooltip) {
-	  0%{
-	  	visibility: visible;
-		opacity: 1;
-		@include translateY(0px);
-	  }
-	  100%{
-	  	visibility: hidden;
-		opacity: 0;
-		@include translateY(40px);
-	  }
-	}
-
+&.hidden{
+	display: none;
 }
 
 >.fadeIn{
@@ -94,13 +67,17 @@
 
 >.fadeIn{
 	>.bar{
-		@include animation(fade-in-tooltip .5s $easeOutCubic both);
+		visibility: inherit;
+		opacity: 1;
+		@include scale(1);
 	}
 }
 
 >.fadeOut{
 	>.bar{
-		@include animation(fade-out-tooltip .5s $easeOutCubic both);
+	  	visibility: hidden;
+		opacity: 0;
+		@include scale(0);
 	}
 }
 
@@ -109,7 +86,7 @@
 	position: absolute;
 	display: block;
 	opacity: 1;
-	visibility: visible;
+	visibility: inherit;
 	@include transition( opacity .5s ease-in-out, visibility .5s );
 
 	&:hover{
@@ -126,7 +103,9 @@
 		background-color: rgba(255, 255, 255, .95);
 		@include single-box-shadow(1px, 1px, 3px, 0px, rgba(0, 0, 0, .25));
 		@include border-radius(50px);
-		@include transition( width .4s $easeOutCubic, left .4s $easeOutCubic, background-color .4s ease-out );
+		@include transition(
+			width .4s $easeOutCubic, left .4s $easeOutCubic, background-color .4s ease-out,
+			opacity .5s $easeOutCubic, visibility .5s $easeOutCubic, transform .5s $easeOutCubic);
 
 		>.symbol{
 			width: 100px;

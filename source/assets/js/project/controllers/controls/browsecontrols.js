@@ -5,7 +5,6 @@ goog.require('goog.events.MouseWheelHandler');
 goog.require('goog.math.Box');
 goog.require('feng.controllers.controls.Controls');
 goog.require('feng.utils.ThreeUtils');
-goog.require('feng.views.view3dobject.GatewayObject');
 
 /**
  * @constructor
@@ -43,7 +42,7 @@ feng.controllers.controls.BrowseControls = function(camera, view3d, domElement){
 	this._targetRotationY = 0;
 
 	this._maxRotationX = THREE.Math.degToRad(40);
-	this._minRotationX = THREE.Math.degToRad(-40);
+	this._minRotationX = THREE.Math.degToRad(-60);
 };
 goog.inherits(feng.controllers.controls.BrowseControls, feng.controllers.controls.Controls);
 
@@ -87,30 +86,18 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 			if(isUnlockedRequiredTip) return;
 
 			var withinRange = this._detectorSphere.intersectsSphere( tipObject.getBoundingSphere() );
-			var canReach = false;
 
-			var rayDirection = new THREE.Vector3().subVectors( tipObject.getCenter(), cameraPosition ).normalize();
-			this._detectorRay.set( cameraPosition, rayDirection );
+			var inArms = this._view3d.arms.hasObject( tipObject );
 
-			var intersects = this._detectorRay.intersectObjects( object3ds );
+			//console.log(tipObject.name + ' withinRange: ' + withinRange + ', locked: ' + locked);
 
-			var canReach =
-				(intersects.length > 0) ?
-				(intersects[0].object === tipObject.object3d || goog.array.contains(tipObject.object3d.children, intersects[0].object)) :
-				false;
-
-			//console.log(tipObject.name + ' withinRange: ' + withinRange + ', locked: ' + locked + ', canReach: ' + canReach, (intersects.length > 0 ? intersects[0].object : null));
-
-			if(locked && withinRange && canReach) {
+			if(locked && withinRange && !inArms) {
 				selectableObjects.push( tipObject );
 			}
 		}, this);
 
 		//
 		var nearbyObjects = selectableObjects.concat();
-
-		var gatewayObjects = this._view3d.getGatewayObjects();
-		var selectableObjects = ([]).concat(gatewayObjects).concat(selectableObjects);
 		
 		this._objectSelector.setSelectableObjects( selectableObjects );
 		this._progressBar.setNearbyObjects( nearbyObjects );
@@ -196,17 +183,7 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 
 	if ( intersects.length > 0 ) {
 
-		// check if clicked on any particular object
-		var clickedObject = intersects[0].object.view3dObject;
-
-		/*
-		if ( clickedObject instanceof /// ) {
-
-			return true;
-		}
-		*/
-
-		// otherwise walk to the object
+		// walk to the object
 		var toPosition = intersects[0].point;
 		toPosition.y = toPosition.y < 10 ? this.getPosition().y : toPosition.y;
 
@@ -294,24 +271,6 @@ feng.controllers.controls.BrowseControls.prototype.onObjectSelectStart = functio
 feng.controllers.controls.BrowseControls.prototype.onObjectSelectComplete = function ( object ) {
 
 	console.log('Object selected: ' + object.object3d.name);
-	
-	// check if it should open and head to the door directly
-	var isGatewayObject = (object instanceof feng.views.view3dobject.GatewayObject);
-	
-	if(isGatewayObject) {
-
-		var center = object.getCenter();
-		
-		this.dispatchEvent({
-			type: feng.events.EventType.CHANGE,
-			mode: feng.controllers.view3d.ModeController.Mode.WALK,
-			nextMode: null,
-			gateway: object,
-			toPosition: center
-		});
-
-		return;
-	}
 
 	//
 	this.dispatchEvent({

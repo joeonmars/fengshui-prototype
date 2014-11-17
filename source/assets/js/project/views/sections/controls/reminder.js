@@ -105,14 +105,12 @@ feng.views.sections.controls.Reminder.prototype.activate = function(){
 
 	this._eventHandler.listen(this._prevEl, 'click', this.onClick, false, this);
 	this._eventHandler.listen(this._nextEl, 'click', this.onClick, false, this);
-	this._eventHandler.listen(this._characterEl, 'mousedown', this.onClick, false, this);
+	this._eventHandler.listen(this._characterEl, 'mousedown', this.onMouseDown, false, this);
 	this._eventHandler.listen(this._hintDialogueEl, 'mouseover', this.onMouseOver, false, this);
 	this._eventHandler.listen(this._hintDialogueEl, 'mouseout', this.onMouseOut, false, this);
 	this._eventHandler.listen(this._hintTimer, 'tick', this.onHintTick, false, this);
 
 	this._hintTimer.start();
-
-	goog.dom.classes.enable(this.domElement, 'hidden', false);
 };
 
 
@@ -123,8 +121,6 @@ feng.views.sections.controls.Reminder.prototype.deactivate = function(){
   if(!shouldDeactivate) return;
 
 	this._hintTimer.stop();
-
-	goog.dom.classes.enable(this.domElement, 'hidden', true);
 };
 
 
@@ -283,7 +279,7 @@ feng.views.sections.controls.Reminder.prototype.showHint = function( tipId ){
 
 	this.gotoHintByTip( tipId );
 
-	goog.dom.classes.add( this.domElement, 'active' );
+	goog.dom.classes.addRemove( this.domElement, 'inactive', 'active' );
 
 	this._hideHintDelay.start();
 
@@ -300,7 +296,7 @@ feng.views.sections.controls.Reminder.prototype.hideHint = function( instance ){
 
 	var duration = instance ? 0 : .4;
 
-	goog.dom.classes.remove( this.domElement, 'active' );
+	goog.dom.classes.addRemove( this.domElement, 'active', 'inactive' );
 
 	this._hintTimer.start();
 
@@ -318,22 +314,27 @@ feng.views.sections.controls.Reminder.prototype.onClick = function(e){
 		case this._nextEl:
 		this.nextHint();
 		break;
+	}
+};
 
-		case this._characterEl:
 
-		if(this._isHintShown) {
+feng.views.sections.controls.Reminder.prototype.onMouseDown = function(e){
 
-			this.hideHint();
+	if(!e.isMouseActionButton()) {
+		return false;
+	}
 
-		}else {
+	if(this._isHintShown) {
 
-			var tip = this.getCurrentTip();
-			
-			if(tip) {
-				this.showHint( tip.id );
-			}
+		this.hideHint();
+
+	}else {
+
+		var tip = this.getCurrentTip();
+		
+		if(tip) {
+			this.showHint( tip.id );
 		}
-		break;
 	}
 };
 

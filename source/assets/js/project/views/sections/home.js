@@ -58,7 +58,7 @@ feng.views.sections.Home.prototype.deactivate = function(){
 
 feng.views.sections.Home.prototype.load = function(){
 
-	this._assetKeys = [this.id, 'accessories', 'global'];
+	this._assetKeys = [this.id, 'global'];
 	
 	goog.base(this, 'load');
 };

@@ -1,72 +1,206 @@
 &{
-	position: absolute;
-	display: table;
-	width: 50%;
-	max-width: 650px;
+	@include absoluteTopLeft;
+	width: 100%;
+	height: 100%;
 
 	&.left{
-		left: 0;
+		>.panel{
+			left: 0;
+
+			>.panel-button{
+				@extend .icon-prev;
+				right: -50px;
+				@include animation(bouncing-left 2s infinite);
+			}
+		}
+
+		>.shade{
+			@include background-image(linear-gradient(to right, rgba(0,0,0,.9) 40%, rgba(0,0,0,0) 100%));
+		}
+
+		&.hide-panel{
+			>.panel{
+				@include translateX(-100%);
+
+				>.panel-button{
+					@extend .icon-next;
+					@include animation(bouncing-right 2s infinite);
+				}
+			}
+		}
 	}
 
 	&.right{
-		right: 0;
+		>.panel{
+			right: 0;
+
+			>.panel-button{
+				@extend .icon-next;
+				left: -50px;
+				@include animation(bouncing-right 2s infinite);
+			}
+		}
+
+		>.shade{
+			@include background-image(linear-gradient(to left, rgba(0,0,0,.9) 40%, rgba(0,0,0,0) 100%));
+		}
+
+		&.hide-panel{
+			>.panel{
+				@include translateX(100%);
+
+				>.panel-button{
+					@extend .icon-prev;
+					@include animation(bouncing-left 2s infinite);
+				}
+			}
+		}
 	}
 
-	>.popup-wrapper{
-		display: table-cell;
-		vertical-align: middle;
-		text-align: center;
-		padding: 0 8.8em;
+	&.hide-panel{
+		>.shade{
+			visibility: hidden;
+			opacity: 0;
+		}
 
-		>.popup{
-			>.content{
-				padding: 5em 6.5em 4em 6.5em;
+		>.panel{
+			>.panel-button{
+				opacity: 1;
+			}
 
-				h1{
-					margin-bottom: .2em;
+			>.panel-content{
+				opacity: 0;
+				visibility: hidden;
+			}
+		}
+	}
+
+	>.shade{
+		@include absoluteTopLeft;
+		width: 100%;
+		height: 100%;
+		@include transition(opacity .5s $easeInOutQuad, visibility .5s);
+	}
+
+	>.panel{
+		position: absolute;
+		top: 0;
+		width: 40%;
+		height: 100%;
+		padding: 20em 50px 0 50px;
+		@include box-sizing(border-box);
+		color: #fff;
+		opacity: 1;
+		@include transition(opacity .5s $easeInOutQuad, transform .5s $easeInOutQuad);
+
+		>.panel-button{
+			position: absolute;
+			margin-top: -20px;
+			margin-left: -20px;
+			top: 50%;
+			color: #fff;
+			font-size: 40px;
+			opacity: .25;
+			@include transition(opacity .5s, transform .5s $easeInOutCubic);
+		}
+
+		>.panel-content{
+			position: relative;
+			width: 100%;
+			height: 100%;
+			max-width: 460px;
+			margin: 0 auto;
+			visibility: visible;
+			opacity: 1;
+			@include transition(opacity .5s $easeInOutQuad, visibility .5s);
+		}
+
+		h1{
+			font-size: 5em;
+			text-transform: capitalize;
+		}
+
+		h2{
+			font-size: 3em;
+			line-height: 1.8;
+			text-transform: capitalize;
+		}
+
+		p{
+			font-size: 2.2em;
+			line-height: 1.6;
+			padding: 1em 0;
+			-webkit-font-smoothing: antialiased;
+		}
+
+		.heading{
+			position: absolute;
+			top: -14em;
+			left: 0;
+			width: 100%;
+			height: 14em;
+
+			h1{
+				padding-top: 40px;
+			}
+
+			.share{
+				padding-left: 50px;
+				
+				>ul{
+					>li{
+						display: inline-block;
+						vertical-align: top;
+						margin: 0 .65em;
+
+						&:first-child{
+							margin-left: 0;
+						}
+
+						>a{
+							@extend %round-social-button;
+							font-size: 2.2em;
+						}
+					}
 				}
+			}
+		}
 
-				h2{
-					font-size: 1.8em;
-					height: 3em;
-					line-height: 3em;
-					text-transform: uppercase;
-				}
+		.content{
+			width: 100%;
+			height: 100%;
 
-				>div{
-					margin: 1.5em 0;
+			>.scroller{
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+
+				>.scroll-inner{
+					position: relative;
+					height: 100%;
+
+					>section{
+						height: 100%;
+					}
 				}
 
 				.primary-button{
 					margin-top: 1em;
 				}
-
-				/* share */
-				.share{
-					>ul{
-						>li{
-							display: inline-block;
-							vertical-align: top;
-							margin: 0 .65em;
-
-							&:first-child{
-								margin-left: 0;
-							}
-
-							>a{
-								@extend %round-social-button;
-								font-size: 2.2em;
-							}
-						}
-					}
-				}
-
-				/* */
 			}
 		}
+	}
+
+	>.close-button{
+		position: absolute;
+		top: 50px;
+		right: 50px;
+		color: #fff;
+		font-size: 40px;
 	}
 }
 
 @import "captions/change-color";
 @import "captions/change-picture";
+@import "captions/change-object";
 @import "captions/fruits";

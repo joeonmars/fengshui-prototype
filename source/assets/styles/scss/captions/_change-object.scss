@@ -1,0 +1,23 @@
+.change-object{
+
+	.objects{
+		width: 100%;
+
+		>li{
+			display: inline-block;
+			vertical-align: top;
+			margin: 0 1em;
+
+			&:first-child{
+				margin-left: 0;
+			}
+
+			>.object{
+				width: 7em;
+				height: 7em;
+				@include border-radius(100%);
+				background-color: #fff;
+			}
+		}
+	}
+}

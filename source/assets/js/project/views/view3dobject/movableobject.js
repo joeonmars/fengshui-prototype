@@ -1,6 +1,7 @@
 goog.provide('feng.views.view3dobject.MovableObject');
 
 goog.require('feng.views.view3dobject.TipObject');
+goog.require('feng.utils.ThreeUtils');
 
 
 /**
@@ -16,6 +17,9 @@ feng.views.view3dobject.MovableObject = function( object3d, data, view3d ){
   this._minRow = 0;
   this._maxRow = 0;
 
+  var dropParentObject = this._view3d.getView3dObject( this.data.parent );
+  this._dropParent = dropParentObject ? dropParentObject.object3d : this._view3d.scene;
+
   this._dropPosition = new THREE.Vector3();
 };
 goog.inherits(feng.views.view3dobject.MovableObject, feng.views.view3dobject.TipObject);
@@ -23,7 +27,7 @@ goog.inherits(feng.views.view3dobject.MovableObject, feng.views.view3dobject.Tip
 
 feng.views.view3dobject.MovableObject.prototype.getDestination = function(){
 
-  return this.data.position;
+  return this._dropParent.localToWorld( this.data.position.clone() );
 };
 
 
@@ -56,25 +60,9 @@ feng.views.view3dobject.MovableObject.prototype.updateTilesRange = function(){
 };
 
 
-feng.views.view3dobject.MovableObject.prototype.getPositionIfAvailable = function(){
+feng.views.view3dobject.MovableObject.prototype.getCloseUpObjectWhenDropped = function(){
 
-  var control = this._view3d.modeController.control;
-  var controlPosition = control.getPosition();
-
-  var forward = control.getForwardVector();
-
-  this._dropPosition.addVectors( controlPosition, forward.multiplyScalar(50) );
-
-  var matrixId = this._view3d.getMatrixId();
-  var matrixData = feng.pathfinder.getMatrixData( matrixId );
-
-  var tile = feng.pathfinder.getTileByPosition( this._dropPosition, matrixData );
-  var tileCol = tile[0];
-  var tileRow = tile[1];
-
-  var isInRange = ((tileCol >= this._minCol && tileCol <= this._maxCol) && (tileRow >= this._minRow && tileRow <= this._maxRow));
-
-  return (isInRange ? this._dropPosition : null);
+  return this;
 };
 
 
@@ -95,16 +83,12 @@ feng.views.view3dobject.MovableObject.prototype.drop = function(){
   var arms = this._view3d.arms;
   arms.removeItem( this );
 
-  var position = this.getPositionIfAvailable();
-
   this.object3d.position.copy( this.data.position );
   this.object3d.rotation.copy( this.data.rotation );
-  this.addToScene();
 
-  if(this.data.parent) {
-    var parentView3dObject = this._view3d.getView3dObject( this.data.parent );
-    parentView3dObject.object3d.add( this.object3d );
-  }
+  this._dropParent.add( this.object3d );
+
+  this.unlock();
 
   var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
   
@@ -112,10 +96,8 @@ feng.views.view3dobject.MovableObject.prototype.drop = function(){
     type: feng.events.EventType.CHANGE,
     mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
     nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-    object: this
+    object: this.getCloseUpObjectWhenDropped()
   });
-
-  this.unlock();
 };
 
 
@@ -132,7 +114,7 @@ feng.views.view3dobject.MovableObject.prototype.onClick = function(e){
   var camera = this._view3d.cameraController.activeCamera;
   var viewSize = this._view3d.viewSize;
   var clickedObjects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, [this.object3d], camera, viewSize );
-
+  
   if(clickedObjects.length > 0) {
 
     this.pick();
