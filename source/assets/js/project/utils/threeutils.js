@@ -122,14 +122,41 @@ feng.utils.ThreeUtils.getShortestRotation = function( from, to ) {
 };
 
 
-feng.utils.ThreeUtils.lerpBetween = function( a, b, x ) {
+feng.utils.ThreeUtils.getLerpedEuler = function( a, b, x, opt_euler ) {
 
-	var newObj = a.clone();
-	newObj.x = goog.math.lerp(a.x, b.x, x);
-	newObj.y = goog.math.lerp(a.y, b.y, x);
-	newObj.z = goog.math.lerp(a.z, b.z, x);
+	var euler = opt_euler || a.clone();
 
-	return newObj;
+	euler.x = feng.utils.ThreeUtils.lerpRad( a.x, b.x, x );
+	euler.y = feng.utils.ThreeUtils.lerpRad( a.y, b.y, x );
+	euler.z = feng.utils.ThreeUtils.lerpRad( a.z, b.z, x );
+
+	return euler;
+};
+
+
+feng.utils.ThreeUtils.lerpDeg = function( a, b, x ) {
+
+	if (b - a > 180 ) {
+	    b -= 360;
+	}
+	
+	if (b - a < -180 ) {
+	    b += 360;
+	}
+
+	return goog.math.lerp(a, b, x);
+};
+
+
+feng.utils.ThreeUtils.lerpRad = function( a, b, x ) {
+
+	var a = goog.math.toDegrees( a );
+	var b = goog.math.toDegrees( b );
+
+	var deg = feng.utils.ThreeUtils.lerpDeg( a, b, x );
+	var rad = goog.math.toRadians( deg );
+
+	return rad;
 };
 
 
