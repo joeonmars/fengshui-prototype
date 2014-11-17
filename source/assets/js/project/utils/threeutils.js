@@ -141,14 +141,26 @@ feng.utils.ThreeUtils.getWorldPosition = function( object, position ) {
 };
 
 
-feng.utils.ThreeUtils.lerpBetween = function( a, b, x ) {
+feng.utils.ThreeUtils.lerpDeg = function( a, b, x ) {
 
-	var newObj = a.clone();
-	newObj.x = goog.math.lerp(a.x, b.x, x);
-	newObj.y = goog.math.lerp(a.y, b.y, x);
-	newObj.z = goog.math.lerp(a.z, b.z, x);
+	if (b - a > 180 ) {
+	    b -= 360;
+	}
+	
+	if (b - a < -180 ) {
+	    b += 360;
+	}
 
-	return newObj;
+	return goog.math.lerp(a, b, x);
+};
+
+
+feng.utils.ThreeUtils.lerpRad = function( a, b, x ) {
+
+	var a = goog.math.toDegrees( a );
+	var b = goog.math.toDegrees( b );
+
+	return feng.utils.ThreeUtils.lerpDeg( a, b, x );
 };
 
 
