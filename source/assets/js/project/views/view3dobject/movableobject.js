@@ -17,6 +17,8 @@ feng.views.view3dobject.MovableObject = function( object3d, data, view3d ){
 
   this.hasPicked = false;
   this.hasDropped = false;
+
+  this._pickDelay = new goog.async.Delay(this.pick, 1000, this);
 };
 goog.inherits(feng.views.view3dobject.MovableObject, feng.views.view3dobject.TipObject);
 
@@ -143,7 +145,17 @@ feng.views.view3dobject.MovableObject.prototype.startInteraction = function(){
 
   goog.base(this, 'startInteraction');
 
-  this._interactionHandler.listen(this._view3d.domElement, 'click', this.onClick, false, this);
+  this._pickDelay.start();
+
+  //this._interactionHandler.listen(this._view3d.domElement, 'click', this.onClick, false, this);
+};
+
+
+feng.views.view3dobject.MovableObject.prototype.stopInteraction = function(){
+
+  goog.base(this, 'stopInteraction');
+
+  this._pickDelay.stop();
 };
 
 
