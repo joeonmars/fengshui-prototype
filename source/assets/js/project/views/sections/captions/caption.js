@@ -1,7 +1,6 @@
 goog.provide('feng.views.sections.captions.Caption');
 
 goog.require('goog.events.EventHandler');
-goog.require('goog.async.Delay');
 goog.require('feng.templates.captions');
 goog.require('feng.utils.Utils');
 
@@ -50,8 +49,6 @@ feng.views.sections.captions.Caption = function( object, cameraController, rende
   this._shareEl = goog.dom.getElementByClass('share', this.domElement);
   this._shareButtons = goog.dom.query('a', this._shareEl);
 
-  this._showPanelDelay = new goog.async.Delay(this.animateInPanel, 1000, this);
-
   // set default status
   this._isPanelAnimatedOut = true;
   goog.dom.classes.enable( this.domElement, 'hide-panel', this._isPanelAnimatedOut );
@@ -95,6 +92,10 @@ feng.views.sections.captions.Caption.prototype.activate = function() {
   this._eventHandler.listen( this._object, feng.events.EventType.UNLOCK, this.updateStatus, false, this );
   this._eventHandler.listen( window, 'resize', this.onResize, false, this );
 
+  // listen for object camera animated in event to animate in panel
+  console.log(this._object)
+  this._eventHandler.listen( this._object, feng.events.EventType.ANIMATED_IN, this.animateInPanel, false, this );
+
   // listen for share button click events
   goog.array.forEach(this._shareButtons, function(shareButton) {
     this._eventHandler.listen( shareButton, 'click', this.onClickShareButton, false, this );
@@ -106,14 +107,10 @@ feng.views.sections.captions.Caption.prototype.activate = function() {
   this.updateStatus();
 
   goog.style.showElement(this._panelButton, false);
-  
-  this._showPanelDelay.start();
 };
 
 
 feng.views.sections.captions.Caption.prototype.deactivate = function() {
-
-  this._showPanelDelay.stop();
 
   this._eventHandler.removeAll();
 

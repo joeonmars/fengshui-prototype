@@ -63,7 +63,14 @@ feng.views.sections.controls.DropButton.prototype.onClick = function(e){
 
 	this.fadeOut();
 
-	this._movableObject.drop();
+  var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
+
+  browseControls.dispatchEvent({
+    type: feng.events.EventType.CHANGE,
+    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+    nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
+    object: this._movableObject.getCloseUpObjectWhenDropped()
+  });
 };
 
 

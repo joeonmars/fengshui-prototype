@@ -69,7 +69,7 @@ goog.addDependency('../../../../project/views/mainoptions.js', ['feng.views.Main
 goog.addDependency('../../../../project/views/popups/popup.js', ['feng.views.popups.Popup'], ['goog.async.Delay', 'goog.dom', 'goog.events.EventHandler', 'goog.events.EventTarget']);
 goog.addDependency('../../../../project/views/popups/tutorial.js', ['feng.views.popups.Tutorial'], ['feng.templates.common', 'feng.views.popups.Popup']);
 goog.addDependency('../../../../project/views/preloader.js', ['feng.views.Preloader'], ['feng.events', 'feng.models.Preload', 'goog.events.EventTarget']);
-goog.addDependency('../../../../project/views/sections/captions/caption.js', ['feng.views.sections.captions.Caption'], ['feng.templates.captions', 'feng.utils.Utils', 'goog.async.Delay', 'goog.events.EventHandler']);
+goog.addDependency('../../../../project/views/sections/captions/caption.js', ['feng.views.sections.captions.Caption'], ['feng.templates.captions', 'feng.utils.Utils', 'goog.events.EventHandler']);
 goog.addDependency('../../../../project/views/sections/captions/changecolorcaption.js', ['feng.views.sections.captions.ChangeColorCaption'], ['feng.templates.captions', 'feng.views.sections.captions.Caption', 'goog.soy']);
 goog.addDependency('../../../../project/views/sections/captions/changeobjectcaption.js', ['feng.views.sections.captions.ChangeObjectCaption'], ['feng.templates.captions', 'feng.views.sections.captions.Caption', 'goog.soy']);
 goog.addDependency('../../../../project/views/sections/captions/changepicturecaption.js', ['feng.views.sections.captions.ChangePictureCaption'], ['feng.templates.captions', 'feng.views.sections.captions.Caption', 'goog.soy']);
@@ -119,7 +119,7 @@ goog.addDependency('../../../../project/views/view3dobject/entities/pictures.js'
 goog.addDependency('../../../../project/views/view3dobject/entities/refrigerator.js', ['feng.views.view3dobject.entities.Refrigerator'], ['feng.models.Preload', 'feng.utils.ThreeUtils', 'feng.views.view3dobject.TipObject']);
 goog.addDependency('../../../../project/views/view3dobject/entities/windows.js', ['feng.views.view3dobject.entities.Windows'], ['feng.fx.TextureAnimator', 'feng.views.view3dobject.TipObject']);
 goog.addDependency('../../../../project/views/view3dobject/gatewayobject.js', ['feng.views.view3dobject.GatewayObject'], ['feng.views.view3dobject.InteractiveObject']);
-goog.addDependency('../../../../project/views/view3dobject/interactiveobject.js', ['feng.views.view3dobject.InteractiveObject'], ['feng.views.view3dobject.View3DObject', 'goog.events.EventHandler']);
+goog.addDependency('../../../../project/views/view3dobject/interactiveobject.js', ['feng.views.view3dobject.InteractiveObject'], ['feng.views.view3dobject.View3DObject', 'goog.async.Delay', 'goog.events.EventHandler']);
 goog.addDependency('../../../../project/views/view3dobject/mirror.js', ['feng.views.view3dobject.Mirror'], ['feng.views.view3dobject.View3DObject']);
 goog.addDependency('../../../../project/views/view3dobject/movableobject.js', ['feng.views.view3dobject.MovableObject'], ['feng.utils.ThreeUtils', 'feng.views.view3dobject.TipObject']);
 goog.addDependency('../../../../project/views/view3dobject/replaceableobject.js', ['feng.views.view3dobject.ReplaceableObject'], ['feng.utils.ThreeUtils', 'feng.views.view3dobject.TipObject']);

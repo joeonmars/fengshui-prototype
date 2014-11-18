@@ -1,5 +1,6 @@
 goog.provide('feng.views.view3dobject.InteractiveObject');
 
+goog.require('goog.async.Delay');
 goog.require('goog.events.EventHandler');
 goog.require('feng.views.view3dobject.View3DObject');
 
@@ -13,12 +14,14 @@ feng.views.view3dobject.InteractiveObject = function( object3d, data, view3d ){
 
   this.object3d.interactiveObject = this;
   this.isPhysical = true;
-  this.screenBox = new goog.math.Box(0, 0, 0, 0);
 
   this.isSpecialCameraEnabled = data.camera ? true : false;
   this.specialCameraSettings = data.camera || {};
 
   this._interactionHandler = new goog.events.EventHandler(this);
+
+  this.cameraInDuration = 1000;
+  this._onCameraAnimatedInDelay = new goog.async.Delay(this.onCameraAnimatedIn, 0, this);
 };
 goog.inherits(feng.views.view3dobject.InteractiveObject, feng.views.view3dobject.View3DObject);
 
@@ -65,25 +68,23 @@ feng.views.view3dobject.InteractiveObject.prototype.enableSpecialCamera = functi
 };
 
 
-feng.views.view3dobject.InteractiveObject.prototype.updateScreenBox = function(){
-
-  var box3 = this.getBoundingBox();
-  var camera = this._view3d.cameraController.activeCamera;
-  var viewSize = this._view3d.getViewSize();
-
-  this.screenBox = feng.utils.ThreeUtils.getRectangleFromBox3( box3, camera, viewSize, this.screenBox );
-
-  return this.screenBox;
-};
-
-
 feng.views.view3dobject.InteractiveObject.prototype.onCameraIn = function(){
 
   console.log('on camera in: ' + this.name);
+
+  this._onCameraAnimatedInDelay.start( this.cameraInDuration );
 };
 
 
 feng.views.view3dobject.InteractiveObject.prototype.onCameraOut = function(){
 
   console.log('on camera out: ' + this.name);
+
+  this._onCameraAnimatedInDelay.stop();
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.onCameraAnimatedIn = function(){
+
+  this.dispatchEvent( feng.events.EventType.ANIMATED_IN );
 };

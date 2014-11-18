@@ -16,9 +16,7 @@ feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement)
 
   this._tempPosition = new THREE.Vector3();
 
-  this._box3 = new THREE.Box3();
-  this._proxyBox = new THREE.Mesh( new THREE.BoxGeometry(1,1,1), new THREE.MeshBasicMaterial( { color: 0xffffff, wireframe: true, wireframeLinewidth: 2 } ) );
-  this._raycaster = new THREE.Raycaster();
+  this._raycaster = feng.utils.ThreeUtils.raycaster;
 
   this.distanceToObject = 0;
 };
@@ -37,28 +35,25 @@ feng.controllers.controls.CloseUpControls.prototype.setCamera = function( object
 	var cameraSettings = object.isSpecialCameraEnabled ? object.specialCameraSettings : null;
 	console.log( 'set close up by special camera settings: ', cameraSettings );
 
-	// otherwise focus on the center of object
+	// otherwise focus on the center of object's proxy box
 	if(!cameraSettings) {
 
+		var proxyBox = object.getProxyBox();
+		var boundingBox = (new THREE.Box3()).setFromObject( proxyBox );
+
 		var toRotation = new THREE.Euler(0, 0, 0, 'YXZ');
-		var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, object.getCenter());
+		var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, boundingBox.center());
 		toRotation.setFromQuaternion( quaternion );
 
-	  this._box3.setFromObject( object.object3d );
-	 
-	  this._box3.size( this._proxyBox.scale );
-	  this._box3.center( this._proxyBox.position );
-	  this._proxyBox.updateMatrixWorld();
-	 
-	  var direction = this._proxyBox.position.clone().sub( position ).normalize();
-	  this._raycaster.set( position, direction );
+		var direction = proxyBox.position.clone().sub( position ).normalize();
+		this._raycaster.set( position, direction );
 
-	  var intersects = this._raycaster.intersectObject( this._proxyBox, true );
-	  this.distanceToObject = intersects[0].distance;
-	 
-	  var height = this._box3.size().y;
-	  var fitFov = 2 * Math.atan( height / ( 2 * this.distanceToObject ) ) * ( 180 / Math.PI );
-	  var toFov = fitFov + 10;
+		var intersects = this._raycaster.intersectObject( proxyBox, true );
+		this.distanceToObject = intersects[0].distance;
+
+		var height = boundingBox.size().y;
+		var fitFov = 2 * Math.atan( height / ( 2 * this.distanceToObject ) ) * ( 180 / Math.PI );
+		var toFov = fitFov + 10;
 
 		cameraSettings = {
 			position: position,

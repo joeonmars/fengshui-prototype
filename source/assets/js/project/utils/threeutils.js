@@ -126,37 +126,53 @@ feng.utils.ThreeUtils.getLerpedEuler = function( a, b, x, opt_euler ) {
 
 	var euler = opt_euler || a.clone();
 
-	euler.x = feng.utils.ThreeUtils.lerpRad( a.x, b.x, x );
-	euler.y = feng.utils.ThreeUtils.lerpRad( a.y, b.y, x );
-	euler.z = feng.utils.ThreeUtils.lerpRad( a.z, b.z, x );
+	var qa = (new THREE.Quaternion()).setFromEuler( a );
+	var qb = (new THREE.Quaternion()).setFromEuler( b );
+	var qr = qa.slerp( qb, x );
 
-	return euler;
+	return euler.setFromQuaternion( qr );
 };
 
 
-feng.utils.ThreeUtils.lerpDeg = function( a, b, x ) {
+feng.utils.ThreeUtils.getWorldPositionOfLocal = function( object, position, opt_pos ) {
 
-	if (b - a > 180 ) {
-	    b -= 360;
-	}
-	
-	if (b - a < -180 ) {
-	    b += 360;
-	}
+	var localPos = opt_pos || new THREE.Vector3();
+	localPos.copy( position );
 
-	return goog.math.lerp(a, b, x);
+	return object.localToWorld( localPos );
 };
 
 
-feng.utils.ThreeUtils.lerpRad = function( a, b, x ) {
+feng.utils.ThreeUtils.getLocalPositionOfWorld = function( object, position, opt_pos ) {
 
-	var a = goog.math.toDegrees( a );
-	var b = goog.math.toDegrees( b );
+	var worldPos = opt_pos || new THREE.Vector3();
+	worldPos.copy( position );
 
-	var deg = feng.utils.ThreeUtils.lerpDeg( a, b, x );
-	var rad = goog.math.toRadians( deg );
+	return object.worldToLocal( worldPos );
+};
 
-	return rad;
+
+feng.utils.ThreeUtils.getWorldRotationOfLocal = function( object, rotation, opt_rot ) {
+
+  var localQuaternion = (new THREE.Quaternion()).setFromEuler( rotation );
+  var objectQuaternion = (new THREE.Quaternion()).setFromEuler( object.rotation );
+
+  var worldQuaternion = objectQuaternion.multiply( localQuaternion );
+  var worldRotation = (opt_rot || new THREE.Euler()).setFromQuaternion( worldQuaternion );
+
+  return worldRotation;
+};
+
+
+feng.utils.ThreeUtils.getLocalRotationOfWorld = function( object, rotation, opt_rot ) {
+
+  var worldQuaternion = (new THREE.Quaternion()).setFromEuler( rotation );
+  var objectQuaternion = (new THREE.Quaternion()).setFromEuler( object.rotation );
+
+  var localQuaternion = worldQuaternion.multiply( objectQuaternion );
+  var localRotation = (opt_rot || new THREE.Euler()).setFromQuaternion( localQuaternion );
+
+  return localRotation;
 };
 
 

@@ -41,19 +41,11 @@ goog.inherits(feng.views.view3dobject.Arms, feng.views.view3dobject.InteractiveO
 
 feng.views.view3dobject.Arms.prototype.getWorldOrientation = function( id, opt_pos, opt_rot ){
 
-  var worldPos = opt_pos || new THREE.Vector3();
-  var worldRot = opt_rot || new THREE.Euler();
-
   var localOrientation = feng.views.view3dobject.Arms.Orientations[ id ];
-  this._orientationTester.position.copy( localOrientation.position );
-  this._orientationTester.rotation.copy( localOrientation.rotation );
-
-  worldPos = this._orientationTester.getWorldPosition( worldPos );
-  worldRot = this._orientationTester.getWorldRotation( worldRot );
 
   var worldOrientation = {
-    position: worldPos,
-    rotation: worldRot
+    position: feng.utils.ThreeUtils.getWorldPositionOfLocal( this.object3d, localOrientation.position, opt_pos ),
+    rotation: feng.utils.ThreeUtils.getWorldRotationOfLocal( this.object3d, localOrientation.rotation, opt_rot )
   };
 
   return worldOrientation;

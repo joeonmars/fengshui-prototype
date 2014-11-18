@@ -16,6 +16,8 @@ feng.views.view3dobject.entities.Refrigerator = function( object3d, data, view3d
   this._door = this.object3d;
 
   this._fruits = null;
+
+  this.cameraInDuration = 3000;
 };
 goog.inherits(feng.views.view3dobject.entities.Refrigerator, feng.views.view3dobject.TipObject);
 

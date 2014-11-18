@@ -52,6 +52,16 @@ feng.fx.PathTrack.prototype.create = function(controlPoints, offset, isClosed, c
 };
 
 
+feng.fx.PathTrack.prototype.dispose = function(){
+
+	this.tubeGeometry.dispose();
+	this.tubeGeometry = null;
+
+	this._material.dispose();
+	this._material = null;
+};
+
+
 feng.fx.PathTrack.prototype.getControlMeshes = function(){
 
 	var meshes = [];

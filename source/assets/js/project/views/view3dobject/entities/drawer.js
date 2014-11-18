@@ -17,11 +17,17 @@ goog.inherits(feng.views.view3dobject.entities.Drawer, feng.views.view3dobject.T
 
 feng.views.view3dobject.entities.Drawer.prototype.onCameraIn = function(){
 
+  var knife = this._view3d.tipObjects['knife'];
+
+  this.cameraInDuration = (knife.hasPicked && !this.tip.unlocked) ? 4000 : 2000;
+
   goog.base(this, 'onCameraIn');
 
   TweenMax.to(this.object3d.position, 1, {
     'z': this._startZ + 20,
-    'ease': Quad.easeInOut
+    'ease': Quad.easeInOut,
+    'onComplete': this.onDrawerOpened,
+    'onCompleteScope': this
   });
 
   //feng.soundController.playSfx('refrigerator-open');
@@ -42,4 +48,16 @@ feng.views.view3dobject.entities.Drawer.prototype.onCameraOut = function(){
     //feng.soundController.playSfx('refrigerator-close');
   }, [], this);
 	*/
+};
+
+
+feng.views.view3dobject.entities.Drawer.prototype.onDrawerOpened = function(){
+
+  if(this.tip.unlocked) return;
+
+  var knife = this._view3d.tipObjects['knife'];
+
+  if(knife.hasPicked) {
+    knife.drop();
+  }
 };

@@ -59,11 +59,17 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 		return;
 	}
 
-	// create path track
-	if(feng.debug && this._pathTrack) {
-		this._scene.remove( this._pathTrack );
+	// dispose last path track
+	if(this._pathTrack) {
+
+		if(feng.debug) {
+			this._scene.remove( this._pathTrack );
+		}
+
+		this._pathTrack.dispose();
 	}
 
+	// create path track
 	this._pathTrack = new feng.fx.PathTrack( coordinates, 0, false, null, feng.debug );
 
 	if(feng.debug) {

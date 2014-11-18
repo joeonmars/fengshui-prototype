@@ -15,9 +15,32 @@ feng.views.view3dobject.MovableObject = function( object3d, data, view3d ){
   var dropParentObject = this._view3d.getView3dObject( this.data.parent );
   this._dropParent = dropParentObject ? dropParentObject.object3d : this._view3d.scene;
 
-  this._dropPosition = new THREE.Vector3();
+  this.hasPicked = false;
+  this.hasDropped = false;
 };
 goog.inherits(feng.views.view3dobject.MovableObject, feng.views.view3dobject.TipObject);
+
+
+feng.views.view3dobject.MovableObject.prototype.getBoundingBox = function(){
+
+  if(!this.hasPicked) {
+
+    return goog.base(this, 'getBoundingBox');
+
+  }else {
+
+    // calculate bounding box of original orientation
+    this.object3d.geometry.computeBoundingBox();
+    var boundingBox = this.object3d.geometry.boundingBox;
+
+    var size = boundingBox.size();
+    var center = this.data.position.clone();
+    center.y += size.y/2;
+
+    this._boundingBox.setFromCenterAndSize( center, size );
+    return this._boundingBox;
+  }
+};
 
 
 feng.views.view3dobject.MovableObject.prototype.getDestination = function(){
@@ -71,15 +94,16 @@ feng.views.view3dobject.MovableObject.prototype.drop = function(){
   var arms = this._view3d.arms;
   arms.removeItem( this );
 
-  //this.object3d.position.copy( this.data.position );
-  //this.object3d.rotation.copy( this.data.rotation );
-
   this._dropParent.add( this.object3d );
 
   //
   var startOrientation = arms.getWorldOrientation( this.name );
-  var startPosition = startOrientation.position;
-  var startRotation = startOrientation.rotation;
+  var worldPosition = startOrientation.position;
+  var worldRotation = startOrientation.rotation;
+
+  var startPosition = feng.utils.ThreeUtils.getLocalPositionOfWorld( this._dropParent, worldPosition );
+  var startRotation = feng.utils.ThreeUtils.getLocalRotationOfWorld( this._dropParent, worldRotation );
+
   var endPosition = this.data.position.clone().setY( this.data.position.y + 10 );
   var endRotation = this.data.rotation;
 
@@ -92,6 +116,7 @@ feng.views.view3dobject.MovableObject.prototype.drop = function(){
 
   TweenMax.to( prop, 1, {
     t: 1,
+    'immediateRender': true,
     'ease': Sine.easeInOut,
     'onUpdate': function() {
       
@@ -124,6 +149,8 @@ feng.views.view3dobject.MovableObject.prototype.startInteraction = function(){
 
 feng.views.view3dobject.MovableObject.prototype.onPicked = function(){
 
+  this.hasPicked = true;
+
   var arms = this._view3d.arms;
   arms.addItem( this );
 
@@ -134,16 +161,30 @@ feng.views.view3dobject.MovableObject.prototype.onPicked = function(){
 
 feng.views.view3dobject.MovableObject.prototype.onDropped = function(){
 
-  this.unlock();
+  this.hasDropped = true;
 
-  var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
-  
-  browseControls.dispatchEvent({
-    type: feng.events.EventType.CHANGE,
-    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-    nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-    object: this.getCloseUpObjectWhenDropped()
-  });
+  this.unlock();
+};
+
+
+feng.views.view3dobject.MovableObject.prototype.onCameraIn = function(){
+
+  if(this.hasDropped) {
+
+    this.cameraInDuration = 1000;
+
+  }else if(!this.hasPicked) {
+
+    this.cameraInDuration = 1000;
+
+  }else if(this.hasPicked && !this.hasDropped) {
+
+    this.cameraInDuration = 3000;
+
+    this.drop();
+  }
+
+  goog.base(this, 'onCameraIn');
 };
 
 

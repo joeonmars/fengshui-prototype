@@ -38,7 +38,13 @@ feng.views.view3dobject.entities.Knife.prototype.drop = function(){
 
   this.object3d.material.map = this._inDrawerTexture;
   this.object3d.material.needsUpdate = true;
-  
+};
+
+
+feng.views.view3dobject.entities.Knife.prototype.unlock = function(){
+
+  goog.base(this, 'unlock');
+
   var drawerTipObject = this._view3d.tipObjects['drawer'];
   drawerTipObject.unlock();
 };
