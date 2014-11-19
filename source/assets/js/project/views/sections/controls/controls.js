@@ -51,6 +51,10 @@ feng.views.sections.controls.Controls.prototype.activate = function(){
   if(this._isActivated) return false;
   else this._isActivated = true;
 
+  if(this._view3d) {
+    this._view3d.modeController.listen( feng.events.EventType.CHANGE, this.onModeChange, false, this );
+  }
+
 	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
 
 	this.onResize();
@@ -65,22 +69,18 @@ feng.views.sections.controls.Controls.prototype.deactivate = function(){
   else this._isActivated = false;
   
   this._eventHandler.removeAll();
-
+  
   return true;
 };
 
 
-feng.views.sections.controls.Controls.prototype.show = function(){
+feng.views.sections.controls.Controls.prototype.show = function( shouldShow ){
 
-  goog.style.showElement(this.domElement, true);
+  var shouldShow = goog.isBoolean(shouldShow) ? shouldShow : true;
+
+  goog.dom.classes.enable( this.domElement, 'hidden', !shouldShow );
 
   this.onResize();
-};
-
-
-feng.views.sections.controls.Controls.prototype.hide = function(){
-
-  goog.style.showElement(this.domElement, false);
 };
 
 

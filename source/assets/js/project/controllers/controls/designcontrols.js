@@ -117,13 +117,13 @@ feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 
 	if(shouldEnable) {
 
-		this._zoomSlider.show();
+		this._zoomSlider.show(true);
 
 		this.update();
 
 	}else  {
 
-		this._zoomSlider.hide();
+		this._zoomSlider.show(false);
 	}
 
 	this._dragger.setEnabled( shouldEnable );

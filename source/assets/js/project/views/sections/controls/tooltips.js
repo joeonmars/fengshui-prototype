@@ -110,7 +110,6 @@ feng.views.sections.controls.Tooltips.prototype.setView3D = function( view3d ){
   goog.array.forEach( gatewayObjects, function(gatewayObject) {
 
     var tooltipEl = this._tooltips[ gatewayObject.id ];
-
     goog.events.listenOnce( tooltipEl, 'click', this.onClickGatewayTooltip, false, this );
   }, this);
 
@@ -148,6 +147,14 @@ feng.views.sections.controls.Tooltips.prototype.deactivate = function(){
 };
 
 
+feng.views.sections.controls.Tooltips.prototype.show = function( shouldShow ){
+  
+  goog.base(this, 'show', shouldShow);
+
+  this.detectBlocking();
+};
+
+
 feng.views.sections.controls.Tooltips.prototype.updateDetectObjects = function(){
 
   if(!this._view3d) return;
@@ -156,9 +163,6 @@ feng.views.sections.controls.Tooltips.prototype.updateDetectObjects = function()
   this._detectObjects = goog.array.map(this._view3d.getSolidObjects(), function(object) {
     return object.object3d;
   });
-  
-  goog.array.remove( this._detectObjects, this._view3d.designPlane.object3d );
-  goog.array.remove( this._detectObjects, this._view3d.skybox.object3d );
 };
 
 
@@ -232,7 +236,14 @@ feng.views.sections.controls.Tooltips.prototype.onModeChange = function(e){
 
   goog.base(this, 'onModeChange', e);
 
+  goog.dom.classes.enable(this.domElement, 'design', (e.mode === feng.controllers.view3d.ModeController.Mode.DESIGN));
+
   switch(e.mode) {
+    case feng.controllers.view3d.ModeController.Mode.ENTRY:
+    this.deactivate();
+    this._raycaster.far = 400/2;
+    break;
+
     case feng.controllers.view3d.ModeController.Mode.BROWSE:
     this.activate();
     this._raycaster.far = 400/2;

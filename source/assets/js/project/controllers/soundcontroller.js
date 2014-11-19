@@ -362,7 +362,7 @@ feng.controllers.SoundController.prototype.playMix = function( mixId, duration )
 };
 
 
-feng.controllers.SoundController.prototype.stopMix = function( mixId ){
+feng.controllers.SoundController.prototype.stopMix = function( mixId, duration ){
   
   var mix = this._mix[ mixId ];
 
@@ -371,13 +371,15 @@ feng.controllers.SoundController.prototype.stopMix = function( mixId ){
 
   var sound = mix.sounds[ mix.position ];
 
+  var fadeDuration = goog.isNumber(duration) ? duration : 5;
+
   if(sound.soundType === feng.controllers.SoundController.SoundType.AMBIENT) {
 
-    this.fadeAmbient( sound.soundId, null, 0, 5, true );
+    this.fadeAmbient( sound.soundId, null, 0, duration, true );
 
   }else if(sound.soundType === feng.controllers.SoundController.SoundType.LOOP) {
 
-    this.fadeLoop( sound.soundId, null, 0, 5, true );
+    this.fadeLoop( sound.soundId, null, 0, duration, true );
   }
 
   mix.position = 0;

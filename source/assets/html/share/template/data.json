@@ -160,5 +160,11 @@
 	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
 	    "image": "desktopwallpaper.jpg"
 	  }
+	},
+	"cat": {
+	  "data": {
+	    "description": "This is the tip description of Feng Shui tip - Cat.",
+	    "image": "cat.jpg"
+	  }
 	}
 }

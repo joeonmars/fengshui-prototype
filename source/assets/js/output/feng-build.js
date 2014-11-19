@@ -20082,15 +20082,15 @@ feng.templates.debug.PathfindingDebugView = function(opt_data, opt_ignored) {
  */
 feng.templates.debug.AchievementsDebugView = function(opt_data, opt_ignored) {
   var output = '\t';
-  var param345 = '<div class="tipsPanel"><button class="unlock-all">Unlock All</button><ul class="tips">';
-  var tipList347 = opt_data.tips;
-  var tipListLen347 = tipList347.length;
-  for (var tipIndex347 = 0; tipIndex347 < tipListLen347; tipIndex347++) {
-    var tipData347 = tipList347[tipIndex347];
-    param345 += '<li data-tip-id="' + tipData347.id + '" data-view-id="' + tipData347.view + '" data-section-id="' + tipData347.section + '"><div class="icon icon-' + tipData347.icon + '"></div><div class="caption"><p>' + tipData347.id + '</p><p>' + tipData347.view + '</p><p>' + tipData347.section + '</p></div></li>';
+  var param355 = '<div class="tipsPanel"><button class="unlock-all">Unlock All</button><ul class="tips">';
+  var tipList357 = opt_data.tips;
+  var tipListLen357 = tipList357.length;
+  for (var tipIndex357 = 0; tipIndex357 < tipListLen357; tipIndex357++) {
+    var tipData357 = tipList357[tipIndex357];
+    param355 += '<li data-tip-id="' + tipData357.id + '" data-view-id="' + tipData357.view + '" data-section-id="' + tipData357.section + '"><div class="icon icon-' + tipData357.icon + '"></div><div class="caption"><p>' + tipData357.id + '</p><p>' + tipData357.view + '</p><p>' + tipData357.section + '</p></div></li>';
   }
-  param345 += '</ul></div>';
-  output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param345});
+  param355 += '</ul></div>';
+  output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param355});
   return output;
 };
 
@@ -32585,30 +32585,15 @@ feng.models.Preload = function(){
 		'home': {
 
 		},
-		'accessories': {
-			'rubberplant-data': 'json/elements/rubberplant.json',
-			'rubberplant-texture': 'images/texture/rubberplant.png',
-			'cactus-data': 'json/elements/cactus.json',
-			'cactus-texture': 'images/texture/cactus.png',
-			'lotus-data': 'json/elements/lotus.json',
-			'lotus-texture': 'images/texture/lotus.png'
-		},
 		'studio': {
 			'global': {
 				'character': {
-					'ollie-data': 'json/characters/ollie.json',
-					'ollie': 'images/characters/ollie.png'
+					'ollie-data': 'json/character/ollie.json',
+					'ollie': 'images/character/ollie.png'
 				}
 			},
-			'interior2': {
-				'scene-data': 'json/scene-interior2.json',
-				'energyflow-data': 'json/energyflow/energyflow-2.json',
-				'pc-texture': 'images/texture/pc.jpg',
-				'screensaver-texture': 'images/texture/spritesheet/screensaver.png',
-				'cactus-texture': 'images/texture/cactus.png'
-			},
 			'livingroom': {
-				'scene-data': 'json/studio-livingroom.json',
+				'scene-data': 'json/scene/studio-livingroom.json',
 				'floor-texture': 'images/texture/studio/livingroom/floor.jpg',
 				'wall-texture': 'images/texture/studio/livingroom/wall.jpg',
 				'wall-outer-texture': 'images/texture/studio/livingroom/wall-outer.jpg',
@@ -32618,6 +32603,7 @@ feng.models.Preload = function(){
 				'studio-door-texture': 'images/texture/studio/livingroom/studio-door.jpg',
 				'studio-door-handle-texture': 'images/texture/studio/livingroom/studio-door-handle.jpg',
 				'studio-door-frame-texture': 'images/texture/studio/livingroom/studio-door-frame.jpg',
+				'cactus-texture': 'images/texture/studio/livingroom/cactus.jpg',
 				'bed-texture': 'images/texture/studio/livingroom/bed.jpg',
 				'shoestorage-texture': 'images/texture/studio/livingroom/shoestorage.jpg',
 				'sofabed-cabinet-texture': 'images/texture/studio/livingroom/sofabed-cabinet.jpg',
@@ -32679,7 +32665,7 @@ feng.models.Preload = function(){
 				}
 			},
 			'bathroom': {
-				'scene-data': 'json/studio-bathroom.json',
+				'scene-data': 'json/scene/studio-bathroom.json',
 				'floor-texture': 'images/texture/studio/bathroom/floor.jpg',
 				'ceiling-texture': 'images/texture/studio/bathroom/ceiling.jpg',
 				'wall-texture': 'images/texture/studio/bathroom/wall.jpg',
@@ -32730,16 +32716,16 @@ feng.models.Preload = function(){
 		'house': {
 			'global': {
 				'character': {
-					'joanna-data': 'json/characters/joanna.json',
-					'joanna': 'images/characters/joanna.png',
-					'scott-data': 'json/characters/scott.json',
-					'scott': 'images/characters/scott.png',
-					'nick-data': 'json/characters/nick.json',
-					'nick': 'images/characters/nick.png'
+					'joanna-data': 'json/character/joanna.json',
+					'joanna': 'images/character/joanna.png',
+					'scott-data': 'json/character/scott.json',
+					'scott': 'images/character/scott.png',
+					'nick-data': 'json/character/nick.json',
+					'nick': 'images/character/nick.png'
 				}
 			},
 			'livingroom': {
-				'scene-data': 'json/house-livingroom.json',
+				'scene-data': 'json/scene/house-livingroom.json',
 				'wall-texture': 'images/texture/house/livingroom/wall.jpg',
 				'wall-outer-texture': 'images/texture/house/livingroom/wall-outer.jpg',
 				'stairways-texture': 'images/texture/house/livingroom/stairways.jpg',
@@ -32788,16 +32774,16 @@ feng.models.Preload = function(){
 				'windowsill-stuff-texture': 'images/texture/house/livingroom/windowsill-stuff.jpg',
 				'fish-bowl-stand-texture': 'images/texture/house/livingroom/fish-bowl-stand.jpg',
 				'skybox': {
-					'xpos': 'images/texture/house/boysroom/skybox/pos-x.png',
-					'xneg': 'images/texture/house/boysroom/skybox/neg-x.png',
-					'ypos': 'images/texture/house/boysroom/skybox/pos-y.png',
-					'yneg': 'images/texture/house/boysroom/skybox/neg-y.png',
-					'zpos': 'images/texture/house/boysroom/skybox/pos-z.png',
-					'zneg': 'images/texture/house/boysroom/skybox/neg-z.png'
+					'xpos': 'images/texture/house/boysroom/skybox/pos-x.jpg',
+					'xneg': 'images/texture/house/boysroom/skybox/neg-x.jpg',
+					'ypos': 'images/texture/house/boysroom/skybox/pos-y.jpg',
+					'yneg': 'images/texture/house/boysroom/skybox/neg-y.jpg',
+					'zpos': 'images/texture/house/boysroom/skybox/pos-z.jpg',
+					'zneg': 'images/texture/house/boysroom/skybox/neg-z.jpg'
 				},
 			},
 			'corridor': {
-				'scene-data': 'json/house-corridor.json',
+				'scene-data': 'json/scene/house-corridor.json',
 				'ceiling-texture': 'images/texture/house/corridor/ceiling.jpg',
 				'ceiling-lamp-texture': 'images/texture/house/corridor/ceiling-lamp.jpg',
 				'ceiling-lamps-texture': 'images/texture/house/corridor/ceiling-lamps.jpg',
@@ -32818,16 +32804,16 @@ feng.models.Preload = function(){
 				'boysroom-door-texture': 'images/texture/house/corridor/boysroom-door.png',
 				'bathroom-door-texture': 'images/texture/house/corridor/bathroom-door.png',
 				'skybox': {
-					'xpos': 'images/texture/house/boysroom/skybox/pos-x.png',
-					'xneg': 'images/texture/house/boysroom/skybox/neg-x.png',
-					'ypos': 'images/texture/house/boysroom/skybox/pos-y.png',
-					'yneg': 'images/texture/house/boysroom/skybox/neg-y.png',
-					'zpos': 'images/texture/house/boysroom/skybox/pos-z.png',
-					'zneg': 'images/texture/house/boysroom/skybox/neg-z.png'
+					'xpos': 'images/texture/house/boysroom/skybox/pos-x.jpg',
+					'xneg': 'images/texture/house/boysroom/skybox/neg-x.jpg',
+					'ypos': 'images/texture/house/boysroom/skybox/pos-y.jpg',
+					'yneg': 'images/texture/house/boysroom/skybox/neg-y.jpg',
+					'zpos': 'images/texture/house/boysroom/skybox/pos-z.jpg',
+					'zneg': 'images/texture/house/boysroom/skybox/neg-z.jpg'
 				},
 			},
 			'boysroom': {
-				'scene-data': 'json/house-boysroom.json',
+				'scene-data': 'json/scene/house-boysroom.json',
 				'floor-texture': 'images/texture/house/boysroom/floor.jpg',
 				'ceiling-texture': 'images/texture/house/boysroom/ceiling.jpg',
 				'wall-texture': 'images/texture/house/boysroom/wall.jpg',
@@ -32835,6 +32821,7 @@ feng.models.Preload = function(){
 				'cabinet-texture': 'images/texture/house/boysroom/cabinet.jpg',
 				'bed-texture': 'images/texture/house/boysroom/bed.jpg',
 				'big-frame-texture': 'images/texture/house/boysroom/big-frame.jpg',
+				'big-frame-picture-texture': 'images/texture/house/boysroom/pictures/shark.jpg',
 				'decoration-pictures-texture': 'images/texture/house/boysroom/decoration-pictures.jpg',
 				'ceiling-lamps-texture': 'images/texture/house/boysroom/ceiling-lamps.jpg',
 				'stools-texture': 'images/texture/house/boysroom/stools.jpg',
@@ -32879,16 +32866,16 @@ feng.models.Preload = function(){
 					'3': 'images/texture/house/boysroom/pictures/3.jpg'
 				},
 				'skybox': {
-					'xpos': 'images/texture/house/boysroom/skybox/pos-x.png',
-					'xneg': 'images/texture/house/boysroom/skybox/neg-x.png',
-					'ypos': 'images/texture/house/boysroom/skybox/pos-y.png',
-					'yneg': 'images/texture/house/boysroom/skybox/neg-y.png',
-					'zpos': 'images/texture/house/boysroom/skybox/pos-z.png',
-					'zneg': 'images/texture/house/boysroom/skybox/neg-z.png'
+					'xpos': 'images/texture/house/boysroom/skybox/pos-x.jpg',
+					'xneg': 'images/texture/house/boysroom/skybox/neg-x.jpg',
+					'ypos': 'images/texture/house/boysroom/skybox/pos-y.jpg',
+					'yneg': 'images/texture/house/boysroom/skybox/neg-y.jpg',
+					'zpos': 'images/texture/house/boysroom/skybox/pos-z.jpg',
+					'zneg': 'images/texture/house/boysroom/skybox/neg-z.jpg'
 				}
 			},
 			'homeoffice': {
-				'scene-data': 'json/house-homeoffice.json',
+				'scene-data': 'json/scene/house-homeoffice.json',
 				'floor-texture': 'images/texture/house/homeoffice/floor.jpg',
 				'ceiling-texture': 'images/texture/house/homeoffice/ceiling.jpg',
 				'wall-texture':	'images/texture/house/homeoffice/wall.jpg',
@@ -32898,6 +32885,7 @@ feng.models.Preload = function(){
 				'setsquare-texture': 'images/texture/house/homeoffice/setsquare.jpg',
 				'carpet-texture': 'images/texture/house/homeoffice/carpet.jpg',
 				'door-frame-texture': 'images/texture/house/homeoffice/door-frame.jpg',
+				'homeoffice-door-texture': 'images/texture/house/homeoffice/homeoffice-door.jpg',
 				'display-shelf-lamp-texture': 'images/texture/house/homeoffice/display-shelf-lamp.jpg',
 				'bookshelf-lamps-texture': 'images/texture/house/homeoffice/bookshelf-lamps.jpg',
 				'picture-frame-1-texture': 'images/texture/house/homeoffice/picture-frame-1.jpg',
@@ -32944,12 +32932,12 @@ feng.models.Preload = function(){
 					'4': 'images/texture/house/homeoffice/pictures/4.jpg'
 				},
 				'skybox': {
-					'xpos': 'images/texture/house/boysroom/skybox/pos-x.png',
-					'xneg': 'images/texture/house/boysroom/skybox/neg-x.png',
-					'ypos': 'images/texture/house/boysroom/skybox/pos-y.png',
-					'yneg': 'images/texture/house/boysroom/skybox/neg-y.png',
-					'zpos': 'images/texture/house/boysroom/skybox/pos-z.png',
-					'zneg': 'images/texture/house/boysroom/skybox/neg-z.png'
+					'xpos': 'images/texture/house/boysroom/skybox/pos-x.jpg',
+					'xneg': 'images/texture/house/boysroom/skybox/neg-x.jpg',
+					'ypos': 'images/texture/house/boysroom/skybox/pos-y.jpg',
+					'yneg': 'images/texture/house/boysroom/skybox/neg-y.jpg',
+					'zpos': 'images/texture/house/boysroom/skybox/pos-z.jpg',
+					'zneg': 'images/texture/house/boysroom/skybox/neg-z.jpg'
 				}
 			}
 		}
@@ -33931,7 +33919,7 @@ feng.templates.common.Popup = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.common.TutorialPopup = function(opt_data, opt_ignored) {
-  return feng.templates.common.Popup({classname: 'tutorial from-bottom', content: '<h1>Control Instructions</h1><ul class="steps"><li><h6>Explore the environment</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-1.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-1.ogg" type="video/ogg"></video></div></li><li><h6>Inspect objects for tips</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-2.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-2.ogg" type="video/ogg"></video></div></li><li><h6>Ask the client for clues</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-3.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-3.ogg" type="video/ogg"></video></div></li></ul><div class="controls"><div class="loader"><div class="bar"><div class="fill"></div></div><p class="counter">00</p></div>' + feng.templates.common.PrimaryButton({classname: 'skip', icon: 'icon-yes', text: 'Continue'}) + '</div>'});
+  return feng.templates.common.Popup({classname: 'tutorial from-bottom', content: '<h1>Control Instructions</h1><ul class="steps"><li><h6>Explore the environment</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-1.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-1.ogv" type="video/ogg"></video></div></li><li><h6>Inspect objects for tips</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-2.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-2.ogv" type="video/ogg"></video></div></li><li><h6>Ask the client for clues</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-3.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-3.ogv" type="video/ogg"></video></div></li></ul><div class="controls"><div class="loader"><div class="bar"><div class="fill"></div></div><p class="counter">00</p></div>' + feng.templates.common.PrimaryButton({classname: 'skip', icon: 'icon-yes', text: 'Continue'}) + '</div>'});
 };
 // This file was automatically generated from controls.soy.
 // Please don't edit this file by hand.
@@ -33996,11 +33984,11 @@ feng.templates.controls.Book = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.Reminder = function(opt_data, opt_ignored) {
   var output = '<div class="reminder"><div class="character">' + feng.templates.controls.RoundButton({content: '<canvas></canvas>'}) + '</div><div class="dialogue hint"><div class="wrapper"><button class="prev icon icon-prev"></button><ul class="hints">';
-  var tipList247 = opt_data.tips;
-  var tipListLen247 = tipList247.length;
-  for (var tipIndex247 = 0; tipIndex247 < tipListLen247; tipIndex247++) {
-    var tipData247 = tipList247[tipIndex247];
-    output += '<li data-tip-id="' + tipData247.id + '">' + tipData247.reminder + '</li>';
+  var tipList257 = opt_data.tips;
+  var tipListLen257 = tipList257.length;
+  for (var tipIndex257 = 0; tipIndex257 < tipListLen257; tipIndex257++) {
+    var tipData257 = tipList257[tipIndex257];
+    output += '<li data-tip-id="' + tipData257.id + '">' + tipData257.reminder + '</li>';
   }
   output += '</ul><button class="next icon icon-next"></button></div></div></div>';
   return output;
@@ -34059,16 +34047,16 @@ feng.templates.controls.GatewayTooltip = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var output = '<div class="progressBar"><div class="inner"><button class="prev icon icon-prev"></button><button class="next icon icon-next"></button><div class="tips-wrapper">';
-  var viewIdList277 = soy.$$getMapKeys(opt_data.tipsOfViews);
-  var viewIdListLen277 = viewIdList277.length;
-  for (var viewIdIndex277 = 0; viewIdIndex277 < viewIdListLen277; viewIdIndex277++) {
-    var viewIdData277 = viewIdList277[viewIdIndex277];
-    output += '<ul class="tips" data-view-id="' + viewIdData277 + '">';
-    var tipList281 = opt_data.tipsOfViews[viewIdData277];
-    var tipListLen281 = tipList281.length;
-    for (var tipIndex281 = 0; tipIndex281 < tipListLen281; tipIndex281++) {
-      var tipData281 = tipList281[tipIndex281];
-      output += '<li class="tip" data-tip-id="' + tipData281.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content" href="' + tipData281.readTipToken + '"><div class="icon icon-' + tipData281.icon + '" data-tip-id="' + tipData281.id + '" data-view-id="' + tipData281.viewId + '" data-section-id="' + tipData281.sectionId + '"></div><h6>' + tipData281.name + '</h6></a></div></li>';
+  var viewIdList287 = soy.$$getMapKeys(opt_data.tipsOfViews);
+  var viewIdListLen287 = viewIdList287.length;
+  for (var viewIdIndex287 = 0; viewIdIndex287 < viewIdListLen287; viewIdIndex287++) {
+    var viewIdData287 = viewIdList287[viewIdIndex287];
+    output += '<ul class="tips" data-view-id="' + viewIdData287 + '">';
+    var tipList291 = opt_data.tipsOfViews[viewIdData287];
+    var tipListLen291 = tipList291.length;
+    for (var tipIndex291 = 0; tipIndex291 < tipListLen291; tipIndex291++) {
+      var tipData291 = tipList291[tipIndex291];
+      output += '<li class="tip" data-tip-id="' + tipData291.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content" href="' + tipData291.readTipToken + '"><div class="icon icon-' + tipData291.icon + '" data-tip-id="' + tipData291.id + '" data-view-id="' + tipData291.viewId + '" data-section-id="' + tipData291.sectionId + '"></div><h6>' + tipData291.name + '</h6></a></div></li>';
     }
     output += '</ul>';
   }
@@ -34741,14 +34729,57 @@ feng.utils.ThreeUtils.getShortestRotation = function( from, to ) {
 };
 
 
-feng.utils.ThreeUtils.lerpBetween = function( a, b, x ) {
+feng.utils.ThreeUtils.getLerpedEuler = function( a, b, x, opt_euler ) {
 
-	var newObj = a.clone();
-	newObj.x = goog.math.lerp(a.x, b.x, x);
-	newObj.y = goog.math.lerp(a.y, b.y, x);
-	newObj.z = goog.math.lerp(a.z, b.z, x);
+	var euler = opt_euler || a.clone();
 
-	return newObj;
+	var qa = (new THREE.Quaternion()).setFromEuler( a );
+	var qb = (new THREE.Quaternion()).setFromEuler( b );
+	var qr = qa.slerp( qb, x );
+
+	return euler.setFromQuaternion( qr );
+};
+
+
+feng.utils.ThreeUtils.getWorldPositionOfLocal = function( object, position, opt_pos ) {
+
+	var localPos = opt_pos || new THREE.Vector3();
+	localPos.copy( position );
+
+	return object.localToWorld( localPos );
+};
+
+
+feng.utils.ThreeUtils.getLocalPositionOfWorld = function( object, position, opt_pos ) {
+
+	var worldPos = opt_pos || new THREE.Vector3();
+	worldPos.copy( position );
+
+	return object.worldToLocal( worldPos );
+};
+
+
+feng.utils.ThreeUtils.getWorldRotationOfLocal = function( object, rotation, opt_rot ) {
+
+  var localQuaternion = (new THREE.Quaternion()).setFromEuler( rotation );
+  var objectQuaternion = (new THREE.Quaternion()).setFromEuler( object.rotation );
+
+  var worldQuaternion = objectQuaternion.multiply( localQuaternion );
+  var worldRotation = (opt_rot || new THREE.Euler()).setFromQuaternion( worldQuaternion );
+
+  return worldRotation;
+};
+
+
+feng.utils.ThreeUtils.getLocalRotationOfWorld = function( object, rotation, opt_rot ) {
+
+  var worldQuaternion = (new THREE.Quaternion()).setFromEuler( rotation );
+  var objectQuaternion = (new THREE.Quaternion()).setFromEuler( object.rotation );
+
+  var localQuaternion = worldQuaternion.multiply( objectQuaternion );
+  var localRotation = (opt_rot || new THREE.Euler()).setFromQuaternion( localQuaternion );
+
+  return localRotation;
 };
 
 
@@ -34840,515 +34871,14 @@ feng.utils.ThreeUtils.getRectangleFromBox3 = function( box3, camera, rendererSiz
 
 
 feng.utils.ThreeUtils.projector = new THREE.Projector();
-feng.utils.ThreeUtils.raycaster = new THREE.Raycaster();goog.provide('feng.views.view3dobject.View3DObject');
-
-goog.require('goog.events.EventTarget');
-goog.require('goog.math.Box');
-
-/**
- * @constructor
- * A 3d object in view3d
- */
-feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
-
-  goog.base(this);
-
-  this.object3d = object3d;
-  this.object3d.userData = data;
-  this.object3d.view3dObject = this;
-
-  this.name = object3d.name;
-  this.id = object3d.name + '-' + object3d.uuid;
-  this.data = data;
-
-  this._view3d = view3d;
-  this._boundingBox = new THREE.Box3();
-  this._boundingSphere = new THREE.Sphere();
-  this._center = new THREE.Vector3();
-
-  this._tilemapProxy = null;
-
-  this._proxyBox = new THREE.Mesh( new THREE.BoxGeometry(1,1,1) );
-  this._proxyBox.view3dObject = this;
-
-  this._canRender = this.object3d.visible;
-  this._isRenderEnabled = this._canRender;
-
-  //
-  this.registerToView3D();
-};
-goog.inherits(feng.views.view3dobject.View3DObject, goog.events.EventTarget);
-
-
-feng.views.view3dobject.View3DObject.prototype.registerToView3D = function(){
-
-  this._view3d.view3dObjects[ this.name ] = this;
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.init = function(){
-
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.isCollidable = function(){
-
-  return (this.data.collidable === true);
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.isFloor = function(){
-
-  return (goog.string.startsWith(this.name, 'floor'));
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.getProxyBox = function(){
-
-  var boundingBox = this.getBoundingBox();
-
-  boundingBox.size( this._proxyBox.scale );
-  boundingBox.center( this._proxyBox.position );
-  this._proxyBox.updateMatrixWorld();
-
-  return this._proxyBox;
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.getBoundingBox = function(){
-
-  this._boundingBox.setFromObject( this.object3d );
-  return this._boundingBox;
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.getBoundingSphere = function(){
-
-  this.getBoundingBox().getBoundingSphere( this._boundingSphere );
-  return this._boundingSphere;
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.getBox = function(){
-
-  var box3 = this.getBoundingBox();
-  var minX = box3.min.x;
-  var minZ = box3.min.z;
-  var maxX = box3.max.x;
-  var maxZ = box3.max.z;
-
-  var box2 = new goog.math.Box(minZ, maxX, maxZ, minX);
-
-  return box2;
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.getCenter = function(){
-
-  var box3 = this.getBoundingBox();
-  return box3.center();
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.getBoundingBoxParameters = function(){
-
-  var box3 = this.getBoundingBox();
-  
-  return {
-    width: Math.abs(box3.max.x - box3.min.x),
-    height: Math.abs(box3.max.y - box3.min.y),
-    length: Math.abs(box3.max.z - box3.min.z)
-  };
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.getHeight = function(){
-
-  return this.getBoundingBoxParameters().height;
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.getTilemapProxy = function(){
-
-  var clone = this._tilemapProxy;
-
-  if(!clone) {
-
-    clone = new THREE.Mesh( this.object3d.geometry, feng.views.view3dobject.View3DObject.ProxyMaterial.GREEN );
-    this._tilemapProxy = clone;
-  }
-
-  if(this.isCollidable()) {
-
-    clone.material = feng.views.view3dobject.View3DObject.ProxyMaterial.RED;
-
-  }else {
-
-    clone.material = feng.views.view3dobject.View3DObject.ProxyMaterial.GREEN;
-  }
-  
-  clone.material.overdraw = true;
-
-  clone.position.copy( this.object3d.position );
-  clone.rotation.copy( this.object3d.rotation );
-
-  return clone;
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.addToScene = function(){
-
-  this._view3d.scene.add( this.object3d );
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.removeFromScene = function(){
-
-  this._view3d.scene.remove( this.object3d );
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.enableRender = function(){
-
-  if(!this._canRender) return;
-
-  if(this._isRenderEnabled) return;
-  else this._isRenderEnabled = true;
-
-  // itself, its parent and its children should be renderable
-  this.object3d.visible = true;
-
-  var parent = this.object3d.parent;
-  var scene = this._view3d.scene;
-
-  while(parent && !(parent === scene)) {
-
-    if(parent.view3dObject) parent.view3dObject.enableRender();
-    else parent.visible = true;
-
-    parent = parent.parent;
-  }
-
-  this.object3d.traverse(function(child) {
-
-    if(child.view3dObject) child.view3dObject.enableRender();
-    else child.visible = true;
-  });
-
-  //console.log("SHOW:", this.object3d.name);
-};
-
-
-feng.views.view3dobject.View3DObject.prototype.disableRender = function(){
-
-  if(!this._isRenderEnabled) return;
-  else this._isRenderEnabled = false;
-
-  // itself and its children should not be renderable
-  this.object3d.visible = false;
-
-  //console.log("HIDE:", this.object3d.name);
-};
-
-
-feng.views.view3dobject.View3DObject.ProxyMaterial = {
-  RED: new THREE.MeshBasicMaterial( {color: 0xff0000} ),
-  GREEN: new THREE.MeshBasicMaterial( {color: 0x00ff00} )
-};goog.provide('feng.views.view3dobject.InteractiveObject');
-
-goog.require('goog.events.EventHandler');
-goog.require('feng.views.view3dobject.View3DObject');
-
-/**
- * @constructor
- * A 3d object that can be interacted in view3d
- */
-feng.views.view3dobject.InteractiveObject = function( object3d, data, view3d ){
-
-  goog.base(this, object3d, data, view3d);
-
-  this.object3d.interactiveObject = this;
-  this.isPhysical = true;
-  this.screenBox = new goog.math.Box(0, 0, 0, 0);
-
-  this.isSpecialCameraEnabled = data.camera ? true : false;
-  this.specialCameraSettings = data.camera || {};
-
-  this._interactionHandler = new goog.events.EventHandler(this);
-};
-goog.inherits(feng.views.view3dobject.InteractiveObject, feng.views.view3dobject.View3DObject);
-
-
-feng.views.view3dobject.InteractiveObject.prototype.registerToView3D = function(){
-
-  goog.base(this, 'registerToView3D');
-  
-  this._view3d.interactiveObjects[ this.name ] = this;
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.activate = function(){
-
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.deactivate = function(){
-
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.startInteraction = function(){
-
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.stopInteraction = function(){
-
-  this._interactionHandler.removeAll();
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.enableSpecialCamera = function( position, rotation, fov ){
-
-  this.isSpecialCameraEnabled = position ? true : false;
-
-  if(this.isSpecialCameraEnabled) {
-
-    this.specialCameraSettings.position = position;
-    this.specialCameraSettings.rotation = rotation;
-    this.specialCameraSettings.fov = fov;
-  }
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.updateScreenBox = function(){
-
-  var box3 = this.getBoundingBox();
-  var camera = this._view3d.cameraController.activeCamera;
-  var viewSize = this._view3d.getViewSize();
-
-  this.screenBox = feng.utils.ThreeUtils.getRectangleFromBox3( box3, camera, viewSize, this.screenBox );
-
-  return this.screenBox;
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.onCameraIn = function(){
-
-  console.log('on camera in: ' + this.name);
-};
-
-
-feng.views.view3dobject.InteractiveObject.prototype.onCameraOut = function(){
-
-  console.log('on camera out: ' + this.name);
-};goog.provide('feng.views.view3dobject.TipObject');
-
-goog.require('feng.models.achievements.Achievements');
-goog.require('feng.views.view3dobject.InteractiveObject');
-
-/**
- * @constructor
- * An interactive object that shall be solved as a feng-shui tip
- */
-feng.views.view3dobject.TipObject = function( object3d, data, view3d ){
-
-  goog.base(this, object3d, data, view3d);
-
-  // get tip model and listen to unlock event
-  var tipKeys = data.tipKey.split('.');
-  var tipId = tipKeys[2];
-  var viewId = tipKeys[1];
-  var sectionId = tipKeys[0];
-  this.tip = feng.models.achievements.Achievements.getInstance().getTip(tipId, viewId, sectionId);
-
-  goog.events.listenOnce(this.tip, feng.events.EventType.UNLOCK, this.onUnlock, false, this);
-
-  // get tip caption id if specified
-  this.captionClass = data.captionClass || null;
-};
-goog.inherits(feng.views.view3dobject.TipObject, feng.views.view3dobject.InteractiveObject);
-
-
-feng.views.view3dobject.TipObject.prototype.registerToView3D = function(){
-
-  goog.base(this, 'registerToView3D');
-  
-  this._view3d.tipObjects[ this.name ] = this;
-};
-
-
-feng.views.view3dobject.TipObject.prototype.isUnlocked = function(){
-
-  return this.tip.unlocked;
-};
-
-
-feng.views.view3dobject.TipObject.prototype.unlock = function(e){
-
-  this.tip.unlock();
-};
-
-
-feng.views.view3dobject.TipObject.prototype.onUnlock = function(e){
-
-  this.dispatchEvent( feng.events.EventType.UNLOCK );
-
-  console.log("UNLOCK: ", this);
-};goog.provide('feng.views.view3dobject.MovableObject');
-
-goog.require('feng.views.view3dobject.TipObject');
-goog.require('feng.utils.ThreeUtils');
-
-
-/**
- * @constructor
- * A tip object that can be resolved by moving to a new position
- */
-feng.views.view3dobject.MovableObject = function( object3d, data, view3d ){
-
-  goog.base(this, object3d, data, view3d);
-
-  this._minCol = 0;
-  this._maxCol = 0;
-  this._minRow = 0;
-  this._maxRow = 0;
-
-  var dropParentObject = this._view3d.getView3dObject( this.data.parent );
-  this._dropParent = dropParentObject ? dropParentObject.object3d : this._view3d.scene;
-
-  this._dropPosition = new THREE.Vector3();
-};
-goog.inherits(feng.views.view3dobject.MovableObject, feng.views.view3dobject.TipObject);
-
-
-feng.views.view3dobject.MovableObject.prototype.getDestination = function(){
-
-  return this._dropParent.localToWorld( this.data.position.clone() );
-};
-
-
-feng.views.view3dobject.MovableObject.prototype.updateTilesRange = function(){
-
-  // get available tiles by destination position and range (in view3d unit)
-  var destPos = this.data.position;
-  var range = this.data.range;
-
-  var matrixId = this._view3d.getMatrixId();
-  var matrixData = feng.pathfinder.getMatrixData( matrixId );
-
-  var rangeOfTiles = Math.round( range / 2 / matrixData.tileSize );  
-  var destTile = feng.pathfinder.getTileByPosition( destPos, matrixData );
-
-  var numCols = matrixData.numCols;
-  var numRows = matrixData.numRows;
-
-  this._minCol = Math.max( destTile[0] - rangeOfTiles, 0 );
-  this._maxCol = Math.min( destTile[0] + rangeOfTiles, numCols - 1 );
-  this._minRow = Math.max( destTile[1] - rangeOfTiles, 0 );
-  this._maxRow = Math.min( destTile[1] + rangeOfTiles, numRows - 1 );
-
-  /*
-  console.log(
-    'movable range of tiles: ' + rangeOfTiles,
-    'destination tile col: ' + destTile[0] + ', row: ' + destTile[1],
-    'min col: ' + this._minCol + ', max col: ' + this._maxCol + ', min row: ' + this._minRow + ', max row: ' + this._maxRow,
-    'total cols: ' + numCols + ', total rows: ' + numRows);*/
-};
-
-
-feng.views.view3dobject.MovableObject.prototype.getCloseUpObjectWhenDropped = function(){
-
-  return this;
-};
-
-
-feng.views.view3dobject.MovableObject.prototype.pick = function(){
-
-  this.updateTilesRange();
-
-  var arms = this._view3d.arms;
-  arms.addItem( this );
-
-  var closeUpControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.CLOSE_UP );
-  closeUpControls.close();
-};
-
-
-feng.views.view3dobject.MovableObject.prototype.drop = function(){
-
-  var arms = this._view3d.arms;
-  arms.removeItem( this );
-
-  this.object3d.position.copy( this.data.position );
-  this.object3d.rotation.copy( this.data.rotation );
-
-  this._dropParent.add( this.object3d );
-
-  this.unlock();
-
-  var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
-  
-  browseControls.dispatchEvent({
-    type: feng.events.EventType.CHANGE,
-    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-    nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-    object: this.getCloseUpObjectWhenDropped()
-  });
-};
-
-
-feng.views.view3dobject.MovableObject.prototype.startInteraction = function(){
-
-  goog.base(this, 'startInteraction');
-
-  this._interactionHandler.listen(this._view3d.domElement, 'click', this.onClick, false, this);
-};
-
-
-feng.views.view3dobject.MovableObject.prototype.onClick = function(e){
-
-  var camera = this._view3d.cameraController.activeCamera;
-  var viewSize = this._view3d.viewSize;
-  var clickedObjects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, [this.object3d], camera, viewSize );
-  
-  if(clickedObjects.length > 0) {
-
-    this.pick();
-  }
-};goog.provide('feng.models.View3D');
+feng.utils.ThreeUtils.raycaster = new THREE.Raycaster();
+feng.utils.ThreeUtils.loader = new THREE.ObjectLoader();
+goog.provide('feng.models.View3D');
 
 
 feng.models.View3D.Data = {
 
 	'studio': {
-		'interior2': {
-			'ground': {
-				receiveShadow: true
-			},
-			'door': {
-				Class: "gateway",
-				collidable: true,
-				viewid: "bathroom",
-				gatewayid: "door"
-			},
-			'pc': {
-				collidable: true,
-				texture: "studio.interior2.pc-texture"
-			},
-			'screen': {
-				texture: {
-					defaultTexture: "studio.interior2.screensaver-texture",
-					htiles: 45,
-					vtiles: 1,
-					ntiles: 45,
-					duration: 100
-				}
-			},
-			'cactus': {
-				texture: "studio.interior2.cactus-texture"
-			}
-		},
 		'livingroom': {
 			'studio-door': {
 				Class: "gateway",
@@ -35357,6 +34887,7 @@ feng.models.View3D.Data = {
 				castShadow: true,
 				toHome: true,
 				isEntry: true,
+				inversed: true,
 				origin: {
 					position: new THREE.Vector3(-240, 0, 34),
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
@@ -35425,6 +34956,23 @@ feng.models.View3D.Data = {
 			'floor': {
 				texture: "studio.livingroom.floor-texture",
 				receiveShadow: true
+			},
+			'plant': {
+				Class: "replaceable",
+				tipKey: 'studio.livingroom.cactus',
+				camera: {
+					position: new THREE.Vector3(60, 64, -58.5),
+					rotation: new THREE.Euler(-0.30, -1.50, 0.00, 'YXZ'),
+					fov: 25
+				},
+				captionClass: 'changeobject',
+				objects: [
+					'lucky-bamboo',
+					'rubberplant'
+				]
+			},
+			'cactus': {
+				texture: "studio.livingroom.cactus-texture"
 			},
 			'bed':	{
 				collidable: true,
@@ -36114,7 +35662,7 @@ feng.models.View3D.Data = {
 				Class: 'pictures',
 				captionClass: 'changepicture',
 				tipKey: 'house.boysroom.poster',
-				texture: "house.boysroom.handheld-nightstand-texture",
+				texture: "house.boysroom.big-frame-picture-texture",
 				camera: {
 					position: new THREE.Vector3(21.1, 80, -26.46),
 					rotation: new THREE.Euler(-0.03, 1.55, 0.00, 'YXZ'),
@@ -36308,7 +35856,8 @@ feng.models.View3D.Data = {
 				origin: {
 					position: new THREE.Vector3(68, 0, -53),
 					rotation: new THREE.Euler(0, Math.PI/2, 0)
-				}
+				},
+				texture: "house.homeoffice.homeoffice-door-texture"
 			},
 			'swivel-chair': {
 				Class: "movable",
@@ -36517,6 +36066,686 @@ feng.models.View3D.getData = function(keyString) {
 	});
 
 	return data || {};
+};goog.provide('feng.views.view3dobject.View3DObject');
+
+goog.require('goog.events.EventTarget');
+goog.require('goog.math.Box');
+goog.require('feng.models.Preload');
+goog.require('feng.models.View3D');
+
+/**
+ * @constructor
+ * A 3d object in view3d
+ */
+feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
+
+  goog.base(this);
+
+  this.object3d = object3d;
+  this.object3d.userData = data;
+  this.object3d.view3dObject = this;
+
+  this.name = object3d.name;
+  this.id = object3d.name + '-' + object3d.uuid;
+  this.data = data;
+
+  this._view3d = view3d;
+  this._boundingBox = new THREE.Box3();
+  this._boundingSphere = new THREE.Sphere();
+  this._center = new THREE.Vector3();
+
+  this._tilemapProxy = null;
+
+  this._proxyBox = new THREE.Mesh( new THREE.BoxGeometry(1,1,1) );
+  this._proxyBox.view3dObject = this;
+
+  this._canRender = this.object3d.visible;
+  this._isRenderEnabled = this._canRender;
+  this._isTextureCreated = false;
+
+  //
+  this.registerToView3D();
+};
+goog.inherits(feng.views.view3dobject.View3DObject, goog.events.EventTarget);
+
+
+feng.views.view3dobject.View3DObject.prototype.registerToView3D = function(){
+
+  this._view3d.view3dObjects[ this.name ] = this;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.init = function(){
+
+  // assign object model data
+  var preloadModel = feng.models.Preload.getInstance();
+  var sectionId = this._view3d.sectionId;
+  var viewId = this._view3d.id;
+
+  this.object3d.traverse(function(object) {
+
+    var data = feng.models.View3D.getData(sectionId+'.'+viewId+'.'+object.name);
+
+    if(object instanceof THREE.Object3D) {
+      object.castShadow = data.castShadow || false;
+      object.receiveShadow = data.receiveShadow || false;
+
+      if(object.material) {
+        object.material.shading = THREE.FlatShading;
+        object.material.fog = false;
+      }
+    }
+  });
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.createTextures = function(){
+
+  if(this._isTextureCreated) {
+
+    return false;
+
+  }else {
+
+    this._isTextureCreated = true;
+  }
+
+  var preloadModel = feng.models.Preload.getInstance();
+  var sectionId = this._view3d.sectionId;
+  var viewId = this._view3d.id;
+
+  this.object3d.traverse(function(object) {
+
+    var data = feng.models.View3D.getData(sectionId+'.'+viewId+'.'+object.name);
+
+    if(object instanceof THREE.Object3D) {
+
+      var textureData = data.texture;
+
+      if(goog.isString(textureData) && !object.material.map) {
+
+          var textureAsset = preloadModel.getAsset( textureData );
+          var texture;
+
+          if(textureAsset.src) {
+
+            texture = new THREE.Texture( textureAsset );
+            texture.needsUpdate = true;
+
+          }else {
+            /*
+            var ddsLoader = new THREE.DDSLoader();           
+            var dds = ddsLoader.parse( textureAsset );
+
+            texture = new THREE.CompressedTexture();
+            texture.image = [];
+            texture.flipY = false;
+            texture.generateMipmaps = false;
+            texture.image.width = dds.width;
+            texture.image.height = dds.height;
+            texture.mipmaps = dds.mipmaps;
+            texture.format = dds.format;
+            texture.needsUpdate = true;
+            */
+          }
+
+          object.material.shading = THREE.FlatShading;
+          object.material.fog = false;
+          object.material.map = texture;
+          object.material.needsUpdate = true;
+      }
+    }
+  });
+
+  return true;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.disposeTextures = function(){
+
+  if(!this._isTextureCreated) {
+
+    return false;
+
+  }else {
+
+    this._isTextureCreated = false;
+  }
+
+  this.object3d.traverse(function(object) {
+
+    if(object instanceof THREE.Mesh) {
+
+      if(object.material.map) {
+
+        object.material.map.dispose();
+        object.material.map = null;
+        object.material.needsUpdate = true;
+      }
+    }
+  });
+
+  return true;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.isCollidable = function(){
+
+  return (this.data.collidable === true);
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.isFloor = function(){
+
+  return (goog.string.startsWith(this.name, 'floor'));
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getProxyBox = function(){
+
+  var boundingBox = this.getBoundingBox();
+
+  boundingBox.size( this._proxyBox.scale );
+  boundingBox.center( this._proxyBox.position );
+  this._proxyBox.updateMatrixWorld();
+
+  return this._proxyBox;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getBoundingBox = function(){
+
+  this._boundingBox.setFromObject( this.object3d );
+  return this._boundingBox;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getBoundingSphere = function(){
+
+  this.getBoundingBox().getBoundingSphere( this._boundingSphere );
+  return this._boundingSphere;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getBox = function(){
+
+  var box3 = this.getBoundingBox();
+  var minX = box3.min.x;
+  var minZ = box3.min.z;
+  var maxX = box3.max.x;
+  var maxZ = box3.max.z;
+
+  var box2 = new goog.math.Box(minZ, maxX, maxZ, minX);
+
+  return box2;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getCenter = function(){
+
+  var box3 = this.getBoundingBox();
+  return box3.center();
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getBoundingBoxParameters = function(){
+
+  var box3 = this.getBoundingBox();
+  
+  return {
+    width: Math.abs(box3.max.x - box3.min.x),
+    height: Math.abs(box3.max.y - box3.min.y),
+    length: Math.abs(box3.max.z - box3.min.z)
+  };
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getHeight = function(){
+
+  return this.getBoundingBoxParameters().height;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.getTilemapProxy = function(){
+
+  var clone = this._tilemapProxy;
+
+  if(!clone) {
+
+    clone = new THREE.Mesh( this.object3d.geometry, feng.views.view3dobject.View3DObject.ProxyMaterial.GREEN );
+    this._tilemapProxy = clone;
+  }
+
+  if(this.isCollidable()) {
+
+    clone.material = feng.views.view3dobject.View3DObject.ProxyMaterial.RED;
+
+  }else {
+
+    clone.material = feng.views.view3dobject.View3DObject.ProxyMaterial.GREEN;
+  }
+  
+  clone.material.overdraw = true;
+
+  clone.position.copy( this.object3d.position );
+  clone.rotation.copy( this.object3d.rotation );
+
+  return clone;
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.addToScene = function(){
+
+  this._view3d.scene.add( this.object3d );
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.removeFromScene = function(){
+
+  this._view3d.scene.remove( this.object3d );
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.enableRender = function(){
+
+  if(!this._canRender) return;
+
+  if(this._isRenderEnabled) return;
+  else this._isRenderEnabled = true;
+
+  // itself, its parent and its children should be renderable
+  this.object3d.visible = true;
+
+  var parent = this.object3d.parent;
+  var scene = this._view3d.scene;
+
+  while(parent && !(parent === scene)) {
+
+    if(parent.view3dObject) parent.view3dObject.enableRender();
+    else parent.visible = true;
+
+    parent = parent.parent;
+  }
+
+  this.object3d.traverse(function(child) {
+
+    if(child.view3dObject) child.view3dObject.enableRender();
+    else child.visible = true;
+  });
+
+  //console.log("SHOW:", this.object3d.name);
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.disableRender = function(){
+
+  if(!this._isRenderEnabled) return;
+  else this._isRenderEnabled = false;
+
+  // itself and its children should not be renderable
+  this.object3d.visible = false;
+
+  //console.log("HIDE:", this.object3d.name);
+};
+
+
+feng.views.view3dobject.View3DObject.ProxyMaterial = {
+  RED: new THREE.MeshBasicMaterial( {color: 0xff0000} ),
+  GREEN: new THREE.MeshBasicMaterial( {color: 0x00ff00} )
+};goog.provide('feng.views.view3dobject.InteractiveObject');
+
+goog.require('goog.async.Delay');
+goog.require('goog.events.EventHandler');
+goog.require('feng.views.view3dobject.View3DObject');
+
+/**
+ * @constructor
+ * A 3d object that can be interacted in view3d
+ */
+feng.views.view3dobject.InteractiveObject = function( object3d, data, view3d ){
+
+  goog.base(this, object3d, data, view3d);
+
+  this.object3d.interactiveObject = this;
+  this.isPhysical = true;
+
+  this.isSpecialCameraEnabled = data.camera ? true : false;
+  this.specialCameraSettings = data.camera || {};
+
+  this._interactionHandler = new goog.events.EventHandler(this);
+
+  this.cameraInDuration = 1000;
+  this._onCameraAnimatedInDelay = new goog.async.Delay(this.onCameraAnimatedIn, 0, this);
+};
+goog.inherits(feng.views.view3dobject.InteractiveObject, feng.views.view3dobject.View3DObject);
+
+
+feng.views.view3dobject.InteractiveObject.prototype.registerToView3D = function(){
+
+  goog.base(this, 'registerToView3D');
+  
+  this._view3d.interactiveObjects[ this.name ] = this;
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.activate = function(){
+
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.deactivate = function(){
+
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.startInteraction = function(){
+
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.stopInteraction = function(){
+
+  this._interactionHandler.removeAll();
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.enableSpecialCamera = function( position, rotation, fov ){
+
+  this.isSpecialCameraEnabled = position ? true : false;
+
+  if(this.isSpecialCameraEnabled) {
+
+    this.specialCameraSettings.position = position;
+    this.specialCameraSettings.rotation = rotation;
+    this.specialCameraSettings.fov = fov;
+  }
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.onCameraIn = function(){
+
+  console.log('on camera in: ' + this.name);
+
+  this._onCameraAnimatedInDelay.start( this.cameraInDuration );
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.onCameraOut = function(){
+
+  console.log('on camera out: ' + this.name);
+
+  this._onCameraAnimatedInDelay.stop();
+};
+
+
+feng.views.view3dobject.InteractiveObject.prototype.onCameraAnimatedIn = function(){
+
+  this.dispatchEvent( feng.events.EventType.ANIMATED_IN );
+};goog.provide('feng.views.view3dobject.TipObject');
+
+goog.require('feng.models.achievements.Achievements');
+goog.require('feng.views.view3dobject.InteractiveObject');
+
+/**
+ * @constructor
+ * An interactive object that shall be solved as a feng-shui tip
+ */
+feng.views.view3dobject.TipObject = function( object3d, data, view3d ){
+
+  goog.base(this, object3d, data, view3d);
+
+  // get tip model and listen to unlock event
+  var tipKeys = data.tipKey.split('.');
+  var tipId = tipKeys[2];
+  var viewId = tipKeys[1];
+  var sectionId = tipKeys[0];
+  this.tip = feng.models.achievements.Achievements.getInstance().getTip(tipId, viewId, sectionId);
+
+  goog.events.listenOnce(this.tip, feng.events.EventType.UNLOCK, this.onUnlock, false, this);
+
+  // get tip caption id if specified
+  this.captionClass = data.captionClass || null;
+};
+goog.inherits(feng.views.view3dobject.TipObject, feng.views.view3dobject.InteractiveObject);
+
+
+feng.views.view3dobject.TipObject.prototype.registerToView3D = function(){
+
+  goog.base(this, 'registerToView3D');
+  
+  this._view3d.tipObjects[ this.name ] = this;
+};
+
+
+feng.views.view3dobject.TipObject.prototype.isUnlocked = function(){
+
+  return this.tip.unlocked;
+};
+
+
+feng.views.view3dobject.TipObject.prototype.unlock = function(e){
+
+  this.tip.unlock();
+};
+
+
+feng.views.view3dobject.TipObject.prototype.onUnlock = function(e){
+
+  this.dispatchEvent( feng.events.EventType.UNLOCK );
+
+  console.log("UNLOCK: ", this);
+};goog.provide('feng.views.view3dobject.MovableObject');
+
+goog.require('feng.views.view3dobject.TipObject');
+goog.require('feng.utils.ThreeUtils');
+
+
+/**
+ * @constructor
+ * A tip object that can be resolved by moving to a new position
+ */
+feng.views.view3dobject.MovableObject = function( object3d, data, view3d ){
+
+  goog.base(this, object3d, data, view3d);
+
+  var dropParentObject = this._view3d.getView3dObject( this.data.parent );
+  this._dropParent = dropParentObject ? dropParentObject.object3d : this._view3d.scene;
+
+  this.hasPicked = false;
+  this.hasDropped = false;
+
+  this._pickDelay = new goog.async.Delay(this.pick, 1000, this);
+};
+goog.inherits(feng.views.view3dobject.MovableObject, feng.views.view3dobject.TipObject);
+
+
+feng.views.view3dobject.MovableObject.prototype.getBoundingBox = function(){
+
+  if(!this.hasPicked) {
+
+    return goog.base(this, 'getBoundingBox');
+
+  }else {
+
+    // calculate bounding box of original orientation
+    this.object3d.geometry.computeBoundingBox();
+    var boundingBox = this.object3d.geometry.boundingBox;
+
+    var size = boundingBox.size();
+    var center = this.data.position.clone();
+    center.y += size.y/2;
+
+    this._boundingBox.setFromCenterAndSize( center, size );
+    return this._boundingBox;
+  }
+};
+
+
+feng.views.view3dobject.MovableObject.prototype.getDestination = function(){
+
+  return this._dropParent.localToWorld( this.data.position.clone() );
+};
+
+
+feng.views.view3dobject.MovableObject.prototype.getCloseUpObjectWhenDropped = function(){
+
+  return this;
+};
+
+
+feng.views.view3dobject.MovableObject.prototype.pick = function(){
+
+  var arms = this._view3d.arms;
+  var endOrientation = arms.getWorldOrientation( this.name );
+  var endPosition = endOrientation.position;
+  var endRotation = endOrientation.rotation;
+  var startPosition = this.object3d.position;
+  var startRotation = this.object3d.rotation;
+
+  var prop = {
+    t: 0
+  };
+
+  var position = new THREE.Vector3();
+  var rotation = new THREE.Euler();
+
+  TweenMax.to( prop, 2, {
+    t: 1,
+    'ease': Sine.easeIn,
+    'onUpdate': function() {
+      
+      position = position.copy(startPosition).lerp(endPosition, prop.t);
+      this.object3d.position.copy( position );
+
+      rotation = feng.utils.ThreeUtils.getLerpedEuler( startRotation, endRotation, prop.t, rotation );
+      this.object3d.rotation.copy( rotation );
+    },
+    'onUpdateScope': this,
+    'onComplete': this.onPicked,
+    'onCompleteScope': this
+  });
+};
+
+
+feng.views.view3dobject.MovableObject.prototype.drop = function(){
+
+  var arms = this._view3d.arms;
+  arms.removeItem( this );
+
+  this._dropParent.add( this.object3d );
+
+  //
+  var startOrientation = arms.getWorldOrientation( this.name );
+  var worldPosition = startOrientation.position;
+  var worldRotation = startOrientation.rotation;
+
+  var startPosition = feng.utils.ThreeUtils.getLocalPositionOfWorld( this._dropParent, worldPosition );
+  var startRotation = feng.utils.ThreeUtils.getLocalRotationOfWorld( this._dropParent, worldRotation );
+
+  var endPosition = this.data.position.clone().setY( this.data.position.y + 10 );
+  var endRotation = this.data.rotation;
+
+  var prop = {
+    t: 0
+  };
+
+  var position = new THREE.Vector3();
+  var rotation = new THREE.Euler();
+
+  TweenMax.to( prop, 1, {
+    t: 1,
+    'immediateRender': true,
+    'ease': Sine.easeInOut,
+    'onUpdate': function() {
+      
+      position = position.copy(startPosition).lerp(endPosition, prop.t);
+      this.object3d.position.copy( position );
+
+      rotation = feng.utils.ThreeUtils.getLerpedEuler( startRotation, endRotation, prop.t, rotation );
+      this.object3d.rotation.copy( rotation );
+    },
+    'onUpdateScope': this
+  });
+
+  TweenMax.to( this.object3d.position, 1, {
+    'y': this.data.position.y,
+    'delay': 1.5,
+    'ease': Bounce.easeOut,
+    'onComplete': this.onDropped,
+    'onCompleteScope': this
+  });
+};
+
+
+feng.views.view3dobject.MovableObject.prototype.startInteraction = function(){
+
+  goog.base(this, 'startInteraction');
+
+  this._pickDelay.start();
+
+  //this._interactionHandler.listen(this._view3d.domElement, 'click', this.onClick, false, this);
+};
+
+
+feng.views.view3dobject.MovableObject.prototype.stopInteraction = function(){
+
+  goog.base(this, 'stopInteraction');
+
+  this._pickDelay.stop();
+};
+
+
+feng.views.view3dobject.MovableObject.prototype.onPicked = function(){
+
+  this.hasPicked = true;
+
+  var arms = this._view3d.arms;
+  arms.addItem( this );
+
+  var closeUpControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.CLOSE_UP );
+  closeUpControls.close();
+};
+
+
+feng.views.view3dobject.MovableObject.prototype.onDropped = function(){
+
+  this.hasDropped = true;
+
+  this.unlock();
+};
+
+
+feng.views.view3dobject.MovableObject.prototype.onCameraIn = function(){
+
+  if(this.hasDropped) {
+
+    this.cameraInDuration = 1000;
+
+  }else if(!this.hasPicked) {
+
+    this.cameraInDuration = 1000;
+
+  }else if(this.hasPicked && !this.hasDropped) {
+
+    this.cameraInDuration = 3000;
+
+    this.drop();
+  }
+
+  goog.base(this, 'onCameraIn');
+};
+
+
+feng.views.view3dobject.MovableObject.prototype.onClick = function(e){
+
+  var camera = this._view3d.cameraController.activeCamera;
+  var viewSize = this._view3d.viewSize;
+  var clickedObjects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, [this.object3d], camera, viewSize );
+  
+  if(clickedObjects.length > 0) {
+
+    this.pick();
+  }
 };// Copyright 2012 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -38681,7 +38910,8 @@ feng.views.view3dobject.entities.Pictures.prototype.startInteraction = function(
 
   goog.base(this, 'startInteraction');
 
-  this._interactionHandler.listen(this._view3d.domElement, 'click', this.onClick, false, this);
+  // disable free picture selection for now...
+  //this._interactionHandler.listen(this._view3d.domElement, 'click', this.onClick, false, this);
 
   this.setActivePicture( this._pictureObject3ds[0] );
 };
@@ -38742,7 +38972,7 @@ feng.views.view3dobject.entities.Pictures.prototype.setPicture = function( id ){
   }
 };
 
-
+/*
 feng.views.view3dobject.entities.Pictures.prototype.onClick = function(e){
 
   var camera = this._view3d.cameraController.activeCamera;
@@ -38753,7 +38983,8 @@ feng.views.view3dobject.entities.Pictures.prototype.onClick = function(e){
     var picture = clickedObjects[0].object;
     this.setActivePicture( picture );
   }
-};goog.provide('feng.views.view3dobject.entities.DiningMirror');
+};
+*/goog.provide('feng.views.view3dobject.entities.DiningMirror');
 
 goog.require('feng.views.view3dobject.TipObject');
 
@@ -38772,6 +39003,8 @@ goog.inherits(feng.views.view3dobject.entities.DiningMirror, feng.views.view3dob
 
 feng.views.view3dobject.entities.DiningMirror.prototype.init = function() {
 
+  goog.base(this, 'init');
+  
   this._cubeCamera = new THREE.CubeCamera( 0.1, 1000, feng.renderSettings.renderSize * 2 );
   this._cubeCamera.position.copy( this.getCenter() );
   this.object3d.add( this._cubeCamera );
@@ -38789,58 +39022,6 @@ feng.views.view3dobject.entities.DiningMirror.prototype.updateEnvMap = function(
   var renderer = this._view3d.renderer.getRenderer();
   var scene = this._view3d.scene;
   this._cubeCamera.updateCubeMap( renderer, scene );
-};goog.provide('feng.models.Accessories');
-
-goog.require('feng.models.Preload');
-
-
-feng.models.Accessories = function(){
-
-	this._loader = new THREE.ObjectLoader();
-};
-goog.addSingletonGetter(feng.models.Accessories);
-
-
-feng.models.Accessories.Data = {
-	'studio': {
-		'livingroom': ['rubberplant', 'cactus', 'lotus'],
-		'interior2': [],
-		'interior3': [],
-		'bathroom': []
-	},
-	'house': {
-		'livingroom': ['rubberplant', 'cactus', 'lotus'],
-		'corridor': [],
-		'boysroom': [],
-		'homeoffice': []
-	}
-};
-
-
-feng.models.Accessories.prototype.getAccessoryObject3D = function(name) {
-
-	var preloadModel = feng.models.Preload.getInstance();
-
-	var data = preloadModel.getAsset('accessories.'+name+'-data');
-	var textureSrc = preloadModel.getAsset('accessories.'+name+'-texture').src;
-
-	var mesh = this._loader.parse( data );
-	mesh.material.map = THREE.ImageUtils.loadTexture( textureSrc );
-	mesh.material.shading = THREE.FlatShading;
-	mesh.castShadow = true;
-
-	return mesh;
-};
-
-
-feng.models.Accessories.prototype.getAccessories = function(sectionId, sceneId) {
-
-	var names = feng.models.Accessories.Data[sectionId][sceneId];
-	var accessories = goog.array.map(names, function(name) {
-		return this.getAccessoryObject3D( name );
-	}, this);
-
-	return accessories;
 };goog.provide('feng.fx.View3DSize');
 
 goog.require('goog.events.EventTarget');
@@ -38918,6 +39099,113 @@ feng.fx.View3DSize.prototype.update = function( ratioX, ratioY ){
 feng.fx.View3DSize.prototype.onResize = function(e){
 
 	this.update();
+};goog.provide('feng.views.view3dobject.ReplaceableObject');
+
+goog.require('feng.views.view3dobject.TipObject');
+goog.require('feng.utils.ThreeUtils');
+
+/**
+ * @constructor
+ * A holder to replace its content (mesh)
+ */
+feng.views.view3dobject.ReplaceableObject = function( object3d, data, view3d ){
+
+	goog.base(this, object3d, data, view3d);
+
+	// create assets loader
+	this._loader = new createjs.LoadQueue(true);
+  	createjs.LoadQueue.loadTimeout = 100000;
+
+	this._onLoadComplete = goog.bind(this.onLoadComplete, this);
+	this._onLoadError = goog.bind(this.onLoadError, this);
+
+	// object storage
+	this._object = this.object3d.children[0];
+
+	this.objects = {};
+
+	goog.array.forEach( data.objects, function(objectKey) {
+		this.objects[ objectKey ] = null;
+	}, this);
+
+	//
+	this._idToLoad = null;
+};
+goog.inherits(feng.views.view3dobject.ReplaceableObject, feng.views.view3dobject.TipObject);
+
+
+feng.views.view3dobject.ReplaceableObject.prototype.change = function( objectId ){
+
+	if(this.objects[objectId]) {
+
+		this.updateObject( this.objects[objectId] );
+		return;
+	}
+
+	this._idToLoad = objectId;
+
+	this._loader.removeAll();
+	this._loader.removeAllEventListeners();
+
+	this._loader.addEventListener("complete", this._onLoadComplete);
+	this._loader.addEventListener("error", this._onLoadError);
+
+	this._loader.loadManifest([
+		{
+			'src': feng.Config['assetsPath'] + 'json/replaceable/' + objectId + '.json',
+			'id': 'data'
+		},
+		{
+			'src': feng.Config['assetsPath'] + 'images/texture/replaceable/' + objectId + '.jpg',
+			'id': 'texture'
+		}
+	]);
+
+	//
+};
+
+
+feng.views.view3dobject.ReplaceableObject.prototype.updateObject = function( mesh ){
+
+	var currentObject = this.object3d.children[0];
+
+	if(currentObject) {
+
+		this.object3d.remove( currentObject );
+		delete this._view3d.view3dObjects[ currentObject.name ];
+	}
+
+	this._object = mesh;
+
+	this.object3d.add( this._object );
+};
+
+
+feng.views.view3dobject.ReplaceableObject.prototype.onLoadComplete = function( e ){
+
+	var json = this._loader.getResult('data');
+	var img = this._loader.getResult('texture');
+
+	var mesh = feng.utils.ThreeUtils.loader.parse( json );
+
+	var texture = new THREE.Texture( img );
+	texture.needsUpdate = true;
+
+	mesh.material.map = texture;
+	mesh.material.needsUpdate = true;
+
+	var view3dObject = new feng.views.view3dobject.View3DObject( mesh, {}, this._view3d );
+	this._view3d.view3dObjects[ view3dObject.name ] = view3dObject;
+
+	this.updateObject( mesh );
+
+	this.unlock();
+};
+
+
+feng.views.view3dobject.ReplaceableObject.prototype.onLoadError = function( e ){
+
+
 };goog.provide('feng.views.view3dobject.Skybox');
 
 goog.require('feng.views.view3dobject.View3DObject');
@@ -38928,39 +39216,28 @@ goog.require('feng.views.view3dobject.View3DObject');
  */
 feng.views.view3dobject.Skybox = function( assets, view3d ){
 
-  var directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
+  this._assets = assets;
 
-  var skyGeometry = new THREE.BoxGeometry( 150000, 150000, 150000 );
-  
   var materials = [];
 
   for (var i = 0; i < 6; i++) {
 
-    var asset = assets[ directions[i] ];
-
-    var material;
-
-    if(asset) {
-
-      var texture = new THREE.Texture( asset );
-      texture.needsUpdate = true;
-
-      material = new THREE.MeshBasicMaterial({
-        map: texture,
-        side: THREE.BackSide
-      });
-      material.shading = THREE.FlatShading;
-      material.fog = false;
-    }
+    var material = new THREE.MeshBasicMaterial({
+      side: THREE.BackSide
+    });
+    material.shading = THREE.FlatShading;
+    material.fog = false;
 
     materials.push( material );
   }
 
-  var skyMaterial = new THREE.MeshFaceMaterial( materials );
-  skyMaterial.shading = THREE.FlatShading;
-  skyMaterial.fog = false;
+  var skyGeometry = new THREE.BoxGeometry( 150000, 150000, 150000 );
 
-  var skybox = new THREE.Mesh( skyGeometry, skyMaterial );
+  this._material = new THREE.MeshFaceMaterial( materials );
+  this._material.shading = THREE.FlatShading;
+  this._material.fog = false;
+
+  var skybox = new THREE.Mesh( skyGeometry, this._material );
   skybox.position.y = -8000;
   skybox.name = 'skybox';
 
@@ -38968,7 +39245,45 @@ feng.views.view3dobject.Skybox = function( assets, view3d ){
 
   this.addToScene();
 };
-goog.inherits(feng.views.view3dobject.Skybox, feng.views.view3dobject.View3DObject);goog.provide('feng.views.view3dobject.Mirror');
+goog.inherits(feng.views.view3dobject.Skybox, feng.views.view3dobject.View3DObject);
+
+
+feng.views.view3dobject.Skybox.prototype.createTextures = function(){
+
+  var shouldCreate = goog.base(this, 'createTextures');
+
+  if(!shouldCreate) return;
+
+  var directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
+
+  goog.array.forEach(this._material.materials, function(material, i) {
+
+    var asset = this._assets[ directions[i] ];
+
+    var texture = new THREE.Texture( asset );
+    texture.needsUpdate = true;
+
+    material.map = texture;
+    material.needsUpdate = true;
+
+  }, this);
+};
+
+
+feng.views.view3dobject.Skybox.prototype.disposeTextures = function(){
+
+  var shouldDispose = goog.base(this, 'disposeTextures');
+
+  if(!shouldDispose) return;
+
+  goog.array.forEach(this._material.materials, function(material, i) {
+
+    material.map.dispose();
+    material.map = null;
+    material.needsUpdate = true;
+
+  }, this);
+};goog.provide('feng.views.view3dobject.Mirror');
 
 goog.require('feng.views.view3dobject.View3DObject');
 
@@ -38986,6 +39301,8 @@ goog.inherits(feng.views.view3dobject.Mirror, feng.views.view3dobject.View3DObje
 
 
 feng.views.view3dobject.Mirror.prototype.init = function() {
+
+  goog.base(this, 'init');
 
   this._cubeCamera = new THREE.CubeCamera( 0.1, 1000, feng.renderSettings.renderSize * 2 );
   this._cubeCamera.position.copy( this.getCenter() );
@@ -39089,6 +39406,8 @@ goog.inherits(feng.views.view3dobject.entities.Windows, feng.views.view3dobject.
 
 feng.views.view3dobject.entities.Windows.prototype.init = function(){
 
+	goog.base(this, 'init');
+	
   this._windowLeft = this.object3d.getObjectByName('window-left').view3dObject;
   this._windowRight = this.object3d.getObjectByName('window-right').view3dObject;
 };goog.provide('feng.views.view3dobject.entities.Cat');
@@ -39252,7 +39571,7 @@ feng.controllers.controls.Controls.prototype.getForwardVector = function (dontFo
 feng.controllers.controls.Controls.prototype.getTarget = function () {
 
 	var raycaster = new THREE.Raycaster(this.getPosition(), this.getForwardVector(true));
-	var intersects = raycaster.intersectObjects( this._view3d.scene.children );
+	var intersects = raycaster.intersectObject( this._view3d.skybox.object3d );
 	var intersectPosition = intersects.length > 0 ? intersects[0].point : this._view3d.scene.position;
 
 	return intersectPosition;
@@ -39578,8 +39897,8 @@ feng.controllers.controls.EntryControls.prototype.start = function () {
 	var entryDirection = (new THREE.Vector3()).subVectors(entryOriginPosition, entryPosition).setY(0).normalize().negate();
 
 	var endPosition = entryOriginPosition.clone().setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT );
-	var startPosition = entryPosition.clone().setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT ).add( entryDirection.clone().multiplyScalar(120) );
-	var stepInPosition = startPosition.clone().add( entryDirection.clone().multiplyScalar(-70) );
+	var startPosition = entryPosition.clone().setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT ).add( entryDirection.clone().multiplyScalar(150) );
+	var stepInPosition = startPosition.clone().add( entryDirection.clone().multiplyScalar(-80) );
 
 	var endRotation = entryOriginRotation.clone();
 	var startRotation = new THREE.Euler(0, 0, 0, 'YXZ');
@@ -39624,6 +39943,7 @@ feng.controllers.controls.EntryControls.prototype.start = function () {
 
 	var arriveInTweener = TweenMax.to(prop, 3, {
 		t: 1,
+		'delay': 1,
 		'ease': Quad.easeInOut,
 		'onUpdate': this.onArriveInUpdate,
 		'onUpdateParams': [prop],
@@ -39641,8 +39961,7 @@ feng.controllers.controls.EntryControls.prototype.start = function () {
 feng.controllers.controls.EntryControls.prototype.openDoor = function () {
 
 	var skipPause = true;
-	var inversed = true;
-	this._entry.open( skipPause, inversed );
+	this._entry.open( skipPause );
 
 	var designPlane = this._view3d.designPlane;
 	designPlane.removeFromScene();
@@ -39770,6 +40089,10 @@ feng.views.sections.controls.Controls.prototype.activate = function(){
   if(this._isActivated) return false;
   else this._isActivated = true;
 
+  if(this._view3d) {
+    this._view3d.modeController.listen( feng.events.EventType.CHANGE, this.onModeChange, false, this );
+  }
+
 	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
 
 	this.onResize();
@@ -39784,22 +40107,18 @@ feng.views.sections.controls.Controls.prototype.deactivate = function(){
   else this._isActivated = false;
   
   this._eventHandler.removeAll();
-
+  
   return true;
 };
 
 
-feng.views.sections.controls.Controls.prototype.show = function(){
+feng.views.sections.controls.Controls.prototype.show = function( shouldShow ){
 
-  goog.style.showElement(this.domElement, true);
+  var shouldShow = goog.isBoolean(shouldShow) ? shouldShow : true;
+
+  goog.dom.classes.enable( this.domElement, 'hidden', !shouldShow );
 
   this.onResize();
-};
-
-
-feng.views.sections.controls.Controls.prototype.hide = function(){
-
-  goog.style.showElement(this.domElement, false);
 };
 
 
@@ -39874,18 +40193,6 @@ feng.views.sections.controls.ZoomSlider.prototype.activate = function(){
   if(!shouldActivate) return;
   
 	this._eventHandler.listen(this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this);
-};
-
-
-feng.views.sections.controls.ZoomSlider.prototype.show = function(){
-
-	goog.base(this, 'show');
-};
-
-
-feng.views.sections.controls.ZoomSlider.prototype.hide = function(){
-
-	goog.base(this, 'hide');
 };
 
 
@@ -40028,13 +40335,13 @@ feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 
 	if(shouldEnable) {
 
-		this._zoomSlider.show();
+		this._zoomSlider.show(true);
 
 		this.update();
 
 	}else  {
 
-		this._zoomSlider.hide();
+		this._zoomSlider.show(false);
 	}
 
 	this._dragger.setEnabled( shouldEnable );
@@ -40168,9 +40475,7 @@ feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement)
 
   this._tempPosition = new THREE.Vector3();
 
-  this._box3 = new THREE.Box3();
-  this._proxyBox = new THREE.Mesh( new THREE.BoxGeometry(1,1,1), new THREE.MeshBasicMaterial( { color: 0xffffff, wireframe: true, wireframeLinewidth: 2 } ) );
-  this._raycaster = new THREE.Raycaster();
+  this._raycaster = feng.utils.ThreeUtils.raycaster;
 
   this.distanceToObject = 0;
 };
@@ -40189,28 +40494,25 @@ feng.controllers.controls.CloseUpControls.prototype.setCamera = function( object
 	var cameraSettings = object.isSpecialCameraEnabled ? object.specialCameraSettings : null;
 	console.log( 'set close up by special camera settings: ', cameraSettings );
 
-	// otherwise focus on the center of object
+	// otherwise focus on the center of object's proxy box
 	if(!cameraSettings) {
 
+		var proxyBox = object.getProxyBox();
+		var boundingBox = (new THREE.Box3()).setFromObject( proxyBox );
+
 		var toRotation = new THREE.Euler(0, 0, 0, 'YXZ');
-		var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, object.getCenter());
+		var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(position, boundingBox.center());
 		toRotation.setFromQuaternion( quaternion );
 
-	  this._box3.setFromObject( object.object3d );
-	 
-	  this._box3.size( this._proxyBox.scale );
-	  this._box3.center( this._proxyBox.position );
-	  this._proxyBox.updateMatrixWorld();
-	 
-	  var direction = this._proxyBox.position.clone().sub( position ).normalize();
-	  this._raycaster.set( position, direction );
+		var direction = proxyBox.position.clone().sub( position ).normalize();
+		this._raycaster.set( position, direction );
 
-	  var intersects = this._raycaster.intersectObject( this._proxyBox, true );
-	  this.distanceToObject = intersects[0].distance;
-	 
-	  var height = this._box3.size().y;
-	  var fitFov = 2 * Math.atan( height / ( 2 * this.distanceToObject ) ) * ( 180 / Math.PI );
-	  var toFov = fitFov + 10;
+		var intersects = this._raycaster.intersectObject( proxyBox, true );
+		this.distanceToObject = intersects[0].distance;
+
+		var height = boundingBox.size().y;
+		var fitFov = 2 * Math.atan( height / ( 2 * this.distanceToObject ) ) * ( 180 / Math.PI );
+		var toFov = fitFov + 10;
 
 		cameraSettings = {
 			position: position,
@@ -40858,6 +41160,16 @@ feng.fx.PathTrack.prototype.create = function(controlPoints, offset, isClosed, c
 };
 
 
+feng.fx.PathTrack.prototype.dispose = function(){
+
+	this.tubeGeometry.dispose();
+	this.tubeGeometry = null;
+
+	this._material.dispose();
+	this._material = null;
+};
+
+
 feng.fx.PathTrack.prototype.getControlMeshes = function(){
 
 	var meshes = [];
@@ -41086,11 +41398,17 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 		return;
 	}
 
-	// create path track
-	if(feng.debug && this._pathTrack) {
-		this._scene.remove( this._pathTrack );
+	// dispose last path track
+	if(this._pathTrack) {
+
+		if(feng.debug) {
+			this._scene.remove( this._pathTrack );
+		}
+
+		this._pathTrack.dispose();
 	}
 
+	// create path track
 	this._pathTrack = new feng.fx.PathTrack( coordinates, 0, false, null, feng.debug );
 
 	if(feng.debug) {
@@ -41267,13 +41585,13 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 	// toggle sound loops
 	if(nextMode === feng.controllers.view3d.ModeController.Mode.CLOSE_UP) {
 
-		feng.soundController.stopMix( this._view3d.sectionId );
-		feng.soundController.fadeLoop( 'closeup', 0, 1, 4, false );
+		feng.soundController.stopMix( this._view3d.sectionId, 1 );
+		feng.soundController.fadeLoop( 'closeup', 0, 1, 2, false );
 
 	}else {
 
-		feng.soundController.playMix( this._view3d.sectionId );
-		feng.soundController.fadeLoop( 'closeup', null, 0, 4, true );
+		feng.soundController.playMix( this._view3d.sectionId, 6 );
+		feng.soundController.fadeLoop( 'closeup', null, 0, 3, true );
 	}
 
 	//
@@ -41684,6 +42002,8 @@ feng.views.view3dobject.entities.Refrigerator = function( object3d, data, view3d
   this._door = this.object3d;
 
   this._fruits = null;
+
+  this.cameraInDuration = 3000;
 };
 goog.inherits(feng.views.view3dobject.entities.Refrigerator, feng.views.view3dobject.TipObject);
 
@@ -41769,6 +42089,29 @@ goog.require('feng.views.view3dobject.View3DObject');
  */
 feng.views.view3dobject.DesignPlane = function( view3d ){
 
+  var planeGeometry = new THREE.PlaneBufferGeometry( 100000, 100000, 1, 1 );
+  var planeMaterial = new THREE.MeshLambertMaterial( {
+    transparent: true
+  } );
+  planeMaterial.shading = THREE.FlatShading;
+
+  var designPlane = new THREE.Mesh( planeGeometry, planeMaterial );
+  designPlane.name = 'design-plane';
+  designPlane.rotation.x = -Math.PI/2;
+  designPlane.position.y = -.5;
+  designPlane.receiveShadow = true;
+
+  goog.base( this, designPlane, {}, view3d );
+};
+goog.inherits(feng.views.view3dobject.DesignPlane, feng.views.view3dobject.View3DObject);
+
+
+feng.views.view3dobject.DesignPlane.prototype.createTextures = function(){
+
+  var shouldCreate = goog.base(this, 'createTextures');
+
+  if(!shouldCreate) return;
+
   var size = 128;
   var canvas = goog.dom.createDom('canvas');
   canvas.width = size;
@@ -41784,22 +42127,9 @@ feng.views.view3dobject.DesignPlane = function( view3d ){
   texture.repeat.set(8000, 8000);
   texture.needsUpdate = true;
 
-  var planeGeometry = new THREE.PlaneBufferGeometry( 100000, 100000, 1, 1 );
-  var planeMaterial = new THREE.MeshLambertMaterial( {
-    map: texture,
-    transparent: true
-  } );
-  planeMaterial.shading = THREE.FlatShading;
-
-  var designPlane = new THREE.Mesh( planeGeometry, planeMaterial );
-  designPlane.name = 'design-plane';
-  designPlane.rotation.x = -Math.PI/2;
-  designPlane.position.y = -.5;
-  designPlane.receiveShadow = true;
-
-  goog.base( this, designPlane, {}, view3d );
-};
-goog.inherits(feng.views.view3dobject.DesignPlane, feng.views.view3dobject.View3DObject);goog.provide('feng.views.view3dobject.entities.Computer');
+  this.object3d.material.map = texture;
+  this.object3d.material.needsUpdate = true;
+};goog.provide('feng.views.view3dobject.entities.Computer');
 
 goog.require('feng.views.view3dobject.TipObject');
 
@@ -41903,7 +42233,9 @@ feng.fx.Renderer = function(canvas, scene, camera){
 		stencilBuffer: true
 	};
 
-	var resolution = (new goog.math.Size( screen.width, screen.height )).scale( this._DPR ).scale( 1 );
+	var res = (screen.width > 1920) ? 2048 : 1024;
+
+	var resolution = (new goog.math.Size( res, res )).scale( this._DPR );
 
 	// create default render texture pass
 	var renderTarget = new THREE.WebGLRenderTarget( resolution.width, resolution.height, renderTargetParameters );
@@ -42791,64 +43123,6 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderMask = function
 		maskedObject.enableRender();
 		this._view3d.arms.enableRender();
 	}
-};goog.provide('feng.views.view3dobject.HolderObject');
-
-goog.require('feng.views.view3dobject.TipObject');
-
-/**
- * @constructor
- * A holder to be tipped for changing its accessories or receiving objects
- */
-feng.views.view3dobject.HolderObject = function( object3d, data, view3d ){
-
-	goog.base(this, object3d, data, view3d);
-
-	this._type = data.holderType || feng.views.view3dobject.HolderObject.Type.OBJECT;
-
-	this._holder = this.object3d.getObjectByName('holder');
-
-	if(!this._holder) {
-		this.createHolder();
-	}
-
-	if(this._type === feng.views.view3dobject.HolderObject.Type.ACCESSORY) {
-
-		var accessories = view3d.accessories;
-		var defaultAccessory = 'empty';
-
-		this.accessory = new feng.views.view3dobject.AccessoryObject( accessories, this, defaultAccessory, view3d );
-		
-		var changeAccessory = feng.views.view3dobject.InteractiveObject.Interaction.CHANGE_ACCESSORY;
-
-	}else if(this._type === feng.views.view3dobject.HolderObject.Type.OBJECT) {
-
-
-	}
-};
-goog.inherits(feng.views.view3dobject.HolderObject, feng.views.view3dobject.TipObject);
-
-
-feng.views.view3dobject.HolderObject.prototype.createHolder = function(){
-
-	this._holder = new THREE.Object3D();
-	this._holder.name = 'holder';
-	this.object3d.add( this._holder );
-};
-
-
-feng.views.view3dobject.HolderObject.prototype.updateAccessory = function( accessory ){
-
-	this.accessory = accessory;
-
-	if(this.accessory) {
-		this._holder.add( this.accessory.object3d );
-	}
-};
-
-
-feng.views.view3dobject.HolderObject.Type = {
-	ACCESSORY: 'accessory',
-	OBJECT: 'object'
 };goog.provide('feng.views.view3dobject.entities.Closet');
 
 goog.require('feng.models.Preload');
@@ -42907,131 +43181,6 @@ feng.views.view3dobject.entities.Closet.prototype.onCameraOut = function(){
 
 feng.views.view3dobject.entities.Closet.prototype.onClick = function(e){
 
-};goog.provide('feng.views.view3dobject.AccessoryObject');
-
-goog.require('feng.models.Accessories');
-goog.require('feng.views.view3dobject.InteractiveObject');
-
-/**
- * @constructor
- * An interactive object that is placeable on other holder objects, and is changeable itself
- */
-feng.views.view3dobject.AccessoryObject = function( accessories, holder, defaultAccessory, view3d ){
-
-	var object3d = new THREE.Object3D();
-
-	var data = {
-		interactions: ['change_accessory', 'place', 'rotate']
-	};
-
-  goog.base(this, object3d, data, view3d);
-
-  this.isPhysical = false;
-
-  this.object3d.name = 'accessory-' + goog.now();
-  this.object3d.interactiveObject = null;
-
-	this._emptyAccessory = new THREE.Object3D();
-	this._emptyAccessory.name = "empty";
-
-  this._accessory = null;
-  this._accessories = accessories.concat();
-  this._accessories.push( this._emptyAccessory );
-
-  this._availableAccessories = this.getAvailableAccessories();
-
-	this.holder = this.registerHolder( holder, defaultAccessory || 0 );
-};
-goog.inherits(feng.views.view3dobject.AccessoryObject, feng.views.view3dobject.InteractiveObject);
-
-
-feng.views.view3dobject.AccessoryObject.prototype.registerHolder = function( holder, defaultAccessory ) {
-
-	this.holder = holder;
-	this.holder.updateAccessory( this );
-
-	if(goog.isNumber(defaultAccessory)) {
-
-		this.changeAccessoryByIndex( defaultAccessory );
-
-	}else if(goog.isString(defaultAccessory)) {
-
-		this.changeAccessoryByName( defaultAccessory );
-
-	}
-
-	return this.holder;
-};
-
-
-feng.views.view3dobject.AccessoryObject.prototype.getAvailableAccessories = function() {
-
-	// return non-parent accessories and the empty accessory
-	var availables = goog.array.filter(this._accessories, function(accessory) {
-		return (!accessory.parent || accessory === this._accessory || accessory === this._emptyAccessory);
-	}, this);
-
-	return availables;
-};
-
-
-feng.views.view3dobject.AccessoryObject.prototype.changeAccessoryByIndex = function(index) {
-
-	this._availableAccessories = this.getAvailableAccessories();
-
-	var accessory = this._availableAccessories[index];
-	this.changeAccessory( accessory );
-};
-
-
-feng.views.view3dobject.AccessoryObject.prototype.changeAccessoryByName = function(name) {
-
-	this._availableAccessories = this.getAvailableAccessories();
-
-	var accessory = goog.array.find(this._availableAccessories, function(accessory) {
-		return accessory.name === name;
-	});
-
-	this.changeAccessory( accessory );
-};
-
-
-feng.views.view3dobject.AccessoryObject.prototype.changeAccessory = function(accessory) {
-
-	if(this._accessory) {
-		this.object3d.remove( this._accessory );
-	}
-
-	this._accessory = accessory;
-	this._accessory.interactiveObject = this;
-
-	this.object3d.add( this._accessory );
-};
-
-
-feng.views.view3dobject.AccessoryObject.prototype.prevAccessory = function(){
-
-	this._availableAccessories = this.getAvailableAccessories();
-
-	var index = goog.array.indexOf(this._availableAccessories, this._accessory) - 1;
-	if(index < 0) {
-		index = this._availableAccessories.length - 1;
-	}
-
-	this.changeAccessory( this._availableAccessories[index] );
-};
-
-
-feng.views.view3dobject.AccessoryObject.prototype.nextAccessory = function(){
-
-	this._availableAccessories = this.getAvailableAccessories();
-
-	var index = goog.array.indexOf(this._availableAccessories, this._accessory) + 1;
-	if(index > this._availableAccessories.length - 1) {
-		index = 0;
-	}
-
-	this.changeAccessory( this._availableAccessories[index] );
 };goog.provide('feng.views.view3dobject.GatewayObject');
 
 goog.require('feng.views.view3dobject.InteractiveObject');
@@ -43074,17 +43223,19 @@ feng.views.view3dobject.GatewayObject.prototype.shouldGoHome = function() {
 };
 
 
-feng.views.view3dobject.GatewayObject.prototype.getEndRotationY = function( inversed ) {
+feng.views.view3dobject.GatewayObject.prototype.getEndRotationY = function() {
 
-	var direction = inversed ? -1 : 1;
-	return (this._startRotationY + goog.math.toRadians( 90 * direction ));
+	var direction = this.data.inversed ? -1 : 1;
+	var rotation = (this._startRotationY + goog.math.toRadians( -90 * direction ));
+
+	return rotation;
 };
 
 
-feng.views.view3dobject.GatewayObject.prototype.open = function( skipPause, inversed ) {
+feng.views.view3dobject.GatewayObject.prototype.open = function( skipPause ) {
 
 	this._openTweener.updateTo({
-		'y': this.getEndRotationY( inversed )
+		'y': this.getEndRotationY()
 	}, true);
 
 	this._openTweener.restart();
@@ -43126,12 +43277,12 @@ feng.views.view3dobject.GatewayObject.prototype.onOpenComplete = function(e) {
 	this.dispatchEvent( feng.events.EventType.COMPLETE );
 };goog.provide('feng.views.view3dobject.entities.FruitPlate');
 
-goog.require('feng.views.view3dobject.HolderObject');
+goog.require('feng.views.view3dobject.TipObject');
 
 
 /**
  * @constructor
- * A fruit plate that can hold fruits
+ * A fruit plate that will contain fruits
  */
 feng.views.view3dobject.entities.FruitPlate = function( object3d, data, view3d ){
 
@@ -43144,15 +43295,7 @@ feng.views.view3dobject.entities.FruitPlate = function( object3d, data, view3d )
     'peach': false
   };
 };
-goog.inherits(feng.views.view3dobject.entities.FruitPlate, feng.views.view3dobject.HolderObject);
-
-
-feng.views.view3dobject.entities.FruitPlate.prototype.createHolder = function(){
-
-  goog.base(this, 'createHolder');
-
-  this._holder.position.set( -115.01, 50.36, -67.80 );
-};
+goog.inherits(feng.views.view3dobject.entities.FruitPlate, feng.views.view3dobject.TipObject);
 
 
 feng.views.view3dobject.entities.FruitPlate.prototype.drop = function( view3dObject ){
@@ -43167,7 +43310,7 @@ feng.views.view3dobject.entities.FruitPlate.prototype.drop = function( view3dObj
   object3d.position.copy( orientation.position );
   object3d.rotation.copy( orientation.rotation );
 
-  this._holder.add( object3d );
+  this.object3d.add( object3d );
 
   // check all fruits status for unlock
   var isDone = this._fruits['apple'] && this._fruits['orange'] && this._fruits['pineapple'] && this._fruits['peach'];
@@ -43248,6 +43391,10 @@ feng.views.view3dobject.Arms = function( view3d ){
   var object3d = new THREE.Object3D();
   object3d.name = 'arms';
 
+  // a dummy object3d for generating world orientation
+  this._orientationTester = new THREE.Object3D();
+  object3d.add( this._orientationTester );
+
   // -- test
   /*
   var geometry = new THREE.BoxGeometry( 10, 10, 10 );
@@ -43269,6 +43416,19 @@ feng.views.view3dobject.Arms = function( view3d ){
   this.addToScene();
 };
 goog.inherits(feng.views.view3dobject.Arms, feng.views.view3dobject.InteractiveObject);
+
+
+feng.views.view3dobject.Arms.prototype.getWorldOrientation = function( id, opt_pos, opt_rot ){
+
+  var localOrientation = feng.views.view3dobject.Arms.Orientations[ id ];
+
+  var worldOrientation = {
+    position: feng.utils.ThreeUtils.getWorldPositionOfLocal( this.object3d, localOrientation.position, opt_pos ),
+    rotation: feng.utils.ThreeUtils.getWorldRotationOfLocal( this.object3d, localOrientation.rotation, opt_rot )
+  };
+
+  return worldOrientation;
+};
 
 
 feng.views.view3dobject.Arms.prototype.hasObject = function( view3dObject ){
@@ -43734,11 +43894,17 @@ goog.inherits(feng.views.view3dobject.entities.Drawer, feng.views.view3dobject.T
 
 feng.views.view3dobject.entities.Drawer.prototype.onCameraIn = function(){
 
+  var knife = this._view3d.tipObjects['knife'];
+
+  this.cameraInDuration = (knife.hasPicked && !this.tip.unlocked) ? 4000 : 2000;
+
   goog.base(this, 'onCameraIn');
 
   TweenMax.to(this.object3d.position, 1, {
     'z': this._startZ + 20,
-    'ease': Quad.easeInOut
+    'ease': Quad.easeInOut,
+    'onComplete': this.onDrawerOpened,
+    'onCompleteScope': this
   });
 
   //feng.soundController.playSfx('refrigerator-open');
@@ -43759,6 +43925,18 @@ feng.views.view3dobject.entities.Drawer.prototype.onCameraOut = function(){
     //feng.soundController.playSfx('refrigerator-close');
   }, [], this);
 	*/
+};
+
+
+feng.views.view3dobject.entities.Drawer.prototype.onDrawerOpened = function(){
+
+  if(this.tip.unlocked) return;
+
+  var knife = this._view3d.tipObjects['knife'];
+
+  if(knife.hasPicked) {
+    knife.drop();
+  }
 };goog.provide('feng.views.view3dobject.entities.Knife');
 
 goog.require('feng.views.view3dobject.MovableObject');
@@ -43799,7 +43977,13 @@ feng.views.view3dobject.entities.Knife.prototype.drop = function(){
 
   this.object3d.material.map = this._inDrawerTexture;
   this.object3d.material.needsUpdate = true;
-  
+};
+
+
+feng.views.view3dobject.entities.Knife.prototype.unlock = function(){
+
+  goog.base(this, 'unlock');
+
   var drawerTipObject = this._view3d.tipObjects['drawer'];
   drawerTipObject.unlock();
 };goog.provide('feng.views.View3D');
@@ -43818,19 +44002,17 @@ goog.require('feng.fx.Renderer');
 goog.require('feng.fx.View3DSize');
 goog.require('feng.models.Preload');
 goog.require('feng.models.View3D');
-goog.require('feng.models.Accessories');
 goog.require('feng.views.book.Book');
 goog.require('feng.views.view3dfx.FX');
 goog.require('feng.views.view3dobject.View3DObject');
 goog.require('feng.views.view3dobject.InteractiveObject');
 goog.require('feng.views.view3dobject.Arms');
 goog.require('feng.views.view3dobject.DesignPlane');
-goog.require('feng.views.view3dobject.HolderObject');
+goog.require('feng.views.view3dobject.ReplaceableObject');
 goog.require('feng.views.view3dobject.MovableObject');
 goog.require('feng.views.view3dobject.GatewayObject');
 goog.require('feng.views.view3dobject.Skybox');
 goog.require('feng.views.view3dobject.Mirror');
-goog.require('feng.views.view3dobject.AccessoryObject');
 goog.require('feng.views.view3dobject.TipObject');
 goog.require('feng.views.view3dobject.entities.Bear');
 goog.require('feng.views.view3dobject.entities.Cat');
@@ -43856,12 +44038,12 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud, episode){
   this.id = viewId;
   this.sectionId = sectionId;
 
-  this.isShown = true;
+  this.isShown = false;
+  this.isActivated = false;
 
   this.containerElement = containerElement;
 
   this.domElement = goog.dom.createDom('canvas');
-  goog.dom.appendChild( this.containerElement, this.domElement );
 
   this.hud = hud;
 
@@ -43881,8 +44063,6 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud, episode){
 	this.view3dObjects = {};
 	this.interactiveObjects = {};
 	this.tipObjects = {};
-
-	this.accessories = [];
 
 	this.viewSize = new feng.fx.View3DSize(0, 0);
 
@@ -43916,6 +44096,24 @@ feng.views.View3D.prototype.init = function(){
 	this.modeController.init();
 
 	this.hide();
+};
+
+
+feng.views.View3D.prototype.createResources = function(){
+
+	goog.object.forEach(this.view3dObjects, function(object) {
+		object.createTextures();
+	});
+};
+
+
+feng.views.View3D.prototype.disposeResources = function(){
+	
+	console.log(this.id + ' DISPOSED!');
+	
+	goog.object.forEach(this.view3dObjects, function(object) {
+		object.disposeTextures();
+	});
 };
 
 
@@ -43967,6 +44165,10 @@ feng.views.View3D.prototype.getSolidObjects = function(){
 	goog.array.remove( objects, this.skybox );
 	goog.array.remove( objects, this.arms );
 	goog.array.remove( objects, this.designPlane );
+
+	objects = goog.array.filter(objects, function(object) {
+		return goog.isDefAndNotNull( object.object3d.parent );
+	});
 
   return objects;
 };
@@ -44040,6 +44242,9 @@ feng.views.View3D.prototype.getObjectsByClass = function( objectClass ){
 
 feng.views.View3D.prototype.activate = function(){
 
+	if(this.isActivated) return;
+	else this.isActivated = true;
+
  	this._eventHandler.listen( this.viewSize, goog.events.EventType.RESIZE, this.onResize, false, this );
  	this._eventHandler.listen( this.cameraController, feng.events.EventType.CHANGE, this.onCameraChange, false, this );
  	
@@ -44053,7 +44258,8 @@ feng.views.View3D.prototype.activate = function(){
  	this._eventHandler.listen( finaleOverlay, feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this );
 
  	var book = feng.views.book.Book.getInstance();
-	this._eventHandler.listen( book, feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this );
+	this._eventHandler.listen( book, feng.events.EventType.ANIMATE_IN, this.onBookAnimateIn, false, this );
+	this._eventHandler.listen( book, feng.events.EventType.ANIMATE_OUT, this.onBookAnimateOut, false, this );
 
  	goog.object.forEach(this.interactiveObjects, function(interactiveObject) {
  		interactiveObject.activate();
@@ -44067,6 +44273,9 @@ feng.views.View3D.prototype.activate = function(){
  
 feng.views.View3D.prototype.deactivate = function(){
  
+ 	if(!this.isActivated) return;
+	else this.isActivated = false;
+
 	this._eventHandler.removeAll();
 
  	goog.object.forEach(this.interactiveObjects, function(interactiveObject) {
@@ -44083,6 +44292,8 @@ feng.views.View3D.prototype.show = function(){
  
 	if(this.isShown) return;
 	else this.isShown = true;
+
+	goog.dom.appendChild( this.containerElement, this.domElement );
 
 	TweenMax.set(this.domElement, {
 		'opacity': 0,
@@ -44122,7 +44333,7 @@ feng.views.View3D.prototype.fadeIn = function(){
  	var tweener = TweenMax.to(this.domElement, 1, {
  		'delay': 1,
  		'opacity': 1,
- 		'clearProps': 'all'
+ 		'clearProps': 'opacity'
  	});
 
 	this.dispatchEvent({
@@ -44226,7 +44437,7 @@ feng.views.View3D.prototype.initScene = function() {
 	 */
 	var objectClass = {
 		'tip': feng.views.view3dobject.TipObject,
-		'holder': feng.views.view3dobject.HolderObject,
+		'replaceable': feng.views.view3dobject.ReplaceableObject,
 		'movable': feng.views.view3dobject.MovableObject,
 		'gateway': feng.views.view3dobject.GatewayObject,
 		'mirror': feng.views.view3dobject.Mirror,
@@ -44247,8 +44458,6 @@ feng.views.View3D.prototype.initScene = function() {
 	// parse scene objects
 	var sectionId = this.sectionId;
 	var sceneId = this.id;
-
-	this.accessories = feng.models.Accessories.getInstance().getAccessories(sectionId, sceneId);
 
 	var parse = goog.bind( function(object) {
 
@@ -44381,6 +44590,24 @@ feng.views.View3D.prototype.onOverlayAnimateOut = function(e){
 };
 
 
+feng.views.View3D.prototype.onBookAnimateIn = function(e){
+
+	this.pause();
+
+	feng.soundController.stopMix( this.sectionId );
+	feng.soundController.fadeLoop( 'book', 0, 1, 2, false );
+};
+
+
+feng.views.View3D.prototype.onBookAnimateOut = function(e){
+
+	this.resume();
+
+	feng.soundController.playMix( this.sectionId );
+  	feng.soundController.fadeLoop( 'book', null, 0, 2, true );
+};
+
+
 feng.views.View3D.prototype.onResize = function(e){
 
 	this.cameraController.onResize( this.viewSize.aspectRatio() );
@@ -44406,72 +44633,14 @@ feng.views.View3D.parseChildren = function(object, parseFunc) {
 
 feng.views.View3D.constructScene = function(sectionId, sceneId) {
 
-	// create a threejs loader just for parsing scene data
-	var loader = new THREE.ObjectLoader();
-
 	// get scene data
 	var preloadModel = feng.models.Preload.getInstance();
 	var sceneData = preloadModel.getAsset(sectionId+'.'+sceneId+'.scene-data');
-	var scene = loader.parse( sceneData );
+	var scene = feng.utils.ThreeUtils.loader.parse( sceneData );
 
-	// parse scene children
-	var parse = function(object) {
-
-		var objectData = feng.models.View3D.getData(sectionId+'.'+sceneId+'.'+object.name);
-
-		if(object instanceof THREE.Object3D) {
-
-			var textureData = objectData.texture;
-
-			if(goog.isString(textureData)) {
-
-					var textureAsset = preloadModel.getAsset( textureData );
-					var texture;
-
-					if(textureAsset.src) {
-
-						texture = new THREE.Texture( textureAsset );
-						texture.needsUpdate = true;
-
-					}else {
-						/*
-						var ddsLoader = new THREE.DDSLoader();           
-            var dds = ddsLoader.parse( textureAsset );
-
-            texture = new THREE.CompressedTexture();
-            texture.image = [];
-            texture.flipY = false;
-            texture.generateMipmaps = false;
-            texture.image.width = dds.width;
-            texture.image.height = dds.height;
-            texture.mipmaps = dds.mipmaps;
-            texture.format = dds.format;
-            texture.needsUpdate = true;
-            */
-					}
-
-			  	object.material.map = texture;
-			}
-
-			if(object instanceof THREE.Mesh) {
-				object.castShadow = objectData.castShadow || false;
-				object.receiveShadow = objectData.receiveShadow || false;
-
-				if(object.material) {
-					object.material.shading = THREE.FlatShading;
-					object.material.fog = false;
-				}
-			}
-		}
-  };
-
-	goog.array.forEach(scene.children, function(child) {
-		feng.views.View3D.parseChildren(child, parse);
-	});
-
-  return {
-  	scene: scene
-  };
+	return {
+		scene: scene
+	};
 };// Copyright 2006 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -45472,8 +45641,9 @@ feng.apps.PathEdit = function() {
 
 	this._sceneKeys = [
 		'studio.livingroom',
-		'studio.interior2',
 		'studio.bathroom',
+		'house.livingroom',
+		'house.corridor',
 		'house.boysroom',
 		'house.homeoffice'
 	];
@@ -47034,20 +47204,13 @@ feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
  * @return {string}
  * @notypecheck
  */
-feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
-  var param103 = '<h2>Fill the plate with fruits</h2><div class="drop-fruits"><ul class="fruits">';
-  var fruitKeyList105 = soy.$$getMapKeys(opt_data.fruits);
-  var fruitKeyListLen105 = fruitKeyList105.length;
-  for (var fruitKeyIndex105 = 0; fruitKeyIndex105 < fruitKeyListLen105; fruitKeyIndex105++) {
-    var fruitKeyData105 = fruitKeyList105[fruitKeyIndex105];
-    param103 += '<li><button data-fruit-id="' + fruitKeyData105 + '"></button></li>';
-  }
-  param103 += '</ul><ul class="descriptions">';
-  var fruitKeyList111 = soy.$$getMapKeys(opt_data.fruits);
-  var fruitKeyListLen111 = fruitKeyList111.length;
-  for (var fruitKeyIndex111 = 0; fruitKeyIndex111 < fruitKeyListLen111; fruitKeyIndex111++) {
-    var fruitKeyData111 = fruitKeyList111[fruitKeyIndex111];
-    param103 += '<li data-fruit-id="' + fruitKeyData111 + '"><p>' + opt_data.fruits[fruitKeyData111] + '</p></li>';
+feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
+  var param103 = '<div class="change-object"><h2>Click on an object to change</h2><ul class="objects">';
+  var objectKeyList105 = soy.$$getMapKeys(opt_data.objects);
+  var objectKeyListLen105 = objectKeyList105.length;
+  for (var objectKeyIndex105 = 0; objectKeyIndex105 < objectKeyListLen105; objectKeyIndex105++) {
+    var objectKeyData105 = objectKeyList105[objectKeyIndex105];
+    param103 += '<li><button class="object" data-object="' + objectKeyData105 + '"></button></li>';
   }
   param103 += '</ul></div>';
   var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param103}));
@@ -47061,13 +47224,40 @@ feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
  * @return {string}
  * @notypecheck
  */
+feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
+  var param113 = '<h2>Fill the plate with fruits</h2><div class="drop-fruits"><ul class="fruits">';
+  var fruitKeyList115 = soy.$$getMapKeys(opt_data.fruits);
+  var fruitKeyListLen115 = fruitKeyList115.length;
+  for (var fruitKeyIndex115 = 0; fruitKeyIndex115 < fruitKeyListLen115; fruitKeyIndex115++) {
+    var fruitKeyData115 = fruitKeyList115[fruitKeyIndex115];
+    param113 += '<li><button data-fruit-id="' + fruitKeyData115 + '"></button></li>';
+  }
+  param113 += '</ul><ul class="descriptions">';
+  var fruitKeyList121 = soy.$$getMapKeys(opt_data.fruits);
+  var fruitKeyListLen121 = fruitKeyList121.length;
+  for (var fruitKeyIndex121 = 0; fruitKeyIndex121 < fruitKeyListLen121; fruitKeyIndex121++) {
+    var fruitKeyData121 = fruitKeyList121[fruitKeyIndex121];
+    param113 += '<li data-fruit-id="' + fruitKeyData121 + '"><p>' + opt_data.fruits[fruitKeyData121] + '</p></li>';
+  }
+  param113 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param113}));
+  return output;
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
 feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
   var output = '<p class="floatText">';
-  var lineList122 = opt_data.lines;
-  var lineListLen122 = lineList122.length;
-  for (var lineIndex122 = 0; lineIndex122 < lineListLen122; lineIndex122++) {
-    var lineData122 = lineList122[lineIndex122];
-    output += '<span>' + lineData122 + '</span>';
+  var lineList132 = opt_data.lines;
+  var lineListLen132 = lineList132.length;
+  for (var lineIndex132 = 0; lineIndex132 < lineListLen132; lineIndex132++) {
+    var lineData132 = lineList132[lineIndex132];
+    output += '<span>' + lineData132 + '</span>';
   }
   output += '</p>';
   return output;
@@ -50044,7 +50234,7 @@ feng.views.sections.Home.prototype.deactivate = function(){
 
 feng.views.sections.Home.prototype.load = function(){
 
-	this._assetKeys = [this.id, 'accessories', 'global'];
+	this._assetKeys = [this.id, 'global'];
 	
 	goog.base(this, 'load');
 };
@@ -50646,7 +50836,6 @@ feng.views.sections.overlays.FinaleOverlay.prototype.onResize = function(e){
 };goog.provide('feng.views.sections.captions.Caption');
 
 goog.require('goog.events.EventHandler');
-goog.require('goog.async.Delay');
 goog.require('feng.templates.captions');
 goog.require('feng.utils.Utils');
 
@@ -50695,13 +50884,7 @@ feng.views.sections.captions.Caption = function( object, cameraController, rende
   this._shareEl = goog.dom.getElementByClass('share', this.domElement);
   this._shareButtons = goog.dom.query('a', this._shareEl);
 
-  goog.style.showElement(this._panelButton, false);
-
-  this._showPanelDelay = new goog.async.Delay(this.animateInPanel, 1000, this);
-
   // set default status
-  this._problemShownOnce = false;
-  this._tipShownOnce = false;
   this._isPanelAnimatedOut = true;
   goog.dom.classes.enable( this.domElement, 'hide-panel', this._isPanelAnimatedOut );
 
@@ -50744,6 +50927,10 @@ feng.views.sections.captions.Caption.prototype.activate = function() {
   this._eventHandler.listen( this._object, feng.events.EventType.UNLOCK, this.updateStatus, false, this );
   this._eventHandler.listen( window, 'resize', this.onResize, false, this );
 
+  // listen for object camera animated in event to animate in panel
+  console.log(this._object)
+  this._eventHandler.listen( this._object, feng.events.EventType.ANIMATED_IN, this.animateInPanel, false, this );
+
   // listen for share button click events
   goog.array.forEach(this._shareButtons, function(shareButton) {
     this._eventHandler.listen( shareButton, 'click', this.onClickShareButton, false, this );
@@ -50754,19 +50941,11 @@ feng.views.sections.captions.Caption.prototype.activate = function() {
 
   this.updateStatus();
 
-  if(!this._tipShownOnce && this._object.tip.unlocked) {
-    this._showPanelDelay.start();
-  }
-    
-  if(!this._problemShownOnce) {
-    this._showPanelDelay.start();
-  }
+  goog.style.showElement(this._panelButton, false);
 };
 
 
 feng.views.sections.captions.Caption.prototype.deactivate = function() {
-
-  this._showPanelDelay.stop();
 
   this._eventHandler.removeAll();
 
@@ -50777,12 +50956,6 @@ feng.views.sections.captions.Caption.prototype.deactivate = function() {
 
 
 feng.views.sections.captions.Caption.prototype.animateInPanel = function() {
-
-  this._problemShownOnce = true;
-
-  if(this._object.tip.unlocked) {
-    this._tipShownOnce = true;
-  }
 
   if(this._isPanelAnimatedOut) {
 
@@ -51697,7 +51870,6 @@ feng.views.sections.controls.Compass = function(domElement){
   goog.base(this, domElement);
 
   this._mainEl = goog.dom.getElement('main');
-  this._cubeEl = goog.dom.getElementByClass('cube', this.domElement);
   
   var browseEl = goog.dom.getElementByClass('browse', this.domElement);
   var img = feng.models.Preload.getInstance().getAsset('global.cube-browse');
@@ -51730,9 +51902,13 @@ feng.views.sections.controls.Compass.prototype.activate = function(){
 
   this._eventHandler.listen(this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
   this._eventHandler.listen(this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
-  this._eventHandler.listen(this._cubeEl, 'mousemove', this.onMouseMove, false, this);
-  this._eventHandler.listen(this._cubeEl, 'mouseout', this.onMouseOut, false, this);
-  this._eventHandler.listen(this._cubeEl, 'click', this.onClick, false, this);
+  this._eventHandler.listen(this.domElement, 'mousemove', this.onMouseMove, false, this);
+  this._eventHandler.listen(this.domElement, 'mouseout', this.onMouseOut, false, this);
+  this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
+
+  if(this._view3d) {
+    this._view3d.modeController.listen( feng.events.EventType.UPDATE, this.onView3dUpdate, false, this );
+  }
 
   this._dragger.setEnabled( true );
 };
@@ -52021,7 +52197,7 @@ feng.views.sections.controls.ObjectSelector = function(domElement){
 
   this._hitTestMeshes = [];
 
-	this.hide();
+	this.show( false );
 };
 goog.inherits(feng.views.sections.controls.ObjectSelector, feng.views.sections.controls.Controls);
 
@@ -52036,19 +52212,10 @@ feng.views.sections.controls.ObjectSelector.prototype.setSelectableObjects = fun
 
 	this._selectableObjects = objects;
 
-	var hitTestMeshes = [];
+	this._hitTestMeshes = goog.array.map(this._selectableObjects, function(object) {
 
-	goog.array.forEach(this._selectableObjects, function(object) {
-
-		object.object3d.traverse(function(obj) {
-			if(obj.interactiveObject) {
-				hitTestMeshes.push( obj );
-			}
-		});
-
+		return object.getProxyBox();
 	}, this);
-
-	this._hitTestMeshes = hitTestMeshes;
 };
 
 
@@ -52174,7 +52341,7 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e
 		return false;
 	}
 
-	this._downObject = intersects[0].object.interactiveObject;
+	this._downObject = intersects[0].object.view3dObject;
 	this.setPosition( e.clientX, e.clientY );
 
 	this._eventHandler.listen(document, 'mousemove', this.onMouseDownCancel, false, this);
@@ -52249,15 +52416,16 @@ goog.require('feng.views.sections.captions.Caption');
 feng.views.sections.captions.ChangeObjectCaption = function( object, cameraController, renderSize, controls, hud ){
 
   this._template = feng.templates.captions.ChangeObjectCaption;
-
+  
   this._templateData = {
-  	tip: object.tip
+    objects: object.objects,
+    tip: object.tip,
+    position: 'right'
   };
 
   goog.base(this, object, cameraController, renderSize, controls, hud);
 
-  var topEl = goog.dom.getElementByClass('top', this.domElement);
-  var rightEl = goog.dom.getElementByClass('right', this.domElement);
+  this._objectEls = goog.dom.getElementsByClass('object', this.domElement);
 };
 goog.inherits(feng.views.sections.captions.ChangeObjectCaption, feng.views.sections.captions.Caption);
 
@@ -52265,6 +52433,10 @@ goog.inherits(feng.views.sections.captions.ChangeObjectCaption, feng.views.secti
 feng.views.sections.captions.ChangeObjectCaption.prototype.show = function() {
 
   goog.base(this, 'show');
+
+  goog.array.forEach(this._objectEls, function(objectEl) {
+    this._eventHandler.listen(objectEl, 'click', this.onClickObject, false, this);
+  }, this);
 
   this._object.startInteraction();
 };
@@ -52275,6 +52447,14 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.hide = function() {
   goog.base(this, 'hide');
 
   this._object.stopInteraction();
+};
+
+
+feng.views.sections.captions.ChangeObjectCaption.prototype.onClickObject = function(e) {
+
+  var objectId = e.currentTarget.getAttribute("data-object");
+
+  this._object.change( objectId );
 };goog.provide('feng.views.sections.overlays.OpeningOverlay');
 
 goog.require('goog.dom');
@@ -52639,7 +52819,14 @@ feng.views.sections.controls.DropButton.prototype.onClick = function(e){
 
 	this.fadeOut();
 
-	this._movableObject.drop();
+  var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
+
+  browseControls.dispatchEvent({
+    type: feng.events.EventType.CHANGE,
+    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+    nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
+    object: this._movableObject.getCloseUpObjectWhenDropped()
+  });
 };
 
 
@@ -52758,7 +52945,9 @@ feng.views.sections.controls.Tooltips = function( domElement ){
   this._detectBlockingThrottle = new goog.async.Throttle( this.detectBlocking, 400, this );
 
   this._raycaster = new THREE.Raycaster();
+
   this._rayDirection = new THREE.Vector3();
+
   this._detectObjects = [];
 
   this._tooltips = {};
@@ -52850,17 +53039,10 @@ feng.views.sections.controls.Tooltips.prototype.setView3D = function( view3d ){
   goog.array.forEach( gatewayObjects, function(gatewayObject) {
 
     var tooltipEl = this._tooltips[ gatewayObject.id ];
-
     goog.events.listenOnce( tooltipEl, 'click', this.onClickGatewayTooltip, false, this );
   }, this);
 
-  // check objects to detect blocking
-  this._detectObjects = goog.array.map(this._view3d.getSolidObjects(), function(object) {
-    return object.object3d;
-  });
-
-  goog.array.remove( this._detectObjects, this._view3d.designPlane.object3d );
-  goog.array.remove( this._detectObjects, this._view3d.skybox.object3d );
+  this.updateDetectObjects();
 };
 
 
@@ -52873,6 +53055,8 @@ feng.views.sections.controls.Tooltips.prototype.activate = function(){
   goog.object.forEach( this._currentTooltips, function(tooltip) {
     goog.dom.classes.addRemove( tooltip, 'fadeOut', 'fadeIn' );
   });
+
+  this.updateDetectObjects();
 
   goog.fx.anim.registerAnimation( this );
 };
@@ -52889,6 +53073,25 @@ feng.views.sections.controls.Tooltips.prototype.deactivate = function(){
   });
 
   goog.fx.anim.unregisterAnimation( this );
+};
+
+
+feng.views.sections.controls.Tooltips.prototype.show = function( shouldShow ){
+  
+  goog.base(this, 'show', shouldShow);
+
+  this.detectBlocking();
+};
+
+
+feng.views.sections.controls.Tooltips.prototype.updateDetectObjects = function(){
+
+  if(!this._view3d) return;
+
+  // check objects to detect blocking
+  this._detectObjects = goog.array.map(this._view3d.getSolidObjects(), function(object) {
+    return object.object3d;
+  });
 };
 
 
@@ -52962,10 +53165,22 @@ feng.views.sections.controls.Tooltips.prototype.onModeChange = function(e){
 
   goog.base(this, 'onModeChange', e);
 
+  goog.dom.classes.enable(this.domElement, 'design', (e.mode === feng.controllers.view3d.ModeController.Mode.DESIGN));
+
   switch(e.mode) {
+    case feng.controllers.view3d.ModeController.Mode.ENTRY:
+    this.deactivate();
+    this._raycaster.far = 400/2;
+    break;
+
     case feng.controllers.view3d.ModeController.Mode.BROWSE:
+    this.activate();
+    this._raycaster.far = 400/2;
+    break;
+
     case feng.controllers.view3d.ModeController.Mode.DESIGN:
     this.activate();
+    this._raycaster.far = Infinity;
     break;
 
     default:
@@ -53515,6 +53730,8 @@ feng.views.View3DHud = function( hudEl, view3dController, tips, episode ){
 
   this._tips = tips;
 
+  this._isInEntryMode = false;
+
   // create a captions collection
   this._captions = {};
 
@@ -53661,6 +53878,10 @@ feng.views.View3DHud.prototype.activateControls = function() {
   this.reminder.activate();
   this.progressBar.activate();
 
+  if(this._view3d && !this._isInEntryMode) {
+    this.tooltips.activate();
+  }
+
   feng.mainOptions.showHelpButton( true );
 };
 
@@ -53672,6 +53893,8 @@ feng.views.View3DHud.prototype.deactivateControls = function() {
   this.book.deactivate();
   this.reminder.deactivate();
   this.progressBar.deactivate();
+
+  this.tooltips.deactivate();
 
   feng.mainOptions.showHelpButton( false );
 };
@@ -53697,6 +53920,10 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls ) {
     captionClass = feng.views.sections.captions.ChangePictureCaption;
     break;
 
+    case 'changeobject':
+    captionClass = feng.views.sections.captions.ChangeObjectCaption;
+    break;
+
     case 'dropfruits':
     captionClass = feng.views.sections.captions.DropFruitsCaption;
     break;
@@ -53720,7 +53947,8 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls ) {
 feng.views.View3DHud.prototype.showControls = function( shouldShow ) {
 
   goog.dom.classes.enable( this._controlsEl, 'hidden', !shouldShow );
-  goog.dom.classes.enable( this._tooltipsEl, 'hidden', !shouldShow );
+  
+  this.tooltips.show( shouldShow );
 
   feng.mainOptions.showHelpButton( shouldShow );
 };
@@ -53731,9 +53959,10 @@ feng.views.View3DHud.prototype.onModeChange = function( e ) {
   var anyMode = e.nextMode || e.mode;
   var shouldShowControls = true;
 
+  this._isInEntryMode = (e.mode === feng.controllers.view3d.ModeController.Mode.ENTRY);
+
   switch(anyMode) {
 
-    case feng.controllers.view3d.ModeController.Mode.ENTRY:
     case feng.controllers.view3d.ModeController.Mode.EXIT:
     case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
     case null:
@@ -53818,7 +54047,10 @@ feng.views.View3DHud.prototype.onOverlayAnimateOut = function( e ) {
   }else {
 
     this.activateControls();
-    this.showControls( true );
+
+    if(!this._isInEntryMode) {
+      this.showControls( true );
+    }
   }
 };goog.provide('feng.controllers.view3d.View3DController');
 
@@ -53891,12 +54123,14 @@ feng.controllers.view3d.View3DController.prototype.onHideView3D = function(e){
 
 feng.controllers.view3d.View3DController.prototype.onShowView3D = function(e){
 
-	console.log('Show View3D: ', e.target.id);
-
 	this.view3d = e.target;
+
+	console.log('Show View3D: ', this.view3d.id);
+
+	this.view3d.createResources();
 	this.view3d.activate();
 
-	feng.pubsub.publish( feng.PubSub.Topic.SHOW_VIEW3D, e.target );
+	feng.pubsub.publish( feng.PubSub.Topic.SHOW_VIEW3D, this.view3d );
 };
 
 
@@ -53922,7 +54156,9 @@ feng.controllers.view3d.View3DController.prototype.onAnimateInView3D = function(
 
 feng.controllers.view3d.View3DController.prototype.onAnimateOutView3D = function(e){
 
-	e.target.deactivate();
+	var view3d = e.target;
+	view3d.deactivate();
+	view3d.disposeResources();
 };
 
 
@@ -54004,6 +54240,7 @@ feng.views.sections.Episode.prototype.activateView = function(){
 
 	if(this._view3d) {
 
+		this._view3d.createResources();
 		this._view3d.activate();
 	}
 };
@@ -54020,14 +54257,16 @@ feng.views.sections.Episode.prototype.deactivate = function(){
 	this._view3dController.unlisten(feng.events.EventType.SHOW, this.onShowView3D, false, this);
 
 	if(this._view3d) {
+
 		this._view3d.deactivate();
+		this._view3d.disposeResources();
 	}
 };
 
 
 feng.views.sections.Episode.prototype.load = function( viewId ){
 
-	this._viewId = viewId || this._viewIds[0];
+	this._viewId = viewId || this._viewId || this._viewIds[0];
 
 	var globalAssetsKey = this.id + '.global';
 	var view3dAssetsKey = this.id + '.' + this._viewId;
@@ -54057,9 +54296,6 @@ feng.views.sections.Episode.prototype.animateOut = function(){
 	if(!shouldDo) return false;
 
 	feng.soundController.stopMix( this.id );
-
-	this._viewId = null;
-	this._view3d = null;
 };
 
 
@@ -54089,11 +54325,8 @@ feng.views.sections.Episode.prototype.onLoadComplete = function(e){
 		this._view3ds.push( view3d );
 	}
 
-	if(!this._view3d) {
-
-		this._view3d = this._view3dController.getView3D( sectionId, viewId );
-		this.activateView();
-	}
+	this._view3d = this._view3dController.getView3D( sectionId, viewId );
+	this.activateView();
 };
 
 
@@ -54172,7 +54405,7 @@ goog.require('feng.views.sections.Episode');
  */
 feng.views.sections.Studio = function(){
 
-	var viewIds = ['livingroom', 'bathroom' /*'interior2'*/];
+	var viewIds = ['livingroom', 'bathroom'];
 	var sectionId = 'studio';
 
 	var achievements = feng.models.achievements.Achievements.getInstance();
@@ -54772,13 +55005,21 @@ feng.controllers.SoundController = function(){
 
   // define sound data to load
   var onSoundLoad = goog.bind(this.onSoundLoad, this);
+  var self = this;
 
-  var urls = function(filename) {
-    var result = [
-      feng.Config['assetsPath'] + 'audio/' + filename + '.mp3',
-      feng.Config['assetsPath'] + 'audio/' + filename + '.ogg',
-      feng.Config['assetsPath'] + 'audio/' + filename + '.wav'
-    ];
+  var urls = function(filename, forcedFormat) {
+
+    var result = [];
+
+    if(forcedFormat) {
+
+      result[0] = feng.Config['assetsPath'] + 'audio/' + filename + '.' + forcedFormat;
+
+    }else {
+
+      result[0] = feng.Config['assetsPath'] + 'audio/' + filename + '.mp3';
+      result[1] = feng.Config['assetsPath'] + 'audio/' + filename + '.ogg';
+    }
 
     return result;
   };
@@ -54804,52 +55045,46 @@ feng.controllers.SoundController = function(){
     'studio': {
       'urls': urls('ambient/city-distant-traffic'),
       'volume': 0,
-      'loop': true,
+      'onend': goog.bind(this.replaySound, self, 'studio', 'ambient'),
       'onload': onSoundLoad
     },
     'house': {
       'urls': urls('ambient/subdivision'),
       'volume': 0,
-      'loop': true,
+      'onend': goog.bind(this.replaySound, self, 'house', 'ambient'),
       'onload': onSoundLoad
     }
   };
 
   this._data[ feng.controllers.SoundController.SoundType.LOOP ] = {
-    'family-breakfast': {
-      'urls': urls('loop/family-breakfast'),
-      'volume': 0,
-      'loop': true,
-      'onload': onSoundLoad
-    },
     'first-class': {
       'urls': urls('loop/first-class'),
       'volume': 0,
-      'loop': true,
+      'onend': goog.bind(this.replaySound, self, 'first-class', 'loop'),
       'onload': onSoundLoad
     },
     'optimize-loop-1': {
       'urls': urls('loop/optimize-loop-1'),
       'volume': 0,
-      'loop': true,
+      'onend': goog.bind(this.replaySound, self, 'optimize-loop-1', 'loop'),
       'onload': onSoundLoad
     },
     'serendipity': {
       'urls': urls('loop/serendipity'),
       'volume': 0,
-      'loop': true,
-      'onload': onSoundLoad
-    },
-    'trees': {
-      'urls': urls('loop/trees'),
-      'volume': 0,
-      'loop': true,
+      'onend': goog.bind(this.replaySound, self, 'serendipity', 'loop'),
       'onload': onSoundLoad
     },
     'closeup': {
       'urls': urls('loop/optimize-loop-7'),
       'volume': 0,
-      'loop': true,
+      'onend': goog.bind(this.replaySound, self, 'closeup', 'loop'),
+      'onload': onSoundLoad
+    },
+    'book': {
+      'urls': urls('loop/optimize-loop-8'),
+      'volume': 0,
+      'onend': goog.bind(this.replaySound, self, 'book', 'loop'),
       'onload': onSoundLoad
     }
   };
@@ -54886,16 +55121,12 @@ feng.controllers.SoundController = function(){
       position: 0,
       timer: new goog.Timer(25000),
       sounds: [
-        this.getAmbient('studio'),
         this.getLoop('optimize-loop-1'),
-        this.getAmbient('studio'),
-        this.getLoop('trees'),
         this.getAmbient('studio'),
         this.getLoop('serendipity'),
         this.getAmbient('studio'),
         this.getLoop('first-class'),
-        this.getAmbient('studio'),
-        this.getLoop('family-breakfast')
+        this.getAmbient('studio')
       ],
       fadeAmbient: fadeAmbient,
       fadeLoop: fadeLoop
@@ -54904,16 +55135,12 @@ feng.controllers.SoundController = function(){
       position: 0,
       timer: new goog.Timer(25000),
       sounds: [
-        this.getAmbient('house'),
         this.getLoop('optimize-loop-1'),
-        this.getAmbient('house'),
-        this.getLoop('trees'),
         this.getAmbient('house'),
         this.getLoop('serendipity'),
         this.getAmbient('house'),
         this.getLoop('first-class'),
-        this.getAmbient('house'),
-        this.getLoop('family-breakfast')
+        this.getAmbient('house')
       ],
       fadeAmbient: fadeAmbient,
       fadeLoop: fadeLoop
@@ -54944,9 +55171,25 @@ goog.inherits(feng.controllers.SoundController, goog.events.EventTarget);
 goog.addSingletonGetter(feng.controllers.SoundController);
 
 
-feng.controllers.SoundController.prototype.getSound = function( id ){
-  
-  return this._sounds[ id ];
+feng.controllers.SoundController.prototype.replaySound = function( soundId, soundType ){
+
+  var sound;
+
+  switch(soundType) {
+    case feng.controllers.SoundController.SoundType.AMBIENT:
+    sound = this.getAmbient( soundId );
+    break;
+
+    case feng.controllers.SoundController.SoundType.LOOP:
+    sound = this.getLoop( soundId );
+    break;
+
+    case feng.controllers.SoundController.SoundType.SFX:
+    sound = this.getSfx( soundId );
+    break;
+  }
+
+  sound.play();
 };
 
 
@@ -55069,7 +55312,7 @@ feng.controllers.SoundController.prototype.playLoop = function( id ){
 };
 
 
-feng.controllers.SoundController.prototype.playMix = function( mixId ){
+feng.controllers.SoundController.prototype.playMix = function( mixId, duration ){
   
   var mix = this._mix[ mixId ];
 
@@ -55079,11 +55322,21 @@ feng.controllers.SoundController.prototype.playMix = function( mixId ){
   mix.position = 0;
 
   var sound = mix.sounds[ mix.position ];
-  this.fadeAmbient( sound.soundId, 0, 1, 5 );
+
+  var fadeDuration = goog.isNumber(duration) ? duration : 5;
+
+  if(sound.soundType === feng.controllers.SoundController.SoundType.AMBIENT) {
+
+    this.fadeAmbient( sound.soundId, 0, 1, fadeDuration );
+
+  }else if(sound.soundType === feng.controllers.SoundController.SoundType.LOOP) {
+
+    this.fadeLoop( sound.soundId, 0, 1, fadeDuration );
+  }
 };
 
 
-feng.controllers.SoundController.prototype.stopMix = function( mixId ){
+feng.controllers.SoundController.prototype.stopMix = function( mixId, duration ){
   
   var mix = this._mix[ mixId ];
 
@@ -55092,13 +55345,15 @@ feng.controllers.SoundController.prototype.stopMix = function( mixId ){
 
   var sound = mix.sounds[ mix.position ];
 
+  var fadeDuration = goog.isNumber(duration) ? duration : 5;
+
   if(sound.soundType === feng.controllers.SoundController.SoundType.AMBIENT) {
 
-    this.fadeAmbient( sound.soundId, null, 0, 5, true );
+    this.fadeAmbient( sound.soundId, null, 0, duration, true );
 
   }else if(sound.soundType === feng.controllers.SoundController.SoundType.LOOP) {
 
-    this.fadeLoop( sound.soundId, null, 0, 5, true );
+    this.fadeLoop( sound.soundId, null, 0, duration, true );
   }
 
   mix.position = 0;
@@ -59661,9 +59916,13 @@ feng.fx.Shaders.prototype.onComplete = function( e ) {
 		var dom = goog.dom.createDom('div');
 		dom.innerHTML = e.target.getResponseText();
 
-		this.shaderEls = goog.dom.getChildren( dom );
+		var shaderEls = goog.dom.getChildren( dom );
 
-		console.log( 'shaders load complete' );
+		this.shaderEls = goog.array.map(shaderEls, function(el) {
+			return el;
+		});
+
+		//console.log( 'shaders load complete', this.shaderEls );
 
 	}else {
 
@@ -60975,7 +61234,7 @@ goog.require('feng.apps.PathEdit');
 /**
  * @expose
  */
-feng.version = '11.13.14';
+feng.version = '11.19.14';
 
 
 feng.Config = {};

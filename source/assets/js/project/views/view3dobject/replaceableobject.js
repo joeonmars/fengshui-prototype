@@ -37,7 +37,7 @@ feng.views.view3dobject.ReplaceableObject.prototype.change = function( objectId 
 
 	if(this.objects[objectId]) {
 
-		this.updateObject( object3d );
+		this.updateObject( this.objects[objectId] );
 		return;
 	}
 

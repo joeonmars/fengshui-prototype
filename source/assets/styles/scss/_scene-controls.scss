@@ -324,6 +324,10 @@ $border_size: 7px;
 	@include retina-ui("circle-dot");
 	overflow: visible;
 
+	&.hidden{
+		display: none;
+	}
+
 	>.fill{
 		position: relative;
 		left: -2px;

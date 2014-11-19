@@ -69,13 +69,13 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 	// toggle sound loops
 	if(nextMode === feng.controllers.view3d.ModeController.Mode.CLOSE_UP) {
 
-		feng.soundController.stopMix( this._view3d.sectionId );
-		feng.soundController.fadeLoop( 'closeup', 0, 1, 4, false );
+		feng.soundController.stopMix( this._view3d.sectionId, 1 );
+		feng.soundController.fadeLoop( 'closeup', 0, 1, 2, false );
 
 	}else {
 
-		feng.soundController.playMix( this._view3d.sectionId );
-		feng.soundController.fadeLoop( 'closeup', null, 0, 4, true );
+		feng.soundController.playMix( this._view3d.sectionId, 6 );
+		feng.soundController.fadeLoop( 'closeup', null, 0, 3, true );
 	}
 
 	//

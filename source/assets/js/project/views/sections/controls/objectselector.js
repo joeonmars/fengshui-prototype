@@ -39,7 +39,7 @@ feng.views.sections.controls.ObjectSelector = function(domElement){
 
   this._hitTestMeshes = [];
 
-	this.hide();
+	this.show( false );
 };
 goog.inherits(feng.views.sections.controls.ObjectSelector, feng.views.sections.controls.Controls);
 

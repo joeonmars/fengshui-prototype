@@ -75,7 +75,9 @@ feng.fx.Renderer = function(canvas, scene, camera){
 		stencilBuffer: true
 	};
 
-	var resolution = (new goog.math.Size( screen.width, screen.height )).scale( this._DPR ).scale( 1 );
+	var res = (screen.width > 1920) ? 2048 : 1024;
+
+	var resolution = (new goog.math.Size( res, res )).scale( this._DPR );
 
 	// create default render texture pass
 	var renderTarget = new THREE.WebGLRenderTarget( resolution.width, resolution.height, renderTargetParameters );

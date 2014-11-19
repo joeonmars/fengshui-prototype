@@ -219,12 +219,12 @@ feng.models.Preload = function(){
 				'windowsill-stuff-texture': 'images/texture/house/livingroom/windowsill-stuff.jpg',
 				'fish-bowl-stand-texture': 'images/texture/house/livingroom/fish-bowl-stand.jpg',
 				'skybox': {
-					'xpos': 'images/texture/house/boysroom/skybox/pos-x.png',
-					'xneg': 'images/texture/house/boysroom/skybox/neg-x.png',
-					'ypos': 'images/texture/house/boysroom/skybox/pos-y.png',
-					'yneg': 'images/texture/house/boysroom/skybox/neg-y.png',
-					'zpos': 'images/texture/house/boysroom/skybox/pos-z.png',
-					'zneg': 'images/texture/house/boysroom/skybox/neg-z.png'
+					'xpos': 'images/texture/house/boysroom/skybox/pos-x.jpg',
+					'xneg': 'images/texture/house/boysroom/skybox/neg-x.jpg',
+					'ypos': 'images/texture/house/boysroom/skybox/pos-y.jpg',
+					'yneg': 'images/texture/house/boysroom/skybox/neg-y.jpg',
+					'zpos': 'images/texture/house/boysroom/skybox/pos-z.jpg',
+					'zneg': 'images/texture/house/boysroom/skybox/neg-z.jpg'
 				},
 			},
 			'corridor': {
@@ -249,12 +249,12 @@ feng.models.Preload = function(){
 				'boysroom-door-texture': 'images/texture/house/corridor/boysroom-door.png',
 				'bathroom-door-texture': 'images/texture/house/corridor/bathroom-door.png',
 				'skybox': {
-					'xpos': 'images/texture/house/boysroom/skybox/pos-x.png',
-					'xneg': 'images/texture/house/boysroom/skybox/neg-x.png',
-					'ypos': 'images/texture/house/boysroom/skybox/pos-y.png',
-					'yneg': 'images/texture/house/boysroom/skybox/neg-y.png',
-					'zpos': 'images/texture/house/boysroom/skybox/pos-z.png',
-					'zneg': 'images/texture/house/boysroom/skybox/neg-z.png'
+					'xpos': 'images/texture/house/boysroom/skybox/pos-x.jpg',
+					'xneg': 'images/texture/house/boysroom/skybox/neg-x.jpg',
+					'ypos': 'images/texture/house/boysroom/skybox/pos-y.jpg',
+					'yneg': 'images/texture/house/boysroom/skybox/neg-y.jpg',
+					'zpos': 'images/texture/house/boysroom/skybox/pos-z.jpg',
+					'zneg': 'images/texture/house/boysroom/skybox/neg-z.jpg'
 				},
 			},
 			'boysroom': {
@@ -311,12 +311,12 @@ feng.models.Preload = function(){
 					'3': 'images/texture/house/boysroom/pictures/3.jpg'
 				},
 				'skybox': {
-					'xpos': 'images/texture/house/boysroom/skybox/pos-x.png',
-					'xneg': 'images/texture/house/boysroom/skybox/neg-x.png',
-					'ypos': 'images/texture/house/boysroom/skybox/pos-y.png',
-					'yneg': 'images/texture/house/boysroom/skybox/neg-y.png',
-					'zpos': 'images/texture/house/boysroom/skybox/pos-z.png',
-					'zneg': 'images/texture/house/boysroom/skybox/neg-z.png'
+					'xpos': 'images/texture/house/boysroom/skybox/pos-x.jpg',
+					'xneg': 'images/texture/house/boysroom/skybox/neg-x.jpg',
+					'ypos': 'images/texture/house/boysroom/skybox/pos-y.jpg',
+					'yneg': 'images/texture/house/boysroom/skybox/neg-y.jpg',
+					'zpos': 'images/texture/house/boysroom/skybox/pos-z.jpg',
+					'zneg': 'images/texture/house/boysroom/skybox/neg-z.jpg'
 				}
 			},
 			'homeoffice': {
@@ -377,12 +377,12 @@ feng.models.Preload = function(){
 					'4': 'images/texture/house/homeoffice/pictures/4.jpg'
 				},
 				'skybox': {
-					'xpos': 'images/texture/house/boysroom/skybox/pos-x.png',
-					'xneg': 'images/texture/house/boysroom/skybox/neg-x.png',
-					'ypos': 'images/texture/house/boysroom/skybox/pos-y.png',
-					'yneg': 'images/texture/house/boysroom/skybox/neg-y.png',
-					'zpos': 'images/texture/house/boysroom/skybox/pos-z.png',
-					'zneg': 'images/texture/house/boysroom/skybox/neg-z.png'
+					'xpos': 'images/texture/house/boysroom/skybox/pos-x.jpg',
+					'xneg': 'images/texture/house/boysroom/skybox/neg-x.jpg',
+					'ypos': 'images/texture/house/boysroom/skybox/pos-y.jpg',
+					'yneg': 'images/texture/house/boysroom/skybox/neg-y.jpg',
+					'zpos': 'images/texture/house/boysroom/skybox/pos-z.jpg',
+					'zneg': 'images/texture/house/boysroom/skybox/neg-z.jpg'
 				}
 			}
 		}

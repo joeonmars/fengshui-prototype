@@ -2,6 +2,13 @@
 	display: none;
 }
 
+&.design{
+
+	>.tooltip{
+		@include transition( opacity .25s ease-in-out, visibility .25s );
+	}
+}
+
 >.fadeIn{
 	&:nth-child(1) {
 		>.bar{
@@ -65,29 +72,11 @@
 }
 
 
->.fadeIn{
-	>.bar{
-		visibility: inherit;
-		opacity: 1;
-		@include scale(1);
-	}
-}
-
->.fadeOut{
-	>.bar{
-	  	visibility: hidden;
-		opacity: 0;
-		@include scale(0);
-	}
-}
-
-
 >.tooltip{
 	position: absolute;
 	display: block;
 	opacity: 1;
 	visibility: inherit;
-	@include transition( opacity .5s ease-in-out, visibility .5s );
 
 	&:hover{
 		z-index: 20;
@@ -158,6 +147,27 @@
 
 			.inner{
 				@include translateY(0px);
+			}
+		}
+	}
+
+	&:not(.hidden){
+		
+		@include transition( opacity .5s ease-in-out, visibility .5s );
+
+		&.fadeIn{
+			>.bar{
+				visibility: inherit;
+				opacity: 1;
+				@include scale(1);
+			}
+		}
+
+		&.fadeOut{
+			>.bar{
+			  	visibility: hidden;
+				opacity: 0;
+				@include scale(0);
 			}
 		}
 	}

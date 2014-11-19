@@ -36,6 +36,8 @@ feng.views.View3DHud = function( hudEl, view3dController, tips, episode ){
 
   this._tips = tips;
 
+  this._isInEntryMode = false;
+
   // create a captions collection
   this._captions = {};
 
@@ -182,6 +184,10 @@ feng.views.View3DHud.prototype.activateControls = function() {
   this.reminder.activate();
   this.progressBar.activate();
 
+  if(this._view3d && !this._isInEntryMode) {
+    this.tooltips.activate();
+  }
+
   feng.mainOptions.showHelpButton( true );
 };
 
@@ -193,6 +199,8 @@ feng.views.View3DHud.prototype.deactivateControls = function() {
   this.book.deactivate();
   this.reminder.deactivate();
   this.progressBar.deactivate();
+
+  this.tooltips.deactivate();
 
   feng.mainOptions.showHelpButton( false );
 };
@@ -245,7 +253,8 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls ) {
 feng.views.View3DHud.prototype.showControls = function( shouldShow ) {
 
   goog.dom.classes.enable( this._controlsEl, 'hidden', !shouldShow );
-  goog.dom.classes.enable( this._tooltipsEl, 'hidden', !shouldShow );
+  
+  this.tooltips.show( shouldShow );
 
   feng.mainOptions.showHelpButton( shouldShow );
 };
@@ -256,9 +265,10 @@ feng.views.View3DHud.prototype.onModeChange = function( e ) {
   var anyMode = e.nextMode || e.mode;
   var shouldShowControls = true;
 
+  this._isInEntryMode = (e.mode === feng.controllers.view3d.ModeController.Mode.ENTRY);
+
   switch(anyMode) {
 
-    case feng.controllers.view3d.ModeController.Mode.ENTRY:
     case feng.controllers.view3d.ModeController.Mode.EXIT:
     case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
     case null:
@@ -343,6 +353,9 @@ feng.views.View3DHud.prototype.onOverlayAnimateOut = function( e ) {
   }else {
 
     this.activateControls();
-    this.showControls( true );
+
+    if(!this._isInEntryMode) {
+      this.showControls( true );
+    }
   }
 };

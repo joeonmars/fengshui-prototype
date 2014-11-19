@@ -65,18 +65,6 @@ feng.views.sections.controls.ZoomSlider.prototype.activate = function(){
 };
 
 
-feng.views.sections.controls.ZoomSlider.prototype.show = function(){
-
-	goog.base(this, 'show');
-};
-
-
-feng.views.sections.controls.ZoomSlider.prototype.hide = function(){
-
-	goog.base(this, 'hide');
-};
-
-
 feng.views.sections.controls.ZoomSlider.prototype.onMouseWheel = function(e){
 
 	this._zoomStep = (e.deltaY > 0) ? (this._zoomStep + 1) : (this._zoomStep - 1);

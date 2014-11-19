@@ -51,6 +51,10 @@ feng.views.sections.controls.Compass.prototype.activate = function(){
   this._eventHandler.listen(this.domElement, 'mouseout', this.onMouseOut, false, this);
   this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
 
+  if(this._view3d) {
+    this._view3d.modeController.listen( feng.events.EventType.UPDATE, this.onView3dUpdate, false, this );
+  }
+
   this._dragger.setEnabled( true );
 };
 
