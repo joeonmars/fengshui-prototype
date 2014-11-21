@@ -34,12 +34,12 @@ feng.views.view3dfx.ClickEffect = function(){
 
 	var material = new THREE.MeshBasicMaterial({
 		//color: 0xff0000,
-		map: texture,
-		side: THREE.DoubleSide,
-		fog: false,
-		transparent: true,
-		blending: THREE.AdditiveBlending,
-		depthTest: false
+		'map': texture,
+		'side': THREE.DoubleSide,
+		'fog': false,
+		'transparent': true,
+		'blending': THREE.AdditiveBlending,
+		'depthTest': false
 	});
 
   THREE.Mesh.call( this, geometry, material );

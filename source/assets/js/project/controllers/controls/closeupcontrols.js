@@ -113,31 +113,23 @@ feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
 
 	this._activeObject.onCameraOut();
 
-	// find out the closest walkable position to go to
-	var pathfinder = feng.pathfinder;
-
-	var matrixId = this._view3d.getMatrixId();
-	var matrixData = pathfinder.getMatrixData( matrixId );
-
-	var tile = pathfinder.getTileByPosition( this.getPosition(), matrixData );
-	var toPosition = pathfinder.getClosestWalkableTilePosition( tile, matrixData );
-	toPosition.y = feng.controllers.controls.Controls.Default.STANCE_HEIGHT;
-
-	var toFov = feng.controllers.controls.Controls.Default.FOV;
-
 	// delay to animate out object select effect
 	this._view3d.fx.selectEffect.animateOut( 1 );
 
 	//
 	feng.navigationController.replaceToken("");
 
+	var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
+
+  	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( browseControls.getPosition(), this._activeObject.getCenter() );
+	var rotation = (new THREE.Euler(0, 0, 0, 'YXZ')).setFromQuaternion( quaternion );
+
 	//
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
 		nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
-		toPosition: toPosition,
-		toFov: toFov,
+		toRotation: rotation,
 		eventToTrigger: e ? e.eventToTrigger : null
 	});
 };

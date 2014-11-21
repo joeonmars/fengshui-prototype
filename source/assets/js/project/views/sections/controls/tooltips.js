@@ -52,7 +52,7 @@ feng.views.sections.controls.Tooltips.prototype.createTooltips = function( view3
   // create gateway tooltips
   goog.object.forEach( view3d.getGatewayObjects(), function(gatewayObject) {
 
-    if(!this._tooltips[ gatewayObject.id ]) {
+    if(!this._tooltips[ gatewayObject.id ] && !gatewayObject.isEntry) {
 
       var tooltipEl = soy.renderAsFragment(feng.templates.controls.GatewayTooltip, {
         gateway: gatewayObject
@@ -81,7 +81,11 @@ feng.views.sections.controls.Tooltips.prototype.setView3D = function( view3d ){
 
   // find tooltip objects of view3d
   var tipObjects = goog.object.getValues( view3d.tipObjects );
-  var gatewayObjects = view3d.getGatewayObjects();
+
+  var gatewayObjects = goog.array.filter(view3d.getGatewayObjects(), function(gatewayObject) {
+    return !gatewayObject.isEntry;
+  });
+  
   this._tooltipObjects = ([]).concat( tipObjects, gatewayObjects );
 
   // set current tooltips from objects
