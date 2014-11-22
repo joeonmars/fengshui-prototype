@@ -244,7 +244,7 @@ feng.views.view3dobject.View3DObject.prototype.getTilemapProxy = function(){
 
   if(!clone) {
 
-    clone = new THREE.Mesh( this.object3d.geometry, feng.views.view3dobject.View3DObject.ProxyMaterial.GREEN );
+    clone = new THREE.Mesh( this.object3d.geometry );
     this._tilemapProxy = clone;
   }
 
@@ -257,7 +257,7 @@ feng.views.view3dobject.View3DObject.prototype.getTilemapProxy = function(){
     clone.material = feng.views.view3dobject.View3DObject.ProxyMaterial.GREEN;
   }
   
-  clone.material.overdraw = true;
+  clone.material.overdraw = 8;
 
   clone.position.copy( this.object3d.position );
   clone.rotation.copy( this.object3d.rotation );

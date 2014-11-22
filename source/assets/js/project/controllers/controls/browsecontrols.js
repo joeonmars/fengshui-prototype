@@ -185,17 +185,12 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 
 		// walk to the object
 		var toPosition = intersects[0].point;
-		toPosition.y = toPosition.y < 10 ? this.getPosition().y : toPosition.y;
 
 		this.dispatchEvent({
 			type: feng.events.EventType.CHANGE,
 			mode: feng.controllers.view3d.ModeController.Mode.WALK,
 			nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
-			toPosition: toPosition,
-			toRotation: this.getRotation(),
-			toFov: this.getFov(),
-			fromTarget: this.getTarget(),
-			toTarget: toPosition
+			toPosition: toPosition
 		});
 
 		// play click effect
@@ -249,9 +244,7 @@ feng.controllers.controls.BrowseControls.prototype.onMouseWheel = function ( e )
 		type: feng.events.EventType.CHANGE,
 		mode: feng.controllers.view3d.ModeController.Mode.WALK,
 		nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
-		toPosition: toPosition,
-		toRotation: this.getRotation(),
-		toFov: this.getFov()
+		toPosition: toPosition
 	});
 };
 

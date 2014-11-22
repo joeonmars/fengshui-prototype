@@ -13,10 +13,12 @@ feng.controllers.controls.WalkControls = function(camera, view3d, domElement){
 
   goog.base(this, camera, view3d, domElement);
 
-	this._tweener = new TimelineMax();
+	this._tweener = null;
 	this._pathTrack = null;
 
 	this._cameraRotation = new THREE.Euler(0, 0, 0, 'YXZ');
+	this._startRotation = new THREE.Euler(0, 0, 0, 'YXZ');
+	this._endRotation = new THREE.Euler(0, 0, 0, 'YXZ');
 };
 goog.inherits(feng.controllers.controls.WalkControls, feng.controllers.controls.Controls);
 
@@ -25,7 +27,7 @@ feng.controllers.controls.WalkControls.prototype.pause = function ( pause ) {
 
 	var shouldPause = goog.base(this, 'pause', pause);
 
-	if(shouldPause) {
+	if(shouldPause && this._tweener) {
 
 		this._tweener.pause();
 
@@ -41,8 +43,6 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 	var fromPosition = ev.fromPosition;
 	var toPosition = ev.toPosition;
 	var nextMode = ev.nextMode;
-
-	var viewDistance = (ev.viewDistance >= 0) ? ev.viewDistance : 50;
 
 	//
 	var pathfinder = feng.pathfinder;
@@ -76,58 +76,56 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 		this._scene.add( this._pathTrack );
 	}
 
-	var length = this._pathTrack.spline.getLength();
-	var distance = length - viewDistance;
-	var distanceT = Math.max(0, distance / length);
+	// calculate end rotation based on last position
+	var viewDistance = 25;
+	var splineLength = this._pathTrack.spline.getLength();
+	var actualDistance = splineLength - viewDistance;
+	var endU = actualDistance / splineLength;
+
+	var actualEndPosition = this._pathTrack.spline.getPointAt( endU ).setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT );
+
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( actualEndPosition, toPosition );
+	this._endRotation.setFromQuaternion( quaternion );
+
+	this._startRotation.copy( ev.fromRotation );
 	
 	// adult walking speed is 1.564 meter per second
 	var speed = 1.000 * 100;
-	var duration = distance / (speed / 2);
+	var duration = actualDistance / (speed / 2);
 
 	var footstepLength = 20;
-	var footsteps = Math.floor(distance / footstepLength);
+	var footsteps = Math.floor(actualDistance / footstepLength);
 
-	var uProp = {
-		u: 0,
+	var prop = {
+		t: 0,
+		endU: endU,
 		footstep: 0
 	};
 
-	var tProp = {
-		t: 0,
-		fromTarget: ev.fromTarget,
-		toTarget: ev.toTarget
-	};
-
-  var uTweener = TweenMax.to(uProp, duration, {
-    u: distanceT,
+  this._tweener = TweenMax.to(prop, duration, {
+    t: 1,
     footstep: Math.PI * footsteps,
-    'ease': Sine.easeInOut,
-    'onUpdate': this.onPathUProgress,
-    'onUpdateParams': [uProp],
+    'ease': Linear.easeNone,
+    'onUpdate': this.onPathProgress,
+    'onUpdateParams': [prop],
     'onUpdateScope': this,
     'onComplete': this.onPathComplete,
     'onCompleteParams': [nextMode],
     'onCompleteScope': this
   });
-
-  var tTweener = TweenMax.to(tProp, duration, {
-    t: 1,
-    'ease': Quad.easeInOut,
-    'onUpdate': this.onPathTProgress,
-    'onUpdateParams': [tProp],
-    'onUpdateScope': this
-  });
-
-  this._tweener.clear();
-  this._tweener.add( [uTweener, tTweener], '+=0', 'start' );
 };
 
 
-feng.controllers.controls.WalkControls.prototype.onPathUProgress = function ( prop ) {
+feng.controllers.controls.WalkControls.prototype.onPathProgress = function ( prop ) {
 
-  var u = prop.u;
+  var t = prop.t;
+  
+  var smoothT = THREE.Math.smoothstep(t, 0, 1);
+
   var pathTrack = this._pathTrack;
-  var pathCamera = pathTrack.getCameraAt( u );
+
+  // update position
+  var pathCamera = pathTrack.getCameraAt( smoothT * prop.endU );
   var cameraPosition = pathCamera.position;
 
   var footstepHeight = Math.sin(prop.footstep) * .5;
@@ -135,23 +133,10 @@ feng.controllers.controls.WalkControls.prototype.onPathUProgress = function ( pr
   var cameraY = defaultHeight + footstepHeight;
 
   this.setPosition( cameraPosition.x, cameraY, cameraPosition.z );
-};
 
-
-feng.controllers.controls.WalkControls.prototype.onPathTProgress = function ( prop ) {
-
-  var t = prop.t;
-
-  // calculate rotation looking at tweening target
-  if(prop.fromTarget && prop.toTarget) {
-
-  	var position = prop.fromTarget.clone().lerp( prop.toTarget, t );
-
-  	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( this.getPosition(), position );
-	this._cameraRotation.setFromQuaternion( quaternion );
-
-	this.setRotation( this._cameraRotation.x, this._cameraRotation.y );
-  }
+  // update rotation
+  this._cameraRotation = feng.utils.ThreeUtils.getLerpedEuler( this._startRotation, this._endRotation, smoothT, this._cameraRotation );
+  this.setRotation( this._cameraRotation.x, this._cameraRotation.y );
 };
 
 

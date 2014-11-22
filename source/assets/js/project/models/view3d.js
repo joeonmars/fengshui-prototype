@@ -169,7 +169,6 @@ feng.models.View3D.Data = {
 			},
 			'dining-chair':	{
 				Class: "movable",
-				collidable: true,
 				castShadow: true,
 				texture: "studio.livingroom.dining-chair-texture",
 				position: new THREE.Vector3(-47.69, 0, -54.87),
@@ -812,7 +811,6 @@ feng.models.View3D.Data = {
 				texture: "house.boysroom.carpet-texture"
 			},
 			'stools': {
-				collidable: true,
 				texture: "house.boysroom.stools-texture"
 			},
 			'football': {
@@ -1077,7 +1075,6 @@ feng.models.View3D.Data = {
 				texture: "house.homeoffice.window-texture"
 			},
 			'armchair':	{
-				collidable: true,
 				texture: "house.homeoffice.armchair-texture"
 			},
 			'writing-desk':	{

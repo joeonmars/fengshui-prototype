@@ -12,7 +12,8 @@ feng.views.view3dobject.GatewayObject = function( object3d, data, view3d ){
 
   this.viewId = this.data.viewid;
   this.gatewayId = this.data.gatewayid;
-  
+
+	this.toHome = this.data.toHome;  
   this.isEntry = this.data.isEntry;
 
   this.origin = this.data.origin;
