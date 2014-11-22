@@ -178,11 +178,8 @@ feng.controllers.view3d.PathfindingController.prototype.getTileByPosition = func
 	var numCols = matrixData.numCols;
 	var numRows = matrixData.numRows;
 
-	var tileCol = Math.floor(Math.abs(position.x - gridMinX) / tileSize);
-	var tileRow = Math.floor(Math.abs(position.z - gridMinZ) / tileSize);
-
-	tileCol = Math.min(tileCol, numCols-1);
-	tileRow = Math.min(tileRow, numRows-1);
+	var tileCol = Math.round((position.x - gridMinX) / tileSize);
+	var tileRow = Math.round((position.z - gridMinZ) / tileSize);
 
 	var tile = [ tileCol, tileRow ];
 
@@ -206,6 +203,13 @@ feng.controllers.view3d.PathfindingController.prototype.resolveMatrix = function
 	var startTile = this.getTileByPosition( start, matrixData );
 	var endTile = this.getTileByPosition( end, matrixData );
 	
+	// clamp the tile within bound
+	startTile[0] = Math.min(startTile[0], numCols-1);
+	startTile[1] = Math.min(startTile[1], numRows-1);
+
+	endTile[0] = Math.min(endTile[0], numCols-1);
+	endTile[1] = Math.min(endTile[1], numRows-1);
+
 	var result = {
 		matrix: matrix,
 		gridMinX: gridMinX,
@@ -223,14 +227,30 @@ feng.controllers.view3d.PathfindingController.prototype.resolveMatrix = function
 };
 
 
+feng.controllers.view3d.PathfindingController.prototype.isWalkablePosition = function( position, matrixData ) {
+
+	var tile = this.getTileByPosition( position, matrixData );
+
+	return this.isWalkableTile( tile, matrixData );
+};
+
+
+feng.controllers.view3d.PathfindingController.prototype.isWalkableTile = function( tile, matrixData ) {
+
+	var matrix = matrixData.matrix;
+
+	var tileType = matrix[ tile[1] ][ tile[0] ];
+
+	return (tileType === 0);
+};
+
+
 feng.controllers.view3d.PathfindingController.prototype.getClosestWalkableTile = function( tile, matrixData ) {
 
 	var matrix = matrixData.matrix;
 
 	// return this tile if is walkable
-	var tileType = matrix[ tile[1] ][ tile[0] ];
-
-	if(tileType === 0) {
+	if(this.isWalkableTile( tile, matrixData )) {
 		return tile;
 	}
 
@@ -325,7 +345,7 @@ feng.controllers.view3d.PathfindingController.prototype.findPath = function( mat
 
 	var finder = new PF.AStarFinder({
 		'allowDiagonal': true,
-		'heuristic': PF.Heuristic.euclidean
+		'heuristic': PF.Heuristic.chebyshev
 	});
 
 	var path = finder.findPath(startTile[0], startTile[1], endTile[0], endTile[1], grid);
@@ -352,10 +372,17 @@ feng.controllers.view3d.PathfindingController.prototype.findPath = function( mat
 		path: path
 	});
 
-	// return smoothened coordinates
-	var spline = new THREE.SplineCurve3( coordinates );
-	var numPoints = Math.floor( spline.getLength() / 50 );
-	var coordinates = spline.getSpacedPoints( numPoints );
+	if(coordinates.length < 2) {
 
-	return coordinates;
+		return null;
+
+	}else {
+
+		// return smoothened coordinates
+		var spline = new THREE.SplineCurve3( coordinates );
+		var numPoints = Math.max(3, Math.floor( spline.getLength() / 100 ));
+		var coordinates = spline.getSpacedPoints( numPoints );
+
+		return coordinates;
+	}
 };

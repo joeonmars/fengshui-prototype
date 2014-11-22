@@ -244,8 +244,27 @@ feng.controllers.controls.BrowseControls.prototype.onMouseWheel = function ( e )
 		type: feng.events.EventType.CHANGE,
 		mode: feng.controllers.view3d.ModeController.Mode.WALK,
 		nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
-		toPosition: toPosition
+		toPosition: toPosition,
+		mousewheel: true
 	});
+
+	
+	/*
+	var distance = 25 * (-e.deltaY / Math.abs(e.deltaY));
+	
+	var forward = this.getForwardVector();
+	
+	var toPosition = forward.multiplyScalar( distance ).add( this.getPosition() );
+	toPosition.y = this.getPosition().y;
+
+	var pathfinder = feng.pathfinder;
+	var matrixData = pathfinder.getMatrixData( this._view3d.getMatrixId() );
+	var isWalkable = pathfinder.isWalkablePosition( toPosition, matrixData );
+
+	if(isWalkable) {
+		this.setPosition( toPosition );
+	}
+	*/
 };
 
 

@@ -52,10 +52,10 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 	var end = toPosition;
 	
 	var coordinates = pathfinder.findPath( matrixId, start, end );
-	
+
 	if(!coordinates) {
 
-		this.onPathComplete( nextMode );
+		this.bounceBack( nextMode );
 		return;
 	}
 
@@ -82,6 +82,12 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 	var actualDistance = splineLength - viewDistance;
 	var endU = actualDistance / splineLength;
 
+	if(endU <= 0) {
+
+		this.bounceBack( nextMode );
+		return;
+	}
+
 	var actualEndPosition = this._pathTrack.spline.getPointAt( endU ).setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT );
 
 	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( actualEndPosition, toPosition );
@@ -91,7 +97,7 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 	
 	// adult walking speed is 1.564 meter per second
 	var speed = 1.000 * 100;
-	var duration = actualDistance / (speed / 2);
+	var duration = Math.max(1, actualDistance / (speed / 2));
 
 	var footstepLength = 20;
 	var footsteps = Math.floor(actualDistance / footstepLength);
@@ -99,7 +105,8 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 	var prop = {
 		t: 0,
 		endU: endU,
-		footstep: 0
+		footstep: 0,
+		mousewheel: ev.mousewheel
 	};
 
   this._tweener = TweenMax.to(prop, duration, {
@@ -113,6 +120,29 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
     'onCompleteParams': [nextMode],
     'onCompleteScope': this
   });
+};
+
+
+feng.controllers.controls.WalkControls.prototype.bounceBack = function ( nextMode ) {
+
+	var prop = {
+		fov: this.getFov()
+	};
+
+	TweenMax.to(prop, .3, {
+		fov: 35,
+		'yoyo': true,
+		'repeat': 1,
+		'ease': Quad.easeInOut,
+		'onUpdate': function(prop) {
+			this.setFov( prop.fov );
+		},
+		'onUpdateParams': [prop],
+		'onUpdateScope': this,
+		'onComplete': this.onPathComplete,
+		'onCompleteParams': [nextMode],
+		'onCompleteScope': this
+	});
 };
 
 
@@ -134,9 +164,11 @@ feng.controllers.controls.WalkControls.prototype.onPathProgress = function ( pro
 
   this.setPosition( cameraPosition.x, cameraY, cameraPosition.z );
 
-  // update rotation
-  this._cameraRotation = feng.utils.ThreeUtils.getLerpedEuler( this._startRotation, this._endRotation, smoothT, this._cameraRotation );
-  this.setRotation( this._cameraRotation.x, this._cameraRotation.y );
+  if(!prop.mousewheel) {
+  	// update rotation
+  	this._cameraRotation = feng.utils.ThreeUtils.getLerpedEuler( this._startRotation, this._endRotation, smoothT, this._cameraRotation );
+  	this.setRotation( this._cameraRotation.x, this._cameraRotation.y );
+  }
 };
 
 

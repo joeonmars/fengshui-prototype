@@ -47,7 +47,7 @@ feng.controllers.view3d.CameraController.prototype.addCamera = function( name, f
 
   var fov = fov || 40;
   var aspect = this._view3d.getViewSize().aspectRatio();
-  var near = near || 10;
+  var near = near || 5;
   var far = far || 200000;
 
   var camera = new THREE.PerspectiveCamera( fov, aspect, near, far );

@@ -62,6 +62,7 @@ feng.models.View3D.Data = {
 			},
 			'wall':	{
 				castShadow: true,
+				collidable: true,
 				texture: "studio.livingroom.wall-texture"
 			},
 			'wall-outer':	{

@@ -104,4 +104,4 @@ PF.Grid = {};
 PF.Grid.setWalkableAt = {};
 PF.AStarFinder = {};
 PF.AStarFinder.findPath = {};
-PF.Heuristic.euclidean = {};
+PF.Heuristic.chebyshev = {};
