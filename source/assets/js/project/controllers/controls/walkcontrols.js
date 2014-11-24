@@ -19,6 +19,8 @@ feng.controllers.controls.WalkControls = function(camera, view3d, domElement){
 	this._cameraRotation = new THREE.Euler(0, 0, 0, 'YXZ');
 	this._startRotation = new THREE.Euler(0, 0, 0, 'YXZ');
 	this._endRotation = new THREE.Euler(0, 0, 0, 'YXZ');
+
+	this._footstepsSound = null;
 };
 goog.inherits(feng.controllers.controls.WalkControls, feng.controllers.controls.Controls);
 
@@ -113,6 +115,8 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
     t: 1,
     footstep: Math.PI * footsteps,
     'ease': Linear.easeNone,
+    'onStart': this.onPathStart,
+    'onStartScope': this,
     'onUpdate': this.onPathProgress,
     'onUpdateParams': [prop],
     'onUpdateScope': this,
@@ -146,6 +150,12 @@ feng.controllers.controls.WalkControls.prototype.bounceBack = function ( nextMod
 };
 
 
+feng.controllers.controls.WalkControls.prototype.onPathStart = function () {
+
+	this._footstepsSound = feng.soundController.playSfx('footsteps');
+};
+
+
 feng.controllers.controls.WalkControls.prototype.onPathProgress = function ( prop ) {
 
   var t = prop.t;
@@ -174,6 +184,10 @@ feng.controllers.controls.WalkControls.prototype.onPathProgress = function ( pro
 
 feng.controllers.controls.WalkControls.prototype.onPathComplete = function ( nextMode ) {
 
+	if(this._footstepsSound) {
+		this._footstepsSound.pause();
+	}
+
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		mode: nextMode
@@ -187,6 +201,10 @@ feng.controllers.controls.WalkControls.prototype.onInputDown = function ( e ) {
 
 	this._tweener.kill();
 
+	if(this._footstepsSound) {
+		this._footstepsSound.pause();
+	}
+	
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		mode: feng.controllers.view3d.ModeController.Mode.BROWSE,

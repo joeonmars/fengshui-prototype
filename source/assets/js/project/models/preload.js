@@ -304,6 +304,7 @@ feng.models.Preload = function(){
 				'handheld-nightstand-texture': 'images/texture/house/boysroom/handheld-nightstand.jpg',
 				'window-texture': 'images/texture/house/boysroom/window.jpg',
 				'window-frame-texture': 'images/texture/house/boysroom/window-frame.jpg',
+				'boysroom-door-texture': 'images/texture/house/boysroom/boysroom-door.jpg',
 				'door-frame-texture': 'images/texture/house/boysroom/door-frame.jpg',
 				'pictures': {
 					'1': 'images/texture/house/boysroom/pictures/1.jpg',

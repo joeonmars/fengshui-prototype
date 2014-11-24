@@ -14,7 +14,7 @@ feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement)
 
   this._activeObject = null;
 
-  this._tempPosition = new THREE.Vector3();
+  this._backUpRotation = new THREE.Euler(0, 0, 0, 'YXZ');
 
   this._raycaster = feng.utils.ThreeUtils.raycaster;
 
@@ -70,7 +70,14 @@ feng.controllers.controls.CloseUpControls.prototype.setCamera = function( object
 	this.setRotation( cameraSettings.rotation );
 	this.setFov( cameraSettings.fov );
 
+	//
 	this._activeObject = object;
+
+	// pre-calculate backed up rotation, in case the object might be later picked up
+	var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
+
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( browseControls.getPosition(), this._activeObject.getCenter() );
+	this._backUpRotation.setFromQuaternion( quaternion );
 };
 
 
@@ -119,17 +126,12 @@ feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
 	//
 	feng.navigationController.replaceToken("");
 
-	var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
-
-  	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( browseControls.getPosition(), this._activeObject.getCenter() );
-	var rotation = (new THREE.Euler(0, 0, 0, 'YXZ')).setFromQuaternion( quaternion );
-
 	//
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
 		nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
-		toRotation: rotation,
+		toRotation: this._backUpRotation,
 		eventToTrigger: e ? e.eventToTrigger : null
 	});
 };

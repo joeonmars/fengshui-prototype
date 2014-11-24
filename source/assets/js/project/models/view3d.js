@@ -884,7 +884,8 @@ feng.models.View3D.Data = {
 				origin: {
 					position: new THREE.Vector3(78, 0, 33),
 					rotation: new THREE.Euler(0, Math.PI/2, 0)
-				}
+				},
+				texture: "house.boysroom.boysroom-door-texture"
 			},
 			'sketchpad': {
 				texture: "house.boysroom.sketchpad-texture"

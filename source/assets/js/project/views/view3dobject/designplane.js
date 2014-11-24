@@ -14,13 +14,17 @@ feng.views.view3dobject.DesignPlane = function( view3d ){
   } );
   planeMaterial.shading = THREE.FlatShading;
 
-  var designPlane = new THREE.Mesh( planeGeometry, planeMaterial );
-  designPlane.name = 'design-plane';
-  designPlane.rotation.x = -Math.PI/2;
-  designPlane.position.y = -.5;
-  designPlane.receiveShadow = true;
+  var plane = new THREE.Mesh( planeGeometry, planeMaterial );
+  plane.name = 'design-plane';
+  plane.rotation.x = -Math.PI/2;
+  plane.position.y = -.5;
 
-  goog.base( this, designPlane, {}, view3d );
+  var data = {
+    receiveShadow: true,
+    fog: true
+  };
+
+  goog.base( this, plane, data, view3d );
 };
 goog.inherits(feng.views.view3dobject.DesignPlane, feng.views.view3dobject.View3DObject);
 

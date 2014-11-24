@@ -49,25 +49,13 @@ feng.views.view3dobject.View3DObject.prototype.registerToView3D = function(){
 
 feng.views.view3dobject.View3DObject.prototype.init = function(){
 
-  // assign object model data
-  var preloadModel = feng.models.Preload.getInstance();
-  var sectionId = this._view3d.sectionId;
-  var viewId = this._view3d.id;
+  this.object3d.castShadow = this.data.castShadow || false;
+  this.object3d.receiveShadow = this.data.receiveShadow || false;
 
-  this.object3d.traverse(function(object) {
-
-    var data = feng.models.View3D.getData(sectionId+'.'+viewId+'.'+object.name);
-
-    if(object instanceof THREE.Object3D) {
-      object.castShadow = data.castShadow || false;
-      object.receiveShadow = data.receiveShadow || false;
-
-      if(object.material) {
-        object.material.shading = THREE.FlatShading;
-        object.material.fog = false;
-      }
-    }
-  });
+  if(this.object3d.material) {
+    this.object3d.material.shading = THREE.FlatShading;
+    this.object3d.material.fog = this.data.fog || false;
+  }
 };
 
 
