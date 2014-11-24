@@ -50,6 +50,18 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement){
   var zoomSliderDom = goog.dom.createDom('div');
   var zoomCallback = goog.bind(this.setFov, this);
   this._zoomSlider = new feng.views.sections.controls.ZoomSlider( zoomSliderDom, this._view3d.domElement, zoomCallback );
+
+  //TODO
+  this._controlProps = {
+  	'x': 0,
+  	'y': 0,
+  	startX: 0,
+  	startY: 0
+  };
+
+  this._startDragRotation = 0;
+
+  this._cameraRotation = new THREE.Euler(0, 0, 0, 'YXZ');
 };
 goog.inherits(feng.controllers.controls.DesignControls, feng.controllers.controls.Controls);
 
@@ -64,6 +76,26 @@ feng.controllers.controls.DesignControls.prototype.setCamera = function( forward
 	
 	this.setFov( this._zoomSlider.calculateFov( .6 ) );
 
+	//
+	var position = this.getPosition();
+	//atan(opposite/adjacent) = angle
+	//this._startDragRotation = Math.atan( position.x / position.z ) - Math.PI/2;
+
+	//console.log(position.x, position.z);
+
+	//var shouldDeg = goog.math.angle(position.x, position.y, 0, 0);
+	//var shouldRad = THREE.Math.degToRad( shouldDeg ); 
+
+	var shouldRad = Math.atan( position.x/position.z );
+	var shouldDeg = THREE.Math.radToDeg( shouldRad );
+
+	var posX = this._distance * Math.sin( - shouldRad ) + this._focus.x;
+	var posZ = this._distance * Math.cos( - shouldRad ) + this._focus.z;
+
+	console.log( position.x, position.z, posX, posZ, shouldDeg );
+	//
+
+
 	this._zoomSlider.reset();
 
 	this._activeObject = object;
@@ -77,19 +109,28 @@ feng.controllers.controls.DesignControls.prototype.setFocus = function( x, z, fo
 	// calculate camera position from inversed forward vector
 	var vector = forward.negate().multiplyScalar( this._distance );
 
+/*
+	var deg = goog.math.angle(vector.x, vector.z, 0, 0);
+	var rad = THREE.Math.degToRad(deg);
+	var posX = this._distance * Math.cos( rad ) - this._distance * Math.sin( rad );
+	var posZ = this._distance * Math.sin( rad ) + this._distance * Math.cos( rad );
+
+	var cameraX = posX;
+	var cameraZ = posZ;
+*/
 	var cameraX = vector.x;
 	var cameraZ = vector.z;
+
 	var cameraY = this._distance;
 
 	// apply position
 	this.setPosition( cameraX, cameraY, cameraZ );
 
 	// recalculate rotation
-	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
 	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), this._focus);
-	rotation.setFromQuaternion( quaternion );
+	this._cameraRotation.setFromQuaternion( quaternion );
 
-	this.setRotation( rotation );
+	this.setRotation( this._cameraRotation );
 
 	// update tracker position
 	this._tracker.position.copy( this._focus );
@@ -138,7 +179,8 @@ feng.controllers.controls.DesignControls.prototype.activate = function () {
 
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this);
-	
+	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
+
 	this._zoomSlider.activate();
 };
 
@@ -167,28 +209,34 @@ feng.controllers.controls.DesignControls.prototype.update = function () {
 };
 
 
-feng.controllers.controls.DesignControls.prototype.onUpdateHud = function(e){
+feng.controllers.controls.DesignControls.prototype.applyDragRotation = function( rad ){
 
-	if(e.target instanceof feng.views.sections.controls.Compass) {
+	//var posX = this._distance * Math.cos( rad ) - this._distance * Math.sin( rad );
+	//var posZ = this._distance * Math.sin( rad ) + this._distance * Math.cos( rad );
 
-		var posX = this._distance * Math.sin( -e.rotation ) + this._focus.x;
-		var posZ = this._distance * Math.cos( -e.rotation ) + this._focus.z;
-		var posY = this._distance;
+	var posX = this._distance * Math.sin( - rad ) + this._focus.x;
+	var posZ = this._distance * Math.cos( - rad ) + this._focus.z;
+	var posY = this._distance;
 
-		this.setPosition( posX, posY, posZ );
+	this.setPosition( posX, posY, posZ );
 
-		// look at
-		var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
-		var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), this._focus);
-		rotation.setFromQuaternion( quaternion );
+	// look at
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), this._focus);
+	this._cameraRotation.setFromQuaternion( quaternion );
 
-		this.setRotation( rotation );
-	}
+	this.setRotation( this._cameraRotation );
 };
 
 
 feng.controllers.controls.DesignControls.prototype.onDragStart = function(e){
 
+	this._controlProps.startX = this._controlProps['x'];
+
+	TweenLite.killTweensOf( this._controlProps );
+	ThrowPropsPlugin.untrack( this._controlProps );
+	ThrowPropsPlugin.track( this._controlProps, 'x' );
+
+	/*
 	// set origin focus position
 	this._dragOrigin.copy( this._focus );
 	this._dragToPosition.copy( this._focus );
@@ -199,6 +247,7 @@ feng.controllers.controls.DesignControls.prototype.onDragStart = function(e){
 	this._dragCamera.aspect = this._camera.aspect;
 	this._dragCamera.updateProjectionMatrix();
 	this._dragCamera.lookAt( this._focus );
+	*/
 };
 
 
@@ -207,6 +256,11 @@ feng.controllers.controls.DesignControls.prototype.onDrag = function(e){
 	var deltaX = this._dragger.deltaX;
 	var deltaY = this._dragger.deltaY;
 
+	this._controlProps['x'] = this._controlProps.startX + deltaX / this._view3d.viewSize.width / 2;
+
+	this.onDragUpdate();
+
+	/*
 	var fov = this.getFov();
 	var minFov = this._zoomSlider.fovRange.min;
 	var maxFov = this._zoomSlider.fovRange.max;
@@ -239,4 +293,30 @@ feng.controllers.controls.DesignControls.prototype.onDrag = function(e){
 	rotation.setFromQuaternion( quaternion );
 
 	this.setRotation( rotation );
+	*/
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onDragEnd = function(e){
+
+	ThrowPropsPlugin.to(this._controlProps, {
+		'throwProps': {
+			'x': 'auto',
+			'resistance': 100
+		},
+		//ease: Quad.easeOut,
+		'onUpdate': this.onDragUpdate,
+		'onUpdateScope': this
+	}, 4, .5);
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onDragUpdate = function(){
+
+	var deg = this._controlProps['x'] * 360;
+	var rad = THREE.Math.degToRad( deg );
+
+	//this.applyDragRotation( this._startDragRotation );
+
+	this.applyDragRotation( this._startDragRotation + rad );
 };

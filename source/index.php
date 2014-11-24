@@ -48,7 +48,8 @@
 					<script src="assets/js/thirdparty/createjs/preloadjs-0.4.1.min.js"></script>
 					<script src="assets/js/thirdparty/greensock/TweenMax.min.js"></script>
 					<script src="assets/js/thirdparty/greensock/utils/Draggable.min.js"></script>
-					
+					<script src="assets/js/thirdparty/greensock/plugins/ThrowPropsPlugin.min.js"></script>
+
 					<script src="assets/js/thirdparty/threejs/build/three69.min.js"></script>
 
 					<script src="assets/js/thirdparty/threejs-utils/Projector.js"></script>

@@ -15,7 +15,8 @@ feng.views.view3dobject.Skybox = function( assets, view3d ){
   for (var i = 0; i < 6; i++) {
 
     var material = new THREE.MeshBasicMaterial({
-      side: THREE.BackSide
+      'transparent': true,
+      'side': THREE.BackSide
     });
     material.shading = THREE.FlatShading;
     material.fog = false;
@@ -23,7 +24,7 @@ feng.views.view3dobject.Skybox = function( assets, view3d ){
     materials.push( material );
   }
 
-  var skyGeometry = new THREE.BoxGeometry( 150000, 150000, 150000 );
+  var skyGeometry = new THREE.BoxGeometry( 100000, 100000, 100000 );
 
   this._material = new THREE.MeshFaceMaterial( materials );
   this._material.shading = THREE.FlatShading;
@@ -34,6 +35,8 @@ feng.views.view3dobject.Skybox = function( assets, view3d ){
   skybox.name = 'skybox';
 
   goog.base( this, skybox, {}, view3d );
+
+  this.opacity = 1;
 
   this.addToScene();
 };
@@ -75,4 +78,14 @@ feng.views.view3dobject.Skybox.prototype.disposeTextures = function(){
     material.needsUpdate = true;
 
   }, this);
+};
+
+
+feng.views.view3dobject.Skybox.prototype.updateOpacity = function( opt_opacity ){
+
+  var opacity = goog.isNumber(opt_opacity) ? opt_opacity : this.opacity;
+
+  goog.array.forEach(this._material.materials, function(material) {
+    material.opacity = opacity;
+  });
 };

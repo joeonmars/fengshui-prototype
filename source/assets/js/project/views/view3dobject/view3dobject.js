@@ -266,6 +266,12 @@ feng.views.view3dobject.View3DObject.prototype.removeFromScene = function(){
 };
 
 
+feng.views.view3dobject.View3DObject.prototype.isInScene = function(){
+
+  return goog.isDefAndNotNull( this.object3d.parent );
+};
+
+
 feng.views.view3dobject.View3DObject.prototype.enableRender = function(){
 
   if(!this._canRender) return;

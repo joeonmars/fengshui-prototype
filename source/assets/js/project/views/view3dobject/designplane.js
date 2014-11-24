@@ -25,6 +25,8 @@ feng.views.view3dobject.DesignPlane = function( view3d ){
   };
 
   goog.base( this, plane, data, view3d );
+
+  this.opacity = 1;
 };
 goog.inherits(feng.views.view3dobject.DesignPlane, feng.views.view3dobject.View3DObject);
 
@@ -52,4 +54,12 @@ feng.views.view3dobject.DesignPlane.prototype.createTextures = function(){
 
   this.object3d.material.map = texture;
   this.object3d.material.needsUpdate = true;
+};
+
+
+feng.views.view3dobject.DesignPlane.prototype.updateOpacity = function( opt_opacity ){
+
+  var opacity = goog.isNumber(opt_opacity) ? opt_opacity : this.opacity;
+
+  this.object3d.material.opacity = opacity;
 };

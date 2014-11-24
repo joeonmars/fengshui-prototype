@@ -57,13 +57,53 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 	if(nextMode === feng.controllers.view3d.ModeController.Mode.DESIGN) {
 
 		designPlane.addToScene();
-		skybox.removeFromScene();
+		skybox.addToScene();
 
-		TweenMax.fromTo(designPlane.object3d.material, 1, {
+		TweenMax.fromTo(skybox, dur, {
+			opacity: 1
+		}, {
+			opacity: 0,
+			'onUpdate': skybox.updateOpacity,
+			'onUpdateScope': skybox,
+			'onComplete': skybox.removeFromScene,
+			'onCompleteScope': skybox
+		});
+
+		TweenMax.fromTo(designPlane, dur, {
 			opacity: 0
 		}, {
-			opacity: 1
+			opacity: 1,
+			'onUpdate': designPlane.updateOpacity,
+			'onUpdateScope': designPlane
 		});
+
+	}else {
+
+		if(!skybox.isInScene()) {
+
+			skybox.addToScene();
+
+			var halfDur = dur/2;
+
+			TweenMax.fromTo(skybox, halfDur, {
+				opacity: 0
+			}, {
+				opacity: 1,
+				'delay': halfDur,
+				'onUpdate': skybox.updateOpacity,
+				'onUpdateScope': skybox
+			});
+
+			TweenMax.fromTo(designPlane, dur, {
+				opacity: 1
+			}, {
+				opacity: 0,
+				'onUpdate': designPlane.updateOpacity,
+				'onUpdateScope': designPlane,
+				'onComplete': designPlane.removeFromScene,
+				'onCompleteScope': designPlane
+			});
+		}
 	}
 
 	// toggle sound loops
@@ -127,29 +167,9 @@ feng.controllers.controls.TransitionControls.prototype.onTransitionUpdate = func
 
 feng.controllers.controls.TransitionControls.prototype.onTransitionComplete = function ( prop ) {
 
-	var nextMode = prop.nextMode;
-
-	// toggle ground plane
-	var designPlane = this._view3d.designPlane;
-	var skybox = this._view3d.skybox;
-
-	if(nextMode !== feng.controllers.view3d.ModeController.Mode.DESIGN) {
-
-		TweenMax.fromTo(designPlane.object3d.material, 1, {
-			opacity: 1
-		}, {
-			opacity: 0,
-			'onComplete': function() {
-				designPlane.removeFromScene();
-				skybox.addToScene();
-			}
-		});
-	}
-
-	//
 	var ev = {
 		type: feng.events.EventType.CHANGE,
-		mode: nextMode
+		mode: prop.nextMode
 	};
 
 	this.dispatchEvent( ev );
