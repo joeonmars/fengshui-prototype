@@ -14,22 +14,25 @@
 		<div class="panel">
 			<button class="icon panel-button"></button>
 
+			<div class="panel-controls">
+
+				<button class="icon icon-close close-button"></button>
+				
+				<div class="share">
+					<ul>
+						<li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-facebook"></a></li>
+						<li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-twitter"></a></li>
+						<li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-google"></a></li>
+					</ul>
+				</div>
+				
+			</div>
+			
 			<div class="panel-content">
 
-				<div class="heading">
-
-					<div class="share">
-						<ul>
-							<li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-facebook"></a>
-							<li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-twitter"></a>
-							<li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-google"></a>
-						</ul>
-					</div>
-
-					<h1>{ $tip.name }</h1>
-				</div>
-
 				<div class="content">
+					<h1>{ $tip.name }</h1>
+
 					<div class="scroller">
 
 						<div class="scroller-inner">

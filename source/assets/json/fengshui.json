@@ -113,7 +113,7 @@
 			"provide": null,
 			"final": true,
 			"problem": null,
-			"advice": "This is an advice for selecting a clock.",
+			"advice": "Clocks are important furniture with every home and office. A working clock that is also attractive indicates positivity and harmony in the environment.<br>Placing a clock in your career area will promote good business and increase your wealth and business opportunities. Good feng shui areas to freely display the clocks are the kitchen, the living room, or the home office.",
 			"character": "ollie",
 			"reminder": "What time is it now?"
 		},
@@ -509,7 +509,7 @@
 				"livingroom": {
 					"character": "ollie",
 					"title": "Welcome to my studio!",
-					"paragraph": "My name is Ollie B. Bowie. I am 24 years old, and I am a graphic designer. This is my apartment. Welcome!<br>I love photos and plants and handcrafts. I have had a hard time recently, and if you have any suggestions on improving the workspace energy in my studio, it would be great!"
+					"paragraph": "My name is Ollie B. Bowie. I am a fashion designer. This is my apartment. Welcome!<br>I love photos and plants and handcrafts. I have had a hard time recently, and if you have any suggestions on improving the workspace energy in my studio, it would be great!"
 				},
 				"bathroom": {
 					"character": "ollie",
@@ -520,13 +520,13 @@
 			"house": {
 				"livingroom": {
 					"character": "joanna",
-					"title": "Welcome to our house!",
+					"title": "Welcome to my house!",
 					"paragraph": "My name is Joanna. Welcome to our house. Isn’t it a very nice living room? How can we make it even better?<br>We spend a great deal of time here, and I hope that the living room can provide more wealth and prosperity for my family. We would also like to improve my husband’s workplace and provide a positive learning environment for Nick."
 				},
 				"corridor": {
 					"character": "joanna",
-					"title": "Say Hello to Scott and Nick!",
-					"paragraph": "Hi, there! Feel free to investigate the second floor.<br>Walk through the corridor you will find my husband Scott's office and my lovely boy, Nick."
+					"title": "Say Hi to Scott and Nick?",
+					"paragraph": "Hi, there! Feel free to explore the second floor of my house.<br>Walk through the corridor you will find my husband Scott's office and my lovely boy, Nick. They want some advice too."
 				},
 				"boysroom": {
 					"character": "nick",
@@ -535,8 +535,8 @@
 				},
 				"homeoffice": {
 					"character": "scott",
-					"title": "Welcome to my home office!",
-					"paragraph": "Hi, there! This is my workplace. I am sure you have been a great help for Joanna and Nick!<br>Working for a university mathematics department can be very stressful and difficult. Sometimes I hope that I can totally relax in my home office. I hope that this is a place where I can buck up when depressed. What sorts of things we can do here?"
+					"title": "Welcome to<br>my home office!",
+					"paragraph": "I am sure you have been a great help for Joanna and Nick! Working for a university mathematics department can be very stressful. Sometimes I hope that I can totally relax in my home office.<br>What sorts of things we can do here?"
 				}
 			}
 		},

@@ -374,13 +374,12 @@ body{
 
   p{
     font-family: $font_marine_light;
-    letter-spacing: 0.025em;
-  }
+    letter-spacing: 0.12em;
+    line-height: 1.65;
 
-  q{
-    font-family: $font_marine_light;
-    font-style: italic;
-    letter-spacing: 0.025em;
+    br{
+      line-height: 3;
+    }
   }
 
   a{

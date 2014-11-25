@@ -286,9 +286,10 @@ $border_size: 7px;
 
 				>li{
 					color: $gray;
-					font-size: 1.6em;
-					line-height: 1.4;
-					font-family: $font_marine;
+					font-size: 1.7em;
+				    font-family: $font_marine_light;
+				    letter-spacing: 0.12em;
+				    line-height: 1.65;
 					display: none;
 
 					&.shown{

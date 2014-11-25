@@ -2,21 +2,18 @@
 	>.content{
 
 		h1{
-			font-size: 4.2em;
+			font-size: 4em;
 			line-height: 1.2;
-			text-transform: capitalize;
 		}
 
 		h2{
 			font-size: 2em;
 			line-height: 1.2;
-			text-transform: uppercase;
 		}
 
 		p{
-			font-size: 1.6em;
+			font-size: 1.7em;
 			color: $lightgray-ui;
-			line-height: 1.5;
 
 			>br{
 				line-height: 2em;
@@ -147,7 +144,7 @@
 }
 
 &.opening, &.ending, &.finale{
-	width: 80em;
+	width: 85em;
 	min-height: 40em;
 
 	>.content{
@@ -169,7 +166,7 @@
 			position: relative;
 			z-index: 3;
 			width: 65%;
-			padding: 1em 0 2em 0;
+			padding: 2em 0 2em 0;
 		}
 
 		>button{
