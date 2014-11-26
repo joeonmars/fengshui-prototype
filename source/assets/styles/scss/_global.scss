@@ -274,14 +274,13 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
     border-color: #ffffff transparent transparent transparent;
   }
 }
-
+/*
 %arrow-button{
   @include border-radius(100%);
   border: 2px solid $gray-ui;
   color: $gray-ui;
   width: 1em;
   height: 1em;
-  background-color: transparent;
   @include background-clip(border-box);
   @include transition(opacity .25s, color .25s, background-color .25s, transform .1s);
 
@@ -304,16 +303,35 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
     @include scale(.85);
   }
 }
+*/
+@mixin arrow-button($size:1em, $color:$gray-ui, $color_bg:transparent, $color_hover:#fff, $color_bg_hover:$gray-ui) {
 
-@mixin arrow-button($size:1em, $color:$gray-ui) {
-
-  @extend %arrow-button;
+  width: 1em;
+  height: 1em;
   font-size: $size;
   color: $color;
+  background-color: $color_bg;
+  border-width: 2px;
+  border-style: solid;
   border-color: $color;
+  @include border-radius(50%);
+  @include background-clip(border-box);
+  @include transition(opacity .25s, color .25s, border-color .25s, background-color .25s, transform .1s);
 
+  &:before{
+    display: block;
+    font-size: .5em;
+  }
+  
   &:hover, &:active{
-    background-color: $color;
+    color: $color_hover;
+    border-color: transparent;
+    background-color: $color_bg_hover;
+  }
+
+  &:active{
+    opacity: .4;
+    @include scale(.85);
   }
 }
 
@@ -443,7 +461,7 @@ body{
     padding: 1em 1.1em;
     @include border-radius( 40px );
     @include box-sizing( border-box );
-    @include transition( color .4s $easeInOutCirc, background-color .2s );
+    @include transition( color .4s $easeInOutCirc, border-color .2s, background-color .2s );
 
     &.small{
       font-size: 1.8em;

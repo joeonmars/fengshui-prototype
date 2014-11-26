@@ -131,7 +131,12 @@
  */
 {template .DropButton}
 <div class="dropButton">
-	<div class="arrow"></div>
+	//<div class="arrow"></div>
+	<div class="circle"></div>
+	{call feng.templates.common.PrimaryButton}
+		{param icon: 'icon-yes' /}
+		{param text: 'Drop' /}
+	{/call}
 </div>
 {/template}
 

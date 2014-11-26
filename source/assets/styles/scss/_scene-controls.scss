@@ -268,7 +268,7 @@ $border_size: 7px;
 		@extend %bordered-ui;
 		@extend %arrow-bottom-right;
 		right: 0;
-		width: 40em;
+		width: 45em;
 		height: 10em;
 		padding: 2.7em 2em;
 		text-align: center;
@@ -281,7 +281,7 @@ $border_size: 7px;
 			>.hints{
 				display: inline-block;
 				vertical-align: middle;
-				width: 27em;
+				width: 30em;
 				text-align: left;
 
 				>li{
@@ -302,9 +302,8 @@ $border_size: 7px;
 			>button{
 				display: inline-block;
 				vertical-align: middle;
-				@extend %arrow-button;
-				font-size: 3em;
-				margin: 0 (2em/3);
+				@include arrow-button( 3.6em, $gray-ui, transparent, #fff, $gray-ui );
+				margin: 0 (2em/3.6);
 
 				&:first-child{
 					margin-left: 0;
@@ -338,43 +337,44 @@ $border_size: 7px;
 
 >.dropButton{
 	@include absoluteTopLeft;
-	margin-left: -60px;
-	margin-top: -120px;
+	width: 20em;
+	height: 0;
 	@include chromeOSPointerCursor;
 
-  >.arrow{
-  	display: block;
-  	margin: 0 auto;
-	  width: 120px;
-		height: 120px;
-		@include border-radius(50%);
-	  background-color: rgba(0, 0, 0, .8);
-	  opacity: .65;
-	  @include single-transition(opacity, .4s);
-  	@extend .icon;
-  	@extend .icon-down;
-  	line-height: 120px;
-  	font-size: 30px;
-  	text-align: center;
-  	color: #fff;
-  }
+	&:hover{
 
-  &:hover{
-  	>.arrow{
-  		opacity: 1;
-  	}
-  }
+	}
 
 	&.fadeIn{
-		@include animation(fade-in-drop .4s forwards $easeOutExpo);
 
-		>.arrow{
-			@include animation(bouncing-arrow 2s infinite);
+		>.circle{
+			@include animation(pulse 1.5s infinite);
 		}
 	}
 
 	&.fadeOut{
-		@include animation(fade-out-drop .4s forwards $easeOutExpo);
+		
+		display: none;
+	}
+
+	>.circle{
+		position: absolute;
+		left: 3em;
+		top: -7em;
+		width: 14em;
+		height: 14em;
+		background-color: rgba(255, 255, 255, .2);
+		@include border-radius(50%);
+	}
+
+	>button{
+		margin: -1.15em auto;
+		color: #fff;
+		border-color: #fff;
+
+		&:hover{
+			border-color: transparent;
+		}
 	}
 }
 
@@ -406,7 +406,7 @@ $border_size: 7px;
 		>button{
 			position: absolute;
 			margin: .25em;
-			@include arrow-button( 4.5em, rgba(255, 255, 255, .6) );
+			@include arrow-button( 4.5em, rgba(255, 255, 255, .6), transparent, #fff, $darkgray-ui );
 
 			&.prev{
 				left: 0;

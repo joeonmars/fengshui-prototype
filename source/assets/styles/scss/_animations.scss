@@ -68,26 +68,17 @@
 
 
 /* -- drop button -- */
-@include keyframes(fade-in-drop) {
-  0%{
-  	visibility: inherit;
-		opacity: 0;
+@include keyframes(pulse) {
+  0% {
+    @include scale(.9);
   }
-  100%{
-  	visibility: inherit;
-		opacity: 1;
+  70% {
+    @include scale(1);
+    box-shadow: 0 0 0 50px #fff;
   }
-}
-
-
-@include keyframes(fade-out-drop) {
-  0%{
-  	visibility: inherit;
-		opacity: 1;
-  }
-  100%{
-  	visibility: hidden;
-		opacity: 0;
+  100% {
+    @include scale(.9);
+    box-shadow: 0 0 0 0 #fff;
   }
 }
 

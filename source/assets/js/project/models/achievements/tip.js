@@ -21,6 +21,7 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId, data ){
   this.character = data['character'];
   this.name = data['name'];
   this.icon = data['icon'];
+  this.prompt = data['prompt'];
   this.advice = data['advice'];
   this.problem = data['problem'];
   this.hint = data['hint'];
