@@ -64,7 +64,7 @@ feng.views.view3dobject.ReplaceableObject.prototype.change = function( objectId 
 };
 
 
-feng.views.view3dobject.ReplaceableObject.prototype.updateObject = function( mesh ){
+feng.views.view3dobject.ReplaceableObject.prototype.updateObject = function( view3dObject ){
 
 	var currentObject = this.object3d.children[0];
 
@@ -74,9 +74,25 @@ feng.views.view3dobject.ReplaceableObject.prototype.updateObject = function( mes
 		delete this._view3d.view3dObjects[ currentObject.name ];
 	}
 
-	this._object = mesh;
+	this._view3d.view3dObjects[ view3dObject.name ] = view3dObject;
+
+	this._object = view3dObject.object3d;
 
 	this.object3d.add( this._object );
+
+	TweenMax.fromTo( this._object.scale, 1, {
+		'y': 1.05
+	},{
+		'y': 1,
+		'ease': Elastic.easeOut
+	});
+
+	TweenMax.fromTo( this._object.position, .5, {
+		'y': 1.5
+	},{
+		'y': 0,
+		'ease': Bounce.easeOut
+	});
 };
 
 
@@ -94,9 +110,11 @@ feng.views.view3dobject.ReplaceableObject.prototype.onLoadComplete = function( e
 	mesh.material.needsUpdate = true;
 
 	var view3dObject = new feng.views.view3dobject.View3DObject( mesh, {}, this._view3d );
-	this._view3d.view3dObjects[ view3dObject.name ] = view3dObject;
+	view3dObject.init();
+	
+	this.objects[ this._idToLoad ] = view3dObject;
 
-	this.updateObject( mesh );
+	this.updateObject( view3dObject );
 
 	this.unlock();
 };

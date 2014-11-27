@@ -143,7 +143,7 @@
 			"id": "cactus",
 			"section": "studio",
 			"view": "livingroom",
-			"name": "cactus",
+			"name": "indoor plants",
 			"icon": "cactus",
 			"unlocked": false,
 			"mandatory": true,
@@ -151,13 +151,18 @@
 			"provide": null,
 			"final": true,
 			"problem": "Plants are always excellent Feng Shui for a home or office because they bring vibrant energy into one's space. But the cactus plant is a classic example of a so-called bad Feng Shui plant, because its energy is very spiky.",
-			"advice": "Be loremipsum, loremipsum",
+			"advice": null,
 			"character": "ollie",
 			"prompt": "Change to another plant.",
 			"reminder": "I love my “little green”, and cactus leaves also offer health benefits, right?",
 			"details": {
+				"names": {
+					"lucky-bamboo": "Lucky Bamboo",
+					"orchid": "Orchids",
+					"rubberplant": "Ivy"
+				},
 				"descriptions": {
-					"luckybamboo": "So why is Lucky Bamboo considered lucky in Feng shui? Bamboo in itself is an amazing plant with a very peaceful and wise energy. It teaches the ultimate wisdom: how to be flexible and hollow (open) on the inside, so that the spirit can freely flow and heal your being.",
+					"lucky-bamboo": "So why is Lucky Bamboo considered lucky in Feng shui? Bamboo in itself is an amazing plant with a very peaceful and wise energy. It teaches the ultimate wisdom: how to be flexible and hollow (open) on the inside, so that the spirit can freely flow and heal your being.",
 					"orchid": "Orchids are graceful flowering plants. The flowers are long lasting and come in a variety of shapes, sizes, and colors. They can bloom all year round, even in the coldest winter. Orchids not only absorb carbon dioxide but they release oxygen at night, which make them ideal for bedrooms. They can also help us sleep better because of this fact. For feng shui purposes, we often use orchids for relationship adjustments. While the bamboo can be used for a current or prospective relationship, the orchid is more often used to find a new partner.",
 					"rubberplant": "Ivy, because of its ability to attach itself so securely to structures and objects, stands for friendship and is an expression of constancy and patience. One of Its specialty is taking care of benzene found in plastics and inks. It also helps control formaldehyde from carpets and paint."
 				}
@@ -246,12 +251,12 @@
 			"view": "bathroom",
 			"name": "lotus",
 			"icon": "lotus",
-			"unlocked": false,
+			"unlocked": true,
 			"mandatory": false,
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
+			"problem": null,
 			"advice": "Be loremipsum, loremipsum",
 			"character": "ollie",
 			"prompt": null,

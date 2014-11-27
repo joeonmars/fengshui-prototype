@@ -36,18 +36,33 @@ feng.views.sections.captions.Caption = function( object, cameraController, rende
 
   this._shadeEl = goog.dom.getElementByClass('shade', this.domElement);
   this._panelEl = goog.dom.getElementByClass('panel', this.domElement);
+  this._scrollerInnerEl = goog.dom.getElementByClass('scroller-inner', this.domElement);
 
   this._closeButton = goog.dom.getElementByClass('close-button', this.domElement);
   this._panelButton = goog.dom.getElementByClass('panel-button', this.domElement);
   this._hintButton = goog.dom.getElementByClass('hint-button', this.domElement);
-  this._interactionButton = goog.dom.getElementByClass('interaction-button', this.domElement);
+  this._promptButton = goog.dom.getElementByClass('prompt-button', this.domElement);
 
-  this._problemEl = goog.dom.getElementByClass('problem', this.domElement);
-  this._hintEl = goog.dom.getElementByClass('hint', this.domElement);
-  this._interactionEl = goog.dom.getElementByClass('interaction', this.domElement);
-  this._adviceEl = goog.dom.getElementByClass('advice', this.domElement);
+  this._problemSection = goog.dom.getElementByClass('problem', this.domElement);
+  this._hintSection = goog.dom.getElementByClass('hint', this.domElement);
+  this._interactionSection = goog.dom.getElementByClass('interaction', this.domElement);
+  this._adviceSection = goog.dom.getElementByClass('advice', this.domElement);
+
+  this._sections = goog.array.filter([
+      this._problemSection,
+      this._hintSection,
+      this._interactionSection,
+      this._adviceSection
+    ], function(section) {
+      return goog.isDefAndNotNull(section);
+    });
+
+  this._section = null;
+
   this._shareEl = goog.dom.getElementByClass('share', this.domElement);
   this._shareButtons = goog.dom.query('a', this._shareEl);
+
+  this._sectionTweener = null;
 
   // set default status
   this._isPanelAnimatedOut = true;
@@ -81,19 +96,12 @@ feng.views.sections.captions.Caption.prototype.activate = function() {
 
   this._eventHandler.listen( this._closeButton, 'click', this.close, false, this );
   this._eventHandler.listen( this._panelButton, 'click', this.togglePanel, false, this );
-
-  this._eventHandler.listen( this._hintButton, 'click', this.close, false, this );
-
-  if(this._interactionButton) {
-    this._eventHandler.listen( this._interactionButton, 'click', this.onClick, false, this );
-  }
   
   // listen for unlock ready event from view3d object
   this._eventHandler.listen( this._object, feng.events.EventType.UNLOCK, this.updateStatus, false, this );
   this._eventHandler.listen( window, 'resize', this.onResize, false, this );
 
   // listen for object camera animated in event to animate in panel
-  console.log(this._object)
   this._eventHandler.listen( this._object, feng.events.EventType.ANIMATED_IN, this.animateInPanel, false, this );
 
   // listen for share button click events
@@ -104,9 +112,9 @@ feng.views.sections.captions.Caption.prototype.activate = function() {
   //
   this._closeKeyId = feng.keyboardController.bind( this._close, feng.keyboardController.key.ESC, true );
 
-  this.updateStatus();
-
   goog.style.showElement(this._panelButton, false);
+
+  this.updateStatus();
 };
 
 
@@ -117,6 +125,129 @@ feng.views.sections.captions.Caption.prototype.deactivate = function() {
   feng.keyboardController.unbind( this._closeKeyId );
 
   this._object.stopInteraction();
+};
+
+
+feng.views.sections.captions.Caption.prototype.enableHintSection = function( shouldEnable ) {
+
+  if(shouldEnable) {
+
+    this._eventHandler.listen( this._hintButton, 'click', this.close, false, this );
+
+  }else {
+
+    this._eventHandler.unlisten( this._hintButton, 'click', this.close, false, this );
+  }
+};
+
+
+feng.views.sections.captions.Caption.prototype.enableProblemSection = function( shouldEnable ) {
+
+  if(shouldEnable) {
+
+    this._eventHandler.listen( this._promptButton, 'click', this.onClick, false, this );
+
+  }else {
+
+    this._eventHandler.unlisten( this._promptButton, 'click', this.onClick, false, this );
+  }
+};
+
+
+feng.views.sections.captions.Caption.prototype.enableInteractionSection = function( shouldEnable ) {
+
+};
+
+
+feng.views.sections.captions.Caption.prototype.enableAdviceSection = function( shouldEnable ) {
+
+};
+
+
+feng.views.sections.captions.Caption.prototype.getSectionX = function( section ) {
+
+  return goog.array.indexOf( this._sections, section ) * goog.style.getSize(this._scrollerInnerEl).width;
+};
+
+
+feng.views.sections.captions.Caption.prototype.gotoSection = function( section, instant ) {
+
+  if(this._section === section) {
+    return;
+  }else {
+    this._section = section;
+  }
+
+  var fromSection = this._section;
+  var toSection = section;
+
+  var duration = instant ? 0 : .25;
+
+  this._sectionTweener = TweenMax.to(this._scrollerInnerEl, duration, {
+    'x': - this.getSectionX( toSection ),
+    'ease': Quad.easeInOut,
+    'onStart': this.onScrollFromSection,
+    'onStartParams': [fromSection],
+    'onStartScope': this,
+    'onComplete': this.onScrolledToSection,
+    'onCompleteParams': [toSection],
+    'onCompleteScope': this
+  });
+};
+
+
+feng.views.sections.captions.Caption.prototype.onScrollFromSection = function( fromSection ) {
+
+  if(!fromSection) {
+
+    return;
+  }
+
+  goog.dom.classes.addRemove( fromSection, 'animate-in', 'animate-out' );
+
+  switch(fromSection) {
+
+    case this._interactionSection:
+    this.enableInteractionSection( false );
+    break;
+
+    case this._hintSection:
+    this.enableHintSection( false );
+    break;
+
+    case this._problemSection:
+    this.enableProblemSection( false );
+    break;
+
+    case this._adviceSection:
+    this.enableAdviceSection( false );
+    break;
+  }
+};
+
+
+feng.views.sections.captions.Caption.prototype.onScrolledToSection = function( toSection ) {
+
+  goog.dom.classes.addRemove( toSection, 'animate-out', 'animate-in' );
+
+  switch(toSection) {
+
+    case this._interactionSection:
+    this.enableInteractionSection( true );
+    break;
+
+    case this._hintSection:
+    this.enableHintSection( true );
+    break;
+
+    case this._problemSection:
+    this.enableProblemSection( true );
+    break;
+
+    case this._adviceSection:
+    this.enableAdviceSection( true );
+    break;
+  }
 };
 
 
@@ -205,37 +336,44 @@ feng.views.sections.captions.Caption.prototype.unlock = function() {
 
 feng.views.sections.captions.Caption.prototype.updateStatus = function() {
 
+  // check if should go hint section
   var tip = this._object.tip;
 
   var requiredTip = tip.getRequiredTip();
   var hasLockedRequiredTip = (requiredTip && !requiredTip.unlocked);
-  goog.style.showElement( this._hintEl, hasLockedRequiredTip );
 
-  if(this._interactionEl) {
-    goog.style.showElement( this._interactionEl, !hasLockedRequiredTip );
+  if(hasLockedRequiredTip) {
+
+    this.gotoSection( this._hintSection );
+    return;
   }
 
-  if(!tip.problem || hasLockedRequiredTip) {
-    goog.style.showElement( this._problemEl, false );
-  }
+  // check if should go problem section
+  goog.style.showElement( this._promptButton, !tip.unlocked );
 
-  if(this._interactionButton) {
-    goog.style.showElement( this._interactionButton, !tip.unlocked );
+  if(!tip.unlocked) {
+
+    if(this._problemSection) {
+      
+      this.gotoSection( this._problemSection );
+      return;
+    }
   }
   
-  goog.style.showElement( this._adviceEl, tip.unlocked );
+  //
   goog.style.showElement( this._shareEl, tip.unlocked );
+  
+  if(this._interactionSection) {
+    goog.dom.classes.add( this._interactionSection, 'unlocked' );
+  }
 
+  // check if should go advice section
   if(tip.unlocked) {
-    
-    if(tip.problem) {
-      goog.dom.classes.add( this._problemEl, 'closed' );
-    }
 
-    goog.dom.classes.remove( this._adviceEl, 'closed' );
-
-    if(this._interactionEl) {
-      goog.dom.classes.add( this._interactionEl, 'unlocked' );
+    if(this._adviceSection) {
+      
+      this.gotoSection( this._adviceSection );
+      return;
     }
   }
 };
@@ -257,11 +395,18 @@ feng.views.sections.captions.Caption.prototype.onPanelAnimatedOut = function( sh
 feng.views.sections.captions.Caption.prototype.onClick = function( e ) {
 
   switch(e.currentTarget) {
-    case this._interactionButton:
+    case this._promptButton:
     this._object.startInteraction();
     
     /* WIP */
-    this.animateOutPanel();
+    if(this._interactionSection) {
+
+      this.gotoSection( this._interactionSection );
+
+    }else {
+
+      this.animateOutPanel();
+    }
     break;
 
     /*
@@ -289,4 +434,22 @@ feng.views.sections.captions.Caption.prototype.onResize = function( e ) {
 
   goog.style.setStyle( this._shadeEl, 'height', this._renderSize.height + 'px' );
   goog.style.setStyle( this._panelEl, 'height', this._renderSize.height + 'px' );
+
+  if(this._sectionTweener) {
+
+    var sectionX = this.getSectionX( this._section );
+
+    if(this._sectionTweener.isActive()) {
+
+      this._sectionTweener.updateTo({
+        'x': - sectionX
+      })
+
+    }else {
+
+      TweenMax.set(this._scrollerInnerEl, {
+        'x': - sectionX
+      });
+    }
+  }
 };

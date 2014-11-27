@@ -13,10 +13,6 @@
 @import "fonts";
 @import "icons";
 
-@at-root {
-  @import "animations";
-}
-
 // --- Global vars ---
 $min_width: 1024px;
 $min_height: 640px;
@@ -25,7 +21,6 @@ $cream: #FFFDF1;
 $brown: #D9CBB5;
 $gray: #969696;
 $red: #e2443a;
-$yellow: #e3cc76;
 $black: #3d3e39;
 $lightgray-ui: #9a9a9a;
 $darkgray-ui: #626262;
@@ -45,6 +40,9 @@ $easeOutQuart: cubic-bezier(0.165, 0.840, 0.440, 1.000);
 $easeOutQuint: cubic-bezier(0.230, 1.000, 0.320, 1.000);
 $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
 
+@at-root {
+  @import "animations";
+}
 
 @mixin absoluteTopLeft() {
   position: absolute;

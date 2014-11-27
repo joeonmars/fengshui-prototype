@@ -37,36 +37,50 @@
 
 						<div class="scroller-inner">
 
+							{if $tip.hint}
 							<section class="hint">
-								<p>{ $tip.hint }</p>
-								{call feng.templates.common.PrimaryButton}
-									{param icon: 'icon-yes' /}
-									{param classname: 'hint-button' /}
-									{param text: 'I see' /}
-								{/call}
-							</section>
-
-							<section class="problem">
-								<p>{ $tip.problem }</p>
-
-								<!-- either close to interact, or scroll down to go interaction section if available -->
-								{call feng.templates.common.PrimaryButton}
-									{param classname: 'interaction-button' /}
-									{param icon: 'icon-yes' /}
-									{param text: $tip.prompt /}
-								{/call}
-							</section>
-
-							{if $interactionContent}
-							<section class="interaction">
-								{ $interactionContent }
+								<div class="inner">
+									<p>{ $tip.hint }</p>
+									{call feng.templates.common.PrimaryButton}
+										{param icon: 'icon-yes' /}
+										{param classname: 'hint-button' /}
+										{param text: 'I see' /}
+									{/call}
+								</div>
 							</section>
 							{/if}
 
-							<section class="advice">
-								<h2>Tips</h2>
-								<p>{ $tip.advice }</p>
+							{if $tip.problem}
+							<section class="problem">
+								<div class="inner">
+									<p>{ $tip.problem }</p>
+
+									<!-- either close to interact, or scroll down to go interaction section if available -->
+									{call feng.templates.common.PrimaryButton}
+										{param classname: 'prompt-button' /}
+										{param icon: 'icon-yes' /}
+										{param text: $tip.prompt /}
+									{/call}
+								</div>
 							</section>
+							{/if}
+
+							{if $interactionContent}
+							<section class="interaction">
+								<div class="inner">
+									{ $interactionContent }
+								</div>
+							</section>
+							{/if}
+
+							{if $tip.advice}
+							<section class="advice">
+								<div class="inner">
+									<h2>Tips</h2>
+									<p>{ $tip.advice }</p>
+								</div>
+							</section>
+							{/if}
 
 						</div>
 
@@ -145,7 +159,6 @@
 
 /**
  * Change object caption
- * @param objects objects
  * @param tip the tip
  * @param? position the caption's position
  */
@@ -159,9 +172,18 @@
 			<h2>Click on an object to change</h2>
 
 			<ul class="objects">
-				{foreach $objectKey in keys($objects)}
+				{foreach $objectKey in keys($tip.details['names'])}
 					<li>
 						<button class="object" data-object="{$objectKey}"></button>
+					</li>
+				{/foreach}
+			</ul>
+
+			<ul class="info">
+				{foreach $objectKey in keys($tip.details['descriptions'])}
+					<li>
+						<h3>{ $tip.details['names'][$objectKey] }</h3>
+						<p>{ $tip.details['descriptions'][$objectKey] }</p>
 					</li>
 				{/foreach}
 			</ul>

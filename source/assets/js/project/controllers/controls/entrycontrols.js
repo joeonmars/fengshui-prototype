@@ -17,6 +17,8 @@ feng.controllers.controls.EntryControls = function(camera, view3d, domElement){
 
   this._timeline = new TimelineMax();
 
+  this._footstepsSound = null;
+
   this._entry = this._view3d.getEntry();
 };
 goog.inherits(feng.controllers.controls.EntryControls, feng.controllers.controls.Controls);
@@ -79,6 +81,8 @@ feng.controllers.controls.EntryControls.prototype.start = function () {
 		t: 1,
 		'delay': 1,
 		'ease': Quad.easeInOut,
+		'onStart': this.onArriveInStart,
+		'onStartScope': this,
 		'onUpdate': this.onArriveInUpdate,
 		'onUpdateParams': [prop],
 		'onUpdateScope': this,
@@ -101,6 +105,8 @@ feng.controllers.controls.EntryControls.prototype.openDoor = function () {
 	designPlane.removeFromScene();
 
 	this._timeline.play();
+
+	feng.soundController.playSfx('entry-open');
 };
 
 
@@ -127,6 +133,12 @@ feng.controllers.controls.EntryControls.prototype.onStepCloseComplete = function
 	hud.openingOverlay.animateIn();
 
 	goog.events.listenOnce( hud.openingOverlay, feng.events.EventType.HIDE, this.openDoor, false, this );
+};
+
+
+feng.controllers.controls.EntryControls.prototype.onArriveInStart = function () {
+	
+	this._footstepsSound = feng.soundController.playSfx('footsteps');
 };
 
 
@@ -160,6 +172,10 @@ feng.controllers.controls.EntryControls.prototype.onArriveInUpdate = function (p
 
 
 feng.controllers.controls.EntryControls.prototype.onArriveInComplete = function (prop) {
+
+	this._footstepsSound.pause();
+
+	feng.soundController.playSfx('entry-close');
 
 	this._entry.close();
 

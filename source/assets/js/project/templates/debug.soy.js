@@ -70,15 +70,15 @@ feng.templates.debug.PathfindingDebugView = function(opt_data, opt_ignored) {
  */
 feng.templates.debug.AchievementsDebugView = function(opt_data, opt_ignored) {
   var output = '\t';
-  var param359 = '<div class="tipsPanel"><button class="unlock-all">Unlock All</button><ul class="tips">';
-  var tipList361 = opt_data.tips;
-  var tipListLen361 = tipList361.length;
-  for (var tipIndex361 = 0; tipIndex361 < tipListLen361; tipIndex361++) {
-    var tipData361 = tipList361[tipIndex361];
-    param359 += '<li data-tip-id="' + tipData361.id + '" data-view-id="' + tipData361.view + '" data-section-id="' + tipData361.section + '"><div class="icon icon-' + tipData361.icon + '"></div><div class="caption"><p>' + tipData361.id + '</p><p>' + tipData361.view + '</p><p>' + tipData361.section + '</p></div></li>';
+  var param376 = '<div class="tipsPanel"><button class="unlock-all">Unlock All</button><ul class="tips">';
+  var tipList378 = opt_data.tips;
+  var tipListLen378 = tipList378.length;
+  for (var tipIndex378 = 0; tipIndex378 < tipListLen378; tipIndex378++) {
+    var tipData378 = tipList378[tipIndex378];
+    param376 += '<li data-tip-id="' + tipData378.id + '" data-view-id="' + tipData378.view + '" data-section-id="' + tipData378.section + '"><div class="icon icon-' + tipData378.icon + '"></div><div class="caption"><p>' + tipData378.id + '</p><p>' + tipData378.view + '</p><p>' + tipData378.section + '</p></div></li>';
   }
-  param359 += '</ul></div>';
-  output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param359});
+  param376 += '</ul></div>';
+  output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param376});
   return output;
 };
 

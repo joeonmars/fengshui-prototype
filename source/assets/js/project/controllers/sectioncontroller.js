@@ -30,8 +30,6 @@ feng.controllers.SectionController.prototype.init = function(){
   this.addSection('house');
 
   this._eventHandler.listen(this, feng.events.EventType.ANIMATE_IN, this.onSectionAnimateIn, false, this);
-  this._eventHandler.listen(this, feng.events.EventType.ANIMATE_OUT, this.onSectionAnimateOut, false, this);
-  this._eventHandler.listen(this, feng.events.EventType.ANIMATED_IN, this.onSectionAnimatedIn, false, this);
   this._eventHandler.listen(this, feng.events.EventType.ANIMATED_OUT, this.onSectionAnimatedOut, false, this);
 };
 
@@ -80,18 +78,6 @@ feng.controllers.SectionController.prototype.onSectionAnimateIn = function(e){
 	}
 
 	this._section = e.target;
-};
-
-
-feng.controllers.SectionController.prototype.onSectionAnimateOut = function(e){
-  
-  
-};
-
-
-feng.controllers.SectionController.prototype.onSectionAnimatedIn = function(e){
-  
-
 };
 
 

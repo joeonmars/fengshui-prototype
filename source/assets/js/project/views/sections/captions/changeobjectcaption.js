@@ -11,14 +11,15 @@ goog.require('feng.views.sections.captions.Caption');
 feng.views.sections.captions.ChangeObjectCaption = function( object, cameraController, renderSize, controls, hud ){
 
   this._template = feng.templates.captions.ChangeObjectCaption;
-  
+  console.log(object.tip)
   this._templateData = {
-    objects: object.objects,
     tip: object.tip,
     position: 'right'
   };
 
   goog.base(this, object, cameraController, renderSize, controls, hud);
+
+  this._objectEl = null;
 
   this._objectEls = goog.dom.getElementsByClass('object', this.domElement);
 };
@@ -47,7 +48,15 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.hide = function() {
 
 feng.views.sections.captions.ChangeObjectCaption.prototype.onClickObject = function(e) {
 
-  var objectId = e.currentTarget.getAttribute("data-object");
+  if(this._objectEl) {
+    goog.dom.classes.enable( this._objectEl, 'active', false );
+  }
+
+  this._objectEl = e.currentTarget;
+
+  goog.dom.classes.enable( this._objectEl, 'active', true );
+
+  var objectId = this._objectEl.getAttribute("data-object");
 
   this._object.change( objectId );
 };

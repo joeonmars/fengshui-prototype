@@ -26,8 +26,6 @@ feng.views.view3dobject.Mirror.prototype.init = function() {
   var material = this.object3d.material;
   material.needsUpdate = true;
   material.envMap = this._cubeCamera.renderTarget;
-
-  this.updateEnvMap();
 };
 
 

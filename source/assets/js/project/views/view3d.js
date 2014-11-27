@@ -314,6 +314,14 @@ feng.views.View3D.prototype.show = function(){
 
  	this.onResize();
 
+	// update mirrors if there are
+	var mirrorObjects = this.getObjectsByClass( feng.views.view3dobject.Mirror );
+
+	goog.array.forEach(mirrorObjects, function(mirror) {
+		mirror.updateEnvMap();
+	});
+
+	//
 	this.dispatchEvent({
 		type: feng.events.EventType.SHOW
 	});

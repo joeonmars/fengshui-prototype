@@ -151,11 +151,20 @@ feng.views.sections.controls.Tooltips.prototype.deactivate = function(){
 };
 
 
-feng.views.sections.controls.Tooltips.prototype.show = function( shouldShow ){
+feng.views.sections.controls.Tooltips.prototype.onModeChange = function( e ){
   
-  goog.base(this, 'show', shouldShow);
+  goog.base(this, 'onModeChange', e);
 
-  this.detectBlocking();
+  switch(e.mode) {
+
+    case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
+    this.deactivate();
+    break;
+
+    default:
+    this.activate();
+    break;
+  }
 };
 
 
