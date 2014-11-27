@@ -495,14 +495,17 @@ feng.models.View3D.Data = {
 			'ceiling-lamp-2':	{
 				texture: "house.livingroom.ceiling-lamp-2-texture"
 			},
-			'mirror':	{
-				Class: "diningmirror",
+			'mirror-holder':	{
+				Class: "tip",
 				camera: {
 					position: new THREE.Vector3(-9, 75, -118),
 					rotation: new THREE.Euler(-0.4, 0, 0, 'YXZ'),
 					fov: 40
 				},
 				tipKey: 'house.livingroom.mirror'
+			},
+			'mirror':	{
+				Class: "mirror"
 			},
 			'drawer': {
 				Class: "drawer",

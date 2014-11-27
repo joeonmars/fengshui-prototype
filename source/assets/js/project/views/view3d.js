@@ -28,7 +28,6 @@ goog.require('feng.views.view3dobject.Mirror');
 goog.require('feng.views.view3dobject.TipObject');
 goog.require('feng.views.view3dobject.entities.Bear');
 goog.require('feng.views.view3dobject.entities.Cat');
-goog.require('feng.views.view3dobject.entities.DiningMirror');
 goog.require('feng.views.view3dobject.entities.Drawer');
 goog.require('feng.views.view3dobject.entities.Knife');
 goog.require('feng.views.view3dobject.entities.Lamp');
@@ -461,7 +460,6 @@ feng.views.View3D.prototype.initScene = function() {
 		'movable': feng.views.view3dobject.MovableObject,
 		'gateway': feng.views.view3dobject.GatewayObject,
 		'mirror': feng.views.view3dobject.Mirror,
-		'diningmirror': feng.views.view3dobject.entities.DiningMirror,
 		'closet': feng.views.view3dobject.entities.Closet,
 		'pictures': feng.views.view3dobject.entities.Pictures,
 		'computer': feng.views.view3dobject.entities.Computer,
