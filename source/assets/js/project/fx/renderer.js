@@ -209,7 +209,9 @@ feng.fx.Renderer.prototype.render = function(){
 
 	if(this.onBeforeRenderBlur) this.onBeforeRenderBlur();
 	
-	this._blurComposer.render();
+	if(this._blurTexturePass.enabled) {
+		this._blurComposer.render();
+	}
 
 	if(this.onBeforeRenderMask) this.onBeforeRenderMask();
 
