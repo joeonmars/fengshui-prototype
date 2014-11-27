@@ -64,6 +64,18 @@ feng.utils.Utils.centerAlign = function(alignEl, relativeElOrSize) {
 };
 
 
+feng.utils.Utils.createDomCollectionByAttributes = function( doms, attr ) {
+
+  var result = {};
+
+  goog.array.forEach(doms, function(dom) {
+    result[ dom.getAttribute( attr ) ] = dom;
+  });
+
+  return result;
+};
+
+
 feng.utils.Utils.popUp = function(url) {
 
   var width, height;

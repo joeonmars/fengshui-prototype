@@ -21,8 +21,8 @@ feng.controllers.view3d.RenderController = function( view3d ){
 
   //
   this._maxBlur = 20;
-  this._minBrightness = -.25;
-  this._minContrast = -.40;
+  this._minBrightness = -.20;
+  this._minContrast = -.35;
   this._minVignette = 1;
   this._maxVignette = 3;
 
@@ -200,10 +200,10 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderBlur = function
 	var maskedObject = this._maskedObject;
 	var view3dObjects = this._view3d.view3dObjects;
 
-	goog.object.forEach(view3dObjects, function(view3dObject) {
+	for(var name in view3dObjects) {
 
-		view3dObject.enableRender();
-	});
+		view3dObjects[ name ].enableRender();
+	}
 
 	this._view3d.fx.visible = true;
 
@@ -222,10 +222,10 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderMask = function
 	var maskedObject = this._maskedObject;
 	var view3dObjects = this._view3d.view3dObjects;
 
-	goog.object.forEach(view3dObjects, function(view3dObject) {
+	for(var name in view3dObjects) {
 
-		view3dObject.disableRender();
-	});
+		view3dObjects[ name ].disableRender();
+	}
 
 	this._view3d.fx.visible = false;
 

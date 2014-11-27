@@ -30,7 +30,7 @@ feng.apps.Demo = function() {
 	feng.quality = feng.utils.Utils.getQuery('quality') || feng.Config['quality'];
 	
 	feng.renderSettings = {
-		renderSize: (feng.quality === 'high') ? 1024 : 512,
+		renderSize: (feng.quality === 'high') ? ((screen.width > 1920) ? 2048 : 1024) : 1024,
 		shadowMapSize: (feng.quality === 'high') ? 1024 : 512
 	};
 

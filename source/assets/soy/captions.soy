@@ -174,14 +174,14 @@
 			<ul class="objects">
 				{foreach $objectKey in keys($tip.details['names'])}
 					<li>
-						<button class="object" data-object="{$objectKey}"></button>
+						<button class="item-button" data-object="{$objectKey}"></button>
 					</li>
 				{/foreach}
 			</ul>
 
 			<ul class="info">
 				{foreach $objectKey in keys($tip.details['descriptions'])}
-					<li>
+					<li data-object="{$objectKey}">
 						<h3>{ $tip.details['names'][$objectKey] }</h3>
 						<p>{ $tip.details['descriptions'][$objectKey] }</p>
 					</li>

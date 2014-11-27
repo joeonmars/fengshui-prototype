@@ -75,7 +75,7 @@ feng.fx.Renderer = function(canvas, scene, camera){
 		stencilBuffer: true
 	};
 
-	var res = (screen.width > 1920) ? 2048 : 1024;
+	var res = feng.renderSettings.renderSize;
 
 	var resolution = (new goog.math.Size( res, res )).scale( this._DPR );
 
@@ -92,7 +92,7 @@ feng.fx.Renderer = function(canvas, scene, camera){
 	this._renderTextureForMaskingPass.enabled = false;
 
 	// create blur texture pass
-	var renderSize = feng.renderSettings.renderSize;
+	var renderSize = feng.renderSettings.renderSize / 2;
 	var renderTarget = new THREE.WebGLRenderTarget( renderSize, renderSize, renderTargetParameters );
 	renderTarget.generateMipmaps = false;
 

@@ -19,7 +19,7 @@ feng.views.view3dobject.Mirror.prototype.init = function() {
 
   goog.base(this, 'init');
 
-  this._cubeCamera = new THREE.CubeCamera( 0.1, 1000, feng.renderSettings.renderSize * 2 );
+  this._cubeCamera = new THREE.CubeCamera( 0.1, 1000, feng.renderSettings.renderSize );
   this._cubeCamera.position.copy( this.getCenter() );
   this.object3d.add( this._cubeCamera );
 

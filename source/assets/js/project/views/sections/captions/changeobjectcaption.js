@@ -19,9 +19,10 @@ feng.views.sections.captions.ChangeObjectCaption = function( object, cameraContr
 
   goog.base(this, object, cameraController, renderSize, controls, hud);
 
-  this._objectEl = null;
+  this._objectId = null;
 
-  this._objectEls = goog.dom.getElementsByClass('object', this.domElement);
+  this._itemEls = feng.utils.Utils.createDomCollectionByAttributes( goog.dom.query('.objects .item-button', this.domElement), 'data-object' );
+  this._infoEls = feng.utils.Utils.createDomCollectionByAttributes( goog.dom.query('.info li', this.domElement), 'data-object' );
 };
 goog.inherits(feng.views.sections.captions.ChangeObjectCaption, feng.views.sections.captions.Caption);
 
@@ -30,7 +31,7 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.show = function() {
 
   goog.base(this, 'show');
 
-  goog.array.forEach(this._objectEls, function(objectEl) {
+  goog.object.forEach(this._itemEls, function(objectEl) {
     this._eventHandler.listen(objectEl, 'click', this.onClickObject, false, this);
   }, this);
 
@@ -48,15 +49,15 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.hide = function() {
 
 feng.views.sections.captions.ChangeObjectCaption.prototype.onClickObject = function(e) {
 
-  if(this._objectEl) {
-    goog.dom.classes.enable( this._objectEl, 'active', false );
+  if(this._objectId) {
+    goog.dom.classes.enable( this._itemEls[this._objectId], 'active', false );
+    goog.dom.classes.enable( this._infoEls[this._objectId], 'active', false );
   }
 
-  this._objectEl = e.currentTarget;
+  this._objectId = e.currentTarget.getAttribute('data-object');
 
-  goog.dom.classes.enable( this._objectEl, 'active', true );
+  goog.dom.classes.enable( this._itemEls[this._objectId], 'active', true );
+  goog.dom.classes.enable( this._infoEls[this._objectId], 'active', true );
 
-  var objectId = this._objectEl.getAttribute("data-object");
-
-  this._object.change( objectId );
+  this._object.change( this._objectId );
 };

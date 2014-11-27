@@ -12,25 +12,7 @@
 				margin-left: 0;
 			}
 
-			>.object{
-				width: 100px;
-				height: 100px;
-				border: solid 2px $lightgray-ui;
-				@include border-radius(50%);
-				background-color: #fff;
-				opacity: .3;
-				@include transition(opacity .2s, border-color .2s);
-				box-shadow: 0 0 0 0 rgba( $yellow-ui,  1 );
-
-				&:hover{
-					opacity: .5;
-				}
-
-				&.active{
-					border-color: $yellow-ui;
-					opacity: 1;
-					@include animation( pulse-button 1.25s infinite $easeInOutCubic );
-				}
+			>.item-button{
 
 				// item classes
 				&[data-object="rubberplant"] {
@@ -40,6 +22,19 @@
 				&[data-object="lucky-bamboo"] {
 					@include retina-icon("luckybamboo");
 				}
+			}
+		}
+	}
+
+	.info{
+		width: 100%;
+
+		>li{
+			width: 100%;
+			display: none;
+
+			>.active{
+				display: block;
 			}
 		}
 	}
