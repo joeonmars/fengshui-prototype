@@ -349,7 +349,9 @@ feng.views.sections.captions.Caption.prototype.updateStatus = function() {
   }
 
   // check if should go problem section
-  goog.style.showElement( this._promptButton, !tip.unlocked );
+  if(this._promptButton) {
+    goog.style.showElement( this._promptButton, !tip.unlocked );
+  }
 
   if(!tip.unlocked) {
 

@@ -15,6 +15,8 @@ goog.addSingletonGetter( feng.PubSub );
 feng.PubSub.Topic = {
 	SHOW_VIEW3D: 'show_view3d',
 	HIDE_VIEW3D: 'hide_view3d',
+	BUFFER_START: 'buffer_start',
+	BUFFER_COMPLETE: 'buffer_complete',
 	NAVIGATE: 'navigate',
 	SOUND_ON: 'sound_on',
 	SOUND_OFF: 'sound_off',

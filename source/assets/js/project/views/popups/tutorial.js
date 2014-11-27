@@ -70,7 +70,7 @@ feng.views.popups.Tutorial.prototype.nextStep = function(){
 
 	}else {
 
-		this.animateOut();
+		this.dispatchEvent( feng.events.EventType.COMPLETE );
 	}
 };
 
@@ -187,7 +187,13 @@ feng.views.popups.Tutorial.prototype.setProgress = function(progress){
 
 	goog.style.setStyle( this._fillEl, 'width', progress + '%' );
 
-	this._counterEl.innerHTML = (progress > 9) ? progress : ('0' + progress);
+	this._counterEl.innerHTML = ((progress > 9) ? progress : ('0' + progress)) + '%';
+};
+
+
+feng.views.popups.Tutorial.prototype.setBuffering = function(){
+
+	this._counterEl.innerHTML = "Please Wait...";
 };
 
 

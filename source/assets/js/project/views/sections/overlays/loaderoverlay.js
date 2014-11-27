@@ -90,7 +90,7 @@ feng.views.sections.overlays.LoaderOverlay.prototype.onLoadProgress = function(e
 
 feng.views.sections.overlays.LoaderOverlay.prototype.onLoadComplete = function(e){
 
-	this.animateOut();
+	feng.pubsub.subscribeOnce( feng.PubSub.Topic.BUFFER_COMPLETE, this.animateOut, this );
 };
 
 

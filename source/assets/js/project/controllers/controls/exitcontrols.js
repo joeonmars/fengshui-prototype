@@ -56,6 +56,12 @@ feng.controllers.controls.ExitControls.prototype.activate = function () {
 
 feng.controllers.controls.ExitControls.prototype.onLoadComplete = function () {
 	
+	feng.pubsub.subscribeOnce( feng.PubSub.Topic.BUFFER_COMPLETE, this.onBufferComplete, this );
+};
+
+
+feng.controllers.controls.ExitControls.prototype.onBufferComplete = function () {
+
 	feng.soundController.playSfx('door-open');
 
 	goog.Timer.callOnce(function() {

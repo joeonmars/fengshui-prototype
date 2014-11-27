@@ -112,9 +112,35 @@ feng.views.View3D.prototype.init = function(){
 
 feng.views.View3D.prototype.createResources = function(){
 
-	goog.object.forEach(this.view3dObjects, function(object) {
-		object.createTextures();
-	});
+	feng.pubsub.publish( feng.PubSub.Topic.BUFFER_START );
+
+	// upload the texture with a delay between each creation
+	// try be friendly to the GPU...
+
+	var i = 0;
+	var callbacks = [];
+
+	var objects = goog.object.getValues(this.view3dObjects);
+	var count = objects.length;
+
+	var delay = new goog.async.Delay(function() {
+
+		objects[i].createTextures();
+		
+		if(i === count - 1) {
+
+			feng.pubsub.publish( feng.PubSub.Topic.BUFFER_COMPLETE );
+			delay.dispose();
+
+		}else {
+
+			i++;
+			delay.start();
+		}
+
+	}, 100);
+
+	delay.start();
 };
 
 
