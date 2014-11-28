@@ -3,42 +3,26 @@
 	width: 100%;
 	height: 100%;
 
-	&.left{
-		>.panel{
-			left: 0;
-
-			>.panel-button{
-				@extend .icon-prev;
-				right: -50px;
-				@include animation(bouncing-left 2s infinite);
-			}
-		}
-
-		>.shade{
-			@include background-image(linear-gradient(to right, rgba(0,0,0,.5) 40%, rgba(0,0,0,0) 100%));
-		}
-
-		&.hide-panel{
-			>.panel{
-				@include translateX(-100%);
-
-				>.panel-button{
-					@extend .icon-next;
-					@include animation(bouncing-right 2s infinite);
-				}
-			}
-		}
-	}
-
 	&.right{
 		>.panel{
 			right: 0;
 
 			>.panel-button{
-				@extend .icon-next;
-				left: -50px;
-				@include animation(bouncing-right 2s infinite);
+				left: -20em;
+				
+				>.icon{
+					@include animation(bouncing-right 2s infinite);
+					@extend .icon-next;
+				}
+
+				>h3{
+					opacity: 0;
+				}
 			}
+		}
+
+		>.close-button{
+			@include arrow-button( 4.8em, $darkgray-ui, transparent, #fff, $darkgray-ui );
 		}
 
 		>.shade{
@@ -50,13 +34,20 @@
 				@include translateX(100%);
 
 				>.panel-button{
-					@extend .icon-prev;
-					@include animation(bouncing-left 2s infinite);
+
+					>.icon{
+						@include animation(bouncing-left 2s infinite);
+						@extend .icon-prev;
+					}
+
+					>h3{
+						opacity: 1;
+					}
 				}
 			}
 
 			>.close-button{
-
+				@include arrow-button( 4.8em, #fff, transparent, #fff, $darkgray-ui );
 			}
 		}
 	}
@@ -72,20 +63,10 @@
 				opacity: 1;
 			}
 
-			>.panel-controls{
-				.close-button{
-					@include translateX(-100px);
-				}
-			}
-
 			>.panel-content{
 				opacity: 0;
 				visibility: hidden;
 			}
-		}
-
-		>.close-button{
-			@include translateX(-50px);
 		}
 	}
 
@@ -112,36 +93,40 @@
 
 		>.panel-button{
 			position: absolute;
-			margin-top: -20px;
-			margin-left: -20px;
+			width: 16em;
+			text-align: right;
 			top: 50%;
 			color: #fff;
-			font-size: 40px;
 			opacity: .25;
 			@include transition(opacity .5s, transform .5s $easeInOutCubic);
+
+			>.icon{
+				display: inline-block;
+				@include arrow-button( 4.5em, #fff, transparent, #fff, $darkgray-ui );
+			}
+
+			>h3{
+				line-height: 1.25;
+				padding-top: .8em;
+				font-size: 1.8em;
+				color: rgba(#fff, .35);
+				@include single-transition(opacity, .5s);
+			}
 		}
 
 		>.panel-controls{
 			@include absoluteTopLeft;
 			padding: 40px;
-			padding-left: 0;
 			width: 100%;
 			height: 15%;
 			overflow: hidden;
 			@include box-sizing(border-box);
 
-			.close-button{
-				position: absolute;
-				left: 0;
-				font-size: 48px;
-				@include translateX(40px);
-				@include transition(transform 1s $easeInOutCubic);
-			}
-
 			.share{
-				float: right;
-				
+
 				>ul{
+					padding: 0;
+
 					>li{
 						display: inline-block;
 						vertical-align: top;
@@ -249,12 +234,9 @@
 
 	>.close-button{
 		position: absolute;
-		top: 50px;
-		right: 0;
-		color: #fff;
-		font-size: 48px;
-		@include translateX(100px);
-		@include transition(transform 1s $easeInOutCubic);
+		top: 40px;
+		right: 40px;
+		z-index: 10;
 	}
 
 	/* common */

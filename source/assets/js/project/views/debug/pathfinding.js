@@ -43,7 +43,7 @@ feng.views.debug.Pathfinding.prototype.setColors = function(colors) {
 };
 
 
-feng.views.debug.Pathfinding.prototype.update = function(matrix, gridWidth, gridHeight, numCols, numRows, cellSize, path) {
+feng.views.debug.Pathfinding.prototype.update = function(matrix, gridWidth, gridHeight, numCols, numRows, cellSize, path, sourceCanvas) {
 
 	var canvasWidth = gridWidth * this._debugScale;
 	var canvasHeight = gridHeight * this._debugScale;
@@ -65,12 +65,12 @@ feng.views.debug.Pathfinding.prototype.update = function(matrix, gridWidth, grid
 			var type = matrix[row][col];
 			var color = (type === 0) ? this._colors.walkable : this._colors.blocked;
 			context.beginPath();
-      context.rect(cellX, cellY, canvasCellSize, canvasCellSize);
-      context.fillStyle = color;
-      context.fill();
-      context.lineWidth = 1;
-      context.strokeStyle = this._colors.stroke;
-      context.stroke();
+			context.rect(cellX, cellY, canvasCellSize, canvasCellSize);
+			context.fillStyle = color;
+			context.fill();
+			context.lineWidth = 1;
+			context.strokeStyle = this._colors.stroke;
+			context.stroke();
 		}
 	}
 
@@ -86,17 +86,18 @@ feng.views.debug.Pathfinding.prototype.update = function(matrix, gridWidth, grid
 			color = this._colors.end;
 		}
 		context.beginPath();
-    context.rect(cellX, cellY, canvasCellSize, canvasCellSize);
-    context.fillStyle = color;
-    context.fill();
+    	context.rect(cellX, cellY, canvasCellSize, canvasCellSize);
+    	context.fillStyle = color;
+    	context.fill();
 	}
 
 	goog.dom.removeChildren( this._canvasContainerDom );
 	goog.dom.appendChild(this._canvasContainerDom, canvas);
+	goog.dom.appendChild(this._canvasContainerDom, sourceCanvas);
 };
 
 
 feng.views.debug.Pathfinding.prototype.onPathfindingUpdate = function(e) {
-
-	this.update(e.matrix, e.gridWidth, e.gridHeight, e.numCols, e.numRows, e.tileSize, e.path);
+	
+	this.update(e.matrix, e.gridWidth, e.gridHeight, e.numCols, e.numRows, e.tileSize, e.path, e.sourceCanvas);
 };

@@ -94,7 +94,8 @@ $debug_border_style:  2px outset #d6d3ce;
 		background-color: #000;
 
 		>canvas{
-			display: block;
+			display: inline-block;
+			vertical-align: top;
 			width: auto;
 			max-height: 450px;
 		}

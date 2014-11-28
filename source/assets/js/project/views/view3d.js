@@ -78,9 +78,7 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud, episode){
 
 	this.viewSize = new feng.fx.View3DSize(0, 0);
 
-	this.floorIndex = 0;
-	this.floorObjects = [];
-	this._floorMatrixIds = [];
+	this._matrixId = null;
 
 	this.startGateway = null;
 
@@ -167,7 +165,7 @@ feng.views.View3D.prototype.getViewSize = function(){
 
 feng.views.View3D.prototype.getMatrixId = function(){
 
-	return this._floorMatrixIds[ this.floorIndex ];
+	return this._matrixId;
 };
 
 
@@ -188,12 +186,6 @@ feng.views.View3D.prototype.getEntry = function(){
 	});
 
 	return entry;
-};
-
-
-feng.views.View3D.prototype.getFloorY = function(){
-
-	return this.floorObjects[ this.floorIndex ].position.y;
 };
 
 
@@ -219,36 +211,6 @@ feng.views.View3D.prototype.getObjectByTip = function( tip ){
 	});
 
 	return tipObject;
-};
-
-
-feng.views.View3D.prototype.getObjectsOfFloor = function( floorIndex ){
-
-	var hasFloorIndex = goog.isNumber( floorIndex );
-
-	var floor = hasFloorIndex ? this.floorObjects[floorIndex] : this.floorObjects[0];
-
-	var upperFloor = this.floorObjects[floorIndex+1];
-
-	var minY = floor.position.y;
-	var maxY = upperFloor ? upperFloor.position.y : Number.MAX_VALUE;
-
-	var objects = [];
-	
-	// find view3d objects between this floor and its upper floor, if exists
-	goog.object.forEach(this.view3dObjects, function(object) {
-
-		var obj3d = object.object3d;
-
-		if(obj3d.position.y < maxY && obj3d.position.y >= minY) {
-			objects.push( object );
-		}
-  });
-
-	goog.array.remove( objects, this.designPlane );
-	goog.array.remove( objects, this.skybox );
-
-	return objects;
 };
 
 
@@ -532,27 +494,9 @@ feng.views.View3D.prototype.initScene = function() {
 		feng.views.View3D.parseChildren(child, parse);
 	});
 
-	// find floors & init pathfinder matrix
-	this.floorObjects = goog.array.filter(this.scene.children, function(obj) {
-		if(goog.string.startsWith(obj.name, 'floor') && obj.name.length <= 7) {
-			return true;
-		}
-	});
-
-	goog.array.sort(this.floorObjects, function(floorA, floorB) {
-		return ((floorA.position.y > floorB.position.y) ? 1 : -1);
-	});
-
-	this._floorMatrixIds = goog.array.map(this.floorObjects, function(obj, index) {
-
-		var matrixId = ([this.sectionId, this.id, index]).join('-');
-
-		var objectsOfFloor = this.getObjectsOfFloor( index );
-
-		feng.pathfinder.generateMatrix( matrixId, objectsOfFloor );
-
-		return matrixId;
-	}, this);
+	//init pathfinder matrix
+	this._matrixId = ([this.sectionId, this.id]).join('-');
+	feng.pathfinder.generateMatrix( this._matrixId, this.getSolidObjects() );
 
 	// create energyflow
 	var preloadModel = feng.models.Preload.getInstance();

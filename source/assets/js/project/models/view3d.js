@@ -641,6 +641,19 @@ feng.models.View3D.Data = {
 				receiveShadow: true,
 				texture: "house.corridor.floor-texture"
 			},
+			'floor-2': {
+				collidable: true,
+				texture: "house.livingroom.floor-texture"
+			},
+			'wall-2':	{
+				texture: "house.livingroom.wall-texture"
+			},
+			'tv-stand': {
+				texture: "house.livingroom.tv-stand-texture"
+			},
+			'clock': {
+				texture: "house.livingroom.clock-texture"
+			},
 			'stairways': {
 				texture: "house.livingroom.stairways-texture"
 			},
@@ -656,6 +669,12 @@ feng.models.View3D.Data = {
 					position: new THREE.Vector3(50, 0, 225),
 					rotation: new THREE.Euler(0, 0, 0)
 				}
+			},
+			'round-table': {
+				texture: "house.livingroom.round-table-texture"
+			},
+			'white-sofa': {
+				texture: "house.livingroom.white-sofa-texture"
 			},
 			'ceiling-lamp': {
 				texture: "house.corridor.ceiling-lamp-texture"
@@ -701,6 +720,7 @@ feng.models.View3D.Data = {
 				texture: "house.corridor.picture-wall-texture"
 			},
 			'display-table': {
+				collidable: true,
 				texture: "house.corridor.display-table-texture"
 			},
 			'cat': {

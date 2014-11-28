@@ -41,7 +41,6 @@ feng.controllers.view3d.PathfindingController = function(){
 
   this._renderer = new THREE.CanvasRenderer();
   this._renderer.setClearColor( 0xff0000 );
-  //document.body.appendChild( this._renderer.domElement );
 };
 goog.inherits(feng.controllers.view3d.PathfindingController, goog.events.EventTarget);
 goog.addSingletonGetter(feng.controllers.view3d.PathfindingController);
@@ -140,7 +139,7 @@ feng.controllers.view3d.PathfindingController.prototype.generateMatrix = functio
 			if( ctx.getImageData(x + tileSize, y + tileSize, 1, 1).data[0] === 255 ) redCount++;
 
 			var collided = (redCount >= 2);
-
+			
 			var type = collided ? 1 : 0;
 			rowData.push( type );
 		}
@@ -369,7 +368,8 @@ feng.controllers.view3d.PathfindingController.prototype.findPath = function( mat
 		numCols: numCols,
 		numRows: numRows,
 		tileSize: tileSize,
-		path: path
+		path: path,
+		sourceCanvas: this._renderer.domElement
 	});
 
 	if(coordinates.length < 2) {

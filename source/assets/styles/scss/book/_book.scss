@@ -11,9 +11,7 @@
 		right: 40px;
 		margin-top: -5px;
 		z-index: 2;
-		color: #fff;
-		font-size: 40px;
-		line-height: 0;
+		@include arrow-button( 4.8em, #fff, transparent, #fff, $darkgray-ui );
 	}
 
 	>h2{

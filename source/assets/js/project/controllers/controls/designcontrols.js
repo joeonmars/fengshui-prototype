@@ -23,7 +23,13 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement){
   // detect bounding box on floors for camera to move around
   this._boundingBox = new THREE.Box3();
 
-  goog.array.forEach(this._view3d.floorObjects, function(floorObject) {
+	var floorObjects = goog.array.filter(this._view3d.scene.children, function(obj) {
+		if(goog.string.startsWith(obj.name, 'floor') && obj.name.length <= 7) {
+			return true;
+		}
+	})
+
+  goog.array.forEach(floorObjects, function(floorObject) {
 
   	var floorBox = (new THREE.Box3()).setFromObject( floorObject );
   	this._boundingBox = this._boundingBox.union( floorBox );
