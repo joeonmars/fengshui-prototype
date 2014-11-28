@@ -1037,16 +1037,16 @@ feng.models.View3D.Data = {
 				texture: "house.homeoffice.picture-frame-4-texture"
 			},
 			'picture-1': {
-				texture: "house.homeoffice.calendar-texture"
+				texture: "house.homeoffice.pictures.1"
 			},
 			'picture-2': {
-				texture: "house.homeoffice.calendar-texture"
+				texture: "house.homeoffice.pictures.2"
 			},
 			'picture-3': {
-				texture: "house.homeoffice.calendar-texture"
+				texture: "house.homeoffice.pictures.3"
 			},
 			'picture-4': {
-				texture: "house.homeoffice.calendar-texture"
+				texture: "house.homeoffice.pictures.4"
 			},
 			'block-shelf-1':	{
 				texture: "house.homeoffice.block-shelf-1-texture"
@@ -1143,17 +1143,17 @@ feng.models.View3D.Data = {
 					fov: 40
 				},
 				pictures: {
-					'1':{
-						description: 'This is a dummy picture. Its name is 1.'
+					'family':{
+						description: 'This is a dummy picture. Its name is family.'
 					},
-					'2':{
-						description: 'This is a dummy picture. Its name is 2.'
+					'hug':{
+						description: 'This is a dummy picture. Its name is hug.'
 					},
-					'3':{
-						description: 'This is a dummy picture. Its name is 3.'
+					'lecture':{
+						description: 'This is a dummy picture. Its name is lecture.'
 					},
-					'4':{
-						description: 'This is a dummy picture. Its name is 4.'
+					'degree':{
+						description: 'This is a dummy picture. Its name is degree.'
 					}
 				}
 			},

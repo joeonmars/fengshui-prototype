@@ -66,6 +66,15 @@ feng.views.view3dobject.entities.Pictures.prototype.stopInteraction = function()
 };
 
 
+feng.views.view3dobject.entities.Pictures.prototype.nextPicture = function() {
+
+  var pictureIndex = (this._activePicture) ? goog.array.indexOf(this._pictureObject3ds, this._activePicture) + 1 : 0;
+  pictureIndex = Math.min( pictureIndex, this._pictureObject3ds.length - 1 );
+
+  this.setActivePicture( this._pictureObject3ds[pictureIndex] );
+};
+
+
 feng.views.view3dobject.entities.Pictures.prototype.setActivePicture = function( picture ) {
 
   this._activePicture = picture;
@@ -103,6 +112,45 @@ feng.views.view3dobject.entities.Pictures.prototype.setPicture = function( id ){
   this._activePicture.material.map = texture;
   this._activePicture.material.needsUpdate = true;
 
+  // fit picture in UV
+  var u, v, offsetU, offsetV;
+  var imgRatio = texture.image.width / texture.image.height;
+
+  var size = new THREE.Box3().setFromObject( this._activePicture ).size();
+  var meshWidth = size.x;
+  var meshHeight = size.y;
+  var meshRatio = meshWidth / meshHeight;
+
+  var actualWidth;
+  var actualHeight;
+
+  if(imgRatio > meshRatio) {
+
+    u = 1 / imgRatio / meshRatio;
+    v = 1;
+
+    actualWidth = meshHeight * imgRatio;
+    actualHeight = meshHeight;
+
+    offsetU = (actualWidth - meshWidth) / 2 / actualWidth;
+    offsetV = 0;
+
+  }else {
+
+    u = 1;
+    v = 1 * imgRatio / meshRatio;
+
+    actualWidth = meshWidth;
+    actualHeight = meshWidth / imgRatio;
+
+    offsetU = 0;
+    offsetV = (actualHeight - meshHeight) / 2 / actualHeight;
+  }
+
+  texture.repeat.set( u, v );
+  texture.offset.set( offsetU, offsetV );
+
+  // check if resolved all
   this._resolvedPictures[ this._activePicture.name ] = true;
 
   var resolvedAllPictures = (goog.object.getCount( this._resolvedPictures ) === this._pictureObject3ds.length);

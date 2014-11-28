@@ -249,22 +249,26 @@
 					@include transition-delay(.35s);
 					
 					.question{
-						>.fengshui-logo{
+						.fengshui-logo{
 							@include animation( fade-in-up .75s $easeOutCubic both );
 							@include animation-delay(.45s);
 						}
 
-						>h1{
+						h1{
 							@include animation( fade-in-up .65s $easeOutCubic both );
 							@include animation-delay(.55s);
 						}
 
-						>h2{
+						h2{
 							@include animation( fade-in-up .55s $easeOutCubic both );
 							@include animation-delay(.65s);
 						}
 
-						>.arrows{
+						p{
+							margin-top: 1em;
+						}
+
+						.arrows{
 							@include animation( fade-in-up .45s $easeOutCubic both );
 							@include animation-delay(.75s);
 						}

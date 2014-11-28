@@ -31,7 +31,7 @@ feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
   var pictureKeyListLen92 = pictureKeyList92.length;
   for (var pictureKeyIndex92 = 0; pictureKeyIndex92 < pictureKeyListLen92; pictureKeyIndex92++) {
     var pictureKeyData92 = pictureKeyList92[pictureKeyIndex92];
-    param90 += '<li><button class="picture" data-picture="' + pictureKeyData92 + '"></button></li>';
+    param90 += '<li><button class="item-button" data-picture="' + pictureKeyData92 + '"></button></li>';
   }
   param90 += '</ul></div>';
   var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param90}));

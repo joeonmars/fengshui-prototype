@@ -375,7 +375,11 @@ feng.models.Preload = function(){
 					'1': 'images/texture/house/homeoffice/pictures/1.jpg',
 					'2': 'images/texture/house/homeoffice/pictures/2.jpg',
 					'3': 'images/texture/house/homeoffice/pictures/3.jpg',
-					'4': 'images/texture/house/homeoffice/pictures/4.jpg'
+					'4': 'images/texture/house/homeoffice/pictures/4.jpg',
+					'degree': 'images/texture/house/homeoffice/pictures/degree.jpg',
+					'hug': 'images/texture/house/homeoffice/pictures/hug.jpg',
+					'family': 'images/texture/house/homeoffice/pictures/family.jpg',
+					'lecture': 'images/texture/house/homeoffice/pictures/lecture.jpg'
 				},
 				'skybox': {
 					'xpos': 'images/texture/house/boysroom/skybox/pos-x.jpg',

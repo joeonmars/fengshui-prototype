@@ -20,7 +20,7 @@ feng.views.sections.captions.ChangePictureCaption = function( object, cameraCont
 
   goog.base(this, object, cameraController, renderSize, controls, hud);
 
-  this._pictureEls = goog.dom.getElementsByClass('picture', this.domElement);
+  this._pictureEls = goog.dom.getElementsByClass('item-button', this.domElement);
 };
 goog.inherits(feng.views.sections.captions.ChangePictureCaption, feng.views.sections.captions.Caption);
 
@@ -50,4 +50,6 @@ feng.views.sections.captions.ChangePictureCaption.prototype.onClickPicture = fun
   var pictureId = e.currentTarget.getAttribute("data-picture");
 
   this._object.setPicture( pictureId );
+
+  this._object.nextPicture();
 };

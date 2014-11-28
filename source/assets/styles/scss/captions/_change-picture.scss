@@ -12,11 +12,8 @@
 				margin-left: 0;
 			}
 
-			>.picture{
-				width: 7em;
-				height: 7em;
-				border: 1px solid $lightgray-ui;
-				@include border-radius(100%);
+			>.item-button{
+				
 			}
 		}
 	}
