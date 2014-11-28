@@ -13,14 +13,16 @@ feng.views.sections.captions.ChangePictureCaption = function( object, cameraCont
   this._template = feng.templates.captions.ChangePictureCaption;
   
   this._templateData = {
-    pictures: object.pictures,
     tip: object.tip,
     position: 'right'
   };
 
   goog.base(this, object, cameraController, renderSize, controls, hud);
 
-  this._pictureEls = goog.dom.getElementsByClass('item-button', this.domElement);
+  this._pictureId = null;
+
+  this._itemEls = feng.utils.Utils.createDomCollectionByAttributes( goog.dom.query('.item-button', this.domElement), 'data-picture' );
+  this._infoEls = feng.utils.Utils.createDomCollectionByAttributes( goog.dom.query('.info li', this.domElement), 'data-picture' );
 };
 goog.inherits(feng.views.sections.captions.ChangePictureCaption, feng.views.sections.captions.Caption);
 
@@ -29,8 +31,8 @@ feng.views.sections.captions.ChangePictureCaption.prototype.show = function() {
 
   goog.base(this, 'show');
 
-  goog.array.forEach(this._pictureEls, function(pictureEl) {
-    this._eventHandler.listen(pictureEl, 'click', this.onClickPicture, false, this);
+  goog.object.forEach(this._itemEls, function(itemEl) {
+    this._eventHandler.listen(itemEl, 'click', this.onClickItem, false, this);
   }, this);
 
   this._object.startInteraction();
@@ -45,11 +47,19 @@ feng.views.sections.captions.ChangePictureCaption.prototype.hide = function() {
 };
 
 
-feng.views.sections.captions.ChangePictureCaption.prototype.onClickPicture = function(e) {
+feng.views.sections.captions.ChangePictureCaption.prototype.onClickItem = function(e) {
 
-  var pictureId = e.currentTarget.getAttribute("data-picture");
+  if(this._pictureId) {
+    goog.dom.classes.enable( this._itemEls[this._pictureId], 'active', false );
+    goog.dom.classes.enable( this._infoEls[this._pictureId], 'active', false );
+  }
 
-  this._object.setPicture( pictureId );
+  this._pictureId = e.currentTarget.getAttribute("data-picture");
+
+  goog.dom.classes.enable( this._itemEls[this._pictureId], 'active', true );
+  goog.dom.classes.enable( this._infoEls[this._pictureId], 'active', true );
+
+  this._object.setPicture( this._pictureId );
 
   this._object.nextPicture();
 };

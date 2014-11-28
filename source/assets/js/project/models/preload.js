@@ -97,8 +97,7 @@ feng.models.Preload = function(){
 				'pictures': {
 					'1': 'images/texture/studio/livingroom/pictures/1.jpg',
 					'2': 'images/texture/studio/livingroom/pictures/2.jpg',
-					'3': 'images/texture/studio/livingroom/pictures/3.jpg',
-					'4': 'images/texture/studio/livingroom/pictures/4.jpg'
+					'3': 'images/texture/studio/livingroom/pictures/3.jpg'
 				},
 				'skybox': {
 					'xpos': 'images/texture/studio/livingroom/skybox/pos-x.png',

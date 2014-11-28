@@ -942,11 +942,9 @@
 			"emissive": 0
 		},
 		{
-			"uuid": "C94FA632-C0C6-4BFE-926A-8EB57FDB6A69",
-			"type": "MeshLambertMaterial",
-			"color": 5329233,
-			"ambient": 16777215,
-			"emissive": 0
+			"uuid": "ECA04FAF-753C-4272-899F-1BE70424045A",
+			"type": "MeshBasicMaterial",
+			"color": 16777215
 		},
 		{
 			"uuid": "CEA972CB-7F92-4D88-8A04-FF34B7ABCA79",
@@ -977,7 +975,7 @@
 			"emissive": 0
 		}],
 	"object": {
-		"uuid": "C11718A0-4D7C-4CEA-B38A-AD1069E3A362",
+		"uuid": "A7FBC669-F0D3-4273-A778-B164EA13E2CE",
 		"type": "Scene",
 		"name": "house-homeoffice",
 		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
@@ -1394,7 +1392,7 @@
 						"type": "Mesh",
 						"name": "screen",
 						"geometry": "286A0811-6DFA-4E49-89B3-DD513CA309EC",
-						"material": "C94FA632-C0C6-4BFE-926A-8EB57FDB6A69",
+						"material": "ECA04FAF-753C-4272-899F-1BE70424045A",
 						"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
 					}]
 			},

@@ -36,6 +36,7 @@ goog.require('feng.views.view3dobject.entities.Closet');
 goog.require('feng.views.view3dobject.entities.Pictures');
 goog.require('feng.views.view3dobject.entities.Refrigerator');
 goog.require('feng.views.view3dobject.entities.FruitPlate');
+goog.require('feng.views.view3dobject.entities.Wallpaper');
 goog.require('feng.views.view3dobject.entities.Windows');
 
 
@@ -495,6 +496,7 @@ feng.views.View3D.prototype.initScene = function() {
 		'drawer': feng.views.view3dobject.entities.Drawer,
 		'knife': feng.views.view3dobject.entities.Knife,
 		'refrigerator': feng.views.view3dobject.entities.Refrigerator,
+		'wallpaper': feng.views.view3dobject.entities.Wallpaper,
 		'windows': feng.views.view3dobject.entities.Windows,
 		'fruitplate': feng.views.view3dobject.entities.FruitPlate
 	};

@@ -99,6 +99,7 @@
 	>.panel{
 		position: absolute;
 		top: 0;
+		min-width: 450px;
 		width: 35%;
 		height: 100%;
 		padding: 40px 0;
@@ -128,10 +129,6 @@
 			height: 15%;
 			overflow: hidden;
 			@include box-sizing(border-box);
-
-			h1{
-				padding-top: 40px;
-			}
 
 			.close-button{
 				position: absolute;
@@ -176,21 +173,41 @@
 
 		h1{
 			display: block;
+			width: 80%;
 			max-width: 500px;
 			font-size: 3.8em;
+			line-height: 1.8;
 			margin: 0 auto;
 			text-transform: capitalize;
+			border-bottom: 2px solid rgba(0,0,0,0.05);
 		}
 
 		h2{
-			font-size: 2.8em;
+			font-size: 1.8em;
 			line-height: 2;
+			color: $lightgray-ui;
+			text-transform: uppercase;
+		}
+
+		h3{
+			font-size: 1.8em;
+			font-family: $font_marineup_bold;
+			text-transform: uppercase;
 		}
 
 		p{
 			font-size: 1.7em;
 			padding: 1em 0;
+			color: $darkgray-ui;
 			-webkit-font-smoothing: antialiased;
+
+			br{
+				line-height: 3;
+			}
+		}
+
+		ul{
+			padding: 2em 0;
 		}
 
 		.content{
@@ -216,8 +233,8 @@
 						white-space: normal;
 
 						>.inner{
-							margin: 0 auto;
-							width: 100%;
+							margin: 2em auto 0 auto;
+							width: 80%;
 							max-width: 500px;
 						}
 					}
@@ -261,6 +278,28 @@
 			@include animation( pulse-button 1.25s infinite $easeInOutCubic );
 		}
 	}
+
+	.info{
+		margin-top: 2em;
+		border-top: 2px solid rgba(0,0,0,0.05);
+
+		li{
+			display: none;
+
+			&.active{
+				display: block;
+			}
+		}
+	}
+
+	// media-queries
+	@media screen and (max-width: 1300px) {
+   		font-size: .9em;
+   	}
+
+	@media screen and (max-width: 1024px) {
+   		font-size: .8em;
+   	}
 }
 
 @import "captions/change-color";

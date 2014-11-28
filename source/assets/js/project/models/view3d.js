@@ -28,20 +28,6 @@ feng.models.View3D.Data = {
 					position: new THREE.Vector3(59, 80, 62),
 					rotation: new THREE.Euler(0.13, -3.10, 0.00, 'YXZ'),
 					fov: 40
-				},
-				pictures: {
-					'1':{
-						description: 'This is a dummy picture. Its name is 1.'
-					},
-					'2':{
-						description: 'This is a dummy picture. Its name is 2.'
-					},
-					'3':{
-						description: 'This is a dummy picture. Its name is 3.'
-					},
-					'4':{
-						description: 'This is a dummy picture. Its name is 4.'
-					}
 				}
 			},
 			'studio-door-handle': {
@@ -135,11 +121,6 @@ feng.models.View3D.Data = {
 			},
 			'round-lamp':	{
 				Class: 'lamp',
-				colors: [
-					"pink",
-					"yellow",
-					"orange"
-				],
 				tipKey: 'studio.livingroom.readinglamp',
 				texture: "studio.livingroom.round-lamp-texture",
 				captionClass: 'changecolor'
@@ -795,17 +776,6 @@ feng.models.View3D.Data = {
 					position: new THREE.Vector3(21.1, 80, -26.46),
 					rotation: new THREE.Euler(-0.03, 1.55, 0.00, 'YXZ'),
 					fov: 40
-				},
-				pictures: {
-					'1':{
-						description: 'This is a dummy picture. Its name is 1.'
-					},
-					'2':{
-						description: 'This is a dummy picture. Its name is 2.'
-					},
-					'3':{
-						description: 'This is a dummy picture. Its name is 3.'
-					}
 				}
 			},
 			'decoration-pictures': {
@@ -1141,24 +1111,14 @@ feng.models.View3D.Data = {
 					position: new THREE.Vector3(23, 80, -60),
 					rotation: new THREE.Euler(0.01, 0.07, 0.00, 'YXZ'),
 					fov: 40
-				},
-				pictures: {
-					'family':{
-						description: 'This is a dummy picture. Its name is family.'
-					},
-					'hug':{
-						description: 'This is a dummy picture. Its name is hug.'
-					},
-					'lecture':{
-						description: 'This is a dummy picture. Its name is lecture.'
-					},
-					'degree':{
-						description: 'This is a dummy picture. Its name is degree.'
-					}
 				}
 			},
 			'computer':	{
 				texture: "house.homeoffice.computer-texture"
+			},
+			'screen': {
+				Class: 'wallpaper',
+				tipKey: 'house.homeoffice.desktopwallpaper'
 			},
 			'laptop':	{
 				texture: "house.homeoffice.laptop-texture"

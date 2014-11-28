@@ -21,7 +21,7 @@ feng.views.sections.captions.ChangeObjectCaption = function( object, cameraContr
 
   this._objectId = null;
 
-  this._itemEls = feng.utils.Utils.createDomCollectionByAttributes( goog.dom.query('.objects .item-button', this.domElement), 'data-object' );
+  this._itemEls = feng.utils.Utils.createDomCollectionByAttributes( goog.dom.query('.item-button', this.domElement), 'data-object' );
   this._infoEls = feng.utils.Utils.createDomCollectionByAttributes( goog.dom.query('.info li', this.domElement), 'data-object' );
 };
 goog.inherits(feng.views.sections.captions.ChangeObjectCaption, feng.views.sections.captions.Caption);

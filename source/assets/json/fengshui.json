@@ -48,11 +48,27 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be warm, friendly, happy",
+			"problem": "Photographs are a great way to increase the positive chi in your living space and bring your environment into alignment with your true self and your goals.<br>However, images of single people in the bedroom can indicate loneliness. It's possible to feel lonely and insecure even if you're married.<br>To correct this, hang a picture of a couple or display pairs of objects.",
+			"advice": null,
 			"character": "ollie",
-			"prompt": "Change to another image.",
-			"reminder": "I love taking photos and display them above my bed!"
+			"prompt": "Change the image.",
+			"reminder": "I love taking photos and display them above my bed!",
+			"details": {
+				"pictures": {
+					"1": {
+						"name": "Photo 1",
+						"description": "This is a dummy picture. Its name is 1."
+					},
+					"2": {
+						"name": "Photo 2",
+						"description": "This is a dummy picture. Its name is 2."
+					},
+					"3": {
+						"name": "Photo 3",
+						"description": "This is a dummy picture. Its name is 3."
+					}
+				}
+			}
 		},
 		{
 			"id": "diningchair",
@@ -83,10 +99,29 @@
 			"provide": null,
 			"final": true,
 			"problem": "It is not advisable to use cold color light in dining areas. These adverse situations will create mental tension in the occupants of the dwelling and can result in stress.",
-			"advice": "Pink light came to be associated with health, abundance and longevity. In the Feng shui philosophy, pink symbolizes love. A pink light may reignite feelings of love and passion in a relationship. (Do not use reddish-pink colors because red is a stimulating color.)<br>The Feng shui color of sunlight, cheerful and uplifting yellow vibes always lighten and brighten a reading area, as well as create a cozy, welcoming feeling.Color orange is often called the “social” color, as it creates the Feng shui energy to promote lively conversations and good times in your home. In the winter it reminds us of summertime dreams and adventures.",
+			"advice": null,
 			"character": "ollie",
 			"prompt": "Change the bulb color.",
-			"reminder": "I love novels and makeup magazines, but sometimes I feel tired after reading for a while."
+			"reminder": "I love novels and makeup magazines, but sometimes I feel tired after reading for a while.",
+			"details": {
+				"colors": {
+					"pink": {
+						"name": "Pink Light",
+						"hex": "#FFC5CC",
+						"description": "Pink light came to be associated with health, abundance and longevity. In the Feng shui philosophy, pink symbolizes love. A pink light may reignite feelings of love and passion in a relationship. (Do not use reddish-pink colors because red is a stimulating color.)"
+					},
+					"yellow": {
+						"name": "Yellow Light",
+						"hex": "#FCE9A8",
+						"description": "The Feng shui color of sunlight, cheerful and uplifting yellow vibes always lighten and brighten a reading area, as well as create a cozy, welcoming feeling."
+					},
+					"orange": {
+						"name": "Orange Light",
+						"hex": "#FFB135",
+						"description": "Color orange is often called the “social” color, as it creates the Feng shui energy to promote lively conversations and good times in your home. In the winter it reminds us of summertime dreams and adventures."
+					}
+				}
+			}
 		},
 		{
 			"id": "crystal",
@@ -428,10 +463,26 @@
 			"provide": null,
 			"final": true,
 			"problem": "Feng shui believes that children and parents can enjoy success in life and healthy relationships if the environment supports them. Also very important, be sure to eliminate images of ferocious or dangerous animals or violence.",
-			"advice": "Be loremipsum, loremipsum",
+			"advice": null,
 			"character": "nick",
-			"prompt": "Change to another image.",
-			"reminder": "Do you like that picture hanging on my wall?"
+			"prompt": "Change the image.",
+			"reminder": "Do you like that picture hanging on my wall?",
+			"details": {
+				"pictures": {
+					"1": {
+						"name": "Photo 1",
+						"description": "This is a dummy picture. Its name is 1."
+					},
+					"2": {
+						"name": "Photo 2",
+						"description": "This is a dummy picture. Its name is 2."
+					},
+					"3": {
+						"name": "Photo 3",
+						"description": "This is a dummy picture. Its name is 3."
+					}
+				}
+			}
 		},
 		{
 			"id": "deskchair",
@@ -461,11 +512,31 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "To create a nurturing Feng shui home office hangs pictures, mottos, or images that symbolize what you want to accomplish.",
-			"advice": "Acknowledge your sources of support by placing a few photos of family members and mentors but being careful! Too many images of your family will actually be an interruption into your home office. It is more important to place images that are connected to your business and that inspire you.",
+			"problem": "To create a nurturing Feng shui home office hangs pictures, mottos, or images that symbolize what you want to accomplish. Acknowledge your sources of support by placing a few photos of family members and mentors but being careful! Too many images of your family will actually be an interruption into your home office. It is more important to place images that are connected to your business and that inspire you.",
+			"advice": null,
 			"character": "scott",
 			"prompt": "Change photos.",
-			"reminder": "Any suggestions on the picture wall? I’ve heard that Feng Shui can help with my career."
+			"reminder": "Any suggestions on the picture wall? I’ve heard that Feng Shui can help with my career.",
+			"details": {
+				"pictures": {
+					"family": {
+						"name": "Photo of Family",
+						"description": "This is a dummy picture. Its name is family."
+					},
+					"hug": {
+						"name": "Photo of Family Moment",
+						"description": "This is a dummy picture. Its name is hug."
+					},
+					"lecture": {
+						"name": "Photo of Career",
+						"description": "This is a dummy picture. Its name is lecture."
+					},
+					"degree": {
+						"name": "Photo of Achievements",
+						"description": "This is a dummy picture. Its name is degree."
+					}
+				}
+			}
 		},
 		{
 			"id": "setsquare",
@@ -512,8 +583,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
+			"problem": null,
+			"advice": "Flowing water represents prosperity and wealth. This rings true in society at large as well.<br>It is very helpful to have a flowing water fountain at your front door, or the door you enter your home or office most. If you cannot build a pond or fountain then images of flowing water will do. For example, set your computer wallpaper or screensaver to be images of great flowing waterfalls with sunlight.",
 			"character": "scott",
 			"prompt": null,
 			"reminder": "Do you like my desktop wallpaper?"

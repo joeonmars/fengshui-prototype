@@ -7,7 +7,7 @@ goog.require('feng.views.view3dobject.TipObject');
 
 /**
  * @constructor
- * A lamp whose color can be changed
+ * A lamp whose color should be changed
  */
 feng.views.view3dobject.entities.Lamp = function( object3d, data, view3d ){
 
@@ -15,29 +15,19 @@ feng.views.view3dobject.entities.Lamp = function( object3d, data, view3d ){
 
   this._light = this.object3d.getObjectByName('light');
 
-  this.colors = {};
-
-  var colors = feng.views.view3dobject.entities.Lamp.Colors;
-
-  goog.array.forEach( data.colors, function(colorKey) {
-
-  	this.colors[ colorKey ] = {
-  		color: colors[ colorKey ],
-  		hex: '#' + colors[ colorKey ].getHexString()
-  	}
-  }, this);
-
   this._defaultColor = this._light.color;
   this._color = this._defaultColor.clone();
+  this._toColor = new THREE.Color();
 
   this.setColor( this._color );
 };
 goog.inherits(feng.views.view3dobject.entities.Lamp, feng.views.view3dobject.TipObject);
 
 
-feng.views.view3dobject.entities.Lamp.prototype.setColor = function(color) {
+feng.views.view3dobject.entities.Lamp.prototype.setColor = function(hex) {
 
-  var startColor = this._color.clone();
+  var startHex = this._color.getHex();
+  var toColor = this._toColor.set( hex );
 
   var prop = {
   	t: 0
@@ -47,15 +37,14 @@ feng.views.view3dobject.entities.Lamp.prototype.setColor = function(color) {
   	t: 1,
   	'ease': Expo.easeOut,
   	'onUpdate': function() {
-  		var c = startColor.clone().lerp( color, prop.t );
-  		this._color.copy( c );
-  		this._light.color.copy( c );
-  		this.object3d.material.color.copy( c );
+  		this._color.set(startHex).lerp( this._toColor, prop.t );
+  		this._light.color.copy( this._color );
+  		this.object3d.material.color.copy( this._color );
   	},
   	'onUpdateScope': this
   });
 
-  if(!color.equals( this._defaultColor )) {
+  if(!toColor.equals( this._defaultColor )) {
     this.unlock();
   }
 };
@@ -63,14 +52,6 @@ feng.views.view3dobject.entities.Lamp.prototype.setColor = function(color) {
 
 feng.views.view3dobject.entities.Lamp.prototype.setColorByName = function(name) {
 
-	var color = feng.views.view3dobject.entities.Lamp.Colors[ name ];
-	this.setColor( color );
-};
-
-
-feng.views.view3dobject.entities.Lamp.Colors = {
-	"pink": new THREE.Color().set( '#FFC5CC' ),
-	"yellow": new THREE.Color().set( '#FCE9A8' ),
-	"white": new THREE.Color().set( '#ffffff' ),
-	"orange": new THREE.Color().set( '#F6D5EE' )
+	var hex = this.tip.details['colors'][name]['hex'];
+	this.setColor( hex );
 };

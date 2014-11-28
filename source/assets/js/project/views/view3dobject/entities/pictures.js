@@ -14,15 +14,17 @@ feng.views.view3dobject.entities.Pictures = function( object3d, data, view3d ){
   goog.base(this, object3d, data, view3d);
 
   // parse and store pictures data
-  this.pictures = this.data['pictures'];
+  var pictures = this.tip.details['pictures'];
 
   var preload = feng.models.Preload.getInstance();
 
-  this._pictureTextures = goog.object.map(this.data['pictures'], function(val, key) {
+  this._pictureTextures = goog.object.map(pictures, function(val, key) {
 
     var img = preload.getAsset( this._view3d.sectionId + '.' + this._view3d.id + '.pictures.' + key );
 
     var texture = new THREE.Texture( img );
+    //texture.minFilter = THREE.LinearFilter;
+    //texture.magFilter = THREE.LinearFilter;
     texture.needsUpdate = true;
 
     return texture;
@@ -41,6 +43,8 @@ feng.views.view3dobject.entities.Pictures = function( object3d, data, view3d ){
 
   //
   this._activePicture = null;
+
+  this._sizeBox = new THREE.Box3();
 
   this._resolvedPictures = {};
 };
@@ -68,7 +72,7 @@ feng.views.view3dobject.entities.Pictures.prototype.stopInteraction = function()
 
 feng.views.view3dobject.entities.Pictures.prototype.nextPicture = function() {
 
-  var pictureIndex = (this._activePicture) ? goog.array.indexOf(this._pictureObject3ds, this._activePicture) + 1 : 0;
+  var pictureIndex = goog.array.indexOf(this._pictureObject3ds, this._activePicture) + 1;
   pictureIndex = Math.min( pictureIndex, this._pictureObject3ds.length - 1 );
 
   this.setActivePicture( this._pictureObject3ds[pictureIndex] );
@@ -112,11 +116,11 @@ feng.views.view3dobject.entities.Pictures.prototype.setPicture = function( id ){
   this._activePicture.material.map = texture;
   this._activePicture.material.needsUpdate = true;
 
-  // fit picture in UV
+  // fit picture texture in UV
   var u, v, offsetU, offsetV;
   var imgRatio = texture.image.width / texture.image.height;
 
-  var size = new THREE.Box3().setFromObject( this._activePicture ).size();
+  var size = this._sizeBox.setFromObject( this._activePicture ).size();
   var meshWidth = size.x;
   var meshHeight = size.y;
   var meshRatio = meshWidth / meshHeight;
