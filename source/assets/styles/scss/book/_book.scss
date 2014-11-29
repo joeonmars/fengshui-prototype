@@ -133,7 +133,7 @@
 										background-color: #fff;
 										opacity: 1;
 										visibility: visible;
-										backface-visibility: hidden;
+										-webkit-backface-visibility: hidden;
 										@include transition(opacity .4s, visibility .4s);
 										@include transition-delay(.5s);
 									}
@@ -184,28 +184,6 @@
 
 												>br{
 													line-height: 3em;
-												}
-											}
-										}
-
-										>.scrollbar{
-											position: absolute;
-											top: 0;
-											right: 0;
-											width: 5px;
-											height: 100%;
-											background-color: rgba(0,0,0,0.05);
-											overflow: hidden;
-
-											>.handle{
-												position: relative;
-												width: 100%;
-												background-color: $lightgray-ui;
-												opacity: .8;
-												@include single-transition(opacity, .25s);
-
-												&:hover, &:active{
-													opacity: 1;
 												}
 											}
 										}

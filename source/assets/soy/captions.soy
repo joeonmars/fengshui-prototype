@@ -41,45 +41,57 @@
 							{if $tip.hint}
 							<section class="hint">
 								<div class="inner">
-									<p>{ $tip.hint }</p>
-									{call feng.templates.common.PrimaryButton}
-										{param icon: 'icon-yes' /}
-										{param classname: 'hint-button' /}
-										{param text: 'I see' /}
-									{/call}
+									<div class="inner-scroller">
+										<p>{ $tip.hint }</p>
+										{call feng.templates.common.PrimaryButton}
+											{param icon: 'icon-yes' /}
+											{param classname: 'hint-button' /}
+											{param text: 'I see' /}
+										{/call}
+									</div>
 								</div>
+								{call feng.templates.common.ScrollBar}{/call}
 							</section>
 							{/if}
 
 							{if $tip.problem}
 							<section class="problem">
 								<div class="inner">
-									<p>{ $tip.problem }</p>
+									<div class="inner-scroller">
+										<p>{ $tip.problem }</p>
 
-									<!-- either close to interact, or scroll down to go interaction section if available -->
-									{call feng.templates.common.PrimaryButton}
-										{param classname: 'prompt-button' /}
-										{param icon: 'icon-yes' /}
-										{param text: $tip.prompt /}
-									{/call}
+										<!-- either close to interact, or scroll down to go interaction section if available -->
+										{call feng.templates.common.PrimaryButton}
+											{param classname: 'prompt-button' /}
+											{param icon: 'icon-yes' /}
+											{param text: $tip.prompt /}
+										{/call}
+									</div>
 								</div>
+								{call feng.templates.common.ScrollBar}{/call}
 							</section>
 							{/if}
 
 							{if $interactionContent}
 							<section class="interaction">
 								<div class="inner">
+									<div class="inner-scroller">
 									{ $interactionContent }
+									</div>
 								</div>
+								{call feng.templates.common.ScrollBar}{/call}
 							</section>
 							{/if}
 
 							{if $tip.advice}
 							<section class="advice">
 								<div class="inner">
-									<h2>Tips</h2>
-									<p>{ $tip.advice }</p>
+									<div class="inner-scroller">
+										<h3>Tips</h3>
+										<p>{ $tip.advice }</p>
+									</div>
 								</div>
+								{call feng.templates.common.ScrollBar}{/call}
 							</section>
 							{/if}
 

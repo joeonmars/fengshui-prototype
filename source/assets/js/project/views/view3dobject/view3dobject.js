@@ -254,15 +254,18 @@ feng.views.view3dobject.View3DObject.prototype.getTilemapProxy = function(){
 };
 
 
-feng.views.view3dobject.View3DObject.prototype.addToScene = function(){
+feng.views.view3dobject.View3DObject.prototype.addToScene = function( parent ){
 
-  this._view3d.scene.add( this.object3d );
+  var parent = parent || this._view3d.scene;
+  parent.add( this.object3d );
 };
 
 
 feng.views.view3dobject.View3DObject.prototype.removeFromScene = function(){
 
-  this._view3d.scene.remove( this.object3d );
+  if(this.object3d.parent) {
+    this.object3d.parent.remove( this.object3d );
+  }
 };
 
 

@@ -1,6 +1,7 @@
 goog.provide('feng.apps.Demo');
 
 goog.require('goog.dom');
+goog.require('goog.events');
 goog.require('goog.fx.anim');
 goog.require('goog.style');
 goog.require('feng.templates.main');
@@ -29,6 +30,12 @@ feng.apps.Demo = function() {
 	feng.office = (feng.utils.Utils.getQuery('office') === 'true') || feng.Config['office'];
 	feng.quality = feng.utils.Utils.getQuery('quality') || feng.Config['quality'];
 	
+	feng.viewportSize = feng.apps.Demo.getViewportSize();
+
+	goog.events.listen(window, goog.events.EventType.RESIZE, function() {
+		feng.viewportSize = feng.apps.Demo.getViewportSize();
+	});
+
 	feng.renderSettings = {
 		renderSize: (feng.quality === 'high') ? ((screen.width > 1920) ? 2048 : 1024) : 1024,
 		shadowMapSize: (feng.quality === 'high') ? 1024 : 512
@@ -72,3 +79,9 @@ feng.apps.Demo = function() {
 };
 goog.inherits(feng.apps.Demo, goog.events.EventTarget);
 goog.addSingletonGetter(feng.apps.Demo);
+
+
+feng.apps.Demo.getViewportSize = function() {
+
+	return goog.style.getSize( document.body );
+};

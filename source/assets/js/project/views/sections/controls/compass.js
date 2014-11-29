@@ -1,7 +1,6 @@
 goog.provide('feng.views.sections.controls.Compass');
 
 goog.require('goog.dom');
-goog.require('goog.fx.Dragger');
 goog.require('feng.events');
 goog.require('feng.fx.AnimatedSprite');
 goog.require('feng.views.sections.controls.Controls');
@@ -24,10 +23,6 @@ feng.views.sections.controls.Compass = function(domElement){
   var img = feng.models.Preload.getInstance().getAsset('global.cube-design');
   this._designSprite = new feng.fx.AnimatedSprite(designEl, img, 12, 9, 100);
 
-  this._dragger = new goog.fx.Dragger(this.domElement);
-  this._dragger.setHysteresis( 2 );
-  this._dragger.defaultAction = goog.bind(this.onDrag, this);
-
   this._hoveredDesign = false;
   this._hoveredBrowse = false;
 
@@ -45,8 +40,6 @@ feng.views.sections.controls.Compass.prototype.activate = function(){
 
   if(!shouldActivate) return;
 
-  this._eventHandler.listen(this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
-  this._eventHandler.listen(this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
   this._eventHandler.listen(this.domElement, 'mousemove', this.onMouseMove, false, this);
   this._eventHandler.listen(this.domElement, 'mouseout', this.onMouseOut, false, this);
   this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
@@ -54,18 +47,6 @@ feng.views.sections.controls.Compass.prototype.activate = function(){
   if(this._view3d) {
     this._view3d.modeController.listen( feng.events.EventType.UPDATE, this.onView3dUpdate, false, this );
   }
-
-  this._dragger.setEnabled( true );
-};
-
-
-feng.views.sections.controls.Compass.prototype.deactivate = function(){
-
-  var shouldDeactivate = goog.base(this, 'deactivate');
-
-  if(!shouldDeactivate) return;
-
-  this._dragger.setEnabled( false );
 };
 
 
@@ -78,17 +59,6 @@ feng.views.sections.controls.Compass.prototype.setView3D = function( view3d ){
   }
 
   this._view3d.modeController.listen( feng.events.EventType.UPDATE, this.onView3dUpdate, false, this );
-};
-
-
-feng.views.sections.controls.Compass.prototype.calculateDraggedRotation = function(){
-
-	var deltaX = this._dragger.clientX - this._dragger.startX;
-	var distancePI2 = 200;
-	var fractionPI2 = deltaX / distancePI2;
-
-	var rotation = fractionPI2 * (2 * Math.PI);
-	return rotation;
 };
 
 
@@ -110,42 +80,7 @@ feng.views.sections.controls.Compass.prototype.setRotation = function(rotation){
 };
 
 
-feng.views.sections.controls.Compass.prototype.onDragStart = function(e){
-
-	goog.dom.classes.add(this._mainEl, 'grabbing');
-
-	goog.dom.classes.remove(this.domElement, 'hover-design');
-	this._hoveredDesign = false;
-	this._hoveredBrowse = false;
-
-	this._startRotation = this._rotation;
-};
-
-
-feng.views.sections.controls.Compass.prototype.onDragEnd = function(e){
-
-	goog.dom.classes.remove(this._mainEl, 'grabbing');
-};
-
-
-feng.views.sections.controls.Compass.prototype.onDrag = function(x, y){
-
-	var draggedRotation = this.calculateDraggedRotation();
-
-	var rotation = draggedRotation + this._startRotation;
-
-	var standardRotation = this.setRotation( rotation );
-
-	this.dispatchEvent({
-		type: feng.events.EventType.UPDATE,
-		rotation: standardRotation
-	});
-};
-
-
 feng.views.sections.controls.Compass.prototype.onMouseMove = function(e){
-
-	if(this._dragger.isDragging()) return false;
 
 	if(e.offsetY > 40) {
 
@@ -179,8 +114,6 @@ feng.views.sections.controls.Compass.prototype.onMouseOut = function(e){
 
 feng.views.sections.controls.Compass.prototype.onClick = function(e){
 
-	if(this._dragger.isDragging()) return false;
-
 	if(this._hoveredDesign) {
 
 		if(this._isInDesignMode) return false;
@@ -211,8 +144,7 @@ feng.views.sections.controls.Compass.prototype.onClick = function(e){
 
 feng.views.sections.controls.Compass.prototype.onResize = function(e){
 
-	var viewportSize = goog.dom.getViewportSize();
-	goog.style.setPosition(this.domElement, viewportSize.width - 100 - 30, 30);
+	goog.style.setPosition(this.domElement, feng.viewportSize.width - 100 - 30, 30);
 };
 
 

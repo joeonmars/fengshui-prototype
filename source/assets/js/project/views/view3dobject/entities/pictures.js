@@ -23,8 +23,6 @@ feng.views.view3dobject.entities.Pictures = function( object3d, data, view3d ){
     var img = preload.getAsset( this._view3d.sectionId + '.' + this._view3d.id + '.pictures.' + key );
 
     var texture = new THREE.Texture( img );
-    //texture.minFilter = THREE.LinearFilter;
-    //texture.magFilter = THREE.LinearFilter;
     texture.needsUpdate = true;
 
     return texture;
@@ -43,8 +41,6 @@ feng.views.view3dobject.entities.Pictures = function( object3d, data, view3d ){
 
   //
   this._activePicture = null;
-
-  this._sizeBox = new THREE.Box3();
 
   this._resolvedPictures = {};
 };
@@ -120,9 +116,14 @@ feng.views.view3dobject.entities.Pictures.prototype.setPicture = function( id ){
   var u, v, offsetU, offsetV;
   var imgRatio = texture.image.width / texture.image.height;
 
-  var size = this._sizeBox.setFromObject( this._activePicture ).size();
-  var meshWidth = size.x;
-  var meshHeight = size.y;
+  this._activePicture.geometry.computeBoundingBox();
+  var size = this._activePicture.geometry.boundingBox;
+
+  var diffX = size.max.x - size.min.x;
+  var diffZ = size.max.z - size.min.z;
+  var diffY = size.max.y - size.min.y;
+  var meshWidth = (diffX > diffZ) ? diffX : diffZ;
+  var meshHeight = diffY;
   var meshRatio = meshWidth / meshHeight;
 
   var actualWidth;

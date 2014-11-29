@@ -138,7 +138,7 @@ feng.views.book.Book.prototype.deactivate = function() {
 
 feng.views.book.Book.prototype.resize = function() {
 
-	this._viewportSize = goog.dom.getViewportSize();
+	this._viewportSize = feng.viewportSize;
 
 	this._tipModuleWidths = goog.array.map(this._tipModules, function(tipModule) {
 		return tipModule.setSize( this._viewportSize ).width;
@@ -426,7 +426,7 @@ feng.views.book.Book.prototype.onMouseWheel = function( e ) {
 
 	// skip mousewheel if hovering on a tip module scroller
 	var hoveringScroller = goog.array.find(this._tipModules, function(tipModule) {
-		return (tipModule.isHoveringScroller === true);
+		return (tipModule.isHoveringScroller() === true);
 	});
 
 	if(hoveringScroller) {

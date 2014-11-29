@@ -114,9 +114,7 @@ feng.views.sections.overlays.FinaleOverlay.prototype.onResize = function(e){
 
 	goog.base(this, 'onResize', e);
 
-	var viewportSize = goog.dom.getViewportSize();
+	goog.style.setSize(this.domElement, feng.viewportSize);
 
-	goog.style.setSize(this.domElement, viewportSize);
-
-	feng.utils.Utils.centerAlign( this._popup.domElement, viewportSize );
+	feng.utils.Utils.centerAlign( this._popup.domElement, feng.viewportSize );
 };

@@ -11,10 +11,7 @@ feng.views.view3dobject.entities.Knife = function( object3d, data, view3d ){
 
   goog.base(this, object3d, data, view3d);
 
-  var preload = feng.models.Preload.getInstance();
-  var inDrawerImg = preload.getAsset(this._view3d.sectionId + '.' + this._view3d.id + '.knife-in-drawer-texture');
-  this._inDrawerTexture = new THREE.Texture( inDrawerImg );
-  this._inDrawerTexture.needsUpdate = true;
+  this._inDrawerTexture = null;
 };
 goog.inherits(feng.views.view3dobject.entities.Knife, feng.views.view3dobject.MovableObject);
 
@@ -25,10 +22,29 @@ feng.views.view3dobject.entities.Knife.prototype.getCloseUpObjectWhenDropped = f
 };
 
 
-feng.views.view3dobject.entities.Knife.prototype.pick = function(){
+feng.views.view3dobject.entities.Knife.prototype.createTextures = function(){
 
-  goog.base(this, 'pick');
+  goog.base(this, 'createTextures');
 
+  var preload = feng.models.Preload.getInstance();
+  var inDrawerImg = preload.getAsset(this._view3d.sectionId + '.' + this._view3d.id + '.knife-in-drawer-texture');
+  this._inDrawerTexture = new THREE.Texture( inDrawerImg );
+  this._inDrawerTexture.needsUpdate = true;
+
+  if(this.hasDropped) {
+    this.object3d.material.map = this._inDrawerTexture;
+  }
+};
+
+
+feng.views.view3dobject.entities.Knife.prototype.disposeTextures = function(){
+
+  this._inDrawerTexture.dispose();
+  this._inDrawerTexture = null;
+
+  this.object3d.material.map = null;
+
+  goog.base(this, 'disposeTextures');
 };
 
 

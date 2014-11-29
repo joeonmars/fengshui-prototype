@@ -63,7 +63,7 @@ feng.views.sections.controls.Book.prototype.onMouseOut = function(e){
 
 feng.views.sections.controls.Book.prototype.onResize = function(e){
 
-	var viewportSize = goog.dom.getViewportSize();
+	var viewportSize = feng.viewportSize;
 	goog.style.setPosition(this.domElement, viewportSize.width - 100 - 30, 150);
 };
 

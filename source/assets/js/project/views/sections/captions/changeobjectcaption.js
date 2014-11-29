@@ -59,5 +59,7 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.onClickObject = funct
   goog.dom.classes.enable( this._itemEls[this._objectId], 'active', true );
   goog.dom.classes.enable( this._infoEls[this._objectId], 'active', true );
 
+  this.scrollBar.resize();
+  
   this._object.change( this._objectId );
 };

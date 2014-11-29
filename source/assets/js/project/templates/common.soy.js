@@ -46,6 +46,17 @@ feng.templates.common.CloseButton = function(opt_data, opt_ignored) {
  * @return {string}
  * @notypecheck
  */
+feng.templates.common.ScrollBar = function(opt_data, opt_ignored) {
+  return '<div class="scrollbar"><button class="handle"></button></div>';
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
 feng.templates.common.FengshuiLogo = function(opt_data, opt_ignored) {
   opt_data = opt_data || {};
   return '<div class="fengshui-logo"><div class="symbol"><div class="needle"></div><div class="frame"></div></div>' + ((opt_data.noText != true) ? '<h1><div class="line1">FENGSHUI</div><div class="line2">REALTIME</div></h1>' : '') + '</div>';

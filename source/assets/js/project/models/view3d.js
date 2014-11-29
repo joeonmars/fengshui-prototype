@@ -196,7 +196,14 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.nightstand-texture"
 			},
 			'sewingmachine':	{
-				texture: "studio.livingroom.sewingmachine-texture"
+				Class: 'sewingmachine',
+				camera: {
+					position: new THREE.Vector3(-95, 54, 10),
+					rotation: new THREE.Euler(-0.10, -0.80, 0.00, 'YXZ'),
+					fov: 13
+				},
+				texture: "studio.livingroom.sewingmachine-texture",
+				tipKey: 'studio.livingroom.sewingmachine'
 			},
 			'sewingmachine-cover':	{
 				texture: "studio.livingroom.sewingmachine-cover-texture"
@@ -490,6 +497,7 @@ feng.models.View3D.Data = {
 			},
 			'drawer': {
 				Class: "drawer",
+				receiveShadow: true,
 				texture: "house.livingroom.drawer-texture",
 				camera: {
 					position: new THREE.Vector3(-8, 97, -203),
@@ -500,6 +508,7 @@ feng.models.View3D.Data = {
 			},
 			'knife': {
 				Class: "knife",
+				castShadow: true,
 				texture: "house.livingroom.knife-on-cabinet-texture",
 				position: new THREE.Vector3(-6.87, -2.21, 10.82),
 				rotation: new THREE.Euler(0, 0, 0),

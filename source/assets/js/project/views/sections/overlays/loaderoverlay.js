@@ -98,5 +98,5 @@ feng.views.sections.overlays.LoaderOverlay.prototype.onResize = function(e){
 
 	goog.base(this, 'onResize', e);
 
-	goog.style.setSize(this.domElement, goog.dom.getViewportSize());
+	goog.style.setSize(this.domElement, feng.viewportSize);
 };

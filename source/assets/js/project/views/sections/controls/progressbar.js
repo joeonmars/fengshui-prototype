@@ -63,7 +63,7 @@ feng.views.sections.controls.ProgressBar.prototype.calculateTipsLayout = functio
   // arrange tip dots
   var numDots = this._tipEls.length;
   var dotsWidth = numDots * this._maxTipMargin * 2;
-  var actualWidth = Math.min( dotsWidth, this._tipsWidthViewportRatio * goog.dom.getViewportSize().width );
+  var actualWidth = Math.min( dotsWidth, this._tipsWidthViewportRatio * feng.viewportSize.width );
   var dotWidth = actualWidth / numDots;
   var margin = dotWidth / 2;
 
@@ -308,10 +308,9 @@ feng.views.sections.controls.ProgressBar.prototype.onResize = function(e){
 
 	goog.base(this, 'onResize', e);
 
-	var viewportSize = goog.dom.getViewportSize();
   var domSize = goog.style.getSize( this.domElement );
 
-  var y = viewportSize.height - 115;
+  var y = feng.viewportSize.height - 115;
 	goog.style.setStyle( this.domElement, 'top', y + 'px');
 
   this.calculateTipsLayout();

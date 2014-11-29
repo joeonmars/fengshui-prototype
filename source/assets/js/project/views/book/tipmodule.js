@@ -3,9 +3,9 @@ goog.provide('feng.views.book.TipModule');
 goog.require('goog.dom');
 goog.require('goog.events.EventHandler');
 goog.require('goog.math.Size');
-goog.require('goog.fx.Dragger');
 goog.require('feng.events');
 goog.require('feng.utils.Utils');
+goog.require('feng.fx.ScrollBar');
 
 
 feng.views.book.TipModule = function( domElement, index, widthChangeCallback ) {
@@ -14,20 +14,17 @@ feng.views.book.TipModule = function( domElement, index, widthChangeCallback ) {
 	
 	this.domElement = domElement;
 	this._cardEl = goog.dom.getElementByClass('card', this.domElement);
-	this._scrollerEl = goog.dom.getElementByClass('scroller', this.domElement);
-	this._scrollerContentEl = goog.dom.getElementByClass('content', this._scrollerEl);
-	this._scrollBarEl = goog.dom.getElementByClass('scrollbar', this._scrollerEl);
-	this._handleEl = goog.dom.getElementByClass('handle', this._scrollerEl);
-	this._shareButtons = goog.dom.query('.share a', this.domElement);
 
-	this._draggerLimits = new goog.math.Rect(0, 0, 0, 0);
-	this._dragger = new goog.fx.Dragger(this._handleEl, null, this._draggerLimits);
-	this._dragger.defaultAction = goog.bind(this.onDragHandle, this);
+	var scrollerEl = goog.dom.getElementByClass('scroller', this.domElement);
+	var scrollerContentEl = goog.dom.getElementByClass('content', scrollerEl);
+	var scrollBarEl = goog.dom.getElementByClass('scrollbar', scrollerEl);
+
+	this._scrollBar = new feng.fx.ScrollBar( scrollBarEl, scrollerContentEl );
+
+	this._shareButtons = goog.dom.query('.share a', this.domElement);
 
 	this.index = index;
 	
-	this.isHoveringScroller = false;
-
 	this._widthChangeCallback = widthChangeCallback;
 
 	this.x = 0;
@@ -42,10 +39,7 @@ feng.views.book.TipModule = function( domElement, index, widthChangeCallback ) {
 	this._margin = 0;
 	this._coverWidth = 0;
 
-	this._scrollerContentHeight = 0;
-
 	this._imageLoaded = false;
-	this._hasScrollBar = false;
 
 	this._outerEventHandler = new goog.events.EventHandler(this);
 	this._innerEventHandler = new goog.events.EventHandler(this);
@@ -92,9 +86,7 @@ feng.views.book.TipModule.prototype.setActive = function( isActive ) {
 		}
 
 		// activate inner events
-		this._innerEventHandler.listen( this._scrollerContentEl, 'scroll', this.onScrollerScroll, false, this );
-		this._innerEventHandler.listen( this._scrollerContentEl, 'mouseover', this.onMouseOverScroller, false, this );
-		this._innerEventHandler.listen( this._scrollerContentEl, 'mouseout', this.onMouseOutScroller, false, this );
+		this._scrollBar.activate();
 
 		goog.array.forEach(this._shareButtons, function(shareButton) {
 			this._innerEventHandler.listen( shareButton, 'click', this.onClickShareButton, false, this );
@@ -103,6 +95,8 @@ feng.views.book.TipModule.prototype.setActive = function( isActive ) {
 	}else {
 
 		goog.dom.classes.remove(this.domElement, 'active');
+
+		this._scrollBar.deactivate();
 
 		// deactivate inner events
 		this._innerEventHandler.removeAll();
@@ -138,22 +132,16 @@ feng.views.book.TipModule.prototype.setSize = function( viewportSize ) {
 	goog.style.setSize( this.domElement, this.size );
 
 	// update scroller size
-	this._scrollerContentHeight = goog.style.getSize(this._scrollerContentEl).height;
-	var scrollerRatio = this._scrollerContentHeight / this._scrollerContentEl.scrollHeight;
-	var handlePer = Math.round(scrollerRatio * 100);
-	goog.style.setStyle( this._handleEl, 'height', handlePer + '%' );
-	
-	this._hasScrollBar = !(handlePer >= 100 || handlePer <= 0);
-	goog.style.showElement( this._scrollBarEl, this._hasScrollBar );
-
-	// update dragger
-	var scrollBarPosition = goog.style.getPosition(this._scrollBarEl);
-	var scrollBarHeight = goog.style.getSize(this._scrollBarEl).height;
-	this._draggerLimits.height = scrollBarHeight - (scrollBarHeight * scrollerRatio);
-	this._dragger.setLimits( this._draggerLimits );
+	this._scrollBar.resize();
 
 	//
 	return this.size;
+};
+
+
+feng.views.book.TipModule.prototype.isHoveringScroller = function() {
+
+	return this._scrollBar.isHoveringScroller;
 };
 
 
@@ -168,43 +156,6 @@ feng.views.book.TipModule.prototype.updateWidth = function() {
 feng.views.book.TipModule.prototype.onClick = function(e) {
 
 	this.dispatchEvent( feng.events.EventType.CHANGE );
-};
-
-
-feng.views.book.TipModule.prototype.onDragHandle = function(x, y) {
-
-	goog.style.setPosition( this._handleEl, x, y );
-
-	var ratio = y / this._draggerLimits.height;
-	var distanceToScroll = this._scrollerContentEl.scrollHeight - this._scrollerContentHeight;
-	this._scrollerContentEl.scrollTop = distanceToScroll * ratio;
-};
-
-
-feng.views.book.TipModule.prototype.onScrollerScroll = function(e) {
-
-	var handleRatio = Math.round(e.currentTarget.scrollTop / e.currentTarget.scrollHeight * 100);
-
-	goog.style.setStyle( this._handleEl, 'top', handleRatio + '%' );
-};
-
-
-feng.views.book.TipModule.prototype.onMouseOverScroller = function(e) {
-
-	this.isHoveringScroller = this._hasScrollBar;
-};
-
-
-feng.views.book.TipModule.prototype.onMouseOutScroller = function(e) {
-
-	if(e.relatedTarget) {
-		this.isHoveringScroller = false;
-		return;
-	}
-
-	if( e.relatedTarget && !goog.dom.contains(e.currentTarget, e.relatedTarget) ) {
-		this.isHoveringScroller = false;
-	}
 };
 
 

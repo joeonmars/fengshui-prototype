@@ -59,6 +59,8 @@ feng.views.sections.captions.ChangePictureCaption.prototype.onClickItem = functi
   goog.dom.classes.enable( this._itemEls[this._pictureId], 'active', true );
   goog.dom.classes.enable( this._infoEls[this._pictureId], 'active', true );
 
+  this.scrollBar.resize();
+  
   this._object.setPicture( this._pictureId );
 
   this._object.nextPicture();

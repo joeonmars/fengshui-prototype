@@ -3,6 +3,7 @@ goog.provide('feng.views.sections.captions.Caption');
 goog.require('goog.events.EventHandler');
 goog.require('feng.templates.captions');
 goog.require('feng.utils.Utils');
+goog.require('feng.fx.ScrollBar');
 
 
 /**
@@ -59,6 +60,15 @@ feng.views.sections.captions.Caption = function( object, cameraController, rende
 
   this._section = null;
 
+  this.scrollBars = goog.array.map(this._sections, function(section) {
+    var scrollerEl = goog.dom.getElementByClass('inner-scroller', section);
+    var scrollBarEl = goog.dom.getElementByClass('scrollbar', section);
+    var scrollBar = new feng.fx.ScrollBar( scrollBarEl, scrollerEl );
+    return scrollBar;
+  });
+
+  this.scrollBar = null;
+
   this._shareEl = goog.dom.getElementByClass('share', this.domElement);
   this._shareButtons = goog.dom.query('a', this._shareEl);
 
@@ -104,6 +114,9 @@ feng.views.sections.captions.Caption.prototype.activate = function() {
   // listen for object camera animated in event to animate in panel
   this._eventHandler.listen( this._object, feng.events.EventType.ANIMATED_IN, this.animateInPanel, false, this );
 
+  // listen for object interaction end
+  this._eventHandler.listen( this._object, feng.events.EventType.END, this.animateInPanel, false, this );
+
   // listen for share button click events
   goog.array.forEach(this._shareButtons, function(shareButton) {
     this._eventHandler.listen( shareButton, 'click', this.onClickShareButton, false, this );
@@ -125,6 +138,10 @@ feng.views.sections.captions.Caption.prototype.deactivate = function() {
   feng.keyboardController.unbind( this._closeKeyId );
 
   this._object.stopInteraction();
+
+  goog.array.forEach(this.scrollBars, function(scrollBar) {
+    scrollBar.deactivate();
+  });
 };
 
 
@@ -177,6 +194,13 @@ feng.views.sections.captions.Caption.prototype.gotoSection = function( section, 
   }else {
     this._section = section;
   }
+
+  if(this.scrollBar) {
+    this.scrollBar.deactivate();
+  }
+
+  this.scrollBar = this.scrollBars[ goog.array.indexOf(this._sections, section) ];
+  this.scrollBar.activate();
 
   var fromSection = this._section;
   var toSection = section;
@@ -436,6 +460,10 @@ feng.views.sections.captions.Caption.prototype.onResize = function( e ) {
 
   goog.style.setStyle( this._shadeEl, 'height', this._renderSize.height + 'px' );
   goog.style.setStyle( this._panelEl, 'height', this._renderSize.height + 'px' );
+
+  if(this.scrollBar) {
+    this.scrollBar.resize();
+  }
 
   if(this._sectionTweener) {
 

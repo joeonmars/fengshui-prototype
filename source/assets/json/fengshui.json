@@ -74,31 +74,31 @@
 			"id": "diningchair",
 			"section": "studio",
 			"view": "livingroom",
-			"name": "chair's position",
+			"name": "The Chair",
 			"icon": "chair",
 			"unlocked": false,
 			"mandatory": false,
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "What is around you when sitting? Make sure your body is not in alignment with a door, between two doors, or a window and door. This is too much Yang activity around your body. Over time, your energy will be depleted.",
+			"problem": "The chair, on which you sit, should be located in the right position so as to retain the energy of your body. If you sit between two doors or, between a door and a window or, if your chair is aligned with a door, then your body energy can drain quickly due to ‘yang activity‘.",
 			"advice": "Relocate the chair to a quiet place.",
 			"character": "ollie",
-			"prompt": "Move to a new place.",
+			"prompt": "Relocate the chair.",
 			"reminder": "Oh, sorry! The chair in the middle of the room blocks your way. Maybe I should move it somewhere else."
 		},
 		{
 			"id": "readinglamp",
 			"section": "studio",
 			"view": "livingroom",
-			"name": "reading lamp",
+			"name": "The Light",
 			"icon": "lamp",
 			"unlocked": false,
 			"mandatory": true,
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "It is not advisable to use cold color light in dining areas. These adverse situations will create mental tension in the occupants of the dwelling and can result in stress.",
+			"problem": "Cold lights mostly give rise to stress, tension and a lot of negative energy, which is why, it should not be used in a recreation area. Instead, warm color lights should be selected.",
 			"advice": null,
 			"character": "ollie",
 			"prompt": "Change the bulb color.",
@@ -108,17 +108,17 @@
 					"pink": {
 						"name": "Pink Light",
 						"hex": "#FFC5CC",
-						"description": "Pink light came to be associated with health, abundance and longevity. In the Feng shui philosophy, pink symbolizes love. A pink light may reignite feelings of love and passion in a relationship. (Do not use reddish-pink colors because red is a stimulating color.)"
+						"description": "Pink is the color of love in accordance with the feng shui belief. It is linked with positive factors like longevity, health, and abundance, which is why pink light work so well to re-ignite passion in a relationship. It is important to note here that these characteristics are not associated with any reddish shade of pink; the shade can be prove to be too stimulating."
 					},
 					"yellow": {
 						"name": "Yellow Light",
 						"hex": "#FCE9A8",
-						"description": "The Feng shui color of sunlight, cheerful and uplifting yellow vibes always lighten and brighten a reading area, as well as create a cozy, welcoming feeling."
+						"description": "Another warm color to consider is the yellow shade of sunlight. Sunny colors are associated with positive and cheerful attributes and emotions.  Apart from this, it has a soothing effect which can lighten the sourest of moods and make a person feel good."
 					},
 					"orange": {
 						"name": "Orange Light",
 						"hex": "#FFB135",
-						"description": "Color orange is often called the “social” color, as it creates the Feng shui energy to promote lively conversations and good times in your home. In the winter it reminds us of summertime dreams and adventures."
+						"description": "The feng shui philosophy marks orange as the ‘social’ color, as this color helps to encourage conversations. This color serves as a reminder of summers, during winters."
 					}
 				}
 			}
@@ -127,7 +127,7 @@
 			"id": "crystal",
 			"section": "studio",
 			"view": "livingroom",
-			"name": "crystal",
+			"name": "The Crystal",
 			"icon": "crystal",
 			"unlocked": true,
 			"mandatory": false,
@@ -135,7 +135,7 @@
 			"provide": null,
 			"final": true,
 			"problem": null,
-			"advice": "In Feng Shui, crystals are considered powerful Feng Shui cures and are used to improve the Feng Shui energy flow in various areas of the house or office, as well as to improve one's own energy.<br>The best place for the crystal is near a window. On sunny days, the crystal captures energy and sunlight and redirects lots of rainbow beams in the room creating a positive energy.",
+			"advice": "Feng shui crystals are used for various purposes and can benefit the user by enhancing the flow of energy in different areas of an office or the house. Apart from this, they are also well known for their energizing abilities.<br>One of the attributes of crystal is that it stores the energy from sunlight and distributes it as positive energy in the form of rainbows. It is because of this property, that these crystals are placed near windows.",
 			"character": "ollie",
 			"prompt": null,
 			"reminder": "I got a crystal as a gift, does it has any Feng Shui function? I display it above the vanity cabinet."
@@ -144,7 +144,7 @@
 			"id": "clock",
 			"section": "studio",
 			"view": "livingroom",
-			"name": "clock",
+			"name": "The Clock",
 			"icon": "clock",
 			"unlocked": true,
 			"mandatory": false,
@@ -161,34 +161,34 @@
 			"id": "windows",
 			"section": "studio",
 			"view": "livingroom",
-			"name": "windows",
+			"name": "The Window",
 			"icon": "window",
 			"unlocked": false,
 			"mandatory": true,
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Identifying the flow of energy in your home is easy if you visualize energy, flowing into your home as water. Would the water flow smoothly and nourish all areas of your home or will it get blocked and stagnant in many areas?",
-			"advice": "Be loremipsum, loremipsum",
+			"problem": "You can easily understand how energy enters your home by imagining it as a stream of gushing water flowing in. The water needs to flow freely and should not be allowed to stagnate, it might compromise the flow of positive energy otherwise.",
+			"advice": "Be sure that direct alignment of doors and windows are avoided, which creates rushing energy. The best choice is to create a meandering, graceful and balanced energy flow.",
 			"character": "ollie",
-			"prompt": "",
+			"prompt": "Lift up the right window.",
 			"reminder": "My room is small, so I try to open the windows more often, but I still feel suffocated."
 		},
 		{
 			"id": "cactus",
 			"section": "studio",
 			"view": "livingroom",
-			"name": "indoor plants",
+			"name": "Indoor Plants",
 			"icon": "cactus",
 			"unlocked": false,
 			"mandatory": true,
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Plants are always excellent Feng Shui for a home or office because they bring vibrant energy into one's space. But the cactus plant is a classic example of a so-called bad Feng Shui plant, because its energy is very spiky.",
+			"problem": "The art of feng shui lays great emphasis on plants. In accordance with it, plants are the source of lively energy and are absolutely crucial for one’s office space as well as homes. There are, however, plants which are termed as ‘bad’ feng shui representation. One such plant is the cactus due to its ‘spiky’ energy.",
 			"advice": null,
 			"character": "ollie",
-			"prompt": "Change to another plant.",
+			"prompt": "Now choose a plant.",
 			"reminder": "I love my “little green”, and cactus leaves also offer health benefits, right?",
 			"details": {
 				"names": {
@@ -197,9 +197,9 @@
 					"rubberplant": "Ivy"
 				},
 				"descriptions": {
-					"lucky-bamboo": "So why is Lucky Bamboo considered lucky in Feng shui? Bamboo in itself is an amazing plant with a very peaceful and wise energy. It teaches the ultimate wisdom: how to be flexible and hollow (open) on the inside, so that the spirit can freely flow and heal your being.",
-					"orchid": "Orchids are graceful flowering plants. The flowers are long lasting and come in a variety of shapes, sizes, and colors. They can bloom all year round, even in the coldest winter. Orchids not only absorb carbon dioxide but they release oxygen at night, which make them ideal for bedrooms. They can also help us sleep better because of this fact. For feng shui purposes, we often use orchids for relationship adjustments. While the bamboo can be used for a current or prospective relationship, the orchid is more often used to find a new partner.",
-					"rubberplant": "Ivy, because of its ability to attach itself so securely to structures and objects, stands for friendship and is an expression of constancy and patience. One of Its specialty is taking care of benzene found in plastics and inks. It also helps control formaldehyde from carpets and paint."
+					"lucky-bamboo": "Bamboo is considered to be the transmitter of wise and harmonious energy as it serves to teach a fundamental lesson, namely the importance of adopting a flexible and an open approach to life.",
+					"orchid": "The orchid blooms throughout the year and they are popularly used to attract new partners as opposed to bamboos which are used to strengthen existing relationships. These plants have the capability to take in carbon dioxide and to diffuse oxygen at night. This property of the plant makes it ideal for bedrooms as it facilitates sleep and maintains a comfortable environment.",
+					"rubberplant": "The ivy plant teaches patience, continuity and the power of friendship. This is because Ivy has the ability of stick on to different objects and structures. It serves to control substances like formaldehyde from carpets and paint, as well as the harmful chemicals found in plastic and ink."
 				}
 			}
 		},
@@ -207,15 +207,15 @@
 			"id": "sewingmachine",
 			"section": "studio",
 			"view": "livingroom",
-			"name": "sharp objects",
+			"name": "Sharp Objects",
 			"icon": "sewingmachine",
 			"unlocked": false,
 			"mandatory": true,
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "It is not advisable to display any reflective items or sharp and pointed objects in the interior of the dwelling. Under accepted FENG SHUI principles sharp objects are known as [sha energy].<br>These adverse situations will create mental tension in the occupants of the dwelling and can result in stress and even increase in blood pressure.",
-			"advice": null,
+			"problem": "According to the feng shui beliefs, objects which are pointed in nature and appear to be sharp are transmitters of ‘sha energy’. Such objects serve to induce negative energy in a household and stimulate tension and stress leading to a rise in blood pressure.",
+			"advice": "If there is a sharp object towards you or near you, cover it up by placing a cover or something in front of it.",
 			"character": "ollie",
 			"prompt": "Add a cover.",
 			"reminder": "Fashion design and handcrafts are my favorites. I especially enjoy working with a sewing machine."
@@ -224,14 +224,14 @@
 			"id": "refrigerator",
 			"section": "studio",
 			"view": "livingroom",
-			"name": "refrigerator",
+			"name": "The Fruits",
 			"icon": "fruits",
 			"unlocked": false,
 			"mandatory": true,
 			"require": null,
 			"provide": "fruitplate",
 			"final": false,
-			"problem": "This is a statement about this object's fengshui problem.",
+			"problem": "Feng shui ideology encourages home owners to display fruits in their homes. It is best to make use of these fresh fruits for their specific energies in feng shui philosophy.",
 			"advice": null,
 			"character": "ollie",
 			"prompt": "Get the fruits.",
@@ -241,25 +241,25 @@
 			"id": "fruitplate",
 			"section": "studio",
 			"view": "livingroom",
-			"name": "fruits",
+			"name": "The Fruits",
 			"icon": "fruits",
 			"unlocked": false,
 			"mandatory": true,
 			"require": "refrigerator",
 			"provide": null,
 			"final": true,
-			"problem": "The use of specific fruits in traditional Feng shui applications is often dictated by classifications from ancient texts as being specific symbols of longevity, wealth, prosperity, fertility, etc.<br>Display fruit in your home is much better than hiding them.",
+			"problem": "Feng shui ideology encourages home owners to display fruits in their homes. This is because its scriptures clearly highlight the fact that fruits are viewed as symbols of fertility, success, wealth, longevity etc.",
 			"advice": null,
 			"character": "ollie",
 			"prompt": "Drop your fruits.",
 			"reminder": "I recently bought a new fruit plate.",
-			"hint": "Something is missing on the fruit plate...",
+			"hint": "Something is missing on the fruit plate. Could you find them?",
 			"details": {
 				"descriptions": {
-					"apple": "Apple has always been associated with peace and harmony in one's home.",
-					"pineapple": "The sound of the Chinese word for pineapple is close to the sound of “good luck coming your way”.",
-					"peach": "Peach came to be associated with health, abundance and longevity.",
-					"orange": "Oranges in Feng shui is explained by the refreshing odor, as well as the [yang] quality of the orange color."
+					"apple": "Apple symbolizes harmony and peace which makes it ideal for households.",
+					"pineapple": "We have the pineapple. Scrumtious and full of positive goodness, the word sounds like the Chinese one for “good luck coming your way”",
+					"peach": "The peach signifies longevity, wealth and health.",
+					"orange": "Oranges are well known for their revitalizing scent and color of the fruit has positive attributes or ‘yang’."
 				}
 			}
 		},
@@ -267,24 +267,24 @@
 			"id": "closet",
 			"section": "studio",
 			"view": "bathroom",
-			"name": "closet",
+			"name": "The Closet",
 			"icon": "closet",
 			"unlocked": false,
 			"mandatory": true,
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "You cannot cover, conceal or pretend not to see low energy, because in the world of Feng Shui energy, there are no boundaries.<br>Here is the thing about closets - most people think of closets as an out of sight, out of mind deal. Clutter should be clean and organized.",
-			"advice": "Rearrange the items to the similar amount for each level.",
+			"problem": "You cannot cover, conceal or pretend not to see low energy, because in the world of feng shui energy, there are no boundaries.<br>Here is the thing about closets - most people think of closets as an out of sight, out of mind deal. Clutter should be clean and organized.",
+			"advice": "A disorganized space is one that wastes and even eliminates positive energy. Trying to overlook this will not do any good since there are no limits to feng shui.<br>It is, therefore, advised that there should be no mess inside a house, as being organized will prove to be beneficial for both body and mind.",
 			"character": "ollie",
-			"prompt": "Clean it up.",
+			"prompt": "Rearrange the items.",
 			"reminder": "I always have a really rushed morning. I don’t have time to organize the closet."
 		},
 		{
 			"id": "lotus",
 			"section": "studio",
 			"view": "bathroom",
-			"name": "lotus",
+			"name": "The Lotus",
 			"icon": "lotus",
 			"unlocked": true,
 			"mandatory": false,
@@ -292,7 +292,7 @@
 			"provide": null,
 			"final": true,
 			"problem": null,
-			"advice": "Be loremipsum, loremipsum",
+			"advice": "The lotus plant remains pristine regardless of the mud it grows in. This plant has many medical attributes attached to it, which is why the Chinese make use of each part to create medicine. This quality makes it an ideal energy purifier for bathrooms.",
 			"character": "ollie",
 			"prompt": null,
 			"reminder": "Do you like my flower vase? I think it brings a fresh mood to the bathroom."
@@ -301,15 +301,15 @@
 			"id": "showerhead",
 			"section": "studio",
 			"view": "bathroom",
-			"name": "water leakage",
+			"name": "Water Leakage",
 			"icon": "water",
 			"unlocked": false,
 			"mandatory": true,
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "This is a statement about this object's fengshui problem.",
-			"advice": "Be loremipsum, loremipsum",
+			"problem": "Any kind of water leaks symbolize a deteriorating household or financial condition. It is very important that all such leaks are filled and taken care of in order to avoid excess expenditure.",
+			"advice": "Water problems can lead to the loss of wealth. Any leaking, dripping, or seeping water in your environment can represent hemorrhaging in your home or business financial picture. The cure to perform is very simple: Stop up all your leaks, while visualizing that your expenditures are now under control and not leaking out in known or unknown ways.",
 			"character": "ollie",
 			"prompt": "Tighten the tap.",
 			"reminder": "Oh... somewhere is leaking? Maybe I should have tap the shower head!"
@@ -318,15 +318,15 @@
 			"id": "glassbowl",
 			"section": "house",
 			"view": "livingroom",
-			"name": "goldfish",
+			"name": "The Goldfish",
 			"icon": "goldfish",
 			"unlocked": false,
 			"mandatory": true,
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "The symbology of fish, in general, is closely associated with the energy of water. Feng shui adds the dimension of prosperity and abundance to the meaning of [water].<br>Besides, the aspect of wealthy also comes from the ability of fish to quickly reproduce in quite big quantities.",
-			"advice": "The recommend types of fish are Arowana, Koi and gold fish; the ideal quantity will be Odd number, especially 9.",
+			"problem": "You will want to always clean the fish tank immediately, and refill it with new goldfish as soon as possible.",
+			"advice": "The presence of fish symbolizes the energy associated with the flow of water. In the scriptures of feng shui water is associated with wealth and success.<br>The idea of greater wealth is also connected to the reproductive capabilities of fish, because they are able to reproduce significantly in a very short time.",
 			"character": "joanna",
 			"prompt": "Add a goldfish.",
 			"reminder": "We had a goldfish, but it passed away a few months ago. We left the empty aquarium near the sofa."
@@ -335,15 +335,15 @@
 			"id": "mirror",
 			"section": "house",
 			"view": "livingroom",
-			"name": "mirror",
+			"name": "The Mirror",
 			"icon": "mirror",
 			"unlocked": true,
 			"mandatory": true,
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Usually, Feng shui mirror has some restrictions, but just remember: mirror should always reflect something attractive.",
-			"advice": "In this case, the images wall is good. However, place a mirror here is even better:  in this way, the mirror will reflects pleasant dishes, amplifies the natural light in the room and enhances the healthy [Chi] energy that can bring riches for the whole family.",
+			"problem": null,
+			"advice": "The values of feng shi place some reservations on the presence of mirrors. This, however, does not mean that mirrors should be avoided. It should be placed in areas where it reflects something pleasant and comforting.<br>For instance, the mirror can reflect pleasant dishes, amplifies the natural light in the room and enhances the healthy chi energy that can bring riches for the whole family.",
 			"character": "joanna",
 			"prompt": null,
 			"reminder": "I heard that mirrors have some unexpected Feng Shui influences. Is that true? Have I used it correctly?"
@@ -352,17 +352,17 @@
 			"id": "knife",
 			"section": "house",
 			"view": "livingroom",
-			"name": "kitchen utensils",
+			"name": "The Cooking Utensils",
 			"icon": "cookingutensils",
 			"unlocked": false,
 			"mandatory": true,
 			"require": null,
 			"provide": "drawer",
 			"final": false,
-			"problem": "Knives are inherently as “Sha” (bad luck) in Feng shui so it will disturb” the energy flow in your kitchen. You should never keep knives out on the countertop or hanging on the wall in your home if you have young children.",
-			"advice": "Ideally, knives are best kept in drawers. Yes, they probably came in a beautiful counter top knife block, but it is not good Feng shui to have knives so easily accessible.",
+			"problem": "Knives are inherently as “Sha” (bad luck) in Feng shui so it will disturb the energy flow in your kitchen. You should never keep knives out on the countertop or hanging on the wall in your home if you have young children.",
+			"advice": "There are some cooking utensils, like knives, which transmit the ‘sha’ energy or bad luck. This sort of energy flow needs to be stopped from flowing through the kitchen. This is, therefore, advised that knives should not be left hanging from walls, or on tops of counters. The best place to store knives is in covered areas like drawers.",
 			"character": "joanna",
-			"prompt": "Pick up the knife.",
+			"prompt": "Remove the knife.",
 			"reminder": "My husband Scott always displays cooking utensils on the countertop. But I really like to keep them organized in a drawer."
 		},
 		{
@@ -395,7 +395,7 @@
 			"provide": null,
 			"final": true,
 			"problem": null,
-			"advice": "Books should be organized well. This kind of a small library, properly stacked on a shelf, is a good example.<br>Usually, books in the living room are not bad Feng shui, as long as you do not have too many of them overflowing and take all over the space. Always let air flow between books and stacks and leave several empty lattices.",
+			"advice": "If you have book shelves, they need to be organized and well maintained. Stacking books on shelves, in the form of a miniature library is a very good way to be organized.<br>Keeping a lot of books in the living room are not a very good idea as they might take a lot of space. This, however, does not mean that a small amount of books, in the living room, is a bad idea.",
 			"character": "joanna",
 			"prompt": null,
 			"reminder": "The half-wall book stack shelf is the most significant decoration in our living room, but we actually seldom read those books."
@@ -404,15 +404,15 @@
 			"id": "handheld",
 			"section": "house",
 			"view": "boysroom",
-			"name": "electronic devices",
+			"name": "Electronic Devices",
 			"icon": "electronicdevices",
 			"unlocked": false,
 			"mandatory": true,
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "In Feng shui, modern digital devices can be classified as [JIN] element. In a bedroom environment, JIN element will cause dangers because its represent pointy metal.",
-			"advice": "It is especially important for children’s sleep quality that digital devices are not used before bed time and that they should be kept in a different location overnight to stop children from using the devices straight before, during and after sleep.",
+			"problem": "The beliefs of feng shui categorize the modern electronic gadgets as ‘jin’ elements. ‘Jin’ elements are not well suited inside a bedroom because they are characterized by sharp metal objects.",
+			"advice": "The modern electronic gadgets, in other words as 'Jin' elements, cause hindrance in a a child’s sleep patterns. It is, therefore, advised that the use of these electronic devices should be avoided by children especially before going to bed.",
 			"character": "nick",
 			"prompt": "Move to a new place.",
 			"reminder": "I love to play with my handheld console! I put it near my bed so I can reach it at night!"
@@ -421,15 +421,15 @@
 			"id": "bear",
 			"section": "house",
 			"view": "boysroom",
-			"name": "plush toys",
+			"name": "The Plush Toys",
 			"icon": "bear",
 			"unlocked": false,
 			"mandatory": true,
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "In Feng shui, dolls are symbolism as human and they should be view as friends. It also suggested that the number of dolls should be limited, otherwise the owners will get involved in a complex relationships.",
-			"advice": "Further more, Keep dolls closed in a cabinet is not a wise way to organize the toys. Instead, they should be arranged to an open area and let them breath.",
+			"problem": "In feng shui, the plush toys are symbolism as human beings and they should be treated as friends. Please find him a better place than the drawer.",
+			"advice": "The art of feng shui, views plush toys as imitations of human beings which can be taken as friends, which is why having them in a room is not an issue. The issue, however, is the place where they are kept. Plush toys should appear in open spaces where they get a chance to breathe. Storing them in cabinets may promote negative energy.",
 			"character": "nick",
 			"prompt": "Move to a new place.",
 			"reminder": "Dad said I need to clean my room, so I threw my bear, Nick King, into a drawer, but I don’t think he liked it."
@@ -438,31 +438,31 @@
 			"id": "computer",
 			"section": "house",
 			"view": "boysroom",
-			"name": "computer",
+			"name": "The Study Area",
 			"icon": "computer",
 			"unlocked": false,
 			"mandatory": false,
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Nick’s table is confronting windows - this set he up to be attracted by the activities going on ahead of them.",
-			"advice": "For study purposes, it is best to have a child’s back is to a wall with the desk facing into the room.<br>The shift helps children feel more empowered and on top of their work and that they are less affected by distractions.",
+			"problem": "The table on which a child studies should be arranged in a manner that the child’s back is towards a window and table is facing the room.<br>The window may cause easy distractions for a child.",
+			"advice": "To facilitate study, it is best to have the child faced to the wall.<br>The shift helps him feel more empowered and on top of his work. They will be less affected by distractions.",
 			"character": "nick",
-			"prompt": "Move to a new place.",
+			"prompt": "Move the computer.",
 			"reminder": "There is a playground outside my window. I hope I can finish my homework soon and join Tom and Ryan."
 		},
 		{
 			"id": "poster",
 			"section": "house",
 			"view": "boysroom",
-			"name": "poster",
+			"name": "The Poster",
 			"icon": "poster",
 			"unlocked": false,
 			"mandatory": false,
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Feng shui believes that children and parents can enjoy success in life and healthy relationships if the environment supports them. Also very important, be sure to eliminate images of ferocious or dangerous animals or violence.",
+			"problem": "A child’s bedroom should be free from posters of wild and dangerous animals as these images generate a lot of negative energy.<br>Instead, a child’s room should be a place, where one could relax. Any violent or aggressive images may result in insufficient healing.",
 			"advice": null,
 			"character": "nick",
 			"prompt": "Change the image.",
@@ -471,15 +471,15 @@
 				"pictures": {
 					"1": {
 						"name": "Photo 1",
-						"description": "This is a dummy picture. Its name is 1."
+						"description": "According to feng shui philosophy the bond between parents and children can be strengthened in a healthy environment.  Furthermore, a healing environment tends to have a positive effect on a person’s relationship and it paves the floor for his or her success."
 					},
 					"2": {
 						"name": "Photo 2",
-						"description": "This is a dummy picture. Its name is 2."
+						"description": "According to feng shui philosophy the bond between parents and children can be strengthened in a healthy environment.  Furthermore, a healing environment tends to have a positive effect on a person’s relationship and it paves the floor for his or her success."
 					},
 					"3": {
 						"name": "Photo 3",
-						"description": "This is a dummy picture. Its name is 3."
+						"description": "According to feng shui philosophy the bond between parents and children can be strengthened in a healthy environment.  Furthermore, a healing environment tends to have a positive effect on a person’s relationship and it paves the floor for his or her success."
 					}
 				}
 			}
@@ -495,8 +495,8 @@
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "Sit as far away from the door as possible. A Feng shui commanding position means you do not have your back to the door; try to move the chair to a better position first.",
-			"advice": "If you are unable to position your desk in this manner, hang a an appropriate reflective surface (like a mirror) on the wall in front of you so that you can see the entryway, you may also need to think about choose a high back chair in the future.",
+			"problem": "The feng shui ideology dictates that one must be seated at a distance from the door while making sure that his or her back is not towards it.",
+			"advice": "In a situation where a table cannot be placed in the manner described before, then a mirror should be placed on the wall in form of a seat. This will allow you to be vigilant and to constantly maintain a watchful eye on the entrance. A chair with a high back may also be required in due time.",
 			"character": "scott",
 			"prompt": "Move to a new place.",
 			"reminder": "Have a seat! Try this desk chair, it’s very comfortable! But I don’t know why I sometimes get backaches."
@@ -505,14 +505,14 @@
 			"id": "photodisplay",
 			"section": "house",
 			"view": "homeoffice",
-			"name": "photo display",
+			"name": "The Photo Display",
 			"icon": "pictures",
 			"unlocked": false,
 			"mandatory": true,
 			"require": null,
 			"provide": null,
 			"final": true,
-			"problem": "To create a nurturing Feng shui home office hangs pictures, mottos, or images that symbolize what you want to accomplish. Acknowledge your sources of support by placing a few photos of family members and mentors but being careful! Too many images of your family will actually be an interruption into your home office. It is more important to place images that are connected to your business and that inspire you.",
+			"problem": "In order to create a fostering environment in your office, it is essential that you decorate your walls with mottos, images, and pictures such that they motivate you to achieve your life goal.<br>It always helps to acknowledge the people who have provided you with support throughout. This acknowledgment would involve placing pictures of your family, along with that of your mentors. <br>One, however, needs to be careful because placing too many pictures might cause distractions.<br>Be sure to place the kind of images that are a source of inspiration for you and are somehow linked to your business.",
 			"advice": null,
 			"character": "scott",
 			"prompt": "Change photos.",
@@ -521,19 +521,19 @@
 				"pictures": {
 					"family": {
 						"name": "Photo of Family",
-						"description": "This is a dummy picture. Its name is family."
+						"description": "It is always a great idea to display family photos to connect to your happy family times."
 					},
 					"hug": {
 						"name": "Photo of Family Moment",
-						"description": "This is a dummy picture. Its name is hug."
+						"description": "The photo of a dad and son could symbolize growth of the young and harmony in his household."
 					},
 					"lecture": {
 						"name": "Photo of Career",
-						"description": "This is a dummy picture. Its name is lecture."
+						"description": "The picture of career success will motivate you to achieve your life goal."
 					},
 					"degree": {
 						"name": "Photo of Achievements",
-						"description": "This is a dummy picture. Its name is degree."
+						"description": "The picture of graduation will make it easier for the person to adjust to the new stage in life, as well as help him make the best of the changes and challenges that the future may hold."
 					}
 				}
 			}
@@ -542,7 +542,7 @@
 			"id": "setsquare",
 			"section": "house",
 			"view": "homeoffice",
-			"name": "overhead objects",
+			"name": "Sharp Decorations",
 			"icon": "setsquare",
 			"unlocked": false,
 			"mandatory": true,
@@ -550,7 +550,7 @@
 			"provide": null,
 			"final": true,
 			"problem": "Sha Chi travels in straight lines. If you have some sharp angles and corners around you, pointed you or near to where you spend most of your time, these can be considered sources of harmful influences.",
-			"advice": "You can dramatically improve the Feng shui of this situation by moving around those sharp objects.",
+			"advice": "Sharp edges and corners can cause you some problems and may be a source of negative experiences. This is why it is advised to move around these and in order to enhance the situation’s feng shui. You can dramatically improve the Feng shui of this situation by moving around those sharp objects.",
 			"character": "scott",
 			"prompt": "Move to a new place.",
 			"reminder": "I always need set square. Do you think it is in a good position now? I want to keep it at hand."
@@ -559,7 +559,7 @@
 			"id": "officeplant",
 			"section": "house",
 			"view": "homeoffice",
-			"name": "office plants",
+			"name": "Office Plants",
 			"icon": "officeplant",
 			"unlocked": true,
 			"mandatory": false,
@@ -567,7 +567,7 @@
 			"provide": null,
 			"final": true,
 			"problem": null,
-			"advice": "If you have to face a wall in your workspace, you can dramatically improve the Feng shui of this situation by having vibrant bright art with some depth, or perspective to it. Making the wall disappear is your goal and be sure this is possible with appropriate Feng shui cures.",
+			"advice": "If you have to face a wall in your workspace, you can dramatically improve the feng shui of this situation by having some green plants, or pictures of it.<br>Making the environment lively is your goal and be sure this is possible with appropriate feng shui cures.",
 			"character": "scott",
 			"prompt": null,
 			"reminder": "I love having some plants in the room. Do you think I have made a wise choice?"
@@ -576,7 +576,7 @@
 			"id": "desktopwallpaper",
 			"section": "house",
 			"view": "homeoffice",
-			"name": "desktop wallpapers",
+			"name": "The Desktop Wallpaper",
 			"icon": "desktopwallpaper",
 			"unlocked": true,
 			"mandatory": false,
@@ -593,7 +593,7 @@
 			"id": "cat",
 			"section": "house",
 			"view": "corridor",
-			"name": "pet",
+			"name": "The Cat",
 			"icon": "petbeds",
 			"unlocked": true,
 			"mandatory": false,
@@ -601,7 +601,7 @@
 			"provide": null,
 			"final": true,
 			"problem": null,
-			"advice": "Cats are smart and, after observing us over the years, have developed their own practice for becoming a fortunate felines symbol in feng shui.<br>Give your cat a special area that's just for them. Whether it's a bed or cushion, this will honor your pet in a way that benefits your whole household. Make sure your pet's area is always clean and well maintained. The best spots for an animal's perch are the near left corner or the center portion of the far wall of your home. When you designate a special spot for your animals, it will be easier to be recognized for your own talents and contributions.",
+			"advice": "There is a reason cats are known as fortunate felines when it comes to feng shui.<br>It is important that you treat your cat in a nice way and do a little extra for it. This extra effort would include developing a small area which is just for your cat, which should be furnished with a cushion or perhaps a small bed. This small gesture will have a positive impact on your cat and this in turn will have a very good influence on your entire household. It is essential to pick a good spot for your cat and that spot should be cleaned regularly.",
 			"character": "joanna",
 			"prompt": null,
 			"reminder": "Did you hear the sweet snozzing sound? That's our kitty Tom!"

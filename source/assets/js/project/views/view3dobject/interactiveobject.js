@@ -46,12 +46,15 @@ feng.views.view3dobject.InteractiveObject.prototype.deactivate = function(){
 
 feng.views.view3dobject.InteractiveObject.prototype.startInteraction = function(){
 
+  this.dispatchEvent( feng.events.EventType.START );
 };
 
 
 feng.views.view3dobject.InteractiveObject.prototype.stopInteraction = function(){
 
   this._interactionHandler.removeAll();
+
+  this.dispatchEvent( feng.events.EventType.END );
 };
 
 

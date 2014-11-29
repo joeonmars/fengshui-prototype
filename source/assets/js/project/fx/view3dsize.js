@@ -62,9 +62,8 @@ feng.fx.View3DSize.prototype.update = function( ratioX, ratioY ){
 	this.ratioX = goog.isNumber(ratioX) ? ratioX : this.ratioX;
 	this.ratioY = goog.isNumber(ratioY) ? ratioY : this.ratioY;
 
-	var viewportSize = goog.dom.getViewportSize();
-	var width = viewportSize.width * this.ratioX;
-	var height = viewportSize.height * this.ratioY;
+	var width = feng.viewportSize.width * this.ratioX;
+	var height = feng.viewportSize.height * this.ratioY;
 
 	this.set( width, height );
 

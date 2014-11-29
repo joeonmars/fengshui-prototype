@@ -59,5 +59,7 @@ feng.views.sections.captions.ChangeColorCaption.prototype.onClickItem = function
   goog.dom.classes.enable( this._itemEls[this._colorId], 'active', true );
   goog.dom.classes.enable( this._infoEls[this._colorId], 'active', true );
 
+  this.scrollBar.resize();
+  
   this._object.setColorByName( this._colorId );
 };

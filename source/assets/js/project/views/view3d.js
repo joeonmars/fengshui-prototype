@@ -35,6 +35,7 @@ goog.require('feng.views.view3dobject.entities.Computer');
 goog.require('feng.views.view3dobject.entities.Closet');
 goog.require('feng.views.view3dobject.entities.Pictures');
 goog.require('feng.views.view3dobject.entities.Refrigerator');
+goog.require('feng.views.view3dobject.entities.SewingMachine');
 goog.require('feng.views.view3dobject.entities.FruitPlate');
 goog.require('feng.views.view3dobject.entities.Wallpaper');
 goog.require('feng.views.view3dobject.entities.Windows');
@@ -220,12 +221,6 @@ feng.views.View3D.prototype.getView3dObject = function( name ){
 };
 
 
-feng.views.View3D.prototype.getInteractiveObject = function( name ){
-
-	return this.interactiveObjects[ name ];
-};
-
-
 feng.views.View3D.prototype.getObjectsByClass = function( objectClass ){
 
 	var result = [];
@@ -377,8 +372,6 @@ feng.views.View3D.prototype.fadeOut = function(){
 
 feng.views.View3D.prototype.pause = function(){
 
-	console.log("Pause View3D!!!");
-
 	this.modeController.control.pause( true );
 	this.renderController.updateByPause( true );
 	this.hud.pause( true );
@@ -386,8 +379,6 @@ feng.views.View3D.prototype.pause = function(){
 
 
 feng.views.View3D.prototype.resume = function(){
-
-	console.log("Resume View3D!!!");
 
 	this.modeController.control.pause( false );
 	this.renderController.updateByPause( false );
@@ -458,6 +449,7 @@ feng.views.View3D.prototype.initScene = function() {
 		'drawer': feng.views.view3dobject.entities.Drawer,
 		'knife': feng.views.view3dobject.entities.Knife,
 		'refrigerator': feng.views.view3dobject.entities.Refrigerator,
+		'sewingmachine': feng.views.view3dobject.entities.SewingMachine,
 		'wallpaper': feng.views.view3dobject.entities.Wallpaper,
 		'windows': feng.views.view3dobject.entities.Windows,
 		'fruitplate': feng.views.view3dobject.entities.FruitPlate
