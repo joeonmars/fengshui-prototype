@@ -40,6 +40,7 @@ feng.views.view3dobject.entities.SewingMachine.prototype.startInteraction = func
   		'y': this._cover.object3d.position.y + 30
   	}, {
   		'y': this._cover.object3d.position.y,
+      'immediateRender': true,
   		'ease': Strong.easeInOut,
   		'onComplete': this.onCovered,
   		'onCompleteScope': this

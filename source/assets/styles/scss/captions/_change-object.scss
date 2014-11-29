@@ -19,6 +19,10 @@
 					@include retina-icon("rubberplant");
 				}
 
+				&[data-object="orchid"] {
+					@include retina-icon("orchid");
+				}
+
 				&[data-object="lucky-bamboo"] {
 					@include retina-icon("luckybamboo");
 				}

@@ -531,6 +531,12 @@ body{
     }
   }
 
+  .close-button{
+    &:disabled{
+      display: none;
+    }
+  }
+
   .scrollbar{
     position: absolute;
     top: 0;

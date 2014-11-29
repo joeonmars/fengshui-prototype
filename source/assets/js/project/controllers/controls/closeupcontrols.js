@@ -113,15 +113,15 @@ feng.controllers.controls.CloseUpControls.prototype.activate = function () {
 	goog.base(this, 'activate');
 
 	this._eventHandler.listen(this, feng.events.EventType.CLOSE, this.close, false, this);
+
+	// animate out object select effect
+	this._view3d.fx.selectEffect.animateOut();
 };
 
 
 feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
 
 	this._activeObject.onCameraOut();
-
-	// delay to animate out object select effect
-	this._view3d.fx.selectEffect.animateOut( 1 );
 
 	//
 	feng.navigationController.replaceToken("");

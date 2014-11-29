@@ -199,7 +199,7 @@ feng.views.view3dobject.MovableObject.prototype.onCameraIn = function(){
   goog.base(this, 'onCameraIn');
 };
 
-
+/*
 feng.views.view3dobject.MovableObject.prototype.onClick = function(e){
 
   var camera = this._view3d.cameraController.activeCamera;
@@ -211,3 +211,4 @@ feng.views.view3dobject.MovableObject.prototype.onClick = function(e){
     this.pick();
   }
 };
+*/

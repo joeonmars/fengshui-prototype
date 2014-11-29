@@ -98,7 +98,14 @@ feng.views.sections.captions.Caption.prototype.hide = function() {
 
   this.deactivate();
 
-  goog.style.showElement( this.domElement, false );
+  if(this._isPanelAnimatedOut) {
+
+    goog.style.showElement( this.domElement, false );
+
+  }else {
+
+    this.animateOutPanel( false, true );
+  }
 };
 
 
@@ -114,8 +121,9 @@ feng.views.sections.captions.Caption.prototype.activate = function() {
   // listen for object camera animated in event to animate in panel
   this._eventHandler.listen( this._object, feng.events.EventType.ANIMATED_IN, this.animateInPanel, false, this );
 
-  // listen for object interaction end
-  this._eventHandler.listen( this._object, feng.events.EventType.END, this.animateInPanel, false, this );
+  // listen for object interaction start/end
+  this._eventHandler.listen( this._object, feng.events.EventType.START, this.onInteractionStart, false, this );
+  this._eventHandler.listen( this._object, feng.events.EventType.END, this.onInteractionEnd, false, this );
 
   // listen for share button click events
   goog.array.forEach(this._shareButtons, function(shareButton) {
@@ -126,6 +134,8 @@ feng.views.sections.captions.Caption.prototype.activate = function() {
   this._closeKeyId = feng.keyboardController.bind( this._close, feng.keyboardController.key.ESC, true );
 
   goog.style.showElement(this._panelButton, false);
+
+  this.enableCloseButton( false );
 
   this.updateStatus();
 };
@@ -142,6 +152,12 @@ feng.views.sections.captions.Caption.prototype.deactivate = function() {
   goog.array.forEach(this.scrollBars, function(scrollBar) {
     scrollBar.deactivate();
   });
+};
+
+
+feng.views.sections.captions.Caption.prototype.enableCloseButton = function( enabled ) {
+
+  this._closeButton.disabled = goog.isBoolean(enabled) ? !enabled : false;
 };
 
 
@@ -288,6 +304,8 @@ feng.views.sections.captions.Caption.prototype.animateInPanel = function() {
 
   goog.style.showElement(this._panelButton, true);
 
+  this.enableCloseButton( true );
+
   goog.dom.classes.enable(this.domElement, 'hide-panel', false);
 
   TweenMax.to( this._renderSize, .5, {
@@ -299,7 +317,7 @@ feng.views.sections.captions.Caption.prototype.animateInPanel = function() {
 };
 
 
-feng.views.sections.captions.Caption.prototype.animateOutPanel = function( shouldDoCloseWhenComplete ) {
+feng.views.sections.captions.Caption.prototype.animateOutPanel = function( shouldDoCloseWhenComplete, shouldHideWhenComplete ) {
 
   if(this._isPanelAnimatedOut) {
 
@@ -314,7 +332,7 @@ feng.views.sections.captions.Caption.prototype.animateOutPanel = function( shoul
     'onUpdate': this._renderSize.update,
     'onUpdateScope': this._renderSize,
     'onComplete': this.onPanelAnimatedOut,
-    'onCompleteParams': [shouldDoCloseWhenComplete],
+    'onCompleteParams': [shouldDoCloseWhenComplete, shouldHideWhenComplete],
     'onCompleteScope': this
   });
 };
@@ -405,7 +423,7 @@ feng.views.sections.captions.Caption.prototype.updateStatus = function() {
 };
 
 
-feng.views.sections.captions.Caption.prototype.onPanelAnimatedOut = function( shouldDoClose ) {
+feng.views.sections.captions.Caption.prototype.onPanelAnimatedOut = function( shouldDoClose, shouldHide ) {
 
   this._isPanelAnimatedOut = true;
 
@@ -415,6 +433,31 @@ feng.views.sections.captions.Caption.prototype.onPanelAnimatedOut = function( sh
       type: feng.events.EventType.CLOSE
     });
   }
+
+  if(shouldHide) {
+    this.hide();
+  }
+};
+
+
+feng.views.sections.captions.Caption.prototype.onInteractionStart = function( e ) {
+
+  if(this._interactionSection) {
+
+    this.gotoSection( this._interactionSection );
+
+  }else {
+
+    this.enableCloseButton( false );
+
+    this.animateOutPanel();
+  }
+};
+
+
+feng.views.sections.captions.Caption.prototype.onInteractionEnd = function( e ) {
+
+  this.animateInPanel();
 };
 
 
@@ -423,16 +466,6 @@ feng.views.sections.captions.Caption.prototype.onClick = function( e ) {
   switch(e.currentTarget) {
     case this._promptButton:
     this._object.startInteraction();
-    
-    /* WIP */
-    if(this._interactionSection) {
-
-      this.gotoSection( this._interactionSection );
-
-    }else {
-
-      this.animateOutPanel();
-    }
     break;
 
     /*
