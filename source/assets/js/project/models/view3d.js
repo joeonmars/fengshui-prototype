@@ -14,7 +14,7 @@ feng.models.View3D.Data = {
 				isEntry: true,
 				inversed: true,
 				origin: {
-					position: new THREE.Vector3(-240, 0, 34),
+					position: new THREE.Vector3(-240, 0, 30),
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
 				},
 				texture: "studio.livingroom.studio-door-texture"
@@ -769,8 +769,7 @@ feng.models.View3D.Data = {
 		},
 		'boysroom': {
 			'floor': {
-				texture: "house.boysroom.floor-texture",
-				receiveShadow: true
+				texture: "house.boysroom.floor-texture"
 			},
 			'wall':	{
 				castShadow: true,
@@ -847,16 +846,17 @@ feng.models.View3D.Data = {
 			'computer': {
 				Class: "computer",
 				collidable: true,
-				castShadow: true,
 				texture: "house.boysroom.computer-on-table-texture",
 				position: new THREE.Vector3(63.04, 37.75, -97.24),
 				rotation: new THREE.Euler(0, 3.14, 0),
 				range: 50,
+				parent: 'desk',
 				tipKey: 'house.boysroom.computer'
+			},
+			'screen': {
 			},
 			'desk': {
 				collidable: true,
-				receiveShadow: true,
 				texture: "house.boysroom.desk-texture"
 			},
 			'table': {

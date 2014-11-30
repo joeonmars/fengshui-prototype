@@ -289,6 +289,8 @@ feng.views.View3DHud.prototype.onModeChange = function( e ) {
     break;
   }
 
+  goog.dom.classes.enable( this._view3d.containerElement, 'bg-white', (e.mode === feng.controllers.view3d.ModeController.Mode.CLOSE_UP) );
+
   if(e.gateway) {
     shouldShowControls = false;
   }

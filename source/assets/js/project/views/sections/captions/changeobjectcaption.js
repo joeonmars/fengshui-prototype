@@ -34,8 +34,6 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.show = function() {
   goog.object.forEach(this._itemEls, function(objectEl) {
     this._eventHandler.listen(objectEl, 'click', this.onClickObject, false, this);
   }, this);
-
-  this._object.startInteraction();
 };
 
 

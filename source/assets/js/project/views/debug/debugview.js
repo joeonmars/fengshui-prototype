@@ -29,8 +29,8 @@ feng.views.debug.DebugView = function(template, templateData){
   this._eventHandler = new goog.events.EventHandler(this);
 	this._eventHandler.listen(this._displayButton, 'click', this.onClick, false, this);
 
-	feng.pubsub.subscribe(feng.PubSub.Topic.SHOW_VIEW3D, goog.bind(this.onView3DShow, this));
-	feng.pubsub.subscribe(feng.PubSub.Topic.HIDE_VIEW3D, goog.bind(this.onView3DHide, this));
+	feng.pubsub.subscribe(feng.PubSub.Topic.SHOW_VIEW3D, this.onView3DShow, this);
+	feng.pubsub.subscribe(feng.PubSub.Topic.HIDE_VIEW3D, this.onView3DHide, this);
 };
 goog.inherits(feng.views.debug.DebugView, goog.events.EventTarget);
 

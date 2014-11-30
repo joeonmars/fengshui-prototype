@@ -19,6 +19,13 @@ TweenMax.reversed = {};
 TweenMax.updateTo = {};
 TweenMax.delayedCall = {};
 
+var TweenLite = {};
+TweenLite.killTweensOf = {};
+
+var ThrowPropsPlugin = {};
+ThrowPropsPlugin.track = {};
+ThrowPropsPlugin.untrack = {};
+
 /* TimelineMax */
 var TimelineMax = {};
 TimelineMax.data = {};
@@ -50,6 +57,8 @@ Sine.easeIn = {};
 Sine.easeInOut = {};
 
 var Strong = {};
+Strong.easeIn = {};
+Strong.easeInOut = {};
 Strong.easeOut = {};
 
 var Back = {};

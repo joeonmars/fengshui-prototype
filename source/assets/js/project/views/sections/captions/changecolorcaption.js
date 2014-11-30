@@ -34,8 +34,6 @@ feng.views.sections.captions.ChangeColorCaption.prototype.show = function() {
   goog.object.forEach(this._itemEls, function(itemEl) {
     this._eventHandler.listen(itemEl, 'click', this.onClickItem, false, this);
   }, this);
-
-  this._object.startInteraction();
 };
 
 

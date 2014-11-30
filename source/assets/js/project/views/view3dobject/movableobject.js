@@ -13,7 +13,7 @@ feng.views.view3dobject.MovableObject = function( object3d, data, view3d ){
   goog.base(this, object3d, data, view3d);
 
   var dropParentObject = this._view3d.getView3dObject( this.data.parent );
-  this._dropParent = dropParentObject ? dropParentObject.object3d : this._view3d.scene;
+  this.dropParent = dropParentObject ? dropParentObject.object3d : this._view3d.scene;
 
   this.hasPicked = false;
   this.hasDropped = false;
@@ -47,7 +47,7 @@ feng.views.view3dobject.MovableObject.prototype.getBoundingBox = function(){
 
 feng.views.view3dobject.MovableObject.prototype.getDestination = function(){
 
-  return this._dropParent.localToWorld( this.data.position.clone() );
+  return this.dropParent.localToWorld( this.data.position.clone() );
 };
 
 
@@ -96,15 +96,15 @@ feng.views.view3dobject.MovableObject.prototype.drop = function(){
   var arms = this._view3d.arms;
   arms.removeItem( this );
 
-  this._dropParent.add( this.object3d );
+  this.dropParent.add( this.object3d );
 
   //
   var startOrientation = arms.getWorldOrientation( this.name );
   var worldPosition = startOrientation.position;
   var worldRotation = startOrientation.rotation;
 
-  var startPosition = feng.utils.ThreeUtils.getLocalPositionOfWorld( this._dropParent, worldPosition );
-  var startRotation = feng.utils.ThreeUtils.getLocalRotationOfWorld( this._dropParent, worldRotation );
+  var startPosition = feng.utils.ThreeUtils.getLocalPositionOfWorld( this.dropParent, worldPosition );
+  var startRotation = feng.utils.ThreeUtils.getLocalRotationOfWorld( this.dropParent, worldRotation );
 
   var endPosition = this.data.position.clone().setY( this.data.position.y + 10 );
   var endRotation = this.data.rotation;

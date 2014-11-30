@@ -61,7 +61,6 @@ feng.views.sections.overlays.LoaderOverlay.prototype.animateOut = function(){
 		'opacity': 0,
 		'ease': Strong.easeInOut,
 		'onComplete': this.hide,
-		'onCompleteParams': [ true ],
 		'onCompleteScope': this
 	});
 };
@@ -90,7 +89,7 @@ feng.views.sections.overlays.LoaderOverlay.prototype.onLoadProgress = function(e
 
 feng.views.sections.overlays.LoaderOverlay.prototype.onLoadComplete = function(e){
 
-	feng.pubsub.subscribeOnce( feng.PubSub.Topic.BUFFER_COMPLETE, this.animateOut, this );
+	feng.pubsub.subscribeOnce( feng.PubSub.Topic.HIDE_VIEW3D, this.animateOut, this );
 };
 
 

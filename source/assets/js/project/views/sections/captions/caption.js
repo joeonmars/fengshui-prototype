@@ -98,6 +98,8 @@ feng.views.sections.captions.Caption.prototype.hide = function() {
 
   this.deactivate();
 
+  this._section = null;
+
   if(this._isPanelAnimatedOut) {
 
     goog.style.showElement( this.domElement, false );
@@ -189,6 +191,7 @@ feng.views.sections.captions.Caption.prototype.enableProblemSection = function( 
 
 feng.views.sections.captions.Caption.prototype.enableInteractionSection = function( shouldEnable ) {
 
+  this._object.startInteraction();
 };
 
 
@@ -417,7 +420,10 @@ feng.views.sections.captions.Caption.prototype.updateStatus = function() {
     if(this._adviceSection) {
       
       this.gotoSection( this._adviceSection );
-      return;
+
+    }else {
+
+      this.gotoSection( this._interactionSection );
     }
   }
 };

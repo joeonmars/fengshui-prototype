@@ -117,7 +117,7 @@ feng.views.sections.Section.prototype.load = function(){
 
 feng.views.sections.Section.prototype.setAnimations = function(){
 
-	var fadeInTweener = TweenMax.fromTo(this.domElement, .5, {
+	var fadeInTweener = TweenMax.fromTo(this.domElement, 1, {
 		'opacity': 0
 	}, {
 		'opacity': 1

@@ -12,6 +12,7 @@ body{
 #main{
 	width: 100%;
 	height: 100%;
+	background-color: #000;
 }
 
 #main-options{
@@ -219,10 +220,14 @@ body{
 			}
 		}
 
-		>.sceneContainer{
+		>.scene-container{
 			width: 100%;
 			height: 100%;
 			background-color: #000;
+
+			&.bg-white{
+				background-color: #fff;
+			}
 
 			>canvas{
 				position: absolute;

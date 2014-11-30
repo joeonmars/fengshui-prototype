@@ -58,6 +58,7 @@
 				@include box-sizing( border-box );
 				opacity: .4;
 				@include single-transition(opacity, .5s);
+				cursor: none !important;
 
 				&:first-child{
 					margin-left: 0;
