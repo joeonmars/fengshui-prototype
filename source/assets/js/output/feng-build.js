@@ -20082,15 +20082,15 @@ feng.templates.debug.PathfindingDebugView = function(opt_data, opt_ignored) {
  */
 feng.templates.debug.AchievementsDebugView = function(opt_data, opt_ignored) {
   var output = '\t';
-  var param355 = '<div class="tipsPanel"><button class="unlock-all">Unlock All</button><ul class="tips">';
-  var tipList357 = opt_data.tips;
-  var tipListLen357 = tipList357.length;
-  for (var tipIndex357 = 0; tipIndex357 < tipListLen357; tipIndex357++) {
-    var tipData357 = tipList357[tipIndex357];
-    param355 += '<li data-tip-id="' + tipData357.id + '" data-view-id="' + tipData357.view + '" data-section-id="' + tipData357.section + '"><div class="icon icon-' + tipData357.icon + '"></div><div class="caption"><p>' + tipData357.id + '</p><p>' + tipData357.view + '</p><p>' + tipData357.section + '</p></div></li>';
+  var param412 = '<div class="tipsPanel"><button class="unlock-all">Unlock All</button><ul class="tips">';
+  var tipList414 = opt_data.tips;
+  var tipListLen414 = tipList414.length;
+  for (var tipIndex414 = 0; tipIndex414 < tipListLen414; tipIndex414++) {
+    var tipData414 = tipList414[tipIndex414];
+    param412 += '<li data-tip-id="' + tipData414.id + '" data-view-id="' + tipData414.view + '" data-section-id="' + tipData414.section + '"><div class="icon icon-' + tipData414.icon + '"></div><div class="caption"><p>' + tipData414.id + '</p><p>' + tipData414.view + '</p><p>' + tipData414.section + '</p></div></li>';
   }
-  param355 += '</ul></div>';
-  output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param355});
+  param412 += '</ul></div>';
+  output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param412});
   return output;
 };
 
@@ -25755,8 +25755,8 @@ feng.views.debug.DebugView = function(template, templateData){
   this._eventHandler = new goog.events.EventHandler(this);
 	this._eventHandler.listen(this._displayButton, 'click', this.onClick, false, this);
 
-	feng.pubsub.subscribe(feng.PubSub.Topic.SHOW_VIEW3D, goog.bind(this.onView3DShow, this));
-	feng.pubsub.subscribe(feng.PubSub.Topic.HIDE_VIEW3D, goog.bind(this.onView3DHide, this));
+	feng.pubsub.subscribe(feng.PubSub.Topic.SHOW_VIEW3D, this.onView3DShow, this);
+	feng.pubsub.subscribe(feng.PubSub.Topic.HIDE_VIEW3D, this.onView3DHide, this);
 };
 goog.inherits(feng.views.debug.DebugView, goog.events.EventTarget);
 
@@ -27845,6 +27845,7 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId, data ){
   this.character = data['character'];
   this.name = data['name'];
   this.icon = data['icon'];
+  this.prompt = data['prompt'];
   this.advice = data['advice'];
   this.problem = data['problem'];
   this.hint = data['hint'];
@@ -29044,7 +29045,6 @@ feng.controllers.view3d.PathfindingController = function(){
 
   this._renderer = new THREE.CanvasRenderer();
   this._renderer.setClearColor( 0xff0000 );
-  //document.body.appendChild( this._renderer.domElement );
 };
 goog.inherits(feng.controllers.view3d.PathfindingController, goog.events.EventTarget);
 goog.addSingletonGetter(feng.controllers.view3d.PathfindingController);
@@ -29143,7 +29143,7 @@ feng.controllers.view3d.PathfindingController.prototype.generateMatrix = functio
 			if( ctx.getImageData(x + tileSize, y + tileSize, 1, 1).data[0] === 255 ) redCount++;
 
 			var collided = (redCount >= 2);
-
+			
 			var type = collided ? 1 : 0;
 			rowData.push( type );
 		}
@@ -29181,11 +29181,8 @@ feng.controllers.view3d.PathfindingController.prototype.getTileByPosition = func
 	var numCols = matrixData.numCols;
 	var numRows = matrixData.numRows;
 
-	var tileCol = Math.floor(Math.abs(position.x - gridMinX) / tileSize);
-	var tileRow = Math.floor(Math.abs(position.z - gridMinZ) / tileSize);
-
-	tileCol = Math.min(tileCol, numCols-1);
-	tileRow = Math.min(tileRow, numRows-1);
+	var tileCol = Math.round((position.x - gridMinX) / tileSize);
+	var tileRow = Math.round((position.z - gridMinZ) / tileSize);
 
 	var tile = [ tileCol, tileRow ];
 
@@ -29209,6 +29206,13 @@ feng.controllers.view3d.PathfindingController.prototype.resolveMatrix = function
 	var startTile = this.getTileByPosition( start, matrixData );
 	var endTile = this.getTileByPosition( end, matrixData );
 	
+	// clamp the tile within bound
+	startTile[0] = Math.min(startTile[0], numCols-1);
+	startTile[1] = Math.min(startTile[1], numRows-1);
+
+	endTile[0] = Math.min(endTile[0], numCols-1);
+	endTile[1] = Math.min(endTile[1], numRows-1);
+
 	var result = {
 		matrix: matrix,
 		gridMinX: gridMinX,
@@ -29226,14 +29230,30 @@ feng.controllers.view3d.PathfindingController.prototype.resolveMatrix = function
 };
 
 
+feng.controllers.view3d.PathfindingController.prototype.isWalkablePosition = function( position, matrixData ) {
+
+	var tile = this.getTileByPosition( position, matrixData );
+
+	return this.isWalkableTile( tile, matrixData );
+};
+
+
+feng.controllers.view3d.PathfindingController.prototype.isWalkableTile = function( tile, matrixData ) {
+
+	var matrix = matrixData.matrix;
+
+	var tileType = matrix[ tile[1] ][ tile[0] ];
+
+	return (tileType === 0);
+};
+
+
 feng.controllers.view3d.PathfindingController.prototype.getClosestWalkableTile = function( tile, matrixData ) {
 
 	var matrix = matrixData.matrix;
 
 	// return this tile if is walkable
-	var tileType = matrix[ tile[1] ][ tile[0] ];
-
-	if(tileType === 0) {
+	if(this.isWalkableTile( tile, matrixData )) {
 		return tile;
 	}
 
@@ -29328,7 +29348,7 @@ feng.controllers.view3d.PathfindingController.prototype.findPath = function( mat
 
 	var finder = new PF.AStarFinder({
 		'allowDiagonal': true,
-		'heuristic': PF.Heuristic.euclidean
+		'heuristic': PF.Heuristic.chebyshev
 	});
 
 	var path = finder.findPath(startTile[0], startTile[1], endTile[0], endTile[1], grid);
@@ -29352,15 +29372,23 @@ feng.controllers.view3d.PathfindingController.prototype.findPath = function( mat
 		numCols: numCols,
 		numRows: numRows,
 		tileSize: tileSize,
-		path: path
+		path: path,
+		sourceCanvas: this._renderer.domElement
 	});
 
-	// return smoothened coordinates
-	var spline = new THREE.SplineCurve3( coordinates );
-	var numPoints = Math.floor( spline.getLength() / 50 );
-	var coordinates = spline.getSpacedPoints( numPoints );
+	if(coordinates.length < 2) {
 
-	return coordinates;
+		return null;
+
+	}else {
+
+		// return smoothened coordinates
+		var spline = new THREE.SplineCurve3( coordinates );
+		var numPoints = Math.max(3, Math.floor( spline.getLength() / 100 ));
+		var coordinates = spline.getSpacedPoints( numPoints );
+
+		return coordinates;
+	}
 };goog.provide('feng.views.debug.Pathfinding');
 
 goog.require('feng.controllers.view3d.PathfindingController');
@@ -29406,7 +29434,7 @@ feng.views.debug.Pathfinding.prototype.setColors = function(colors) {
 };
 
 
-feng.views.debug.Pathfinding.prototype.update = function(matrix, gridWidth, gridHeight, numCols, numRows, cellSize, path) {
+feng.views.debug.Pathfinding.prototype.update = function(matrix, gridWidth, gridHeight, numCols, numRows, cellSize, path, sourceCanvas) {
 
 	var canvasWidth = gridWidth * this._debugScale;
 	var canvasHeight = gridHeight * this._debugScale;
@@ -29428,12 +29456,12 @@ feng.views.debug.Pathfinding.prototype.update = function(matrix, gridWidth, grid
 			var type = matrix[row][col];
 			var color = (type === 0) ? this._colors.walkable : this._colors.blocked;
 			context.beginPath();
-      context.rect(cellX, cellY, canvasCellSize, canvasCellSize);
-      context.fillStyle = color;
-      context.fill();
-      context.lineWidth = 1;
-      context.strokeStyle = this._colors.stroke;
-      context.stroke();
+			context.rect(cellX, cellY, canvasCellSize, canvasCellSize);
+			context.fillStyle = color;
+			context.fill();
+			context.lineWidth = 1;
+			context.strokeStyle = this._colors.stroke;
+			context.stroke();
 		}
 	}
 
@@ -29449,19 +29477,20 @@ feng.views.debug.Pathfinding.prototype.update = function(matrix, gridWidth, grid
 			color = this._colors.end;
 		}
 		context.beginPath();
-    context.rect(cellX, cellY, canvasCellSize, canvasCellSize);
-    context.fillStyle = color;
-    context.fill();
+    	context.rect(cellX, cellY, canvasCellSize, canvasCellSize);
+    	context.fillStyle = color;
+    	context.fill();
 	}
 
 	goog.dom.removeChildren( this._canvasContainerDom );
 	goog.dom.appendChild(this._canvasContainerDom, canvas);
+	goog.dom.appendChild(this._canvasContainerDom, sourceCanvas);
 };
 
 
 feng.views.debug.Pathfinding.prototype.onPathfindingUpdate = function(e) {
-
-	this.update(e.matrix, e.gridWidth, e.gridHeight, e.numCols, e.numRows, e.tileSize, e.path);
+	
+	this.update(e.matrix, e.gridWidth, e.gridHeight, e.numCols, e.numRows, e.tileSize, e.path, e.sourceCanvas);
 };goog.provide('feng.views.debug.Debugger');
 
 goog.require('goog.dom');
@@ -32516,6 +32545,18 @@ feng.utils.Utils.centerAlign = function(alignEl, relativeElOrSize) {
 };
 
 
+feng.utils.Utils.createDomCollectionByAttributes = function( doms, attr ) {
+
+  var result = {};
+
+  goog.array.forEach(doms, function(dom) {
+    result[ dom.getAttribute( attr ) ] = dom;
+  });
+
+  return result;
+};
+
+
 feng.utils.Utils.popUp = function(url) {
 
   var width, height;
@@ -32652,8 +32693,7 @@ feng.models.Preload = function(){
 				'pictures': {
 					'1': 'images/texture/studio/livingroom/pictures/1.jpg',
 					'2': 'images/texture/studio/livingroom/pictures/2.jpg',
-					'3': 'images/texture/studio/livingroom/pictures/3.jpg',
-					'4': 'images/texture/studio/livingroom/pictures/4.jpg'
+					'3': 'images/texture/studio/livingroom/pictures/3.jpg'
 				},
 				'skybox': {
 					'xpos': 'images/texture/studio/livingroom/skybox/pos-x.png',
@@ -32799,9 +32839,9 @@ feng.models.Preload = function(){
 				'corridor-stuff-texture': 'images/texture/house/corridor/corridor-stuff.jpg',
 				'nick-photo-texture': 'images/texture/house/corridor/nick-photo.jpg',
 				'window-plant-texture': 'images/texture/house/corridor/window-plant.jpg',
-				'homeoffice-door-texture': 'images/texture/house/corridor/homeoffice-door.png',
+				'homeoffice-door-texture': 'images/texture/house/corridor/homeoffice-door.jpg',
 				'bedroom-door-texture': 'images/texture/house/corridor/bedroom-door.png',
-				'boysroom-door-texture': 'images/texture/house/corridor/boysroom-door.png',
+				'boysroom-door-texture': 'images/texture/house/corridor/boysroom-door.jpg',
 				'bathroom-door-texture': 'images/texture/house/corridor/bathroom-door.png',
 				'skybox': {
 					'xpos': 'images/texture/house/boysroom/skybox/pos-x.jpg',
@@ -32859,6 +32899,7 @@ feng.models.Preload = function(){
 				'handheld-nightstand-texture': 'images/texture/house/boysroom/handheld-nightstand.jpg',
 				'window-texture': 'images/texture/house/boysroom/window.jpg',
 				'window-frame-texture': 'images/texture/house/boysroom/window-frame.jpg',
+				'boysroom-door-texture': 'images/texture/house/boysroom/boysroom-door.jpg',
 				'door-frame-texture': 'images/texture/house/boysroom/door-frame.jpg',
 				'pictures': {
 					'1': 'images/texture/house/boysroom/pictures/1.jpg',
@@ -32929,7 +32970,11 @@ feng.models.Preload = function(){
 					'1': 'images/texture/house/homeoffice/pictures/1.jpg',
 					'2': 'images/texture/house/homeoffice/pictures/2.jpg',
 					'3': 'images/texture/house/homeoffice/pictures/3.jpg',
-					'4': 'images/texture/house/homeoffice/pictures/4.jpg'
+					'4': 'images/texture/house/homeoffice/pictures/4.jpg',
+					'degree': 'images/texture/house/homeoffice/pictures/degree.jpg',
+					'hug': 'images/texture/house/homeoffice/pictures/hug.jpg',
+					'family': 'images/texture/house/homeoffice/pictures/family.jpg',
+					'lecture': 'images/texture/house/homeoffice/pictures/lecture.jpg'
 				},
 				'skybox': {
 					'xpos': 'images/texture/house/boysroom/skybox/pos-x.jpg',
@@ -33885,7 +33930,18 @@ feng.templates.common.PrimaryButton = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.common.CloseButton = function(opt_data, opt_ignored) {
-  return '<button class="close-button"><div class="circle"></div><div class="icon icon-close"></div></button>';
+  return '<button class="icon icon-close close-button"></button>';
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.common.ScrollBar = function(opt_data, opt_ignored) {
+  return '<div class="scrollbar"><button class="handle"></button></div>';
 };
 
 
@@ -33919,7 +33975,7 @@ feng.templates.common.Popup = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.common.TutorialPopup = function(opt_data, opt_ignored) {
-  return feng.templates.common.Popup({classname: 'tutorial from-bottom', content: '<h1>Control Instructions</h1><ul class="steps"><li><h6>Explore the environment</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-1.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-1.ogv" type="video/ogg"></video></div></li><li><h6>Inspect objects for tips</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-2.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-2.ogv" type="video/ogg"></video></div></li><li><h6>Ask the client for clues</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-3.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-3.ogv" type="video/ogg"></video></div></li></ul><div class="controls"><div class="loader"><div class="bar"><div class="fill"></div></div><p class="counter">00</p></div>' + feng.templates.common.PrimaryButton({classname: 'skip', icon: 'icon-yes', text: 'Continue'}) + '</div>'});
+  return feng.templates.common.Popup({classname: 'tutorial from-bottom', content: '<h1>Control Instructions</h1><ul class="steps"><li><h6>1. Explore the environment</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-1.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-1.ogv" type="video/ogg"></video></div></li><li><h6>2. Inspect objects for tips</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-2.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-2.ogv" type="video/ogg"></video></div></li><li><h6>3. Ask the client for clues</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-3.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-3.ogv" type="video/ogg"></video></div></li></ul><div class="controls"><div class="loader"><div class="bar"><div class="fill"></div></div><p class="counter">00</p></div>' + feng.templates.common.PrimaryButton({classname: 'skip', icon: 'icon-yes', text: 'Continue'}) + '</div>'});
 };
 // This file was automatically generated from controls.soy.
 // Please don't edit this file by hand.
@@ -33984,11 +34040,11 @@ feng.templates.controls.Book = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.Reminder = function(opt_data, opt_ignored) {
   var output = '<div class="reminder"><div class="character">' + feng.templates.controls.RoundButton({content: '<canvas></canvas>'}) + '</div><div class="dialogue hint"><div class="wrapper"><button class="prev icon icon-prev"></button><ul class="hints">';
-  var tipList257 = opt_data.tips;
-  var tipListLen257 = tipList257.length;
-  for (var tipIndex257 = 0; tipIndex257 < tipListLen257; tipIndex257++) {
-    var tipData257 = tipList257[tipIndex257];
-    output += '<li data-tip-id="' + tipData257.id + '">' + tipData257.reminder + '</li>';
+  var tipList310 = opt_data.tips;
+  var tipListLen310 = tipList310.length;
+  for (var tipIndex310 = 0; tipIndex310 < tipListLen310; tipIndex310++) {
+    var tipData310 = tipList310[tipIndex310];
+    output += '<li data-tip-id="' + tipData310.id + '">' + tipData310.reminder + '</li>';
   }
   output += '</ul><button class="next icon icon-next"></button></div></div></div>';
   return output;
@@ -34013,7 +34069,7 @@ feng.templates.controls.ObjectSelector = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.controls.DropButton = function(opt_data, opt_ignored) {
-  return '<div class="dropButton"><div class="arrow"></div></div>';
+  return '<div class="dropButton"><div class="circle"></div>' + feng.templates.common.PrimaryButton({icon: 'icon-yes', text: 'Drop'}) + '</div>';
 };
 
 
@@ -34047,16 +34103,16 @@ feng.templates.controls.GatewayTooltip = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var output = '<div class="progressBar"><div class="inner"><button class="prev icon icon-prev"></button><button class="next icon icon-next"></button><div class="tips-wrapper">';
-  var viewIdList287 = soy.$$getMapKeys(opt_data.tipsOfViews);
-  var viewIdListLen287 = viewIdList287.length;
-  for (var viewIdIndex287 = 0; viewIdIndex287 < viewIdListLen287; viewIdIndex287++) {
-    var viewIdData287 = viewIdList287[viewIdIndex287];
-    output += '<ul class="tips" data-view-id="' + viewIdData287 + '">';
-    var tipList291 = opt_data.tipsOfViews[viewIdData287];
-    var tipListLen291 = tipList291.length;
-    for (var tipIndex291 = 0; tipIndex291 < tipListLen291; tipIndex291++) {
-      var tipData291 = tipList291[tipIndex291];
-      output += '<li class="tip" data-tip-id="' + tipData291.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content" href="' + tipData291.readTipToken + '"><div class="icon icon-' + tipData291.icon + '" data-tip-id="' + tipData291.id + '" data-view-id="' + tipData291.viewId + '" data-section-id="' + tipData291.sectionId + '"></div><h6>' + tipData291.name + '</h6></a></div></li>';
+  var viewIdList344 = soy.$$getMapKeys(opt_data.tipsOfViews);
+  var viewIdListLen344 = viewIdList344.length;
+  for (var viewIdIndex344 = 0; viewIdIndex344 < viewIdListLen344; viewIdIndex344++) {
+    var viewIdData344 = viewIdList344[viewIdIndex344];
+    output += '<ul class="tips" data-view-id="' + viewIdData344 + '">';
+    var tipList348 = opt_data.tipsOfViews[viewIdData344];
+    var tipListLen348 = tipList348.length;
+    for (var tipIndex348 = 0; tipIndex348 < tipListLen348; tipIndex348++) {
+      var tipData348 = tipList348[tipIndex348];
+      output += '<li class="tip" data-tip-id="' + tipData348.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content" href="' + tipData348.readTipToken + '"><div class="icon icon-' + tipData348.icon + '" data-tip-id="' + tipData348.id + '" data-view-id="' + tipData348.viewId + '" data-section-id="' + tipData348.sectionId + '"></div><h6>' + tipData348.name + '</h6></a></div></li>';
     }
     output += '</ul>';
   }
@@ -34082,7 +34138,7 @@ goog.require('feng.templates.debug');
  * @notypecheck
  */
 feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
-  return '<div class="section episode" id="' + opt_data.id + '"><div class="hud"><div class="overlays"><div class="tutorial-overlay"></div><div class="opening-overlay">' + feng.templates.common.Popup({classname: 'opening from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'icon-yes', text: 'I’d be glad to help!'}) + '<div class="character"></div>'}) + '</div><div class="ending-overlay">' + feng.templates.common.Popup({classname: 'ending from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'stay', icon: 'icon-yes', text: 'Stay'}) + feng.templates.common.PrimaryButton({classname: 'next', icon: 'icon-yes', text: 'Next Location', href: opt_data.token.HOME}) + '<div class="character"></div>'}) + '</div><div class="finale-overlay">' + feng.templates.common.Popup({classname: 'finale from-bottom', content: '<h1></h1><p></p><h2>Share With Friends</h2><ul><li><a class="icon icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/" target="_blank"></a></li><li><a class="icon icon-twitter" href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/" target="_blank"></a></li><li><a class="icon icon-google" href="https://plus.google.com/share?url=http://fengshuirealtime.com/" target="_blank"></a></li></ul>'}) + '</div><div class="loader-overlay"><div class="loader"><canvas class="spinner"></canvas><p class="progress"></p></div></div></div><div class="controls">' + feng.templates.controls.HomeButton(opt_data) + feng.templates.controls.Compass(null) + feng.templates.controls.Book(opt_data) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.DropButton(null) + feng.templates.controls.ProgressBar(opt_data) + feng.templates.controls.Reminder(opt_data) + '</div><div class="tooltips"></div><div class="captions"></div></div><div class="sceneContainer"></div></div>';
+  return '<div class="section episode" id="' + opt_data.id + '"><div class="hud"><div class="overlays"><div class="tutorial-overlay"></div><div class="opening-overlay">' + feng.templates.common.Popup({classname: 'opening from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'icon-yes', text: 'I’d be glad to help!'}) + '<div class="character"></div>'}) + '</div><div class="ending-overlay">' + feng.templates.common.Popup({classname: 'ending from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'stay', icon: 'icon-yes', text: 'Stay'}) + feng.templates.common.PrimaryButton({classname: 'next', icon: 'icon-yes', text: 'Next Location', href: opt_data.token.HOME}) + '<div class="character"></div>'}) + '</div><div class="finale-overlay">' + feng.templates.common.Popup({classname: 'finale from-bottom', content: '<h1></h1><p></p><h2>Share With Friends</h2><ul><li><a class="icon icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/" target="_blank"></a></li><li><a class="icon icon-twitter" href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/" target="_blank"></a></li><li><a class="icon icon-google" href="https://plus.google.com/share?url=http://fengshuirealtime.com/" target="_blank"></a></li></ul>'}) + '</div><div class="loader-overlay"><div class="loader"><canvas class="spinner"></canvas><p class="progress"></p></div></div></div><div class="controls">' + feng.templates.controls.HomeButton(opt_data) + feng.templates.controls.Compass(null) + feng.templates.controls.Book(opt_data) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.DropButton(null) + feng.templates.controls.ProgressBar(opt_data) + feng.templates.controls.Reminder(opt_data) + '</div><div class="tooltips"></div><div class="captions"></div></div><div class="scene-container"></div></div>';
 };
 
 
@@ -34093,7 +34149,7 @@ feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.main.EpisodeSelection = function(opt_data, opt_ignored) {
-  return '<div class="episode-selection"><div class="scene studio"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Ollie\'s Studio</h1><p>Ollie lives in a small, delicate studio in downtown. How could we improve it\'s energy flow?</p>' + feng.templates.common.PrimaryButton({href: opt_data.token.STUDIO, icon: 'icon-yes', text: 'start'})}) + '</div></div><div class="scene house"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Scott\'s House</h1><p>Scott lives in a two story house, with his wife Joanna and son Nick. How could we improve it\'s energy flow?</p>' + feng.templates.common.PrimaryButton({href: opt_data.token.HOUSE, icon: 'icon-yes', text: 'start'})}) + '</div></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="question">' + feng.templates.common.FengshuiLogo({noText: true}) + '<h1><b>You\'ve got requests.</b>Please make some<br>improvements to their<br>home environments.</h1><h2><div class="arrow left"></div><span>CHOOSE ONE</span><div class="arrow right"></div></h2></div>'}) + '</div></div>';
+  return '<div class="episode-selection"><div class="scene studio"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Ollie\'s Studio</h1><p>Ollie lives in a small, delicate studio in the crowded downtown. How could we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'studio', href: opt_data.token.STUDIO, icon: 'icon-yes', text: 'start'})}) + '</div></div><div class="scene house"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Scott\'s House</h1><p>Scott lives in a two story house, with his wife Joanna and son Nick. How could we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'house', href: opt_data.token.HOUSE, icon: 'icon-yes', text: 'start'})}) + '</div></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="question">' + feng.templates.common.FengshuiLogo({noText: true}) + '<div><h1>You\'ve got requests.</h1><p>Please make some<br>improvements to their<br>home environments.</p><h2><div class="arrow left"></div><span>CHOOSE ONE</span><div class="arrow right"></div></h2></div></div>'}) + '</div></div>';
 };
 
 
@@ -34460,6 +34516,8 @@ goog.addSingletonGetter( feng.PubSub );
 feng.PubSub.Topic = {
 	SHOW_VIEW3D: 'show_view3d',
 	HIDE_VIEW3D: 'hide_view3d',
+	BUFFER_START: 'buffer_start',
+	BUFFER_COMPLETE: 'buffer_complete',
 	NAVIGATE: 'navigate',
 	SOUND_ON: 'sound_on',
 	SOUND_OFF: 'sound_off',
@@ -34513,7 +34571,7 @@ feng.controllers.view3d.CameraController.prototype.addCamera = function( name, f
 
   var fov = fov || 40;
   var aspect = this._view3d.getViewSize().aspectRatio();
-  var near = near || 10;
+  var near = near || 5;
   var far = far || 200000;
 
   var camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
@@ -34889,7 +34947,7 @@ feng.models.View3D.Data = {
 				isEntry: true,
 				inversed: true,
 				origin: {
-					position: new THREE.Vector3(-240, 0, 34),
+					position: new THREE.Vector3(-240, 0, 30),
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
 				},
 				texture: "studio.livingroom.studio-door-texture"
@@ -34903,20 +34961,6 @@ feng.models.View3D.Data = {
 					position: new THREE.Vector3(59, 80, 62),
 					rotation: new THREE.Euler(0.13, -3.10, 0.00, 'YXZ'),
 					fov: 40
-				},
-				pictures: {
-					'1':{
-						description: 'This is a dummy picture. Its name is 1.'
-					},
-					'2':{
-						description: 'This is a dummy picture. Its name is 2.'
-					},
-					'3':{
-						description: 'This is a dummy picture. Its name is 3.'
-					},
-					'4':{
-						description: 'This is a dummy picture. Its name is 4.'
-					}
 				}
 			},
 			'studio-door-handle': {
@@ -34937,6 +34981,7 @@ feng.models.View3D.Data = {
 			},
 			'wall':	{
 				castShadow: true,
+				collidable: true,
 				texture: "studio.livingroom.wall-texture"
 			},
 			'wall-outer':	{
@@ -35009,11 +35054,6 @@ feng.models.View3D.Data = {
 			},
 			'round-lamp':	{
 				Class: 'lamp',
-				colors: [
-					"pink",
-					"yellow",
-					"orange"
-				],
 				tipKey: 'studio.livingroom.readinglamp',
 				texture: "studio.livingroom.round-lamp-texture",
 				captionClass: 'changecolor'
@@ -35044,7 +35084,6 @@ feng.models.View3D.Data = {
 			},
 			'dining-chair':	{
 				Class: "movable",
-				collidable: true,
 				castShadow: true,
 				texture: "studio.livingroom.dining-chair-texture",
 				position: new THREE.Vector3(-47.69, 0, -54.87),
@@ -35090,7 +35129,14 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.nightstand-texture"
 			},
 			'sewingmachine':	{
-				texture: "studio.livingroom.sewingmachine-texture"
+				Class: 'sewingmachine',
+				camera: {
+					position: new THREE.Vector3(-95, 54, 10),
+					rotation: new THREE.Euler(-0.10, -0.80, 0.00, 'YXZ'),
+					fov: 13
+				},
+				texture: "studio.livingroom.sewingmachine-texture",
+				tipKey: 'studio.livingroom.sewingmachine'
 			},
 			'sewingmachine-cover':	{
 				texture: "studio.livingroom.sewingmachine-cover-texture"
@@ -35370,8 +35416,8 @@ feng.models.View3D.Data = {
 			'ceiling-lamp-2':	{
 				texture: "house.livingroom.ceiling-lamp-2-texture"
 			},
-			'mirror':	{
-				Class: "diningmirror",
+			'mirror-holder':	{
+				Class: "tip",
 				camera: {
 					position: new THREE.Vector3(-9, 75, -118),
 					rotation: new THREE.Euler(-0.4, 0, 0, 'YXZ'),
@@ -35379,8 +35425,12 @@ feng.models.View3D.Data = {
 				},
 				tipKey: 'house.livingroom.mirror'
 			},
+			'mirror':	{
+				Class: "mirror"
+			},
 			'drawer': {
 				Class: "drawer",
+				receiveShadow: true,
 				texture: "house.livingroom.drawer-texture",
 				camera: {
 					position: new THREE.Vector3(-8, 97, -203),
@@ -35391,6 +35441,7 @@ feng.models.View3D.Data = {
 			},
 			'knife': {
 				Class: "knife",
+				castShadow: true,
 				texture: "house.livingroom.knife-on-cabinet-texture",
 				position: new THREE.Vector3(-6.87, -2.21, 10.82),
 				rotation: new THREE.Euler(0, 0, 0),
@@ -35532,6 +35583,19 @@ feng.models.View3D.Data = {
 				receiveShadow: true,
 				texture: "house.corridor.floor-texture"
 			},
+			'floor-2': {
+				collidable: true,
+				texture: "house.livingroom.floor-texture"
+			},
+			'wall-2':	{
+				texture: "house.livingroom.wall-texture"
+			},
+			'tv-stand': {
+				texture: "house.livingroom.tv-stand-texture"
+			},
+			'clock': {
+				texture: "house.livingroom.clock-texture"
+			},
 			'stairways': {
 				texture: "house.livingroom.stairways-texture"
 			},
@@ -35547,6 +35611,12 @@ feng.models.View3D.Data = {
 					position: new THREE.Vector3(50, 0, 225),
 					rotation: new THREE.Euler(0, 0, 0)
 				}
+			},
+			'round-table': {
+				texture: "house.livingroom.round-table-texture"
+			},
+			'white-sofa': {
+				texture: "house.livingroom.white-sofa-texture"
 			},
 			'ceiling-lamp': {
 				texture: "house.corridor.ceiling-lamp-texture"
@@ -35592,6 +35662,7 @@ feng.models.View3D.Data = {
 				texture: "house.corridor.picture-wall-texture"
 			},
 			'display-table': {
+				collidable: true,
 				texture: "house.corridor.display-table-texture"
 			},
 			'cat': {
@@ -35631,8 +35702,7 @@ feng.models.View3D.Data = {
 		},
 		'boysroom': {
 			'floor': {
-				texture: "house.boysroom.floor-texture",
-				receiveShadow: true
+				texture: "house.boysroom.floor-texture"
 			},
 			'wall':	{
 				castShadow: true,
@@ -35667,17 +35737,6 @@ feng.models.View3D.Data = {
 					position: new THREE.Vector3(21.1, 80, -26.46),
 					rotation: new THREE.Euler(-0.03, 1.55, 0.00, 'YXZ'),
 					fov: 40
-				},
-				pictures: {
-					'1':{
-						description: 'This is a dummy picture. Its name is 1.'
-					},
-					'2':{
-						description: 'This is a dummy picture. Its name is 2.'
-					},
-					'3':{
-						description: 'This is a dummy picture. Its name is 3.'
-					}
 				}
 			},
 			'decoration-pictures': {
@@ -35687,7 +35746,6 @@ feng.models.View3D.Data = {
 				texture: "house.boysroom.carpet-texture"
 			},
 			'stools': {
-				collidable: true,
 				texture: "house.boysroom.stools-texture"
 			},
 			'football': {
@@ -35721,16 +35779,17 @@ feng.models.View3D.Data = {
 			'computer': {
 				Class: "computer",
 				collidable: true,
-				castShadow: true,
 				texture: "house.boysroom.computer-on-table-texture",
 				position: new THREE.Vector3(63.04, 37.75, -97.24),
 				rotation: new THREE.Euler(0, 3.14, 0),
 				range: 50,
+				parent: 'desk',
 				tipKey: 'house.boysroom.computer'
+			},
+			'screen': {
 			},
 			'desk': {
 				collidable: true,
-				receiveShadow: true,
 				texture: "house.boysroom.desk-texture"
 			},
 			'table': {
@@ -35760,7 +35819,8 @@ feng.models.View3D.Data = {
 				origin: {
 					position: new THREE.Vector3(78, 0, 33),
 					rotation: new THREE.Euler(0, Math.PI/2, 0)
-				}
+				},
+				texture: "house.boysroom.boysroom-door-texture"
 			},
 			'sketchpad': {
 				texture: "house.boysroom.sketchpad-texture"
@@ -35909,16 +35969,16 @@ feng.models.View3D.Data = {
 				texture: "house.homeoffice.picture-frame-4-texture"
 			},
 			'picture-1': {
-				texture: "house.homeoffice.calendar-texture"
+				texture: "house.homeoffice.pictures.1"
 			},
 			'picture-2': {
-				texture: "house.homeoffice.calendar-texture"
+				texture: "house.homeoffice.pictures.2"
 			},
 			'picture-3': {
-				texture: "house.homeoffice.calendar-texture"
+				texture: "house.homeoffice.pictures.3"
 			},
 			'picture-4': {
-				texture: "house.homeoffice.calendar-texture"
+				texture: "house.homeoffice.pictures.4"
 			},
 			'block-shelf-1':	{
 				texture: "house.homeoffice.block-shelf-1-texture"
@@ -35952,7 +36012,6 @@ feng.models.View3D.Data = {
 				texture: "house.homeoffice.window-texture"
 			},
 			'armchair':	{
-				collidable: true,
 				texture: "house.homeoffice.armchair-texture"
 			},
 			'writing-desk':	{
@@ -36014,24 +36073,14 @@ feng.models.View3D.Data = {
 					position: new THREE.Vector3(23, 80, -60),
 					rotation: new THREE.Euler(0.01, 0.07, 0.00, 'YXZ'),
 					fov: 40
-				},
-				pictures: {
-					'1':{
-						description: 'This is a dummy picture. Its name is 1.'
-					},
-					'2':{
-						description: 'This is a dummy picture. Its name is 2.'
-					},
-					'3':{
-						description: 'This is a dummy picture. Its name is 3.'
-					},
-					'4':{
-						description: 'This is a dummy picture. Its name is 4.'
-					}
 				}
 			},
 			'computer':	{
 				texture: "house.homeoffice.computer-texture"
+			},
+			'screen': {
+				Class: 'wallpaper',
+				tipKey: 'house.homeoffice.desktopwallpaper'
 			},
 			'laptop':	{
 				texture: "house.homeoffice.laptop-texture"
@@ -36117,25 +36166,13 @@ feng.views.view3dobject.View3DObject.prototype.registerToView3D = function(){
 
 feng.views.view3dobject.View3DObject.prototype.init = function(){
 
-  // assign object model data
-  var preloadModel = feng.models.Preload.getInstance();
-  var sectionId = this._view3d.sectionId;
-  var viewId = this._view3d.id;
+  this.object3d.castShadow = this.data.castShadow || false;
+  this.object3d.receiveShadow = this.data.receiveShadow || false;
 
-  this.object3d.traverse(function(object) {
-
-    var data = feng.models.View3D.getData(sectionId+'.'+viewId+'.'+object.name);
-
-    if(object instanceof THREE.Object3D) {
-      object.castShadow = data.castShadow || false;
-      object.receiveShadow = data.receiveShadow || false;
-
-      if(object.material) {
-        object.material.shading = THREE.FlatShading;
-        object.material.fog = false;
-      }
-    }
-  });
+  if(this.object3d.material) {
+    this.object3d.material.shading = THREE.FlatShading;
+    this.object3d.material.fog = this.data.fog || false;
+  }
 };
 
 
@@ -36312,7 +36349,7 @@ feng.views.view3dobject.View3DObject.prototype.getTilemapProxy = function(){
 
   if(!clone) {
 
-    clone = new THREE.Mesh( this.object3d.geometry, feng.views.view3dobject.View3DObject.ProxyMaterial.GREEN );
+    clone = new THREE.Mesh( this.object3d.geometry );
     this._tilemapProxy = clone;
   }
 
@@ -36325,7 +36362,7 @@ feng.views.view3dobject.View3DObject.prototype.getTilemapProxy = function(){
     clone.material = feng.views.view3dobject.View3DObject.ProxyMaterial.GREEN;
   }
   
-  clone.material.overdraw = true;
+  clone.material.overdraw = 8;
 
   clone.position.copy( this.object3d.position );
   clone.rotation.copy( this.object3d.rotation );
@@ -36334,15 +36371,24 @@ feng.views.view3dobject.View3DObject.prototype.getTilemapProxy = function(){
 };
 
 
-feng.views.view3dobject.View3DObject.prototype.addToScene = function(){
+feng.views.view3dobject.View3DObject.prototype.addToScene = function( parent ){
 
-  this._view3d.scene.add( this.object3d );
+  var parent = parent || this._view3d.scene;
+  parent.add( this.object3d );
 };
 
 
 feng.views.view3dobject.View3DObject.prototype.removeFromScene = function(){
 
-  this._view3d.scene.remove( this.object3d );
+  if(this.object3d.parent) {
+    this.object3d.parent.remove( this.object3d );
+  }
+};
+
+
+feng.views.view3dobject.View3DObject.prototype.isInScene = function(){
+
+  return goog.isDefAndNotNull( this.object3d.parent );
 };
 
 
@@ -36440,12 +36486,15 @@ feng.views.view3dobject.InteractiveObject.prototype.deactivate = function(){
 
 feng.views.view3dobject.InteractiveObject.prototype.startInteraction = function(){
 
+  this.dispatchEvent( feng.events.EventType.START );
 };
 
 
 feng.views.view3dobject.InteractiveObject.prototype.stopInteraction = function(){
 
   this._interactionHandler.removeAll();
+
+  this.dispatchEvent( feng.events.EventType.END );
 };
 
 
@@ -36549,7 +36598,7 @@ feng.views.view3dobject.MovableObject = function( object3d, data, view3d ){
   goog.base(this, object3d, data, view3d);
 
   var dropParentObject = this._view3d.getView3dObject( this.data.parent );
-  this._dropParent = dropParentObject ? dropParentObject.object3d : this._view3d.scene;
+  this.dropParent = dropParentObject ? dropParentObject.object3d : this._view3d.scene;
 
   this.hasPicked = false;
   this.hasDropped = false;
@@ -36583,7 +36632,7 @@ feng.views.view3dobject.MovableObject.prototype.getBoundingBox = function(){
 
 feng.views.view3dobject.MovableObject.prototype.getDestination = function(){
 
-  return this._dropParent.localToWorld( this.data.position.clone() );
+  return this.dropParent.localToWorld( this.data.position.clone() );
 };
 
 
@@ -36632,15 +36681,15 @@ feng.views.view3dobject.MovableObject.prototype.drop = function(){
   var arms = this._view3d.arms;
   arms.removeItem( this );
 
-  this._dropParent.add( this.object3d );
+  this.dropParent.add( this.object3d );
 
   //
   var startOrientation = arms.getWorldOrientation( this.name );
   var worldPosition = startOrientation.position;
   var worldRotation = startOrientation.rotation;
 
-  var startPosition = feng.utils.ThreeUtils.getLocalPositionOfWorld( this._dropParent, worldPosition );
-  var startRotation = feng.utils.ThreeUtils.getLocalRotationOfWorld( this._dropParent, worldRotation );
+  var startPosition = feng.utils.ThreeUtils.getLocalPositionOfWorld( this.dropParent, worldPosition );
+  var startRotation = feng.utils.ThreeUtils.getLocalRotationOfWorld( this.dropParent, worldRotation );
 
   var endPosition = this.data.position.clone().setY( this.data.position.y + 10 );
   var endRotation = this.data.rotation;
@@ -36735,7 +36784,7 @@ feng.views.view3dobject.MovableObject.prototype.onCameraIn = function(){
   goog.base(this, 'onCameraIn');
 };
 
-
+/*
 feng.views.view3dobject.MovableObject.prototype.onClick = function(e){
 
   var camera = this._view3d.cameraController.activeCamera;
@@ -36746,7 +36795,8 @@ feng.views.view3dobject.MovableObject.prototype.onClick = function(e){
 
     this.pick();
   }
-};// Copyright 2012 The Closure Library Authors. All Rights Reserved.
+};
+*/// Copyright 2012 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37800,19 +37850,121 @@ feng.templates.book.Book = function(opt_data, opt_ignored) {
         output += tipData6.details['descriptions'][keyData32] + '</br>';
       }
     }
-    output += '</p></div><div class="scrollbar"><button class="handle"></button></div></div><ul class="share"><li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/' + tipData6.id + '.html" target="_blank" class="icon icon-facebook"></a></li><li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/' + tipData6.id + '.html" target="_blank" class="icon icon-twitter"></a></li><li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/' + tipData6.id + '.html" target="_blank" class="icon icon-google"></a></li></ul></div></div></div></li>';
+    output += '</p></div>' + feng.templates.common.ScrollBar(null) + '</div><ul class="share"><li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/' + tipData6.id + '.html" target="_blank" class="icon icon-facebook"></a></li><li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/' + tipData6.id + '.html" target="_blank" class="icon icon-twitter"></a></li><li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/' + tipData6.id + '.html" target="_blank" class="icon icon-google"></a></li></ul></div></div></div></li>';
   }
   output += '</ul></div></div></div><div class="scrubber"><div class="handle"></div></div></div>';
   return output;
 };
-goog.provide('feng.views.book.TipModule');
+goog.provide('feng.fx.ScrollBar');
+
+goog.require('goog.events.EventTarget');
+goog.require('goog.events.EventHandler');
+goog.require('goog.fx.Dragger');
+
+
+/**
+ * @constructor
+ */
+feng.fx.ScrollBar = function(domElement, scrollerEl){
+
+	goog.base(this);
+
+	this.domElement = domElement;
+	this._handleEl = goog.dom.getElementByClass('handle', this.domElement);
+
+	this._scrollerEl = scrollerEl;
+
+	this._eventHandler = new goog.events.EventHandler(this);
+
+	this.isHoveringScroller = false;
+
+	this._scrollerContentHeight = 0;
+	this._hasScrollBar = false;
+
+	this._draggerLimits = new goog.math.Rect(0, 0, 0, 0);
+	this._dragger = new goog.fx.Dragger(this._handleEl, null, this._draggerLimits);
+	this._dragger.defaultAction = goog.bind(this.onDragHandle, this);
+};
+goog.inherits(feng.fx.ScrollBar, goog.events.EventTarget);
+
+
+feng.fx.ScrollBar.prototype.activate = function() {
+
+	this._eventHandler.listen( this._scrollerEl, 'scroll', this.onScrollerScroll, false, this );
+	this._eventHandler.listen( this._scrollerEl, 'mouseover', this.onMouseOverScroller, false, this );
+	this._eventHandler.listen( this._scrollerEl, 'mouseout', this.onMouseOutScroller, false, this );
+
+	this.resize();
+};
+
+
+feng.fx.ScrollBar.prototype.deactivate = function() {
+
+	this._eventHandler.removeAll();
+};
+
+
+feng.fx.ScrollBar.prototype.resize = function() {
+
+	// update scroller size
+	this._scrollerContentHeight = goog.style.getSize(this._scrollerEl).height;
+	var scrollerRatio = this._scrollerContentHeight / this._scrollerEl.scrollHeight;
+	var handlePer = Math.round(scrollerRatio * 100);
+	goog.style.setStyle( this._handleEl, 'height', handlePer + '%' );
+
+	this._hasScrollBar = !(handlePer >= 100 || handlePer <= 0);
+	goog.style.showElement( this.domElement, this._hasScrollBar );
+
+	// update dragger
+	var scrollBarPosition = goog.style.getPosition(this.domElement);
+	var scrollBarHeight = goog.style.getSize(this.domElement).height;
+	this._draggerLimits.height = scrollBarHeight - (scrollBarHeight * scrollerRatio);
+	this._dragger.setLimits( this._draggerLimits );
+};
+
+
+feng.fx.ScrollBar.prototype.onDragHandle = function(x, y) {
+
+	goog.style.setPosition( this._handleEl, x, y );
+
+	var ratio = y / this._draggerLimits.height;
+	var distanceToScroll = this._scrollerEl.scrollHeight - this._scrollerContentHeight;
+	this._scrollerEl.scrollTop = distanceToScroll * ratio;
+};
+
+
+feng.fx.ScrollBar.prototype.onScrollerScroll = function(e) {
+
+	var handleRatio = Math.round(e.currentTarget.scrollTop / e.currentTarget.scrollHeight * 100);
+
+	goog.style.setStyle( this._handleEl, 'top', handleRatio + '%' );
+};
+
+
+feng.fx.ScrollBar.prototype.onMouseOverScroller = function(e) {
+
+	this.isHoveringScroller = this._hasScrollBar;
+};
+
+
+feng.fx.ScrollBar.prototype.onMouseOutScroller = function(e) {
+
+	if(e.relatedTarget) {
+		this.isHoveringScroller = false;
+		return;
+	}
+
+	if( e.relatedTarget && !goog.dom.contains(e.currentTarget, e.relatedTarget) ) {
+		this.isHoveringScroller = false;
+	}
+};goog.provide('feng.views.book.TipModule');
 
 goog.require('goog.dom');
 goog.require('goog.events.EventHandler');
 goog.require('goog.math.Size');
-goog.require('goog.fx.Dragger');
 goog.require('feng.events');
 goog.require('feng.utils.Utils');
+goog.require('feng.fx.ScrollBar');
 
 
 feng.views.book.TipModule = function( domElement, index, widthChangeCallback ) {
@@ -37821,20 +37973,17 @@ feng.views.book.TipModule = function( domElement, index, widthChangeCallback ) {
 	
 	this.domElement = domElement;
 	this._cardEl = goog.dom.getElementByClass('card', this.domElement);
-	this._scrollerEl = goog.dom.getElementByClass('scroller', this.domElement);
-	this._scrollerContentEl = goog.dom.getElementByClass('content', this._scrollerEl);
-	this._scrollBarEl = goog.dom.getElementByClass('scrollbar', this._scrollerEl);
-	this._handleEl = goog.dom.getElementByClass('handle', this._scrollerEl);
-	this._shareButtons = goog.dom.query('.share a', this.domElement);
 
-	this._draggerLimits = new goog.math.Rect(0, 0, 0, 0);
-	this._dragger = new goog.fx.Dragger(this._handleEl, null, this._draggerLimits);
-	this._dragger.defaultAction = goog.bind(this.onDragHandle, this);
+	var scrollerEl = goog.dom.getElementByClass('scroller', this.domElement);
+	var scrollerContentEl = goog.dom.getElementByClass('content', scrollerEl);
+	var scrollBarEl = goog.dom.getElementByClass('scrollbar', scrollerEl);
+
+	this._scrollBar = new feng.fx.ScrollBar( scrollBarEl, scrollerContentEl );
+
+	this._shareButtons = goog.dom.query('.share a', this.domElement);
 
 	this.index = index;
 	
-	this.isHoveringScroller = false;
-
 	this._widthChangeCallback = widthChangeCallback;
 
 	this.x = 0;
@@ -37849,10 +37998,7 @@ feng.views.book.TipModule = function( domElement, index, widthChangeCallback ) {
 	this._margin = 0;
 	this._coverWidth = 0;
 
-	this._scrollerContentHeight = 0;
-
 	this._imageLoaded = false;
-	this._hasScrollBar = false;
 
 	this._outerEventHandler = new goog.events.EventHandler(this);
 	this._innerEventHandler = new goog.events.EventHandler(this);
@@ -37899,9 +38045,7 @@ feng.views.book.TipModule.prototype.setActive = function( isActive ) {
 		}
 
 		// activate inner events
-		this._innerEventHandler.listen( this._scrollerContentEl, 'scroll', this.onScrollerScroll, false, this );
-		this._innerEventHandler.listen( this._scrollerContentEl, 'mouseover', this.onMouseOverScroller, false, this );
-		this._innerEventHandler.listen( this._scrollerContentEl, 'mouseout', this.onMouseOutScroller, false, this );
+		this._scrollBar.activate();
 
 		goog.array.forEach(this._shareButtons, function(shareButton) {
 			this._innerEventHandler.listen( shareButton, 'click', this.onClickShareButton, false, this );
@@ -37910,6 +38054,8 @@ feng.views.book.TipModule.prototype.setActive = function( isActive ) {
 	}else {
 
 		goog.dom.classes.remove(this.domElement, 'active');
+
+		this._scrollBar.deactivate();
 
 		// deactivate inner events
 		this._innerEventHandler.removeAll();
@@ -37945,22 +38091,16 @@ feng.views.book.TipModule.prototype.setSize = function( viewportSize ) {
 	goog.style.setSize( this.domElement, this.size );
 
 	// update scroller size
-	this._scrollerContentHeight = goog.style.getSize(this._scrollerContentEl).height;
-	var scrollerRatio = this._scrollerContentHeight / this._scrollerContentEl.scrollHeight;
-	var handlePer = Math.round(scrollerRatio * 100);
-	goog.style.setStyle( this._handleEl, 'height', handlePer + '%' );
-	
-	this._hasScrollBar = !(handlePer >= 100 || handlePer <= 0);
-	goog.style.showElement( this._scrollBarEl, this._hasScrollBar );
-
-	// update dragger
-	var scrollBarPosition = goog.style.getPosition(this._scrollBarEl);
-	var scrollBarHeight = goog.style.getSize(this._scrollBarEl).height;
-	this._draggerLimits.height = scrollBarHeight - (scrollBarHeight * scrollerRatio);
-	this._dragger.setLimits( this._draggerLimits );
+	this._scrollBar.resize();
 
 	//
 	return this.size;
+};
+
+
+feng.views.book.TipModule.prototype.isHoveringScroller = function() {
+
+	return this._scrollBar.isHoveringScroller;
 };
 
 
@@ -37975,43 +38115,6 @@ feng.views.book.TipModule.prototype.updateWidth = function() {
 feng.views.book.TipModule.prototype.onClick = function(e) {
 
 	this.dispatchEvent( feng.events.EventType.CHANGE );
-};
-
-
-feng.views.book.TipModule.prototype.onDragHandle = function(x, y) {
-
-	goog.style.setPosition( this._handleEl, x, y );
-
-	var ratio = y / this._draggerLimits.height;
-	var distanceToScroll = this._scrollerContentEl.scrollHeight - this._scrollerContentHeight;
-	this._scrollerContentEl.scrollTop = distanceToScroll * ratio;
-};
-
-
-feng.views.book.TipModule.prototype.onScrollerScroll = function(e) {
-
-	var handleRatio = Math.round(e.currentTarget.scrollTop / e.currentTarget.scrollHeight * 100);
-
-	goog.style.setStyle( this._handleEl, 'top', handleRatio + '%' );
-};
-
-
-feng.views.book.TipModule.prototype.onMouseOverScroller = function(e) {
-
-	this.isHoveringScroller = this._hasScrollBar;
-};
-
-
-feng.views.book.TipModule.prototype.onMouseOutScroller = function(e) {
-
-	if(e.relatedTarget) {
-		this.isHoveringScroller = false;
-		return;
-	}
-
-	if( e.relatedTarget && !goog.dom.contains(e.currentTarget, e.relatedTarget) ) {
-		this.isHoveringScroller = false;
-	}
 };
 
 
@@ -38461,7 +38564,7 @@ feng.views.book.Book.prototype.deactivate = function() {
 
 feng.views.book.Book.prototype.resize = function() {
 
-	this._viewportSize = goog.dom.getViewportSize();
+	this._viewportSize = feng.viewportSize;
 
 	this._tipModuleWidths = goog.array.map(this._tipModules, function(tipModule) {
 		return tipModule.setSize( this._viewportSize ).width;
@@ -38749,7 +38852,7 @@ feng.views.book.Book.prototype.onMouseWheel = function( e ) {
 
 	// skip mousewheel if hovering on a tip module scroller
 	var hoveringScroller = goog.array.find(this._tipModules, function(tipModule) {
-		return (tipModule.isHoveringScroller === true);
+		return (tipModule.isHoveringScroller() === true);
 	});
 
 	if(hoveringScroller) {
@@ -38825,6 +38928,63 @@ feng.views.book.Book.prototype.onResize = function( e ) {
 
 	// lock to module
 	this.scrollToTipModule( (this._activeTipIndex || 0) );
+};goog.provide('feng.views.view3dobject.entities.SewingMachine');
+
+goog.require('feng.views.view3dobject.TipObject');
+goog.require('feng.utils.ThreeUtils');
+
+
+/**
+ * @constructor
+ * The sewing machine with a cover
+ */
+feng.views.view3dobject.entities.SewingMachine = function( object3d, data, view3d ){
+
+  goog.base(this, object3d, data, view3d);
+
+  this._isCovered = false;
+
+  this._cover = null;
+};
+goog.inherits(feng.views.view3dobject.entities.SewingMachine, feng.views.view3dobject.TipObject);
+
+
+feng.views.view3dobject.entities.SewingMachine.prototype.init = function(){
+
+  goog.base(this, 'init');
+
+  this._cover = this._view3d.getView3dObject('sewingmachine-cover');
+  this._cover.removeFromScene();
+};
+
+
+feng.views.view3dobject.entities.SewingMachine.prototype.startInteraction = function(){
+
+  goog.base(this, 'startInteraction');
+
+  if(!this._isCovered) {
+
+  	this._cover.addToScene( this.object3d );
+
+  	TweenMax.fromTo(this._cover.object3d.position, 2, {
+  		'y': this._cover.object3d.position.y + 30
+  	}, {
+  		'y': this._cover.object3d.position.y,
+      'immediateRender': true,
+  		'ease': Strong.easeInOut,
+  		'onComplete': this.onCovered,
+  		'onCompleteScope': this
+  	});
+  }
+};
+
+
+feng.views.view3dobject.entities.SewingMachine.prototype.onCovered = function(){
+
+  this.unlock();
+  this.stopInteraction();
+
+  this._isCovered = true;
 };goog.provide('feng.views.view3dobject.entities.Bear');
 
 goog.require('feng.views.view3dobject.TipObject');
@@ -38838,12 +38998,35 @@ feng.views.view3dobject.entities.Bear = function( object3d, data, view3d ){
 
   goog.base(this, object3d, data, view3d);
 
+  this._onBedTexture = null;
+};
+goog.inherits(feng.views.view3dobject.entities.Bear, feng.views.view3dobject.MovableObject);
+
+
+feng.views.view3dobject.entities.Bear.prototype.createTextures = function(){
+
+  goog.base(this, 'createTextures');
+
   var preload = feng.models.Preload.getInstance();
   var onBedImg = preload.getAsset(this._view3d.sectionId + '.' + this._view3d.id + '.bear-on-bed-texture');
   this._onBedTexture = new THREE.Texture( onBedImg );
   this._onBedTexture.needsUpdate = true;
+
+  if(this.hasPicked) {
+    this.object3d.material.map = this._onBedTexture;
+  }
 };
-goog.inherits(feng.views.view3dobject.entities.Bear, feng.views.view3dobject.MovableObject);
+
+
+feng.views.view3dobject.entities.Bear.prototype.disposeTextures = function(){
+
+  this._onBedTexture.dispose();
+  this._onBedTexture = null;
+
+  this.object3d.material.map = null;
+
+  goog.base(this, 'disposeTextures');
+};
 
 
 feng.views.view3dobject.entities.Bear.prototype.pick = function(){
@@ -38854,7 +39037,9 @@ feng.views.view3dobject.entities.Bear.prototype.pick = function(){
   this.object3d.material.needsUpdate = true;
 
   var drawer = this._view3d.getView3dObject( 'drawer' );
+
   TweenMax.to( drawer.object3d.position, 1, {
+    'delay': 2,
     'z': -11
   });
 };goog.provide('feng.views.view3dobject.entities.Pictures');
@@ -38873,11 +39058,11 @@ feng.views.view3dobject.entities.Pictures = function( object3d, data, view3d ){
   goog.base(this, object3d, data, view3d);
 
   // parse and store pictures data
-  this.pictures = this.data['pictures'];
+  var pictures = this.tip.details['pictures'];
 
   var preload = feng.models.Preload.getInstance();
 
-  this._pictureTextures = goog.object.map(this.data['pictures'], function(val, key) {
+  this._pictureTextures = goog.object.map(pictures, function(val, key) {
 
     var img = preload.getAsset( this._view3d.sectionId + '.' + this._view3d.id + '.pictures.' + key );
 
@@ -38925,6 +39110,15 @@ feng.views.view3dobject.entities.Pictures.prototype.stopInteraction = function()
 };
 
 
+feng.views.view3dobject.entities.Pictures.prototype.nextPicture = function() {
+
+  var pictureIndex = goog.array.indexOf(this._pictureObject3ds, this._activePicture) + 1;
+  pictureIndex = Math.min( pictureIndex, this._pictureObject3ds.length - 1 );
+
+  this.setActivePicture( this._pictureObject3ds[pictureIndex] );
+};
+
+
 feng.views.view3dobject.entities.Pictures.prototype.setActivePicture = function( picture ) {
 
   this._activePicture = picture;
@@ -38962,6 +39156,50 @@ feng.views.view3dobject.entities.Pictures.prototype.setPicture = function( id ){
   this._activePicture.material.map = texture;
   this._activePicture.material.needsUpdate = true;
 
+  // fit picture texture in UV
+  var u, v, offsetU, offsetV;
+  var imgRatio = texture.image.width / texture.image.height;
+
+  this._activePicture.geometry.computeBoundingBox();
+  var size = this._activePicture.geometry.boundingBox;
+
+  var diffX = size.max.x - size.min.x;
+  var diffZ = size.max.z - size.min.z;
+  var diffY = size.max.y - size.min.y;
+  var meshWidth = (diffX > diffZ) ? diffX : diffZ;
+  var meshHeight = diffY;
+  var meshRatio = meshWidth / meshHeight;
+
+  var actualWidth;
+  var actualHeight;
+
+  if(imgRatio > meshRatio) {
+
+    u = 1 / imgRatio / meshRatio;
+    v = 1;
+
+    actualWidth = meshHeight * imgRatio;
+    actualHeight = meshHeight;
+
+    offsetU = (actualWidth - meshWidth) / 2 / actualWidth;
+    offsetV = 0;
+
+  }else {
+
+    u = 1;
+    v = 1 * imgRatio / meshRatio;
+
+    actualWidth = meshWidth;
+    actualHeight = meshWidth / imgRatio;
+
+    offsetU = 0;
+    offsetV = (actualHeight - meshHeight) / 2 / actualHeight;
+  }
+
+  texture.repeat.set( u, v );
+  texture.offset.set( offsetU, offsetV );
+
+  // check if resolved all
   this._resolvedPictures[ this._activePicture.name ] = true;
 
   var resolvedAllPictures = (goog.object.getCount( this._resolvedPictures ) === this._pictureObject3ds.length);
@@ -38984,45 +39222,7 @@ feng.views.view3dobject.entities.Pictures.prototype.onClick = function(e){
     this.setActivePicture( picture );
   }
 };
-*/goog.provide('feng.views.view3dobject.entities.DiningMirror');
-
-goog.require('feng.views.view3dobject.TipObject');
-
-/**
- * @constructor
- * The mirror which reflects fruits on the dining table
- */
-feng.views.view3dobject.entities.DiningMirror = function( object3d, data, view3d ){
-
-  goog.base(this, object3d, data, view3d);
-
-  this._cubeCamera = null;
-};
-goog.inherits(feng.views.view3dobject.entities.DiningMirror, feng.views.view3dobject.TipObject);
-
-
-feng.views.view3dobject.entities.DiningMirror.prototype.init = function() {
-
-  goog.base(this, 'init');
-  
-  this._cubeCamera = new THREE.CubeCamera( 0.1, 1000, feng.renderSettings.renderSize * 2 );
-  this._cubeCamera.position.copy( this.getCenter() );
-  this.object3d.add( this._cubeCamera );
-
-  var material = this.object3d.material;
-  material.needsUpdate = true;
-  material.envMap = this._cubeCamera.renderTarget;
-
-  this.updateEnvMap();
-};
-
-
-feng.views.view3dobject.entities.DiningMirror.prototype.updateEnvMap = function() {
-
-  var renderer = this._view3d.renderer.getRenderer();
-  var scene = this._view3d.scene;
-  this._cubeCamera.updateCubeMap( renderer, scene );
-};goog.provide('feng.fx.View3DSize');
+*/goog.provide('feng.fx.View3DSize');
 
 goog.require('goog.events.EventTarget');
 goog.require('goog.math.Size');
@@ -39086,9 +39286,8 @@ feng.fx.View3DSize.prototype.update = function( ratioX, ratioY ){
 	this.ratioX = goog.isNumber(ratioX) ? ratioX : this.ratioX;
 	this.ratioY = goog.isNumber(ratioY) ? ratioY : this.ratioY;
 
-	var viewportSize = goog.dom.getViewportSize();
-	var width = viewportSize.width * this.ratioX;
-	var height = viewportSize.height * this.ratioY;
+	var width = feng.viewportSize.width * this.ratioX;
+	var height = feng.viewportSize.height * this.ratioY;
 
 	this.set( width, height );
 
@@ -39165,7 +39364,7 @@ feng.views.view3dobject.ReplaceableObject.prototype.change = function( objectId 
 };
 
 
-feng.views.view3dobject.ReplaceableObject.prototype.updateObject = function( mesh ){
+feng.views.view3dobject.ReplaceableObject.prototype.updateObject = function( view3dObject ){
 
 	var currentObject = this.object3d.children[0];
 
@@ -39175,9 +39374,25 @@ feng.views.view3dobject.ReplaceableObject.prototype.updateObject = function( mes
 		delete this._view3d.view3dObjects[ currentObject.name ];
 	}
 
-	this._object = mesh;
+	this._view3d.view3dObjects[ view3dObject.name ] = view3dObject;
+
+	this._object = view3dObject.object3d;
 
 	this.object3d.add( this._object );
+
+	TweenMax.fromTo( this._object.scale, 1, {
+		'y': 1.05
+	},{
+		'y': 1,
+		'ease': Elastic.easeOut
+	});
+
+	TweenMax.fromTo( this._object.position, .5, {
+		'y': 1.5
+	},{
+		'y': 0,
+		'ease': Bounce.easeOut
+	});
 };
 
 
@@ -39195,9 +39410,11 @@ feng.views.view3dobject.ReplaceableObject.prototype.onLoadComplete = function( e
 	mesh.material.needsUpdate = true;
 
 	var view3dObject = new feng.views.view3dobject.View3DObject( mesh, {}, this._view3d );
-	this._view3d.view3dObjects[ view3dObject.name ] = view3dObject;
+	view3dObject.init();
+	
+	this.objects[ this._idToLoad ] = view3dObject;
 
-	this.updateObject( mesh );
+	this.updateObject( view3dObject );
 
 	this.unlock();
 };
@@ -39223,7 +39440,8 @@ feng.views.view3dobject.Skybox = function( assets, view3d ){
   for (var i = 0; i < 6; i++) {
 
     var material = new THREE.MeshBasicMaterial({
-      side: THREE.BackSide
+      'transparent': true,
+      'side': THREE.BackSide
     });
     material.shading = THREE.FlatShading;
     material.fog = false;
@@ -39231,7 +39449,7 @@ feng.views.view3dobject.Skybox = function( assets, view3d ){
     materials.push( material );
   }
 
-  var skyGeometry = new THREE.BoxGeometry( 150000, 150000, 150000 );
+  var skyGeometry = new THREE.BoxGeometry( 100000, 100000, 100000 );
 
   this._material = new THREE.MeshFaceMaterial( materials );
   this._material.shading = THREE.FlatShading;
@@ -39242,6 +39460,8 @@ feng.views.view3dobject.Skybox = function( assets, view3d ){
   skybox.name = 'skybox';
 
   goog.base( this, skybox, {}, view3d );
+
+  this.opacity = 1;
 
   this.addToScene();
 };
@@ -39283,6 +39503,16 @@ feng.views.view3dobject.Skybox.prototype.disposeTextures = function(){
     material.needsUpdate = true;
 
   }, this);
+};
+
+
+feng.views.view3dobject.Skybox.prototype.updateOpacity = function( opt_opacity ){
+
+  var opacity = goog.isNumber(opt_opacity) ? opt_opacity : this.opacity;
+
+  goog.array.forEach(this._material.materials, function(material) {
+    material.opacity = opacity;
+  });
 };goog.provide('feng.views.view3dobject.Mirror');
 
 goog.require('feng.views.view3dobject.View3DObject');
@@ -39304,15 +39534,13 @@ feng.views.view3dobject.Mirror.prototype.init = function() {
 
   goog.base(this, 'init');
 
-  this._cubeCamera = new THREE.CubeCamera( 0.1, 1000, feng.renderSettings.renderSize * 2 );
+  this._cubeCamera = new THREE.CubeCamera( 0.1, 1000, feng.renderSettings.renderSize );
   this._cubeCamera.position.copy( this.getCenter() );
   this.object3d.add( this._cubeCamera );
 
   var material = this.object3d.material;
   material.needsUpdate = true;
   material.envMap = this._cubeCamera.renderTarget;
-
-  this.updateEnvMap();
 };
 
 
@@ -39858,6 +40086,18 @@ feng.controllers.controls.ExitControls.prototype.activate = function () {
 
 feng.controllers.controls.ExitControls.prototype.onLoadComplete = function () {
 	
+	feng.pubsub.subscribeOnce( feng.PubSub.Topic.BUFFER_COMPLETE, this.onBufferComplete, this );
+};
+
+
+feng.controllers.controls.ExitControls.prototype.onBufferComplete = function () {
+
+	feng.soundController.playSfx('door-open');
+
+	goog.Timer.callOnce(function() {
+		feng.soundController.playSfx('door-close');
+	}, 2500);
+
 	this._view3d.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		sectionId: this._view3d.sectionId,
@@ -39882,6 +40122,8 @@ feng.controllers.controls.EntryControls = function(camera, view3d, domElement){
   this._cameraRotation = new THREE.Euler(0, 0, 0, 'YXZ');
 
   this._timeline = new TimelineMax();
+
+  this._footstepsSound = null;
 
   this._entry = this._view3d.getEntry();
 };
@@ -39945,6 +40187,8 @@ feng.controllers.controls.EntryControls.prototype.start = function () {
 		t: 1,
 		'delay': 1,
 		'ease': Quad.easeInOut,
+		'onStart': this.onArriveInStart,
+		'onStartScope': this,
 		'onUpdate': this.onArriveInUpdate,
 		'onUpdateParams': [prop],
 		'onUpdateScope': this,
@@ -39967,6 +40211,8 @@ feng.controllers.controls.EntryControls.prototype.openDoor = function () {
 	designPlane.removeFromScene();
 
 	this._timeline.play();
+
+	feng.soundController.playSfx('entry-open');
 };
 
 
@@ -39993,6 +40239,12 @@ feng.controllers.controls.EntryControls.prototype.onStepCloseComplete = function
 	hud.openingOverlay.animateIn();
 
 	goog.events.listenOnce( hud.openingOverlay, feng.events.EventType.HIDE, this.openDoor, false, this );
+};
+
+
+feng.controllers.controls.EntryControls.prototype.onArriveInStart = function () {
+	
+	this._footstepsSound = feng.soundController.playSfx('footsteps');
 };
 
 
@@ -40026,6 +40278,10 @@ feng.controllers.controls.EntryControls.prototype.onArriveInUpdate = function (p
 
 
 feng.controllers.controls.EntryControls.prototype.onArriveInComplete = function (prop) {
+
+	this._footstepsSound.pause();
+
+	feng.soundController.playSfx('entry-close');
 
 	this._entry.close();
 
@@ -40241,7 +40497,13 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement){
   // detect bounding box on floors for camera to move around
   this._boundingBox = new THREE.Box3();
 
-  goog.array.forEach(this._view3d.floorObjects, function(floorObject) {
+	var floorObjects = goog.array.filter(this._view3d.scene.children, function(obj) {
+		if(goog.string.startsWith(obj.name, 'floor') && obj.name.length <= 7) {
+			return true;
+		}
+	})
+
+  goog.array.forEach(floorObjects, function(floorObject) {
 
   	var floorBox = (new THREE.Box3()).setFromObject( floorObject );
   	this._boundingBox = this._boundingBox.union( floorBox );
@@ -40268,6 +40530,18 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement){
   var zoomSliderDom = goog.dom.createDom('div');
   var zoomCallback = goog.bind(this.setFov, this);
   this._zoomSlider = new feng.views.sections.controls.ZoomSlider( zoomSliderDom, this._view3d.domElement, zoomCallback );
+
+  //TODO
+  this._controlProps = {
+  	'x': 0,
+  	'y': 0,
+  	startX: 0,
+  	startY: 0
+  };
+
+  this._startDragRotation = 0;
+
+  this._cameraRotation = new THREE.Euler(0, 0, 0, 'YXZ');
 };
 goog.inherits(feng.controllers.controls.DesignControls, feng.controllers.controls.Controls);
 
@@ -40282,6 +40556,26 @@ feng.controllers.controls.DesignControls.prototype.setCamera = function( forward
 	
 	this.setFov( this._zoomSlider.calculateFov( .6 ) );
 
+	//
+	var position = this.getPosition();
+	//atan(opposite/adjacent) = angle
+	//this._startDragRotation = Math.atan( position.x / position.z ) - Math.PI/2;
+
+	//console.log(position.x, position.z);
+
+	//var shouldDeg = goog.math.angle(position.x, position.y, 0, 0);
+	//var shouldRad = THREE.Math.degToRad( shouldDeg ); 
+
+	var shouldRad = Math.atan( position.x/position.z );
+	var shouldDeg = THREE.Math.radToDeg( shouldRad );
+
+	var posX = this._distance * Math.sin( - shouldRad ) + this._focus.x;
+	var posZ = this._distance * Math.cos( - shouldRad ) + this._focus.z;
+
+	console.log( position.x, position.z, posX, posZ, shouldDeg );
+	//
+
+
 	this._zoomSlider.reset();
 
 	this._activeObject = object;
@@ -40295,19 +40589,28 @@ feng.controllers.controls.DesignControls.prototype.setFocus = function( x, z, fo
 	// calculate camera position from inversed forward vector
 	var vector = forward.negate().multiplyScalar( this._distance );
 
+/*
+	var deg = goog.math.angle(vector.x, vector.z, 0, 0);
+	var rad = THREE.Math.degToRad(deg);
+	var posX = this._distance * Math.cos( rad ) - this._distance * Math.sin( rad );
+	var posZ = this._distance * Math.sin( rad ) + this._distance * Math.cos( rad );
+
+	var cameraX = posX;
+	var cameraZ = posZ;
+*/
 	var cameraX = vector.x;
 	var cameraZ = vector.z;
+
 	var cameraY = this._distance;
 
 	// apply position
 	this.setPosition( cameraX, cameraY, cameraZ );
 
 	// recalculate rotation
-	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
 	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), this._focus);
-	rotation.setFromQuaternion( quaternion );
+	this._cameraRotation.setFromQuaternion( quaternion );
 
-	this.setRotation( rotation );
+	this.setRotation( this._cameraRotation );
 
 	// update tracker position
 	this._tracker.position.copy( this._focus );
@@ -40356,7 +40659,8 @@ feng.controllers.controls.DesignControls.prototype.activate = function () {
 
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this);
-	
+	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
+
 	this._zoomSlider.activate();
 };
 
@@ -40385,28 +40689,34 @@ feng.controllers.controls.DesignControls.prototype.update = function () {
 };
 
 
-feng.controllers.controls.DesignControls.prototype.onUpdateHud = function(e){
+feng.controllers.controls.DesignControls.prototype.applyDragRotation = function( rad ){
 
-	if(e.target instanceof feng.views.sections.controls.Compass) {
+	//var posX = this._distance * Math.cos( rad ) - this._distance * Math.sin( rad );
+	//var posZ = this._distance * Math.sin( rad ) + this._distance * Math.cos( rad );
 
-		var posX = this._distance * Math.sin( -e.rotation ) + this._focus.x;
-		var posZ = this._distance * Math.cos( -e.rotation ) + this._focus.z;
-		var posY = this._distance;
+	var posX = this._distance * Math.sin( - rad ) + this._focus.x;
+	var posZ = this._distance * Math.cos( - rad ) + this._focus.z;
+	var posY = this._distance;
 
-		this.setPosition( posX, posY, posZ );
+	this.setPosition( posX, posY, posZ );
 
-		// look at
-		var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
-		var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), this._focus);
-		rotation.setFromQuaternion( quaternion );
+	// look at
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), this._focus);
+	this._cameraRotation.setFromQuaternion( quaternion );
 
-		this.setRotation( rotation );
-	}
+	this.setRotation( this._cameraRotation );
 };
 
 
 feng.controllers.controls.DesignControls.prototype.onDragStart = function(e){
 
+	this._controlProps.startX = this._controlProps['x'];
+
+	TweenLite.killTweensOf( this._controlProps );
+	ThrowPropsPlugin.untrack( this._controlProps );
+	ThrowPropsPlugin.track( this._controlProps, 'x' );
+
+	/*
 	// set origin focus position
 	this._dragOrigin.copy( this._focus );
 	this._dragToPosition.copy( this._focus );
@@ -40417,6 +40727,7 @@ feng.controllers.controls.DesignControls.prototype.onDragStart = function(e){
 	this._dragCamera.aspect = this._camera.aspect;
 	this._dragCamera.updateProjectionMatrix();
 	this._dragCamera.lookAt( this._focus );
+	*/
 };
 
 
@@ -40425,6 +40736,11 @@ feng.controllers.controls.DesignControls.prototype.onDrag = function(e){
 	var deltaX = this._dragger.deltaX;
 	var deltaY = this._dragger.deltaY;
 
+	this._controlProps['x'] = this._controlProps.startX + deltaX / this._view3d.viewSize.width / 2;
+
+	this.onDragUpdate();
+
+	/*
 	var fov = this.getFov();
 	var minFov = this._zoomSlider.fovRange.min;
 	var maxFov = this._zoomSlider.fovRange.max;
@@ -40457,7 +40773,34 @@ feng.controllers.controls.DesignControls.prototype.onDrag = function(e){
 	rotation.setFromQuaternion( quaternion );
 
 	this.setRotation( rotation );
-};goog.provide('feng.controllers.controls.CloseUpControls');
+	*/
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onDragEnd = function(e){
+
+	ThrowPropsPlugin.to(this._controlProps, {
+		'throwProps': {
+			'x': 'auto',
+			'resistance': 100
+		},
+		//ease: Quad.easeOut,
+		'onUpdate': this.onDragUpdate,
+		'onUpdateScope': this
+	}, 4, .5);
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onDragUpdate = function(){
+
+	var deg = this._controlProps['x'] * 360;
+	var rad = THREE.Math.degToRad( deg );
+
+	//this.applyDragRotation( this._startDragRotation );
+
+	this.applyDragRotation( this._startDragRotation + rad );
+};
+goog.provide('feng.controllers.controls.CloseUpControls');
 
 goog.require('goog.events');
 goog.require('goog.math');
@@ -40473,7 +40816,7 @@ feng.controllers.controls.CloseUpControls = function(camera, view3d, domElement)
 
   this._activeObject = null;
 
-  this._tempPosition = new THREE.Vector3();
+  this._backUpRotation = new THREE.Euler(0, 0, 0, 'YXZ');
 
   this._raycaster = feng.utils.ThreeUtils.raycaster;
 
@@ -40529,7 +40872,14 @@ feng.controllers.controls.CloseUpControls.prototype.setCamera = function( object
 	this.setRotation( cameraSettings.rotation );
 	this.setFov( cameraSettings.fov );
 
+	//
 	this._activeObject = object;
+
+	// pre-calculate backed up rotation, in case the object might be later picked up
+	var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
+
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( browseControls.getPosition(), this._activeObject.getCenter() );
+	this._backUpRotation.setFromQuaternion( quaternion );
 };
 
 
@@ -40565,27 +40915,15 @@ feng.controllers.controls.CloseUpControls.prototype.activate = function () {
 	goog.base(this, 'activate');
 
 	this._eventHandler.listen(this, feng.events.EventType.CLOSE, this.close, false, this);
+
+	// animate out object select effect
+	this._view3d.fx.selectEffect.animateOut();
 };
 
 
 feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
 
 	this._activeObject.onCameraOut();
-
-	// find out the closest walkable position to go to
-	var pathfinder = feng.pathfinder;
-
-	var matrixId = this._view3d.getMatrixId();
-	var matrixData = pathfinder.getMatrixData( matrixId );
-
-	var tile = pathfinder.getTileByPosition( this.getPosition(), matrixData );
-	var toPosition = pathfinder.getClosestWalkableTilePosition( tile, matrixData );
-	toPosition.y = feng.controllers.controls.Controls.Default.STANCE_HEIGHT;
-
-	var toFov = feng.controllers.controls.Controls.Default.FOV;
-
-	// delay to animate out object select effect
-	this._view3d.fx.selectEffect.animateOut( 1 );
 
 	//
 	feng.navigationController.replaceToken("");
@@ -40595,8 +40933,7 @@ feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
 		type: feng.events.EventType.CHANGE,
 		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
 		nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
-		toPosition: toPosition,
-		toFov: toFov,
+		toRotation: this._backUpRotation,
 		eventToTrigger: e ? e.eventToTrigger : null
 	});
 };goog.provide('feng.controllers.controls.BrowseControls');
@@ -40786,17 +41123,12 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 
 		// walk to the object
 		var toPosition = intersects[0].point;
-		toPosition.y = toPosition.y < 10 ? this.getPosition().y : toPosition.y;
 
 		this.dispatchEvent({
 			type: feng.events.EventType.CHANGE,
 			mode: feng.controllers.view3d.ModeController.Mode.WALK,
 			nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
-			toPosition: toPosition,
-			toRotation: this.getRotation(),
-			toFov: this.getFov(),
-			fromTarget: this.getTarget(),
-			toTarget: toPosition
+			toPosition: toPosition
 		});
 
 		// play click effect
@@ -40851,9 +41183,26 @@ feng.controllers.controls.BrowseControls.prototype.onMouseWheel = function ( e )
 		mode: feng.controllers.view3d.ModeController.Mode.WALK,
 		nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
 		toPosition: toPosition,
-		toRotation: this.getRotation(),
-		toFov: this.getFov()
+		mousewheel: true
 	});
+
+	
+	/*
+	var distance = 25 * (-e.deltaY / Math.abs(e.deltaY));
+	
+	var forward = this.getForwardVector();
+	
+	var toPosition = forward.multiplyScalar( distance ).add( this.getPosition() );
+	toPosition.y = this.getPosition().y;
+
+	var pathfinder = feng.pathfinder;
+	var matrixData = pathfinder.getMatrixData( this._view3d.getMatrixId() );
+	var isWalkable = pathfinder.isWalkablePosition( toPosition, matrixData );
+
+	if(isWalkable) {
+		this.setPosition( toPosition );
+	}
+	*/
 };
 
 
@@ -41352,10 +41701,14 @@ feng.controllers.controls.WalkControls = function(camera, view3d, domElement){
 
   goog.base(this, camera, view3d, domElement);
 
-	this._tweener = new TimelineMax();
+	this._tweener = null;
 	this._pathTrack = null;
 
 	this._cameraRotation = new THREE.Euler(0, 0, 0, 'YXZ');
+	this._startRotation = new THREE.Euler(0, 0, 0, 'YXZ');
+	this._endRotation = new THREE.Euler(0, 0, 0, 'YXZ');
+
+	this._footstepsSound = null;
 };
 goog.inherits(feng.controllers.controls.WalkControls, feng.controllers.controls.Controls);
 
@@ -41364,7 +41717,7 @@ feng.controllers.controls.WalkControls.prototype.pause = function ( pause ) {
 
 	var shouldPause = goog.base(this, 'pause', pause);
 
-	if(shouldPause) {
+	if(shouldPause && this._tweener) {
 
 		this._tweener.pause();
 
@@ -41381,8 +41734,6 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 	var toPosition = ev.toPosition;
 	var nextMode = ev.nextMode;
 
-	var viewDistance = (ev.viewDistance >= 0) ? ev.viewDistance : 50;
-
 	//
 	var pathfinder = feng.pathfinder;
 
@@ -41391,10 +41742,10 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 	var end = toPosition;
 	
 	var coordinates = pathfinder.findPath( matrixId, start, end );
-	
+
 	if(!coordinates) {
 
-		this.onPathComplete( nextMode );
+		this.bounceBack( nextMode );
 		return;
 	}
 
@@ -41415,58 +41766,94 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 		this._scene.add( this._pathTrack );
 	}
 
-	var length = this._pathTrack.spline.getLength();
-	var distance = length - viewDistance;
-	var distanceT = Math.max(0, distance / length);
+	// calculate end rotation based on last position
+	var viewDistance = 25;
+	var splineLength = this._pathTrack.spline.getLength();
+	var actualDistance = splineLength - viewDistance;
+	var endU = actualDistance / splineLength;
+
+	if(endU <= 0) {
+
+		this.bounceBack( nextMode );
+		return;
+	}
+
+	var actualEndPosition = this._pathTrack.spline.getPointAt( endU ).setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT );
+
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( actualEndPosition, toPosition );
+	this._endRotation.setFromQuaternion( quaternion );
+
+	this._startRotation.copy( ev.fromRotation );
 	
 	// adult walking speed is 1.564 meter per second
 	var speed = 1.000 * 100;
-	var duration = distance / (speed / 2);
+	var duration = Math.max(1, actualDistance / (speed / 2));
 
 	var footstepLength = 20;
-	var footsteps = Math.floor(distance / footstepLength);
+	var footsteps = Math.floor(actualDistance / footstepLength);
 
-	var uProp = {
-		u: 0,
-		footstep: 0
-	};
-
-	var tProp = {
+	var prop = {
 		t: 0,
-		fromTarget: ev.fromTarget,
-		toTarget: ev.toTarget
+		endU: endU,
+		footstep: 0,
+		mousewheel: ev.mousewheel
 	};
 
-  var uTweener = TweenMax.to(uProp, duration, {
-    u: distanceT,
+  this._tweener = TweenMax.to(prop, duration, {
+    t: 1,
     footstep: Math.PI * footsteps,
-    'ease': Sine.easeInOut,
-    'onUpdate': this.onPathUProgress,
-    'onUpdateParams': [uProp],
+    'ease': Linear.easeNone,
+    'onStart': this.onPathStart,
+    'onStartScope': this,
+    'onUpdate': this.onPathProgress,
+    'onUpdateParams': [prop],
     'onUpdateScope': this,
     'onComplete': this.onPathComplete,
     'onCompleteParams': [nextMode],
     'onCompleteScope': this
   });
-
-  var tTweener = TweenMax.to(tProp, duration, {
-    t: 1,
-    'ease': Quad.easeInOut,
-    'onUpdate': this.onPathTProgress,
-    'onUpdateParams': [tProp],
-    'onUpdateScope': this
-  });
-
-  this._tweener.clear();
-  this._tweener.add( [uTweener, tTweener], '+=0', 'start' );
 };
 
 
-feng.controllers.controls.WalkControls.prototype.onPathUProgress = function ( prop ) {
+feng.controllers.controls.WalkControls.prototype.bounceBack = function ( nextMode ) {
 
-  var u = prop.u;
+	var prop = {
+		fov: this.getFov()
+	};
+
+	TweenMax.to(prop, .3, {
+		fov: 35,
+		'yoyo': true,
+		'repeat': 1,
+		'ease': Quad.easeInOut,
+		'onUpdate': function(prop) {
+			this.setFov( prop.fov );
+		},
+		'onUpdateParams': [prop],
+		'onUpdateScope': this,
+		'onComplete': this.onPathComplete,
+		'onCompleteParams': [nextMode],
+		'onCompleteScope': this
+	});
+};
+
+
+feng.controllers.controls.WalkControls.prototype.onPathStart = function () {
+
+	this._footstepsSound = feng.soundController.playSfx('footsteps');
+};
+
+
+feng.controllers.controls.WalkControls.prototype.onPathProgress = function ( prop ) {
+
+  var t = prop.t;
+  
+  var smoothT = THREE.Math.smoothstep(t, 0, 1);
+
   var pathTrack = this._pathTrack;
-  var pathCamera = pathTrack.getCameraAt( u );
+
+  // update position
+  var pathCamera = pathTrack.getCameraAt( smoothT * prop.endU );
   var cameraPosition = pathCamera.position;
 
   var footstepHeight = Math.sin(prop.footstep) * .5;
@@ -41474,27 +41861,20 @@ feng.controllers.controls.WalkControls.prototype.onPathUProgress = function ( pr
   var cameraY = defaultHeight + footstepHeight;
 
   this.setPosition( cameraPosition.x, cameraY, cameraPosition.z );
-};
 
-
-feng.controllers.controls.WalkControls.prototype.onPathTProgress = function ( prop ) {
-
-  var t = prop.t;
-
-  // calculate rotation looking at tweening target
-  if(prop.fromTarget && prop.toTarget) {
-
-  	var position = prop.fromTarget.clone().lerp( prop.toTarget, t );
-
-  	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( this.getPosition(), position );
-	this._cameraRotation.setFromQuaternion( quaternion );
-
-	this.setRotation( this._cameraRotation.x, this._cameraRotation.y );
+  if(!prop.mousewheel) {
+  	// update rotation
+  	this._cameraRotation = feng.utils.ThreeUtils.getLerpedEuler( this._startRotation, this._endRotation, smoothT, this._cameraRotation );
+  	this.setRotation( this._cameraRotation.x, this._cameraRotation.y );
   }
 };
 
 
 feng.controllers.controls.WalkControls.prototype.onPathComplete = function ( nextMode ) {
+
+	if(this._footstepsSound) {
+		this._footstepsSound.pause();
+	}
 
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
@@ -41509,6 +41889,10 @@ feng.controllers.controls.WalkControls.prototype.onInputDown = function ( e ) {
 
 	this._tweener.kill();
 
+	if(this._footstepsSound) {
+		this._footstepsSound.pause();
+	}
+	
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
@@ -41552,7 +41936,7 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 		nextMode: ev.nextMode
 	};
 	
-	var dur = goog.math.clamp( 1, 2, goog.math.lerp( 1, 2, fromPosition.distanceTo( toPosition ) / 1000 ));
+	var dur = goog.math.clamp( 1, 2, goog.math.lerp( 1, 2, fromPosition.distanceTo( toPosition ) / 100 ));
 
 	this._tweener = TweenMax.to( prop, dur, {
 		t: 1,
@@ -41573,13 +41957,53 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 	if(nextMode === feng.controllers.view3d.ModeController.Mode.DESIGN) {
 
 		designPlane.addToScene();
-		skybox.removeFromScene();
+		skybox.addToScene();
 
-		TweenMax.fromTo(designPlane.object3d.material, 1, {
+		TweenMax.fromTo(skybox, dur, {
+			opacity: 1
+		}, {
+			opacity: 0,
+			'onUpdate': skybox.updateOpacity,
+			'onUpdateScope': skybox,
+			'onComplete': skybox.removeFromScene,
+			'onCompleteScope': skybox
+		});
+
+		TweenMax.fromTo(designPlane, dur, {
 			opacity: 0
 		}, {
-			opacity: 1
+			opacity: 1,
+			'onUpdate': designPlane.updateOpacity,
+			'onUpdateScope': designPlane
 		});
+
+	}else {
+
+		if(!skybox.isInScene()) {
+
+			skybox.addToScene();
+
+			var halfDur = dur/2;
+
+			TweenMax.fromTo(skybox, halfDur, {
+				opacity: 0
+			}, {
+				opacity: 1,
+				'delay': halfDur,
+				'onUpdate': skybox.updateOpacity,
+				'onUpdateScope': skybox
+			});
+
+			TweenMax.fromTo(designPlane, dur, {
+				opacity: 1
+			}, {
+				opacity: 0,
+				'onUpdate': designPlane.updateOpacity,
+				'onUpdateScope': designPlane,
+				'onComplete': designPlane.removeFromScene,
+				'onCompleteScope': designPlane
+			});
+		}
 	}
 
 	// toggle sound loops
@@ -41643,29 +42067,9 @@ feng.controllers.controls.TransitionControls.prototype.onTransitionUpdate = func
 
 feng.controllers.controls.TransitionControls.prototype.onTransitionComplete = function ( prop ) {
 
-	var nextMode = prop.nextMode;
-
-	// toggle ground plane
-	var designPlane = this._view3d.designPlane;
-	var skybox = this._view3d.skybox;
-
-	if(nextMode !== feng.controllers.view3d.ModeController.Mode.DESIGN) {
-
-		TweenMax.fromTo(designPlane.object3d.material, 1, {
-			opacity: 1
-		}, {
-			opacity: 0,
-			'onComplete': function() {
-				designPlane.removeFromScene();
-				skybox.addToScene();
-			}
-		});
-	}
-
-	//
 	var ev = {
 		type: feng.events.EventType.CHANGE,
-		mode: nextMode
+		mode: prop.nextMode
 	};
 
 	this.dispatchEvent( ev );
@@ -42095,13 +42499,19 @@ feng.views.view3dobject.DesignPlane = function( view3d ){
   } );
   planeMaterial.shading = THREE.FlatShading;
 
-  var designPlane = new THREE.Mesh( planeGeometry, planeMaterial );
-  designPlane.name = 'design-plane';
-  designPlane.rotation.x = -Math.PI/2;
-  designPlane.position.y = -.5;
-  designPlane.receiveShadow = true;
+  var plane = new THREE.Mesh( planeGeometry, planeMaterial );
+  plane.name = 'design-plane';
+  plane.rotation.x = -Math.PI/2;
+  plane.position.y = -.5;
 
-  goog.base( this, designPlane, {}, view3d );
+  var data = {
+    receiveShadow: true,
+    fog: true
+  };
+
+  goog.base( this, plane, data, view3d );
+
+  this.opacity = 1;
 };
 goog.inherits(feng.views.view3dobject.DesignPlane, feng.views.view3dobject.View3DObject);
 
@@ -42129,6 +42539,14 @@ feng.views.view3dobject.DesignPlane.prototype.createTextures = function(){
 
   this.object3d.material.map = texture;
   this.object3d.material.needsUpdate = true;
+};
+
+
+feng.views.view3dobject.DesignPlane.prototype.updateOpacity = function( opt_opacity ){
+
+  var opacity = goog.isNumber(opt_opacity) ? opt_opacity : this.opacity;
+
+  this.object3d.material.opacity = opacity;
 };goog.provide('feng.views.view3dobject.entities.Computer');
 
 goog.require('feng.views.view3dobject.TipObject');
@@ -42142,19 +42560,42 @@ feng.views.view3dobject.entities.Computer = function( object3d, data, view3d ){
 
   goog.base(this, object3d, data, view3d);
 
-  var preload = feng.models.Preload.getInstance();
-  var onBedImg = preload.getAsset(this._view3d.sectionId + '.' + this._view3d.id + '.computer-on-desk-texture');
-  this._onBedTexture = new THREE.Texture( onBedImg );
-  this._onBedTexture.needsUpdate = true;
+  this._onDeskTexture = null;
 };
 goog.inherits(feng.views.view3dobject.entities.Computer, feng.views.view3dobject.MovableObject);
+
+
+feng.views.view3dobject.entities.Computer.prototype.createTextures = function(){
+
+  goog.base(this, 'createTextures');
+
+  var preload = feng.models.Preload.getInstance();
+  var onBedImg = preload.getAsset(this._view3d.sectionId + '.' + this._view3d.id + '.computer-on-desk-texture');
+  this._onDeskTexture = new THREE.Texture( onBedImg );
+  this._onDeskTexture.needsUpdate = true;
+
+  if(this.hasPicked) {
+    this.object3d.material.map = this._onDeskTexture;
+  }
+};
+
+
+feng.views.view3dobject.entities.Computer.prototype.disposeTextures = function(){
+
+  this._onDeskTexture.dispose();
+  this._onDeskTexture = null;
+
+  this.object3d.material.map = null;
+
+  goog.base(this, 'disposeTextures');
+};
 
 
 feng.views.view3dobject.entities.Computer.prototype.pick = function(){
 
   goog.base(this, 'pick');
 
-  this.object3d.material.map = this._onBedTexture;
+  this.object3d.material.map = this._onDeskTexture;
   this.object3d.material.needsUpdate = true;
 };goog.provide('feng.fx.Renderer');
 
@@ -42233,7 +42674,7 @@ feng.fx.Renderer = function(canvas, scene, camera){
 		stencilBuffer: true
 	};
 
-	var res = (screen.width > 1920) ? 2048 : 1024;
+	var res = feng.renderSettings.renderSize;
 
 	var resolution = (new goog.math.Size( res, res )).scale( this._DPR );
 
@@ -42250,7 +42691,7 @@ feng.fx.Renderer = function(canvas, scene, camera){
 	this._renderTextureForMaskingPass.enabled = false;
 
 	// create blur texture pass
-	var renderSize = feng.renderSettings.renderSize;
+	var renderSize = feng.renderSettings.renderSize / 2;
 	var renderTarget = new THREE.WebGLRenderTarget( renderSize, renderSize, renderTargetParameters );
 	renderTarget.generateMipmaps = false;
 
@@ -42367,7 +42808,9 @@ feng.fx.Renderer.prototype.render = function(){
 
 	if(this.onBeforeRenderBlur) this.onBeforeRenderBlur();
 	
-	this._blurComposer.render();
+	if(this._blurTexturePass.enabled) {
+		this._blurComposer.render();
+	}
 
 	if(this.onBeforeRenderMask) this.onBeforeRenderMask();
 
@@ -42910,8 +43353,8 @@ feng.controllers.view3d.RenderController = function( view3d ){
 
   //
   this._maxBlur = 20;
-  this._minBrightness = -.25;
-  this._minContrast = -.40;
+  this._minBrightness = -.20;
+  this._minContrast = -.35;
   this._minVignette = 1;
   this._maxVignette = 3;
 
@@ -43089,10 +43532,10 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderBlur = function
 	var maskedObject = this._maskedObject;
 	var view3dObjects = this._view3d.view3dObjects;
 
-	goog.object.forEach(view3dObjects, function(view3dObject) {
+	for(var name in view3dObjects) {
 
-		view3dObject.enableRender();
-	});
+		view3dObjects[ name ].enableRender();
+	}
 
 	this._view3d.fx.visible = true;
 
@@ -43111,10 +43554,10 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderMask = function
 	var maskedObject = this._maskedObject;
 	var view3dObjects = this._view3d.view3dObjects;
 
-	goog.object.forEach(view3dObjects, function(view3dObject) {
+	for(var name in view3dObjects) {
 
-		view3dObject.disableRender();
-	});
+		view3dObjects[ name ].disableRender();
+	}
 
 	this._view3d.fx.visible = false;
 
@@ -43122,6 +43565,10 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderMask = function
 
 		maskedObject.enableRender();
 		this._view3d.arms.enableRender();
+
+		if(maskedObject.hasPicked) {
+			maskedObject.dropParent.view3dObject.enableRender();
+		}
 	}
 };goog.provide('feng.views.view3dobject.entities.Closet');
 
@@ -43181,6 +43628,98 @@ feng.views.view3dobject.entities.Closet.prototype.onCameraOut = function(){
 
 feng.views.view3dobject.entities.Closet.prototype.onClick = function(e){
 
+};goog.provide('feng.views.view3dobject.entities.Wallpaper');
+
+goog.require('feng.views.view3dobject.TipObject');
+
+/**
+ * @constructor
+ * The animated wallpaper for home office computer
+ */
+feng.views.view3dobject.entities.Wallpaper = function( object3d, data, view3d ){
+
+  goog.base(this, object3d, data, view3d);
+
+  this._video = goog.dom.createDom('video', {
+    'preload': 'metadata',
+    'loop': true
+  }, [
+    goog.dom.createDom('source', {
+      'src': feng.Config['assetsPath'] + 'video/wallpaper.mp4',
+      'type': 'video/mp4; codecs="avc1.42E01E"'
+    }),
+    goog.dom.createDom('source', {
+      'src': feng.Config['assetsPath'] + 'video/wallpaper.ogv',
+      'type': 'video/ogg; codecs="theora, vorbis"'
+    })
+  ]);
+
+  this._video.load();
+
+  this._videoCanvas = goog.dom.createDom('canvas', {
+    'width': 480,
+    'height': 268
+  });
+
+  this._videoCanvasContext = this._videoCanvas.getContext( '2d' );
+  this._videoCanvasContext.fillStyle = '#000000';
+  this._videoCanvasContext.fillRect( 0, 0, this._videoCanvas.width, this._videoCanvas.height );
+
+  this._videoTexture = new THREE.Texture( this._videoCanvas );
+  this._videoTexture.minFilter = THREE.LinearFilter;
+  this._videoTexture.magFilter = THREE.LinearFilter;
+
+  this.object3d.material.map = this._videoTexture;
+};
+goog.inherits(feng.views.view3dobject.entities.Wallpaper, feng.views.view3dobject.TipObject);
+
+
+feng.views.view3dobject.entities.Wallpaper.prototype.activate = function(){
+
+  goog.base(this, 'activate');
+
+  goog.events.listen( this._video, 'canplay', this.onVideoUpdate, false, this );
+};
+
+
+feng.views.view3dobject.entities.Wallpaper.prototype.deactivate = function(){
+
+  goog.base(this, 'deactivate');
+
+  goog.events.unlisten( this._video, 'canplay', this.onVideoUpdate, false, this );
+};
+
+
+feng.views.view3dobject.entities.Wallpaper.prototype.onVideoUpdate = function(){
+
+  this._videoCanvasContext.drawImage( this._video, 0, 0 );
+  this._videoTexture.needsUpdate = true;
+};
+
+
+feng.views.view3dobject.entities.Wallpaper.prototype.onCameraIn = function(){
+
+  goog.base(this, 'onCameraIn');
+
+  this._video.play();
+
+  goog.fx.anim.registerAnimation(this);
+};
+
+
+feng.views.view3dobject.entities.Wallpaper.prototype.onCameraOut = function(){
+
+  goog.base(this, 'onCameraOut');
+
+  this._video.pause();
+
+  goog.fx.anim.unregisterAnimation(this);
+};
+
+
+feng.views.view3dobject.entities.Wallpaper.prototype.onAnimationFrame = function(now){
+
+  this.onVideoUpdate();
 };goog.provide('feng.views.view3dobject.GatewayObject');
 
 goog.require('feng.views.view3dobject.InteractiveObject');
@@ -43195,7 +43734,8 @@ feng.views.view3dobject.GatewayObject = function( object3d, data, view3d ){
 
   this.viewId = this.data.viewid;
   this.gatewayId = this.data.gatewayid;
-  
+
+	this.toHome = this.data.toHome;  
   this.isEntry = this.data.isEntry;
 
   this.origin = this.data.origin;
@@ -43519,8 +44059,8 @@ feng.views.view3dobject.Arms.Orientations = {
     rotation: new THREE.Euler(-0.78, -1.57, 0.02)
   },
   'knife': {
-    position: new THREE.Vector3(0, 8, -2),
-    rotation: new THREE.Euler(0.05, -0.09, -0.25)
+    position: new THREE.Vector3(0, 10, -2),
+    rotation: new THREE.Euler(0.05, -0.09, -0.50)
   }
 };goog.provide('feng.views.view3dfx.SelectEffect');
 
@@ -43741,12 +44281,12 @@ feng.views.view3dfx.ClickEffect = function(){
 
 	var material = new THREE.MeshBasicMaterial({
 		//color: 0xff0000,
-		map: texture,
-		side: THREE.DoubleSide,
-		fog: false,
-		transparent: true,
-		blending: THREE.AdditiveBlending,
-		depthTest: false
+		'map': texture,
+		'side': THREE.DoubleSide,
+		'fog': false,
+		'transparent': true,
+		'blending': THREE.AdditiveBlending,
+		'depthTest': false
 	});
 
   THREE.Mesh.call( this, geometry, material );
@@ -43809,7 +44349,7 @@ goog.require('feng.views.view3dobject.TipObject');
 
 /**
  * @constructor
- * A lamp whose color can be changed
+ * A lamp whose color should be changed
  */
 feng.views.view3dobject.entities.Lamp = function( object3d, data, view3d ){
 
@@ -43817,29 +44357,19 @@ feng.views.view3dobject.entities.Lamp = function( object3d, data, view3d ){
 
   this._light = this.object3d.getObjectByName('light');
 
-  this.colors = {};
-
-  var colors = feng.views.view3dobject.entities.Lamp.Colors;
-
-  goog.array.forEach( data.colors, function(colorKey) {
-
-  	this.colors[ colorKey ] = {
-  		color: colors[ colorKey ],
-  		hex: '#' + colors[ colorKey ].getHexString()
-  	}
-  }, this);
-
   this._defaultColor = this._light.color;
   this._color = this._defaultColor.clone();
+  this._toColor = new THREE.Color();
 
   this.setColor( this._color );
 };
 goog.inherits(feng.views.view3dobject.entities.Lamp, feng.views.view3dobject.TipObject);
 
 
-feng.views.view3dobject.entities.Lamp.prototype.setColor = function(color) {
+feng.views.view3dobject.entities.Lamp.prototype.setColor = function(hex) {
 
-  var startColor = this._color.clone();
+  var startHex = this._color.getHex();
+  var toColor = this._toColor.set( hex );
 
   var prop = {
   	t: 0
@@ -43849,15 +44379,14 @@ feng.views.view3dobject.entities.Lamp.prototype.setColor = function(color) {
   	t: 1,
   	'ease': Expo.easeOut,
   	'onUpdate': function() {
-  		var c = startColor.clone().lerp( color, prop.t );
-  		this._color.copy( c );
-  		this._light.color.copy( c );
-  		this.object3d.material.color.copy( c );
+  		this._color.set(startHex).lerp( this._toColor, prop.t );
+  		this._light.color.copy( this._color );
+  		this.object3d.material.color.copy( this._color );
   	},
   	'onUpdateScope': this
   });
 
-  if(!color.equals( this._defaultColor )) {
+  if(!toColor.equals( this._defaultColor )) {
     this.unlock();
   }
 };
@@ -43865,16 +44394,8 @@ feng.views.view3dobject.entities.Lamp.prototype.setColor = function(color) {
 
 feng.views.view3dobject.entities.Lamp.prototype.setColorByName = function(name) {
 
-	var color = feng.views.view3dobject.entities.Lamp.Colors[ name ];
-	this.setColor( color );
-};
-
-
-feng.views.view3dobject.entities.Lamp.Colors = {
-	"pink": new THREE.Color().set( '#FFC5CC' ),
-	"yellow": new THREE.Color().set( '#FCE9A8' ),
-	"white": new THREE.Color().set( '#ffffff' ),
-	"orange": new THREE.Color().set( '#F6D5EE' )
+	var hex = this.tip.details['colors'][name]['hex'];
+	this.setColor( hex );
 };goog.provide('feng.views.view3dobject.entities.Drawer');
 
 goog.require('feng.views.view3dobject.TipObject');
@@ -43950,10 +44471,7 @@ feng.views.view3dobject.entities.Knife = function( object3d, data, view3d ){
 
   goog.base(this, object3d, data, view3d);
 
-  var preload = feng.models.Preload.getInstance();
-  var inDrawerImg = preload.getAsset(this._view3d.sectionId + '.' + this._view3d.id + '.knife-in-drawer-texture');
-  this._inDrawerTexture = new THREE.Texture( inDrawerImg );
-  this._inDrawerTexture.needsUpdate = true;
+  this._inDrawerTexture = null;
 };
 goog.inherits(feng.views.view3dobject.entities.Knife, feng.views.view3dobject.MovableObject);
 
@@ -43964,10 +44482,29 @@ feng.views.view3dobject.entities.Knife.prototype.getCloseUpObjectWhenDropped = f
 };
 
 
-feng.views.view3dobject.entities.Knife.prototype.pick = function(){
+feng.views.view3dobject.entities.Knife.prototype.createTextures = function(){
 
-  goog.base(this, 'pick');
+  goog.base(this, 'createTextures');
 
+  var preload = feng.models.Preload.getInstance();
+  var inDrawerImg = preload.getAsset(this._view3d.sectionId + '.' + this._view3d.id + '.knife-in-drawer-texture');
+  this._inDrawerTexture = new THREE.Texture( inDrawerImg );
+  this._inDrawerTexture.needsUpdate = true;
+
+  if(this.hasDropped) {
+    this.object3d.material.map = this._inDrawerTexture;
+  }
+};
+
+
+feng.views.view3dobject.entities.Knife.prototype.disposeTextures = function(){
+
+  this._inDrawerTexture.dispose();
+  this._inDrawerTexture = null;
+
+  this.object3d.material.map = null;
+
+  goog.base(this, 'disposeTextures');
 };
 
 
@@ -44016,7 +44553,6 @@ goog.require('feng.views.view3dobject.Mirror');
 goog.require('feng.views.view3dobject.TipObject');
 goog.require('feng.views.view3dobject.entities.Bear');
 goog.require('feng.views.view3dobject.entities.Cat');
-goog.require('feng.views.view3dobject.entities.DiningMirror');
 goog.require('feng.views.view3dobject.entities.Drawer');
 goog.require('feng.views.view3dobject.entities.Knife');
 goog.require('feng.views.view3dobject.entities.Lamp');
@@ -44024,7 +44560,9 @@ goog.require('feng.views.view3dobject.entities.Computer');
 goog.require('feng.views.view3dobject.entities.Closet');
 goog.require('feng.views.view3dobject.entities.Pictures');
 goog.require('feng.views.view3dobject.entities.Refrigerator');
+goog.require('feng.views.view3dobject.entities.SewingMachine');
 goog.require('feng.views.view3dobject.entities.FruitPlate');
+goog.require('feng.views.view3dobject.entities.Wallpaper');
 goog.require('feng.views.view3dobject.entities.Windows');
 
 
@@ -44066,9 +44604,7 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud, episode){
 
 	this.viewSize = new feng.fx.View3DSize(0, 0);
 
-	this.floorIndex = 0;
-	this.floorObjects = [];
-	this._floorMatrixIds = [];
+	this._matrixId = null;
 
 	this.startGateway = null;
 
@@ -44101,9 +44637,35 @@ feng.views.View3D.prototype.init = function(){
 
 feng.views.View3D.prototype.createResources = function(){
 
-	goog.object.forEach(this.view3dObjects, function(object) {
-		object.createTextures();
-	});
+	feng.pubsub.publish( feng.PubSub.Topic.BUFFER_START );
+
+	// upload the texture with a delay between each creation
+	// try be friendly to the GPU...
+
+	var i = 0;
+	var callbacks = [];
+
+	var objects = goog.object.getValues(this.view3dObjects);
+	var count = objects.length;
+
+	var delay = new goog.async.Delay(function() {
+
+		objects[i].createTextures();
+		
+		if(i === count - 1) {
+
+			feng.pubsub.publish( feng.PubSub.Topic.BUFFER_COMPLETE );
+			delay.dispose();
+
+		}else {
+
+			i++;
+			delay.start();
+		}
+
+	}, 100);
+
+	delay.start();
 };
 
 
@@ -44129,7 +44691,7 @@ feng.views.View3D.prototype.getViewSize = function(){
 
 feng.views.View3D.prototype.getMatrixId = function(){
 
-	return this._floorMatrixIds[ this.floorIndex ];
+	return this._matrixId;
 };
 
 
@@ -44150,12 +44712,6 @@ feng.views.View3D.prototype.getEntry = function(){
 	});
 
 	return entry;
-};
-
-
-feng.views.View3D.prototype.getFloorY = function(){
-
-	return this.floorObjects[ this.floorIndex ].position.y;
 };
 
 
@@ -44184,45 +44740,9 @@ feng.views.View3D.prototype.getObjectByTip = function( tip ){
 };
 
 
-feng.views.View3D.prototype.getObjectsOfFloor = function( floorIndex ){
-
-	var hasFloorIndex = goog.isNumber( floorIndex );
-
-	var floor = hasFloorIndex ? this.floorObjects[floorIndex] : this.floorObjects[0];
-
-	var upperFloor = this.floorObjects[floorIndex+1];
-
-	var minY = floor.position.y;
-	var maxY = upperFloor ? upperFloor.position.y : Number.MAX_VALUE;
-
-	var objects = [];
-	
-	// find view3d objects between this floor and its upper floor, if exists
-	goog.object.forEach(this.view3dObjects, function(object) {
-
-		var obj3d = object.object3d;
-
-		if(obj3d.position.y < maxY && obj3d.position.y >= minY) {
-			objects.push( object );
-		}
-  });
-
-	goog.array.remove( objects, this.designPlane );
-	goog.array.remove( objects, this.skybox );
-
-	return objects;
-};
-
-
 feng.views.View3D.prototype.getView3dObject = function( name ){
 
 	return this.view3dObjects[ name ];
-};
-
-
-feng.views.View3D.prototype.getInteractiveObject = function( name ){
-
-	return this.interactiveObjects[ name ];
 };
 
 
@@ -44302,6 +44822,14 @@ feng.views.View3D.prototype.show = function(){
 
  	this.onResize();
 
+	// update mirrors if there are
+	var mirrorObjects = this.getObjectsByClass( feng.views.view3dobject.Mirror );
+
+	goog.array.forEach(mirrorObjects, function(mirror) {
+		mirror.updateEnvMap();
+	});
+
+	//
 	this.dispatchEvent({
 		type: feng.events.EventType.SHOW
 	});
@@ -44369,8 +44897,6 @@ feng.views.View3D.prototype.fadeOut = function(){
 
 feng.views.View3D.prototype.pause = function(){
 
-	console.log("Pause View3D!!!");
-
 	this.modeController.control.pause( true );
 	this.renderController.updateByPause( true );
 	this.hud.pause( true );
@@ -44378,8 +44904,6 @@ feng.views.View3D.prototype.pause = function(){
 
 
 feng.views.View3D.prototype.resume = function(){
-
-	console.log("Resume View3D!!!");
 
 	this.modeController.control.pause( false );
 	this.renderController.updateByPause( false );
@@ -44441,7 +44965,6 @@ feng.views.View3D.prototype.initScene = function() {
 		'movable': feng.views.view3dobject.MovableObject,
 		'gateway': feng.views.view3dobject.GatewayObject,
 		'mirror': feng.views.view3dobject.Mirror,
-		'diningmirror': feng.views.view3dobject.entities.DiningMirror,
 		'closet': feng.views.view3dobject.entities.Closet,
 		'pictures': feng.views.view3dobject.entities.Pictures,
 		'computer': feng.views.view3dobject.entities.Computer,
@@ -44451,6 +44974,8 @@ feng.views.View3D.prototype.initScene = function() {
 		'drawer': feng.views.view3dobject.entities.Drawer,
 		'knife': feng.views.view3dobject.entities.Knife,
 		'refrigerator': feng.views.view3dobject.entities.Refrigerator,
+		'sewingmachine': feng.views.view3dobject.entities.SewingMachine,
+		'wallpaper': feng.views.view3dobject.entities.Wallpaper,
 		'windows': feng.views.view3dobject.entities.Windows,
 		'fruitplate': feng.views.view3dobject.entities.FruitPlate
 	};
@@ -44486,27 +45011,9 @@ feng.views.View3D.prototype.initScene = function() {
 		feng.views.View3D.parseChildren(child, parse);
 	});
 
-	// find floors & init pathfinder matrix
-	this.floorObjects = goog.array.filter(this.scene.children, function(obj) {
-		if(goog.string.startsWith(obj.name, 'floor') && obj.name.length <= 7) {
-			return true;
-		}
-	});
-
-	goog.array.sort(this.floorObjects, function(floorA, floorB) {
-		return ((floorA.position.y > floorB.position.y) ? 1 : -1);
-	});
-
-	this._floorMatrixIds = goog.array.map(this.floorObjects, function(obj, index) {
-
-		var matrixId = ([this.sectionId, this.id, index]).join('-');
-
-		var objectsOfFloor = this.getObjectsOfFloor( index );
-
-		feng.pathfinder.generateMatrix( matrixId, objectsOfFloor );
-
-		return matrixId;
-	}, this);
+	//init pathfinder matrix
+	this._matrixId = ([this.sectionId, this.id]).join('-');
+	feng.pathfinder.generateMatrix( this._matrixId, this.getSolidObjects() );
 
 	// create energyflow
 	var preloadModel = feng.models.Preload.getInstance();
@@ -47154,7 +47661,7 @@ goog.require('feng.templates.common');
  * @notypecheck
  */
 feng.templates.captions.Caption = function(opt_data, opt_ignored) {
-  return '<div class="caption ' + opt_data.position + '"><div class="shade"></div><div class="panel"><button class="icon panel-button"></button><div class="panel-content"><div class="heading"><div class="share"><ul><li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-facebook"></a><li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-twitter"></a><li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-google"></a></ul></div><h1>' + opt_data.tip.name + '</h1></div><div class="content"><div class="scroller"><div class="scroller-inner"><section class="hint"><p>' + opt_data.tip.hint + '</p>' + feng.templates.common.PrimaryButton({icon: 'icon-yes', classname: 'hint-button', text: 'I see'}) + '</section><section class="problem"><p>' + opt_data.tip.problem + '</p><!-- either close to interact, or scroll down to go interaction section if available -->' + feng.templates.common.PrimaryButton({classname: 'interaction-button', icon: 'icon-yes', text: 'Solve the problem'}) + '</section>' + ((opt_data.interactionContent) ? '<section class="interaction">' + opt_data.interactionContent + '</section>' : '') + '<section class="advice"><h2>Tips</h2><p>' + opt_data.tip.advice + '</p></section></div></div></div></div></div><button class="icon icon-close close-button"></button></div>';
+  return '<div class="caption ' + opt_data.position + '"><div class="shade"></div><div class="panel"><div class="panel-button"><button class="icon"></button><h3>Learn<br>More</h3></div><div class="panel-controls"><div class="share"><ul><li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-facebook"></a></li><li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-twitter"></a></li><li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-google"></a></li></ul></div></div><div class="panel-content"><div class="content"><h1>' + opt_data.tip.name + '</h1><div class="scroller"><div class="scroller-inner">' + ((opt_data.tip.hint) ? '<section class="hint"><div class="inner"><div class="inner-scroller"><p>' + opt_data.tip.hint + '</p>' + feng.templates.common.PrimaryButton({icon: 'icon-yes', classname: 'hint-button', text: 'I see'}) + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.tip.problem) ? '<section class="problem"><div class="inner"><div class="inner-scroller"><p>' + opt_data.tip.problem + '</p><!-- either close to interact, or scroll down to go interaction section if available -->' + feng.templates.common.PrimaryButton({classname: 'prompt-button', icon: 'icon-yes', text: opt_data.tip.prompt}) + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.interactionContent) ? '<section class="interaction"><div class="inner"><div class="inner-scroller">' + opt_data.interactionContent + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.tip.advice) ? '<section class="advice"><div class="inner"><div class="inner-scroller"><h3>Feng Shui Tips</h3><p>' + opt_data.tip.advice + '</p></div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + '</div></div></div></div></div>' + feng.templates.common.CloseButton(null) + '</div>';
 };
 
 
@@ -47165,15 +47672,22 @@ feng.templates.captions.Caption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
-  var param81 = '<div class="change-picture"><h2>Click on a picture to change</h2><ul class="pictures">';
-  var pictureKeyList83 = soy.$$getMapKeys(opt_data.pictures);
-  var pictureKeyListLen83 = pictureKeyList83.length;
-  for (var pictureKeyIndex83 = 0; pictureKeyIndex83 < pictureKeyListLen83; pictureKeyIndex83++) {
-    var pictureKeyData83 = pictureKeyList83[pictureKeyIndex83];
-    param81 += '<li><button class="picture" data-picture="' + pictureKeyData83 + '"></button></li>';
+  var param102 = '<div class="change-picture"><h2>Click on a picture to change</h2><ul class="pictures">';
+  var pictureKeyList104 = soy.$$getMapKeys(opt_data.tip.details['pictures']);
+  var pictureKeyListLen104 = pictureKeyList104.length;
+  for (var pictureKeyIndex104 = 0; pictureKeyIndex104 < pictureKeyListLen104; pictureKeyIndex104++) {
+    var pictureKeyData104 = pictureKeyList104[pictureKeyIndex104];
+    param102 += '<li><button class="item-button" data-picture="' + pictureKeyData104 + '"></button></li>';
   }
-  param81 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param81}));
+  param102 += '</ul><ul class="info">';
+  var pictureKeyList110 = soy.$$getMapKeys(opt_data.tip.details['pictures']);
+  var pictureKeyListLen110 = pictureKeyList110.length;
+  for (var pictureKeyIndex110 = 0; pictureKeyIndex110 < pictureKeyListLen110; pictureKeyIndex110++) {
+    var pictureKeyData110 = pictureKeyList110[pictureKeyIndex110];
+    param102 += '<li data-picture="' + pictureKeyData110 + '"><h3>' + opt_data.tip.details['pictures'][pictureKeyData110]['name'] + '</h3><p>' + opt_data.tip.details['pictures'][pictureKeyData110]['description'] + '</p></li>';
+  }
+  param102 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param102}));
   return output;
 };
 
@@ -47185,15 +47699,22 @@ feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
-  var param91 = '<div class="change-color"><h2>Click on a color to change</h2><ul class="colors">';
-  var colorKeyList93 = soy.$$getMapKeys(opt_data.colors);
-  var colorKeyListLen93 = colorKeyList93.length;
-  for (var colorKeyIndex93 = 0; colorKeyIndex93 < colorKeyListLen93; colorKeyIndex93++) {
-    var colorKeyData93 = colorKeyList93[colorKeyIndex93];
-    param91 += '<li><button class="color" style="background-color: ' + opt_data.colors[colorKeyData93].hex + '" data-color="' + colorKeyData93 + '"></button></li>';
+  var param122 = '<div class="change-color"><h2>Choose a better color.</h2><ul class="colors">';
+  var colorKeyList124 = soy.$$getMapKeys(opt_data.tip.details['colors']);
+  var colorKeyListLen124 = colorKeyList124.length;
+  for (var colorKeyIndex124 = 0; colorKeyIndex124 < colorKeyListLen124; colorKeyIndex124++) {
+    var colorKeyData124 = colorKeyList124[colorKeyIndex124];
+    param122 += '<li><button class="item-button" style="background-color: ' + opt_data.tip.details['colors'][colorKeyData124]['hex'] + '" data-color="' + colorKeyData124 + '"></button></li>';
   }
-  param91 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param91}));
+  param122 += '</ul><ul class="info">';
+  var colorKeyList132 = soy.$$getMapKeys(opt_data.tip.details['colors']);
+  var colorKeyListLen132 = colorKeyList132.length;
+  for (var colorKeyIndex132 = 0; colorKeyIndex132 < colorKeyListLen132; colorKeyIndex132++) {
+    var colorKeyData132 = colorKeyList132[colorKeyIndex132];
+    param122 += '<li data-color="' + colorKeyData132 + '"><h3>' + opt_data.tip.details['colors'][colorKeyData132]['name'] + '</h3><p>' + opt_data.tip.details['colors'][colorKeyData132]['description'] + '</p></li>';
+  }
+  param122 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param122}));
   return output;
 };
 
@@ -47205,15 +47726,22 @@ feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
-  var param103 = '<div class="change-object"><h2>Click on an object to change</h2><ul class="objects">';
-  var objectKeyList105 = soy.$$getMapKeys(opt_data.objects);
-  var objectKeyListLen105 = objectKeyList105.length;
-  for (var objectKeyIndex105 = 0; objectKeyIndex105 < objectKeyListLen105; objectKeyIndex105++) {
-    var objectKeyData105 = objectKeyList105[objectKeyIndex105];
-    param103 += '<li><button class="object" data-object="' + objectKeyData105 + '"></button></li>';
+  var param144 = '<div class="change-object"><h2>Replace with a new element.</h2><ul class="objects">';
+  var objectKeyList146 = soy.$$getMapKeys(opt_data.tip.details['names']);
+  var objectKeyListLen146 = objectKeyList146.length;
+  for (var objectKeyIndex146 = 0; objectKeyIndex146 < objectKeyListLen146; objectKeyIndex146++) {
+    var objectKeyData146 = objectKeyList146[objectKeyIndex146];
+    param144 += '<li><button class="item-button" data-object="' + objectKeyData146 + '"></button></li>';
   }
-  param103 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param103}));
+  param144 += '</ul><ul class="info">';
+  var objectKeyList152 = soy.$$getMapKeys(opt_data.tip.details['descriptions']);
+  var objectKeyListLen152 = objectKeyList152.length;
+  for (var objectKeyIndex152 = 0; objectKeyIndex152 < objectKeyListLen152; objectKeyIndex152++) {
+    var objectKeyData152 = objectKeyList152[objectKeyIndex152];
+    param144 += '<li data-object="' + objectKeyData152 + '"><h3>' + opt_data.tip.details['names'][objectKeyData152] + '</h3><p>' + opt_data.tip.details['descriptions'][objectKeyData152] + '</p></li>';
+  }
+  param144 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param144}));
   return output;
 };
 
@@ -47225,22 +47753,22 @@ feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
-  var param113 = '<h2>Fill the plate with fruits</h2><div class="drop-fruits"><ul class="fruits">';
-  var fruitKeyList115 = soy.$$getMapKeys(opt_data.fruits);
-  var fruitKeyListLen115 = fruitKeyList115.length;
-  for (var fruitKeyIndex115 = 0; fruitKeyIndex115 < fruitKeyListLen115; fruitKeyIndex115++) {
-    var fruitKeyData115 = fruitKeyList115[fruitKeyIndex115];
-    param113 += '<li><button data-fruit-id="' + fruitKeyData115 + '"></button></li>';
+  var param164 = '<h2>Fill the plate with fruits</h2><div class="drop-fruits"><ul class="fruits">';
+  var fruitKeyList166 = soy.$$getMapKeys(opt_data.fruits);
+  var fruitKeyListLen166 = fruitKeyList166.length;
+  for (var fruitKeyIndex166 = 0; fruitKeyIndex166 < fruitKeyListLen166; fruitKeyIndex166++) {
+    var fruitKeyData166 = fruitKeyList166[fruitKeyIndex166];
+    param164 += '<li><button data-fruit-id="' + fruitKeyData166 + '"></button></li>';
   }
-  param113 += '</ul><ul class="descriptions">';
-  var fruitKeyList121 = soy.$$getMapKeys(opt_data.fruits);
-  var fruitKeyListLen121 = fruitKeyList121.length;
-  for (var fruitKeyIndex121 = 0; fruitKeyIndex121 < fruitKeyListLen121; fruitKeyIndex121++) {
-    var fruitKeyData121 = fruitKeyList121[fruitKeyIndex121];
-    param113 += '<li data-fruit-id="' + fruitKeyData121 + '"><p>' + opt_data.fruits[fruitKeyData121] + '</p></li>';
+  param164 += '</ul><ul class="descriptions">';
+  var fruitKeyList172 = soy.$$getMapKeys(opt_data.fruits);
+  var fruitKeyListLen172 = fruitKeyList172.length;
+  for (var fruitKeyIndex172 = 0; fruitKeyIndex172 < fruitKeyListLen172; fruitKeyIndex172++) {
+    var fruitKeyData172 = fruitKeyList172[fruitKeyIndex172];
+    param164 += '<li data-fruit-id="' + fruitKeyData172 + '"><p>' + opt_data.fruits[fruitKeyData172] + '</p></li>';
   }
-  param113 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param113}));
+  param164 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param164}));
   return output;
 };
 
@@ -47253,11 +47781,11 @@ feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
  */
 feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
   var output = '<p class="floatText">';
-  var lineList132 = opt_data.lines;
-  var lineListLen132 = lineList132.length;
-  for (var lineIndex132 = 0; lineIndex132 < lineListLen132; lineIndex132++) {
-    var lineData132 = lineList132[lineIndex132];
-    output += '<span>' + lineData132 + '</span>';
+  var lineList183 = opt_data.lines;
+  var lineListLen183 = lineList183.length;
+  for (var lineIndex183 = 0; lineIndex183 < lineListLen183; lineIndex183++) {
+    var lineData183 = lineList183[lineIndex183];
+    output += '<span>' + lineData183 + '</span>';
   }
   output += '</p>';
   return output;
@@ -49009,1593 +49537,6 @@ feng.controllers.StorageController.prototype.onTipUnlocked = function( tipId ){
 feng.controllers.StorageController.prototype.onSoundEnabled = function( enabled ){
   
   this.set( 'sound', enabled );
-};goog.provide('feng.views.sections.home.Screen');
-
-goog.require('goog.dom');
-goog.require('goog.events.EventTarget');
-goog.require('goog.events.EventHandler');
-
-
-/**
- * @constructor
- */
-feng.views.sections.home.Screen = function(domElement){
-
-	goog.base( this );
-
-  this.domElement = domElement;
-
-  this._eventHandler = new goog.events.EventHandler(this);
-};
-goog.inherits(feng.views.sections.home.Screen, goog.events.EventTarget);
-
-
-feng.views.sections.home.Screen.prototype.activate = function() {
-
-
-};
-
-
-feng.views.sections.home.Screen.prototype.deactivate = function() {
-
-	this._eventHandler.removeAll();
-};
-
-
-feng.views.sections.home.Screen.prototype.show = function() {
-
-	TweenMax.set(this.domElement, {
-		'display': 'block'
-	});
-};
-
-
-feng.views.sections.home.Screen.prototype.hide = function() {
-
-	TweenMax.set(this.domElement, {
-		'display': 'none'
-	});
-};
-
-
-feng.views.sections.home.Screen.prototype.animateIn = function() {
-
-	this.show();
-};
-
-
-feng.views.sections.home.Screen.prototype.animateOut = function() {
-
-	this.deactivate();
-};goog.provide('feng.views.sections.home.EpisodeScreen');
-
-goog.require('feng.views.sections.home.Screen');
-
-
-/**
- * @constructor
- */
-feng.views.sections.home.EpisodeScreen = function(domElement){
-
-	goog.base(this, domElement);
-
-	this._episodeSelection = feng.episodeSelection;
-	goog.dom.appendChild( this.domElement, this._episodeSelection.domElement );
-};
-goog.inherits(feng.views.sections.home.EpisodeScreen, feng.views.sections.home.Screen);
-
-
-feng.views.sections.home.EpisodeScreen.prototype.activate = function() {
-
-	goog.base(this, 'activate');
-
-	this._eventHandler.listen( this._episodeSelection, feng.events.EventType.COMPLETE, this.onLoadComplete, false, this );
-};
-
-
-feng.views.sections.home.EpisodeScreen.prototype.deactivate = function() {
-
-	goog.base(this, 'deactivate');
-
-	this._episodeSelection.deactivate();
-};
-
-
-
-feng.views.sections.home.EpisodeScreen.prototype.reset = function() {
-
-	this._episodeSelection.animateIn();
-};
-
-
-feng.views.sections.home.EpisodeScreen.prototype.animateIn = function() {
-
-	goog.base(this, 'animateIn');
-
-	this.activate();
-
-	this._episodeSelection.animateIn();
-};
-
-
-feng.views.sections.home.EpisodeScreen.prototype.animateOut = function() {
-
-	goog.base(this, 'animateOut');
-
-	this.deactivate();
-
-	this._episodeSelection.animateOut();
-};
-
-
-feng.views.sections.home.EpisodeScreen.prototype.onLoadComplete = function(e) {
-
-	this._episodeSelection.animateOutOnComplete( e.episode.id );
-
-	this.dispatchEvent( e );
-};goog.provide('feng.views.sections.Section');
-
-goog.require('goog.dom');
-goog.require('goog.dom.query');
-goog.require('goog.events.EventTarget');
-goog.require('goog.events.EventHandler');
-goog.require('feng.events');
-goog.require('feng.views.Preloader');
-
-
-/**
- * @constructor
- */
-feng.views.sections.Section = function(domElement){
-	
-  goog.base(this);
-
-  this.domElement = domElement;
-  this.id = this.domElement.id;
-
-  this._animateInTweener = new TimelineMax({
-  	'paused': true,
-  	'onComplete': this.onAnimatedIn,
-  	'onCompleteScope': this
-  });
-
-  this._animateOutTweener = new TimelineMax({
-  	'paused': true,
-  	'onComplete': this.onAnimatedOut,
-  	'onCompleteScope': this
-  });
-
-  // section loader
-  this._preloaderDom = goog.dom.query('.preloader', this.domElement)[0];
-  this._preloader = new feng.views.Preloader( this._preloaderDom, 2000 );
-  this._preloader.setParentEventTarget(this);
-
-  // permanent events
-  goog.events.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
-
-  // activatable events
-  this._eventHandler = new goog.events.EventHandler(this);
-
-  // asset keys
-  this._assetKeys = [];
-  this._loadedAssetKeys = [];
-};
-goog.inherits(feng.views.sections.Section, goog.events.EventTarget);
-
-
-feng.views.sections.Section.prototype.init = function(){
-
-  // hide section by default
-  this.hide();
-  
-	this.setAnimations();
-};
-
-
-feng.views.sections.Section.prototype.show = function(){
-
-	goog.style.showElement(this.domElement, true);
-
-	this.dispatchEvent({
-		type: feng.events.EventType.SHOW
-	});
-};
-
-
-feng.views.sections.Section.prototype.hide = function(){
-
-	goog.style.showElement(this.domElement, false);
-
-	this.dispatchEvent({
-		type: feng.events.EventType.HIDE
-	});
-};
-
-
-feng.views.sections.Section.prototype.isShown = function(){
-
-	return goog.style.isElementShown(this.domElement);
-};
-
-
-feng.views.sections.Section.prototype.activate = function(){
-
-};
-
-
-feng.views.sections.Section.prototype.deactivate = function(){
-
-	this._eventHandler.removeAll();
-};
-
-
-feng.views.sections.Section.prototype.addPreloadListeners = function(){
-
-	this.listen(feng.events.EventType.START, this.onLoadStart, false, this);
-	this.listen(feng.events.EventType.PROGRESS, this.onLoadProgress, false, this);
-	this.listen(feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this);
-	this.listen(feng.events.EventType.COMPLETE, this.onLoadAnimationComplete, false, this);
-};
-
-
-feng.views.sections.Section.prototype.load = function(){
-
-	this.addPreloadListeners();
-
-	this._assetKeys = goog.array.filter( this._assetKeys, function(key) {
-		return !goog.array.contains(this._loadedAssetKeys, key);
-	}, this);
-
-	this._preloader.load( this._assetKeys );
-};
-
-
-feng.views.sections.Section.prototype.setAnimations = function(){
-
-	var fadeInTweener = TweenMax.fromTo(this.domElement, .5, {
-		'opacity': 0
-	}, {
-		'opacity': 1
-	});
-
-	this._animateInTweener.add( fadeInTweener );
-
-	var fadeOutTweener = TweenMax.fromTo(this.domElement, .5, {
-		'opacity': 1
-	}, {
-		'opacity': 0
-	});
-
-	this._animateOutTweener.add( fadeOutTweener );
-};
-
-
-feng.views.sections.Section.prototype.animateIn = function(){
-
-	if(this.isShown()) return false;
-
-	this.show();
-	this.activate();
-	this._animateInTweener.restart();
-
-	this.dispatchEvent({
-		type: feng.events.EventType.ANIMATE_IN
-	});
-
-	return true;
-};
-
-
-feng.views.sections.Section.prototype.animateOut = function(){
-
-	if(!this.isShown()) return false;
-
-	this.deactivate();
-	this._animateOutTweener.restart();
-
-	this.dispatchEvent({
-		type: feng.events.EventType.ANIMATE_OUT
-	});
-
-	return true;
-};
-
-
-feng.views.sections.Section.prototype.doNavigate = function(){
-
-	this.load();
-};
-
-
-feng.views.sections.Section.prototype.onAnimatedIn = function(e){
-
-	this.dispatchEvent({
-		type: feng.events.EventType.ANIMATED_IN
-	});
-};
-
-
-feng.views.sections.Section.prototype.onAnimatedOut = function(e){
-
-	this.hide();
-
-	this.dispatchEvent({
-		type: feng.events.EventType.ANIMATED_OUT
-	});
-};
-
-
-feng.views.sections.Section.prototype.onLoadStart = function(e){
-
-	//console.log("section load start");
-};
-
-
-feng.views.sections.Section.prototype.onLoadProgress = function(e){
-
-	//console.log("section load progress: " + e.progress);
-};
-
-
-feng.views.sections.Section.prototype.onLoadComplete = function(e){
-	
-	//console.log("section load complete");
-
-	goog.array.forEach( this._assetKeys, function(key) {
-		goog.array.insert(this._loadedAssetKeys, key);
-	}, this);
-
-	goog.array.clear( this._assetKeys );
-};
-
-
-feng.views.sections.Section.prototype.onLoadAnimationComplete = function(e){
-	
-	//console.log("section load animation complete");
-};
-
-
-feng.views.sections.Section.prototype.onNavigationChange = function(e){
-
-	var navController = e.target;
-
-	var sectionResult = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.SECTION );
-
-	if(sectionResult && (sectionResult['sectionId'] === this.id)) {
-		this.doNavigate();
-	}
-};goog.provide('feng.fx.CanvasSprite');
-
-goog.require('goog.dom');
-goog.require('goog.events.KeyHandler');
-
-
-feng.fx.CanvasSprite = function( img, data, opt_canvas, opt_debug ) {
-
-	this._canvasEl = opt_canvas || goog.dom.createDom('canvas');
-  	this._canvasContext = this._canvasEl.getContext('2d');
-
-  	this._size = new goog.math.Size( data['size']['w'], data['size']['h'] );
-  	
-  	this._sourceCanvas = goog.dom.createDom('canvas');
-  	this._sourceCanvas.width = img.width;
-	this._sourceCanvas.height = img.height;
-  	this._sourceContext = this._sourceCanvas.getContext('2d');
-  	this._sourceContext.drawImage( img, 0, 0 );
-
-	this._frameDic = data['frames'];
-
-	this._frameIds = goog.object.getKeys(this._frameDic).sort();
-
-	this._frames = goog.array.map(this._frameIds, function(frameId) {
-		return this._frameDic[frameId];
-	}, this);
-
-	this.frameIndex = 0;
-	this.numFrames = this._frames.length;
-
-	this.restoreSize();
-	this.update();
-
-	// added key events for debugging
-	if(opt_debug) {
-	
-		var keyHandler = new goog.events.KeyHandler( document );
-		goog.events.listen( keyHandler, goog.events.KeyHandler.EventType.KEY, function(e) {
-			switch(e.keyCode) {
-				case goog.events.KeyCodes.LEFT:
-				case goog.events.KeyCodes.UP:
-				this.prevFrame();
-				break;
-
-				case goog.events.KeyCodes.RIGHT:
-				case goog.events.KeyCodes.DOWN:
-				this.nextFrame();
-				break;
-			}
-		}, false, this);
-	}
-};
-
-
-feng.fx.CanvasSprite.prototype.getCanvas = function() {
-
-	return this._canvasEl;
-};
-
-
-feng.fx.CanvasSprite.prototype.getTweener = function( vars, fps, duration ) {
-
-	var fps = fps || 60;
-	var duration = duration || (this.numFrames / fps);
-
-	var fromVars = {
-		frameIndex: 0
-	};
-
-	var toVars = {
-  	frameIndex: this.numFrames - 1,
-  	'paused': true,
-  	'ease': Linear.easeNone,
-  	'repeat': -1,
-  	'onUpdate': this.update,
-  	'onUpdateScope': this
-	};
-
-	goog.object.extend(toVars, (vars || {}));
-
-	var tweener = TweenMax.fromTo(this, duration, fromVars, toVars);
-
-  return tweener;
-};
-
-
-feng.fx.CanvasSprite.prototype.restoreSize = function() {
-
-	this._canvasEl.width = this._size.width;
-	this._canvasEl.height = this._size.height;
-};
-
-
-feng.fx.CanvasSprite.prototype.getProgress = function() {
-
-	return this.frameIndex / (this.numFrames - 1);
-};
-
-
-feng.fx.CanvasSprite.prototype.getCurrentFrame = function() {
-
-	return this.frameIndex;
-};
-
-
-feng.fx.CanvasSprite.prototype.setProgress = function( progress ) {
-
-	var frameIndex = Math.round( (this.numFrames - 1) * progress );
-	this.gotoFrameByIndex( frameIndex );
-};
-
-
-feng.fx.CanvasSprite.prototype.gotoFrameById = function( frameId ) {
-
-	var frameIndex = goog.array.findIndex( this._frameIds, function(key) {
-		return (key === frameId);
-	});
-
-	this.gotoFrameByIndex( frameIndex );
-};
-
-
-feng.fx.CanvasSprite.prototype.gotoFrameByIndex = function( frameIndex ) {
-
-	this.frameIndex = Math.round(frameIndex);
-
-	var frameData = this._frames[ this.frameIndex ];
-
-	var sx = frameData['sx'], sy = frameData['sy'];
-	var sw = frameData['sw'], sh = frameData['sh'];
-	var x = frameData['x'], y = frameData['y'];
-
-	this._canvasContext.clearRect( 0, 0, this._canvasEl.width, this._canvasEl.height );
-
-	var imgData = this._sourceContext.getImageData( sx, sy, sw, sh );
-	this._canvasContext.putImageData( imgData, x, y );
-};
-
-
-feng.fx.CanvasSprite.prototype.prevFrame = function() {
-
-	this.frameIndex = Math.max(0, this.frameIndex - 1);
-	this.update();
-};
-
-
-feng.fx.CanvasSprite.prototype.nextFrame = function() {
-
-	this.frameIndex = Math.min(this.numFrames - 1, this.frameIndex + 1);
-	this.update();
-};
-
-
-feng.fx.CanvasSprite.prototype.update = function() {
-
-	this.gotoFrameByIndex( this.frameIndex );
-};goog.provide('feng.fx.AnimatedHouseLogo');
-
-goog.require('feng.fx.CanvasSprite');
-
-
-feng.fx.AnimatedHouseLogo = function( opt_canvas ) {
-
-    var img = feng.fx.AnimatedHouseLogo.Img;
-    var data = feng.fx.AnimatedHouseLogo.Data;
-
-    goog.base(this, img, data, opt_canvas);
-};
-goog.inherits(feng.fx.AnimatedHouseLogo, feng.fx.CanvasSprite);
-
-
-feng.fx.AnimatedHouseLogo.getImg = function() {
-
-    var img = feng.fx.AnimatedHouseLogo.Img;
-    img.src = feng.Config['assetsPath'] + 'images/house-logo-loop.png';
-
-    return img;
-};
-
-
-feng.fx.AnimatedHouseLogo.Img = new Image();
-
-
-feng.fx.AnimatedHouseLogo.Data = {
-    "frames": {
-        
-            "00": {
-                "sx": 842,
-                "sy": 496,
-                "sw": 120,
-                "sh": 124,
-                "x": 20,
-                "y": 15
-            }, 
-        
-            "01": {
-                "sx": 718,
-                "sy": 372,
-                "sw": 130,
-                "sh": 124,
-                "x": 15,
-                "y": 15
-            }, 
-        
-            "02": {
-                "sx": 448,
-                "sy": 496,
-                "sw": 138,
-                "sh": 124,
-                "x": 11,
-                "y": 15
-            }, 
-        
-            "03": {
-                "sx": 304,
-                "sy": 620,
-                "sw": 144,
-                "sh": 124,
-                "x": 8,
-                "y": 15
-            }, 
-        
-            "04": {
-                "sx": 154,
-                "sy": 620,
-                "sw": 150,
-                "sh": 124,
-                "x": 5,
-                "y": 15
-            }, 
-        
-            "05": {
-                "sx": 0,
-                "sy": 620,
-                "sw": 154,
-                "sh": 124,
-                "x": 3,
-                "y": 15
-            }, 
-        
-            "06": {
-                "sx": 780,
-                "sy": 124,
-                "sw": 156,
-                "sh": 124,
-                "x": 2,
-                "y": 15
-            }, 
-        
-            "07": {
-                "sx": 624,
-                "sy": 124,
-                "sw": 156,
-                "sh": 124,
-                "x": 2,
-                "y": 15
-            }, 
-        
-            "08": {
-                "sx": 468,
-                "sy": 124,
-                "sw": 156,
-                "sh": 124,
-                "x": 2,
-                "y": 15
-            }, 
-        
-            "09": {
-                "sx": 152,
-                "sy": 868,
-                "sw": 152,
-                "sh": 124,
-                "x": 4,
-                "y": 15
-            }, 
-        
-            "10": {
-                "sx": 748,
-                "sy": 248,
-                "sw": 148,
-                "sh": 124,
-                "x": 6,
-                "y": 15
-            }, 
-        
-            "11": {
-                "sx": 444,
-                "sy": 868,
-                "sw": 140,
-                "sh": 124,
-                "x": 10,
-                "y": 15
-            }, 
-        
-            "12": {
-                "sx": 586,
-                "sy": 496,
-                "sw": 132,
-                "sh": 124,
-                "x": 14,
-                "y": 15
-            }, 
-        
-            "13": {
-                "sx": 838,
-                "sy": 744,
-                "sw": 124,
-                "sh": 124,
-                "x": 18,
-                "y": 15
-            }, 
-        
-            "14": {
-                "sx": 848,
-                "sy": 372,
-                "sw": 112,
-                "sh": 124,
-                "x": 24,
-                "y": 15
-            }, 
-        
-            "15": {
-                "sx": 962,
-                "sy": 744,
-                "sw": 100,
-                "sh": 124,
-                "x": 30,
-                "y": 15
-            }, 
-        
-            "16": {
-                "sx": 962,
-                "sy": 496,
-                "sw": 112,
-                "sh": 124,
-                "x": 24,
-                "y": 15
-            }, 
-        
-            "17": {
-                "sx": 714,
-                "sy": 868,
-                "sw": 124,
-                "sh": 124,
-                "x": 18,
-                "y": 15
-            }, 
-        
-            "18": {
-                "sx": 586,
-                "sy": 372,
-                "sw": 132,
-                "sh": 124,
-                "x": 14,
-                "y": 15
-            }, 
-        
-            "19": {
-                "sx": 444,
-                "sy": 744,
-                "sw": 140,
-                "sh": 124,
-                "x": 10,
-                "y": 15
-            }, 
-        
-            "20": {
-                "sx": 600,
-                "sy": 248,
-                "sw": 148,
-                "sh": 124,
-                "x": 5,
-                "y": 15
-            }, 
-        
-            "21": {
-                "sx": 152,
-                "sy": 744,
-                "sw": 152,
-                "sh": 124,
-                "x": 4,
-                "y": 15
-            }, 
-        
-            "22": {
-                "sx": 312,
-                "sy": 124,
-                "sw": 156,
-                "sh": 124,
-                "x": 1,
-                "y": 15
-            }, 
-        
-            "23": {
-                "sx": 156,
-                "sy": 124,
-                "sw": 156,
-                "sh": 124,
-                "x": 2,
-                "y": 15
-            }, 
-        
-            "24": {
-                "sx": 0,
-                "sy": 124,
-                "sw": 156,
-                "sh": 124,
-                "x": 2,
-                "y": 15
-            }, 
-        
-            "25": {
-                "sx": 0,
-                "sy": 496,
-                "sw": 154,
-                "sh": 124,
-                "x": 3,
-                "y": 15
-            }, 
-        
-            "26": {
-                "sx": 154,
-                "sy": 496,
-                "sw": 150,
-                "sh": 124,
-                "x": 5,
-                "y": 15
-            }, 
-        
-            "27": {
-                "sx": 304,
-                "sy": 496,
-                "sw": 144,
-                "sh": 124,
-                "x": 8,
-                "y": 15
-            }, 
-        
-            "28": {
-                "sx": 448,
-                "sy": 372,
-                "sw": 138,
-                "sh": 124,
-                "x": 11,
-                "y": 15
-            }, 
-        
-            "29": {
-                "sx": 584,
-                "sy": 868,
-                "sw": 130,
-                "sh": 124,
-                "x": 14,
-                "y": 15
-            }, 
-        
-            "30": {
-                "sx": 842,
-                "sy": 620,
-                "sw": 120,
-                "sh": 124,
-                "x": 20,
-                "y": 15
-            }, 
-        
-            "31": {
-                "sx": 712,
-                "sy": 620,
-                "sw": 130,
-                "sh": 124,
-                "x": 14,
-                "y": 15
-            }, 
-        
-            "32": {
-                "sx": 936,
-                "sy": 124,
-                "sw": 138,
-                "sh": 124,
-                "x": 11,
-                "y": 15
-            }, 
-        
-            "33": {
-                "sx": 304,
-                "sy": 372,
-                "sw": 144,
-                "sh": 124,
-                "x": 8,
-                "y": 15
-            }, 
-        
-            "34": {
-                "sx": 154,
-                "sy": 372,
-                "sw": 150,
-                "sh": 124,
-                "x": 5,
-                "y": 15
-            }, 
-        
-            "35": {
-                "sx": 0,
-                "sy": 372,
-                "sw": 154,
-                "sh": 124,
-                "x": 3,
-                "y": 15
-            }, 
-        
-            "36": {
-                "sx": 780,
-                "sy": 0,
-                "sw": 156,
-                "sh": 124,
-                "x": 2,
-                "y": 15
-            }, 
-        
-            "37": {
-                "sx": 624,
-                "sy": 0,
-                "sw": 156,
-                "sh": 124,
-                "x": 2,
-                "y": 15
-            }, 
-        
-            "38": {
-                "sx": 468,
-                "sy": 0,
-                "sw": 156,
-                "sh": 124,
-                "x": 1,
-                "y": 15
-            }, 
-        
-            "39": {
-                "sx": 0,
-                "sy": 868,
-                "sw": 152,
-                "sh": 124,
-                "x": 4,
-                "y": 15
-            }, 
-        
-            "40": {
-                "sx": 452,
-                "sy": 248,
-                "sw": 148,
-                "sh": 124,
-                "x": 5,
-                "y": 15
-            }, 
-        
-            "41": {
-                "sx": 304,
-                "sy": 868,
-                "sw": 140,
-                "sh": 124,
-                "x": 10,
-                "y": 15
-            }, 
-        
-            "42": {
-                "sx": 580,
-                "sy": 620,
-                "sw": 132,
-                "sh": 124,
-                "x": 14,
-                "y": 15
-            }, 
-        
-            "43": {
-                "sx": 714,
-                "sy": 744,
-                "sw": 124,
-                "sh": 124,
-                "x": 18,
-                "y": 15
-            }, 
-        
-            "44": {
-                "sx": 962,
-                "sy": 372,
-                "sw": 112,
-                "sh": 124,
-                "x": 24,
-                "y": 15
-            }, 
-        
-            "45": {
-                "sx": 962,
-                "sy": 620,
-                "sw": 100,
-                "sh": 124,
-                "x": 30,
-                "y": 15
-            }, 
-        
-            "46": {
-                "sx": 958,
-                "sy": 868,
-                "sw": 112,
-                "sh": 124,
-                "x": 24,
-                "y": 15
-            }, 
-        
-            "47": {
-                "sx": 718,
-                "sy": 496,
-                "sw": 124,
-                "sh": 124,
-                "x": 18,
-                "y": 15
-            }, 
-        
-            "48": {
-                "sx": 448,
-                "sy": 620,
-                "sw": 132,
-                "sh": 124,
-                "x": 14,
-                "y": 15
-            }, 
-        
-            "49": {
-                "sx": 304,
-                "sy": 744,
-                "sw": 140,
-                "sh": 124,
-                "x": 10,
-                "y": 15
-            }, 
-        
-            "50": {
-                "sx": 304,
-                "sy": 248,
-                "sw": 148,
-                "sh": 124,
-                "x": 6,
-                "y": 15
-            }, 
-        
-            "51": {
-                "sx": 0,
-                "sy": 744,
-                "sw": 152,
-                "sh": 124,
-                "x": 4,
-                "y": 15
-            }, 
-        
-            "52": {
-                "sx": 312,
-                "sy": 0,
-                "sw": 156,
-                "sh": 124,
-                "x": 2,
-                "y": 15
-            }, 
-        
-            "53": {
-                "sx": 156,
-                "sy": 0,
-                "sw": 156,
-                "sh": 124,
-                "x": 2,
-                "y": 15
-            }, 
-        
-            "54": {
-                "sx": 0,
-                "sy": 0,
-                "sw": 156,
-                "sh": 124,
-                "x": 2,
-                "y": 15
-            }, 
-        
-            "55": {
-                "sx": 0,
-                "sy": 248,
-                "sw": 154,
-                "sh": 124,
-                "x": 3,
-                "y": 15
-            }, 
-        
-            "56": {
-                "sx": 154,
-                "sy": 248,
-                "sw": 150,
-                "sh": 124,
-                "x": 5,
-                "y": 15
-            }, 
-        
-            "57": {
-                "sx": 896,
-                "sy": 248,
-                "sw": 144,
-                "sh": 124,
-                "x": 8,
-                "y": 15
-            }, 
-        
-            "58": {
-                "sx": 936,
-                "sy": 0,
-                "sw": 138,
-                "sh": 124,
-                "x": 11,
-                "y": 15
-            }, 
-        
-            "59": {
-                "sx": 584,
-                "sy": 744,
-                "sw": 130,
-                "sh": 124,
-                "x": 15,
-                "y": 15
-            }, 
-        
-            "60": {
-                "sx": 838,
-                "sy": 868,
-                "sw": 120,
-                "sh": 124,
-                "x": 20,
-                "y": 15
-            }
-        
-    },
-    "size": {
-        "w": 160,
-        "h": 160
-    }
-};goog.provide('feng.views.sections.home.PreloadScreen');
-
-goog.require('goog.Timer');
-goog.require('feng.views.sections.home.Screen');
-goog.require('feng.fx.AnimatedHouseLogo');
-
-
-/**
- * @constructor
- */
-feng.views.sections.home.PreloadScreen = function(domElement){
-
-	goog.base(this, domElement);
-
-	this._houseLogo = null;
-	this._houseLogoTweener = null;
-};
-goog.inherits(feng.views.sections.home.PreloadScreen, feng.views.sections.home.Screen);
-
-
-feng.views.sections.home.PreloadScreen.prototype.activate = function() {
-
-	goog.base(this, 'activate');
-
-	var houseLogoImg = feng.fx.AnimatedHouseLogo.getImg();
-	this._eventHandler.listenOnce( houseLogoImg, goog.events.EventType.LOAD, this.createHouseLogo, false, this );
-};
-
-
-feng.views.sections.home.PreloadScreen.prototype.hide = function() {
-
-	goog.base(this, 'hide');
-
-	this._houseLogoTweener.pause();
-};
-
-
-feng.views.sections.home.PreloadScreen.prototype.createHouseLogo = function() {
-
-	var logoEl = goog.dom.getElementByClass('house-logo', this.domElement);
-	this._houseLogo = new feng.fx.AnimatedHouseLogo( logoEl );
-	this._houseLogoTweener = this._houseLogo.getTweener({
-		'repeat': -1,
-		'repeatDelay': 1.5,
-		'ease': Sine.easeInOut
-	}, 60);
-
-	this._houseLogoTweener.restart();
-};
-
-
-feng.views.sections.home.PreloadScreen.prototype.animateOut = function() {
-
-	goog.base(this, 'animateOut');
-
-	TweenMax.to(this.domElement, 1, {
-		'delay': .8,
-		'opacity': 0,
-		'ease': Strong.easeInOut,
-		'onComplete': this.hide,
-		'onCompleteScope': this
-	});
-};
-
-
-feng.views.sections.home.PreloadScreen.prototype.onLoadAnimationComplete = function(e){
-
-	goog.Timer.callOnce(function() {
-		this.dispatchEvent( feng.events.EventType.CLOSE );
-	}, 2000, this);
-};goog.provide('feng.views.sections.Home');
-
-goog.require('goog.dom');
-goog.require('goog.events.EventTarget');
-goog.require('feng.events');
-goog.require('feng.views.sections.Section');
-goog.require('feng.models.achievements.Achievements');
-goog.require('feng.views.book.Book');
-goog.require('feng.views.sections.home.PreloadScreen');
-goog.require('feng.views.sections.home.EpisodeScreen');
-
-
-/**
- * @constructor
- */
-feng.views.sections.Home = function(){
-
-	var domElement = goog.dom.getElement('home');
-  goog.base(this, domElement);
-
-  var preloadScreenEl = goog.dom.getElement('main-preloader');
-  this._preloadScreen = new feng.views.sections.home.PreloadScreen( preloadScreenEl );
-  this._preloadScreen.activate();
-
-  var episodeScreenEl = goog.dom.getElement('main-episode-selection');
-  this._episodeScreen = new feng.views.sections.home.EpisodeScreen( episodeScreenEl );
-  this._episodeScreen.hide();
-
-  this._hasLoadedOnce = false;
-};
-goog.inherits(feng.views.sections.Home, feng.views.sections.Section);
-
-
-feng.views.sections.Home.prototype.init = function(){
-
-	goog.base(this, 'init');
-};
-
-
-feng.views.sections.Home.prototype.activate = function(){
-
-	goog.base(this, 'activate');
-
-	this._eventHandler.listen( this._preloadScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
-	this._eventHandler.listen( this._episodeScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
-	this._eventHandler.listen( this._episodeScreen, feng.events.EventType.COMPLETE, this.onEpisodeLoadComplete, false, this );
-};
-
-
-feng.views.sections.Home.prototype.deactivate = function(){
-
-	goog.base(this, 'deactivate');
-
-	this._preloadScreen.deactivate();
-	this._episodeScreen.deactivate();
-};
-
-
-feng.views.sections.Home.prototype.load = function(){
-
-	this._assetKeys = [this.id, 'global'];
-	
-	goog.base(this, 'load');
-};
-
-
-feng.views.sections.Home.prototype.onAnimatedIn = function(e){
-
-	goog.base(this, 'onAnimatedIn', e);
-};
-
-
-feng.views.sections.Home.prototype.onScreenClose = function(e){
-
-	switch( e.target ) {
-		case this._preloadScreen:
-		this._preloadScreen.animateOut();
-
-		// for test tip
-		var testTipPattern = feng.controllers.NavigationController.Token.TEST_TIP;
-
-		if(feng.initialToken.length === 4 && goog.string.startsWith(testTipPattern.replace('#/', ''), feng.initialToken[0])) {
-
-			var sectionId = feng.initialToken[1];
-			var viewId = feng.initialToken[2];
-			var tipId = feng.initialToken[3];
-
-			var testTipToken = testTipPattern.replace('{sectionId}', sectionId).replace('{viewId}', viewId).replace('{tipId}', tipId);
-
-			console.log('parsed test tip token: ' + testTipToken);
-
-			this._episodeScreen.animateIn();
-			feng.episodeSelection.activate();
-
-			feng.navigationController.setToken( feng.controllers.NavigationController.Token.STUDIO );
-		}
-		// animate in episode selection
-		else {
-
-			this._episodeScreen.animateIn();
-		}
-		break;
-
-		case this._episodeScreen:
-		this._episodeScreen.animateOut();
-		break;
-	}
-};
-
-
-feng.views.sections.Home.prototype.onLoadStart = function(e){
-
-	goog.base(this, 'onLoadStart', e);
-
-	this.animateIn();
-};
-
-
-feng.views.sections.Home.prototype.onLoadComplete = function(e){
-
-	goog.base(this, 'onLoadComplete', e);
-
-	if(!this._hasLoadedOnce) {
-
-		// init main modules with loaded fengshui data
-		var globalAssets = e.target.model.getAsset('global');
-		var fsData = globalAssets['fengshui-data'];
-		var tipsData = fsData['tips'];
-
-		var achievements = feng.models.achievements.Achievements.getInstance();
-		achievements.init( tipsData );
-
-		var sectionController = feng.controllers.SectionController.getInstance();
-		sectionController.init();
-
-		var book = feng.views.book.Book.getInstance();
-
-		feng.pubsub.publish( feng.PubSub.Topic.MAIN_LOAD_COMPLETE, globalAssets );
-
-	}else {
-
-		this._episodeScreen.reset();
-	}
-
-	//
-	this._hasLoadedOnce = true;
-};
-
-
-feng.views.sections.Home.prototype.onLoadAnimationComplete = function(e){
-
-	goog.base(this, 'onLoadAnimationComplete', e);
-
-	this._preloadScreen.onLoadAnimationComplete();
-};
-
-
-feng.views.sections.Home.prototype.onEpisodeLoadComplete = function(e){
-
-	this.animateOut();
-};goog.provide('feng.views.Overlay');
-
-goog.require('goog.events.EventTarget');
-goog.require('goog.events.EventHandler');
-
-
-/**
- * @constructor
- */
-feng.views.Overlay = function(domElement, canHalt){
-	
-  goog.base(this);
-
-  this.domElement = domElement;
-
-  this.isShown = false;
-
-  this._canHalt = canHalt;
-
-  this._eventHandler = new goog.events.EventHandler(this);
-
-  this.hide( false );
-};
-goog.inherits(feng.views.Overlay, goog.events.EventTarget);
-
-
-feng.views.Overlay.prototype.activate = function(){
-
-	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
-};
-
-
-feng.views.Overlay.prototype.deactivate = function(){
-
-	this._eventHandler.removeAll();
-};
-
-
-feng.views.Overlay.prototype.show = function( shouldDispatch ){
-
-	this.isShown = true;
-
-	goog.style.showElement(this.domElement, this.isShown);
-
-	this.onResize();
-
-	this.activate();
-
-	var shouldDispatch = (shouldDispatch === false) ? false : true;
-
-	if(shouldDispatch) {
-
-		this.dispatchEvent({
-			type: feng.events.EventType.SHOW,
-			canHalt: this._canHalt
-		});
-	}
-};
-
-
-feng.views.Overlay.prototype.hide = function( shouldDispatch ){
-
-	this.isShown = false;
-	
-	goog.style.showElement(this.domElement, this.isShown);
-
-	this.deactivate();
-
-	var shouldDispatch = (shouldDispatch === false) ? false : true;
-
-	if(shouldDispatch) {
-
-		this.dispatchEvent({
-			type: feng.events.EventType.HIDE,
-			canHalt: this._canHalt
-		});
-	}
-};
-
-
-feng.views.Overlay.prototype.animateIn = function(){
-
-	this.show( true );
-
-	this.dispatchEvent( feng.events.EventType.ANIMATE_IN );
-};
-
-
-feng.views.Overlay.prototype.animateOut = function(){
-
-	this.hide( true );
-
-	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
-};
-
-
-feng.views.Overlay.prototype.onResize = function(e){
-
-
-};goog.provide('feng.views.sections.overlays.LoaderOverlay');
-
-goog.require('goog.dom');
-goog.require('goog.style');
-goog.require('feng.models.Preload');
-goog.require('feng.views.Overlay');
-goog.require('feng.fx.CanvasSprite');
-
-
-/**
- * @constructor
- */
-feng.views.sections.overlays.LoaderOverlay = function(domElement){
-
-  this._loaderEl = goog.dom.getElementByClass('loader', domElement);
-  this._spinnerEl = goog.dom.getElementByClass('spinner', domElement);
-  this._progressEl = goog.dom.getElementByClass('progress', domElement);
-
-  var preload = feng.models.Preload.getInstance();
-  var img = preload.getAsset( 'global.spinner' );
-	var data = preload.getAsset( 'global.spinner-data' );
-  this._spinner = new feng.fx.CanvasSprite( img, data, this._spinnerEl );
-
-  this._spinnerTweener = this._spinner.getTweener();
-
-  var canHalt = true;
-
-  goog.base(this, domElement, canHalt);
-};
-goog.inherits(feng.views.sections.overlays.LoaderOverlay, feng.views.Overlay);
-goog.addSingletonGetter(feng.views.sections.overlays.LoaderOverlay);
-
-
-feng.views.sections.overlays.LoaderOverlay.prototype.animateIn = function(){
-
-	goog.base(this, 'animateIn');
-
-	TweenMax.fromTo(this.domElement, .8, {
-		'opacity': 0
-	}, {
-		'opacity': 1,
-		'ease': Strong.easeInOut
-	});
-
-	TweenMax.fromTo(this._loaderEl, .8, {
-		'opacity': 0
-	}, {
-		'delay': .8,
-		'opacity': 1
-	});
-
-	this._spinnerTweener.restart();
-};
-
-
-feng.views.sections.overlays.LoaderOverlay.prototype.animateOut = function(){
-
-	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
-
-	TweenMax.to(this.domElement, .8, {
-		'opacity': 0,
-		'ease': Strong.easeInOut,
-		'onComplete': this.hide,
-		'onCompleteParams': [ true ],
-		'onCompleteScope': this
-	});
-};
-
-
-feng.views.sections.overlays.LoaderOverlay.prototype.hide = function( shouldDispatch ){
-
-	goog.base(this, 'hide', shouldDispatch);
-
-	this._spinnerTweener.pause();
-};
-
-
-feng.views.sections.overlays.LoaderOverlay.prototype.onLoadStart = function(e){
-
-	this.animateIn();
-};
-
-
-feng.views.sections.overlays.LoaderOverlay.prototype.onLoadProgress = function(e){
-
-	var numStr = Math.round(e.progress * 100).toString();
-	this._progressEl.innerHTML = (numStr.length > 1) ? numStr : ('0' + numStr);
-};
-
-
-feng.views.sections.overlays.LoaderOverlay.prototype.onLoadComplete = function(e){
-
-	this.animateOut();
-};
-
-
-feng.views.sections.overlays.LoaderOverlay.prototype.onResize = function(e){
-
-	goog.base(this, 'onResize', e);
-
-	goog.style.setSize(this.domElement, goog.dom.getViewportSize());
-};goog.provide('feng.views.sections.overlays.TutorialOverlay');
-
-goog.require('goog.dom');
-goog.require('goog.style');
-goog.require('feng.views.Overlay');
-
-
-/**
- * @constructor
- */
-feng.views.sections.overlays.TutorialOverlay = function(domElement){
-
-	var canHalt = true;
-
-  goog.base(this, domElement, canHalt);
-};
-goog.inherits(feng.views.sections.overlays.TutorialOverlay, feng.views.Overlay);
-goog.addSingletonGetter(feng.views.sections.overlays.TutorialOverlay);
-
-
-feng.views.sections.overlays.TutorialOverlay.prototype.show = function( shouldDispatch ){
-
-	goog.base(this, 'show', shouldDispatch);
-	
-	feng.tutorial.enableAutoPlay(false);
-	goog.dom.appendChild( this.domElement, feng.tutorial.domElement );
-};
-
-
-feng.views.sections.overlays.TutorialOverlay.prototype.animateIn = function(){
-
-	goog.base(this, 'animateIn');
-
-	TweenMax.fromTo(this.domElement, .8, {
-		'opacity': 0
-	}, {
-		'opacity': 1,
-		'ease': Strong.easeInOut
-	});
-};
-
-
-feng.views.sections.overlays.TutorialOverlay.prototype.animateOut = function(){
-
-	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
-
-	TweenMax.to(this.domElement, .8, {
-		'delay': .25,
-		'opacity': 0,
-		'ease': Strong.easeInOut,
-		'onComplete': this.hide,
-		'onCompleteParams': [ true ],
-		'onCompleteScope': this
-	});
-};
-
-
-feng.views.sections.overlays.TutorialOverlay.prototype.onResize = function(e){
-
-	goog.base(this, 'onResize', e);
-
-	goog.style.setSize(this.domElement, goog.dom.getViewportSize());
 };goog.provide('feng.views.popups.Popup');
 
 goog.require('goog.async.Delay');
@@ -50712,3826 +49653,6 @@ feng.views.popups.Popup.prototype.onAnimatedOut = function() {
 	this._isShown = false;
 
 	this.dispatchEvent( feng.events.EventType.CLOSE );
-};goog.provide('feng.views.sections.overlays.FinaleOverlay');
-
-goog.require('goog.dom');
-goog.require('goog.style');
-goog.require('feng.views.Overlay');
-goog.require('feng.views.popups.Popup');
-goog.require('feng.models.Preload');
-goog.require('feng.utils.Utils');
-
-
-/**
- * @constructor
- */
-feng.views.sections.overlays.FinaleOverlay = function(domElement){
-
-	var canHalt = true;
-
-  goog.base(this, domElement, canHalt);
-
-  var popupEl = goog.dom.getElementByClass('popup', this.domElement);
-  this._popup = new feng.views.popups.Popup( popupEl );
-
-  this._shareButtons = goog.dom.query('ul a', this.domElement);
-
-  this._escKeyId = null;
-
-  this._animateOutFunc = goog.bind(function() {
-  	this._popup.animateOut();
-  }, this);
-
-  this.updateContent();
-};
-goog.inherits(feng.views.sections.overlays.FinaleOverlay, feng.views.Overlay);
-goog.addSingletonGetter(feng.views.sections.overlays.FinaleOverlay);
-
-
-feng.views.sections.overlays.FinaleOverlay.prototype.activate = function(){
-
-	goog.base(this, 'activate');
-
-	goog.array.forEach(this._shareButtons, function(shareButton) {
-		this._eventHandler.listen( shareButton, 'click', this.onClickShareButton, false, this );
-	}, this);
-
-	this._eventHandler.listenOnce( this._popup, feng.events.EventType.ANIMATE_OUT, this.animateOut, false, this );
-	
-	this._escKeyId = feng.keyboardController.bind( this._animateOutFunc, feng.keyboardController.key.ESC, true );
-};
-
-
-feng.views.sections.overlays.FinaleOverlay.prototype.deactivate = function(){
-
-	goog.base(this, 'deactivate');
-
-	feng.keyboardController.unbind( this._escKeyId );
-};
-
-
-feng.views.sections.overlays.FinaleOverlay.prototype.updateContent = function(){
-
-	var preload = feng.models.Preload.getInstance();
-	var copy = preload.getAsset('global.fengshui-data')['dialog']['finale'];
-
-	var title = copy['title'];
-	var paragraph = copy['paragraph'];
-
-	var titleEl = goog.dom.query('h1', this.domElement)[0];
-	var paragraphEl = goog.dom.query('p', this.domElement)[0];
-
-	titleEl.innerHTML = title;
-	paragraphEl.innerHTML = paragraph;
-};
-
-
-feng.views.sections.overlays.FinaleOverlay.prototype.animateIn = function(){
-
-	goog.base(this, 'animateIn');
-
-	TweenMax.fromTo(this.domElement, .8, {
-		'opacity': 0
-	}, {
-		'opacity': 1,
-		'ease': Strong.easeInOut
-	});
-
-	this._popup.animateIn();
-};
-
-
-feng.views.sections.overlays.FinaleOverlay.prototype.animateOut = function(){
-
-	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
-
-	TweenMax.to(this.domElement, .8, {
-		'delay': .25,
-		'opacity': 0,
-		'ease': Strong.easeInOut,
-		'onComplete': this.hide,
-		'onCompleteParams': [ true ],
-		'onCompleteScope': this
-	});
-};
-
-
-feng.views.sections.overlays.FinaleOverlay.prototype.onClickShareButton = function(e) {
-
-  e.preventDefault();
-
-  feng.utils.Utils.popUp( e.currentTarget.href );
-};
-
-
-feng.views.sections.overlays.FinaleOverlay.prototype.onResize = function(e){
-
-	goog.base(this, 'onResize', e);
-
-	var viewportSize = goog.dom.getViewportSize();
-
-	goog.style.setSize(this.domElement, viewportSize);
-
-	feng.utils.Utils.centerAlign( this._popup.domElement, viewportSize );
-};goog.provide('feng.views.sections.captions.Caption');
-
-goog.require('goog.events.EventHandler');
-goog.require('feng.templates.captions');
-goog.require('feng.utils.Utils');
-
-
-/**
- * @constructor
- */
-feng.views.sections.captions.Caption = function( object, cameraController, renderSize, controls, hud ){
-
-  goog.base(this);
-
-  this._object = object;
-  this._cameraController = cameraController;
-  this._renderSize = renderSize;
-  this._controls = controls;
-  this._hud = hud;
-
-  this._eventHandler = new goog.events.EventHandler(this);
-
-  this._template = this._template || feng.templates.captions.Caption;
-  
-  this._templateData = this._templateData || {
-    tip: object.tip,
-    position: 'right'
-  };
-
-  this._closeKeyId = null;
-
-  this._close = goog.bind( this.close, this );
-
-  // render HTML template
-  this.domElement = soy.renderAsFragment(this._template, this._templateData);
-
-  this._shadeEl = goog.dom.getElementByClass('shade', this.domElement);
-  this._panelEl = goog.dom.getElementByClass('panel', this.domElement);
-
-  this._closeButton = goog.dom.getElementByClass('close-button', this.domElement);
-  this._panelButton = goog.dom.getElementByClass('panel-button', this.domElement);
-  this._hintButton = goog.dom.getElementByClass('hint-button', this.domElement);
-  this._interactionButton = goog.dom.getElementByClass('interaction-button', this.domElement);
-
-  this._problemEl = goog.dom.getElementByClass('problem', this.domElement);
-  this._hintEl = goog.dom.getElementByClass('hint', this.domElement);
-  this._interactionEl = goog.dom.getElementByClass('interaction', this.domElement);
-  this._adviceEl = goog.dom.getElementByClass('advice', this.domElement);
-  this._shareEl = goog.dom.getElementByClass('share', this.domElement);
-  this._shareButtons = goog.dom.query('a', this._shareEl);
-
-  // set default status
-  this._isPanelAnimatedOut = true;
-  goog.dom.classes.enable( this.domElement, 'hide-panel', this._isPanelAnimatedOut );
-
-  // set elements status by tip
-  this.updateStatus();
-};
-goog.inherits(feng.views.sections.captions.Caption, goog.events.EventTarget);
-
-
-feng.views.sections.captions.Caption.prototype.show = function() {
-
-  this.activate();
-
-  goog.style.showElement( this.domElement, true );
-
-  this.onResize();
-};
-
-
-feng.views.sections.captions.Caption.prototype.hide = function() {
-
-  this.deactivate();
-
-  goog.style.showElement( this.domElement, false );
-};
-
-
-feng.views.sections.captions.Caption.prototype.activate = function() {
-
-  this._eventHandler.listen( this._closeButton, 'click', this.close, false, this );
-  this._eventHandler.listen( this._panelButton, 'click', this.togglePanel, false, this );
-
-  this._eventHandler.listen( this._hintButton, 'click', this.close, false, this );
-
-  if(this._interactionButton) {
-    this._eventHandler.listen( this._interactionButton, 'click', this.onClick, false, this );
-  }
-  
-  // listen for unlock ready event from view3d object
-  this._eventHandler.listen( this._object, feng.events.EventType.UNLOCK, this.updateStatus, false, this );
-  this._eventHandler.listen( window, 'resize', this.onResize, false, this );
-
-  // listen for object camera animated in event to animate in panel
-  console.log(this._object)
-  this._eventHandler.listen( this._object, feng.events.EventType.ANIMATED_IN, this.animateInPanel, false, this );
-
-  // listen for share button click events
-  goog.array.forEach(this._shareButtons, function(shareButton) {
-    this._eventHandler.listen( shareButton, 'click', this.onClickShareButton, false, this );
-  }, this);
-
-  //
-  this._closeKeyId = feng.keyboardController.bind( this._close, feng.keyboardController.key.ESC, true );
-
-  this.updateStatus();
-
-  goog.style.showElement(this._panelButton, false);
-};
-
-
-feng.views.sections.captions.Caption.prototype.deactivate = function() {
-
-  this._eventHandler.removeAll();
-
-  feng.keyboardController.unbind( this._closeKeyId );
-
-  this._object.stopInteraction();
-};
-
-
-feng.views.sections.captions.Caption.prototype.animateInPanel = function() {
-
-  if(this._isPanelAnimatedOut) {
-
-    this._isPanelAnimatedOut = false;
-
-  }else {
-
-    return;
-  }
-
-  goog.style.showElement(this._panelButton, true);
-
-  goog.dom.classes.enable(this.domElement, 'hide-panel', false);
-
-  TweenMax.to( this._renderSize, .5, {
-    ratioX: .7,
-    'ease': Sine.easeInOut,
-    'onUpdate': this._renderSize.update,
-    'onUpdateScope': this._renderSize
-  });
-};
-
-
-feng.views.sections.captions.Caption.prototype.animateOutPanel = function( shouldDoCloseWhenComplete ) {
-
-  if(this._isPanelAnimatedOut) {
-
-    return;
-  }
-
-  goog.dom.classes.enable(this.domElement, 'hide-panel', true);
-
-  TweenMax.to( this._renderSize, .5, {
-    ratioX: 1,
-    'ease': Sine.easeInOut,
-    'onUpdate': this._renderSize.update,
-    'onUpdateScope': this._renderSize,
-    'onComplete': this.onPanelAnimatedOut,
-    'onCompleteParams': [shouldDoCloseWhenComplete],
-    'onCompleteScope': this
-  });
-};
-
-
-feng.views.sections.captions.Caption.prototype.togglePanel = function() {
-
-  if(this._isPanelAnimatedOut) {
-    this.animateInPanel();
-  }else {
-    this.animateOutPanel();
-  }
-};
-
-
-feng.views.sections.captions.Caption.prototype.close = function() {
-
-  this.doClose();
-};
-
-
-feng.views.sections.captions.Caption.prototype.doClose = function() {
-
-  if(this._isPanelAnimatedOut) {
-
-    this.onPanelAnimatedOut( true );
-
-  }else {
-    
-    this.animateOutPanel( true );
-  }
-};
-
-
-feng.views.sections.captions.Caption.prototype.unlock = function() {
-
-  // trigger tip object to unlock
-  this._object.unlock();
-
-  this.animateInPanel();
-};
-
-
-feng.views.sections.captions.Caption.prototype.updateStatus = function() {
-
-  var tip = this._object.tip;
-
-  var requiredTip = tip.getRequiredTip();
-  var hasLockedRequiredTip = (requiredTip && !requiredTip.unlocked);
-  goog.style.showElement( this._hintEl, hasLockedRequiredTip );
-
-  if(this._interactionEl) {
-    goog.style.showElement( this._interactionEl, !hasLockedRequiredTip );
-  }
-
-  if(!tip.problem || hasLockedRequiredTip) {
-    goog.style.showElement( this._problemEl, false );
-  }
-
-  if(this._interactionButton) {
-    goog.style.showElement( this._interactionButton, !tip.unlocked );
-  }
-  
-  goog.style.showElement( this._adviceEl, tip.unlocked );
-  goog.style.showElement( this._shareEl, tip.unlocked );
-
-  if(tip.unlocked) {
-    
-    if(tip.problem) {
-      goog.dom.classes.add( this._problemEl, 'closed' );
-    }
-
-    goog.dom.classes.remove( this._adviceEl, 'closed' );
-
-    if(this._interactionEl) {
-      goog.dom.classes.add( this._interactionEl, 'unlocked' );
-    }
-  }
-};
-
-
-feng.views.sections.captions.Caption.prototype.onPanelAnimatedOut = function( shouldDoClose ) {
-
-  this._isPanelAnimatedOut = true;
-
-  if(shouldDoClose) {
-
-    this.dispatchEvent({
-      type: feng.events.EventType.CLOSE
-    });
-  }
-};
-
-
-feng.views.sections.captions.Caption.prototype.onClick = function( e ) {
-
-  switch(e.currentTarget) {
-    case this._interactionButton:
-    this._object.startInteraction();
-    
-    /* WIP */
-    this.animateOutPanel();
-    break;
-
-    /*
-    case this._changeButton:
-    this._object.tip.unlock();
-    break;
-
-    case this._unlockButton:
-    this.unlock();
-    break;
-    */
-  }
-};
-
-
-feng.views.sections.captions.Caption.prototype.onClickShareButton = function( e ) {
-
-  e.preventDefault();
-
-  feng.utils.Utils.popUp( e.currentTarget.href );
-};
-
-
-feng.views.sections.captions.Caption.prototype.onResize = function( e ) {
-
-  goog.style.setStyle( this._shadeEl, 'height', this._renderSize.height + 'px' );
-  goog.style.setStyle( this._panelEl, 'height', this._renderSize.height + 'px' );
-};goog.provide('feng.views.sections.captions.ChangeColorCaption');
-
-goog.require('goog.soy');
-goog.require('feng.templates.captions');
-goog.require('feng.views.sections.captions.Caption');
-
-
-/**
- * @constructor
- */
-feng.views.sections.captions.ChangeColorCaption = function( object, cameraController, renderSize, controls, hud ){
-
-  this._template = feng.templates.captions.ChangeColorCaption;
-  
-  this._templateData = {
-  	colors: object.colors,
-    tip: object.tip,
-    position: 'right'
-  };
-
-  goog.base(this, object, cameraController, renderSize, controls, hud);
-
-  this._colorEls = goog.dom.getElementsByClass('color', this.domElement);
-};
-goog.inherits(feng.views.sections.captions.ChangeColorCaption, feng.views.sections.captions.Caption);
-
-
-feng.views.sections.captions.ChangeColorCaption.prototype.show = function() {
-
-  goog.base(this, 'show');
-
-  goog.array.forEach(this._colorEls, function(colorEl) {
-    this._eventHandler.listen(colorEl, 'click', this.onClickColor, false, this);
-  }, this);
-
-  this._object.startInteraction();
-};
-
-
-feng.views.sections.captions.ChangeColorCaption.prototype.hide = function() {
-
-  goog.base(this, 'hide');
-
-  this._object.stopInteraction();
-};
-
-
-feng.views.sections.captions.ChangeColorCaption.prototype.onClickColor = function(e) {
-
-  var colorName = e.currentTarget.getAttribute("data-color");
-
-  this._object.setColorByName( colorName );
-};// Copyright 2007 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Definition of the goog.async.Throttle class.
- *
- * @see ../demos/timers.html
- */
-
-goog.provide('goog.Throttle');
-goog.provide('goog.async.Throttle');
-
-goog.require('goog.Disposable');
-goog.require('goog.Timer');
-
-
-
-/**
- * Throttle will perform an action that is passed in no more than once
- * per interval (specified in milliseconds). If it gets multiple signals
- * to perform the action while it is waiting, it will only perform the action
- * once at the end of the interval.
- * @param {function(this: T)} listener Function to callback when the action is
- *     triggered.
- * @param {number} interval Interval over which to throttle. The listener can
- *     only be called once per interval.
- * @param {T=} opt_handler Object in whose scope to call the listener.
- * @constructor
- * @extends {goog.Disposable}
- * @final
- * @template T
- */
-goog.async.Throttle = function(listener, interval, opt_handler) {
-  goog.Disposable.call(this);
-
-  /**
-   * Function to callback
-   * @type {function(this: T)}
-   * @private
-   */
-  this.listener_ = listener;
-
-  /**
-   * Interval for the throttle time
-   * @type {number}
-   * @private
-   */
-  this.interval_ = interval;
-
-  /**
-   * "this" context for the listener
-   * @type {Object|undefined}
-   * @private
-   */
-  this.handler_ = opt_handler;
-
-  /**
-   * Cached callback function invoked after the throttle timeout completes
-   * @type {Function}
-   * @private
-   */
-  this.callback_ = goog.bind(this.onTimer_, this);
-};
-goog.inherits(goog.async.Throttle, goog.Disposable);
-
-
-
-/**
- * A deprecated alias.
- * @deprecated Use goog.async.Throttle instead.
- * @constructor
- * @final
- */
-goog.Throttle = goog.async.Throttle;
-
-
-/**
- * Indicates that the action is pending and needs to be fired.
- * @type {boolean}
- * @private
- */
-goog.async.Throttle.prototype.shouldFire_ = false;
-
-
-/**
- * Indicates the count of nested pauses currently in effect on the throttle.
- * When this count is not zero, fired actions will be postponed until the
- * throttle is resumed enough times to drop the pause count to zero.
- * @type {number}
- * @private
- */
-goog.async.Throttle.prototype.pauseCount_ = 0;
-
-
-/**
- * Timer for scheduling the next callback
- * @type {?number}
- * @private
- */
-goog.async.Throttle.prototype.timer_ = null;
-
-
-/**
- * Notifies the throttle that the action has happened. It will throttle the call
- * so that the callback is not called too often according to the interval
- * parameter passed to the constructor.
- */
-goog.async.Throttle.prototype.fire = function() {
-  if (!this.timer_ && !this.pauseCount_) {
-    this.doAction_();
-  } else {
-    this.shouldFire_ = true;
-  }
-};
-
-
-/**
- * Cancels any pending action callback. The throttle can be restarted by
- * calling {@link #fire}.
- */
-goog.async.Throttle.prototype.stop = function() {
-  if (this.timer_) {
-    goog.Timer.clear(this.timer_);
-    this.timer_ = null;
-    this.shouldFire_ = false;
-  }
-};
-
-
-/**
- * Pauses the throttle.  All pending and future action callbacks will be
- * delayed until the throttle is resumed.  Pauses can be nested.
- */
-goog.async.Throttle.prototype.pause = function() {
-  this.pauseCount_++;
-};
-
-
-/**
- * Resumes the throttle.  If doing so drops the pausing count to zero, pending
- * action callbacks will be executed as soon as possible, but still no sooner
- * than an interval's delay after the previous call.  Future action callbacks
- * will be executed as normal.
- */
-goog.async.Throttle.prototype.resume = function() {
-  this.pauseCount_--;
-  if (!this.pauseCount_ && this.shouldFire_ && !this.timer_) {
-    this.shouldFire_ = false;
-    this.doAction_();
-  }
-};
-
-
-/** @override */
-goog.async.Throttle.prototype.disposeInternal = function() {
-  goog.async.Throttle.superClass_.disposeInternal.call(this);
-  this.stop();
-};
-
-
-/**
- * Handler for the timer to fire the throttle
- * @private
- */
-goog.async.Throttle.prototype.onTimer_ = function() {
-  this.timer_ = null;
-
-  if (this.shouldFire_ && !this.pauseCount_) {
-    this.shouldFire_ = false;
-    this.doAction_();
-  }
-};
-
-
-/**
- * Calls the callback
- * @private
- */
-goog.async.Throttle.prototype.doAction_ = function() {
-  this.timer_ = goog.Timer.callOnce(this.callback_, this.interval_);
-  this.listener_.call(this.handler_);
-};
-goog.provide('feng.views.sections.controls.ProgressBar');
-
-goog.require('goog.async.Throttle');
-goog.require('feng.views.sections.controls.Controls');
-
-
-/**
- * @constructor
- */
-feng.views.sections.controls.ProgressBar = function(domElement, tips){
-
-  goog.base(this, domElement);
-
-  this._tipsWrapperEl = goog.dom.query('.tips-wrapper', this.domElement)[0];
-  this._tipsEls = goog.dom.query('.tips', this.domElement);
-  this._tipEls = goog.dom.query('.tips > li', this.domElement);
-  this._dotEls = goog.dom.query('.tips .dot', this.domElement);
-  this._prevButtonEl = goog.dom.getElementByClass('prev', this.domElement);
-  this._nextButtonEl = goog.dom.getElementByClass('next', this.domElement);
-
-  this._tipsEl = this._tipsEls[0];
-
-  this._viewIds = goog.array.map( this._tipsEls, function(tipsEl) {
-    return tipsEl.getAttribute('data-view-id');
-  });
-
-  this._viewId = this._viewIds[0];
-
-  this._tips = {};
-  
-  goog.array.forEach(tips, function(tip) {
-		this._tips[ tip.id ] = tip;
-  }, this);
-
-  this._nearbyTipEl = null;
-
-  //
-  this._detectNearbyThrottle = new goog.async.Throttle(this.detectNearbyObjects, 1000/5, this);
-  
-  this._nearbyObjects = [];
-
-  this._tipsWidthViewportRatio = 0.5;
-  this._maxTipMargin = 50;
-
-  this._tweener = new TimelineMax();
-};
-goog.inherits(feng.views.sections.controls.ProgressBar, feng.views.sections.controls.Controls);
-
-
-feng.views.sections.controls.ProgressBar.prototype.setView3D = function( view3d ){
-
-  goog.base(this, 'setView3D', view3d);
-
-  this.calculateTipsLayout();
-  this.goTipsOfView( view3d.id );
-};
-
-
-feng.views.sections.controls.ProgressBar.prototype.calculateTipsLayout = function(){
-
-  this._tipEls = goog.dom.query( 'li', this._tipsEl );
-
-  // arrange tip dots
-  var numDots = this._tipEls.length;
-  var dotsWidth = numDots * this._maxTipMargin * 2;
-  var actualWidth = Math.min( dotsWidth, this._tipsWidthViewportRatio * goog.dom.getViewportSize().width );
-  var dotWidth = actualWidth / numDots;
-  var margin = dotWidth / 2;
-
-  goog.array.forEach(this._tipEls, function(tipEl) {
-    goog.style.setStyle( tipEl, 'margin', '0 ' + margin + 'px' );
-  });
-
-  return actualWidth;
-};
-
-
-feng.views.sections.controls.ProgressBar.prototype.activate = function() {
-
-  var shouldActivate = goog.base(this, 'activate');
-
-  if(!shouldActivate) return;
-
-  this._eventHandler.listen(this._prevButtonEl, 'click', this.goPrevTips, false, this);
-  this._eventHandler.listen(this._nextButtonEl, 'click', this.goNextTips, false, this);
-
-  goog.object.forEach(this._tips, function(tip) {
-
-    tip.listen(feng.events.EventType.UNLOCK, this.onTipUnlock, false, this);
-    if(tip.unlocked) this.unlockTip( tip.id );
-  }, this);
-
-  this._detectNearbyThrottle.fire();
-
-  goog.dom.classes.enable(this.domElement, 'hidden', false);
-};
-
-
-feng.views.sections.controls.ProgressBar.prototype.deactivate = function() {
-
-  var shouldDeactivate = goog.base(this, 'deactivate');
-
-  if(!shouldDeactivate) return;
-
-  goog.object.forEach(this._tips, function(tip) {
-    tip.unlisten(feng.events.EventType.UNLOCK, this.onTipUnlock, false, this);
-  }, this);
-
-  this._detectNearbyThrottle.stop();
-
-  this._tweener.kill();
-
-  goog.dom.classes.enable(this.domElement, 'hidden', true);
-};
-
-
-feng.views.sections.controls.ProgressBar.prototype.goTipsOfView = function( viewId ) {
-
-  this._viewId = viewId;
-
-  // get tips element of the view id
-  var tipsEl = goog.array.find(this._tipsEls, function(tipsEl) {
-    return (tipsEl.getAttribute('data-view-id') === viewId);
-  });
-
-  // animate tips
-  var tweener = TweenMax.to(this._tipsEls, 0, {
-    'display': 'none'
-  });
-
-  // assign new tips el
-  this._tipsEl = tipsEl;
-
-  // calculate new tips layout
-  var tipsWrapperWidth = this.calculateTipsLayout();
-
-  var tweener2 = TweenMax.to( this._tipsWrapperEl, .5, {
-    'width': tipsWrapperWidth,
-    'ease': Strong.easeOut
-  });
-
-  //
-  var tweener3 = new TimelineMax();
-
-  var tweeners = goog.array.map( goog.dom.query('li', this._tipsEl), function(tipEl) {
-
-    var t = TweenMax.fromTo(tipEl, .25, {
-      'opacity': 0,
-      'y': 20
-    }, {
-      'opacity': 1,
-      'y': 0
-    });
-
-    return t;
-  });
-
-  tweener3.add( tweeners, '+=0', 'start', .05 );
-
-  var tweener4 = TweenMax.to(this._tipsEl, .25, {
-    'opacity': 1,
-    'display': 'block'
-  });
-
-  this._tweener.clear();
-  this._tweener.add([tweener, tweener2, tweener3, tweener4]);
-};
-
-
-feng.views.sections.controls.ProgressBar.prototype.goPrevTips = function() {
-
-  var currentTipsIndex = goog.array.indexOf(this._viewIds, this._tipsEl.getAttribute('data-view-id'));
-
-  currentTipsIndex --;
-
-  if(currentTipsIndex < 0) currentTipsIndex = this._viewIds.length - 1;
-
-  this.goTipsOfView( this._viewIds[currentTipsIndex] );
-};
-
-
-feng.views.sections.controls.ProgressBar.prototype.goNextTips = function() {
-
-  var currentTipsIndex = goog.array.indexOf(this._viewIds, this._tipsEl.getAttribute('data-view-id'));
-
-  currentTipsIndex ++;
-
-  if(currentTipsIndex > this._viewIds.length - 1) currentTipsIndex = 0;
-
-  this.goTipsOfView( this._viewIds[currentTipsIndex] );
-};
-
-
-feng.views.sections.controls.ProgressBar.prototype.setNearbyObjects = function( objects ){
-
-  this._nearbyObjects = objects;
-
-  if(this._nearbyObjects && this._nearbyObjects.length > 0) {
-
-    this._detectNearbyThrottle.fire();
-  }
-};
-
-
-feng.views.sections.controls.ProgressBar.prototype.detectNearbyObjects = function(){
-
-  if(!this._nearbyObjects || this._nearbyObjects.length === 0) {
-
-    this._detectNearbyThrottle.stop();
-    return;
-
-  }else {
-
-    this._detectNearbyThrottle.fire();
-  }
-
-  var control = this._view3d.modeController.control;
-  var cameraPosition = control.getPosition();
-  var cameraDirection = control.getForwardVector( true );
-  var highestDot = Math.cos( THREE.Math.degToRad(45) );
-  var nearestObject;
-
-  goog.array.forEach(this._nearbyObjects, function(object) {
-    
-    var objectDirection = object.getCenter().clone().sub( cameraPosition ).normalize();
-    var dot = objectDirection.dot( cameraDirection );
-    //console.log(dot, object.name)
-    if(dot >= highestDot) {
-      highestDot = dot;
-      nearestObject = object;
-    }
-  });
-
-  if(nearestObject) {
-
-    //console.log(nearestObject.name);
-    var tip = nearestObject.tip;
-    var providedTip = tip.getProvidedTip();
-
-    var tipId = providedTip ? providedTip.id : tip.id;
-
-    var tipEl = goog.array.find(this._tipEls, function(tipEl) {
-      return (tipEl.getAttribute('data-tip-id') === tipId);
-    });
-
-    //console.log(tipEl, tipId, providedTip)
-    
-    if(this._nearbyTipEl !== tipEl) {
-
-      if(this._nearbyTipEl) {
-        goog.dom.classes.remove(this._nearbyTipEl, 'nearby');
-      }
-
-      this._nearbyTipEl = tipEl;
-      goog.dom.classes.add(this._nearbyTipEl, 'nearby');
-    }
-
-  }else {
-
-    if(this._nearbyTipEl) {
-      goog.dom.classes.remove(this._nearbyTipEl, 'nearby');
-      this._nearbyTipEl = null;
-    }
-  }
-};
-
-
-feng.views.sections.controls.ProgressBar.prototype.unlockTip = function( tipId ){
-  
-  var unlockedTipEl = goog.array.find(this._tipEls, function(tipEl) {
-    return tipEl.getAttribute('data-tip-id') === tipId;
-  });
-
-  if(!unlockedTipEl) return;
-
-  goog.dom.classes.add( unlockedTipEl, 'unlocked' );
-};
-
-
-feng.views.sections.controls.ProgressBar.prototype.onTipUnlock = function(e){
-
-  var tipId = e.tip.id;
-  this.unlockTip( tipId );
-};
-
-
-feng.views.sections.controls.ProgressBar.prototype.onModeChange = function(e){
-
-  goog.base(this, 'onModeChange', e);
-
-  var mode = e.nextMode || e.mode;
-
-  switch(mode) {
-
-    case feng.controllers.view3d.ModeController.Mode.BROWSE:
-    case feng.controllers.view3d.ModeController.Mode.WALK:
-    this.activate();
-    break;
-
-    default:
-    this.deactivate();
-    break;
-  }
-};
-
-
-feng.views.sections.controls.ProgressBar.prototype.onResize = function(e){
-
-	goog.base(this, 'onResize', e);
-
-	var viewportSize = goog.dom.getViewportSize();
-  var domSize = goog.style.getSize( this.domElement );
-
-  var y = viewportSize.height - 115;
-	goog.style.setStyle( this.domElement, 'top', y + 'px');
-
-  this.calculateTipsLayout();
-  this.goTipsOfView( this._viewId );
-};goog.provide('feng.views.sections.controls.HomeButton');
-
-goog.require('goog.dom');
-goog.require('feng.events');
-goog.require('feng.views.sections.controls.Controls');
-
-
-/**
- * @constructor
- */
-feng.views.sections.controls.HomeButton = function(domElement){
-	
-  goog.base(this, domElement);
-
-  this._promptShown = false;
-  this._promptEl = goog.dom.getElementByClass('home-button-prompt', this.domElement.parentNode);
-
-  this._yesButtonEl = goog.dom.getElementByClass('yes', this._promptEl);
-  this._noButtonEl = goog.dom.getElementByClass('no', this._promptEl);
-};
-goog.inherits(feng.views.sections.controls.HomeButton, feng.views.sections.controls.Controls);
-
-
-feng.views.sections.controls.HomeButton.prototype.activate = function(){
-
-  var shouldActivate = goog.base(this, 'activate');
-
-  if(!shouldActivate) return;
-
-  this._eventHandler.listen( document.body, 'mousedown', this.onMouseDown, false, this );
-  this._eventHandler.listen( this._noButtonEl, 'click', this.hidePrompt, false, this );
-};
-
-
-feng.views.sections.controls.HomeButton.prototype.deactivate = function(){
-
-  var shouldDeactivate = goog.base(this, 'deactivate');
-  
-  if(!shouldDeactivate) return;
-
-  this.hidePrompt();
-};
-
-
-feng.views.sections.controls.HomeButton.prototype.showPrompt = function(){
-
-	this._promptShown = true;
-
-	goog.dom.classes.add( this.domElement, 'pending' );
-	goog.dom.classes.add( this._promptEl, 'shown' );
-};
-
-
-feng.views.sections.controls.HomeButton.prototype.hidePrompt = function(){
-
-	this._promptShown = false;
-
-	goog.dom.classes.remove( this.domElement, 'pending' );
-	goog.dom.classes.remove( this._promptEl, 'shown' );
-};
-
-
-feng.views.sections.controls.HomeButton.prototype.onMouseDown = function(e){
-
-	var isClickedOnHomeButton = goog.dom.contains( this.domElement, e.target );
-	var isClickedOnPrompt = goog.dom.contains( this._promptEl, e.target );
-
-	var isClickedOutside = (!isClickedOnHomeButton && !isClickedOnPrompt);
-
-	if(isClickedOutside && this._promptShown) {
-
-		this.hidePrompt();
-		return false;
-	}
-
-	if(isClickedOnHomeButton) {
-		
-		if(this._promptShown) {
-
-			this.hidePrompt();
-
-		}else {
-
-			this.showPrompt();
-		}
-	}
-};goog.provide('feng.fx.AnimatedSprite');
-
-goog.require('goog.math.Size');
-goog.require('goog.math.Coordinate');
-
-
-feng.fx.AnimatedSprite = function( domElement, image, framesHorizontal, framesVertical, numFrames, useRetina ) {
-
-	this.domElement = domElement;
-	this.image = image;
-
-	this._framesHorizontal = framesHorizontal;
-	this._framesVertical = framesVertical;
-	this._numFrames = numFrames;
-
-	this._retinaScale = (useRetina === true && window.devicePixelRatio > 1) ? 2 : 1;
-
-	var domWidth = this.image.width / this._framesHorizontal / this._retinaScale;
-	var domHeight = this.image.height / this._framesVertical / this._retinaScale;
-	this.size = new goog.math.Size( domWidth, domHeight );
-
-	this._frameId = 0;
-	this._framePosition = new goog.math.Coordinate(0, 0);
-
-	goog.style.setStyle(this.domElement, {
-		'background-image': 'url('+this.image.src+')',
-		'background-size': (this.image.width / this._retinaScale) + 'px ' + (this.image.height / this._retinaScale) + 'px',
-		'background-repeat': 'no-repeat',
-		'width': domWidth + 'px',
-		'height': domHeight + 'px'
-	});
-
-	this.gotoFrame( 0 );
-};
-
-
-feng.fx.AnimatedSprite.prototype.getProgress = function() {
-
-	return this._frameId / (this._numFrames - 1);
-};
-
-
-feng.fx.AnimatedSprite.prototype.getCurrentFrame = function() {
-
-	return this._frameId;
-};
-
-
-feng.fx.AnimatedSprite.prototype.getFramePositionById = function( frameId ) {
-
-	var frameCol = frameId % this._framesHorizontal;
-	this._framePosition.x = frameCol / this._framesHorizontal * this.image.width / this._retinaScale;
-
-	var frameRow = Math.floor(frameId / this._framesHorizontal);
-	this._framePosition.y = frameRow / this._framesVertical * this.image.height / this._retinaScale;
-
-	return this._framePosition;
-};
-
-
-feng.fx.AnimatedSprite.prototype.getFramePosition = function() {
-
-	return this.getFramePositionById( this._frameId );
-};
-
-
-feng.fx.AnimatedSprite.prototype.setProgress = function( progress ) {
-
-	var frameId = Math.round( (this._numFrames - 1) * progress );
-	this.gotoFrame( frameId );
-};
-
-
-feng.fx.AnimatedSprite.prototype.gotoFrame = function( frameId ) {
-
-	this._frameId = frameId;
-
-	var framePosition = this.getFramePositionById( this._frameId );
-
-	goog.style.setStyle(this.domElement, 'background-position', (-framePosition.x + 'px ') + (-framePosition.y + 'px'));
-};goog.provide('feng.views.sections.controls.Compass');
-
-goog.require('goog.dom');
-goog.require('goog.fx.Dragger');
-goog.require('feng.events');
-goog.require('feng.fx.AnimatedSprite');
-goog.require('feng.views.sections.controls.Controls');
-
-
-/**
- * @constructor
- */
-feng.views.sections.controls.Compass = function(domElement){
-	
-  goog.base(this, domElement);
-
-  this._mainEl = goog.dom.getElement('main');
-  
-  var browseEl = goog.dom.getElementByClass('browse', this.domElement);
-  var img = feng.models.Preload.getInstance().getAsset('global.cube-browse');
-  this._browseSprite = new feng.fx.AnimatedSprite(browseEl, img, 12, 9, 100);
-
-  var designEl = goog.dom.getElementByClass('design', this.domElement);
-  var img = feng.models.Preload.getInstance().getAsset('global.cube-design');
-  this._designSprite = new feng.fx.AnimatedSprite(designEl, img, 12, 9, 100);
-
-  this._dragger = new goog.fx.Dragger(this.domElement);
-  this._dragger.setHysteresis( 2 );
-  this._dragger.defaultAction = goog.bind(this.onDrag, this);
-
-  this._hoveredDesign = false;
-  this._hoveredBrowse = false;
-
-  this._rotation = 0;
-  this._startRotation = 0;
-
-  this._isInDesignMode = false;
-};
-goog.inherits(feng.views.sections.controls.Compass, feng.views.sections.controls.Controls);
-
-
-feng.views.sections.controls.Compass.prototype.activate = function(){
-
-  var shouldActivate = goog.base(this, 'activate');
-
-  if(!shouldActivate) return;
-
-  this._eventHandler.listen(this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
-  this._eventHandler.listen(this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
-  this._eventHandler.listen(this.domElement, 'mousemove', this.onMouseMove, false, this);
-  this._eventHandler.listen(this.domElement, 'mouseout', this.onMouseOut, false, this);
-  this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
-
-  if(this._view3d) {
-    this._view3d.modeController.listen( feng.events.EventType.UPDATE, this.onView3dUpdate, false, this );
-  }
-
-  this._dragger.setEnabled( true );
-};
-
-
-feng.views.sections.controls.Compass.prototype.deactivate = function(){
-
-  var shouldDeactivate = goog.base(this, 'deactivate');
-
-  if(!shouldDeactivate) return;
-
-  this._dragger.setEnabled( false );
-};
-
-
-feng.views.sections.controls.Compass.prototype.setView3D = function( view3d ){
-
-  goog.base(this, 'setView3D', view3d);
-
-  if(this._view3d) {
-    this._view3d.modeController.unlisten( feng.events.EventType.UPDATE, this.onView3dUpdate, false, this );
-  }
-
-  this._view3d.modeController.listen( feng.events.EventType.UPDATE, this.onView3dUpdate, false, this );
-};
-
-
-feng.views.sections.controls.Compass.prototype.calculateDraggedRotation = function(){
-
-	var deltaX = this._dragger.clientX - this._dragger.startX;
-	var distancePI2 = 200;
-	var fractionPI2 = deltaX / distancePI2;
-
-	var rotation = fractionPI2 * (2 * Math.PI);
-	return rotation;
-};
-
-
-feng.views.sections.controls.Compass.prototype.setProgress = function(progress){
-
-	this._browseSprite.setProgress( progress );
-	this._designSprite.setProgress( progress );
-};
-
-
-feng.views.sections.controls.Compass.prototype.setRotation = function(rotation){
-
-	this._rotation = goog.math.modulo( rotation, 2 * Math.PI );
-
-	var progress = this._rotation / (2 * Math.PI);
-	this.setProgress( progress );
-
-	return this._rotation;
-};
-
-
-feng.views.sections.controls.Compass.prototype.onDragStart = function(e){
-
-	goog.dom.classes.add(this._mainEl, 'grabbing');
-
-	goog.dom.classes.remove(this.domElement, 'hover-design');
-	this._hoveredDesign = false;
-	this._hoveredBrowse = false;
-
-	this._startRotation = this._rotation;
-};
-
-
-feng.views.sections.controls.Compass.prototype.onDragEnd = function(e){
-
-	goog.dom.classes.remove(this._mainEl, 'grabbing');
-};
-
-
-feng.views.sections.controls.Compass.prototype.onDrag = function(x, y){
-
-	var draggedRotation = this.calculateDraggedRotation();
-
-	var rotation = draggedRotation + this._startRotation;
-
-	var standardRotation = this.setRotation( rotation );
-
-	this.dispatchEvent({
-		type: feng.events.EventType.UPDATE,
-		rotation: standardRotation
-	});
-};
-
-
-feng.views.sections.controls.Compass.prototype.onMouseMove = function(e){
-
-	if(this._dragger.isDragging()) return false;
-
-	if(e.offsetY > 40) {
-
-		// browse mode
-		goog.dom.classes.addRemove(this.domElement, 'hover-design', 'hover-browse');
-		this._hoveredDesign = false;
-		this._hoveredBrowse = true;
-
-	}else {
-
-		// design mode
-		goog.dom.classes.addRemove(this.domElement, 'hover-browse', 'hover-design');
-		this._hoveredDesign = true;
-		this._hoveredBrowse = false;
-	}
-};
-
-
-feng.views.sections.controls.Compass.prototype.onMouseOut = function(e){
-
-	if(e.relatedTarget && goog.dom.contains(e.currentTarget, e.relatedTarget)) {
-		return false;
-	}
-
-	goog.dom.classes.remove(this.domElement, 'hover-browse');
-	goog.dom.classes.remove(this.domElement, 'hover-design');
-	this._hoveredDesign = false;
-	this._hoveredBrowse = false;
-};
-
-
-feng.views.sections.controls.Compass.prototype.onClick = function(e){
-
-	if(this._dragger.isDragging()) return false;
-
-	if(this._hoveredDesign) {
-
-		if(this._isInDesignMode) return false;
-
-		this._view3d.modeController.setMode({
-			type: feng.events.EventType.CHANGE,
-			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-			nextMode: feng.controllers.view3d.ModeController.Mode.DESIGN
-		});
-
-	}else if(this._hoveredBrowse) {
-
-		if(!this._isInDesignMode) return false;
-
-		var designControl = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.DESIGN );
-		var toRotation = designControl.getRotation().clone();
-		toRotation.x = 0;
-
-		this._view3d.modeController.setMode({
-			type: feng.events.EventType.CHANGE,
-			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-			nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
-			toRotation: toRotation
-		});
-	}
-};
-
-
-feng.views.sections.controls.Compass.prototype.onResize = function(e){
-
-	var viewportSize = goog.dom.getViewportSize();
-	goog.style.setPosition(this.domElement, viewportSize.width - 100 - 30, 30);
-};
-
-
-feng.views.sections.controls.Compass.prototype.onView3dUpdate = function(e){
-
-	this.setRotation( e.rotationY );
-};
-
-
-feng.views.sections.controls.Compass.prototype.onModeChange = function(e){
-
-  goog.base(this, 'onModeChange', e);
-
-  if(e.mode === feng.controllers.view3d.ModeController.Mode.DESIGN) {
-
-  	goog.dom.classes.addRemove(this.domElement, 'browse', 'design');
-
-  	this._isInDesignMode = true;
-
-  }else {
-
-  	goog.dom.classes.addRemove(this.domElement, 'design', 'browse');
-
-  	this._isInDesignMode = false;
-  }
-  
-  switch(e.mode) {
-
-    case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
-	this.deactivate();
-    break;
-
-    default:
-	this.activate();
-    break;
-  }
-};goog.provide('feng.views.sections.captions.ChangePictureCaption');
-
-goog.require('goog.soy');
-goog.require('feng.templates.captions');
-goog.require('feng.views.sections.captions.Caption');
-
-
-/**
- * @constructor
- */
-feng.views.sections.captions.ChangePictureCaption = function( object, cameraController, renderSize, controls, hud ){
-
-  this._template = feng.templates.captions.ChangePictureCaption;
-  
-  this._templateData = {
-    pictures: object.pictures,
-    tip: object.tip,
-    position: 'right'
-  };
-
-  goog.base(this, object, cameraController, renderSize, controls, hud);
-
-  this._pictureEls = goog.dom.getElementsByClass('picture', this.domElement);
-};
-goog.inherits(feng.views.sections.captions.ChangePictureCaption, feng.views.sections.captions.Caption);
-
-
-feng.views.sections.captions.ChangePictureCaption.prototype.show = function() {
-
-  goog.base(this, 'show');
-
-  goog.array.forEach(this._pictureEls, function(pictureEl) {
-    this._eventHandler.listen(pictureEl, 'click', this.onClickPicture, false, this);
-  }, this);
-
-  this._object.startInteraction();
-};
-
-
-feng.views.sections.captions.ChangePictureCaption.prototype.hide = function() {
-
-  goog.base(this, 'hide');
-
-  this._object.stopInteraction();
-};
-
-
-feng.views.sections.captions.ChangePictureCaption.prototype.onClickPicture = function(e) {
-
-  var pictureId = e.currentTarget.getAttribute("data-picture");
-
-  this._object.setPicture( pictureId );
-};goog.provide('feng.views.sections.controls.ObjectSelector');
-
-goog.require('goog.events');
-goog.require('goog.async.Delay');
-goog.require('goog.async.Throttle');
-goog.require('feng.fx.AnimatedSprite');
-goog.require('feng.views.sections.controls.Controls');
-
-
-/**
- * @constructor
- */
-feng.views.sections.controls.ObjectSelector = function(domElement){
-
-  goog.base(this, domElement);
-
-  this._selectableObjects = [];
-
-  this._domElement = domElement;
-  this._fillEl = goog.dom.getElementByClass('fill', this._domElement);
-
-  var img = feng.models.Preload.getInstance().getAsset('global.circular-fill');
-  this._fillSprite = new feng.fx.AnimatedSprite(this._fillEl, img, 16, 2, 31);
-
-  this._selectedObject = null;
-  this._downObject = null;
-  this._isEnabled = false;
-  this._startTime = 0;
-  this._duration = 800;
-
-  this._callbacks = {};
-
-  // a delay to kick off the progress, to differentiate the mouse behavior between a fast click and object selecting
-  this._delay = new goog.async.Delay(this.startSelect, 250, this);
-
-  // a throttle to not let the object hover detection fire too often
-  this._mouseMoveThrottle = new goog.async.Throttle(this.doHoverDetection, 250, this);
-  this._mouseMovePosition = {x: 0, y: 0};
-
-  this._hitTestMeshes = [];
-
-	this.show( false );
-};
-goog.inherits(feng.views.sections.controls.ObjectSelector, feng.views.sections.controls.Controls);
-
-
-feng.views.sections.controls.ObjectSelector.prototype.setPosition = function ( x, y ) {
-
-	goog.style.setPosition(this.domElement, x, y);
-};
-
-
-feng.views.sections.controls.ObjectSelector.prototype.setSelectableObjects = function ( objects ) {
-
-	this._selectableObjects = objects;
-
-	this._hitTestMeshes = goog.array.map(this._selectableObjects, function(object) {
-
-		return object.getProxyBox();
-	}, this);
-};
-
-
-feng.views.sections.controls.ObjectSelector.prototype.activate = function( callbacks ) {
-
-  var shouldActivate = goog.base(this, 'activate');
-
-  if(!shouldActivate) return;
-  
-	this._callbacks = {
-	  	'onProgress': callbacks['onProgress'] || goog.nullFunction,
-	  	'onStart': callbacks['onStart'] || goog.nullFunction,
-	  	'onCancel': callbacks['onCancel'] || goog.nullFunction,
-	  	'onComplete': callbacks['onComplete'] || goog.nullFunction
-	  };
-
-	this._eventHandler.listen(this._renderEl, 'mousedown', this.onMouseDown, false, this);
-	this._eventHandler.listen(this._renderEl, 'mousemove', this.onMouseMove, false, this);
-};
-
-
-feng.views.sections.controls.ObjectSelector.prototype.deactivate = function() {
-
-  var shouldDeactivate = goog.base(this, 'deactivate');
-
-  if(!shouldDeactivate) return;
-
-	this._delay.stop();
-
-	goog.fx.anim.unregisterAnimation( this );
-};
-
-
-feng.views.sections.controls.ObjectSelector.prototype.animateIn = function () {
-
-	TweenMax.fromTo(this.domElement, .25, {
-		'scale': 0,
-		'opacity': 0
-	}, {
-		'scale': 1,
-		'opacity': 1,
-		'ease': Expo.easeOut
-	});
-
-	TweenMax.fromTo(this._fillEl, .4, {
-		'scale': 0
-	}, {
-		'delay': .1,
-		'scale': 1,
-		'ease': Back.easeOut
-	});
-
-	feng.utils.Utils.setCursor('initial', this._renderEl);
-};
-
-
-feng.views.sections.controls.ObjectSelector.prototype.animateOut = function () {
-
-	TweenMax.to(this.domElement, .25, {
-		'scale': .5,
-		'opacity': 0,
-		'ease': Expo.easeOut,
-		'onComplete': this.hide,
-		'onCompleteScope': this
-	});
-
-	feng.utils.Utils.setCursor(null, this._renderEl);
-};
-
-
-feng.views.sections.controls.ObjectSelector.prototype.doSelect = function () {
-
-	this._selectedObject = feng.views.sections.controls.ObjectSelector.findObjectDelegation( this._downObject );
-
-	this.animateOut();
-
-	this._callbacks['onComplete']( this._selectedObject );
-};
-
-
-feng.views.sections.controls.ObjectSelector.prototype.cancelSelect = function () {
-
-	this.animateOut();
-
-	this._callbacks['onCancel']();
-};
-
-
-feng.views.sections.controls.ObjectSelector.prototype.startSelect = function () {
-
-	this.show();
-	this.animateIn();
-
-	this._startTime = goog.now();
-	goog.fx.anim.registerAnimation( this );
-
-	this._callbacks['onStart']( this._downObject );
-};
-
-
-feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = function () {
-
-	var mouseX = this._mouseMovePosition.x;
-	var mouseY = this._mouseMovePosition.y;
-
-	var camera = this._cameraController.activeCamera;
-
-	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( mouseX, mouseY, this._hitTestMeshes, camera, this._viewSize );
-	
-	goog.dom.classes.enable(this._renderEl, 'help', (intersects.length > 0));
-};
-
-
-feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e ) {
-
-	this._selectedObject = null;
-
-	var camera = this._cameraController.activeCamera;
-
-	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, this._hitTestMeshes, camera, this._viewSize );
-
-	if(intersects.length === 0) {
-		return false;
-	}
-
-	this._downObject = intersects[0].object.view3dObject;
-	this.setPosition( e.clientX, e.clientY );
-
-	this._eventHandler.listen(document, 'mousemove', this.onMouseDownCancel, false, this);
-	this._eventHandler.listen(document, 'mouseup', this.onMouseDownCancel, false, this);
-
-	this._delay.start();
-};
-
-
-feng.views.sections.controls.ObjectSelector.prototype.onMouseDownCancel = function ( e ) {
-
-	this._delay.stop();
-
-	this._eventHandler.unlisten(document, 'mousemove', this.onMouseDownCancel, false, this);
-	this._eventHandler.unlisten(document, 'mouseup', this.onMouseDownCancel, false, this);
-
-	goog.fx.anim.unregisterAnimation( this );
-
-	this.cancelSelect();
-};
-
-
-feng.views.sections.controls.ObjectSelector.prototype.onMouseMove = function ( e ) {
-
-	this._mouseMovePosition.x = e.clientX;
-	this._mouseMovePosition.y = e.clientY;
-
-	this._mouseMoveThrottle.fire();
-};
-
-
-feng.views.sections.controls.ObjectSelector.prototype.onAnimationFrame = function ( now ) {
-
-	var progress = Math.min(1, (now - this._startTime) / this._duration);
-	//console.log('object select progress: ' + progress);
-
-	this._fillSprite.setProgress( progress );
-
-	if(progress === 1) {
-
-		this._eventHandler.unlisten(document, 'mousemove', this.onMouseDownCancel, false, this);
-		this._eventHandler.unlisten(document, 'mouseup', this.onMouseDownCancel, false, this);
-
-		goog.fx.anim.unregisterAnimation( this );
-
-		this.doSelect();
-	}
-
-	this._callbacks['onProgress']( this._downObject, progress );
-};
-
-
-feng.views.sections.controls.ObjectSelector.findObjectDelegation = function( object ) {
-
-	/*
-	if(object instanceof feng.views.view3dobject.entities.PictureFrame) {
-		return object.object3d.parent.interactiveObject;
-	}
-	*/
-	
-	return object;
-};goog.provide('feng.views.sections.captions.ChangeObjectCaption');
-
-goog.require('goog.soy');
-goog.require('feng.templates.captions');
-goog.require('feng.views.sections.captions.Caption');
-
-
-/**
- * @constructor
- */
-feng.views.sections.captions.ChangeObjectCaption = function( object, cameraController, renderSize, controls, hud ){
-
-  this._template = feng.templates.captions.ChangeObjectCaption;
-  
-  this._templateData = {
-    objects: object.objects,
-    tip: object.tip,
-    position: 'right'
-  };
-
-  goog.base(this, object, cameraController, renderSize, controls, hud);
-
-  this._objectEls = goog.dom.getElementsByClass('object', this.domElement);
-};
-goog.inherits(feng.views.sections.captions.ChangeObjectCaption, feng.views.sections.captions.Caption);
-
-
-feng.views.sections.captions.ChangeObjectCaption.prototype.show = function() {
-
-  goog.base(this, 'show');
-
-  goog.array.forEach(this._objectEls, function(objectEl) {
-    this._eventHandler.listen(objectEl, 'click', this.onClickObject, false, this);
-  }, this);
-
-  this._object.startInteraction();
-};
-
-
-feng.views.sections.captions.ChangeObjectCaption.prototype.hide = function() {
-
-  goog.base(this, 'hide');
-
-  this._object.stopInteraction();
-};
-
-
-feng.views.sections.captions.ChangeObjectCaption.prototype.onClickObject = function(e) {
-
-  var objectId = e.currentTarget.getAttribute("data-object");
-
-  this._object.change( objectId );
-};goog.provide('feng.views.sections.overlays.OpeningOverlay');
-
-goog.require('goog.dom');
-goog.require('goog.style');
-goog.require('feng.views.Overlay');
-goog.require('feng.views.popups.Popup');
-goog.require('feng.models.Preload');
-goog.require('feng.utils.Utils');
-
-
-/**
- * @constructor
- */
-feng.views.sections.overlays.OpeningOverlay = function(domElement){
-
-	var canHalt = true;
-
-  goog.base(this, domElement, canHalt);
-
-  var popupEl = goog.dom.getElementByClass('popup', this.domElement);
-  this._popup = new feng.views.popups.Popup( popupEl );
-
-  this._okButton = goog.dom.getElementByClass('ok', popupEl);
-
-  this._character = '';
-
-  this._sectionId = null;
-  this._viewId = null;
-  this._shownOnce = {};
-
-  this._enterKeyId = null;
-	this._escKeyId = null;
-	this._onClickOK = goog.bind( this.onClickOK, this );
-
-  this._preload = feng.models.Preload.getInstance();
-};
-goog.inherits(feng.views.sections.overlays.OpeningOverlay, feng.views.Overlay);
-goog.addSingletonGetter(feng.views.sections.overlays.OpeningOverlay);
-
-
-feng.views.sections.overlays.OpeningOverlay.prototype.activate = function(){
-
-	goog.base(this, 'activate');
-
-	this._eventHandler.listenOnce( this._okButton, 'click', this.onClickOK, false, this );
-	this._eventHandler.listenOnce( this._popup, feng.events.EventType.ANIMATE_OUT, this.animateOut, false, this );
-
-	this._enterKeyId = feng.keyboardController.bind( this._onClickOK, feng.keyboardController.key.ENTER, true );
-	this._escKeyId = feng.keyboardController.bind( this._onClickOK, feng.keyboardController.key.ESC, true );
-};
-
-
-feng.views.sections.overlays.OpeningOverlay.prototype.deactivate = function(){
-
-	goog.base(this, 'deactivate');
-
-	feng.keyboardController.unbind( this._enterKeyId );
-	feng.keyboardController.unbind( this._escKeyId );
-};
-
-
-feng.views.sections.overlays.OpeningOverlay.prototype.shouldShow = function( sectionId, viewId ){
-
-	var shouldShow;
-
-	if( !this._shownOnce[sectionId] ) {
-
-		shouldShow = true;
-
-	}else {
-
-		if( this._shownOnce[sectionId][viewId] !== true ) shouldShow = true;
-		else shouldShow = false;
-	}
-
-	return shouldShow;
-};
-
-
-feng.views.sections.overlays.OpeningOverlay.prototype.updateContent = function( sectionId, viewId ){
-
-	this._sectionId = sectionId;
-	this._viewId = viewId;
-
-	var copy = this._preload.getAsset('global.fengshui-data')['dialog']['opening'][sectionId][viewId];
-
-	var character = copy['character'];
-	var title = copy['title'];
-	var paragraph = copy['paragraph'];
-
-	var titleEl = goog.dom.query('h1', this.domElement)[0];
-	var paragraphEl = goog.dom.query('p', this.domElement)[0];
-	var characterEl = goog.dom.getElementByClass('character', this.domElement);
-
-	titleEl.innerHTML = title;
-	paragraphEl.innerHTML = paragraph;
-
-	goog.dom.classes.addRemove( characterEl, this._character, character );
-	this._character = character;
-};
-
-
-feng.views.sections.overlays.OpeningOverlay.prototype.animateIn = function(){
-
-	var shouldShow = this.shouldShow( this._sectionId, this._viewId );
-
-	if(!shouldShow) return false;
-
-	goog.base(this, 'animateIn');
-
-	TweenMax.fromTo(this.domElement, .8, {
-		'opacity': 0
-	}, {
-		'opacity': 1,
-		'ease': Strong.easeInOut
-	});
-
-	this._popup.animateIn( 800 );
-
-	this._shownOnce[this._sectionId] = this._shownOnce[this._sectionId] || {};
-	this._shownOnce[this._sectionId][this._viewId] = true;
-};
-
-
-feng.views.sections.overlays.OpeningOverlay.prototype.animateOut = function(){
-
-	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
-
-	TweenMax.to(this.domElement, .8, {
-		'delay': .25,
-		'opacity': 0,
-		'ease': Strong.easeInOut,
-		'onComplete': this.hide,
-		'onCompleteParams': [ true ],
-		'onCompleteScope': this
-	});
-};
-
-
-feng.views.sections.overlays.OpeningOverlay.prototype.onClickOK = function(e){
-
-	this._popup.animateOut();
-};
-
-
-feng.views.sections.overlays.OpeningOverlay.prototype.onResize = function(e){
-
-	goog.base(this, 'onResize', e);
-
-	var viewportSize = goog.dom.getViewportSize();
-
-	goog.style.setSize(this.domElement, viewportSize);
-
-	feng.utils.Utils.centerAlign( this._popup.domElement, viewportSize );
-};goog.provide('feng.views.sections.overlays.EndingOverlay');
-
-goog.require('goog.dom');
-goog.require('goog.style');
-goog.require('feng.views.Overlay');
-goog.require('feng.views.popups.Popup');
-goog.require('feng.models.Preload');
-goog.require('feng.utils.Utils');
-
-
-/**
- * @constructor
- */
-feng.views.sections.overlays.EndingOverlay = function(domElement){
-
-	var canHalt = true;
-
-  goog.base(this, domElement, canHalt);
-
-  var popupEl = goog.dom.getElementByClass('popup', this.domElement);
-  this._popup = new feng.views.popups.Popup( popupEl );
-
-  this._stayButton = goog.dom.getElementByClass('stay', popupEl);
-  this._nextButton = goog.dom.getElementByClass('next', popupEl);
-
-	this._sectionId = null;
-  this._shownOnce = {};
-
-  this._character = '';
-
-  this._enterKeyId = null;
-	this._escKeyId = null;
-	this._onClickNext = goog.bind( this.onClickNext, this );
-	this._onClickStay = goog.bind( this.onClickStay, this );
-
-  this._preload = feng.models.Preload.getInstance();
-};
-goog.inherits(feng.views.sections.overlays.EndingOverlay, feng.views.Overlay);
-goog.addSingletonGetter(feng.views.sections.overlays.EndingOverlay);
-
-
-feng.views.sections.overlays.EndingOverlay.prototype.activate = function(){
-
-	goog.base(this, 'activate');
-
-	this._eventHandler.listenOnce( this._stayButton, 'click', this.onClickStay, false, this );
-	this._eventHandler.listenOnce( this._nextButton, 'click', this.onClickNext, false, this );
-	this._eventHandler.listenOnce( this._popup, feng.events.EventType.ANIMATE_OUT, this.animateOut, false, this );
-
-	this._enterKeyId = feng.keyboardController.bind( this._onClickNext, feng.keyboardController.key.ENTER, true );
-	this._escKeyId = feng.keyboardController.bind( this._onClickStay, feng.keyboardController.key.ESC, true );
-};
-
-
-feng.views.sections.overlays.EndingOverlay.prototype.deactivate = function(){
-
-	goog.base(this, 'deactivate');
-
-	feng.keyboardController.unbind( this._enterKeyId );
-	feng.keyboardController.unbind( this._escKeyId );
-};
-
-
-feng.views.sections.overlays.EndingOverlay.prototype.updateContent = function( sectionId ){
-
-	this._sectionId = sectionId;
-
-	var copy = this._preload.getAsset('global.fengshui-data')['dialog']['ending'][sectionId];
-
-	var character = copy['character'];
-	var title = copy['title'];
-	var paragraph = copy['paragraph'];
-
-	var titleEl = goog.dom.query('h1', this.domElement)[0];
-	var paragraphEl = goog.dom.query('p', this.domElement)[0];
-	var characterEl = goog.dom.getElementByClass('character', this.domElement);
-
-	titleEl.innerHTML = title;
-	paragraphEl.innerHTML = paragraph;
-
-	goog.dom.classes.addRemove( characterEl, this._character, character );
-	this._character = character;
-};
-
-
-feng.views.sections.overlays.EndingOverlay.prototype.animateIn = function(){
-
-	if( !this._shownOnce[this._sectionId] ) {
-
-		this._shownOnce[this._sectionId] = true;
-
-	}else {
-
-		return false;
-	}
-
-	goog.base(this, 'animateIn');
-
-	TweenMax.fromTo(this.domElement, .8, {
-		'opacity': 0
-	}, {
-		'opacity': 1,
-		'ease': Strong.easeInOut
-	});
-
-	this._popup.animateIn();
-};
-
-
-feng.views.sections.overlays.EndingOverlay.prototype.animateOut = function(){
-
-	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
-
-	TweenMax.to(this.domElement, .8, {
-		'delay': .25,
-		'opacity': 0,
-		'ease': Strong.easeInOut,
-		'onComplete': this.hide,
-		'onCompleteParams': [ true ],
-		'onCompleteScope': this
-	});
-};
-
-
-feng.views.sections.overlays.EndingOverlay.prototype.onClickStay = function(e){
-
-	this._popup.animateOut();
-};
-
-
-feng.views.sections.overlays.EndingOverlay.prototype.onClickNext = function(e){
-
-	this._popup.animateOut();
-};
-
-
-feng.views.sections.overlays.EndingOverlay.prototype.onResize = function(e){
-
-	goog.base(this, 'onResize', e);
-
-	var viewportSize = goog.dom.getViewportSize();
-
-	goog.style.setSize(this.domElement, viewportSize);
-
-	feng.utils.Utils.centerAlign( this._popup.domElement, viewportSize );
-};goog.provide('feng.views.sections.controls.DropButton');
-
-goog.require('feng.views.sections.controls.Controls');
-
-
-/**
- * @constructor
- */
-feng.views.sections.controls.DropButton = function(domElement){
-	
-  goog.base(this, domElement);
-
-  this._movableObject = null;
-
-  this.fadeOut();
-};
-goog.inherits(feng.views.sections.controls.DropButton, feng.views.sections.controls.Controls);
-
-
-feng.views.sections.controls.DropButton.prototype.activate = function( movableObject ){
-
-  var shouldActivate = goog.base(this, 'activate');
-
-  if(!shouldActivate) return;
-
-  this._movableObject = movableObject;
-
-  this.fadeIn();
-
-	this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
-
-	goog.fx.anim.registerAnimation( this );
-};
-
-
-feng.views.sections.controls.DropButton.prototype.deactivate = function(){
-
-  var shouldDeactivate = goog.base(this, 'deactivate');
-
-  if(!shouldDeactivate) return;
-
-  this._movableObject = null;
-
-  goog.fx.anim.unregisterAnimation( this );
-};
-
-
-feng.views.sections.controls.DropButton.prototype.fadeIn = function(){
-
-	goog.dom.classes.addRemove( this.domElement, 'fadeOut', 'fadeIn' );
-};
-
-
-feng.views.sections.controls.DropButton.prototype.fadeOut = function(){
-
-	goog.dom.classes.addRemove( this.domElement, 'fadeIn', 'fadeOut' );
-};
-
-
-feng.views.sections.controls.DropButton.prototype.onClick = function(e){
-
-	if(goog.dom.classes.has(this.domElement, 'fadeOut')) return false;
-
-	this.fadeOut();
-
-  var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
-
-  browseControls.dispatchEvent({
-    type: feng.events.EventType.CHANGE,
-    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-    nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-    object: this._movableObject.getCloseUpObjectWhenDropped()
-  });
-};
-
-
-feng.views.sections.controls.DropButton.prototype.onAnimationFrame = function(now) {
-
-  var camera = this._cameraController.activeCamera;
-  var viewSize = this._viewSize;
-
-  var pos3d = this._movableObject.getDestination();
-  var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, camera, viewSize );
-  
-  goog.style.setStyle( this.domElement, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)' );
-};goog.provide('feng.views.sections.controls.Book');
-
-goog.require('goog.dom');
-goog.require('goog.fx.Dragger');
-goog.require('feng.events');
-goog.require('feng.fx.AnimatedSprite');
-goog.require('feng.views.sections.controls.Controls');
-goog.require('feng.views.book.Book');
-
-
-/**
- * @constructor
- */
-feng.views.sections.controls.Book = function(domElement){
-	
-  goog.base(this, domElement);
-
-  var iconEl = goog.dom.getElementByClass('icon', this.domElement);
-  var img = feng.models.Preload.getInstance().getAsset('global.book');
-  this._bookSprite = new feng.fx.AnimatedSprite(iconEl, img, 10, 3, 30);
-
-	var prop = {
-		progress: 0
-	};
-
-	this._bookTweener = TweenMax.fromTo(prop, .25, {
-		progress: 0
-	},{
-		progress: 1,
-		'paused': true,
-		'ease': Linear.easeNone,
-		'onUpdate': function() {
-			this._bookSprite.setProgress( prop.progress );
-		},
-		'onUpdateScope': this
-	});
-};
-goog.inherits(feng.views.sections.controls.Book, feng.views.sections.controls.Controls);
-
-
-feng.views.sections.controls.Book.prototype.activate = function(){
-
-  var shouldActivate = goog.base(this, 'activate');
-
-  if(!shouldActivate) return;
-
-	this._eventHandler.listen(this.domElement, 'mouseover', this.onMouseOver, false, this);
-	this._eventHandler.listen(this.domElement, 'mouseout', this.onMouseOut, false, this);
-};
-
-
-feng.views.sections.controls.Book.prototype.onMouseOver = function(e){
-
-	this._bookTweener.play();
-};
-
-
-feng.views.sections.controls.Book.prototype.onMouseOut = function(e){
-
-	this._bookTweener.reverse();
-};
-
-
-feng.views.sections.controls.Book.prototype.onResize = function(e){
-
-	var viewportSize = goog.dom.getViewportSize();
-	goog.style.setPosition(this.domElement, viewportSize.width - 100 - 30, 150);
-};
-
-
-feng.views.sections.controls.Book.prototype.onModeChange = function(e){
-
-  goog.base(this, 'onModeChange', e);
-
-  switch(e.mode) {
-
-    case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
-	if(this._isActivated) {
-		this.deactivate();
-	}
-    break;
-
-    default:
-    if(!this._isActivated) {
-		this.activate();
-    }
-    break;
-  }
-};goog.provide('feng.views.sections.controls.Tooltips');
-
-goog.require('goog.async.Throttle');
-goog.require('goog.dom.classes');
-goog.require('feng.views.sections.controls.Controls');
-goog.require('feng.utils.ThreeUtils');
-
-
-/**
- * @constructor
- */
-feng.views.sections.controls.Tooltips = function( domElement ){
-
-  goog.base(this, domElement);
-
-  this._detectBlockingThrottle = new goog.async.Throttle( this.detectBlocking, 400, this );
-
-  this._raycaster = new THREE.Raycaster();
-
-  this._rayDirection = new THREE.Vector3();
-
-  this._detectObjects = [];
-
-  this._tooltips = {};
-
-  // tooltips of current view3d
-  this._currentTooltips = {};
-  this._tooltipObjects = [];
-};
-goog.inherits(feng.views.sections.controls.Tooltips, feng.views.sections.controls.Controls);
-
-
-feng.views.sections.controls.Tooltips.prototype.createTooltips = function( view3d ){
-
-  // create tip tooltips
-  goog.object.forEach( view3d.tipObjects, function(tipObject) {
-
-    var tip = tipObject.tip;
-
-    if(!this._tooltips[ tip.id ]) {
-
-      var tooltipEl = soy.renderAsFragment(feng.templates.controls.TipTooltip, {
-        tip: tipObject.tip
-      });
-
-      goog.dom.appendChild( this.domElement, tooltipEl );
-
-      this._tooltips[ tip.id ] = tooltipEl;
-    }
-  }, this);
-
-  // create gateway tooltips
-  goog.object.forEach( view3d.getGatewayObjects(), function(gatewayObject) {
-
-    if(!this._tooltips[ gatewayObject.id ]) {
-
-      var tooltipEl = soy.renderAsFragment(feng.templates.controls.GatewayTooltip, {
-        gateway: gatewayObject
-      });
-
-      goog.dom.appendChild( this.domElement, tooltipEl );
-
-      this._tooltips[ gatewayObject.id ] = tooltipEl;
-    }
-  }, this);
-};
-
-
-feng.views.sections.controls.Tooltips.prototype.getTooltip = function( id ){
-
-  return goog.dom.query('.tooltip[data-id=' + id + ']', this.domElement)[0];
-};
-
-
-feng.views.sections.controls.Tooltips.prototype.setView3D = function( view3d ){
-
-  goog.base(this, 'setView3D', view3d);
-
-  // create tooltips if not
-  this.createTooltips( view3d );
-
-  // find tooltip objects of view3d
-  var tipObjects = goog.object.getValues( view3d.tipObjects );
-  var gatewayObjects = view3d.getGatewayObjects();
-  this._tooltipObjects = ([]).concat( tipObjects, gatewayObjects );
-
-  // set current tooltips from objects
-  this._currentTooltips = {};
-
-  goog.array.forEach( this._tooltipObjects, function(object) {
-
-    var id = object.tip ? object.tip.id : object.id;
-    this._currentTooltips[ id ] = this._tooltips[ id ];
-  }, this);
-
-  // listen to tip unlock event
-  goog.array.forEach( tipObjects, function(tipObject) {
-
-    var tip = tipObject.tip;
-    var tooltipEl = this._tooltips[ tip.id ];
-
-    goog.dom.classes.enable( tooltipEl, 'locked', !(tip.unlocked && tip.isFinal) );
-
-    if(!tip.unlocked && tip.isFinal) {
-      goog.events.listenOnce( tip, feng.events.EventType.UNLOCK, this.onTipUnlock, false, this );
-    }
-  }, this);
-
-  // listen to click event of gateway tooltip
-  goog.array.forEach( gatewayObjects, function(gatewayObject) {
-
-    var tooltipEl = this._tooltips[ gatewayObject.id ];
-    goog.events.listenOnce( tooltipEl, 'click', this.onClickGatewayTooltip, false, this );
-  }, this);
-
-  this.updateDetectObjects();
-};
-
-
-feng.views.sections.controls.Tooltips.prototype.activate = function(){
-
-  var shouldActivate = goog.base(this, 'activate');
-
-  if(!shouldActivate) return;
-
-  goog.object.forEach( this._currentTooltips, function(tooltip) {
-    goog.dom.classes.addRemove( tooltip, 'fadeOut', 'fadeIn' );
-  });
-
-  this.updateDetectObjects();
-
-  goog.fx.anim.registerAnimation( this );
-};
-
-
-feng.views.sections.controls.Tooltips.prototype.deactivate = function(){
-
-  var shouldDeactivate = goog.base(this, 'deactivate');
-
-  if(!shouldDeactivate) return;
-
-  goog.object.forEach( this._currentTooltips, function(tooltip) {
-    goog.dom.classes.addRemove( tooltip, 'fadeIn', 'fadeOut' );
-  });
-
-  goog.fx.anim.unregisterAnimation( this );
-};
-
-
-feng.views.sections.controls.Tooltips.prototype.show = function( shouldShow ){
-  
-  goog.base(this, 'show', shouldShow);
-
-  this.detectBlocking();
-};
-
-
-feng.views.sections.controls.Tooltips.prototype.updateDetectObjects = function(){
-
-  if(!this._view3d) return;
-
-  // check objects to detect blocking
-  this._detectObjects = goog.array.map(this._view3d.getSolidObjects(), function(object) {
-    return object.object3d;
-  });
-};
-
-
-feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
-
-  var control = this._view3d.modeController.control;
-  var controlPosition = control.getPosition();
-  var controlDirection = control.getForwardVector( true );
-  var thresholdDot = Math.cos( THREE.Math.degToRad(45) );
-
-  goog.array.forEach( this._tooltipObjects, function(object) {
-
-    var id = object.tip ? object.tip.id : object.id;
-
-    var tooltip = this._currentTooltips[ id ];
-
-    var objectCenter = object.getCenter();
-    var direction = this._rayDirection.subVectors( objectCenter, controlPosition ).normalize();
-    this._raycaster.set( controlPosition, direction );
-
-    var objectDirection = objectCenter.clone().sub( controlPosition ).normalize();
-    var dot = objectDirection.dot( controlDirection );
-
-    if(dot >= thresholdDot) {
-
-      goog.dom.classes.enable( tooltip, 'hidden', false );
-
-    }else {
-
-      goog.dom.classes.enable( tooltip, 'hidden', true );
-      return;
-    }
-    
-    var intersects = this._raycaster.intersectObjects( this._detectObjects );
-
-    var shouldShow = (intersects.length > 0 && 
-      (intersects[0].object.view3dObject === object || intersects[0].object.parent.view3dObject === object || goog.array.contains(intersects[0].object.children, object.object3d))
-      );
-
-    goog.dom.classes.enable( tooltip, 'hidden', !shouldShow );
-
-  }, this);
-};
-
-
-feng.views.sections.controls.Tooltips.prototype.onTipUnlock = function(e){
-
-  var tipId = e.tip.id;
-  var tooltipEl = this.getTooltip( tipId );
-
-  goog.dom.classes.remove( tooltipEl, 'locked' );
-};
-
-
-feng.views.sections.controls.Tooltips.prototype.onClickGatewayTooltip = function(e){
-
-  e.preventDefault();
-
-  var gatewayId = e.currentTarget.getAttribute('data-id');
-  var gateway = this._view3d.getView3dObject( gatewayId );
-
-  this._view3d.modeController.setMode({
-    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-    nextMode: feng.controllers.view3d.ModeController.Mode.EXIT,
-    gateway: gateway
-  });
-};
-
-
-feng.views.sections.controls.Tooltips.prototype.onModeChange = function(e){
-
-  goog.base(this, 'onModeChange', e);
-
-  goog.dom.classes.enable(this.domElement, 'design', (e.mode === feng.controllers.view3d.ModeController.Mode.DESIGN));
-
-  switch(e.mode) {
-    case feng.controllers.view3d.ModeController.Mode.ENTRY:
-    this.deactivate();
-    this._raycaster.far = 400/2;
-    break;
-
-    case feng.controllers.view3d.ModeController.Mode.BROWSE:
-    this.activate();
-    this._raycaster.far = 400/2;
-    break;
-
-    case feng.controllers.view3d.ModeController.Mode.DESIGN:
-    this.activate();
-    this._raycaster.far = Infinity;
-    break;
-
-    default:
-    this.deactivate();
-    break;
-  }
-};
-
-
-feng.views.sections.controls.Tooltips.prototype.onAnimationFrame = function(now) {
-
-  var camera = this._cameraController.activeCamera;
-  var viewSize = this._viewSize;
-
-  goog.array.forEach( this._tooltipObjects, function(object) {
-
-    var pos3d = object.getCenter();
-    var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, camera, viewSize );
-    
-    var id = object.tip ? object.tip.id : object.id;
-    var tooltip = this._currentTooltips[ id ];
-    goog.style.setStyle( tooltip, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)' );
-
-  }, this);
-
-  this._detectBlockingThrottle.fire();
-};goog.provide('feng.views.sections.controls.Reminder');
-
-goog.require('goog.async.Delay');
-goog.require('goog.Timer');
-goog.require('feng.models.achievements.Achievements');
-goog.require('feng.models.Preload');
-goog.require('feng.views.sections.controls.Controls');
-
-/**
- * @constructor
- */
-feng.views.sections.controls.Reminder = function( domElement, tips ){
-	
-  goog.base(this, domElement);
-
-  this._tips = tips;
-  this._currentTips = [];
-
-  this._isHintShown = false;
-
-  this._hintIndex = 0;
-  this._numHints = 0;
-
-  this._hintTimer = new goog.Timer( 30000 );
-
-  this._hintDialogueEl = goog.dom.query('.dialogue.hint', this.domElement)[0];
-  this._prevEl = goog.dom.query('.prev', this.domElement)[0];
-  this._nextEl = goog.dom.query('.next', this.domElement)[0];
-  this._characterEl = goog.dom.getElementByClass('character', this.domElement);
-  this._canvasEl = goog.dom.query('canvas', this._characterEl)[0];
-  this._canvasContext = this._canvasEl.getContext('2d');
-
-  this._hintEls = null;
-  this._hintEl = null;
-
-  this._characterAnimations = null;
-  this._characterAnimation = null;
-
-  this._hideHintDelay = new goog.async.Delay(this.hideHint, 6000, this);
-};
-goog.inherits(feng.views.sections.controls.Reminder, feng.views.sections.controls.Controls);
-
-
-feng.views.sections.controls.Reminder.prototype.init = function(){
-
-	goog.base(this, 'init');
-
-	goog.array.forEach(this._tips, function(tip) {
-		tip.listenOnce(feng.events.EventType.UNLOCK, this.onTipUnlock, false, this);
-	}, this);
-
-	this._characterAnimations = this.getCharacterAnimations();
-};
-
-
-feng.views.sections.controls.Reminder.prototype.getLockedTipsOfView = function(){
-
-  var achievements = feng.models.achievements.Achievements.getInstance();
-  this._currentTips = achievements.getTipsOfView( this._view3d.id, this._view3d.sectionId );
-
-  this._currentTips = goog.array.filter(this._currentTips, function(tip) {
-  	var requiredTip = tip.getRequiredTip();
-  	var requiredTipUnlocked = requiredTip ? requiredTip.unlocked : true;
-  	return (!tip.unlocked && requiredTipUnlocked);
-  });
-  
-  this._numHints = this._currentTips.length;
-
-  return this._currentTips;
-};
-
-
-feng.views.sections.controls.Reminder.prototype.setView3D = function( view3d ){
-
-  goog.base(this, 'setView3D', view3d);
-
-  this._currentTips = this.getLockedTipsOfView();
-
-  this._hintEls = goog.dom.query('.hints li', this._hintDialogueEl);
-
-  if(this._characterAnimation) {
-  	this._characterAnimation.loop.pause();
-  	this._characterAnimation.raise.pause();
-  }
-
-  this._characterAnimation = goog.object.findValue(this._characterAnimations, function(data) {
-  	return (data.viewId === view3d.id);
-  });
-
-  // if no character animation was found by view id, use the default character
-  this._characterAnimation = this._characterAnimation || goog.object.getValues(this._characterAnimations)[0];
-  //
-
-  this._canvasEl.width = this._characterAnimation.size['width'];
-  this._canvasEl.height = this._characterAnimation.size['height'];
-  this._characterAnimation.loop.restart();
-};
-
-
-feng.views.sections.controls.Reminder.prototype.activate = function(){
-
-  var shouldActivate = goog.base(this, 'activate');
-
-  if(!shouldActivate) return;
-
-	this._eventHandler.listen(this._prevEl, 'click', this.onClick, false, this);
-	this._eventHandler.listen(this._nextEl, 'click', this.onClick, false, this);
-	this._eventHandler.listen(this._characterEl, 'mousedown', this.onMouseDown, false, this);
-	this._eventHandler.listen(this._hintDialogueEl, 'mouseover', this.onMouseOver, false, this);
-	this._eventHandler.listen(this._hintDialogueEl, 'mouseout', this.onMouseOut, false, this);
-	this._eventHandler.listen(this._hintTimer, 'tick', this.onHintTick, false, this);
-
-	this._hintTimer.start();
-};
-
-
-feng.views.sections.controls.Reminder.prototype.deactivate = function(){
-
-  var shouldDeactivate = goog.base(this, 'deactivate');
-
-  if(!shouldDeactivate) return;
-
-	this._hintTimer.stop();
-};
-
-
-feng.views.sections.controls.Reminder.prototype.getCharacterAnimations = function(){
-
-	// extract unique character names from tips
-	var animations = {};
-	var preload = feng.models.Preload.getInstance();
-
-	goog.array.forEach(this._tips, function(tip) {
-
-		var character = tip.character;
-
-		if(animations[character]) return;
-
-		var sectionId = tip.sectionId;
-		var viewId = tip.viewId;
-
-		var img = preload.getAsset( sectionId + '.global.character.' + character );
-		var data = preload.getAsset( sectionId + '.global.character.' + character + '-data' );
-		var frames = data['frames'];
-		var size = data['size'];
-
-		var keys = goog.object.getKeys( frames );
-
-		var loopKeys = goog.array.filter(keys, function(key) {
-			return goog.string.startsWith(key, 'loop-');
-		});
-
-		var raiseKeys = goog.array.filter(keys, function(key) {
-			return goog.string.startsWith(key, 'raise-');
-		});
-
-		var loopProp = {
-			frame: 0
-		};
-
-		var numLoopFrames = loopKeys.length;
-
-		var loopTweener = TweenMax.to(loopProp, numLoopFrames/30, {
-			frame: numLoopFrames - 1,
-			'ease': Linear.easeNone,
-			'paused': true,
-			'yoyo': true,
-			'repeat': -1,
-			'repeatDelay': 2,
-			'onUpdate': function() {
-				var frame = Math.round( loopProp.frame );
-				this.drawCharacter( img, frames[ 'loop-' + frame ] );
-			},
-			'onUpdateScope': this
-		});
-
-		var raiseProp = {
-			frame: 0
-		};
-
-		var numRaiseFrames = raiseKeys.length;
-
-		var raiseTweener = TweenMax.to(raiseProp, numRaiseFrames/30, {
-			frame: numRaiseFrames - 1,
-			'ease': Linear.easeNone,
-			'paused': true,
-			'onUpdate': function() {
-				var frame = Math.round( raiseProp.frame );
-				this.drawCharacter( img, frames[ 'raise-' + frame ] );
-			},
-			'onUpdateScope': this,
-			'onReverseComplete': function() {
-				loopTweener.restart();
-			}
-		});
-
-		animations[character] = {
-			viewId: tip.viewId,
-			size: size,
-			loop: loopTweener,
-			raise: raiseTweener
-		};
-
-	}, this);
-
-	/* data structure */
-	/*
-	character: {
-		size: <Object>,
-		loop: <TweenMax>,
-		raise: <TweenMax>,
-		viewId: <String>
-	}
-	*/
-
-	return animations;
-};
-
-
-feng.views.sections.controls.Reminder.prototype.getCurrentTip = function(){
-
-	var tip = goog.array.find(this._currentTips, function(tip) {
-		return !tip.unlocked;
-	});
-
-	return tip;
-};
-
-
-feng.views.sections.controls.Reminder.prototype.drawCharacter = function(img, frame){
-
-	var x = frame['x'], y = frame['y'];
-	var width = this._canvasEl.width, height = this._canvasEl.height;
-
-	this._canvasContext.clearRect( 0, 0, width, height );
-	this._canvasContext.drawImage( img, x, y, width, height, 0, 0, width, height );
-};
-
-
-feng.views.sections.controls.Reminder.prototype.prevHint = function(){
-
-	this._hintIndex --;
-	if(this._hintIndex < 0) this._hintIndex = this._numHints - 1;
-
-	this.gotoHintByTip( this._currentTips[this._hintIndex].id );
-};
-
-
-feng.views.sections.controls.Reminder.prototype.nextHint = function(){
-
-	this._hintIndex ++;
-	if(this._hintIndex > this._numHints - 1) this._hintIndex = 0;
-
-	this.gotoHintByTip( this._currentTips[this._hintIndex].id );
-};
-
-
-feng.views.sections.controls.Reminder.prototype.gotoHintByTip = function( tipId ){
-
-	var domIndex = goog.array.findIndex(this._hintEls, function(el, index) {
-		if(el.getAttribute('data-tip-id') === tipId) {
-			return true;
-		}
-	});
-
-	if(this._hintEl) {
-		goog.dom.classes.remove( this._hintEl, 'shown' );
-	}
-
-	this._hintEl = this._hintEls[ domIndex ];
-
-	goog.dom.classes.add( this._hintEl, 'shown' );
-};
-
-
-feng.views.sections.controls.Reminder.prototype.showHint = function( tipId ){
-
-	this._isHintShown = true;
-
-	this.gotoHintByTip( tipId );
-
-	goog.dom.classes.addRemove( this.domElement, 'inactive', 'active' );
-
-	this._hideHintDelay.start();
-
-	this._hintTimer.stop();
-
-	this._characterAnimation.loop.pause();
-	this._characterAnimation.raise.restart();
-};
-
-
-feng.views.sections.controls.Reminder.prototype.hideHint = function( instance ){
-
-	this._isHintShown = false;
-
-	var duration = instance ? 0 : .4;
-
-	goog.dom.classes.addRemove( this.domElement, 'active', 'inactive' );
-
-	this._hintTimer.start();
-
-	this._characterAnimation.raise.reverse();
-};
-
-
-feng.views.sections.controls.Reminder.prototype.onClick = function(e){
-
-	switch(e.currentTarget) {
-		case this._prevEl:
-		this.prevHint();
-		break;
-
-		case this._nextEl:
-		this.nextHint();
-		break;
-	}
-};
-
-
-feng.views.sections.controls.Reminder.prototype.onMouseDown = function(e){
-
-	if(!e.isMouseActionButton()) {
-		return false;
-	}
-
-	if(this._isHintShown) {
-
-		this.hideHint();
-
-	}else {
-
-		var tip = this.getCurrentTip();
-		
-		if(tip) {
-			this.showHint( tip.id );
-		}
-	}
-};
-
-
-feng.views.sections.controls.Reminder.prototype.onMouseOver = function(e){
-
-	if(e.currentTarget === this._hintDialogueEl) {
-
-		this._hideHintDelay.stop();
-	}
-};
-
-
-feng.views.sections.controls.Reminder.prototype.onMouseOut = function(e){
-
-	if(e.currentTarget === this._hintDialogueEl) {
-
-		if(!e.relatedTarget || !goog.dom.contains(e.currentTarget, e.relatedTarget)) {
-			this._hideHintDelay.start();
-		}
-	}
-};
-
-
-feng.views.sections.controls.Reminder.prototype.onHintTick = function(e){
-
-	var tip = this.getCurrentTip();
-
-	if(tip) {
-		this.showHint( tip.id );
-	}
-};
-
-
-feng.views.sections.controls.Reminder.prototype.onTipUnlock = function(e){
-
-	var tipId = e.tip.id;
-
-	var unlockedHintEl = goog.dom.query('.hints li[data-tip-id="' + tipId + '"]', this._hintDialogueEl)[0];
-	goog.dom.removeNode( unlockedHintEl );
-
-	this._currentTips = this.getLockedTipsOfView();
-};
-
-
-feng.views.sections.controls.Reminder.prototype.onModeChange = function(e){
-
-	goog.base(this, 'onModeChange', e);
-	
-	var mode = e.nextMode || e.mode;
-
-	switch(mode) {
-
-		case feng.controllers.view3d.ModeController.Mode.BROWSE:
-		case feng.controllers.view3d.ModeController.Mode.WALK:
-		this.activate();
-		break;
-
-		default:
-		this.deactivate();
-		break;
-	}
-};
-
-
-feng.views.sections.controls.Reminder.prototype.onResize = function(e){
-
-	var viewportSize = goog.dom.getViewportSize();
-	goog.style.setPosition(this.domElement, viewportSize.width - 100 - 30, viewportSize.height - 100 - 30);
-};goog.provide('feng.views.sections.captions.DropFruitsCaption');
-
-goog.require('goog.soy');
-goog.require('feng.templates.captions');
-goog.require('feng.views.sections.captions.Caption');
-
-
-/**
- * @constructor
- */
-feng.views.sections.captions.DropFruitsCaption = function( object, cameraController, renderSize, controls, hud ){
-
-  this._template = feng.templates.captions.DropFruitsCaption;
-  
-  this._templateData = {
-    fruits: object.tip.details['descriptions'],
-    tip: object.tip,
-    position: 'right'
-  };
-
-  goog.base(this, object, cameraController, renderSize, controls, hud);
-
-  this._fruitButtonEls = goog.dom.query('.drop-fruits .fruits li button', this.domElement);
-  this._descriptionEls = goog.dom.query('.drop-fruits .descriptions li', this.domElement);
-  this._descriptionEl = goog.dom.query('.drop-fruits .descriptions', this.domElement)[0];
-};
-goog.inherits(feng.views.sections.captions.DropFruitsCaption, feng.views.sections.captions.Caption);
-
-
-feng.views.sections.captions.DropFruitsCaption.prototype.show = function() {
-
-  goog.base(this, 'show');
-
-  this._object.startInteraction();
-
-  this._eventHandler.listen( this._object, feng.events.EventType.CHANGE, this.onFruitPlateChange, false, this );
-
-  goog.array.forEach(this._fruitButtonEls, function(fruitButtonEl) {
-    this._eventHandler.listen( fruitButtonEl, 'mousedown', this.onClickFruitButton, false, this );
-  }, this);
-};
-
-
-feng.views.sections.captions.DropFruitsCaption.prototype.onFruitPlateChange = function(e) {
-
-  this.setActiveFruit( e.fruit );
-};
-
-
-feng.views.sections.captions.DropFruitsCaption.prototype.setActiveFruit = function(fruit) {
-
-  goog.array.forEach(this._fruitButtonEls, function(fruitButtonEl) {
-
-    if(fruitButtonEl.getAttribute('data-fruit-id') === fruit) {
-      goog.dom.classes.add(fruitButtonEl, 'active');
-    }else {
-      goog.dom.classes.remove(fruitButtonEl, 'active');
-    }
-  });
-
-  goog.array.forEach(this._descriptionEls, function(descriptionEl) {
-
-    if(descriptionEl.getAttribute('data-fruit-id') === fruit) {
-      goog.dom.classes.add(descriptionEl, 'active');
-    }else {
-      goog.dom.classes.remove(descriptionEl, 'active');
-    }
-  });
-
-  goog.dom.classes.add( this._descriptionEl, 'shown' );
-};
-
-
-feng.views.sections.captions.DropFruitsCaption.prototype.onClickFruitButton = function(e) {
-
-  if(!this._object.isUnlocked()) return false;
-
-  var fruit = e.currentTarget.getAttribute('data-fruit-id');
-  this.setActiveFruit( fruit );
-};goog.provide('feng.views.View3DHud');
-
-goog.require('feng.views.sections.controls.ObjectSelector');
-goog.require('feng.views.sections.controls.DropButton');
-goog.require('feng.views.sections.controls.Compass');
-goog.require('feng.views.sections.controls.Book');
-goog.require('feng.views.sections.controls.Reminder');
-goog.require('feng.views.sections.controls.HomeButton');
-goog.require('feng.views.sections.controls.ProgressBar');
-goog.require('feng.views.sections.controls.Tooltips');
-goog.require('feng.views.sections.captions.Caption');
-goog.require('feng.views.sections.captions.ChangeColorCaption');
-goog.require('feng.views.sections.captions.ChangeObjectCaption');
-goog.require('feng.views.sections.captions.ChangePictureCaption');
-goog.require('feng.views.sections.captions.DropFruitsCaption');
-goog.require('feng.views.sections.overlays.TutorialOverlay');
-goog.require('feng.views.sections.overlays.OpeningOverlay');
-goog.require('feng.views.sections.overlays.EndingOverlay');
-goog.require('feng.views.sections.overlays.FinaleOverlay');
-goog.require('feng.views.sections.overlays.LoaderOverlay');
-
-
-/**
- * @constructor
- */
-feng.views.View3DHud = function( hudEl, view3dController, tips, episode ){
-
-  goog.base(this);
-
-  this.domElement = hudEl;
-
-  this._view3d = null;
-  this._view3dController = view3dController;
-
-  this._episode = episode;
-
-  this._tips = tips;
-
-  this._isInEntryMode = false;
-
-  // create a captions collection
-  this._captions = {};
-
-  // create overlays
-  this._overlaysEl = goog.dom.getElementByClass('overlays', this.domElement);
-
-  var tutorialOverlayEl = goog.dom.getElementByClass('tutorial-overlay', this._overlaysEl);
-  this.tutorialOverlay = new feng.views.sections.overlays.TutorialOverlay( tutorialOverlayEl );
-
-  var openingOverlayEl = goog.dom.getElementByClass('opening-overlay', this._overlaysEl);
-  this.openingOverlay = new feng.views.sections.overlays.OpeningOverlay( openingOverlayEl );
-
-  var endingOverlayEl = goog.dom.getElementByClass('ending-overlay', this._overlaysEl);
-  this.endingOverlay = new feng.views.sections.overlays.EndingOverlay( endingOverlayEl );
-
-  var finaleOverlayEl = goog.dom.getElementByClass('finale-overlay', this._overlaysEl);
-  this.finaleOverlay = new feng.views.sections.overlays.FinaleOverlay( finaleOverlayEl );
-
-  var loaderOverlayEl = goog.dom.getElementByClass('loader-overlay', this._overlaysEl);
-  this.loaderOverlay = new feng.views.sections.overlays.LoaderOverlay( loaderOverlayEl );
-
-  // create controls
-  this._controlsEl = goog.dom.getElementByClass('controls', this.domElement);
-
-  var homeButtonEl = goog.dom.getElementByClass('home-button', this._controlsEl);
-  this.homeButton = new feng.views.sections.controls.HomeButton( homeButtonEl );
-  this.homeButton.setParentEventTarget( this );
-
-  var compassEl = goog.dom.getElementByClass('compass', this._controlsEl);
-  this.compass = new feng.views.sections.controls.Compass( compassEl );
-  this.compass.setParentEventTarget( this );
-
-  var bookEl = goog.dom.getElementByClass('book', this._controlsEl);
-  this.book = new feng.views.sections.controls.Book( bookEl );
-  this.book.setParentEventTarget( this );
-  
-  var reminderEl = goog.dom.getElementByClass('reminder', this._controlsEl);
-  this.reminder = new feng.views.sections.controls.Reminder( reminderEl, tips );
-  this.reminder.setParentEventTarget( this );
-
-  var progressBarEl = goog.dom.getElementByClass('progressBar', this._controlsEl);
-  this.progressBar = new feng.views.sections.controls.ProgressBar( progressBarEl, tips );
-  this.progressBar.setParentEventTarget( this );
-
-  var objectSelectorEl = goog.dom.getElementByClass('objectSelector', this._controlsEl);
-  this.objectSelector = new feng.views.sections.controls.ObjectSelector( objectSelectorEl );
-
-  var dropButtonEl = goog.dom.getElementByClass('dropButton', this._controlsEl);
-  this.dropButton = new feng.views.sections.controls.DropButton( dropButtonEl );
-
-  // captions
-  this._captionsEl = goog.dom.getElementByClass('captions', this.domElement);
-
-  // tooltips
-  this._tooltipsEl = goog.dom.getElementByClass('tooltips', this.domElement);
-  this.tooltips = new feng.views.sections.controls.Tooltips( this._tooltipsEl );
-};
-goog.inherits(feng.views.View3DHud, goog.events.EventTarget);
-
-
-feng.views.View3DHud.prototype.init = function() {
-
-  this.reminder.init();
-};
-
-
-feng.views.View3DHud.prototype.setView3D = function( view3d ) {
-
-  if(this._view3d) {
-    this._view3d.modeController.unlisten( feng.events.EventType.CHANGE, this.onModeChange, false, this );
-  }
-
-  this._view3d = view3d;
-
-  this._view3d.modeController.listen( feng.events.EventType.CHANGE, this.onModeChange, false, this );
-
-  this.compass.setView3D( view3d );
-  this.book.setView3D( view3d );
-  this.reminder.setView3D( view3d );
-  this.progressBar.setView3D( view3d );
-  this.objectSelector.setView3D( view3d );
-  this.dropButton.setView3D( view3d );
-  this.tooltips.setView3D( view3d );
-};
-
-
-feng.views.View3DHud.prototype.pause = function( shouldPause ) {
-
-  goog.dom.classes.enable( this._captionsEl, 'paused', shouldPause );
-  goog.dom.classes.enable( this._tooltipsEl, 'paused', shouldPause );
-  goog.dom.classes.enable( this._controlsEl, 'paused', shouldPause );
-
-  goog.dom.classes.enable( this._controlsEl, 'hidden', shouldPause );
-
-  feng.mainOptions.showHelpButton( !shouldPause );
-};
-
-
-feng.views.View3DHud.prototype.activate = function() {
-
-  this._view3dController.listen(feng.events.EventType.SHOW, this.onShowView3D, false, this);
-  this._view3dController.listen(feng.events.EventType.ANIMATED_IN, this.onAnimatedInView3D, false, this);
-
-  feng.tutorial.listen(feng.events.EventType.ANIMATE_IN, this.tutorialOverlay.animateIn, false, this.tutorialOverlay);
-  feng.tutorial.listen(feng.events.EventType.ANIMATE_OUT, this.tutorialOverlay.animateOut, false, this.tutorialOverlay);
-
-  this._episode.listen(feng.events.EventType.START, this.loaderOverlay.onLoadStart, false, this.loaderOverlay);
-  this._episode.listen(feng.events.EventType.PROGRESS, this.loaderOverlay.onLoadProgress, false, this.loaderOverlay);
-  this._episode.listen(feng.events.EventType.COMPLETE, this.loaderOverlay.onLoadComplete, false, this.loaderOverlay);
-
-  this.openingOverlay.listen(feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this);
-  this.openingOverlay.listen(feng.events.EventType.ANIMATE_OUT, this.onOverlayAnimateOut, false, this);
-
-  this.endingOverlay.listen(feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this);
-  this.endingOverlay.listen(feng.events.EventType.ANIMATE_OUT, this.onOverlayAnimateOut, false, this);
-
-  this.tutorialOverlay.activate();
-
-  this.activateControls();
-};
-
-
-feng.views.View3DHud.prototype.deactivate = function() {
-
-  this._view3d.modeController.removeAllListeners();
-  this._view3dController.removeAllListeners();
-  feng.tutorial.removeAllListeners();
-  this._episode.removeAllListeners();
-  this.openingOverlay.removeAllListeners();
-
-  this.dropButton.deactivate();
-  this.tooltips.deactivate();
-  this.tutorialOverlay.deactivate();
-
-  this.deactivateControls();
-};
-
-
-feng.views.View3DHud.prototype.activateControls = function() {
-
-  this.homeButton.activate();
-  this.compass.activate();
-  this.book.activate();
-  this.reminder.activate();
-  this.progressBar.activate();
-
-  if(this._view3d && !this._isInEntryMode) {
-    this.tooltips.activate();
-  }
-
-  feng.mainOptions.showHelpButton( true );
-};
-
-
-feng.views.View3DHud.prototype.deactivateControls = function() {
-
-  this.homeButton.deactivate();
-  this.compass.deactivate();
-  this.book.deactivate();
-  this.reminder.deactivate();
-  this.progressBar.deactivate();
-
-  this.tooltips.deactivate();
-
-  feng.mainOptions.showHelpButton( false );
-};
-
-
-feng.views.View3DHud.prototype.getCaption = function( object, controls ) {
-
-	var key = goog.getUid(object);
-
-	if(this._captions[key]) {
-		return this._captions[key];
-	}
-
-  var captionClass = feng.views.sections.captions.Caption;
-
-  // get the caption if specified by object
-  switch(object.captionClass) {
-    case 'changecolor':
-    captionClass = feng.views.sections.captions.ChangeColorCaption;
-    break;
-
-    case 'changepicture':
-    captionClass = feng.views.sections.captions.ChangePictureCaption;
-    break;
-
-    case 'changeobject':
-    captionClass = feng.views.sections.captions.ChangeObjectCaption;
-    break;
-
-    case 'dropfruits':
-    captionClass = feng.views.sections.captions.DropFruitsCaption;
-    break;
-
-    default:
-    break;
-  }
-  
-  var cameraController = this._view3d.cameraController;
-  var viewSize = this._view3d.viewSize;
-
-	var caption = new captionClass( object, cameraController, viewSize, controls, this );
-	this._captions[ key ] = caption;
-
-	goog.dom.appendChild( this._captionsEl, caption.domElement );
-
-	return caption;
-};
-
-
-feng.views.View3DHud.prototype.showControls = function( shouldShow ) {
-
-  goog.dom.classes.enable( this._controlsEl, 'hidden', !shouldShow );
-  
-  this.tooltips.show( shouldShow );
-
-  feng.mainOptions.showHelpButton( shouldShow );
-};
-
-
-feng.views.View3DHud.prototype.onModeChange = function( e ) {
-
-  var anyMode = e.nextMode || e.mode;
-  var shouldShowControls = true;
-
-  this._isInEntryMode = (e.mode === feng.controllers.view3d.ModeController.Mode.ENTRY);
-
-  switch(anyMode) {
-
-    case feng.controllers.view3d.ModeController.Mode.EXIT:
-    case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
-    case null:
-    shouldShowControls = false;
-    break;
-  }
-
-  switch(e.mode) {
-    
-    case feng.controllers.view3d.ModeController.Mode.BROWSE:
-    var numUnlocked = goog.array.count(this._tips, function(tip) {
-      return tip.unlocked;
-    });
-    if(numUnlocked === this._tips.length) {
-      this.endingOverlay.updateContent( this._view3d.sectionId );
-      this.endingOverlay.animateIn();
-    }
-    break;
-  }
-
-  if(e.gateway) {
-    shouldShowControls = false;
-  }
-
-  var willShowOpeningOverlay = this.openingOverlay.shouldShow( this._view3d.sectionId, this._view3d.id );
-
-  if(willShowOpeningOverlay) {
-
-    shouldShowControls = false;
-  }
-
-  this.showControls( shouldShowControls );
-};
-
-
-feng.views.View3DHud.prototype.onShowView3D = function( e ) {
-
-  var view3d = e.target;
-
-  this.setView3D( view3d );
-};
-
-
-feng.views.View3DHud.prototype.onAnimatedInView3D = function( e ) {
-
-  // pop up opening overlay for only once
-  if(this._view3d.modeController.getMode() === feng.controllers.view3d.ModeController.Mode.BROWSE) {
-
-    var view3d = e.target;
-    var viewId = view3d.id;
-    var sectionId = view3d.sectionId;
-   
-    this.openingOverlay.updateContent( sectionId, viewId );
-    this.openingOverlay.animateIn();
-  }
-};
-
-
-feng.views.View3DHud.prototype.onOverlayAnimateIn = function( e ) {
- 
-  this.deactivateControls();
-  this.showControls( false );
-};
-
-
-feng.views.View3DHud.prototype.onOverlayAnimateOut = function( e ) {
-
-  var shouldShowFinaleOverlay;
-
-  // if ending overlay is just closed, detect if any tip is still locked,
-  // otherwise show finale overlay
-  if(e.currentTarget === this.endingOverlay) {
-
-    var achievements = feng.models.achievements.Achievements.getInstance();
-    shouldShowFinaleOverlay = achievements.isAllUnlocked();
-  }
-
-  if( shouldShowFinaleOverlay ) {
-
-    this.finaleOverlay.animateIn();
-
-  }else {
-
-    this.activateControls();
-
-    if(!this._isInEntryMode) {
-      this.showControls( true );
-    }
-  }
-};goog.provide('feng.controllers.view3d.View3DController');
-
-goog.require('goog.events.EventTarget');
-goog.require('goog.events.EventHandler');
-goog.require('feng.events');
-
-/**
- * @constructor
- */
-feng.controllers.view3d.View3DController = function(){
-
-  goog.base(this);
-
-  this.view3d = null;
-
-  this._view3ds = {};
-  this._view3dToFadeIn = null;
-
-  this._eventHandler = new goog.events.EventHandler(this);
-};
-goog.inherits(feng.controllers.view3d.View3DController, goog.events.EventTarget);
-
-
-feng.controllers.view3d.View3DController.prototype.activate = function(){
-
-  this._eventHandler.listen(this, feng.events.EventType.SHOW, this.onShowView3D, false, this);
-  this._eventHandler.listen(this, feng.events.EventType.HIDE, this.onHideView3D, false, this);
-  this._eventHandler.listen(this, feng.events.EventType.CHANGE, this.onChangeView3D, false, this);
-  this._eventHandler.listen(this, feng.events.EventType.ANIMATE_IN, this.onAnimateInView3D, false, this);
-  this._eventHandler.listen(this, feng.events.EventType.ANIMATE_OUT, this.onAnimateOutView3D, false, this);
-  this._eventHandler.listen(this, feng.events.EventType.ANIMATED_IN, this.onAnimatedInView3D, false, this);
-  this._eventHandler.listen(this, feng.events.EventType.ANIMATED_OUT, this.onAnimatedOutView3D, false, this);
-};
-
-
-feng.controllers.view3d.View3DController.prototype.deactivate = function(){
-
-  this._eventHandler.removeAll();
-};
-
-
-feng.controllers.view3d.View3DController.prototype.registerView3D = function( view3d ){
-
-	this._view3ds[ view3d.sectionId + '.' + view3d.id ] = view3d;
-	view3d.setParentEventTarget( this );
-};
-
-
-feng.controllers.view3d.View3DController.prototype.isRegisteredViewID = function( sectionId, viewId ){
-
-	var isRegistered = goog.isDefAndNotNull( this._view3ds[ sectionId + '.' + viewId ] );
-	return isRegistered;
-};
-
-
-feng.controllers.view3d.View3DController.prototype.getView3D = function( sectionId, viewId ){
-
-	return this._view3ds[sectionId + '.' + viewId];
-};
-
-
-feng.controllers.view3d.View3DController.prototype.onHideView3D = function(e){
-
-	console.log('Hide View3D: ', e.target.id);
-
-	feng.pubsub.publish( feng.PubSub.Topic.HIDE_VIEW3D, e.target );
-};
-
-
-feng.controllers.view3d.View3DController.prototype.onShowView3D = function(e){
-
-	this.view3d = e.target;
-
-	console.log('Show View3D: ', this.view3d.id);
-
-	this.view3d.createResources();
-	this.view3d.activate();
-
-	feng.pubsub.publish( feng.PubSub.Topic.SHOW_VIEW3D, this.view3d );
-};
-
-
-feng.controllers.view3d.View3DController.prototype.onChangeView3D = function(e){
-
-	var from = e.target;
-	from.fadeOut();
-
-	this._view3dToFadeIn = this.getView3D( e.sectionId, e.viewId );
-	this._view3dToFadeIn.startGateway = this._view3dToFadeIn.view3dObjects[ e.gatewayId ];
-
-	console.log(
-		'Change View3D from: ' + e.target.id + 
-		' to ' + this._view3dToFadeIn.id + 
-		' start gateway: ' + this._view3dToFadeIn.startGateway.gatewayId);
-};
-
-
-feng.controllers.view3d.View3DController.prototype.onAnimateInView3D = function(e){
-
-};
-
-
-feng.controllers.view3d.View3DController.prototype.onAnimateOutView3D = function(e){
-
-	var view3d = e.target;
-	view3d.deactivate();
-	view3d.disposeResources();
-};
-
-
-feng.controllers.view3d.View3DController.prototype.onAnimatedInView3D = function(e){
-
-};
-
-
-feng.controllers.view3d.View3DController.prototype.onAnimatedOutView3D = function(e){
-
-	if(this._view3dToFadeIn) {
-		this._view3dToFadeIn.fadeIn( this._startGateway );
-	}
-};goog.provide('feng.views.sections.Episode');
-
-goog.require('goog.dom');
-goog.require('goog.events.EventTarget');
-goog.require('feng.controllers.view3d.View3DController');
-goog.require('feng.events');
-goog.require('feng.views.sections.Section');
-goog.require('feng.views.View3D');
-goog.require('feng.views.View3DHud');
-
-
-/**
- * @constructor
- */
-feng.views.sections.Episode = function(template, templateData){
-
-	var domFrag = soy.renderAsFragment(template, templateData);
-
-	var mainElement = goog.dom.getElement('main');
-  goog.dom.appendChild(mainElement, domFrag);
-
-  var domElement = goog.dom.getElement( templateData.id );
-
-  goog.base(this, domElement);
-
-  this._view3dController = new feng.controllers.view3d.View3DController;
-
-  this._view3dContainerEl = goog.dom.getElementByClass('sceneContainer', this.domElement);
-
-  var hudEl = goog.dom.getElementByClass('hud', this.domElement);
-  var tips = templateData.tips;
-  this._hud = new feng.views.View3DHud( hudEl, this._view3dController, tips, this );
-
-  this._viewIds = [];
-  this._viewId = null;
-
-  this._view3ds = [];
-  this._view3d = null;
-
-  this._hasDoneIntro = false;
-};
-goog.inherits(feng.views.sections.Episode, feng.views.sections.Section);
-
-
-feng.views.sections.Episode.prototype.init = function(){
-
-	goog.base(this, 'init');
-};
-
-
-feng.views.sections.Episode.prototype.activate = function(){
-
-	goog.base(this, 'activate');
-
-	this._view3dController.activate();
-
-	this._hud.activate();
-
-	this._view3dController.listen(feng.events.EventType.SHOW, this.onShowView3D, false, this);
-
-	this.activateView();
-};
-
-
-feng.views.sections.Episode.prototype.activateView = function(){
-
-	if(this._view3d) {
-
-		this._view3d.createResources();
-		this._view3d.activate();
-	}
-};
-
-
-feng.views.sections.Episode.prototype.deactivate = function(){
-
-	goog.base(this, 'deactivate');
-
-	this._view3dController.deactivate();
-
-	this._hud.deactivate();
-	
-	this._view3dController.unlisten(feng.events.EventType.SHOW, this.onShowView3D, false, this);
-
-	if(this._view3d) {
-
-		this._view3d.deactivate();
-		this._view3d.disposeResources();
-	}
-};
-
-
-feng.views.sections.Episode.prototype.load = function( viewId ){
-
-	this._viewId = viewId || this._viewId || this._viewIds[0];
-
-	var globalAssetsKey = this.id + '.global';
-	var view3dAssetsKey = this.id + '.' + this._viewId;
-
-	this._assetKeys = [globalAssetsKey, view3dAssetsKey];
-	
-	goog.base(this, 'load');
-};
-
-
-feng.views.sections.Episode.prototype.animateIn = function(){
-
-	var shouldDo = goog.base(this, 'animateIn');
-
-	if(!shouldDo) return false;
-	
-	this._view3d.fadeIn();
-
-	feng.soundController.playMix( this.id );
-};
-
-
-feng.views.sections.Episode.prototype.animateOut = function(){
-
-	var shouldDo = goog.base(this, 'animateOut');
-
-	if(!shouldDo) return false;
-
-	feng.soundController.stopMix( this.id );
-};
-
-
-feng.views.sections.Episode.prototype.onLoadComplete = function(e){
-
-	goog.base(this, 'onLoadComplete', e);
-
-	if(this._view3ds.length === 0) {
-
-		// create hud
-		this._hud.init();
-	}
-
-	// register loaded view3d
-	var sectionId = this.id;
-	var viewId = this._viewId;
-
-	var alreadyRegistered = this._view3dController.isRegisteredViewID( sectionId, this._viewId );
-
-	if(!alreadyRegistered) {
-
-		var view3d = new feng.views.View3D( sectionId, viewId, this._view3dContainerEl, this._hud, this );
-		this._view3dController.registerView3D( view3d );
-		
-		view3d.init();
-
-		this._view3ds.push( view3d );
-	}
-
-	this._view3d = this._view3dController.getView3D( sectionId, viewId );
-	this.activateView();
-};
-
-
-feng.views.sections.Episode.prototype.onShowView3D = function(e){
-
-	var view3d = e.target;
-
-	// set initial mode
-	if(!this._hasDoneIntro) {
-
-		view3d.modeController.setMode({
-			mode: feng.controllers.view3d.ModeController.Mode.ENTRY
-		});
-
-		this._hasDoneIntro = true;
-		
-	}else {
-
-		var gatewayObject = view3d.startGateway || view3d.getEntry();
-		var position = gatewayObject.origin.position;
-		var rotation = gatewayObject.origin.rotation;
-	  	
-		view3d.modeController.setMode({
-			mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
-			fromPosition: position,
-			fromRotation: rotation,
-			fromFov: feng.controllers.controls.Controls.Default.FOV
-		});
-	}
-};goog.provide('feng.views.sections.House');
-
-goog.require('goog.dom');
-goog.require('feng.events');
-goog.require('feng.views.sections.Episode');
-
-
-/**
- * @constructor
- */
-feng.views.sections.House = function(){
-
-	var viewIds = ['livingroom', 'corridor', 'homeoffice', 'boysroom'];
-	var sectionId = 'house';
-
-	var achievements = feng.models.achievements.Achievements.getInstance();
-	var tips = achievements.getTipsOfSection( sectionId );
-
-	var tipsOfViews = {};
-	goog.object.forEach(viewIds, function(viewId) {
-		var tips = achievements.getTipsOfView( viewId, sectionId, false, true );
-		tipsOfViews[ viewId ] = tips;
-	});
-
-	var template = feng.templates.main.EpisodeSection;
-	var templateData = {
-		id: sectionId,
-		tips: tips,
-		tipsOfViews: tipsOfViews,
-		token: feng.controllers.NavigationController.Token
-	};
-
-  goog.base(this, template, templateData);
-
-  this._viewIds = viewIds;
-  this._viewId = this._viewIds[0];
-};
-goog.inherits(feng.views.sections.House, feng.views.sections.Episode);goog.provide('feng.views.sections.Studio');
-
-goog.require('goog.dom');
-goog.require('feng.events');
-goog.require('feng.views.sections.Episode');
-
-
-/**
- * @constructor
- */
-feng.views.sections.Studio = function(){
-
-	var viewIds = ['livingroom', 'bathroom'];
-	var sectionId = 'studio';
-
-	var achievements = feng.models.achievements.Achievements.getInstance();
-	var tips = achievements.getTipsOfSection( sectionId );
-
-	var tipsOfViews = {};
-	goog.object.forEach(viewIds, function(viewId) {
-		var tips = achievements.getTipsOfView( viewId, sectionId, false, true );
-		tipsOfViews[ viewId ] = tips;
-	});
-
-	var template = feng.templates.main.EpisodeSection;
-	var templateData = {
-		id: sectionId,
-		tips: tips,
-		tipsOfViews: tipsOfViews,
-		token: feng.controllers.NavigationController.Token
-	};
-
-  goog.base(this, template, templateData);
-
-  this._viewIds = viewIds;
-  this._viewId = this._viewIds[0];
-};
-goog.inherits(feng.views.sections.Studio, feng.views.sections.Episode);goog.provide('feng.controllers.SectionController');
-
-goog.require('goog.events.EventTarget');
-goog.require('goog.events');
-goog.require('feng.views.sections.Home');
-goog.require('feng.views.sections.Studio');
-goog.require('feng.views.sections.House');
-
-
-/**
- * @constructor
- */
-feng.controllers.SectionController = function(){
-  goog.base(this);
-
-  this._sections = {};
-  this._section = null;
-
-  var homeSection = this.addSection('home');
-
-  this._eventHandler = new goog.events.EventHandler(this);
-};
-goog.inherits(feng.controllers.SectionController, goog.events.EventTarget);
-goog.addSingletonGetter(feng.controllers.SectionController);
-
-
-feng.controllers.SectionController.prototype.init = function(){
-  
-  this.addSection('studio');
-  this.addSection('house');
-
-  this._eventHandler.listen(this, feng.events.EventType.ANIMATE_IN, this.onSectionAnimateIn, false, this);
-  this._eventHandler.listen(this, feng.events.EventType.ANIMATE_OUT, this.onSectionAnimateOut, false, this);
-  this._eventHandler.listen(this, feng.events.EventType.ANIMATED_IN, this.onSectionAnimatedIn, false, this);
-  this._eventHandler.listen(this, feng.events.EventType.ANIMATED_OUT, this.onSectionAnimatedOut, false, this);
-};
-
-
-feng.controllers.SectionController.prototype.hasSection = function(id){
-  
-  return goog.isDefAndNotNull( this._sections[id] );
-};
-
-
-feng.controllers.SectionController.prototype.getSection = function(id){
-  
-  return this._sections[id];
-};
-
-
-feng.controllers.SectionController.prototype.addSection = function(id){
-  
-	var section;
-
-  switch(id) {
-  	case 'home':
-  	section = new feng.views.sections.Home;
-  	break;
-
-    case 'studio':
-    section = new feng.views.sections.Studio;
-    break;
-
-    case 'house':
-    section = new feng.views.sections.House;
-    break;
-  }
-
-  section.setParentEventTarget(this);
-  section.init();
-
-  return section;
-};
-
-
-feng.controllers.SectionController.prototype.onSectionAnimateIn = function(e){
-  
-	if(this._section) {
-		this._section.animateOut();
-	}
-
-	this._section = e.target;
-};
-
-
-feng.controllers.SectionController.prototype.onSectionAnimateOut = function(e){
-  
-  
-};
-
-
-feng.controllers.SectionController.prototype.onSectionAnimatedIn = function(e){
-  
-
-};
-
-
-feng.controllers.SectionController.prototype.onSectionAnimatedOut = function(e){
-
-	if(this._section === e.target) {
-		this._section = null;
-	}
 };goog.provide('feng.views.popups.Tutorial');
 
 goog.require('feng.views.popups.Popup');
@@ -54604,7 +49725,7 @@ feng.views.popups.Tutorial.prototype.nextStep = function(){
 
 	}else {
 
-		this.animateOut();
+		this.dispatchEvent( feng.events.EventType.COMPLETE );
 	}
 };
 
@@ -54721,7 +49842,13 @@ feng.views.popups.Tutorial.prototype.setProgress = function(progress){
 
 	goog.style.setStyle( this._fillEl, 'width', progress + '%' );
 
-	this._counterEl.innerHTML = (progress > 9) ? progress : ('0' + progress);
+	this._counterEl.innerHTML = ((progress > 9) ? progress : ('0' + progress)) + '%';
+};
+
+
+feng.views.popups.Tutorial.prototype.setBuffering = function(){
+
+	this._counterEl.innerHTML = "Please Wait...";
 };
 
 
@@ -54762,6 +49889,83 @@ feng.views.popups.Tutorial.prototype.onMouseDownStep = function(e){
 
 	var step = goog.array.indexOf(this._stepEls, e.currentTarget);
 	this.gotoStep( step );
+};goog.provide('feng.views.MainOptions');
+
+goog.require('goog.dom');
+goog.require('goog.dom.classes');
+goog.require('goog.dom.query');
+goog.require('goog.events');
+goog.require('feng.utils.Utils');
+
+
+/**
+ * @constructor
+ */
+feng.views.MainOptions = function(){
+
+  goog.base(this);
+
+  this.domElement = goog.dom.getElement('main-options');
+
+  this._howtoplayButton = goog.dom.query('.howtoplay', this.domElement)[0];
+  this._soundButton = goog.dom.query('.sound', this.domElement)[0];
+  this._facebookButton = goog.dom.query('.facebook', this.domElement)[0];
+  this._twitterButton = goog.dom.query('.twitter', this.domElement)[0];
+  this._googleButton = goog.dom.query('.google', this.domElement)[0];
+
+  this.showHelpButton( false );
+
+  if( !feng.storageController.isSoundEnabled() ) {
+  	this.onMute();
+  }
+
+  goog.events.listen(this._howtoplayButton, 'click', this.onClick, false, this);
+  goog.events.listen(this._soundButton, 'click', this.onClick, false, this);
+  goog.events.listen(this._facebookButton, 'click', this.onClick, false, this);
+  goog.events.listen(this._twitterButton, 'click', this.onClick, false, this);
+  goog.events.listen(this._googleButton, 'click', this.onClick, false, this);
+
+  feng.soundController.listen( feng.events.EventType.MUTE, this.onMute, false, this);
+  feng.soundController.listen( feng.events.EventType.UNMUTE, this.onUnmute, false, this);
+};
+goog.inherits(feng.views.MainOptions, goog.events.EventTarget);
+
+
+feng.views.MainOptions.prototype.showHelpButton = function( shouldShow ){
+
+  goog.style.showElement( this._howtoplayButton, shouldShow );
+};
+
+
+feng.views.MainOptions.prototype.onClick = function(e){
+
+	switch(e.currentTarget) {
+		case this._howtoplayButton:
+    feng.tutorial.toggle();
+		break;
+
+		case this._soundButton:
+		feng.soundController.toggle();
+		break;
+
+		case this._facebookButton:
+		case this._twitterButton:
+		case this._googleButton:
+    feng.utils.Utils.popUp( e.currentTarget.href );
+		break;
+	}
+};
+
+
+feng.views.MainOptions.prototype.onMute = function(e){
+
+	goog.dom.classes.add( this._soundButton, 'mute' );
+};
+
+
+feng.views.MainOptions.prototype.onUnmute = function(e){
+
+	goog.dom.classes.remove( this._soundButton, 'mute' );
 };// Copyright 2013 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -55029,6 +50233,27 @@ feng.controllers.SoundController = function(){
   this._data[ feng.controllers.SoundController.SoundType.SFX ] = {
     'click': {
       'urls': urls('sfx/click'),
+      'onload': onSoundLoad
+    },
+    'door-open': {
+      'urls': urls('sfx/door-open'),
+      'onload': onSoundLoad
+    },
+    'door-close': {
+      'urls': urls('sfx/door-close'),
+      'onload': onSoundLoad
+    },
+    'entry-open': {
+      'urls': urls('sfx/entry-open'),
+      'onload': onSoundLoad
+    },
+    'entry-close': {
+      'urls': urls('sfx/entry-close'),
+      'onload': onSoundLoad
+    },
+    'footsteps': {
+      'urls': urls('sfx/footsteps'),
+      'onend': goog.bind(this.replaySound, self, 'footsteps', 'sfx'),
       'onload': onSoundLoad
     },
     'refrigerator-open': {
@@ -60779,6 +56004,9 @@ feng.views.EpisodeSelection = function(){
 
   this.domElement = soy.renderAsFragment(feng.templates.main.EpisodeSelection, templateData);
 
+  this._isTutorialComplete = false;
+  this._isBuffering = false;
+
   feng.pubsub.subscribeOnce( feng.PubSub.Topic.MAIN_LOAD_COMPLETE, this.init, this );
 };
 goog.inherits(feng.views.EpisodeSelection, goog.events.EventTarget);
@@ -60791,6 +56019,9 @@ feng.views.EpisodeSelection.prototype.init = function(){
 
   this._studioEl = goog.dom.getElementByClass('studio', this.domElement);
   this._houseEl = goog.dom.getElementByClass('house', this.domElement);
+
+  this._studioButton = goog.dom.query('a.studio', this.domElement)[0];
+  this._houseButton = goog.dom.query('a.house', this.domElement)[0];
 
   //
   this._activationDelay = 0;
@@ -60823,6 +56054,8 @@ feng.views.EpisodeSelection.prototype.activate = function(){
 	this._eventHandler.listen( this._houseEl, feng.events.EventType.INPUT_OVER, this.onInputOver, false, this );
 	this._eventHandler.listen( this._studioEl, 'mouseout', this.onMouseOut, false, this );
 	this._eventHandler.listen( this._houseEl, 'mouseout', this.onMouseOut, false, this );
+	this._eventHandler.listen( this._studioButton, 'click', this.onClickStartButton, false, this );
+	this._eventHandler.listen( this._houseButton, 'click', this.onClickStartButton, false, this );
 
 	feng.sectionController.listen( feng.events.EventType.START, this.onLoadStart, false, this );
 	feng.sectionController.listen( feng.events.EventType.PROGRESS, this.onLoadProgress, false, this );
@@ -60954,6 +56187,17 @@ feng.views.EpisodeSelection.prototype.hoverHouse = function(){
 };
 
 
+feng.views.EpisodeSelection.prototype.doAfterComplete = function(){
+
+	this._episode.animateIn();
+	
+	this.dispatchEvent({
+		type: feng.events.EventType.COMPLETE,
+		episode: this._episode
+	});
+};
+
+
 feng.views.EpisodeSelection.prototype.onPressEnter = function(){
 
 	if(this._hoveredSceneEl === this._studioEl) {
@@ -60989,7 +56233,7 @@ feng.views.EpisodeSelection.prototype.onMouseOut = function(e){
   if(!e.relatedTarget || !goog.dom.contains(this.domElement, e.relatedTarget)) {
 
   	this._hoveredSceneEl = null;
-		this.updateSceneStatus();
+	this.updateSceneStatus();
   }
 };
 
@@ -61007,6 +56251,40 @@ feng.views.EpisodeSelection.prototype.onMouseMoveOnce = function(e){
 };
 
 
+feng.views.EpisodeSelection.prototype.onClickStartButton = function(e){
+
+	e.preventDefault();
+
+	this.deactivate();
+
+	goog.dom.classes.enable( this._promptEl, 'hidden', true );
+
+	feng.tutorial.setProgress( 0 );
+	feng.tutorial.showLoader();
+	feng.tutorial.enableAutoPlay( true );
+	feng.tutorial.animateIn();
+
+	switch(e.currentTarget) {
+
+		case this._studioButton:
+		goog.dom.classes.enable( this._studioEl, 'loading', true );
+		goog.dom.classes.enable( this._houseEl, 'hidden', true );
+		goog.dom.appendChild( this._studioEl, feng.tutorial.domElement );
+		break;
+
+		case this._houseButton:
+		goog.dom.classes.enable( this._studioEl, 'hidden', true );
+		goog.dom.classes.enable( this._houseEl, 'loading', true );
+		goog.dom.appendChild( this._houseEl, feng.tutorial.domElement );
+		break;
+	}
+
+	goog.Timer.callOnce(function() {
+		window.location.href = e.currentTarget.href;
+	}, 2000);
+};
+
+
 feng.views.EpisodeSelection.prototype.onLoadStart = function(e){
 
 	this._oldEpisode = this._episode;
@@ -61014,42 +56292,27 @@ feng.views.EpisodeSelection.prototype.onLoadStart = function(e){
 	this._episode = e.target.getParentEventTarget();
 	console.log(this._episode.id + ': load start');
 
-	this.deactivate();
+	this._isTutorialComplete = false;
+	this._isBuffering = false;
 
-	goog.dom.classes.enable( this._promptEl, 'hidden', true );
-
-	feng.tutorial.showLoader();
-	feng.tutorial.enableAutoPlay( true );
-	feng.tutorial.animateIn();
-
-	if(this._episode.id === 'studio') {
-
-		goog.dom.classes.enable( this._studioEl, 'loading', true );
-		goog.dom.classes.enable( this._houseEl, 'hidden', true );
-
-		goog.dom.appendChild( this._studioEl, feng.tutorial.domElement );
-
-	}else if(this._episode.id === 'house') {
-
-		goog.dom.classes.enable( this._studioEl, 'hidden', true );
-		goog.dom.classes.enable( this._houseEl, 'loading', true );
-
-		goog.dom.appendChild( this._houseEl, feng.tutorial.domElement );
-	}
+	feng.pubsub.subscribeOnce( feng.PubSub.Topic.BUFFER_START, this.onBufferStart, this );
+  	feng.pubsub.subscribeOnce( feng.PubSub.Topic.BUFFER_COMPLETE, this.onBufferComplete, this );
 };
 
 
 feng.views.EpisodeSelection.prototype.onLoadProgress = function(e){
 
-  //console.log(this._episode.id + ': load progress ' + e.progress);
+	//console.log(this._episode.id + ': load progress ' + e.progress);
 
-  feng.tutorial.setProgress( e.progress );
+	feng.tutorial.setProgress( e.progress );
 };
 
 
 feng.views.EpisodeSelection.prototype.onLoadComplete = function(e){
 
 	console.log(this._episode.id + ': load complete');
+
+	feng.tutorial.setBuffering();
 
 	if(this._oldEpisode) {
 		this._oldEpisode.hide();
@@ -61060,98 +56323,5637 @@ feng.views.EpisodeSelection.prototype.onLoadComplete = function(e){
 	feng.sectionController.unlisten( feng.events.EventType.PROGRESS, this.onLoadProgress, false, this );
 	feng.sectionController.unlisten( feng.events.EventType.COMPLETE, this.onLoadComplete, false, this );
 
+	feng.tutorial.listenOnce( feng.events.EventType.COMPLETE, this.onTutorialComplete, false, this );
+	feng.tutorial.listenOnce( feng.events.EventType.CLOSE, this.doAfterComplete, false, this );
+};
+
+
+feng.views.EpisodeSelection.prototype.onTutorialComplete = function(e){
+
+	this._isTutorialComplete = true;
+
+	if(!this._isBuffering) {
+
+		feng.tutorial.animateOut();
+	}
+};
+
+
+feng.views.EpisodeSelection.prototype.onBufferStart = function(e){
+
+	this._isBuffering = true;
+};
+
+
+feng.views.EpisodeSelection.prototype.onBufferComplete = function(e){
+
+	this._isBuffering = false;
+
 	feng.tutorial.showSkipButton();
 
-	feng.tutorial.listenOnce( feng.events.EventType.CLOSE, function(e) {
+	if(this._isTutorialComplete) {
 
-		this._episode.animateIn();
-		
-		this.dispatchEvent({
-			type: feng.events.EventType.COMPLETE,
-			episode: this._episode
-		});
-
-	}, false, this );
-};goog.provide('feng.views.MainOptions');
+		feng.tutorial.animateOut();
+	}
+};goog.provide('feng.views.sections.home.Screen');
 
 goog.require('goog.dom');
-goog.require('goog.dom.classes');
+goog.require('goog.events.EventTarget');
+goog.require('goog.events.EventHandler');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.home.Screen = function(domElement){
+
+	goog.base( this );
+
+  this.domElement = domElement;
+
+  this._eventHandler = new goog.events.EventHandler(this);
+};
+goog.inherits(feng.views.sections.home.Screen, goog.events.EventTarget);
+
+
+feng.views.sections.home.Screen.prototype.activate = function() {
+
+
+};
+
+
+feng.views.sections.home.Screen.prototype.deactivate = function() {
+
+	this._eventHandler.removeAll();
+};
+
+
+feng.views.sections.home.Screen.prototype.show = function() {
+
+	TweenMax.set(this.domElement, {
+		'display': 'block'
+	});
+};
+
+
+feng.views.sections.home.Screen.prototype.hide = function() {
+
+	TweenMax.set(this.domElement, {
+		'display': 'none'
+	});
+};
+
+
+feng.views.sections.home.Screen.prototype.animateIn = function() {
+
+	this.show();
+};
+
+
+feng.views.sections.home.Screen.prototype.animateOut = function() {
+
+	this.deactivate();
+};goog.provide('feng.views.sections.home.EpisodeScreen');
+
+goog.require('feng.views.sections.home.Screen');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.home.EpisodeScreen = function(domElement){
+
+	goog.base(this, domElement);
+
+	this._episodeSelection = feng.episodeSelection;
+	goog.dom.appendChild( this.domElement, this._episodeSelection.domElement );
+};
+goog.inherits(feng.views.sections.home.EpisodeScreen, feng.views.sections.home.Screen);
+
+
+feng.views.sections.home.EpisodeScreen.prototype.activate = function() {
+
+	goog.base(this, 'activate');
+
+	this._eventHandler.listen( this._episodeSelection, feng.events.EventType.COMPLETE, this.onLoadComplete, false, this );
+};
+
+
+feng.views.sections.home.EpisodeScreen.prototype.deactivate = function() {
+
+	goog.base(this, 'deactivate');
+
+	this._episodeSelection.deactivate();
+};
+
+
+
+feng.views.sections.home.EpisodeScreen.prototype.reset = function() {
+
+	this._episodeSelection.animateIn();
+};
+
+
+feng.views.sections.home.EpisodeScreen.prototype.animateIn = function() {
+
+	goog.base(this, 'animateIn');
+
+	this.activate();
+
+	this._episodeSelection.animateIn();
+};
+
+
+feng.views.sections.home.EpisodeScreen.prototype.animateOut = function() {
+
+	goog.base(this, 'animateOut');
+
+	this.deactivate();
+
+	this._episodeSelection.animateOut();
+};
+
+
+feng.views.sections.home.EpisodeScreen.prototype.onLoadComplete = function(e) {
+
+	this._episodeSelection.animateOutOnComplete( e.episode.id );
+
+	this.dispatchEvent( e );
+};goog.provide('feng.views.sections.Section');
+
+goog.require('goog.dom');
 goog.require('goog.dom.query');
-goog.require('goog.events');
+goog.require('goog.events.EventTarget');
+goog.require('goog.events.EventHandler');
+goog.require('feng.events');
+goog.require('feng.views.Preloader');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.Section = function(domElement){
+	
+  goog.base(this);
+
+  this.domElement = domElement;
+  this.id = this.domElement.id;
+
+  this._animateInTweener = new TimelineMax({
+  	'paused': true,
+  	'onComplete': this.onAnimatedIn,
+  	'onCompleteScope': this
+  });
+
+  this._animateOutTweener = new TimelineMax({
+  	'paused': true,
+  	'onComplete': this.onAnimatedOut,
+  	'onCompleteScope': this
+  });
+
+  // section loader
+  this._preloaderDom = goog.dom.query('.preloader', this.domElement)[0];
+  this._preloader = new feng.views.Preloader( this._preloaderDom, 2000 );
+  this._preloader.setParentEventTarget(this);
+
+  // permanent events
+  goog.events.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
+
+  // activatable events
+  this._eventHandler = new goog.events.EventHandler(this);
+
+  // asset keys
+  this._assetKeys = [];
+  this._loadedAssetKeys = [];
+};
+goog.inherits(feng.views.sections.Section, goog.events.EventTarget);
+
+
+feng.views.sections.Section.prototype.init = function(){
+
+  // hide section by default
+  this.hide();
+  
+	this.setAnimations();
+};
+
+
+feng.views.sections.Section.prototype.show = function(){
+
+	goog.style.showElement(this.domElement, true);
+
+	this.dispatchEvent({
+		type: feng.events.EventType.SHOW
+	});
+};
+
+
+feng.views.sections.Section.prototype.hide = function(){
+
+	goog.style.showElement(this.domElement, false);
+
+	this.dispatchEvent({
+		type: feng.events.EventType.HIDE
+	});
+};
+
+
+feng.views.sections.Section.prototype.isShown = function(){
+
+	return goog.style.isElementShown(this.domElement);
+};
+
+
+feng.views.sections.Section.prototype.activate = function(){
+
+};
+
+
+feng.views.sections.Section.prototype.deactivate = function(){
+
+	this._eventHandler.removeAll();
+};
+
+
+feng.views.sections.Section.prototype.addPreloadListeners = function(){
+
+	this.listen(feng.events.EventType.START, this.onLoadStart, false, this);
+	this.listen(feng.events.EventType.PROGRESS, this.onLoadProgress, false, this);
+	this.listen(feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this);
+	this.listen(feng.events.EventType.COMPLETE, this.onLoadAnimationComplete, false, this);
+};
+
+
+feng.views.sections.Section.prototype.load = function(){
+
+	this.addPreloadListeners();
+
+	this._assetKeys = goog.array.filter( this._assetKeys, function(key) {
+		return !goog.array.contains(this._loadedAssetKeys, key);
+	}, this);
+
+	this._preloader.load( this._assetKeys );
+};
+
+
+feng.views.sections.Section.prototype.setAnimations = function(){
+
+	var fadeInTweener = TweenMax.fromTo(this.domElement, 1, {
+		'opacity': 0
+	}, {
+		'opacity': 1
+	});
+
+	this._animateInTweener.add( fadeInTweener );
+
+	var fadeOutTweener = TweenMax.fromTo(this.domElement, .5, {
+		'opacity': 1
+	}, {
+		'opacity': 0
+	});
+
+	this._animateOutTweener.add( fadeOutTweener );
+};
+
+
+feng.views.sections.Section.prototype.animateIn = function(){
+
+	if(this.isShown()) return false;
+
+	this.show();
+	this.activate();
+	this._animateInTweener.restart();
+
+	this.dispatchEvent({
+		type: feng.events.EventType.ANIMATE_IN
+	});
+
+	return true;
+};
+
+
+feng.views.sections.Section.prototype.animateOut = function(){
+
+	if(!this.isShown()) return false;
+
+	this.deactivate();
+	this._animateOutTweener.restart();
+
+	this.dispatchEvent({
+		type: feng.events.EventType.ANIMATE_OUT
+	});
+
+	return true;
+};
+
+
+feng.views.sections.Section.prototype.doNavigate = function(){
+
+	this.load();
+};
+
+
+feng.views.sections.Section.prototype.onAnimatedIn = function(e){
+
+	this.dispatchEvent({
+		type: feng.events.EventType.ANIMATED_IN
+	});
+};
+
+
+feng.views.sections.Section.prototype.onAnimatedOut = function(e){
+
+	this.hide();
+
+	this.dispatchEvent({
+		type: feng.events.EventType.ANIMATED_OUT
+	});
+};
+
+
+feng.views.sections.Section.prototype.onLoadStart = function(e){
+
+	//console.log("section load start");
+};
+
+
+feng.views.sections.Section.prototype.onLoadProgress = function(e){
+
+	//console.log("section load progress: " + e.progress);
+};
+
+
+feng.views.sections.Section.prototype.onLoadComplete = function(e){
+	
+	//console.log("section load complete");
+
+	goog.array.forEach( this._assetKeys, function(key) {
+		goog.array.insert(this._loadedAssetKeys, key);
+	}, this);
+
+	goog.array.clear( this._assetKeys );
+};
+
+
+feng.views.sections.Section.prototype.onLoadAnimationComplete = function(e){
+	
+	//console.log("section load animation complete");
+};
+
+
+feng.views.sections.Section.prototype.onNavigationChange = function(e){
+
+	var navController = e.target;
+
+	var sectionResult = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.SECTION );
+
+	if(sectionResult && (sectionResult['sectionId'] === this.id)) {
+		this.doNavigate();
+	}
+};goog.provide('feng.fx.CanvasSprite');
+
+goog.require('goog.dom');
+goog.require('goog.events.KeyHandler');
+
+
+feng.fx.CanvasSprite = function( img, data, opt_canvas, opt_debug ) {
+
+	this._canvasEl = opt_canvas || goog.dom.createDom('canvas');
+  	this._canvasContext = this._canvasEl.getContext('2d');
+
+  	this._size = new goog.math.Size( data['size']['w'], data['size']['h'] );
+  	
+  	this._sourceCanvas = goog.dom.createDom('canvas');
+  	this._sourceCanvas.width = img.width;
+	this._sourceCanvas.height = img.height;
+  	this._sourceContext = this._sourceCanvas.getContext('2d');
+  	this._sourceContext.drawImage( img, 0, 0 );
+
+	this._frameDic = data['frames'];
+
+	this._frameIds = goog.object.getKeys(this._frameDic).sort();
+
+	this._frames = goog.array.map(this._frameIds, function(frameId) {
+		return this._frameDic[frameId];
+	}, this);
+
+	this.frameIndex = 0;
+	this.numFrames = this._frames.length;
+
+	this.restoreSize();
+	this.update();
+
+	// added key events for debugging
+	if(opt_debug) {
+	
+		var keyHandler = new goog.events.KeyHandler( document );
+		goog.events.listen( keyHandler, goog.events.KeyHandler.EventType.KEY, function(e) {
+			switch(e.keyCode) {
+				case goog.events.KeyCodes.LEFT:
+				case goog.events.KeyCodes.UP:
+				this.prevFrame();
+				break;
+
+				case goog.events.KeyCodes.RIGHT:
+				case goog.events.KeyCodes.DOWN:
+				this.nextFrame();
+				break;
+			}
+		}, false, this);
+	}
+};
+
+
+feng.fx.CanvasSprite.prototype.getCanvas = function() {
+
+	return this._canvasEl;
+};
+
+
+feng.fx.CanvasSprite.prototype.getTweener = function( vars, fps, duration ) {
+
+	var fps = fps || 60;
+	var duration = duration || (this.numFrames / fps);
+
+	var fromVars = {
+		frameIndex: 0
+	};
+
+	var toVars = {
+  	frameIndex: this.numFrames - 1,
+  	'paused': true,
+  	'ease': Linear.easeNone,
+  	'repeat': -1,
+  	'onUpdate': this.update,
+  	'onUpdateScope': this
+	};
+
+	goog.object.extend(toVars, (vars || {}));
+
+	var tweener = TweenMax.fromTo(this, duration, fromVars, toVars);
+
+  return tweener;
+};
+
+
+feng.fx.CanvasSprite.prototype.restoreSize = function() {
+
+	this._canvasEl.width = this._size.width;
+	this._canvasEl.height = this._size.height;
+};
+
+
+feng.fx.CanvasSprite.prototype.getProgress = function() {
+
+	return this.frameIndex / (this.numFrames - 1);
+};
+
+
+feng.fx.CanvasSprite.prototype.getCurrentFrame = function() {
+
+	return this.frameIndex;
+};
+
+
+feng.fx.CanvasSprite.prototype.setProgress = function( progress ) {
+
+	var frameIndex = Math.round( (this.numFrames - 1) * progress );
+	this.gotoFrameByIndex( frameIndex );
+};
+
+
+feng.fx.CanvasSprite.prototype.gotoFrameById = function( frameId ) {
+
+	var frameIndex = goog.array.findIndex( this._frameIds, function(key) {
+		return (key === frameId);
+	});
+
+	this.gotoFrameByIndex( frameIndex );
+};
+
+
+feng.fx.CanvasSprite.prototype.gotoFrameByIndex = function( frameIndex ) {
+
+	this.frameIndex = Math.round(frameIndex);
+
+	var frameData = this._frames[ this.frameIndex ];
+
+	var sx = frameData['sx'], sy = frameData['sy'];
+	var sw = frameData['sw'], sh = frameData['sh'];
+	var x = frameData['x'], y = frameData['y'];
+
+	this._canvasContext.clearRect( 0, 0, this._canvasEl.width, this._canvasEl.height );
+
+	var imgData = this._sourceContext.getImageData( sx, sy, sw, sh );
+	this._canvasContext.putImageData( imgData, x, y );
+};
+
+
+feng.fx.CanvasSprite.prototype.prevFrame = function() {
+
+	this.frameIndex = Math.max(0, this.frameIndex - 1);
+	this.update();
+};
+
+
+feng.fx.CanvasSprite.prototype.nextFrame = function() {
+
+	this.frameIndex = Math.min(this.numFrames - 1, this.frameIndex + 1);
+	this.update();
+};
+
+
+feng.fx.CanvasSprite.prototype.update = function() {
+
+	this.gotoFrameByIndex( this.frameIndex );
+};goog.provide('feng.fx.AnimatedHouseLogo');
+
+goog.require('feng.fx.CanvasSprite');
+
+
+feng.fx.AnimatedHouseLogo = function( opt_canvas ) {
+
+    var img = feng.fx.AnimatedHouseLogo.Img;
+    var data = feng.fx.AnimatedHouseLogo.Data;
+
+    goog.base(this, img, data, opt_canvas);
+};
+goog.inherits(feng.fx.AnimatedHouseLogo, feng.fx.CanvasSprite);
+
+
+feng.fx.AnimatedHouseLogo.getImg = function() {
+
+    var img = feng.fx.AnimatedHouseLogo.Img;
+    img.src = feng.Config['assetsPath'] + 'images/house-logo-loop.png';
+
+    return img;
+};
+
+
+feng.fx.AnimatedHouseLogo.Img = new Image();
+
+
+feng.fx.AnimatedHouseLogo.Data = {
+    "frames": {
+        
+            "00": {
+                "sx": 842,
+                "sy": 496,
+                "sw": 120,
+                "sh": 124,
+                "x": 20,
+                "y": 15
+            }, 
+        
+            "01": {
+                "sx": 718,
+                "sy": 372,
+                "sw": 130,
+                "sh": 124,
+                "x": 15,
+                "y": 15
+            }, 
+        
+            "02": {
+                "sx": 448,
+                "sy": 496,
+                "sw": 138,
+                "sh": 124,
+                "x": 11,
+                "y": 15
+            }, 
+        
+            "03": {
+                "sx": 304,
+                "sy": 620,
+                "sw": 144,
+                "sh": 124,
+                "x": 8,
+                "y": 15
+            }, 
+        
+            "04": {
+                "sx": 154,
+                "sy": 620,
+                "sw": 150,
+                "sh": 124,
+                "x": 5,
+                "y": 15
+            }, 
+        
+            "05": {
+                "sx": 0,
+                "sy": 620,
+                "sw": 154,
+                "sh": 124,
+                "x": 3,
+                "y": 15
+            }, 
+        
+            "06": {
+                "sx": 780,
+                "sy": 124,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "07": {
+                "sx": 624,
+                "sy": 124,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "08": {
+                "sx": 468,
+                "sy": 124,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "09": {
+                "sx": 152,
+                "sy": 868,
+                "sw": 152,
+                "sh": 124,
+                "x": 4,
+                "y": 15
+            }, 
+        
+            "10": {
+                "sx": 748,
+                "sy": 248,
+                "sw": 148,
+                "sh": 124,
+                "x": 6,
+                "y": 15
+            }, 
+        
+            "11": {
+                "sx": 444,
+                "sy": 868,
+                "sw": 140,
+                "sh": 124,
+                "x": 10,
+                "y": 15
+            }, 
+        
+            "12": {
+                "sx": 586,
+                "sy": 496,
+                "sw": 132,
+                "sh": 124,
+                "x": 14,
+                "y": 15
+            }, 
+        
+            "13": {
+                "sx": 838,
+                "sy": 744,
+                "sw": 124,
+                "sh": 124,
+                "x": 18,
+                "y": 15
+            }, 
+        
+            "14": {
+                "sx": 848,
+                "sy": 372,
+                "sw": 112,
+                "sh": 124,
+                "x": 24,
+                "y": 15
+            }, 
+        
+            "15": {
+                "sx": 962,
+                "sy": 744,
+                "sw": 100,
+                "sh": 124,
+                "x": 30,
+                "y": 15
+            }, 
+        
+            "16": {
+                "sx": 962,
+                "sy": 496,
+                "sw": 112,
+                "sh": 124,
+                "x": 24,
+                "y": 15
+            }, 
+        
+            "17": {
+                "sx": 714,
+                "sy": 868,
+                "sw": 124,
+                "sh": 124,
+                "x": 18,
+                "y": 15
+            }, 
+        
+            "18": {
+                "sx": 586,
+                "sy": 372,
+                "sw": 132,
+                "sh": 124,
+                "x": 14,
+                "y": 15
+            }, 
+        
+            "19": {
+                "sx": 444,
+                "sy": 744,
+                "sw": 140,
+                "sh": 124,
+                "x": 10,
+                "y": 15
+            }, 
+        
+            "20": {
+                "sx": 600,
+                "sy": 248,
+                "sw": 148,
+                "sh": 124,
+                "x": 5,
+                "y": 15
+            }, 
+        
+            "21": {
+                "sx": 152,
+                "sy": 744,
+                "sw": 152,
+                "sh": 124,
+                "x": 4,
+                "y": 15
+            }, 
+        
+            "22": {
+                "sx": 312,
+                "sy": 124,
+                "sw": 156,
+                "sh": 124,
+                "x": 1,
+                "y": 15
+            }, 
+        
+            "23": {
+                "sx": 156,
+                "sy": 124,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "24": {
+                "sx": 0,
+                "sy": 124,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "25": {
+                "sx": 0,
+                "sy": 496,
+                "sw": 154,
+                "sh": 124,
+                "x": 3,
+                "y": 15
+            }, 
+        
+            "26": {
+                "sx": 154,
+                "sy": 496,
+                "sw": 150,
+                "sh": 124,
+                "x": 5,
+                "y": 15
+            }, 
+        
+            "27": {
+                "sx": 304,
+                "sy": 496,
+                "sw": 144,
+                "sh": 124,
+                "x": 8,
+                "y": 15
+            }, 
+        
+            "28": {
+                "sx": 448,
+                "sy": 372,
+                "sw": 138,
+                "sh": 124,
+                "x": 11,
+                "y": 15
+            }, 
+        
+            "29": {
+                "sx": 584,
+                "sy": 868,
+                "sw": 130,
+                "sh": 124,
+                "x": 14,
+                "y": 15
+            }, 
+        
+            "30": {
+                "sx": 842,
+                "sy": 620,
+                "sw": 120,
+                "sh": 124,
+                "x": 20,
+                "y": 15
+            }, 
+        
+            "31": {
+                "sx": 712,
+                "sy": 620,
+                "sw": 130,
+                "sh": 124,
+                "x": 14,
+                "y": 15
+            }, 
+        
+            "32": {
+                "sx": 936,
+                "sy": 124,
+                "sw": 138,
+                "sh": 124,
+                "x": 11,
+                "y": 15
+            }, 
+        
+            "33": {
+                "sx": 304,
+                "sy": 372,
+                "sw": 144,
+                "sh": 124,
+                "x": 8,
+                "y": 15
+            }, 
+        
+            "34": {
+                "sx": 154,
+                "sy": 372,
+                "sw": 150,
+                "sh": 124,
+                "x": 5,
+                "y": 15
+            }, 
+        
+            "35": {
+                "sx": 0,
+                "sy": 372,
+                "sw": 154,
+                "sh": 124,
+                "x": 3,
+                "y": 15
+            }, 
+        
+            "36": {
+                "sx": 780,
+                "sy": 0,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "37": {
+                "sx": 624,
+                "sy": 0,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "38": {
+                "sx": 468,
+                "sy": 0,
+                "sw": 156,
+                "sh": 124,
+                "x": 1,
+                "y": 15
+            }, 
+        
+            "39": {
+                "sx": 0,
+                "sy": 868,
+                "sw": 152,
+                "sh": 124,
+                "x": 4,
+                "y": 15
+            }, 
+        
+            "40": {
+                "sx": 452,
+                "sy": 248,
+                "sw": 148,
+                "sh": 124,
+                "x": 5,
+                "y": 15
+            }, 
+        
+            "41": {
+                "sx": 304,
+                "sy": 868,
+                "sw": 140,
+                "sh": 124,
+                "x": 10,
+                "y": 15
+            }, 
+        
+            "42": {
+                "sx": 580,
+                "sy": 620,
+                "sw": 132,
+                "sh": 124,
+                "x": 14,
+                "y": 15
+            }, 
+        
+            "43": {
+                "sx": 714,
+                "sy": 744,
+                "sw": 124,
+                "sh": 124,
+                "x": 18,
+                "y": 15
+            }, 
+        
+            "44": {
+                "sx": 962,
+                "sy": 372,
+                "sw": 112,
+                "sh": 124,
+                "x": 24,
+                "y": 15
+            }, 
+        
+            "45": {
+                "sx": 962,
+                "sy": 620,
+                "sw": 100,
+                "sh": 124,
+                "x": 30,
+                "y": 15
+            }, 
+        
+            "46": {
+                "sx": 958,
+                "sy": 868,
+                "sw": 112,
+                "sh": 124,
+                "x": 24,
+                "y": 15
+            }, 
+        
+            "47": {
+                "sx": 718,
+                "sy": 496,
+                "sw": 124,
+                "sh": 124,
+                "x": 18,
+                "y": 15
+            }, 
+        
+            "48": {
+                "sx": 448,
+                "sy": 620,
+                "sw": 132,
+                "sh": 124,
+                "x": 14,
+                "y": 15
+            }, 
+        
+            "49": {
+                "sx": 304,
+                "sy": 744,
+                "sw": 140,
+                "sh": 124,
+                "x": 10,
+                "y": 15
+            }, 
+        
+            "50": {
+                "sx": 304,
+                "sy": 248,
+                "sw": 148,
+                "sh": 124,
+                "x": 6,
+                "y": 15
+            }, 
+        
+            "51": {
+                "sx": 0,
+                "sy": 744,
+                "sw": 152,
+                "sh": 124,
+                "x": 4,
+                "y": 15
+            }, 
+        
+            "52": {
+                "sx": 312,
+                "sy": 0,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "53": {
+                "sx": 156,
+                "sy": 0,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "54": {
+                "sx": 0,
+                "sy": 0,
+                "sw": 156,
+                "sh": 124,
+                "x": 2,
+                "y": 15
+            }, 
+        
+            "55": {
+                "sx": 0,
+                "sy": 248,
+                "sw": 154,
+                "sh": 124,
+                "x": 3,
+                "y": 15
+            }, 
+        
+            "56": {
+                "sx": 154,
+                "sy": 248,
+                "sw": 150,
+                "sh": 124,
+                "x": 5,
+                "y": 15
+            }, 
+        
+            "57": {
+                "sx": 896,
+                "sy": 248,
+                "sw": 144,
+                "sh": 124,
+                "x": 8,
+                "y": 15
+            }, 
+        
+            "58": {
+                "sx": 936,
+                "sy": 0,
+                "sw": 138,
+                "sh": 124,
+                "x": 11,
+                "y": 15
+            }, 
+        
+            "59": {
+                "sx": 584,
+                "sy": 744,
+                "sw": 130,
+                "sh": 124,
+                "x": 15,
+                "y": 15
+            }, 
+        
+            "60": {
+                "sx": 838,
+                "sy": 868,
+                "sw": 120,
+                "sh": 124,
+                "x": 20,
+                "y": 15
+            }
+        
+    },
+    "size": {
+        "w": 160,
+        "h": 160
+    }
+};goog.provide('feng.views.sections.home.PreloadScreen');
+
+goog.require('goog.Timer');
+goog.require('feng.views.sections.home.Screen');
+goog.require('feng.fx.AnimatedHouseLogo');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.home.PreloadScreen = function(domElement){
+
+	goog.base(this, domElement);
+
+	this._houseLogo = null;
+	this._houseLogoTweener = null;
+};
+goog.inherits(feng.views.sections.home.PreloadScreen, feng.views.sections.home.Screen);
+
+
+feng.views.sections.home.PreloadScreen.prototype.activate = function() {
+
+	goog.base(this, 'activate');
+
+	var houseLogoImg = feng.fx.AnimatedHouseLogo.getImg();
+	this._eventHandler.listenOnce( houseLogoImg, goog.events.EventType.LOAD, this.createHouseLogo, false, this );
+};
+
+
+feng.views.sections.home.PreloadScreen.prototype.hide = function() {
+
+	goog.base(this, 'hide');
+
+	this._houseLogoTweener.pause();
+};
+
+
+feng.views.sections.home.PreloadScreen.prototype.createHouseLogo = function() {
+
+	var logoEl = goog.dom.getElementByClass('house-logo', this.domElement);
+	this._houseLogo = new feng.fx.AnimatedHouseLogo( logoEl );
+	this._houseLogoTweener = this._houseLogo.getTweener({
+		'repeat': -1,
+		'repeatDelay': 1.5,
+		'ease': Sine.easeInOut
+	}, 60);
+
+	this._houseLogoTweener.restart();
+};
+
+
+feng.views.sections.home.PreloadScreen.prototype.animateOut = function() {
+
+	goog.base(this, 'animateOut');
+
+	TweenMax.to(this.domElement, 1, {
+		'delay': .8,
+		'opacity': 0,
+		'ease': Strong.easeInOut,
+		'onComplete': this.hide,
+		'onCompleteScope': this
+	});
+};
+
+
+feng.views.sections.home.PreloadScreen.prototype.onLoadAnimationComplete = function(e){
+
+	goog.Timer.callOnce(function() {
+		this.dispatchEvent( feng.events.EventType.CLOSE );
+	}, 2000, this);
+};goog.provide('feng.views.sections.Home');
+
+goog.require('goog.dom');
+goog.require('goog.events.EventTarget');
+goog.require('feng.events');
+goog.require('feng.views.sections.Section');
+goog.require('feng.models.achievements.Achievements');
+goog.require('feng.views.book.Book');
+goog.require('feng.views.sections.home.PreloadScreen');
+goog.require('feng.views.sections.home.EpisodeScreen');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.Home = function(){
+
+	var domElement = goog.dom.getElement('home');
+  goog.base(this, domElement);
+
+  var preloadScreenEl = goog.dom.getElement('main-preloader');
+  this._preloadScreen = new feng.views.sections.home.PreloadScreen( preloadScreenEl );
+  this._preloadScreen.activate();
+
+  var episodeScreenEl = goog.dom.getElement('main-episode-selection');
+  this._episodeScreen = new feng.views.sections.home.EpisodeScreen( episodeScreenEl );
+  this._episodeScreen.hide();
+
+  this._hasLoadedOnce = false;
+};
+goog.inherits(feng.views.sections.Home, feng.views.sections.Section);
+
+
+feng.views.sections.Home.prototype.init = function(){
+
+	goog.base(this, 'init');
+};
+
+
+feng.views.sections.Home.prototype.activate = function(){
+
+	goog.base(this, 'activate');
+
+	this._eventHandler.listen( this._preloadScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
+	this._eventHandler.listen( this._episodeScreen, feng.events.EventType.CLOSE, this.onScreenClose, false, this );
+	this._eventHandler.listen( this._episodeScreen, feng.events.EventType.COMPLETE, this.onEpisodeLoadComplete, false, this );
+};
+
+
+feng.views.sections.Home.prototype.deactivate = function(){
+
+	goog.base(this, 'deactivate');
+
+	this._preloadScreen.deactivate();
+	this._episodeScreen.deactivate();
+};
+
+
+feng.views.sections.Home.prototype.load = function(){
+
+	this._assetKeys = [this.id, 'global'];
+	
+	goog.base(this, 'load');
+};
+
+
+feng.views.sections.Home.prototype.onAnimatedIn = function(e){
+
+	goog.base(this, 'onAnimatedIn', e);
+};
+
+
+feng.views.sections.Home.prototype.onScreenClose = function(e){
+
+	switch( e.target ) {
+		case this._preloadScreen:
+		this._preloadScreen.animateOut();
+
+		// for test tip
+		var testTipPattern = feng.controllers.NavigationController.Token.TEST_TIP;
+
+		if(feng.initialToken.length === 4 && goog.string.startsWith(testTipPattern.replace('#/', ''), feng.initialToken[0])) {
+
+			var sectionId = feng.initialToken[1];
+			var viewId = feng.initialToken[2];
+			var tipId = feng.initialToken[3];
+
+			var testTipToken = testTipPattern.replace('{sectionId}', sectionId).replace('{viewId}', viewId).replace('{tipId}', tipId);
+
+			console.log('parsed test tip token: ' + testTipToken);
+
+			this._episodeScreen.animateIn();
+			feng.episodeSelection.activate();
+
+			feng.navigationController.setToken( feng.controllers.NavigationController.Token.STUDIO );
+		}
+		// animate in episode selection
+		else {
+
+			this._episodeScreen.animateIn();
+		}
+		break;
+
+		case this._episodeScreen:
+		this._episodeScreen.animateOut();
+		break;
+	}
+};
+
+
+feng.views.sections.Home.prototype.onLoadStart = function(e){
+
+	goog.base(this, 'onLoadStart', e);
+
+	this.animateIn();
+};
+
+
+feng.views.sections.Home.prototype.onLoadComplete = function(e){
+
+	goog.base(this, 'onLoadComplete', e);
+
+	if(!this._hasLoadedOnce) {
+
+		// init main modules with loaded fengshui data
+		var globalAssets = e.target.model.getAsset('global');
+		var fsData = globalAssets['fengshui-data'];
+		var tipsData = fsData['tips'];
+
+		var achievements = feng.models.achievements.Achievements.getInstance();
+		achievements.init( tipsData );
+
+		var sectionController = feng.controllers.SectionController.getInstance();
+		sectionController.init();
+
+		var book = feng.views.book.Book.getInstance();
+
+		feng.pubsub.publish( feng.PubSub.Topic.MAIN_LOAD_COMPLETE, globalAssets );
+
+	}else {
+
+		this._episodeScreen.reset();
+	}
+
+	//
+	this._hasLoadedOnce = true;
+};
+
+
+feng.views.sections.Home.prototype.onLoadAnimationComplete = function(e){
+
+	goog.base(this, 'onLoadAnimationComplete', e);
+
+	this._preloadScreen.onLoadAnimationComplete();
+};
+
+
+feng.views.sections.Home.prototype.onEpisodeLoadComplete = function(e){
+
+	this.animateOut();
+};goog.provide('feng.views.Overlay');
+
+goog.require('goog.events.EventTarget');
+goog.require('goog.events.EventHandler');
+
+
+/**
+ * @constructor
+ */
+feng.views.Overlay = function(domElement, canHalt){
+	
+  goog.base(this);
+
+  this.domElement = domElement;
+
+  this.isShown = false;
+
+  this._canHalt = canHalt;
+
+  this._eventHandler = new goog.events.EventHandler(this);
+
+  this.hide( false );
+};
+goog.inherits(feng.views.Overlay, goog.events.EventTarget);
+
+
+feng.views.Overlay.prototype.activate = function(){
+
+	this._eventHandler.listen(window, 'resize', this.onResize, false, this);
+};
+
+
+feng.views.Overlay.prototype.deactivate = function(){
+
+	this._eventHandler.removeAll();
+};
+
+
+feng.views.Overlay.prototype.show = function( shouldDispatch ){
+
+	this.isShown = true;
+
+	goog.style.showElement(this.domElement, this.isShown);
+
+	this.onResize();
+
+	this.activate();
+
+	var shouldDispatch = (shouldDispatch === false) ? false : true;
+
+	if(shouldDispatch) {
+
+		this.dispatchEvent({
+			type: feng.events.EventType.SHOW,
+			canHalt: this._canHalt
+		});
+	}
+};
+
+
+feng.views.Overlay.prototype.hide = function( shouldDispatch ){
+
+	this.isShown = false;
+	
+	goog.style.showElement(this.domElement, this.isShown);
+
+	this.deactivate();
+
+	var shouldDispatch = (shouldDispatch === false) ? false : true;
+
+	if(shouldDispatch) {
+
+		this.dispatchEvent({
+			type: feng.events.EventType.HIDE,
+			canHalt: this._canHalt
+		});
+	}
+};
+
+
+feng.views.Overlay.prototype.animateIn = function(){
+
+	this.show( true );
+
+	this.dispatchEvent( feng.events.EventType.ANIMATE_IN );
+};
+
+
+feng.views.Overlay.prototype.animateOut = function(){
+
+	this.hide( true );
+
+	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
+};
+
+
+feng.views.Overlay.prototype.onResize = function(e){
+
+
+};goog.provide('feng.views.sections.overlays.LoaderOverlay');
+
+goog.require('goog.dom');
+goog.require('goog.style');
+goog.require('feng.models.Preload');
+goog.require('feng.views.Overlay');
+goog.require('feng.fx.CanvasSprite');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.overlays.LoaderOverlay = function(domElement){
+
+  this._loaderEl = goog.dom.getElementByClass('loader', domElement);
+  this._spinnerEl = goog.dom.getElementByClass('spinner', domElement);
+  this._progressEl = goog.dom.getElementByClass('progress', domElement);
+
+  var preload = feng.models.Preload.getInstance();
+  var img = preload.getAsset( 'global.spinner' );
+	var data = preload.getAsset( 'global.spinner-data' );
+  this._spinner = new feng.fx.CanvasSprite( img, data, this._spinnerEl );
+
+  this._spinnerTweener = this._spinner.getTweener();
+
+  var canHalt = true;
+
+  goog.base(this, domElement, canHalt);
+};
+goog.inherits(feng.views.sections.overlays.LoaderOverlay, feng.views.Overlay);
+goog.addSingletonGetter(feng.views.sections.overlays.LoaderOverlay);
+
+
+feng.views.sections.overlays.LoaderOverlay.prototype.animateIn = function(){
+
+	goog.base(this, 'animateIn');
+
+	TweenMax.fromTo(this.domElement, .8, {
+		'opacity': 0
+	}, {
+		'opacity': 1,
+		'ease': Strong.easeInOut
+	});
+
+	TweenMax.fromTo(this._loaderEl, .8, {
+		'opacity': 0
+	}, {
+		'delay': .8,
+		'opacity': 1
+	});
+
+	this._spinnerTweener.restart();
+};
+
+
+feng.views.sections.overlays.LoaderOverlay.prototype.animateOut = function(){
+
+	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
+
+	TweenMax.to(this.domElement, .8, {
+		'opacity': 0,
+		'ease': Strong.easeInOut,
+		'onComplete': this.hide,
+		'onCompleteScope': this
+	});
+};
+
+
+feng.views.sections.overlays.LoaderOverlay.prototype.hide = function( shouldDispatch ){
+
+	goog.base(this, 'hide', shouldDispatch);
+
+	this._spinnerTweener.pause();
+};
+
+
+feng.views.sections.overlays.LoaderOverlay.prototype.onLoadStart = function(e){
+
+	this.animateIn();
+};
+
+
+feng.views.sections.overlays.LoaderOverlay.prototype.onLoadProgress = function(e){
+
+	var numStr = Math.round(e.progress * 100).toString();
+	this._progressEl.innerHTML = (numStr.length > 1) ? numStr : ('0' + numStr);
+};
+
+
+feng.views.sections.overlays.LoaderOverlay.prototype.onLoadComplete = function(e){
+
+	feng.pubsub.subscribeOnce( feng.PubSub.Topic.HIDE_VIEW3D, this.animateOut, this );
+};
+
+
+feng.views.sections.overlays.LoaderOverlay.prototype.onResize = function(e){
+
+	goog.base(this, 'onResize', e);
+
+	goog.style.setSize(this.domElement, feng.viewportSize);
+};goog.provide('feng.views.sections.overlays.TutorialOverlay');
+
+goog.require('goog.dom');
+goog.require('goog.style');
+goog.require('feng.views.Overlay');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.overlays.TutorialOverlay = function(domElement){
+
+	var canHalt = true;
+
+  goog.base(this, domElement, canHalt);
+};
+goog.inherits(feng.views.sections.overlays.TutorialOverlay, feng.views.Overlay);
+goog.addSingletonGetter(feng.views.sections.overlays.TutorialOverlay);
+
+
+feng.views.sections.overlays.TutorialOverlay.prototype.show = function( shouldDispatch ){
+
+	goog.base(this, 'show', shouldDispatch);
+	
+	feng.tutorial.enableAutoPlay(false);
+	goog.dom.appendChild( this.domElement, feng.tutorial.domElement );
+};
+
+
+feng.views.sections.overlays.TutorialOverlay.prototype.animateIn = function(){
+
+	goog.base(this, 'animateIn');
+
+	TweenMax.fromTo(this.domElement, .8, {
+		'opacity': 0
+	}, {
+		'opacity': 1,
+		'ease': Strong.easeInOut
+	});
+};
+
+
+feng.views.sections.overlays.TutorialOverlay.prototype.animateOut = function(){
+
+	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
+
+	TweenMax.to(this.domElement, .8, {
+		'delay': .25,
+		'opacity': 0,
+		'ease': Strong.easeInOut,
+		'onComplete': this.hide,
+		'onCompleteParams': [ true ],
+		'onCompleteScope': this
+	});
+};
+
+
+feng.views.sections.overlays.TutorialOverlay.prototype.onResize = function(e){
+
+	goog.base(this, 'onResize', e);
+
+	goog.style.setSize(this.domElement, feng.viewportSize);
+};goog.provide('feng.views.sections.overlays.FinaleOverlay');
+
+goog.require('goog.dom');
+goog.require('goog.style');
+goog.require('feng.views.Overlay');
+goog.require('feng.views.popups.Popup');
+goog.require('feng.models.Preload');
 goog.require('feng.utils.Utils');
 
 
 /**
  * @constructor
  */
-feng.views.MainOptions = function(){
+feng.views.sections.overlays.FinaleOverlay = function(domElement){
+
+	var canHalt = true;
+
+  goog.base(this, domElement, canHalt);
+
+  var popupEl = goog.dom.getElementByClass('popup', this.domElement);
+  this._popup = new feng.views.popups.Popup( popupEl );
+
+  this._shareButtons = goog.dom.query('ul a', this.domElement);
+
+  this._escKeyId = null;
+
+  this._animateOutFunc = goog.bind(function() {
+  	this._popup.animateOut();
+  }, this);
+
+  this.updateContent();
+};
+goog.inherits(feng.views.sections.overlays.FinaleOverlay, feng.views.Overlay);
+goog.addSingletonGetter(feng.views.sections.overlays.FinaleOverlay);
+
+
+feng.views.sections.overlays.FinaleOverlay.prototype.activate = function(){
+
+	goog.base(this, 'activate');
+
+	goog.array.forEach(this._shareButtons, function(shareButton) {
+		this._eventHandler.listen( shareButton, 'click', this.onClickShareButton, false, this );
+	}, this);
+
+	this._eventHandler.listenOnce( this._popup, feng.events.EventType.ANIMATE_OUT, this.animateOut, false, this );
+	
+	this._escKeyId = feng.keyboardController.bind( this._animateOutFunc, feng.keyboardController.key.ESC, true );
+};
+
+
+feng.views.sections.overlays.FinaleOverlay.prototype.deactivate = function(){
+
+	goog.base(this, 'deactivate');
+
+	feng.keyboardController.unbind( this._escKeyId );
+};
+
+
+feng.views.sections.overlays.FinaleOverlay.prototype.updateContent = function(){
+
+	var preload = feng.models.Preload.getInstance();
+	var copy = preload.getAsset('global.fengshui-data')['dialog']['finale'];
+
+	var title = copy['title'];
+	var paragraph = copy['paragraph'];
+
+	var titleEl = goog.dom.query('h1', this.domElement)[0];
+	var paragraphEl = goog.dom.query('p', this.domElement)[0];
+
+	titleEl.innerHTML = title;
+	paragraphEl.innerHTML = paragraph;
+};
+
+
+feng.views.sections.overlays.FinaleOverlay.prototype.animateIn = function(){
+
+	goog.base(this, 'animateIn');
+
+	TweenMax.fromTo(this.domElement, .8, {
+		'opacity': 0
+	}, {
+		'opacity': 1,
+		'ease': Strong.easeInOut
+	});
+
+	this._popup.animateIn();
+};
+
+
+feng.views.sections.overlays.FinaleOverlay.prototype.animateOut = function(){
+
+	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
+
+	TweenMax.to(this.domElement, .8, {
+		'delay': .25,
+		'opacity': 0,
+		'ease': Strong.easeInOut,
+		'onComplete': this.hide,
+		'onCompleteParams': [ true ],
+		'onCompleteScope': this
+	});
+};
+
+
+feng.views.sections.overlays.FinaleOverlay.prototype.onClickShareButton = function(e) {
+
+  e.preventDefault();
+
+  feng.utils.Utils.popUp( e.currentTarget.href );
+};
+
+
+feng.views.sections.overlays.FinaleOverlay.prototype.onResize = function(e){
+
+	goog.base(this, 'onResize', e);
+
+	goog.style.setSize(this.domElement, feng.viewportSize);
+
+	feng.utils.Utils.centerAlign( this._popup.domElement, feng.viewportSize );
+};goog.provide('feng.views.sections.captions.Caption');
+
+goog.require('goog.events.EventHandler');
+goog.require('feng.templates.captions');
+goog.require('feng.utils.Utils');
+goog.require('feng.fx.ScrollBar');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.captions.Caption = function( object, cameraController, renderSize, controls, hud ){
 
   goog.base(this);
 
-  this.domElement = goog.dom.getElement('main-options');
+  this._object = object;
+  this._cameraController = cameraController;
+  this._renderSize = renderSize;
+  this._controls = controls;
+  this._hud = hud;
 
-  this._howtoplayButton = goog.dom.query('.howtoplay', this.domElement)[0];
-  this._soundButton = goog.dom.query('.sound', this.domElement)[0];
-  this._facebookButton = goog.dom.query('.facebook', this.domElement)[0];
-  this._twitterButton = goog.dom.query('.twitter', this.domElement)[0];
-  this._googleButton = goog.dom.query('.google', this.domElement)[0];
+  this._eventHandler = new goog.events.EventHandler(this);
 
-  this.showHelpButton( false );
+  this._template = this._template || feng.templates.captions.Caption;
+  
+  this._templateData = this._templateData || {
+    tip: object.tip,
+    position: 'right'
+  };
 
-  if( !feng.storageController.isSoundEnabled() ) {
-  	this.onMute();
+  this._closeKeyId = null;
+
+  this._close = goog.bind( this.close, this );
+
+  // render HTML template
+  this.domElement = soy.renderAsFragment(this._template, this._templateData);
+
+  this._shadeEl = goog.dom.getElementByClass('shade', this.domElement);
+  this._panelEl = goog.dom.getElementByClass('panel', this.domElement);
+  this._scrollerInnerEl = goog.dom.getElementByClass('scroller-inner', this.domElement);
+
+  this._closeButton = goog.dom.getElementByClass('close-button', this.domElement);
+  this._panelButton = goog.dom.getElementByClass('panel-button', this.domElement);
+  this._hintButton = goog.dom.getElementByClass('hint-button', this.domElement);
+  this._promptButton = goog.dom.getElementByClass('prompt-button', this.domElement);
+
+  this._problemSection = goog.dom.getElementByClass('problem', this.domElement);
+  this._hintSection = goog.dom.getElementByClass('hint', this.domElement);
+  this._interactionSection = goog.dom.getElementByClass('interaction', this.domElement);
+  this._adviceSection = goog.dom.getElementByClass('advice', this.domElement);
+
+  this._sections = goog.array.filter([
+      this._problemSection,
+      this._hintSection,
+      this._interactionSection,
+      this._adviceSection
+    ], function(section) {
+      return goog.isDefAndNotNull(section);
+    });
+
+  this._section = null;
+
+  this.scrollBars = goog.array.map(this._sections, function(section) {
+    var scrollerEl = goog.dom.getElementByClass('inner-scroller', section);
+    var scrollBarEl = goog.dom.getElementByClass('scrollbar', section);
+    var scrollBar = new feng.fx.ScrollBar( scrollBarEl, scrollerEl );
+    return scrollBar;
+  });
+
+  this.scrollBar = null;
+
+  this._shareEl = goog.dom.getElementByClass('share', this.domElement);
+  this._shareButtons = goog.dom.query('a', this._shareEl);
+
+  this._sectionTweener = null;
+
+  // set default status
+  this._isPanelAnimatedOut = true;
+  goog.dom.classes.enable( this.domElement, 'hide-panel', this._isPanelAnimatedOut );
+
+  // set elements status by tip
+  this.updateStatus();
+};
+goog.inherits(feng.views.sections.captions.Caption, goog.events.EventTarget);
+
+
+feng.views.sections.captions.Caption.prototype.show = function() {
+
+  this.activate();
+
+  goog.style.showElement( this.domElement, true );
+
+  this.onResize();
+};
+
+
+feng.views.sections.captions.Caption.prototype.hide = function() {
+
+  this.deactivate();
+
+  this._section = null;
+
+  if(this._isPanelAnimatedOut) {
+
+    goog.style.showElement( this.domElement, false );
+
+  }else {
+
+    this.animateOutPanel( false, true );
+  }
+};
+
+
+feng.views.sections.captions.Caption.prototype.activate = function() {
+
+  this._eventHandler.listen( this._closeButton, 'click', this.close, false, this );
+  this._eventHandler.listen( this._panelButton, 'click', this.togglePanel, false, this );
+  
+  // listen for unlock ready event from view3d object
+  this._eventHandler.listen( this._object, feng.events.EventType.UNLOCK, this.updateStatus, false, this );
+  this._eventHandler.listen( window, 'resize', this.onResize, false, this );
+
+  // listen for object camera animated in event to animate in panel
+  this._eventHandler.listen( this._object, feng.events.EventType.ANIMATED_IN, this.animateInPanel, false, this );
+
+  // listen for object interaction start/end
+  this._eventHandler.listen( this._object, feng.events.EventType.START, this.onInteractionStart, false, this );
+  this._eventHandler.listen( this._object, feng.events.EventType.END, this.onInteractionEnd, false, this );
+
+  // listen for share button click events
+  goog.array.forEach(this._shareButtons, function(shareButton) {
+    this._eventHandler.listen( shareButton, 'click', this.onClickShareButton, false, this );
+  }, this);
+
+  //
+  this._closeKeyId = feng.keyboardController.bind( this._close, feng.keyboardController.key.ESC, true );
+
+  goog.style.showElement(this._panelButton, false);
+
+  this.enableCloseButton( false );
+
+  this.updateStatus();
+};
+
+
+feng.views.sections.captions.Caption.prototype.deactivate = function() {
+
+  this._eventHandler.removeAll();
+
+  feng.keyboardController.unbind( this._closeKeyId );
+
+  this._object.stopInteraction();
+
+  goog.array.forEach(this.scrollBars, function(scrollBar) {
+    scrollBar.deactivate();
+  });
+};
+
+
+feng.views.sections.captions.Caption.prototype.enableCloseButton = function( enabled ) {
+
+  this._closeButton.disabled = goog.isBoolean(enabled) ? !enabled : false;
+};
+
+
+feng.views.sections.captions.Caption.prototype.enableHintSection = function( shouldEnable ) {
+
+  if(shouldEnable) {
+
+    this._eventHandler.listen( this._hintButton, 'click', this.close, false, this );
+
+  }else {
+
+    this._eventHandler.unlisten( this._hintButton, 'click', this.close, false, this );
+  }
+};
+
+
+feng.views.sections.captions.Caption.prototype.enableProblemSection = function( shouldEnable ) {
+
+  if(shouldEnable) {
+
+    this._eventHandler.listen( this._promptButton, 'click', this.onClick, false, this );
+
+  }else {
+
+    this._eventHandler.unlisten( this._promptButton, 'click', this.onClick, false, this );
+  }
+};
+
+
+feng.views.sections.captions.Caption.prototype.enableInteractionSection = function( shouldEnable ) {
+
+  this._object.startInteraction();
+};
+
+
+feng.views.sections.captions.Caption.prototype.enableAdviceSection = function( shouldEnable ) {
+
+};
+
+
+feng.views.sections.captions.Caption.prototype.getSectionX = function( section ) {
+
+  return goog.array.indexOf( this._sections, section ) * goog.style.getSize(this._scrollerInnerEl).width;
+};
+
+
+feng.views.sections.captions.Caption.prototype.gotoSection = function( section, instant ) {
+
+  if(this._section === section) {
+    return;
+  }else {
+    this._section = section;
   }
 
-  goog.events.listen(this._howtoplayButton, 'click', this.onClick, false, this);
-  goog.events.listen(this._soundButton, 'click', this.onClick, false, this);
-  goog.events.listen(this._facebookButton, 'click', this.onClick, false, this);
-  goog.events.listen(this._twitterButton, 'click', this.onClick, false, this);
-  goog.events.listen(this._googleButton, 'click', this.onClick, false, this);
+  if(this.scrollBar) {
+    this.scrollBar.deactivate();
+  }
 
-  feng.soundController.listen( feng.events.EventType.MUTE, this.onMute, false, this);
-  feng.soundController.listen( feng.events.EventType.UNMUTE, this.onUnmute, false, this);
+  this.scrollBar = this.scrollBars[ goog.array.indexOf(this._sections, section) ];
+  this.scrollBar.activate();
+
+  var fromSection = this._section;
+  var toSection = section;
+
+  var duration = instant ? 0 : .25;
+
+  this._sectionTweener = TweenMax.to(this._scrollerInnerEl, duration, {
+    'x': - this.getSectionX( toSection ),
+    'ease': Quad.easeInOut,
+    'onStart': this.onScrollFromSection,
+    'onStartParams': [fromSection],
+    'onStartScope': this,
+    'onComplete': this.onScrolledToSection,
+    'onCompleteParams': [toSection],
+    'onCompleteScope': this
+  });
 };
-goog.inherits(feng.views.MainOptions, goog.events.EventTarget);
 
 
-feng.views.MainOptions.prototype.showHelpButton = function( shouldShow ){
+feng.views.sections.captions.Caption.prototype.onScrollFromSection = function( fromSection ) {
 
-  goog.style.showElement( this._howtoplayButton, shouldShow );
+  if(!fromSection) {
+
+    return;
+  }
+
+  goog.dom.classes.addRemove( fromSection, 'animate-in', 'animate-out' );
+
+  switch(fromSection) {
+
+    case this._interactionSection:
+    this.enableInteractionSection( false );
+    break;
+
+    case this._hintSection:
+    this.enableHintSection( false );
+    break;
+
+    case this._problemSection:
+    this.enableProblemSection( false );
+    break;
+
+    case this._adviceSection:
+    this.enableAdviceSection( false );
+    break;
+  }
 };
 
 
-feng.views.MainOptions.prototype.onClick = function(e){
+feng.views.sections.captions.Caption.prototype.onScrolledToSection = function( toSection ) {
+
+  goog.dom.classes.addRemove( toSection, 'animate-out', 'animate-in' );
+
+  switch(toSection) {
+
+    case this._interactionSection:
+    this.enableInteractionSection( true );
+    break;
+
+    case this._hintSection:
+    this.enableHintSection( true );
+    break;
+
+    case this._problemSection:
+    this.enableProblemSection( true );
+    break;
+
+    case this._adviceSection:
+    this.enableAdviceSection( true );
+    break;
+  }
+};
+
+
+feng.views.sections.captions.Caption.prototype.animateInPanel = function() {
+
+  if(this._isPanelAnimatedOut) {
+
+    this._isPanelAnimatedOut = false;
+
+  }else {
+
+    return;
+  }
+
+  goog.style.showElement(this._panelButton, true);
+
+  this.enableCloseButton( true );
+
+  goog.dom.classes.enable(this.domElement, 'hide-panel', false);
+
+  TweenMax.to( this._renderSize, .5, {
+    ratioX: .7,
+    'ease': Sine.easeInOut,
+    'onUpdate': this._renderSize.update,
+    'onUpdateScope': this._renderSize
+  });
+};
+
+
+feng.views.sections.captions.Caption.prototype.animateOutPanel = function( shouldDoCloseWhenComplete, shouldHideWhenComplete ) {
+
+  if(this._isPanelAnimatedOut) {
+
+    return;
+  }
+
+  goog.dom.classes.enable(this.domElement, 'hide-panel', true);
+
+  TweenMax.to( this._renderSize, .5, {
+    ratioX: 1,
+    'ease': Sine.easeInOut,
+    'onUpdate': this._renderSize.update,
+    'onUpdateScope': this._renderSize,
+    'onComplete': this.onPanelAnimatedOut,
+    'onCompleteParams': [shouldDoCloseWhenComplete, shouldHideWhenComplete],
+    'onCompleteScope': this
+  });
+};
+
+
+feng.views.sections.captions.Caption.prototype.togglePanel = function() {
+
+  if(this._isPanelAnimatedOut) {
+    this.animateInPanel();
+  }else {
+    this.animateOutPanel();
+  }
+};
+
+
+feng.views.sections.captions.Caption.prototype.close = function() {
+
+  this.doClose();
+};
+
+
+feng.views.sections.captions.Caption.prototype.doClose = function() {
+
+  if(this._isPanelAnimatedOut) {
+
+    this.onPanelAnimatedOut( true );
+
+  }else {
+    
+    this.animateOutPanel( true );
+  }
+};
+
+
+feng.views.sections.captions.Caption.prototype.unlock = function() {
+
+  // trigger tip object to unlock
+  this._object.unlock();
+
+  this.animateInPanel();
+};
+
+
+feng.views.sections.captions.Caption.prototype.updateStatus = function() {
+
+  // check if should go hint section
+  var tip = this._object.tip;
+
+  var requiredTip = tip.getRequiredTip();
+  var hasLockedRequiredTip = (requiredTip && !requiredTip.unlocked);
+
+  if(hasLockedRequiredTip) {
+
+    this.gotoSection( this._hintSection );
+    return;
+  }
+
+  // check if should go problem section
+  if(this._promptButton) {
+    goog.style.showElement( this._promptButton, !tip.unlocked );
+  }
+
+  if(!tip.unlocked) {
+
+    if(this._problemSection) {
+      
+      this.gotoSection( this._problemSection );
+      return;
+    }
+  }
+  
+  //
+  goog.style.showElement( this._shareEl, tip.unlocked );
+  
+  if(this._interactionSection) {
+    goog.dom.classes.add( this._interactionSection, 'unlocked' );
+  }
+
+  // check if should go advice section
+  if(tip.unlocked) {
+
+    if(this._adviceSection) {
+      
+      this.gotoSection( this._adviceSection );
+
+    }else {
+
+      this.gotoSection( this._interactionSection );
+    }
+  }
+};
+
+
+feng.views.sections.captions.Caption.prototype.onPanelAnimatedOut = function( shouldDoClose, shouldHide ) {
+
+  this._isPanelAnimatedOut = true;
+
+  if(shouldDoClose) {
+
+    this.dispatchEvent({
+      type: feng.events.EventType.CLOSE
+    });
+  }
+
+  if(shouldHide) {
+    this.hide();
+  }
+};
+
+
+feng.views.sections.captions.Caption.prototype.onInteractionStart = function( e ) {
+
+  if(this._interactionSection) {
+
+    this.gotoSection( this._interactionSection );
+
+  }else {
+
+    this.enableCloseButton( false );
+
+    this.animateOutPanel();
+  }
+};
+
+
+feng.views.sections.captions.Caption.prototype.onInteractionEnd = function( e ) {
+
+  this.animateInPanel();
+};
+
+
+feng.views.sections.captions.Caption.prototype.onClick = function( e ) {
+
+  switch(e.currentTarget) {
+    case this._promptButton:
+    this._object.startInteraction();
+    break;
+
+    /*
+    case this._changeButton:
+    this._object.tip.unlock();
+    break;
+
+    case this._unlockButton:
+    this.unlock();
+    break;
+    */
+  }
+};
+
+
+feng.views.sections.captions.Caption.prototype.onClickShareButton = function( e ) {
+
+  e.preventDefault();
+
+  feng.utils.Utils.popUp( e.currentTarget.href );
+};
+
+
+feng.views.sections.captions.Caption.prototype.onResize = function( e ) {
+
+  goog.style.setStyle( this._shadeEl, 'height', this._renderSize.height + 'px' );
+  goog.style.setStyle( this._panelEl, 'height', this._renderSize.height + 'px' );
+
+  if(this.scrollBar) {
+    this.scrollBar.resize();
+  }
+
+  if(this._sectionTweener) {
+
+    var sectionX = this.getSectionX( this._section );
+
+    if(this._sectionTweener.isActive()) {
+
+      this._sectionTweener.updateTo({
+        'x': - sectionX
+      })
+
+    }else {
+
+      TweenMax.set(this._scrollerInnerEl, {
+        'x': - sectionX
+      });
+    }
+  }
+};goog.provide('feng.views.sections.captions.ChangeColorCaption');
+
+goog.require('goog.soy');
+goog.require('feng.templates.captions');
+goog.require('feng.views.sections.captions.Caption');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.captions.ChangeColorCaption = function( object, cameraController, renderSize, controls, hud ){
+
+  this._template = feng.templates.captions.ChangeColorCaption;
+  
+  this._templateData = {
+    tip: object.tip,
+    position: 'right'
+  };
+
+  goog.base(this, object, cameraController, renderSize, controls, hud);
+
+  this._colorId = null;
+
+  this._itemEls = feng.utils.Utils.createDomCollectionByAttributes( goog.dom.query('.item-button', this.domElement), 'data-color' );
+  this._infoEls = feng.utils.Utils.createDomCollectionByAttributes( goog.dom.query('.info li', this.domElement), 'data-color' );
+};
+goog.inherits(feng.views.sections.captions.ChangeColorCaption, feng.views.sections.captions.Caption);
+
+
+feng.views.sections.captions.ChangeColorCaption.prototype.show = function() {
+
+  goog.base(this, 'show');
+
+  goog.object.forEach(this._itemEls, function(itemEl) {
+    this._eventHandler.listen(itemEl, 'click', this.onClickItem, false, this);
+  }, this);
+};
+
+
+feng.views.sections.captions.ChangeColorCaption.prototype.hide = function() {
+
+  goog.base(this, 'hide');
+
+  this._object.stopInteraction();
+};
+
+
+feng.views.sections.captions.ChangeColorCaption.prototype.onClickItem = function(e) {
+
+  if(this._colorId) {
+    goog.dom.classes.enable( this._itemEls[this._colorId], 'active', false );
+    goog.dom.classes.enable( this._infoEls[this._colorId], 'active', false );
+  }
+
+  this._colorId = e.currentTarget.getAttribute('data-color');
+
+  goog.dom.classes.enable( this._itemEls[this._colorId], 'active', true );
+  goog.dom.classes.enable( this._infoEls[this._colorId], 'active', true );
+
+  this.scrollBar.resize();
+  
+  this._object.setColorByName( this._colorId );
+};// Copyright 2007 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Definition of the goog.async.Throttle class.
+ *
+ * @see ../demos/timers.html
+ */
+
+goog.provide('goog.Throttle');
+goog.provide('goog.async.Throttle');
+
+goog.require('goog.Disposable');
+goog.require('goog.Timer');
+
+
+
+/**
+ * Throttle will perform an action that is passed in no more than once
+ * per interval (specified in milliseconds). If it gets multiple signals
+ * to perform the action while it is waiting, it will only perform the action
+ * once at the end of the interval.
+ * @param {function(this: T)} listener Function to callback when the action is
+ *     triggered.
+ * @param {number} interval Interval over which to throttle. The listener can
+ *     only be called once per interval.
+ * @param {T=} opt_handler Object in whose scope to call the listener.
+ * @constructor
+ * @extends {goog.Disposable}
+ * @final
+ * @template T
+ */
+goog.async.Throttle = function(listener, interval, opt_handler) {
+  goog.Disposable.call(this);
+
+  /**
+   * Function to callback
+   * @type {function(this: T)}
+   * @private
+   */
+  this.listener_ = listener;
+
+  /**
+   * Interval for the throttle time
+   * @type {number}
+   * @private
+   */
+  this.interval_ = interval;
+
+  /**
+   * "this" context for the listener
+   * @type {Object|undefined}
+   * @private
+   */
+  this.handler_ = opt_handler;
+
+  /**
+   * Cached callback function invoked after the throttle timeout completes
+   * @type {Function}
+   * @private
+   */
+  this.callback_ = goog.bind(this.onTimer_, this);
+};
+goog.inherits(goog.async.Throttle, goog.Disposable);
+
+
+
+/**
+ * A deprecated alias.
+ * @deprecated Use goog.async.Throttle instead.
+ * @constructor
+ * @final
+ */
+goog.Throttle = goog.async.Throttle;
+
+
+/**
+ * Indicates that the action is pending and needs to be fired.
+ * @type {boolean}
+ * @private
+ */
+goog.async.Throttle.prototype.shouldFire_ = false;
+
+
+/**
+ * Indicates the count of nested pauses currently in effect on the throttle.
+ * When this count is not zero, fired actions will be postponed until the
+ * throttle is resumed enough times to drop the pause count to zero.
+ * @type {number}
+ * @private
+ */
+goog.async.Throttle.prototype.pauseCount_ = 0;
+
+
+/**
+ * Timer for scheduling the next callback
+ * @type {?number}
+ * @private
+ */
+goog.async.Throttle.prototype.timer_ = null;
+
+
+/**
+ * Notifies the throttle that the action has happened. It will throttle the call
+ * so that the callback is not called too often according to the interval
+ * parameter passed to the constructor.
+ */
+goog.async.Throttle.prototype.fire = function() {
+  if (!this.timer_ && !this.pauseCount_) {
+    this.doAction_();
+  } else {
+    this.shouldFire_ = true;
+  }
+};
+
+
+/**
+ * Cancels any pending action callback. The throttle can be restarted by
+ * calling {@link #fire}.
+ */
+goog.async.Throttle.prototype.stop = function() {
+  if (this.timer_) {
+    goog.Timer.clear(this.timer_);
+    this.timer_ = null;
+    this.shouldFire_ = false;
+  }
+};
+
+
+/**
+ * Pauses the throttle.  All pending and future action callbacks will be
+ * delayed until the throttle is resumed.  Pauses can be nested.
+ */
+goog.async.Throttle.prototype.pause = function() {
+  this.pauseCount_++;
+};
+
+
+/**
+ * Resumes the throttle.  If doing so drops the pausing count to zero, pending
+ * action callbacks will be executed as soon as possible, but still no sooner
+ * than an interval's delay after the previous call.  Future action callbacks
+ * will be executed as normal.
+ */
+goog.async.Throttle.prototype.resume = function() {
+  this.pauseCount_--;
+  if (!this.pauseCount_ && this.shouldFire_ && !this.timer_) {
+    this.shouldFire_ = false;
+    this.doAction_();
+  }
+};
+
+
+/** @override */
+goog.async.Throttle.prototype.disposeInternal = function() {
+  goog.async.Throttle.superClass_.disposeInternal.call(this);
+  this.stop();
+};
+
+
+/**
+ * Handler for the timer to fire the throttle
+ * @private
+ */
+goog.async.Throttle.prototype.onTimer_ = function() {
+  this.timer_ = null;
+
+  if (this.shouldFire_ && !this.pauseCount_) {
+    this.shouldFire_ = false;
+    this.doAction_();
+  }
+};
+
+
+/**
+ * Calls the callback
+ * @private
+ */
+goog.async.Throttle.prototype.doAction_ = function() {
+  this.timer_ = goog.Timer.callOnce(this.callback_, this.interval_);
+  this.listener_.call(this.handler_);
+};
+goog.provide('feng.views.sections.controls.ProgressBar');
+
+goog.require('goog.async.Throttle');
+goog.require('feng.views.sections.controls.Controls');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.controls.ProgressBar = function(domElement, tips){
+
+  goog.base(this, domElement);
+
+  this._tipsWrapperEl = goog.dom.query('.tips-wrapper', this.domElement)[0];
+  this._tipsEls = goog.dom.query('.tips', this.domElement);
+  this._tipEls = goog.dom.query('.tips > li', this.domElement);
+  this._dotEls = goog.dom.query('.tips .dot', this.domElement);
+  this._prevButtonEl = goog.dom.getElementByClass('prev', this.domElement);
+  this._nextButtonEl = goog.dom.getElementByClass('next', this.domElement);
+
+  this._tipsEl = this._tipsEls[0];
+
+  this._viewIds = goog.array.map( this._tipsEls, function(tipsEl) {
+    return tipsEl.getAttribute('data-view-id');
+  });
+
+  this._viewId = this._viewIds[0];
+
+  this._tips = {};
+  
+  goog.array.forEach(tips, function(tip) {
+		this._tips[ tip.id ] = tip;
+  }, this);
+
+  this._nearbyTipEl = null;
+
+  //
+  this._detectNearbyThrottle = new goog.async.Throttle(this.detectNearbyObjects, 1000/5, this);
+  
+  this._nearbyObjects = [];
+
+  this._tipsWidthViewportRatio = 0.5;
+  this._maxTipMargin = 50;
+
+  this._tweener = new TimelineMax();
+};
+goog.inherits(feng.views.sections.controls.ProgressBar, feng.views.sections.controls.Controls);
+
+
+feng.views.sections.controls.ProgressBar.prototype.setView3D = function( view3d ){
+
+  goog.base(this, 'setView3D', view3d);
+
+  this.calculateTipsLayout();
+  this.goTipsOfView( view3d.id );
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.calculateTipsLayout = function(){
+
+  this._tipEls = goog.dom.query( 'li', this._tipsEl );
+
+  // arrange tip dots
+  var numDots = this._tipEls.length;
+  var dotsWidth = numDots * this._maxTipMargin * 2;
+  var actualWidth = Math.min( dotsWidth, this._tipsWidthViewportRatio * feng.viewportSize.width );
+  var dotWidth = actualWidth / numDots;
+  var margin = dotWidth / 2;
+
+  goog.array.forEach(this._tipEls, function(tipEl) {
+    goog.style.setStyle( tipEl, 'margin', '0 ' + margin + 'px' );
+  });
+
+  return actualWidth;
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.activate = function() {
+
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
+
+  this._eventHandler.listen(this._prevButtonEl, 'click', this.goPrevTips, false, this);
+  this._eventHandler.listen(this._nextButtonEl, 'click', this.goNextTips, false, this);
+
+  goog.object.forEach(this._tips, function(tip) {
+
+    tip.listen(feng.events.EventType.UNLOCK, this.onTipUnlock, false, this);
+    if(tip.unlocked) this.unlockTip( tip.id );
+  }, this);
+
+  this._detectNearbyThrottle.fire();
+
+  goog.dom.classes.enable(this.domElement, 'hidden', false);
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.deactivate = function() {
+
+  var shouldDeactivate = goog.base(this, 'deactivate');
+
+  if(!shouldDeactivate) return;
+
+  goog.object.forEach(this._tips, function(tip) {
+    tip.unlisten(feng.events.EventType.UNLOCK, this.onTipUnlock, false, this);
+  }, this);
+
+  this._detectNearbyThrottle.stop();
+
+  this._tweener.kill();
+
+  goog.dom.classes.enable(this.domElement, 'hidden', true);
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.goTipsOfView = function( viewId ) {
+
+  this._viewId = viewId;
+
+  // get tips element of the view id
+  var tipsEl = goog.array.find(this._tipsEls, function(tipsEl) {
+    return (tipsEl.getAttribute('data-view-id') === viewId);
+  });
+
+  // animate tips
+  var tweener = TweenMax.to(this._tipsEls, 0, {
+    'display': 'none'
+  });
+
+  // assign new tips el
+  this._tipsEl = tipsEl;
+
+  // calculate new tips layout
+  var tipsWrapperWidth = this.calculateTipsLayout();
+
+  var tweener2 = TweenMax.to( this._tipsWrapperEl, .5, {
+    'width': tipsWrapperWidth,
+    'ease': Strong.easeOut
+  });
+
+  //
+  var tweener3 = new TimelineMax();
+
+  var tweeners = goog.array.map( goog.dom.query('li', this._tipsEl), function(tipEl) {
+
+    var t = TweenMax.fromTo(tipEl, .25, {
+      'opacity': 0,
+      'y': 20
+    }, {
+      'opacity': 1,
+      'y': 0
+    });
+
+    return t;
+  });
+
+  tweener3.add( tweeners, '+=0', 'start', .05 );
+
+  var tweener4 = TweenMax.to(this._tipsEl, .25, {
+    'opacity': 1,
+    'display': 'block'
+  });
+
+  this._tweener.clear();
+  this._tweener.add([tweener, tweener2, tweener3, tweener4]);
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.goPrevTips = function() {
+
+  var currentTipsIndex = goog.array.indexOf(this._viewIds, this._tipsEl.getAttribute('data-view-id'));
+
+  currentTipsIndex --;
+
+  if(currentTipsIndex < 0) currentTipsIndex = this._viewIds.length - 1;
+
+  this.goTipsOfView( this._viewIds[currentTipsIndex] );
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.goNextTips = function() {
+
+  var currentTipsIndex = goog.array.indexOf(this._viewIds, this._tipsEl.getAttribute('data-view-id'));
+
+  currentTipsIndex ++;
+
+  if(currentTipsIndex > this._viewIds.length - 1) currentTipsIndex = 0;
+
+  this.goTipsOfView( this._viewIds[currentTipsIndex] );
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.setNearbyObjects = function( objects ){
+
+  this._nearbyObjects = objects;
+
+  if(this._nearbyObjects && this._nearbyObjects.length > 0) {
+
+    this._detectNearbyThrottle.fire();
+  }
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.detectNearbyObjects = function(){
+
+  if(!this._nearbyObjects || this._nearbyObjects.length === 0) {
+
+    this._detectNearbyThrottle.stop();
+    return;
+
+  }else {
+
+    this._detectNearbyThrottle.fire();
+  }
+
+  var control = this._view3d.modeController.control;
+  var cameraPosition = control.getPosition();
+  var cameraDirection = control.getForwardVector( true );
+  var highestDot = Math.cos( THREE.Math.degToRad(45) );
+  var nearestObject;
+
+  goog.array.forEach(this._nearbyObjects, function(object) {
+    
+    var objectDirection = object.getCenter().clone().sub( cameraPosition ).normalize();
+    var dot = objectDirection.dot( cameraDirection );
+    //console.log(dot, object.name)
+    if(dot >= highestDot) {
+      highestDot = dot;
+      nearestObject = object;
+    }
+  });
+
+  if(nearestObject) {
+
+    //console.log(nearestObject.name);
+    var tip = nearestObject.tip;
+    var providedTip = tip.getProvidedTip();
+
+    var tipId = providedTip ? providedTip.id : tip.id;
+
+    var tipEl = goog.array.find(this._tipEls, function(tipEl) {
+      return (tipEl.getAttribute('data-tip-id') === tipId);
+    });
+
+    //console.log(tipEl, tipId, providedTip)
+    
+    if(this._nearbyTipEl !== tipEl) {
+
+      if(this._nearbyTipEl) {
+        goog.dom.classes.remove(this._nearbyTipEl, 'nearby');
+      }
+
+      this._nearbyTipEl = tipEl;
+      goog.dom.classes.add(this._nearbyTipEl, 'nearby');
+    }
+
+  }else {
+
+    if(this._nearbyTipEl) {
+      goog.dom.classes.remove(this._nearbyTipEl, 'nearby');
+      this._nearbyTipEl = null;
+    }
+  }
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.unlockTip = function( tipId ){
+  
+  var unlockedTipEl = goog.array.find(this._tipEls, function(tipEl) {
+    return tipEl.getAttribute('data-tip-id') === tipId;
+  });
+
+  if(!unlockedTipEl) return;
+
+  goog.dom.classes.add( unlockedTipEl, 'unlocked' );
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.onTipUnlock = function(e){
+
+  var tipId = e.tip.id;
+  this.unlockTip( tipId );
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.onModeChange = function(e){
+
+  goog.base(this, 'onModeChange', e);
+
+  var mode = e.nextMode || e.mode;
+
+  switch(mode) {
+
+    case feng.controllers.view3d.ModeController.Mode.BROWSE:
+    case feng.controllers.view3d.ModeController.Mode.WALK:
+    this.activate();
+    break;
+
+    default:
+    this.deactivate();
+    break;
+  }
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.onResize = function(e){
+
+	goog.base(this, 'onResize', e);
+
+  var domSize = goog.style.getSize( this.domElement );
+
+  var y = feng.viewportSize.height - 115;
+	goog.style.setStyle( this.domElement, 'top', y + 'px');
+
+  this.calculateTipsLayout();
+  this.goTipsOfView( this._viewId );
+};goog.provide('feng.views.sections.controls.HomeButton');
+
+goog.require('goog.dom');
+goog.require('feng.events');
+goog.require('feng.views.sections.controls.Controls');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.controls.HomeButton = function(domElement){
+	
+  goog.base(this, domElement);
+
+  this._promptShown = false;
+  this._promptEl = goog.dom.getElementByClass('home-button-prompt', this.domElement.parentNode);
+
+  this._yesButtonEl = goog.dom.getElementByClass('yes', this._promptEl);
+  this._noButtonEl = goog.dom.getElementByClass('no', this._promptEl);
+};
+goog.inherits(feng.views.sections.controls.HomeButton, feng.views.sections.controls.Controls);
+
+
+feng.views.sections.controls.HomeButton.prototype.activate = function(){
+
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
+
+  this._eventHandler.listen( document.body, 'mousedown', this.onMouseDown, false, this );
+  this._eventHandler.listen( this._noButtonEl, 'click', this.hidePrompt, false, this );
+};
+
+
+feng.views.sections.controls.HomeButton.prototype.deactivate = function(){
+
+  var shouldDeactivate = goog.base(this, 'deactivate');
+  
+  if(!shouldDeactivate) return;
+
+  this.hidePrompt();
+};
+
+
+feng.views.sections.controls.HomeButton.prototype.showPrompt = function(){
+
+	this._promptShown = true;
+
+	goog.dom.classes.add( this.domElement, 'pending' );
+	goog.dom.classes.add( this._promptEl, 'shown' );
+};
+
+
+feng.views.sections.controls.HomeButton.prototype.hidePrompt = function(){
+
+	this._promptShown = false;
+
+	goog.dom.classes.remove( this.domElement, 'pending' );
+	goog.dom.classes.remove( this._promptEl, 'shown' );
+};
+
+
+feng.views.sections.controls.HomeButton.prototype.onMouseDown = function(e){
+
+	var isClickedOnHomeButton = goog.dom.contains( this.domElement, e.target );
+	var isClickedOnPrompt = goog.dom.contains( this._promptEl, e.target );
+
+	var isClickedOutside = (!isClickedOnHomeButton && !isClickedOnPrompt);
+
+	if(isClickedOutside && this._promptShown) {
+
+		this.hidePrompt();
+		return false;
+	}
+
+	if(isClickedOnHomeButton) {
+		
+		if(this._promptShown) {
+
+			this.hidePrompt();
+
+		}else {
+
+			this.showPrompt();
+		}
+	}
+};goog.provide('feng.fx.AnimatedSprite');
+
+goog.require('goog.math.Size');
+goog.require('goog.math.Coordinate');
+
+
+feng.fx.AnimatedSprite = function( domElement, image, framesHorizontal, framesVertical, numFrames, useRetina ) {
+
+	this.domElement = domElement;
+	this.image = image;
+
+	this._framesHorizontal = framesHorizontal;
+	this._framesVertical = framesVertical;
+	this._numFrames = numFrames;
+
+	this._retinaScale = (useRetina === true && window.devicePixelRatio > 1) ? 2 : 1;
+
+	var domWidth = this.image.width / this._framesHorizontal / this._retinaScale;
+	var domHeight = this.image.height / this._framesVertical / this._retinaScale;
+	this.size = new goog.math.Size( domWidth, domHeight );
+
+	this._frameId = 0;
+	this._framePosition = new goog.math.Coordinate(0, 0);
+
+	goog.style.setStyle(this.domElement, {
+		'background-image': 'url('+this.image.src+')',
+		'background-size': (this.image.width / this._retinaScale) + 'px ' + (this.image.height / this._retinaScale) + 'px',
+		'background-repeat': 'no-repeat',
+		'width': domWidth + 'px',
+		'height': domHeight + 'px'
+	});
+
+	this.gotoFrame( 0 );
+};
+
+
+feng.fx.AnimatedSprite.prototype.getProgress = function() {
+
+	return this._frameId / (this._numFrames - 1);
+};
+
+
+feng.fx.AnimatedSprite.prototype.getCurrentFrame = function() {
+
+	return this._frameId;
+};
+
+
+feng.fx.AnimatedSprite.prototype.getFramePositionById = function( frameId ) {
+
+	var frameCol = frameId % this._framesHorizontal;
+	this._framePosition.x = frameCol / this._framesHorizontal * this.image.width / this._retinaScale;
+
+	var frameRow = Math.floor(frameId / this._framesHorizontal);
+	this._framePosition.y = frameRow / this._framesVertical * this.image.height / this._retinaScale;
+
+	return this._framePosition;
+};
+
+
+feng.fx.AnimatedSprite.prototype.getFramePosition = function() {
+
+	return this.getFramePositionById( this._frameId );
+};
+
+
+feng.fx.AnimatedSprite.prototype.setProgress = function( progress ) {
+
+	var frameId = Math.round( (this._numFrames - 1) * progress );
+	this.gotoFrame( frameId );
+};
+
+
+feng.fx.AnimatedSprite.prototype.gotoFrame = function( frameId ) {
+
+	this._frameId = frameId;
+
+	var framePosition = this.getFramePositionById( this._frameId );
+
+	goog.style.setStyle(this.domElement, 'background-position', (-framePosition.x + 'px ') + (-framePosition.y + 'px'));
+};goog.provide('feng.views.sections.controls.Compass');
+
+goog.require('goog.dom');
+goog.require('feng.events');
+goog.require('feng.fx.AnimatedSprite');
+goog.require('feng.views.sections.controls.Controls');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.controls.Compass = function(domElement){
+	
+  goog.base(this, domElement);
+
+  this._mainEl = goog.dom.getElement('main');
+  
+  var browseEl = goog.dom.getElementByClass('browse', this.domElement);
+  var img = feng.models.Preload.getInstance().getAsset('global.cube-browse');
+  this._browseSprite = new feng.fx.AnimatedSprite(browseEl, img, 12, 9, 100);
+
+  var designEl = goog.dom.getElementByClass('design', this.domElement);
+  var img = feng.models.Preload.getInstance().getAsset('global.cube-design');
+  this._designSprite = new feng.fx.AnimatedSprite(designEl, img, 12, 9, 100);
+
+  this._hoveredDesign = false;
+  this._hoveredBrowse = false;
+
+  this._rotation = 0;
+  this._startRotation = 0;
+
+  this._isInDesignMode = false;
+};
+goog.inherits(feng.views.sections.controls.Compass, feng.views.sections.controls.Controls);
+
+
+feng.views.sections.controls.Compass.prototype.activate = function(){
+
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
+
+  this._eventHandler.listen(this.domElement, 'mousemove', this.onMouseMove, false, this);
+  this._eventHandler.listen(this.domElement, 'mouseout', this.onMouseOut, false, this);
+  this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
+
+  if(this._view3d) {
+    this._view3d.modeController.listen( feng.events.EventType.UPDATE, this.onView3dUpdate, false, this );
+  }
+};
+
+
+feng.views.sections.controls.Compass.prototype.setView3D = function( view3d ){
+
+  goog.base(this, 'setView3D', view3d);
+
+  if(this._view3d) {
+    this._view3d.modeController.unlisten( feng.events.EventType.UPDATE, this.onView3dUpdate, false, this );
+  }
+
+  this._view3d.modeController.listen( feng.events.EventType.UPDATE, this.onView3dUpdate, false, this );
+};
+
+
+feng.views.sections.controls.Compass.prototype.setProgress = function(progress){
+
+	this._browseSprite.setProgress( progress );
+	this._designSprite.setProgress( progress );
+};
+
+
+feng.views.sections.controls.Compass.prototype.setRotation = function(rotation){
+
+	this._rotation = goog.math.modulo( rotation, 2 * Math.PI );
+
+	var progress = this._rotation / (2 * Math.PI);
+	this.setProgress( progress );
+
+	return this._rotation;
+};
+
+
+feng.views.sections.controls.Compass.prototype.onMouseMove = function(e){
+
+	if(e.offsetY > 40) {
+
+		// browse mode
+		goog.dom.classes.addRemove(this.domElement, 'hover-design', 'hover-browse');
+		this._hoveredDesign = false;
+		this._hoveredBrowse = true;
+
+	}else {
+
+		// design mode
+		goog.dom.classes.addRemove(this.domElement, 'hover-browse', 'hover-design');
+		this._hoveredDesign = true;
+		this._hoveredBrowse = false;
+	}
+};
+
+
+feng.views.sections.controls.Compass.prototype.onMouseOut = function(e){
+
+	if(e.relatedTarget && goog.dom.contains(e.currentTarget, e.relatedTarget)) {
+		return false;
+	}
+
+	goog.dom.classes.remove(this.domElement, 'hover-browse');
+	goog.dom.classes.remove(this.domElement, 'hover-design');
+	this._hoveredDesign = false;
+	this._hoveredBrowse = false;
+};
+
+
+feng.views.sections.controls.Compass.prototype.onClick = function(e){
+
+	if(this._hoveredDesign) {
+
+		if(this._isInDesignMode) return false;
+
+		this._view3d.modeController.setMode({
+			type: feng.events.EventType.CHANGE,
+			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+			nextMode: feng.controllers.view3d.ModeController.Mode.DESIGN
+		});
+
+	}else if(this._hoveredBrowse) {
+
+		if(!this._isInDesignMode) return false;
+
+		var designControl = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.DESIGN );
+		var toRotation = designControl.getRotation().clone();
+		toRotation.x = 0;
+
+		this._view3d.modeController.setMode({
+			type: feng.events.EventType.CHANGE,
+			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+			nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
+			toRotation: toRotation
+		});
+	}
+};
+
+
+feng.views.sections.controls.Compass.prototype.onResize = function(e){
+
+	goog.style.setPosition(this.domElement, feng.viewportSize.width - 100 - 30, 30);
+};
+
+
+feng.views.sections.controls.Compass.prototype.onView3dUpdate = function(e){
+
+	this.setRotation( e.rotationY );
+};
+
+
+feng.views.sections.controls.Compass.prototype.onModeChange = function(e){
+
+  goog.base(this, 'onModeChange', e);
+
+  if(e.mode === feng.controllers.view3d.ModeController.Mode.DESIGN) {
+
+  	goog.dom.classes.addRemove(this.domElement, 'browse', 'design');
+
+  	this._isInDesignMode = true;
+
+  }else {
+
+  	goog.dom.classes.addRemove(this.domElement, 'design', 'browse');
+
+  	this._isInDesignMode = false;
+  }
+  
+  switch(e.mode) {
+
+    case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
+	this.deactivate();
+    break;
+
+    default:
+	this.activate();
+    break;
+  }
+};goog.provide('feng.views.sections.captions.ChangePictureCaption');
+
+goog.require('goog.soy');
+goog.require('feng.templates.captions');
+goog.require('feng.views.sections.captions.Caption');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.captions.ChangePictureCaption = function( object, cameraController, renderSize, controls, hud ){
+
+  this._template = feng.templates.captions.ChangePictureCaption;
+  
+  this._templateData = {
+    tip: object.tip,
+    position: 'right'
+  };
+
+  goog.base(this, object, cameraController, renderSize, controls, hud);
+
+  this._pictureId = null;
+
+  this._itemEls = feng.utils.Utils.createDomCollectionByAttributes( goog.dom.query('.item-button', this.domElement), 'data-picture' );
+  this._infoEls = feng.utils.Utils.createDomCollectionByAttributes( goog.dom.query('.info li', this.domElement), 'data-picture' );
+};
+goog.inherits(feng.views.sections.captions.ChangePictureCaption, feng.views.sections.captions.Caption);
+
+
+feng.views.sections.captions.ChangePictureCaption.prototype.show = function() {
+
+  goog.base(this, 'show');
+
+  goog.object.forEach(this._itemEls, function(itemEl) {
+    this._eventHandler.listen(itemEl, 'click', this.onClickItem, false, this);
+  }, this);
+};
+
+
+feng.views.sections.captions.ChangePictureCaption.prototype.hide = function() {
+
+  goog.base(this, 'hide');
+
+  this._object.stopInteraction();
+};
+
+
+feng.views.sections.captions.ChangePictureCaption.prototype.onClickItem = function(e) {
+
+  if(this._pictureId) {
+    goog.dom.classes.enable( this._itemEls[this._pictureId], 'active', false );
+    goog.dom.classes.enable( this._infoEls[this._pictureId], 'active', false );
+  }
+
+  this._pictureId = e.currentTarget.getAttribute("data-picture");
+
+  goog.dom.classes.enable( this._itemEls[this._pictureId], 'active', true );
+  goog.dom.classes.enable( this._infoEls[this._pictureId], 'active', true );
+
+  this.scrollBar.resize();
+  
+  this._object.setPicture( this._pictureId );
+
+  this._object.nextPicture();
+};goog.provide('feng.views.sections.controls.ObjectSelector');
+
+goog.require('goog.events');
+goog.require('goog.async.Delay');
+goog.require('goog.async.Throttle');
+goog.require('feng.fx.AnimatedSprite');
+goog.require('feng.views.sections.controls.Controls');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.controls.ObjectSelector = function(domElement){
+
+  goog.base(this, domElement);
+
+  this._selectableObjects = [];
+
+  this._domElement = domElement;
+  this._fillEl = goog.dom.getElementByClass('fill', this._domElement);
+
+  var img = feng.models.Preload.getInstance().getAsset('global.circular-fill');
+  this._fillSprite = new feng.fx.AnimatedSprite(this._fillEl, img, 16, 2, 31);
+
+  this._selectedObject = null;
+  this._downObject = null;
+  this._isEnabled = false;
+  this._startTime = 0;
+  this._duration = 800;
+
+  this._callbacks = {};
+
+  // a delay to kick off the progress, to differentiate the mouse behavior between a fast click and object selecting
+  this._delay = new goog.async.Delay(this.startSelect, 250, this);
+
+  // a throttle to not let the object hover detection fire too often
+  this._mouseMoveThrottle = new goog.async.Throttle(this.doHoverDetection, 250, this);
+  this._mouseMovePosition = {x: 0, y: 0};
+
+  this._hitTestMeshes = [];
+
+	this.show( false );
+};
+goog.inherits(feng.views.sections.controls.ObjectSelector, feng.views.sections.controls.Controls);
+
+
+feng.views.sections.controls.ObjectSelector.prototype.setPosition = function ( x, y ) {
+
+	goog.style.setPosition(this.domElement, x, y);
+};
+
+
+feng.views.sections.controls.ObjectSelector.prototype.setSelectableObjects = function ( objects ) {
+
+	this._selectableObjects = objects;
+
+	this._hitTestMeshes = goog.array.map(this._selectableObjects, function(object) {
+
+		return object.getProxyBox();
+	}, this);
+};
+
+
+feng.views.sections.controls.ObjectSelector.prototype.activate = function( callbacks ) {
+
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
+  
+	this._callbacks = {
+	  	'onProgress': callbacks['onProgress'] || goog.nullFunction,
+	  	'onStart': callbacks['onStart'] || goog.nullFunction,
+	  	'onCancel': callbacks['onCancel'] || goog.nullFunction,
+	  	'onComplete': callbacks['onComplete'] || goog.nullFunction
+	  };
+
+	this._eventHandler.listen(this._renderEl, 'mousedown', this.onMouseDown, false, this);
+	this._eventHandler.listen(this._renderEl, 'mousemove', this.onMouseMove, false, this);
+};
+
+
+feng.views.sections.controls.ObjectSelector.prototype.deactivate = function() {
+
+  var shouldDeactivate = goog.base(this, 'deactivate');
+
+  if(!shouldDeactivate) return;
+
+	this._delay.stop();
+
+	goog.fx.anim.unregisterAnimation( this );
+};
+
+
+feng.views.sections.controls.ObjectSelector.prototype.animateIn = function () {
+
+	TweenMax.fromTo(this.domElement, .25, {
+		'scale': 0,
+		'opacity': 0
+	}, {
+		'scale': 1,
+		'opacity': 1,
+		'ease': Expo.easeOut
+	});
+
+	TweenMax.fromTo(this._fillEl, .4, {
+		'scale': 0
+	}, {
+		'delay': .1,
+		'scale': 1,
+		'ease': Back.easeOut
+	});
+
+	feng.utils.Utils.setCursor('initial', this._renderEl);
+};
+
+
+feng.views.sections.controls.ObjectSelector.prototype.animateOut = function () {
+
+	TweenMax.to(this.domElement, .25, {
+		'scale': .5,
+		'opacity': 0,
+		'ease': Expo.easeOut,
+		'onComplete': this.hide,
+		'onCompleteScope': this
+	});
+
+	feng.utils.Utils.setCursor(null, this._renderEl);
+};
+
+
+feng.views.sections.controls.ObjectSelector.prototype.doSelect = function () {
+
+	this._selectedObject = feng.views.sections.controls.ObjectSelector.findObjectDelegation( this._downObject );
+
+	this.animateOut();
+
+	this._callbacks['onComplete']( this._selectedObject );
+};
+
+
+feng.views.sections.controls.ObjectSelector.prototype.cancelSelect = function () {
+
+	this.animateOut();
+
+	this._callbacks['onCancel']();
+};
+
+
+feng.views.sections.controls.ObjectSelector.prototype.startSelect = function () {
+
+	this.show();
+	this.animateIn();
+
+	this._startTime = goog.now();
+	goog.fx.anim.registerAnimation( this );
+
+	this._callbacks['onStart']( this._downObject );
+};
+
+
+feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = function () {
+
+	var mouseX = this._mouseMovePosition.x;
+	var mouseY = this._mouseMovePosition.y;
+
+	var camera = this._cameraController.activeCamera;
+
+	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( mouseX, mouseY, this._hitTestMeshes, camera, this._viewSize );
+	
+	goog.dom.classes.enable(this._renderEl, 'help', (intersects.length > 0));
+};
+
+
+feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e ) {
+
+	this._selectedObject = null;
+
+	var camera = this._cameraController.activeCamera;
+
+	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, this._hitTestMeshes, camera, this._viewSize );
+
+	if(intersects.length === 0) {
+		return false;
+	}
+
+	this._downObject = intersects[0].object.view3dObject;
+	this.setPosition( e.clientX, e.clientY );
+
+	this._eventHandler.listen(document, 'mousemove', this.onMouseDownCancel, false, this);
+	this._eventHandler.listen(document, 'mouseup', this.onMouseDownCancel, false, this);
+
+	this._delay.start();
+};
+
+
+feng.views.sections.controls.ObjectSelector.prototype.onMouseDownCancel = function ( e ) {
+
+	this._delay.stop();
+
+	this._eventHandler.unlisten(document, 'mousemove', this.onMouseDownCancel, false, this);
+	this._eventHandler.unlisten(document, 'mouseup', this.onMouseDownCancel, false, this);
+
+	goog.fx.anim.unregisterAnimation( this );
+
+	this.cancelSelect();
+};
+
+
+feng.views.sections.controls.ObjectSelector.prototype.onMouseMove = function ( e ) {
+
+	this._mouseMovePosition.x = e.clientX;
+	this._mouseMovePosition.y = e.clientY;
+
+	this._mouseMoveThrottle.fire();
+};
+
+
+feng.views.sections.controls.ObjectSelector.prototype.onAnimationFrame = function ( now ) {
+
+	var progress = Math.min(1, (now - this._startTime) / this._duration);
+	//console.log('object select progress: ' + progress);
+
+	this._fillSprite.setProgress( progress );
+
+	if(progress === 1) {
+
+		this._eventHandler.unlisten(document, 'mousemove', this.onMouseDownCancel, false, this);
+		this._eventHandler.unlisten(document, 'mouseup', this.onMouseDownCancel, false, this);
+
+		goog.fx.anim.unregisterAnimation( this );
+
+		this.doSelect();
+	}
+
+	this._callbacks['onProgress']( this._downObject, progress );
+};
+
+
+feng.views.sections.controls.ObjectSelector.findObjectDelegation = function( object ) {
+
+	/*
+	if(object instanceof feng.views.view3dobject.entities.PictureFrame) {
+		return object.object3d.parent.interactiveObject;
+	}
+	*/
+	
+	return object;
+};goog.provide('feng.views.sections.captions.ChangeObjectCaption');
+
+goog.require('goog.soy');
+goog.require('feng.templates.captions');
+goog.require('feng.views.sections.captions.Caption');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.captions.ChangeObjectCaption = function( object, cameraController, renderSize, controls, hud ){
+
+  this._template = feng.templates.captions.ChangeObjectCaption;
+  console.log(object.tip)
+  this._templateData = {
+    tip: object.tip,
+    position: 'right'
+  };
+
+  goog.base(this, object, cameraController, renderSize, controls, hud);
+
+  this._objectId = null;
+
+  this._itemEls = feng.utils.Utils.createDomCollectionByAttributes( goog.dom.query('.item-button', this.domElement), 'data-object' );
+  this._infoEls = feng.utils.Utils.createDomCollectionByAttributes( goog.dom.query('.info li', this.domElement), 'data-object' );
+};
+goog.inherits(feng.views.sections.captions.ChangeObjectCaption, feng.views.sections.captions.Caption);
+
+
+feng.views.sections.captions.ChangeObjectCaption.prototype.show = function() {
+
+  goog.base(this, 'show');
+
+  goog.object.forEach(this._itemEls, function(objectEl) {
+    this._eventHandler.listen(objectEl, 'click', this.onClickObject, false, this);
+  }, this);
+};
+
+
+feng.views.sections.captions.ChangeObjectCaption.prototype.hide = function() {
+
+  goog.base(this, 'hide');
+
+  this._object.stopInteraction();
+};
+
+
+feng.views.sections.captions.ChangeObjectCaption.prototype.onClickObject = function(e) {
+
+  if(this._objectId) {
+    goog.dom.classes.enable( this._itemEls[this._objectId], 'active', false );
+    goog.dom.classes.enable( this._infoEls[this._objectId], 'active', false );
+  }
+
+  this._objectId = e.currentTarget.getAttribute('data-object');
+
+  goog.dom.classes.enable( this._itemEls[this._objectId], 'active', true );
+  goog.dom.classes.enable( this._infoEls[this._objectId], 'active', true );
+
+  this.scrollBar.resize();
+  
+  this._object.change( this._objectId );
+};goog.provide('feng.views.sections.overlays.OpeningOverlay');
+
+goog.require('goog.dom');
+goog.require('goog.style');
+goog.require('feng.views.Overlay');
+goog.require('feng.views.popups.Popup');
+goog.require('feng.models.Preload');
+goog.require('feng.utils.Utils');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.overlays.OpeningOverlay = function(domElement){
+
+	var canHalt = true;
+
+  goog.base(this, domElement, canHalt);
+
+  var popupEl = goog.dom.getElementByClass('popup', this.domElement);
+  this._popup = new feng.views.popups.Popup( popupEl );
+
+  this._okButton = goog.dom.getElementByClass('ok', popupEl);
+
+  this._character = '';
+
+  this._sectionId = null;
+  this._viewId = null;
+  this._shownOnce = {};
+
+  this._enterKeyId = null;
+	this._escKeyId = null;
+	this._onClickOK = goog.bind( this.onClickOK, this );
+
+  this._preload = feng.models.Preload.getInstance();
+};
+goog.inherits(feng.views.sections.overlays.OpeningOverlay, feng.views.Overlay);
+goog.addSingletonGetter(feng.views.sections.overlays.OpeningOverlay);
+
+
+feng.views.sections.overlays.OpeningOverlay.prototype.activate = function(){
+
+	goog.base(this, 'activate');
+
+	this._eventHandler.listenOnce( this._okButton, 'click', this.onClickOK, false, this );
+	this._eventHandler.listenOnce( this._popup, feng.events.EventType.ANIMATE_OUT, this.animateOut, false, this );
+
+	this._enterKeyId = feng.keyboardController.bind( this._onClickOK, feng.keyboardController.key.ENTER, true );
+	this._escKeyId = feng.keyboardController.bind( this._onClickOK, feng.keyboardController.key.ESC, true );
+};
+
+
+feng.views.sections.overlays.OpeningOverlay.prototype.deactivate = function(){
+
+	goog.base(this, 'deactivate');
+
+	feng.keyboardController.unbind( this._enterKeyId );
+	feng.keyboardController.unbind( this._escKeyId );
+};
+
+
+feng.views.sections.overlays.OpeningOverlay.prototype.shouldShow = function( sectionId, viewId ){
+
+	var shouldShow;
+
+	if( !this._shownOnce[sectionId] ) {
+
+		shouldShow = true;
+
+	}else {
+
+		if( this._shownOnce[sectionId][viewId] !== true ) shouldShow = true;
+		else shouldShow = false;
+	}
+
+	return shouldShow;
+};
+
+
+feng.views.sections.overlays.OpeningOverlay.prototype.updateContent = function( sectionId, viewId ){
+
+	this._sectionId = sectionId;
+	this._viewId = viewId;
+
+	var copy = this._preload.getAsset('global.fengshui-data')['dialog']['opening'][sectionId][viewId];
+
+	var character = copy['character'];
+	var title = copy['title'];
+	var paragraph = copy['paragraph'];
+
+	var titleEl = goog.dom.query('h1', this.domElement)[0];
+	var paragraphEl = goog.dom.query('p', this.domElement)[0];
+	var characterEl = goog.dom.getElementByClass('character', this.domElement);
+
+	titleEl.innerHTML = title;
+	paragraphEl.innerHTML = paragraph;
+
+	goog.dom.classes.addRemove( characterEl, this._character, character );
+	this._character = character;
+};
+
+
+feng.views.sections.overlays.OpeningOverlay.prototype.animateIn = function(){
+
+	var shouldShow = this.shouldShow( this._sectionId, this._viewId );
+
+	if(!shouldShow) return false;
+
+	goog.base(this, 'animateIn');
+
+	TweenMax.fromTo(this.domElement, .8, {
+		'opacity': 0
+	}, {
+		'opacity': 1,
+		'ease': Strong.easeInOut
+	});
+
+	this._popup.animateIn( 800 );
+
+	this._shownOnce[this._sectionId] = this._shownOnce[this._sectionId] || {};
+	this._shownOnce[this._sectionId][this._viewId] = true;
+};
+
+
+feng.views.sections.overlays.OpeningOverlay.prototype.animateOut = function(){
+
+	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
+
+	TweenMax.to(this.domElement, .8, {
+		'delay': .25,
+		'opacity': 0,
+		'ease': Strong.easeInOut,
+		'onComplete': this.hide,
+		'onCompleteParams': [ true ],
+		'onCompleteScope': this
+	});
+};
+
+
+feng.views.sections.overlays.OpeningOverlay.prototype.onClickOK = function(e){
+
+	this._popup.animateOut();
+};
+
+
+feng.views.sections.overlays.OpeningOverlay.prototype.onResize = function(e){
+
+	goog.base(this, 'onResize', e);
+
+	goog.style.setSize(this.domElement, feng.viewportSize);
+
+	feng.utils.Utils.centerAlign( this._popup.domElement, feng.viewportSize );
+};goog.provide('feng.views.sections.overlays.EndingOverlay');
+
+goog.require('goog.dom');
+goog.require('goog.style');
+goog.require('feng.views.Overlay');
+goog.require('feng.views.popups.Popup');
+goog.require('feng.models.Preload');
+goog.require('feng.utils.Utils');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.overlays.EndingOverlay = function(domElement){
+
+	var canHalt = true;
+
+  goog.base(this, domElement, canHalt);
+
+  var popupEl = goog.dom.getElementByClass('popup', this.domElement);
+  this._popup = new feng.views.popups.Popup( popupEl );
+
+  this._stayButton = goog.dom.getElementByClass('stay', popupEl);
+  this._nextButton = goog.dom.getElementByClass('next', popupEl);
+
+	this._sectionId = null;
+  this._shownOnce = {};
+
+  this._character = '';
+
+  this._enterKeyId = null;
+	this._escKeyId = null;
+	this._onClickNext = goog.bind( this.onClickNext, this );
+	this._onClickStay = goog.bind( this.onClickStay, this );
+
+  this._preload = feng.models.Preload.getInstance();
+};
+goog.inherits(feng.views.sections.overlays.EndingOverlay, feng.views.Overlay);
+goog.addSingletonGetter(feng.views.sections.overlays.EndingOverlay);
+
+
+feng.views.sections.overlays.EndingOverlay.prototype.activate = function(){
+
+	goog.base(this, 'activate');
+
+	this._eventHandler.listenOnce( this._stayButton, 'click', this.onClickStay, false, this );
+	this._eventHandler.listenOnce( this._nextButton, 'click', this.onClickNext, false, this );
+	this._eventHandler.listenOnce( this._popup, feng.events.EventType.ANIMATE_OUT, this.animateOut, false, this );
+
+	this._enterKeyId = feng.keyboardController.bind( this._onClickNext, feng.keyboardController.key.ENTER, true );
+	this._escKeyId = feng.keyboardController.bind( this._onClickStay, feng.keyboardController.key.ESC, true );
+};
+
+
+feng.views.sections.overlays.EndingOverlay.prototype.deactivate = function(){
+
+	goog.base(this, 'deactivate');
+
+	feng.keyboardController.unbind( this._enterKeyId );
+	feng.keyboardController.unbind( this._escKeyId );
+};
+
+
+feng.views.sections.overlays.EndingOverlay.prototype.updateContent = function( sectionId ){
+
+	this._sectionId = sectionId;
+
+	var copy = this._preload.getAsset('global.fengshui-data')['dialog']['ending'][sectionId];
+
+	var character = copy['character'];
+	var title = copy['title'];
+	var paragraph = copy['paragraph'];
+
+	var titleEl = goog.dom.query('h1', this.domElement)[0];
+	var paragraphEl = goog.dom.query('p', this.domElement)[0];
+	var characterEl = goog.dom.getElementByClass('character', this.domElement);
+
+	titleEl.innerHTML = title;
+	paragraphEl.innerHTML = paragraph;
+
+	goog.dom.classes.addRemove( characterEl, this._character, character );
+	this._character = character;
+};
+
+
+feng.views.sections.overlays.EndingOverlay.prototype.animateIn = function(){
+
+	if( !this._shownOnce[this._sectionId] ) {
+
+		this._shownOnce[this._sectionId] = true;
+
+	}else {
+
+		return false;
+	}
+
+	goog.base(this, 'animateIn');
+
+	TweenMax.fromTo(this.domElement, .8, {
+		'opacity': 0
+	}, {
+		'opacity': 1,
+		'ease': Strong.easeInOut
+	});
+
+	this._popup.animateIn();
+};
+
+
+feng.views.sections.overlays.EndingOverlay.prototype.animateOut = function(){
+
+	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
+
+	TweenMax.to(this.domElement, .8, {
+		'delay': .25,
+		'opacity': 0,
+		'ease': Strong.easeInOut,
+		'onComplete': this.hide,
+		'onCompleteParams': [ true ],
+		'onCompleteScope': this
+	});
+};
+
+
+feng.views.sections.overlays.EndingOverlay.prototype.onClickStay = function(e){
+
+	this._popup.animateOut();
+};
+
+
+feng.views.sections.overlays.EndingOverlay.prototype.onClickNext = function(e){
+
+	this._popup.animateOut();
+};
+
+
+feng.views.sections.overlays.EndingOverlay.prototype.onResize = function(e){
+
+	goog.base(this, 'onResize', e);
+
+	goog.style.setSize(this.domElement, feng.viewportSize);
+
+	feng.utils.Utils.centerAlign( this._popup.domElement, feng.viewportSize );
+};goog.provide('feng.views.sections.controls.DropButton');
+
+goog.require('feng.views.sections.controls.Controls');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.controls.DropButton = function(domElement){
+	
+  goog.base(this, domElement);
+
+  this._movableObject = null;
+
+  this.fadeOut();
+};
+goog.inherits(feng.views.sections.controls.DropButton, feng.views.sections.controls.Controls);
+
+
+feng.views.sections.controls.DropButton.prototype.activate = function( movableObject ){
+
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
+
+  this._movableObject = movableObject;
+
+  this.fadeIn();
+
+	this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
+
+	goog.fx.anim.registerAnimation( this );
+};
+
+
+feng.views.sections.controls.DropButton.prototype.deactivate = function(){
+
+  var shouldDeactivate = goog.base(this, 'deactivate');
+
+  if(!shouldDeactivate) return;
+
+  this._movableObject = null;
+
+  goog.fx.anim.unregisterAnimation( this );
+};
+
+
+feng.views.sections.controls.DropButton.prototype.fadeIn = function(){
+
+	goog.dom.classes.addRemove( this.domElement, 'fadeOut', 'fadeIn' );
+};
+
+
+feng.views.sections.controls.DropButton.prototype.fadeOut = function(){
+
+	goog.dom.classes.addRemove( this.domElement, 'fadeIn', 'fadeOut' );
+};
+
+
+feng.views.sections.controls.DropButton.prototype.onClick = function(e){
+
+	if(goog.dom.classes.has(this.domElement, 'fadeOut')) return false;
+
+	this.fadeOut();
+
+  var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
+
+  browseControls.dispatchEvent({
+    type: feng.events.EventType.CHANGE,
+    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+    nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
+    object: this._movableObject.getCloseUpObjectWhenDropped()
+  });
+};
+
+
+feng.views.sections.controls.DropButton.prototype.onAnimationFrame = function(now) {
+
+  var camera = this._cameraController.activeCamera;
+  var viewSize = this._viewSize;
+
+  var pos3d = this._movableObject.getDestination();
+  var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, camera, viewSize );
+  
+  goog.style.setStyle( this.domElement, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)' );
+};goog.provide('feng.views.sections.controls.Book');
+
+goog.require('goog.dom');
+goog.require('goog.fx.Dragger');
+goog.require('feng.events');
+goog.require('feng.fx.AnimatedSprite');
+goog.require('feng.views.sections.controls.Controls');
+goog.require('feng.views.book.Book');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.controls.Book = function(domElement){
+	
+  goog.base(this, domElement);
+
+  var iconEl = goog.dom.getElementByClass('icon', this.domElement);
+  var img = feng.models.Preload.getInstance().getAsset('global.book');
+  this._bookSprite = new feng.fx.AnimatedSprite(iconEl, img, 10, 3, 30);
+
+	var prop = {
+		progress: 0
+	};
+
+	this._bookTweener = TweenMax.fromTo(prop, .25, {
+		progress: 0
+	},{
+		progress: 1,
+		'paused': true,
+		'ease': Linear.easeNone,
+		'onUpdate': function() {
+			this._bookSprite.setProgress( prop.progress );
+		},
+		'onUpdateScope': this
+	});
+};
+goog.inherits(feng.views.sections.controls.Book, feng.views.sections.controls.Controls);
+
+
+feng.views.sections.controls.Book.prototype.activate = function(){
+
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
+
+	this._eventHandler.listen(this.domElement, 'mouseover', this.onMouseOver, false, this);
+	this._eventHandler.listen(this.domElement, 'mouseout', this.onMouseOut, false, this);
+};
+
+
+feng.views.sections.controls.Book.prototype.onMouseOver = function(e){
+
+	this._bookTweener.play();
+};
+
+
+feng.views.sections.controls.Book.prototype.onMouseOut = function(e){
+
+	this._bookTweener.reverse();
+};
+
+
+feng.views.sections.controls.Book.prototype.onResize = function(e){
+
+	var viewportSize = feng.viewportSize;
+	goog.style.setPosition(this.domElement, viewportSize.width - 100 - 30, 150);
+};
+
+
+feng.views.sections.controls.Book.prototype.onModeChange = function(e){
+
+  goog.base(this, 'onModeChange', e);
+
+  switch(e.mode) {
+
+    case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
+	if(this._isActivated) {
+		this.deactivate();
+	}
+    break;
+
+    default:
+    if(!this._isActivated) {
+		this.activate();
+    }
+    break;
+  }
+};goog.provide('feng.views.sections.controls.Tooltips');
+
+goog.require('goog.async.Throttle');
+goog.require('goog.dom.classes');
+goog.require('feng.views.sections.controls.Controls');
+goog.require('feng.utils.ThreeUtils');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.controls.Tooltips = function( domElement ){
+
+  goog.base(this, domElement);
+
+  this._detectBlockingThrottle = new goog.async.Throttle( this.detectBlocking, 400, this );
+
+  this._raycaster = new THREE.Raycaster();
+
+  this._rayDirection = new THREE.Vector3();
+
+  this._detectObjects = [];
+
+  this._tooltips = {};
+
+  // tooltips of current view3d
+  this._currentTooltips = {};
+  this._tooltipObjects = [];
+};
+goog.inherits(feng.views.sections.controls.Tooltips, feng.views.sections.controls.Controls);
+
+
+feng.views.sections.controls.Tooltips.prototype.createTooltips = function( view3d ){
+
+  // create tip tooltips
+  goog.object.forEach( view3d.tipObjects, function(tipObject) {
+
+    var tip = tipObject.tip;
+
+    if(!this._tooltips[ tip.id ]) {
+
+      var tooltipEl = soy.renderAsFragment(feng.templates.controls.TipTooltip, {
+        tip: tipObject.tip
+      });
+
+      goog.dom.appendChild( this.domElement, tooltipEl );
+
+      this._tooltips[ tip.id ] = tooltipEl;
+    }
+  }, this);
+
+  // create gateway tooltips
+  goog.object.forEach( view3d.getGatewayObjects(), function(gatewayObject) {
+
+    if(!this._tooltips[ gatewayObject.id ] && !gatewayObject.toHome) {
+
+      var tooltipEl = soy.renderAsFragment(feng.templates.controls.GatewayTooltip, {
+        gateway: gatewayObject
+      });
+
+      goog.dom.appendChild( this.domElement, tooltipEl );
+
+      this._tooltips[ gatewayObject.id ] = tooltipEl;
+    }
+  }, this);
+};
+
+
+feng.views.sections.controls.Tooltips.prototype.getTooltip = function( id ){
+
+  return goog.dom.query('.tooltip[data-id=' + id + ']', this.domElement)[0];
+};
+
+
+feng.views.sections.controls.Tooltips.prototype.setView3D = function( view3d ){
+
+  goog.base(this, 'setView3D', view3d);
+
+  // create tooltips if not
+  this.createTooltips( view3d );
+
+  // find tooltip objects of view3d
+  var tipObjects = goog.object.getValues( view3d.tipObjects );
+
+  var gatewayObjects = goog.array.filter(view3d.getGatewayObjects(), function(gatewayObject) {
+    return !gatewayObject.toHome;
+  });
+  
+  this._tooltipObjects = ([]).concat( tipObjects, gatewayObjects );
+
+  // set current tooltips from objects
+  this._currentTooltips = {};
+
+  goog.array.forEach( this._tooltipObjects, function(object) {
+
+    var id = object.tip ? object.tip.id : object.id;
+    this._currentTooltips[ id ] = this._tooltips[ id ];
+  }, this);
+
+  // listen to tip unlock event
+  goog.array.forEach( tipObjects, function(tipObject) {
+
+    var tip = tipObject.tip;
+    var tooltipEl = this._tooltips[ tip.id ];
+
+    goog.dom.classes.enable( tooltipEl, 'locked', !(tip.unlocked && tip.isFinal) );
+
+    if(!tip.unlocked && tip.isFinal) {
+      goog.events.listenOnce( tip, feng.events.EventType.UNLOCK, this.onTipUnlock, false, this );
+    }
+  }, this);
+
+  // listen to click event of gateway tooltip
+  goog.array.forEach( gatewayObjects, function(gatewayObject) {
+
+    var tooltipEl = this._tooltips[ gatewayObject.id ];
+    goog.events.listenOnce( tooltipEl, 'click', this.onClickGatewayTooltip, false, this );
+  }, this);
+
+  this.updateDetectObjects();
+};
+
+
+feng.views.sections.controls.Tooltips.prototype.activate = function(){
+
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
+
+  goog.object.forEach( this._currentTooltips, function(tooltip) {
+    goog.dom.classes.addRemove( tooltip, 'fadeOut', 'fadeIn' );
+  });
+
+  this.updateDetectObjects();
+
+  goog.fx.anim.registerAnimation( this );
+};
+
+
+feng.views.sections.controls.Tooltips.prototype.deactivate = function(){
+
+  var shouldDeactivate = goog.base(this, 'deactivate');
+
+  if(!shouldDeactivate) return;
+
+  goog.object.forEach( this._currentTooltips, function(tooltip) {
+    goog.dom.classes.addRemove( tooltip, 'fadeIn', 'fadeOut' );
+  });
+
+  goog.fx.anim.unregisterAnimation( this );
+};
+
+
+feng.views.sections.controls.Tooltips.prototype.onModeChange = function( e ){
+  
+  goog.base(this, 'onModeChange', e);
+
+  switch(e.mode) {
+
+    case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
+    this.deactivate();
+    break;
+
+    default:
+    this.activate();
+    break;
+  }
+};
+
+
+feng.views.sections.controls.Tooltips.prototype.updateDetectObjects = function(){
+
+  if(!this._view3d) return;
+
+  // check objects to detect blocking
+  this._detectObjects = goog.array.map(this._view3d.getSolidObjects(), function(object) {
+    return object.object3d;
+  });
+};
+
+
+feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
+
+  var control = this._view3d.modeController.control;
+  var controlPosition = control.getPosition();
+  var controlDirection = control.getForwardVector( true );
+  var thresholdDot = Math.cos( THREE.Math.degToRad(45) );
+
+  goog.array.forEach( this._tooltipObjects, function(object) {
+
+    var id = object.tip ? object.tip.id : object.id;
+
+    var tooltip = this._currentTooltips[ id ];
+
+    var objectCenter = object.getCenter();
+    var direction = this._rayDirection.subVectors( objectCenter, controlPosition ).normalize();
+    this._raycaster.set( controlPosition, direction );
+
+    var objectDirection = objectCenter.clone().sub( controlPosition ).normalize();
+    var dot = objectDirection.dot( controlDirection );
+
+    if(dot >= thresholdDot) {
+
+      goog.dom.classes.enable( tooltip, 'hidden', false );
+
+    }else {
+
+      goog.dom.classes.enable( tooltip, 'hidden', true );
+      return;
+    }
+    
+    var intersects = this._raycaster.intersectObjects( this._detectObjects );
+
+    var shouldShow = (intersects.length > 0 && 
+      (intersects[0].object.view3dObject === object || intersects[0].object.parent.view3dObject === object || goog.array.contains(intersects[0].object.children, object.object3d))
+      );
+
+    goog.dom.classes.enable( tooltip, 'hidden', !shouldShow );
+
+  }, this);
+};
+
+
+feng.views.sections.controls.Tooltips.prototype.onTipUnlock = function(e){
+
+  var tipId = e.tip.id;
+  var tooltipEl = this.getTooltip( tipId );
+
+  goog.dom.classes.remove( tooltipEl, 'locked' );
+};
+
+
+feng.views.sections.controls.Tooltips.prototype.onClickGatewayTooltip = function(e){
+
+  e.preventDefault();
+
+  var gatewayId = e.currentTarget.getAttribute('data-id');
+  var gateway = this._view3d.getView3dObject( gatewayId );
+
+  this._view3d.modeController.setMode({
+    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+    nextMode: feng.controllers.view3d.ModeController.Mode.EXIT,
+    gateway: gateway
+  });
+};
+
+
+feng.views.sections.controls.Tooltips.prototype.onModeChange = function(e){
+
+  goog.base(this, 'onModeChange', e);
+
+  goog.dom.classes.enable(this.domElement, 'design', (e.mode === feng.controllers.view3d.ModeController.Mode.DESIGN));
+
+  switch(e.mode) {
+    case feng.controllers.view3d.ModeController.Mode.ENTRY:
+    this.deactivate();
+    this._raycaster.far = 400/2;
+    break;
+
+    case feng.controllers.view3d.ModeController.Mode.BROWSE:
+    this.activate();
+    this._raycaster.far = 400/2;
+    break;
+
+    case feng.controllers.view3d.ModeController.Mode.DESIGN:
+    this.activate();
+    this._raycaster.far = Infinity;
+    break;
+
+    default:
+    this.deactivate();
+    break;
+  }
+};
+
+
+feng.views.sections.controls.Tooltips.prototype.onAnimationFrame = function(now) {
+
+  var camera = this._cameraController.activeCamera;
+  var viewSize = this._viewSize;
+
+  goog.array.forEach( this._tooltipObjects, function(object) {
+
+    var pos3d = object.getCenter();
+    var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, camera, viewSize );
+    
+    var id = object.tip ? object.tip.id : object.id;
+    var tooltip = this._currentTooltips[ id ];
+    goog.style.setStyle( tooltip, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)' );
+
+  }, this);
+
+  this._detectBlockingThrottle.fire();
+};goog.provide('feng.views.sections.controls.Reminder');
+
+goog.require('goog.async.Delay');
+goog.require('goog.Timer');
+goog.require('feng.models.achievements.Achievements');
+goog.require('feng.models.Preload');
+goog.require('feng.views.sections.controls.Controls');
+
+/**
+ * @constructor
+ */
+feng.views.sections.controls.Reminder = function( domElement, tips ){
+	
+  goog.base(this, domElement);
+
+  this._tips = tips;
+  this._currentTips = [];
+
+  this._isHintShown = false;
+
+  this._hintIndex = 0;
+  this._numHints = 0;
+
+  this._hintTimer = new goog.Timer( 30000 );
+
+  this._hintDialogueEl = goog.dom.query('.dialogue.hint', this.domElement)[0];
+  this._prevEl = goog.dom.query('.prev', this.domElement)[0];
+  this._nextEl = goog.dom.query('.next', this.domElement)[0];
+  this._characterEl = goog.dom.getElementByClass('character', this.domElement);
+  this._canvasEl = goog.dom.query('canvas', this._characterEl)[0];
+  this._canvasContext = this._canvasEl.getContext('2d');
+
+  this._hintEls = null;
+  this._hintEl = null;
+
+  this._characterAnimations = null;
+  this._characterAnimation = null;
+
+  this._hideHintDelay = new goog.async.Delay(this.hideHint, 6000, this);
+};
+goog.inherits(feng.views.sections.controls.Reminder, feng.views.sections.controls.Controls);
+
+
+feng.views.sections.controls.Reminder.prototype.init = function(){
+
+	goog.base(this, 'init');
+
+	goog.array.forEach(this._tips, function(tip) {
+		tip.listenOnce(feng.events.EventType.UNLOCK, this.onTipUnlock, false, this);
+	}, this);
+
+	this._characterAnimations = this.getCharacterAnimations();
+};
+
+
+feng.views.sections.controls.Reminder.prototype.getLockedTipsOfView = function(){
+
+  var achievements = feng.models.achievements.Achievements.getInstance();
+  this._currentTips = achievements.getTipsOfView( this._view3d.id, this._view3d.sectionId );
+
+  this._currentTips = goog.array.filter(this._currentTips, function(tip) {
+  	var requiredTip = tip.getRequiredTip();
+  	var requiredTipUnlocked = requiredTip ? requiredTip.unlocked : true;
+  	return (!tip.unlocked && requiredTipUnlocked);
+  });
+  
+  this._numHints = this._currentTips.length;
+
+  return this._currentTips;
+};
+
+
+feng.views.sections.controls.Reminder.prototype.setView3D = function( view3d ){
+
+  goog.base(this, 'setView3D', view3d);
+
+  this._currentTips = this.getLockedTipsOfView();
+
+  this._hintEls = goog.dom.query('.hints li', this._hintDialogueEl);
+
+  if(this._characterAnimation) {
+  	this._characterAnimation.loop.pause();
+  	this._characterAnimation.raise.pause();
+  }
+
+  this._characterAnimation = goog.object.findValue(this._characterAnimations, function(data) {
+  	return (data.viewId === view3d.id);
+  });
+
+  // if no character animation was found by view id, use the default character
+  this._characterAnimation = this._characterAnimation || goog.object.getValues(this._characterAnimations)[0];
+  //
+
+  this._canvasEl.width = this._characterAnimation.size['width'];
+  this._canvasEl.height = this._characterAnimation.size['height'];
+  this._characterAnimation.loop.restart();
+};
+
+
+feng.views.sections.controls.Reminder.prototype.activate = function(){
+
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
+
+	this._eventHandler.listen(this._prevEl, 'click', this.onClick, false, this);
+	this._eventHandler.listen(this._nextEl, 'click', this.onClick, false, this);
+	this._eventHandler.listen(this._characterEl, 'mousedown', this.onMouseDown, false, this);
+	this._eventHandler.listen(this._hintDialogueEl, 'mouseover', this.onMouseOver, false, this);
+	this._eventHandler.listen(this._hintDialogueEl, 'mouseout', this.onMouseOut, false, this);
+	this._eventHandler.listen(this._hintTimer, 'tick', this.onHintTick, false, this);
+
+	this._hintTimer.start();
+};
+
+
+feng.views.sections.controls.Reminder.prototype.deactivate = function(){
+
+  var shouldDeactivate = goog.base(this, 'deactivate');
+
+  if(!shouldDeactivate) return;
+
+	this._hintTimer.stop();
+};
+
+
+feng.views.sections.controls.Reminder.prototype.getCharacterAnimations = function(){
+
+	// extract unique character names from tips
+	var animations = {};
+	var preload = feng.models.Preload.getInstance();
+
+	goog.array.forEach(this._tips, function(tip) {
+
+		var character = tip.character;
+
+		if(animations[character]) return;
+
+		var sectionId = tip.sectionId;
+		var viewId = tip.viewId;
+
+		var img = preload.getAsset( sectionId + '.global.character.' + character );
+		var data = preload.getAsset( sectionId + '.global.character.' + character + '-data' );
+		var frames = data['frames'];
+		var size = data['size'];
+
+		var keys = goog.object.getKeys( frames );
+
+		var loopKeys = goog.array.filter(keys, function(key) {
+			return goog.string.startsWith(key, 'loop-');
+		});
+
+		var raiseKeys = goog.array.filter(keys, function(key) {
+			return goog.string.startsWith(key, 'raise-');
+		});
+
+		var loopProp = {
+			frame: 0
+		};
+
+		var numLoopFrames = loopKeys.length;
+
+		var loopTweener = TweenMax.to(loopProp, numLoopFrames/30, {
+			frame: numLoopFrames - 1,
+			'ease': Linear.easeNone,
+			'paused': true,
+			'yoyo': true,
+			'repeat': -1,
+			'repeatDelay': 2,
+			'onUpdate': function() {
+				var frame = Math.round( loopProp.frame );
+				this.drawCharacter( img, frames[ 'loop-' + frame ] );
+			},
+			'onUpdateScope': this
+		});
+
+		var raiseProp = {
+			frame: 0
+		};
+
+		var numRaiseFrames = raiseKeys.length;
+
+		var raiseTweener = TweenMax.to(raiseProp, numRaiseFrames/30, {
+			frame: numRaiseFrames - 1,
+			'ease': Linear.easeNone,
+			'paused': true,
+			'onUpdate': function() {
+				var frame = Math.round( raiseProp.frame );
+				this.drawCharacter( img, frames[ 'raise-' + frame ] );
+			},
+			'onUpdateScope': this,
+			'onReverseComplete': function() {
+				loopTweener.restart();
+			}
+		});
+
+		animations[character] = {
+			viewId: tip.viewId,
+			size: size,
+			loop: loopTweener,
+			raise: raiseTweener
+		};
+
+	}, this);
+
+	/* data structure */
+	/*
+	character: {
+		size: <Object>,
+		loop: <TweenMax>,
+		raise: <TweenMax>,
+		viewId: <String>
+	}
+	*/
+
+	return animations;
+};
+
+
+feng.views.sections.controls.Reminder.prototype.getCurrentTip = function(){
+
+	var tip = goog.array.find(this._currentTips, function(tip) {
+		return !tip.unlocked;
+	});
+
+	return tip;
+};
+
+
+feng.views.sections.controls.Reminder.prototype.drawCharacter = function(img, frame){
+
+	var x = frame['x'], y = frame['y'];
+	var width = this._canvasEl.width, height = this._canvasEl.height;
+
+	this._canvasContext.clearRect( 0, 0, width, height );
+	this._canvasContext.drawImage( img, x, y, width, height, 0, 0, width, height );
+};
+
+
+feng.views.sections.controls.Reminder.prototype.prevHint = function(){
+
+	this._hintIndex --;
+	if(this._hintIndex < 0) this._hintIndex = this._numHints - 1;
+
+	this.gotoHintByTip( this._currentTips[this._hintIndex].id );
+};
+
+
+feng.views.sections.controls.Reminder.prototype.nextHint = function(){
+
+	this._hintIndex ++;
+	if(this._hintIndex > this._numHints - 1) this._hintIndex = 0;
+
+	this.gotoHintByTip( this._currentTips[this._hintIndex].id );
+};
+
+
+feng.views.sections.controls.Reminder.prototype.gotoHintByTip = function( tipId ){
+
+	var domIndex = goog.array.findIndex(this._hintEls, function(el, index) {
+		if(el.getAttribute('data-tip-id') === tipId) {
+			return true;
+		}
+	});
+
+	if(this._hintEl) {
+		goog.dom.classes.remove( this._hintEl, 'shown' );
+	}
+
+	this._hintEl = this._hintEls[ domIndex ];
+
+	goog.dom.classes.add( this._hintEl, 'shown' );
+};
+
+
+feng.views.sections.controls.Reminder.prototype.showHint = function( tipId ){
+
+	this._isHintShown = true;
+
+	this.gotoHintByTip( tipId );
+
+	goog.dom.classes.addRemove( this.domElement, 'inactive', 'active' );
+
+	this._hideHintDelay.start();
+
+	this._hintTimer.stop();
+
+	this._characterAnimation.loop.pause();
+	this._characterAnimation.raise.restart();
+};
+
+
+feng.views.sections.controls.Reminder.prototype.hideHint = function( instance ){
+
+	this._isHintShown = false;
+
+	var duration = instance ? 0 : .4;
+
+	goog.dom.classes.addRemove( this.domElement, 'active', 'inactive' );
+
+	this._hintTimer.start();
+
+	this._characterAnimation.raise.reverse();
+};
+
+
+feng.views.sections.controls.Reminder.prototype.onClick = function(e){
 
 	switch(e.currentTarget) {
-		case this._howtoplayButton:
-    feng.tutorial.toggle();
+		case this._prevEl:
+		this.prevHint();
 		break;
 
-		case this._soundButton:
-		feng.soundController.toggle();
-		break;
-
-		case this._facebookButton:
-		case this._twitterButton:
-		case this._googleButton:
-    feng.utils.Utils.popUp( e.currentTarget.href );
+		case this._nextEl:
+		this.nextHint();
 		break;
 	}
 };
 
 
-feng.views.MainOptions.prototype.onMute = function(e){
+feng.views.sections.controls.Reminder.prototype.onMouseDown = function(e){
 
-	goog.dom.classes.add( this._soundButton, 'mute' );
+	if(!e.isMouseActionButton()) {
+		return false;
+	}
+
+	if(this._isHintShown) {
+
+		this.hideHint();
+
+	}else {
+
+		var tip = this.getCurrentTip();
+		
+		if(tip) {
+			this.showHint( tip.id );
+		}
+	}
 };
 
 
-feng.views.MainOptions.prototype.onUnmute = function(e){
+feng.views.sections.controls.Reminder.prototype.onMouseOver = function(e){
 
-	goog.dom.classes.remove( this._soundButton, 'mute' );
+	if(e.currentTarget === this._hintDialogueEl) {
+
+		this._hideHintDelay.stop();
+	}
+};
+
+
+feng.views.sections.controls.Reminder.prototype.onMouseOut = function(e){
+
+	if(e.currentTarget === this._hintDialogueEl) {
+
+		if(!e.relatedTarget || !goog.dom.contains(e.currentTarget, e.relatedTarget)) {
+			this._hideHintDelay.start();
+		}
+	}
+};
+
+
+feng.views.sections.controls.Reminder.prototype.onHintTick = function(e){
+
+	var tip = this.getCurrentTip();
+
+	if(tip) {
+		this.showHint( tip.id );
+	}
+};
+
+
+feng.views.sections.controls.Reminder.prototype.onTipUnlock = function(e){
+
+	var tipId = e.tip.id;
+
+	var unlockedHintEl = goog.dom.query('.hints li[data-tip-id="' + tipId + '"]', this._hintDialogueEl)[0];
+	goog.dom.removeNode( unlockedHintEl );
+
+	this._currentTips = this.getLockedTipsOfView();
+};
+
+
+feng.views.sections.controls.Reminder.prototype.onModeChange = function(e){
+
+	goog.base(this, 'onModeChange', e);
+	
+	var mode = e.nextMode || e.mode;
+
+	switch(mode) {
+
+		case feng.controllers.view3d.ModeController.Mode.BROWSE:
+		case feng.controllers.view3d.ModeController.Mode.WALK:
+		this.activate();
+		break;
+
+		default:
+		this.deactivate();
+		break;
+	}
+};
+
+
+feng.views.sections.controls.Reminder.prototype.onResize = function(e){
+
+	goog.style.setPosition(this.domElement, feng.viewportSize.width - 100 - 30, feng.viewportSize.height - 100 - 30);
+};goog.provide('feng.views.sections.captions.DropFruitsCaption');
+
+goog.require('goog.soy');
+goog.require('feng.templates.captions');
+goog.require('feng.views.sections.captions.Caption');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.captions.DropFruitsCaption = function( object, cameraController, renderSize, controls, hud ){
+
+  this._template = feng.templates.captions.DropFruitsCaption;
+  
+  this._templateData = {
+    fruits: object.tip.details['descriptions'],
+    tip: object.tip,
+    position: 'right'
+  };
+
+  goog.base(this, object, cameraController, renderSize, controls, hud);
+
+  this._fruitButtonEls = goog.dom.query('.drop-fruits .fruits li button', this.domElement);
+  this._descriptionEls = goog.dom.query('.drop-fruits .descriptions li', this.domElement);
+  this._descriptionEl = goog.dom.query('.drop-fruits .descriptions', this.domElement)[0];
+};
+goog.inherits(feng.views.sections.captions.DropFruitsCaption, feng.views.sections.captions.Caption);
+
+
+feng.views.sections.captions.DropFruitsCaption.prototype.show = function() {
+
+  goog.base(this, 'show');
+
+  this._object.startInteraction();
+
+  this._eventHandler.listen( this._object, feng.events.EventType.CHANGE, this.onFruitPlateChange, false, this );
+
+  goog.array.forEach(this._fruitButtonEls, function(fruitButtonEl) {
+    this._eventHandler.listen( fruitButtonEl, 'mousedown', this.onClickFruitButton, false, this );
+  }, this);
+};
+
+
+feng.views.sections.captions.DropFruitsCaption.prototype.onFruitPlateChange = function(e) {
+
+  this.setActiveFruit( e.fruit );
+};
+
+
+feng.views.sections.captions.DropFruitsCaption.prototype.setActiveFruit = function(fruit) {
+
+  goog.array.forEach(this._fruitButtonEls, function(fruitButtonEl) {
+
+    if(fruitButtonEl.getAttribute('data-fruit-id') === fruit) {
+      goog.dom.classes.add(fruitButtonEl, 'active');
+    }else {
+      goog.dom.classes.remove(fruitButtonEl, 'active');
+    }
+  });
+
+  goog.array.forEach(this._descriptionEls, function(descriptionEl) {
+
+    if(descriptionEl.getAttribute('data-fruit-id') === fruit) {
+      goog.dom.classes.add(descriptionEl, 'active');
+    }else {
+      goog.dom.classes.remove(descriptionEl, 'active');
+    }
+  });
+
+  goog.dom.classes.add( this._descriptionEl, 'shown' );
+};
+
+
+feng.views.sections.captions.DropFruitsCaption.prototype.onClickFruitButton = function(e) {
+
+  if(!this._object.isUnlocked()) return false;
+
+  var fruit = e.currentTarget.getAttribute('data-fruit-id');
+  this.setActiveFruit( fruit );
+};goog.provide('feng.views.View3DHud');
+
+goog.require('feng.views.sections.controls.ObjectSelector');
+goog.require('feng.views.sections.controls.DropButton');
+goog.require('feng.views.sections.controls.Compass');
+goog.require('feng.views.sections.controls.Book');
+goog.require('feng.views.sections.controls.Reminder');
+goog.require('feng.views.sections.controls.HomeButton');
+goog.require('feng.views.sections.controls.ProgressBar');
+goog.require('feng.views.sections.controls.Tooltips');
+goog.require('feng.views.sections.captions.Caption');
+goog.require('feng.views.sections.captions.ChangeColorCaption');
+goog.require('feng.views.sections.captions.ChangeObjectCaption');
+goog.require('feng.views.sections.captions.ChangePictureCaption');
+goog.require('feng.views.sections.captions.DropFruitsCaption');
+goog.require('feng.views.sections.overlays.TutorialOverlay');
+goog.require('feng.views.sections.overlays.OpeningOverlay');
+goog.require('feng.views.sections.overlays.EndingOverlay');
+goog.require('feng.views.sections.overlays.FinaleOverlay');
+goog.require('feng.views.sections.overlays.LoaderOverlay');
+
+
+/**
+ * @constructor
+ */
+feng.views.View3DHud = function( hudEl, view3dController, tips, episode ){
+
+  goog.base(this);
+
+  this.domElement = hudEl;
+
+  this._view3d = null;
+  this._view3dController = view3dController;
+
+  this._episode = episode;
+
+  this._tips = tips;
+
+  this._isInEntryMode = false;
+
+  // create a captions collection
+  this._captions = {};
+
+  // create overlays
+  this._overlaysEl = goog.dom.getElementByClass('overlays', this.domElement);
+
+  var tutorialOverlayEl = goog.dom.getElementByClass('tutorial-overlay', this._overlaysEl);
+  this.tutorialOverlay = new feng.views.sections.overlays.TutorialOverlay( tutorialOverlayEl );
+
+  var openingOverlayEl = goog.dom.getElementByClass('opening-overlay', this._overlaysEl);
+  this.openingOverlay = new feng.views.sections.overlays.OpeningOverlay( openingOverlayEl );
+
+  var endingOverlayEl = goog.dom.getElementByClass('ending-overlay', this._overlaysEl);
+  this.endingOverlay = new feng.views.sections.overlays.EndingOverlay( endingOverlayEl );
+
+  var finaleOverlayEl = goog.dom.getElementByClass('finale-overlay', this._overlaysEl);
+  this.finaleOverlay = new feng.views.sections.overlays.FinaleOverlay( finaleOverlayEl );
+
+  var loaderOverlayEl = goog.dom.getElementByClass('loader-overlay', this._overlaysEl);
+  this.loaderOverlay = new feng.views.sections.overlays.LoaderOverlay( loaderOverlayEl );
+
+  // create controls
+  this._controlsEl = goog.dom.getElementByClass('controls', this.domElement);
+
+  var homeButtonEl = goog.dom.getElementByClass('home-button', this._controlsEl);
+  this.homeButton = new feng.views.sections.controls.HomeButton( homeButtonEl );
+  this.homeButton.setParentEventTarget( this );
+
+  var compassEl = goog.dom.getElementByClass('compass', this._controlsEl);
+  this.compass = new feng.views.sections.controls.Compass( compassEl );
+  this.compass.setParentEventTarget( this );
+
+  var bookEl = goog.dom.getElementByClass('book', this._controlsEl);
+  this.book = new feng.views.sections.controls.Book( bookEl );
+  this.book.setParentEventTarget( this );
+  
+  var reminderEl = goog.dom.getElementByClass('reminder', this._controlsEl);
+  this.reminder = new feng.views.sections.controls.Reminder( reminderEl, tips );
+  this.reminder.setParentEventTarget( this );
+
+  var progressBarEl = goog.dom.getElementByClass('progressBar', this._controlsEl);
+  this.progressBar = new feng.views.sections.controls.ProgressBar( progressBarEl, tips );
+  this.progressBar.setParentEventTarget( this );
+
+  var objectSelectorEl = goog.dom.getElementByClass('objectSelector', this._controlsEl);
+  this.objectSelector = new feng.views.sections.controls.ObjectSelector( objectSelectorEl );
+
+  var dropButtonEl = goog.dom.getElementByClass('dropButton', this._controlsEl);
+  this.dropButton = new feng.views.sections.controls.DropButton( dropButtonEl );
+
+  // captions
+  this._captionsEl = goog.dom.getElementByClass('captions', this.domElement);
+
+  // tooltips
+  this._tooltipsEl = goog.dom.getElementByClass('tooltips', this.domElement);
+  this.tooltips = new feng.views.sections.controls.Tooltips( this._tooltipsEl );
+};
+goog.inherits(feng.views.View3DHud, goog.events.EventTarget);
+
+
+feng.views.View3DHud.prototype.init = function() {
+
+  this.reminder.init();
+};
+
+
+feng.views.View3DHud.prototype.setView3D = function( view3d ) {
+
+  if(this._view3d) {
+    this._view3d.modeController.unlisten( feng.events.EventType.CHANGE, this.onModeChange, false, this );
+  }
+
+  this._view3d = view3d;
+
+  this._view3d.modeController.listen( feng.events.EventType.CHANGE, this.onModeChange, false, this );
+
+  this.compass.setView3D( view3d );
+  this.book.setView3D( view3d );
+  this.reminder.setView3D( view3d );
+  this.progressBar.setView3D( view3d );
+  this.objectSelector.setView3D( view3d );
+  this.dropButton.setView3D( view3d );
+  this.tooltips.setView3D( view3d );
+};
+
+
+feng.views.View3DHud.prototype.pause = function( shouldPause ) {
+
+  goog.dom.classes.enable( this._captionsEl, 'paused', shouldPause );
+  goog.dom.classes.enable( this._tooltipsEl, 'paused', shouldPause );
+  goog.dom.classes.enable( this._controlsEl, 'paused', shouldPause );
+
+  goog.dom.classes.enable( this._controlsEl, 'hidden', shouldPause );
+
+  feng.mainOptions.showHelpButton( !shouldPause );
+};
+
+
+feng.views.View3DHud.prototype.activate = function() {
+
+  this._view3dController.listen(feng.events.EventType.SHOW, this.onShowView3D, false, this);
+  this._view3dController.listen(feng.events.EventType.ANIMATED_IN, this.onAnimatedInView3D, false, this);
+
+  feng.tutorial.listen(feng.events.EventType.ANIMATE_IN, this.tutorialOverlay.animateIn, false, this.tutorialOverlay);
+  feng.tutorial.listen(feng.events.EventType.ANIMATE_OUT, this.tutorialOverlay.animateOut, false, this.tutorialOverlay);
+
+  this._episode.listen(feng.events.EventType.START, this.loaderOverlay.onLoadStart, false, this.loaderOverlay);
+  this._episode.listen(feng.events.EventType.PROGRESS, this.loaderOverlay.onLoadProgress, false, this.loaderOverlay);
+  this._episode.listen(feng.events.EventType.COMPLETE, this.loaderOverlay.onLoadComplete, false, this.loaderOverlay);
+
+  this.openingOverlay.listen(feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this);
+  this.openingOverlay.listen(feng.events.EventType.ANIMATE_OUT, this.onOverlayAnimateOut, false, this);
+
+  this.endingOverlay.listen(feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this);
+  this.endingOverlay.listen(feng.events.EventType.ANIMATE_OUT, this.onOverlayAnimateOut, false, this);
+
+  this.tutorialOverlay.activate();
+
+  this.activateControls();
+};
+
+
+feng.views.View3DHud.prototype.deactivate = function() {
+
+  this._view3d.modeController.removeAllListeners();
+  this._view3dController.removeAllListeners();
+  feng.tutorial.removeAllListeners();
+  this._episode.removeAllListeners();
+  this.openingOverlay.removeAllListeners();
+
+  this.dropButton.deactivate();
+  this.tooltips.deactivate();
+  this.tutorialOverlay.deactivate();
+
+  this.deactivateControls();
+};
+
+
+feng.views.View3DHud.prototype.activateControls = function() {
+
+  this.homeButton.activate();
+  this.compass.activate();
+  this.book.activate();
+  this.reminder.activate();
+  this.progressBar.activate();
+
+  if(this._view3d && !this._isInEntryMode) {
+    this.tooltips.activate();
+  }
+
+  feng.mainOptions.showHelpButton( true );
+};
+
+
+feng.views.View3DHud.prototype.deactivateControls = function() {
+
+  this.homeButton.deactivate();
+  this.compass.deactivate();
+  this.book.deactivate();
+  this.reminder.deactivate();
+  this.progressBar.deactivate();
+
+  this.tooltips.deactivate();
+
+  feng.mainOptions.showHelpButton( false );
+};
+
+
+feng.views.View3DHud.prototype.getCaption = function( object, controls ) {
+
+	var key = goog.getUid(object);
+
+	if(this._captions[key]) {
+		return this._captions[key];
+	}
+
+  var captionClass = feng.views.sections.captions.Caption;
+
+  // get the caption if specified by object
+  switch(object.captionClass) {
+    case 'changecolor':
+    captionClass = feng.views.sections.captions.ChangeColorCaption;
+    break;
+
+    case 'changepicture':
+    captionClass = feng.views.sections.captions.ChangePictureCaption;
+    break;
+
+    case 'changeobject':
+    captionClass = feng.views.sections.captions.ChangeObjectCaption;
+    break;
+
+    case 'dropfruits':
+    captionClass = feng.views.sections.captions.DropFruitsCaption;
+    break;
+
+    default:
+    break;
+  }
+  
+  var cameraController = this._view3d.cameraController;
+  var viewSize = this._view3d.viewSize;
+
+	var caption = new captionClass( object, cameraController, viewSize, controls, this );
+	this._captions[ key ] = caption;
+
+	goog.dom.appendChild( this._captionsEl, caption.domElement );
+
+	return caption;
+};
+
+
+feng.views.View3DHud.prototype.showControls = function( shouldShow ) {
+
+  goog.dom.classes.enable( this._controlsEl, 'hidden', !shouldShow );
+  
+  this.tooltips.show( shouldShow );
+
+  feng.mainOptions.showHelpButton( shouldShow );
+};
+
+
+feng.views.View3DHud.prototype.onModeChange = function( e ) {
+
+  var anyMode = e.nextMode || e.mode;
+  var shouldShowControls = true;
+
+  this._isInEntryMode = (e.mode === feng.controllers.view3d.ModeController.Mode.ENTRY);
+
+  switch(anyMode) {
+
+    case feng.controllers.view3d.ModeController.Mode.EXIT:
+    case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
+    case null:
+    shouldShowControls = false;
+    break;
+  }
+
+  switch(e.mode) {
+    
+    case feng.controllers.view3d.ModeController.Mode.BROWSE:
+    var numUnlocked = goog.array.count(this._tips, function(tip) {
+      return tip.unlocked;
+    });
+    if(numUnlocked === this._tips.length) {
+      this.endingOverlay.updateContent( this._view3d.sectionId );
+      this.endingOverlay.animateIn();
+    }
+    break;
+  }
+
+  goog.dom.classes.enable( this._view3d.containerElement, 'bg-white', (e.mode === feng.controllers.view3d.ModeController.Mode.CLOSE_UP) );
+
+  if(e.gateway) {
+    shouldShowControls = false;
+  }
+
+  var willShowOpeningOverlay = this.openingOverlay.shouldShow( this._view3d.sectionId, this._view3d.id );
+
+  if(willShowOpeningOverlay) {
+
+    shouldShowControls = false;
+  }
+
+  this.showControls( shouldShowControls );
+};
+
+
+feng.views.View3DHud.prototype.onShowView3D = function( e ) {
+
+  var view3d = e.target;
+
+  this.setView3D( view3d );
+};
+
+
+feng.views.View3DHud.prototype.onAnimatedInView3D = function( e ) {
+
+  // pop up opening overlay for only once
+  if(this._view3d.modeController.getMode() === feng.controllers.view3d.ModeController.Mode.BROWSE) {
+
+    var view3d = e.target;
+    var viewId = view3d.id;
+    var sectionId = view3d.sectionId;
+   
+    this.openingOverlay.updateContent( sectionId, viewId );
+    this.openingOverlay.animateIn();
+  }
+};
+
+
+feng.views.View3DHud.prototype.onOverlayAnimateIn = function( e ) {
+ 
+  this.deactivateControls();
+  this.showControls( false );
+};
+
+
+feng.views.View3DHud.prototype.onOverlayAnimateOut = function( e ) {
+
+  var shouldShowFinaleOverlay;
+
+  // if ending overlay is just closed, detect if any tip is still locked,
+  // otherwise show finale overlay
+  if(e.currentTarget === this.endingOverlay) {
+
+    var achievements = feng.models.achievements.Achievements.getInstance();
+    shouldShowFinaleOverlay = achievements.isAllUnlocked();
+  }
+
+  if( shouldShowFinaleOverlay ) {
+
+    this.finaleOverlay.animateIn();
+
+  }else {
+
+    this.activateControls();
+
+    if(!this._isInEntryMode) {
+      this.showControls( true );
+    }
+  }
+};goog.provide('feng.controllers.view3d.View3DController');
+
+goog.require('goog.events.EventTarget');
+goog.require('goog.events.EventHandler');
+goog.require('feng.events');
+
+/**
+ * @constructor
+ */
+feng.controllers.view3d.View3DController = function(){
+
+  goog.base(this);
+
+  this.view3d = null;
+
+  this._view3ds = {};
+  this._view3dToFadeIn = null;
+
+  this._eventHandler = new goog.events.EventHandler(this);
+};
+goog.inherits(feng.controllers.view3d.View3DController, goog.events.EventTarget);
+
+
+feng.controllers.view3d.View3DController.prototype.activate = function(){
+
+  this._eventHandler.listen(this, feng.events.EventType.SHOW, this.onShowView3D, false, this);
+  this._eventHandler.listen(this, feng.events.EventType.HIDE, this.onHideView3D, false, this);
+  this._eventHandler.listen(this, feng.events.EventType.CHANGE, this.onChangeView3D, false, this);
+  this._eventHandler.listen(this, feng.events.EventType.ANIMATE_IN, this.onAnimateInView3D, false, this);
+  this._eventHandler.listen(this, feng.events.EventType.ANIMATE_OUT, this.onAnimateOutView3D, false, this);
+  this._eventHandler.listen(this, feng.events.EventType.ANIMATED_IN, this.onAnimatedInView3D, false, this);
+  this._eventHandler.listen(this, feng.events.EventType.ANIMATED_OUT, this.onAnimatedOutView3D, false, this);
+};
+
+
+feng.controllers.view3d.View3DController.prototype.deactivate = function(){
+
+  this._eventHandler.removeAll();
+};
+
+
+feng.controllers.view3d.View3DController.prototype.registerView3D = function( view3d ){
+
+	this._view3ds[ view3d.sectionId + '.' + view3d.id ] = view3d;
+	view3d.setParentEventTarget( this );
+};
+
+
+feng.controllers.view3d.View3DController.prototype.isRegisteredViewID = function( sectionId, viewId ){
+
+	var isRegistered = goog.isDefAndNotNull( this._view3ds[ sectionId + '.' + viewId ] );
+	return isRegistered;
+};
+
+
+feng.controllers.view3d.View3DController.prototype.getView3D = function( sectionId, viewId ){
+
+	return this._view3ds[sectionId + '.' + viewId];
+};
+
+
+feng.controllers.view3d.View3DController.prototype.onHideView3D = function(e){
+
+	console.log('Hide View3D: ', e.target.id);
+
+	feng.pubsub.publish( feng.PubSub.Topic.HIDE_VIEW3D, e.target );
+};
+
+
+feng.controllers.view3d.View3DController.prototype.onShowView3D = function(e){
+
+	this.view3d = e.target;
+
+	console.log('Show View3D: ', this.view3d.id);
+
+	this.view3d.createResources();
+	this.view3d.activate();
+
+	feng.pubsub.publish( feng.PubSub.Topic.SHOW_VIEW3D, this.view3d );
+};
+
+
+feng.controllers.view3d.View3DController.prototype.onChangeView3D = function(e){
+
+	var from = e.target;
+	from.fadeOut();
+
+	this._view3dToFadeIn = this.getView3D( e.sectionId, e.viewId );
+	this._view3dToFadeIn.startGateway = this._view3dToFadeIn.view3dObjects[ e.gatewayId ];
+
+	console.log(
+		'Change View3D from: ' + e.target.id + 
+		' to ' + this._view3dToFadeIn.id + 
+		' start gateway: ' + this._view3dToFadeIn.startGateway.gatewayId);
+};
+
+
+feng.controllers.view3d.View3DController.prototype.onAnimateInView3D = function(e){
+
+};
+
+
+feng.controllers.view3d.View3DController.prototype.onAnimateOutView3D = function(e){
+
+	var view3d = e.target;
+	view3d.deactivate();
+	view3d.disposeResources();
+};
+
+
+feng.controllers.view3d.View3DController.prototype.onAnimatedInView3D = function(e){
+
+};
+
+
+feng.controllers.view3d.View3DController.prototype.onAnimatedOutView3D = function(e){
+
+	if(this._view3dToFadeIn) {
+		this._view3dToFadeIn.fadeIn( this._startGateway );
+	}
+};goog.provide('feng.views.sections.Episode');
+
+goog.require('goog.dom');
+goog.require('goog.events.EventTarget');
+goog.require('feng.controllers.view3d.View3DController');
+goog.require('feng.events');
+goog.require('feng.views.sections.Section');
+goog.require('feng.views.View3D');
+goog.require('feng.views.View3DHud');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.Episode = function(template, templateData){
+
+	var domFrag = soy.renderAsFragment(template, templateData);
+
+	var mainElement = goog.dom.getElement('main');
+  goog.dom.appendChild(mainElement, domFrag);
+
+  var domElement = goog.dom.getElement( templateData.id );
+
+  goog.base(this, domElement);
+
+  this._view3dController = new feng.controllers.view3d.View3DController;
+
+  this._view3dContainerEl = goog.dom.getElementByClass('scene-container', this.domElement);
+
+  var hudEl = goog.dom.getElementByClass('hud', this.domElement);
+  var tips = templateData.tips;
+  this._hud = new feng.views.View3DHud( hudEl, this._view3dController, tips, this );
+
+  this._viewIds = [];
+  this._viewId = null;
+
+  this._view3ds = [];
+  this._view3d = null;
+
+  this._hasDoneIntro = false;
+};
+goog.inherits(feng.views.sections.Episode, feng.views.sections.Section);
+
+
+feng.views.sections.Episode.prototype.init = function(){
+
+	goog.base(this, 'init');
+};
+
+
+feng.views.sections.Episode.prototype.activate = function(){
+
+	goog.base(this, 'activate');
+
+	this._view3dController.activate();
+
+	this._hud.activate();
+
+	this._view3dController.listen(feng.events.EventType.SHOW, this.onShowView3D, false, this);
+
+	this.activateView();
+};
+
+
+feng.views.sections.Episode.prototype.activateView = function(){
+
+	if(this._view3d) {
+
+		this._view3d.createResources();
+		this._view3d.activate();
+	}
+};
+
+
+feng.views.sections.Episode.prototype.deactivate = function(){
+
+	goog.base(this, 'deactivate');
+
+	this._view3dController.deactivate();
+
+	this._hud.deactivate();
+	
+	this._view3dController.unlisten(feng.events.EventType.SHOW, this.onShowView3D, false, this);
+
+	if(this._view3d) {
+
+		this._view3d.deactivate();
+		this._view3d.disposeResources();
+	}
+};
+
+
+feng.views.sections.Episode.prototype.load = function( viewId ){
+
+	this._viewId = viewId || this._viewId || this._viewIds[0];
+
+	var globalAssetsKey = this.id + '.global';
+	var view3dAssetsKey = this.id + '.' + this._viewId;
+
+	this._assetKeys = [globalAssetsKey, view3dAssetsKey];
+	
+	goog.base(this, 'load');
+};
+
+
+feng.views.sections.Episode.prototype.animateIn = function(){
+
+	var shouldDo = goog.base(this, 'animateIn');
+
+	if(!shouldDo) return false;
+	
+	this._view3d.fadeIn();
+
+	feng.soundController.playMix( this.id );
+};
+
+
+feng.views.sections.Episode.prototype.animateOut = function(){
+
+	var shouldDo = goog.base(this, 'animateOut');
+
+	if(!shouldDo) return false;
+
+	feng.soundController.stopMix( this.id );
+};
+
+
+feng.views.sections.Episode.prototype.onLoadComplete = function(e){
+
+	goog.base(this, 'onLoadComplete', e);
+
+	if(this._view3ds.length === 0) {
+
+		// create hud
+		this._hud.init();
+	}
+
+	// register loaded view3d
+	var sectionId = this.id;
+	var viewId = this._viewId;
+
+	var alreadyRegistered = this._view3dController.isRegisteredViewID( sectionId, this._viewId );
+
+	if(!alreadyRegistered) {
+
+		var view3d = new feng.views.View3D( sectionId, viewId, this._view3dContainerEl, this._hud, this );
+		this._view3dController.registerView3D( view3d );
+		
+		view3d.init();
+
+		this._view3ds.push( view3d );
+	}
+
+	this._view3d = this._view3dController.getView3D( sectionId, viewId );
+	this.activateView();
+};
+
+
+feng.views.sections.Episode.prototype.onShowView3D = function(e){
+
+	var view3d = e.target;
+
+	// set initial mode
+	if(!this._hasDoneIntro) {
+
+		view3d.modeController.setMode({
+			mode: feng.controllers.view3d.ModeController.Mode.ENTRY
+		});
+
+		this._hasDoneIntro = true;
+		
+	}else {
+
+		var gatewayObject = view3d.startGateway || view3d.getEntry();
+		var position = gatewayObject.origin.position;
+		var rotation = gatewayObject.origin.rotation;
+	  	
+		view3d.modeController.setMode({
+			mode: feng.controllers.view3d.ModeController.Mode.BROWSE,
+			fromPosition: position,
+			fromRotation: rotation,
+			fromFov: feng.controllers.controls.Controls.Default.FOV
+		});
+	}
+};goog.provide('feng.views.sections.House');
+
+goog.require('goog.dom');
+goog.require('feng.events');
+goog.require('feng.views.sections.Episode');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.House = function(){
+
+	var viewIds = ['livingroom', 'corridor', 'homeoffice', 'boysroom'];
+	var sectionId = 'house';
+
+	var achievements = feng.models.achievements.Achievements.getInstance();
+	var tips = achievements.getTipsOfSection( sectionId );
+
+	var tipsOfViews = {};
+	goog.object.forEach(viewIds, function(viewId) {
+		var tips = achievements.getTipsOfView( viewId, sectionId, false, true );
+		tipsOfViews[ viewId ] = tips;
+	});
+
+	var template = feng.templates.main.EpisodeSection;
+	var templateData = {
+		id: sectionId,
+		tips: tips,
+		tipsOfViews: tipsOfViews,
+		token: feng.controllers.NavigationController.Token
+	};
+
+  goog.base(this, template, templateData);
+
+  this._viewIds = viewIds;
+  this._viewId = this._viewIds[0];
+};
+goog.inherits(feng.views.sections.House, feng.views.sections.Episode);goog.provide('feng.views.sections.Studio');
+
+goog.require('goog.dom');
+goog.require('feng.events');
+goog.require('feng.views.sections.Episode');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.Studio = function(){
+
+	var viewIds = ['livingroom', 'bathroom'];
+	var sectionId = 'studio';
+
+	var achievements = feng.models.achievements.Achievements.getInstance();
+	var tips = achievements.getTipsOfSection( sectionId );
+
+	var tipsOfViews = {};
+	goog.object.forEach(viewIds, function(viewId) {
+		var tips = achievements.getTipsOfView( viewId, sectionId, false, true );
+		tipsOfViews[ viewId ] = tips;
+	});
+
+	var template = feng.templates.main.EpisodeSection;
+	var templateData = {
+		id: sectionId,
+		tips: tips,
+		tipsOfViews: tipsOfViews,
+		token: feng.controllers.NavigationController.Token
+	};
+
+  goog.base(this, template, templateData);
+
+  this._viewIds = viewIds;
+  this._viewId = this._viewIds[0];
+};
+goog.inherits(feng.views.sections.Studio, feng.views.sections.Episode);goog.provide('feng.controllers.SectionController');
+
+goog.require('goog.events.EventTarget');
+goog.require('goog.events');
+goog.require('feng.views.sections.Home');
+goog.require('feng.views.sections.Studio');
+goog.require('feng.views.sections.House');
+
+
+/**
+ * @constructor
+ */
+feng.controllers.SectionController = function(){
+  goog.base(this);
+
+  this._sections = {};
+  this._section = null;
+
+  var homeSection = this.addSection('home');
+
+  this._eventHandler = new goog.events.EventHandler(this);
+};
+goog.inherits(feng.controllers.SectionController, goog.events.EventTarget);
+goog.addSingletonGetter(feng.controllers.SectionController);
+
+
+feng.controllers.SectionController.prototype.init = function(){
+  
+  this.addSection('studio');
+  this.addSection('house');
+
+  this._eventHandler.listen(this, feng.events.EventType.ANIMATE_IN, this.onSectionAnimateIn, false, this);
+  this._eventHandler.listen(this, feng.events.EventType.ANIMATED_OUT, this.onSectionAnimatedOut, false, this);
+};
+
+
+feng.controllers.SectionController.prototype.hasSection = function(id){
+  
+  return goog.isDefAndNotNull( this._sections[id] );
+};
+
+
+feng.controllers.SectionController.prototype.getSection = function(id){
+  
+  return this._sections[id];
+};
+
+
+feng.controllers.SectionController.prototype.addSection = function(id){
+  
+	var section;
+
+  switch(id) {
+  	case 'home':
+  	section = new feng.views.sections.Home;
+  	break;
+
+    case 'studio':
+    section = new feng.views.sections.Studio;
+    break;
+
+    case 'house':
+    section = new feng.views.sections.House;
+    break;
+  }
+
+  section.setParentEventTarget(this);
+  section.init();
+
+  return section;
+};
+
+
+feng.controllers.SectionController.prototype.onSectionAnimateIn = function(e){
+  
+	if(this._section) {
+		this._section.animateOut();
+	}
+
+	this._section = e.target;
+};
+
+
+feng.controllers.SectionController.prototype.onSectionAnimatedOut = function(e){
+
+	if(this._section === e.target) {
+		this._section = null;
+	}
 };goog.provide('feng.apps.Demo');
 
 goog.require('goog.dom');
+goog.require('goog.events');
 goog.require('goog.fx.anim');
 goog.require('goog.style');
 goog.require('feng.templates.main');
@@ -61180,8 +61982,14 @@ feng.apps.Demo = function() {
 	feng.office = (feng.utils.Utils.getQuery('office') === 'true') || feng.Config['office'];
 	feng.quality = feng.utils.Utils.getQuery('quality') || feng.Config['quality'];
 	
+	feng.viewportSize = feng.apps.Demo.getViewportSize();
+
+	goog.events.listen(window, goog.events.EventType.RESIZE, function() {
+		feng.viewportSize = feng.apps.Demo.getViewportSize();
+	});
+
 	feng.renderSettings = {
-		renderSize: (feng.quality === 'high') ? 1024 : 512,
+		renderSize: (feng.quality === 'high') ? ((screen.width > 1920) ? 2048 : 1024) : 1024,
 		shadowMapSize: (feng.quality === 'high') ? 1024 : 512
 	};
 
@@ -61222,7 +62030,13 @@ feng.apps.Demo = function() {
 	feng.navigationController.replaceToken( feng.controllers.NavigationController.Token.HOME );
 };
 goog.inherits(feng.apps.Demo, goog.events.EventTarget);
-goog.addSingletonGetter(feng.apps.Demo);goog.provide('feng');
+goog.addSingletonGetter(feng.apps.Demo);
+
+
+feng.apps.Demo.getViewportSize = function() {
+
+	return goog.style.getSize( document.body );
+};goog.provide('feng');
 
 goog.require('goog.Uri');
 goog.require('feng.apps.Main');
@@ -61234,7 +62048,7 @@ goog.require('feng.apps.PathEdit');
 /**
  * @expose
  */
-feng.version = '11.19.14';
+feng.version = '11.30.14';
 
 
 feng.Config = {};
