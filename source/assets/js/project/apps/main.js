@@ -26,7 +26,7 @@ feng.apps.Main = function() {
 	
 	// redirect to fallback page if WebGL is not supported
 	if(!feng.utils.Utils.supportWebGL) {
-		window.location.href = window.location.host + '/unsupported.html';
+		window.location.href = '/unsupported.html';
 		return;
 	}
 

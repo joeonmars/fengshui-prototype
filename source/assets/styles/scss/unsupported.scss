@@ -2,4 +2,83 @@
 
 body{
 	overflow: hidden;
+	background-position: center center;
+	background-size: cover;
+	background-image: image-url('unsupported/background.jpg');
+	-webkit-font-smoothing: antialiased;
+}
+
+.prompt{
+	 @include popup();
+	 position: absolute;
+	 top: 50%;
+	 left: 50%;
+	 width: 740px;
+	 height: 480px;
+	 margin-left: (-740px/2);
+	 margin-top: (-480px/2);
+	 text-align: center;
+	 vertical-align: middle;
+
+	 >.content{
+	 	display: table-cell;
+	 }
+}
+
+h1{
+	font-family: $font_marineup_bold;
+	font-size: 2.4em;
+	text-transform: uppercase;
+	color: $darkgray-ui;
+}
+
+h2{
+	padding: .65em 0;
+	font-size: 3.8em;
+	line-height: 1.2;
+	text-transform: capitalize;
+	color: $darkgray-ui;
+}
+
+p{
+	padding-bottom: 1em;
+	font-size: 1.7em;
+	line-height: 1.6;
+	color: $lightgray-ui;
+}
+
+ul{
+	>li{
+		display: inline-block;
+		vertical-align: top;
+		width: 8em;
+		margin: 0 3.8em;
+
+		>a{
+			text-decoration: none;
+
+			&:first-child{
+				margin-left: 0;
+			}
+
+			&:last-child{
+				margin-right: 0;
+			}
+
+			>img{
+				margin: 1em 0;
+			}
+
+			>p{
+				font-size: 1.4em;
+				line-height: 1.4;
+			}
+
+			&:hover{
+				>p{
+					color: $darkgray-ui;
+				}
+			}
+		}
+	}
 }
