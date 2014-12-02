@@ -199,7 +199,9 @@ feng.controllers.controls.WalkControls.prototype.onInputDown = function ( e ) {
 
 	goog.base(this, 'onInputDown', e);
 
-	this._tweener.kill();
+	if(this._tweener) {
+		this._tweener.kill();
+	}
 
 	if(this._footstepsSound) {
 		this._footstepsSound.pause();
