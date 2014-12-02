@@ -111,6 +111,7 @@ feng.controllers.controls.BrowseControls.prototype.activate = function () {
 
 	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this );
 	this._eventHandler.listen( this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this );
+	this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
 
 	this._objectSelector.activate( this._objectSelectorCallbacks );
 };
@@ -299,5 +300,28 @@ feng.controllers.controls.BrowseControls.prototype.onUpdateHud = function(e){
 	if(e.target instanceof feng.views.sections.controls.Compass) {
 		this.setYaw( e.rotation );
 		this._targetRotationY = e.rotation;
+	}
+};
+
+
+feng.controllers.controls.BrowseControls.prototype.onNavigationChange = function(e) {
+
+	var navController = e.target;
+
+	var goTipResult = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.GO_TIP );
+	
+	if(goTipResult) {
+
+		var achievements = feng.models.achievements.Achievements.getInstance();
+		var tip = achievements.getTip( goTipResult['tipId'], goTipResult['viewId'], goTipResult['sectionId'] );
+
+		var object = this._view3d.getObjectByTip( tip );
+
+		this.dispatchEvent({
+			type: feng.events.EventType.CHANGE,
+			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
+			object: object
+		});
 	}
 };

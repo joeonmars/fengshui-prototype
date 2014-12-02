@@ -31,8 +31,6 @@ feng.views.sections.captions.DropFruitsCaption.prototype.show = function() {
 
   goog.base(this, 'show');
 
-  this._object.startInteraction();
-
   this._eventHandler.listen( this._object, feng.events.EventType.CHANGE, this.onFruitPlateChange, false, this );
 
   goog.array.forEach(this._fruitButtonEls, function(fruitButtonEl) {

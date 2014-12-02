@@ -61,7 +61,6 @@ feng.controllers.view3d.ModeController.prototype.init = function(){
 feng.controllers.view3d.ModeController.prototype.activate = function(){
 
 	this._eventHandler.listen( this, feng.events.EventType.CHANGE, this.onModeChange, false, this );
-	this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
 };
 
 
@@ -275,33 +274,6 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 
 	// update renderer
 	this._renderController.updateByMode(this._mode, e.nextMode);
-};
-
-
-feng.controllers.view3d.ModeController.prototype.onNavigationChange = function(e) {
-
-	var navController = e.target;
-
-	var goTipResult = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.GO_TIP );
-
-	if(goTipResult) {
-
-		var achievements = feng.models.achievements.Achievements.getInstance();
-		var tip = achievements.getTip( goTipResult['tipId'], goTipResult['viewId'], goTipResult['sectionId'] );
-
-		var object = this._view3d.getObjectByTip( tip );
-
-		if(!object) {
-			console.log('tip object currently not available');
-			return false;
-		}
-
-		this.setMode({
-			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-			object: object
-		});
-	}
 };
 
 

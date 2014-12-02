@@ -2,7 +2,6 @@ goog.provide('feng');
 
 goog.require('goog.Uri');
 goog.require('feng.apps.Main');
-goog.require('feng.apps.Demo');
 goog.require('feng.apps.Test');
 goog.require('feng.apps.PathEdit');
 
@@ -41,10 +40,6 @@ feng.init = function( config ) {
 	switch(app) {
 		case 'main':
 		feng.apps.Main.getInstance();
-		break;
-
-		case 'demo':
-		feng.apps.Demo.getInstance();
 		break;
 
 		case 'pathedit':

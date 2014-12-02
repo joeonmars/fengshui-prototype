@@ -50,8 +50,8 @@ feng.views.sections.captions.Caption = function( object, cameraController, rende
   this._adviceSection = goog.dom.getElementByClass('advice', this.domElement);
 
   this._sections = goog.array.filter([
-      this._problemSection,
       this._hintSection,
+      this._problemSection,
       this._interactionSection,
       this._adviceSection
     ], function(section) {
@@ -420,10 +420,13 @@ feng.views.sections.captions.Caption.prototype.updateStatus = function() {
     if(this._adviceSection) {
       
       this.gotoSection( this._adviceSection );
+      return;
+    }
 
-    }else {
+    if(this._interactionSection){
 
       this.gotoSection( this._interactionSection );
+      return;
     }
   }
 };
@@ -512,7 +515,7 @@ feng.views.sections.captions.Caption.prototype.onResize = function( e ) {
 
       this._sectionTweener.updateTo({
         'x': - sectionX
-      })
+      });
 
     }else {
 

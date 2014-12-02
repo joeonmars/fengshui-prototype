@@ -114,3 +114,6 @@ feng.utils.Utils.popUp = function(url) {
     'resizable': true
   });
 };
+
+
+feng.utils.Utils.supportWebGL = ( function () { try { var canvas = document.createElement( 'canvas' ); return !! window.WebGLRenderingContext && canvas.getContext( 'webgl' ); } catch( e ) { return false; } } )();

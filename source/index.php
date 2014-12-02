@@ -84,7 +84,7 @@
 			var config = {
 				basePath: '<?php echo URLADDR; ?>',
 				assetsPath: '<?php echo URLADDR; ?>'+'assets/',
-				app: 'demo',//'pathedit',
+				app: 'main',//'pathedit',
 				quality: 'high',
 				debug: !true,
 				office: !true

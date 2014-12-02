@@ -187,6 +187,8 @@ feng.controllers.controls.DesignControls.prototype.activate = function () {
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this);
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
 
+	this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
+
 	this._zoomSlider.activate();
 };
 
@@ -325,4 +327,27 @@ feng.controllers.controls.DesignControls.prototype.onDragUpdate = function(){
 	//this.applyDragRotation( this._startDragRotation );
 
 	this.applyDragRotation( this._startDragRotation + rad );
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onNavigationChange = function(e) {
+
+	var navController = e.target;
+
+	var goTipResult = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.GO_TIP );
+
+	if(goTipResult) {
+
+		var achievements = feng.models.achievements.Achievements.getInstance();
+		var tip = achievements.getTip( goTipResult['tipId'], goTipResult['viewId'], goTipResult['sectionId'] );
+
+		var object = this._view3d.getObjectByTip( tip );
+
+		this.dispatchEvent({
+			type: feng.events.EventType.CHANGE,
+			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
+			object: object
+		});
+	}
 };
