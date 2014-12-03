@@ -113,6 +113,7 @@ feng.models.Preload = function(){
 				'ceiling-texture': 'images/texture/studio/bathroom/ceiling.jpg',
 				'wall-texture': 'images/texture/studio/bathroom/wall.jpg',
 				'wall-outer-texture': 'images/texture/studio/bathroom/wall-outer.jpg',
+				'bathroom-door-texture': 'images/texture/studio/bathroom/bathroom-door.jpg',
 				'door-frame-texture': 'images/texture/studio/bathroom/door-frame.jpg',
 				'ceiling-lamps-texture': 'images/texture/studio/bathroom/ceiling-lamps.jpg',
 				'bathrobe-texture': 'images/texture/studio/bathroom/bathrobe.jpg',

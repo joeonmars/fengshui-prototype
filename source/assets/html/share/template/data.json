@@ -1,169 +1,157 @@
 {
 	"glamourphoto": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Frame.",
+	    "description": "Images of single people in the bedroom can indicate loneliness.",
 	    "image": "1.jpg"
 	  }
 	},
 	"diningchair": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Chair.",
+	    "description": "If you sit between a door and a window, then your body energy can drain quickly due to ‘yang activity‘.",
 	    "image": "diningchair.jpg"
 	  }
 	},
 	"readinglamp": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Lamp.",
+	    "description": "Cold lights should not be used in a recreation area, it give rise to stress, tension and a lot of negative energy.",
 	    "image": "readinglamp.jpg"
 	  }
 	},
 	"crystal": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Crystal.",
+	    "description": "Crystals can benefit the user by enhancing the flow of energy in different areas of an office or the house.",
 	    "image": "crystal.jpg"
 	  }
 	},
 	"clock": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Clock.",
+	    "description": "A working clock that is attractive indicates positivity and harmony in the environment.",
 	    "image": "clock.jpg"
 	  }
 	},
 	"windows": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Windows.",
+	    "description": "Be sure that direct alignment of doors and windows are avoided, which creates rushing energy.",
 	    "image": "windows.jpg"
 	  }
 	},
 	"cactus": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Cactus.",
+	    "description": "Cactus is termed as ‘bad’ feng shui plant, due to its ‘spiky’ energy.",
 	    "image": "cactus.jpg"
 	  }
 	},
 	"sewingmachine": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Sewing Machine.",
+	    "description": "Objects which are pointed in nature and appear to be sharp are transmitters of ‘sha energy’.",
 	    "image": "sewingmachine.jpg"
 	  }
 	},
 	"fruitplate": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "description": "Feng shui ideology encourages home owners to display fruits in their homes.",
 	    "image": "fruitplate.jpg"
 	  }
 	},
 	"closet": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "description": "A disorganized space is one that wastes and even eliminates positive energy.",
 	    "image": "closet.jpg"
 	  }
 	},
 	"lotus": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "description": "The quality of the lotus makes it an ideal energy purifier for bathrooms.",
 	    "image": "lotus.jpg"
 	  }
 	},
 	"showerhead": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "description": "Any kind of water leaks symbolize a deteriorating household or financial condition.",
 	    "image": "showerhead.jpg"
 	  }
 	},
 	"glassbowl": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "description": "You will always want to refill it with new goldfish as soon as possible.",
 	    "image": "glassbowl.jpg"
 	  }
 	},
 	"mirror": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "description": "The values of feng shi place some reservations on the presence of mirrors.",
 	    "image": "mirror.jpg"
-	  }
-	},
-	"cookingutensils": {
-	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
-	    "image": "cookingutensils.jpg"
 	  }
 	},
 	"drawer": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "description": "Knives are inherently as bad luck in Feng shui so it will disturb the energy flow in your kitchen.",
 	    "image": "drawer.jpg"
 	  }
 	},
 	"books": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "description": "If you have book shelves, they need to be organized and well maintained.",
 	    "image": "books.jpg"
 	  }
 	},
 	"handheld": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "description": "The modern electronic gadgets, in other words as 'Jin' elements, cause hindrance in a child’s sleep patterns.",
 	    "image": "handheld.jpg"
 	  }
 	},
 	"bear": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "description": "In feng shui, the plush toys are symbolism as human beings and they should be treated as friends.",
 	    "image": "bear.jpg"
-	  }
-	},
-	"bed": {
-	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
-	    "image": "bed.jpg"
 	  }
 	},
 	"computer": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "description": "The window facing a study table may cause easy distractions for a child.",
 	    "image": "computer.jpg"
 	  }
 	},
 	"poster": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "description": "Any violent or aggressive images in a child's room may result in insufficient healing.",
 	    "image": "poster.jpg"
 	  }
 	},
 	"deskchair": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "description": "In a situation where a table cannot be placed at a distance from the door, a mirror should be placed on the wall in form of a seat.",
 	    "image": "deskchair.jpg"
 	  }
 	},
 	"photodisplay": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "description": "In order to create a fostering environment in your office, it is essential that you decorate your walls.",
 	    "image": "photodisplay.jpg"
 	  }
 	},
 	"setsquare": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "description": "If you have some sharp angles and corners around or pointed you, these can be considered sources of harmful influences.",
 	    "image": "setsquare.jpg"
 	  }
 	},
 	"officeplant": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "description": "If you have to face a wall in your workspace, you can improve the feng shui by having some green plants",
 	    "image": "officeplant.jpg"
 	  }
 	},
 	"desktopwallpaper": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Fruit Plate.",
+	    "description": "Flowing water represents prosperity and wealth.",
 	    "image": "desktopwallpaper.jpg"
 	  }
 	},
 	"cat": {
 	  "data": {
-	    "description": "This is the tip description of Feng Shui tip - Cat.",
+	    "description": "There is a reason cats are known as fortunate felines when it comes to feng shui.",
 	    "image": "cat.jpg"
 	  }
 	}

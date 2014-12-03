@@ -423,7 +423,8 @@ feng.models.View3D.Data = {
 				origin: {
 					position: new THREE.Vector3(12, 0, -60),
 					rotation: new THREE.Euler(0, Math.PI, 0)
-				}
+				},
+				texture: "studio.bathroom.bathroom-door-texture"
 			}
 		}
 	},

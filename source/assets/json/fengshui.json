@@ -412,7 +412,7 @@
 			"provide": null,
 			"final": true,
 			"problem": "The beliefs of feng shui categorize the modern electronic gadgets as ‘jin’ elements. ‘Jin’ elements are not well suited inside a bedroom because they are characterized by sharp metal objects.",
-			"advice": "The modern electronic gadgets, in other words as 'Jin' elements, cause hindrance in a a child’s sleep patterns. It is, therefore, advised that the use of these electronic devices should be avoided by children especially before going to bed.",
+			"advice": "The modern electronic gadgets, in other words as 'Jin' elements, cause hindrance in a child’s sleep patterns. It is, therefore, advised that the use of these electronic devices should be avoided by children especially before going to bed.",
 			"character": "nick",
 			"prompt": "Move to a new place.",
 			"reminder": "I love to play with my handheld console! I put it near my bed so I can reach it at night!"
@@ -496,7 +496,7 @@
 			"provide": null,
 			"final": true,
 			"problem": "The feng shui ideology dictates that one must be seated at a distance from the door while making sure that his or her back is not towards it.",
-			"advice": "In a situation where a table cannot be placed in the manner described before, then a mirror should be placed on the wall in form of a seat. This will allow you to be vigilant and to constantly maintain a watchful eye on the entrance. A chair with a high back may also be required in due time.",
+			"advice": "In a situation where a table cannot be placed at a distance from the door, then a mirror should be placed on the wall in form of a seat. This will allow you to be vigilant and to constantly maintain a watchful eye on the entrance. A chair with a high back may also be required in due time.",
 			"character": "scott",
 			"prompt": "Move to a new place.",
 			"reminder": "Have a seat! Try this desk chair, it’s very comfortable! But I don’t know why I sometimes get backaches."
@@ -576,7 +576,7 @@
 			"id": "desktopwallpaper",
 			"section": "house",
 			"view": "homeoffice",
-			"name": "The Desktop Wallpaper",
+			"name": "The Desktop Screen",
 			"icon": "desktopwallpaper",
 			"unlocked": true,
 			"mandatory": false,
