@@ -37,6 +37,7 @@ goog.require('feng.views.view3dobject.entities.Pictures');
 goog.require('feng.views.view3dobject.entities.Refrigerator');
 goog.require('feng.views.view3dobject.entities.SewingMachine');
 goog.require('feng.views.view3dobject.entities.FruitPlate');
+goog.require('feng.views.view3dobject.entities.GlassBowl');
 goog.require('feng.views.view3dobject.entities.Wallpaper');
 goog.require('feng.views.view3dobject.entities.Windows');
 
@@ -76,6 +77,8 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud, episode){
 	this.view3dObjects = {};
 	this.interactiveObjects = {};
 	this.tipObjects = {};
+
+	this._cubeCameras = [];
 
 	this.viewSize = new feng.fx.View3DSize(0, 0);
 
@@ -235,6 +238,31 @@ feng.views.View3D.prototype.getObjectsByClass = function( objectClass ){
 };
 
 
+feng.views.View3D.prototype.createCubeMap = function(position, size){
+
+  var cubeCamera = new THREE.CubeCamera( 0.1, 1000, size || feng.renderSettings.renderSize );
+  cubeCamera.position.copy( position );
+
+  this.scene.add( cubeCamera );
+
+  this._cubeCameras.push( cubeCamera );
+
+  return cubeCamera.renderTarget;
+};
+
+
+feng.views.View3D.prototype.updateCubeMaps = function(){
+
+  var renderer = this.renderer.getRenderer();
+  var scene = this.scene;
+
+  goog.array.forEach(this._cubeCameras, function(cubeCamera) {
+
+  	cubeCamera.updateCubeMap( renderer, scene );
+  });
+};
+
+
 feng.views.View3D.prototype.activate = function(){
 
 	if(this.isActivated) return;
@@ -297,12 +325,8 @@ feng.views.View3D.prototype.show = function(){
 
  	this.onResize();
 
-	// update mirrors if there are
-	var mirrorObjects = this.getObjectsByClass( feng.views.view3dobject.Mirror );
-
-	goog.array.forEach(mirrorObjects, function(mirror) {
-		mirror.updateEnvMap();
-	});
+	// update all cube maps
+	this.updateCubeMaps();
 
 	//
 	this.dispatchEvent({
@@ -452,7 +476,8 @@ feng.views.View3D.prototype.initScene = function() {
 		'sewingmachine': feng.views.view3dobject.entities.SewingMachine,
 		'wallpaper': feng.views.view3dobject.entities.Wallpaper,
 		'windows': feng.views.view3dobject.entities.Windows,
-		'fruitplate': feng.views.view3dobject.entities.FruitPlate
+		'fruitplate': feng.views.view3dobject.entities.FruitPlate,
+		'glassbowl': feng.views.view3dobject.entities.GlassBowl
 	};
 
 	// parse scene objects

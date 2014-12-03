@@ -223,8 +223,8 @@ feng.models.View3D.Data = {
 			},
 			'crystal':	{
 				Class: "tip",
-				texture: "studio.livingroom.crystal-texture",
-				tipKey: 'studio.livingroom.crystal'
+				tipKey: 'studio.livingroom.crystal',
+				glass: true
 			},
 			'laptop':	{
 				texture: "studio.livingroom.laptop-texture"
@@ -615,6 +615,19 @@ feng.models.View3D.Data = {
 				collidable: true,
 				texture: "house.livingroom.white-sofa-texture"
 			},
+			'goldfish': {
+				texture: "house.livingroom.goldfish-texture"
+			},
+			'fish-bowl': {
+				Class: 'glassbowl',
+				tipKey: 'house.livingroom.glassbowl',
+				texture: "house.livingroom.fish-bowl-texture",
+				camera: {
+					position: new THREE.Vector3(-11, 77, 56),
+					rotation: new THREE.Euler(-1.06, 3.14, 0.00, 'YXZ'),
+					fov: 22
+				}
+			},
 			'fish-bowl-stand': {
 				collidable: true,
 				texture: "house.livingroom.fish-bowl-stand-texture"
@@ -622,6 +635,9 @@ feng.models.View3D.Data = {
 			'tv-stand': {
 				collidable: true,
 				texture: "house.livingroom.tv-stand-texture"
+			},
+			'glass-containers': {
+				glass: true
 			},
 			'window-blinds': {
 				castShadow: true,

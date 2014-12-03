@@ -68,6 +68,7 @@
 					<script src="assets/js/thirdparty/threejs-utils/BrightnessContrastShader.js"></script>
 					<script src="assets/js/thirdparty/threejs-utils/HueSaturationShader.js"></script>
 					<script src="assets/js/thirdparty/threejs-utils/ConvolutionShader.js"></script>
+					<script src="assets/js/thirdparty/threejs-utils/FresnelShader.js"></script>
 					<script src="assets/js/thirdparty/threejs-utils/OrbitControls.js"></script>
 					<script src="assets/js/thirdparty/pathfinding-browser.min.js"></script>
 

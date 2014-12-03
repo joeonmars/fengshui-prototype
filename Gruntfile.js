@@ -99,6 +99,7 @@ module.exports = function(grunt) {
           '<%= thirdPartyJsDir %>/threejs-utils/BrightnessContrastShader.js',
           '<%= thirdPartyJsDir %>/threejs-utils/HueSaturationShader.js',
           '<%= thirdPartyJsDir %>/threejs-utils/ConvolutionShader.js',
+          '<%= thirdPartyJsDir %>/threejs-utils/FresnelShader.js',
           '<%= thirdPartyJsDir %>/threejs-utils/OrbitControls.js',
           '<%= thirdPartyJsDir %>/pathfinding-browser.min.js'
           ],
@@ -245,6 +246,7 @@ module.exports = function(grunt) {
             '<%= thirdPartyJsDir %>/threejs-utils/BrightnessContrastShader.js',
             '<%= thirdPartyJsDir %>/threejs-utils/HueSaturationShader.js',
             '<%= thirdPartyJsDir %>/threejs-utils/ConvolutionShader.js',
+            '<%= thirdPartyJsDir %>/threejs-utils/FresnelShader.js',
             '<%= thirdPartyJsDir %>/threejs-utils/OrbitControls.js'
             ],
            define: ["'goog.DEBUG=false'"],

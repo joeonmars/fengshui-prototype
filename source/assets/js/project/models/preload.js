@@ -83,7 +83,6 @@ feng.models.Preload = function(){
 				'pictures-texture': 'images/texture/studio/livingroom/pictures.jpg',
 				'refrigerator-texture': 'images/texture/studio/livingroom/refrigerator.jpg',
 				'refrigerator-door-texture': 'images/texture/studio/livingroom/refrigerator-door.jpg',
-				'crystal-texture': 'images/texture/studio/livingroom/crystal.jpg',
 				'carpet-texture': 'images/texture/studio/livingroom/carpet.jpg',
 				'laptop-texture': 'images/texture/studio/livingroom/laptop.jpg',
 				'apple-texture': 'images/texture/studio/livingroom/apple.jpg',
@@ -216,6 +215,8 @@ feng.models.Preload = function(){
 				'heater-texture': 'images/texture/house/livingroom/heater.jpg',
 				'drawer-texture': 'images/texture/house/livingroom/drawer.jpg',
 				'windowsill-stuff-texture': 'images/texture/house/livingroom/windowsill-stuff.jpg',
+				'goldfish-texture': 'images/texture/house/livingroom/goldfish.jpg',
+				'fish-bowl-texture': 'images/texture/house/livingroom/fish-bowl.jpg',
 				'fish-bowl-stand-texture': 'images/texture/house/livingroom/fish-bowl-stand.jpg',
 				'skybox': {
 					'xpos': 'images/texture/house/boysroom/skybox/pos-x.jpg',

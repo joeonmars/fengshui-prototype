@@ -35,6 +35,8 @@ feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
   this._isRenderEnabled = this._canRender;
   this._isTextureCreated = false;
 
+  this._isGlass = this.data.glass;
+
   //
   this.registerToView3D();
 };
@@ -52,7 +54,22 @@ feng.views.view3dobject.View3DObject.prototype.init = function(){
   this.object3d.castShadow = this.data.castShadow || false;
   this.object3d.receiveShadow = this.data.receiveShadow || false;
 
-  if(this.object3d.material) {
+  if(this._isGlass) {
+
+    var shader = THREE.FresnelShader;
+    var uniforms = THREE.UniformsUtils.clone( shader.uniforms );
+
+    uniforms[ "tCube" ].value = this._view3d.createCubeMap( this.getCenter(), feng.renderSettings.renderSize/2 );
+
+    this.object3d.material = new THREE.ShaderMaterial({
+      'fragmentShader': shader.fragmentShader,
+      'vertexShader': shader.vertexShader,
+      'uniforms': uniforms,
+      'shading': THREE.FlatShading
+    });
+
+  }else if(this.object3d.material) {
+
     this.object3d.material.shading = THREE.FlatShading;
     this.object3d.material.fog = this.data.fog || false;
   }
