@@ -32594,7 +32594,10 @@ feng.utils.Utils.popUp = function(url) {
     'menubar': false,
     'resizable': true
   });
-};goog.provide('feng.models.Preload');
+};
+
+
+feng.utils.Utils.supportWebGL = ( function () { try { var canvas = document.createElement( 'canvas' ); return !! window['WebGLRenderingContext'] && canvas.getContext( 'webgl' ); } catch( e ) { return false; } } )();goog.provide('feng.models.Preload');
 
 goog.require('goog.object');
 goog.require('feng.utils.Utils');
@@ -32679,7 +32682,6 @@ feng.models.Preload = function(){
 				'pictures-texture': 'images/texture/studio/livingroom/pictures.jpg',
 				'refrigerator-texture': 'images/texture/studio/livingroom/refrigerator.jpg',
 				'refrigerator-door-texture': 'images/texture/studio/livingroom/refrigerator-door.jpg',
-				'crystal-texture': 'images/texture/studio/livingroom/crystal.jpg',
 				'carpet-texture': 'images/texture/studio/livingroom/carpet.jpg',
 				'laptop-texture': 'images/texture/studio/livingroom/laptop.jpg',
 				'apple-texture': 'images/texture/studio/livingroom/apple.jpg',
@@ -32710,6 +32712,7 @@ feng.models.Preload = function(){
 				'ceiling-texture': 'images/texture/studio/bathroom/ceiling.jpg',
 				'wall-texture': 'images/texture/studio/bathroom/wall.jpg',
 				'wall-outer-texture': 'images/texture/studio/bathroom/wall-outer.jpg',
+				'bathroom-door-texture': 'images/texture/studio/bathroom/bathroom-door.jpg',
 				'door-frame-texture': 'images/texture/studio/bathroom/door-frame.jpg',
 				'ceiling-lamps-texture': 'images/texture/studio/bathroom/ceiling-lamps.jpg',
 				'bathrobe-texture': 'images/texture/studio/bathroom/bathrobe.jpg',
@@ -32812,6 +32815,8 @@ feng.models.Preload = function(){
 				'heater-texture': 'images/texture/house/livingroom/heater.jpg',
 				'drawer-texture': 'images/texture/house/livingroom/drawer.jpg',
 				'windowsill-stuff-texture': 'images/texture/house/livingroom/windowsill-stuff.jpg',
+				'goldfish-texture': 'images/texture/house/livingroom/goldfish.jpg',
+				'fish-bowl-texture': 'images/texture/house/livingroom/fish-bowl.jpg',
 				'fish-bowl-stand-texture': 'images/texture/house/livingroom/fish-bowl-stand.jpg',
 				'skybox': {
 					'xpos': 'images/texture/house/boysroom/skybox/pos-x.jpg',
@@ -34149,7 +34154,7 @@ feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.main.EpisodeSelection = function(opt_data, opt_ignored) {
-  return '<div class="episode-selection"><div class="scene studio"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Ollie\'s Studio</h1><p>Ollie lives in a small, delicate studio in the crowded downtown. How could we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'studio', href: opt_data.token.STUDIO, icon: 'icon-yes', text: 'start'})}) + '</div></div><div class="scene house"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Scott\'s House</h1><p>Scott lives in a two story house, with his wife Joanna and son Nick. How could we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'house', href: opt_data.token.HOUSE, icon: 'icon-yes', text: 'start'})}) + '</div></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="question">' + feng.templates.common.FengshuiLogo({noText: true}) + '<div><h1>You\'ve got requests.</h1><p>Please make some<br>improvements to their<br>home environments.</p><h2><div class="arrow left"></div><span>CHOOSE ONE</span><div class="arrow right"></div></h2></div></div>'}) + '</div></div>';
+  return '<div class="episode-selection"><div class="scene studio"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Ollie\'s Studio</h1><p>Ollie lives in a small, delicate studio in the crowded downtown. How could we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'studio', href: opt_data.token.STUDIO, icon: 'icon-yes', text: 'start'})}) + '</div></div><div class="scene house"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Scott\'s House</h1><p>Scott lives in a two story house, with his wife Joanna and son Nick. How could we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'house', href: opt_data.token.HOUSE, icon: 'icon-yes', text: 'start'})}) + '</div></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="question">' + feng.templates.common.FengshuiLogo({noText: true}) + '<div><h1>Help your first<br>feng shui client!</h1><p>Please make some<br>improvements to their<br>home environments.</p><h2><div class="arrow left"></div><span>CHOOSE ONE</span><div class="arrow right"></div></h2></div></div>'}) + '</div></div>';
 };
 
 
@@ -35088,7 +35093,7 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.dining-chair-texture",
 				position: new THREE.Vector3(-47.69, 0, -54.87),
 				rotation: new THREE.Euler(0, 0, 0),
-				range: 50,
+				range: 140,
 				tipKey: 'studio.livingroom.diningchair'
 			},
 			'window-books':	{
@@ -35156,8 +35161,8 @@ feng.models.View3D.Data = {
 			},
 			'crystal':	{
 				Class: "tip",
-				texture: "studio.livingroom.crystal-texture",
-				tipKey: 'studio.livingroom.crystal'
+				tipKey: 'studio.livingroom.crystal',
+				glass: true
 			},
 			'laptop':	{
 				texture: "studio.livingroom.laptop-texture"
@@ -35356,7 +35361,8 @@ feng.models.View3D.Data = {
 				origin: {
 					position: new THREE.Vector3(12, 0, -60),
 					rotation: new THREE.Euler(0, Math.PI, 0)
-				}
+				},
+				texture: "studio.bathroom.bathroom-door-texture"
 			}
 		}
 	},
@@ -35445,7 +35451,7 @@ feng.models.View3D.Data = {
 				texture: "house.livingroom.knife-on-cabinet-texture",
 				position: new THREE.Vector3(-6.87, -2.21, 10.82),
 				rotation: new THREE.Euler(0, 0, 0),
-				range: 50,
+				range: 100,
 				parent: 'drawer',
 				tipKey: 'house.livingroom.knife'
 			},
@@ -35548,6 +35554,19 @@ feng.models.View3D.Data = {
 				collidable: true,
 				texture: "house.livingroom.white-sofa-texture"
 			},
+			'goldfish': {
+				texture: "house.livingroom.goldfish-texture"
+			},
+			'fish-bowl': {
+				Class: 'glassbowl',
+				tipKey: 'house.livingroom.glassbowl',
+				texture: "house.livingroom.fish-bowl-texture",
+				camera: {
+					position: new THREE.Vector3(-11, 77, 56),
+					rotation: new THREE.Euler(-1.06, 3.14, 0.00, 'YXZ'),
+					fov: 22
+				}
+			},
 			'fish-bowl-stand': {
 				collidable: true,
 				texture: "house.livingroom.fish-bowl-stand-texture"
@@ -35555,6 +35574,9 @@ feng.models.View3D.Data = {
 			'tv-stand': {
 				collidable: true,
 				texture: "house.livingroom.tv-stand-texture"
+			},
+			'glass-containers': {
+				glass: true
 			},
 			'window-blinds': {
 				castShadow: true,
@@ -35782,7 +35804,7 @@ feng.models.View3D.Data = {
 				texture: "house.boysroom.computer-on-table-texture",
 				position: new THREE.Vector3(63.04, 37.75, -97.24),
 				rotation: new THREE.Euler(0, 3.14, 0),
-				range: 50,
+				range: 100,
 				parent: 'desk',
 				tipKey: 'house.boysroom.computer'
 			},
@@ -35867,19 +35889,18 @@ feng.models.View3D.Data = {
 				texture: "house.boysroom.bear-in-drawer-texture",
 				position: new THREE.Vector3(-50.04, 33.70, -27.77),
 				rotation: new THREE.Euler(0, -1.57, 0),
-				range: 50,
+				range: 100,
 				parent: 'bed',
 				tipKey: 'house.boysroom.bear'
 			},
 			'handheld': {
-				Class: 'tip',
-				camera: {
-					position: new THREE.Vector3(-29, 56, 16),
-					rotation: new THREE.Euler(-0.70, 1.55, 0.00, 'YXZ'),
-					fov: 20
-				},
+				Class: "movable",
 				texture: "house.boysroom.handheld-nightstand-texture",
-				tipKey: 'house.boysroom.handheld'
+				tipKey: 'house.boysroom.handheld',
+				position: new THREE.Vector3(-43.73, 69.26, -100.78),
+				rotation: new THREE.Euler(0, 1.57, 0),
+				range: 60,
+				parent: 'shelf-left'
 			},
 			'window': {
 				texture: "house.boysroom.window-texture"
@@ -35926,7 +35947,7 @@ feng.models.View3D.Data = {
 				texture: "house.homeoffice.swivel-chair-texture",
 				position: new THREE.Vector3(-40, 0, 9),
 				rotation: new THREE.Euler(0, 0, 0),
-				range: 50,
+				range: 200,
 				tipKey: 'house.homeoffice.deskchair'
 			},
 			'storage': {
@@ -35941,7 +35962,7 @@ feng.models.View3D.Data = {
 				tipKey: 'house.homeoffice.setsquare',
 				position: new THREE.Vector3(-36.95, 107.05, 137.10),
 				rotation: new THREE.Euler(0, 1.57, 0.18),
-				range: 50,
+				range: 140,
 				parent: 'block-shelf-1'
 			},
 			'carpet': {
@@ -36152,6 +36173,8 @@ feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
   this._isRenderEnabled = this._canRender;
   this._isTextureCreated = false;
 
+  this._isGlass = this.data.glass;
+
   //
   this.registerToView3D();
 };
@@ -36169,7 +36192,22 @@ feng.views.view3dobject.View3DObject.prototype.init = function(){
   this.object3d.castShadow = this.data.castShadow || false;
   this.object3d.receiveShadow = this.data.receiveShadow || false;
 
-  if(this.object3d.material) {
+  if(this._isGlass) {
+
+    var shader = THREE.FresnelShader;
+    var uniforms = THREE.UniformsUtils.clone( shader.uniforms );
+
+    uniforms[ "tCube" ].value = this._view3d.createCubeMap( this.getCenter(), feng.renderSettings.renderSize/2 );
+
+    this.object3d.material = new THREE.ShaderMaterial({
+      'fragmentShader': shader.fragmentShader,
+      'vertexShader': shader.vertexShader,
+      'uniforms': uniforms,
+      'shading': THREE.FlatShading
+    });
+
+  }else if(this.object3d.material) {
+
     this.object3d.material.shading = THREE.FlatShading;
     this.object3d.material.fog = this.data.fog || false;
   }
@@ -36597,8 +36635,8 @@ feng.views.view3dobject.MovableObject = function( object3d, data, view3d ){
 
   goog.base(this, object3d, data, view3d);
 
-  var dropParentObject = this._view3d.getView3dObject( this.data.parent );
-  this.dropParent = dropParentObject ? dropParentObject.object3d : this._view3d.scene;
+  this.dropParent = null;
+  this.range = this.data.range;
 
   this.hasPicked = false;
   this.hasDropped = false;
@@ -36606,6 +36644,15 @@ feng.views.view3dobject.MovableObject = function( object3d, data, view3d ){
   this._pickDelay = new goog.async.Delay(this.pick, 1000, this);
 };
 goog.inherits(feng.views.view3dobject.MovableObject, feng.views.view3dobject.TipObject);
+
+
+feng.views.view3dobject.MovableObject.prototype.init = function(){
+
+  goog.base(this, 'init');
+
+  var dropParentObject = this._view3d.getView3dObject( this.data.parent );
+  this.dropParent = dropParentObject ? dropParentObject.object3d : this._view3d.scene;
+};
 
 
 feng.views.view3dobject.MovableObject.prototype.getBoundingBox = function(){
@@ -39525,7 +39572,6 @@ feng.views.view3dobject.Mirror = function( object3d, data, view3d ){
 
   goog.base(this, object3d, data, view3d);
 
-  this._cubeCamera = null;
 };
 goog.inherits(feng.views.view3dobject.Mirror, feng.views.view3dobject.View3DObject);
 
@@ -39534,21 +39580,9 @@ feng.views.view3dobject.Mirror.prototype.init = function() {
 
   goog.base(this, 'init');
 
-  this._cubeCamera = new THREE.CubeCamera( 0.1, 1000, feng.renderSettings.renderSize );
-  this._cubeCamera.position.copy( this.getCenter() );
-  this.object3d.add( this._cubeCamera );
-
   var material = this.object3d.material;
   material.needsUpdate = true;
-  material.envMap = this._cubeCamera.renderTarget;
-};
-
-
-feng.views.view3dobject.Mirror.prototype.updateEnvMap = function() {
-
-  var renderer = this._view3d.renderer.getRenderer();
-  var scene = this._view3d.scene;
-  this._cubeCamera.updateCubeMap( renderer, scene );
+  material.envMap = this._view3d.createCubeMap( this.getCenter() );
 };goog.provide('feng.fx.TextureAnimator');
 
 goog.require('goog.events.EventTarget');
@@ -40661,6 +40695,8 @@ feng.controllers.controls.DesignControls.prototype.activate = function () {
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this);
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
 
+	this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
+
 	this._zoomSlider.activate();
 };
 
@@ -40800,7 +40836,29 @@ feng.controllers.controls.DesignControls.prototype.onDragUpdate = function(){
 
 	this.applyDragRotation( this._startDragRotation + rad );
 };
-goog.provide('feng.controllers.controls.CloseUpControls');
+
+
+feng.controllers.controls.DesignControls.prototype.onNavigationChange = function(e) {
+
+	var navController = e.target;
+
+	var goTipResult = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.GO_TIP );
+
+	if(goTipResult) {
+
+		var achievements = feng.models.achievements.Achievements.getInstance();
+		var tip = achievements.getTip( goTipResult['tipId'], goTipResult['viewId'], goTipResult['sectionId'] );
+
+		var object = this._view3d.getObjectByTip( tip );
+
+		this.dispatchEvent({
+			type: feng.events.EventType.CHANGE,
+			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
+			object: object
+		});
+	}
+};goog.provide('feng.controllers.controls.CloseUpControls');
 
 goog.require('goog.events');
 goog.require('goog.math');
@@ -41049,6 +41107,7 @@ feng.controllers.controls.BrowseControls.prototype.activate = function () {
 
 	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this );
 	this._eventHandler.listen( this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this );
+	this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
 
 	this._objectSelector.activate( this._objectSelectorCallbacks );
 };
@@ -41237,6 +41296,29 @@ feng.controllers.controls.BrowseControls.prototype.onUpdateHud = function(e){
 	if(e.target instanceof feng.views.sections.controls.Compass) {
 		this.setYaw( e.rotation );
 		this._targetRotationY = e.rotation;
+	}
+};
+
+
+feng.controllers.controls.BrowseControls.prototype.onNavigationChange = function(e) {
+
+	var navController = e.target;
+
+	var goTipResult = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.GO_TIP );
+	
+	if(goTipResult) {
+
+		var achievements = feng.models.achievements.Achievements.getInstance();
+		var tip = achievements.getTip( goTipResult['tipId'], goTipResult['viewId'], goTipResult['sectionId'] );
+
+		var object = this._view3d.getObjectByTip( tip );
+
+		this.dispatchEvent({
+			type: feng.events.EventType.CHANGE,
+			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
+			object: object
+		});
 	}
 };// Copyright 2011 The Closure Library Authors. All Rights Reserved.
 //
@@ -41887,7 +41969,9 @@ feng.controllers.controls.WalkControls.prototype.onInputDown = function ( e ) {
 
 	goog.base(this, 'onInputDown', e);
 
-	this._tweener.kill();
+	if(this._tweener) {
+		this._tweener.kill();
+	}
 
 	if(this._footstepsSound) {
 		this._footstepsSound.pause();
@@ -42136,7 +42220,6 @@ feng.controllers.view3d.ModeController.prototype.init = function(){
 feng.controllers.view3d.ModeController.prototype.activate = function(){
 
 	this._eventHandler.listen( this, feng.events.EventType.CHANGE, this.onModeChange, false, this );
-	this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
 };
 
 
@@ -42350,33 +42433,6 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 
 	// update renderer
 	this._renderController.updateByMode(this._mode, e.nextMode);
-};
-
-
-feng.controllers.view3d.ModeController.prototype.onNavigationChange = function(e) {
-
-	var navController = e.target;
-
-	var goTipResult = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.GO_TIP );
-
-	if(goTipResult) {
-
-		var achievements = feng.models.achievements.Achievements.getInstance();
-		var tip = achievements.getTip( goTipResult['tipId'], goTipResult['viewId'], goTipResult['sectionId'] );
-
-		var object = this._view3d.getObjectByTip( tip );
-
-		if(!object) {
-			console.log('tip object currently not available');
-			return false;
-		}
-
-		this.setMode({
-			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-			object: object
-		});
-	}
 };
 
 
@@ -43565,11 +43621,173 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderMask = function
 
 		maskedObject.enableRender();
 		this._view3d.arms.enableRender();
-
-		if(maskedObject.hasPicked) {
+		
+		if(maskedObject.hasPicked && maskedObject.dropParent && maskedObject.dropParent.view3dObject) {
 			maskedObject.dropParent.view3dObject.enableRender();
 		}
 	}
+};goog.provide('feng.views.view3dobject.entities.GlassBowl');
+
+goog.require('feng.views.view3dobject.TipObject');
+
+/**
+ * @constructor
+ * The glass bowl where the goldfish lives
+ */
+feng.views.view3dobject.entities.GlassBowl = function( object3d, data, view3d ){
+
+  goog.base(this, object3d, data, view3d);
+
+  this._fish = null;
+  
+  this._fishPosition = new THREE.Vector3();
+  this._fishRotation = new THREE.Euler();
+
+  this._fishMoveTweener = null;
+  this._fishBreathTweener = null;
+
+  this._hasDroppedFish = false;
+};
+goog.inherits(feng.views.view3dobject.entities.GlassBowl, feng.views.view3dobject.TipObject);
+
+
+feng.views.view3dobject.entities.GlassBowl.prototype.init = function(){
+
+  goog.base(this, 'init');
+
+  var water = this.object3d.getObjectByName('fish-bowl-water');
+  water.material.reflectivity = 0.65;
+  water.material.opacity = 0.25;
+  water.material.transparent = true;
+  water.material.shininess = 10;
+  water.material.envMap = this._view3d.createCubeMap( this.getCenter(), 512 );
+  water.material.needsUpdate = true;
+
+  //
+  this._fish = this._view3d.getView3dObject('goldfish');
+
+  var transform = new THREE.Matrix4().makeRotationY( Math.PI/2 );
+  this._fish.object3d.geometry.applyMatrix( transform );
+
+  this._fish.removeFromScene();
+};
+
+
+feng.views.view3dobject.entities.GlassBowl.prototype.onCameraIn = function(){
+
+  goog.base(this, 'onCameraIn');
+
+  if(this._hasDroppedFish) {
+
+    this.tweenFish();
+  }
+};
+
+
+feng.views.view3dobject.entities.GlassBowl.prototype.onCameraOut = function(){
+
+  goog.base(this, 'onCameraOut');
+
+  if(this._hasDroppedFish) {
+
+    if(this._fishMoveTweener) {
+      this._fishMoveTweener.kill();
+    }
+
+    if(this._fishBreathTweener) {
+      this._fishBreathTweener.kill();
+    }
+  }
+};
+
+
+feng.views.view3dobject.entities.GlassBowl.prototype.startInteraction = function(){
+
+  goog.base(this, 'startInteraction');
+
+  if(!this._hasDroppedFish) {
+
+    this._fish.addToScene( this.object3d );
+
+    TweenMax.fromTo(this._fish.object3d.position, 4, {
+      'y': this._fish.object3d.position.y + 30
+    }, {
+      'y': this._fish.object3d.position.y,
+      'immediateRender': true,
+      'ease': Expo.easeOut,
+      'onComplete': this.onFishDropped,
+      'onCompleteScope': this
+    });
+  }
+};
+
+
+feng.views.view3dobject.entities.GlassBowl.prototype.tweenFish = function(){
+
+  var duration = Math.random() * 3 + 2;
+  var delay = Math.random() * 1;
+  var radX = 3;
+  var radZ = 3;
+
+  var fish = this._fish.object3d;
+
+  var fromPosition = fish.position.clone();
+  var toPosition = fish.position.clone().set( goog.math.uniformRandom( -radX, radX ), 0, goog.math.uniformRandom( -radZ, radZ ) );
+
+  var fromRotation = fish.rotation.clone();
+
+  var lookAtQ = feng.utils.ThreeUtils.getQuaternionByLookAt( fromPosition, toPosition );
+  var toRotation = fish.rotation.clone().setFromQuaternion( lookAtQ );
+
+  var prop = {
+    t: 0,
+    fromPosition: fromPosition,
+    toPosition: toPosition,
+    fromRotation: fromRotation,
+    toRotation: toRotation
+  };
+
+  this._fishMoveTweener = TweenMax.to( prop, duration, {
+    t: 1,
+    'delay': delay,
+    'onUpdate': this.updateFish,
+    'onUpdateParams': [prop],
+    'onUpdateScope': this,
+    'onComplete': this.tweenFish,
+    'onCompleteScope': this
+  });
+
+  if(!this._fishBreathTweener || !this._fishBreathTweener.isActive()) {
+    this._fishBreathTweener = TweenMax.fromTo( fish.scale, .85, {
+      'x': 1
+    }, {
+      'x': 1.1,
+      'yoyo': true,
+      'repeat': -1
+    });
+  }
+};
+
+
+feng.views.view3dobject.entities.GlassBowl.prototype.updateFish = function( prop ){
+
+  var t = prop.t;
+  var position = this._fishPosition.copy( prop.fromPosition ).lerp( prop.toPosition, t );
+  var rotation = feng.utils.ThreeUtils.getLerpedEuler( prop.fromRotation, prop.toRotation, t, this._fishRotation );
+
+  this._fish.object3d.position.copy( position );
+  this._fish.object3d.rotation.copy( rotation );
+};
+
+
+feng.views.view3dobject.entities.GlassBowl.prototype.onFishDropped = function(){
+
+  this.tweenFish();
+
+  this.unlock();
+  this.stopInteraction();
+
+  this._hasDroppedFish = true;
 };goog.provide('feng.views.view3dobject.entities.Closet');
 
 goog.require('feng.models.Preload');
@@ -44061,6 +44279,10 @@ feng.views.view3dobject.Arms.Orientations = {
   'knife': {
     position: new THREE.Vector3(0, 10, -2),
     rotation: new THREE.Euler(0.05, -0.09, -0.50)
+  },
+  'handheld': {
+    position: new THREE.Vector3(0, 7.5, -2),
+    rotation: new THREE.Euler(0.2, -1.57, 0)
   }
 };goog.provide('feng.views.view3dfx.SelectEffect');
 
@@ -44562,6 +44784,7 @@ goog.require('feng.views.view3dobject.entities.Pictures');
 goog.require('feng.views.view3dobject.entities.Refrigerator');
 goog.require('feng.views.view3dobject.entities.SewingMachine');
 goog.require('feng.views.view3dobject.entities.FruitPlate');
+goog.require('feng.views.view3dobject.entities.GlassBowl');
 goog.require('feng.views.view3dobject.entities.Wallpaper');
 goog.require('feng.views.view3dobject.entities.Windows');
 
@@ -44601,6 +44824,8 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud, episode){
 	this.view3dObjects = {};
 	this.interactiveObjects = {};
 	this.tipObjects = {};
+
+	this._cubeCameras = [];
 
 	this.viewSize = new feng.fx.View3DSize(0, 0);
 
@@ -44760,6 +44985,31 @@ feng.views.View3D.prototype.getObjectsByClass = function( objectClass ){
 };
 
 
+feng.views.View3D.prototype.createCubeMap = function(position, size){
+
+  var cubeCamera = new THREE.CubeCamera( 0.1, 1000, size || feng.renderSettings.renderSize );
+  cubeCamera.position.copy( position );
+
+  this.scene.add( cubeCamera );
+
+  this._cubeCameras.push( cubeCamera );
+
+  return cubeCamera.renderTarget;
+};
+
+
+feng.views.View3D.prototype.updateCubeMaps = function(){
+
+  var renderer = this.renderer.getRenderer();
+  var scene = this.scene;
+
+  goog.array.forEach(this._cubeCameras, function(cubeCamera) {
+
+  	cubeCamera.updateCubeMap( renderer, scene );
+  });
+};
+
+
 feng.views.View3D.prototype.activate = function(){
 
 	if(this.isActivated) return;
@@ -44822,12 +45072,8 @@ feng.views.View3D.prototype.show = function(){
 
  	this.onResize();
 
-	// update mirrors if there are
-	var mirrorObjects = this.getObjectsByClass( feng.views.view3dobject.Mirror );
-
-	goog.array.forEach(mirrorObjects, function(mirror) {
-		mirror.updateEnvMap();
-	});
+	// update all cube maps
+	this.updateCubeMaps();
 
 	//
 	this.dispatchEvent({
@@ -44977,7 +45223,8 @@ feng.views.View3D.prototype.initScene = function() {
 		'sewingmachine': feng.views.view3dobject.entities.SewingMachine,
 		'wallpaper': feng.views.view3dobject.entities.Wallpaper,
 		'windows': feng.views.view3dobject.entities.Windows,
-		'fruitplate': feng.views.view3dobject.entities.FruitPlate
+		'fruitplate': feng.views.view3dobject.entities.FruitPlate,
+		'glassbowl': feng.views.view3dobject.entities.GlassBowl
 	};
 
 	// parse scene objects
@@ -46695,2383 +46942,6 @@ feng.apps.PathEdit.prototype.onResize = function(e) {
 
 	this.render();
 };// Copyright 2011 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview An interface for transition animation. This is a simple
- * interface that allows for playing and stopping a transition. It adds
- * a simple event model with BEGIN and END event.
- *
- */
-
-goog.provide('goog.fx.Transition');
-goog.provide('goog.fx.Transition.EventType');
-
-
-
-/**
- * An interface for programmatic transition. Must extend
- * {@code goog.events.EventTarget}.
- * @interface
- */
-goog.fx.Transition = function() {};
-
-
-/**
- * Transition event types.
- * @enum {string}
- */
-goog.fx.Transition.EventType = {
-  /** Dispatched when played for the first time OR when it is resumed. */
-  PLAY: 'play',
-
-  /** Dispatched only when the animation starts from the beginning. */
-  BEGIN: 'begin',
-
-  /** Dispatched only when animation is restarted after a pause. */
-  RESUME: 'resume',
-
-  /**
-   * Dispatched when animation comes to the end of its duration OR stop
-   * is called.
-   */
-  END: 'end',
-
-  /** Dispatched only when stop is called. */
-  STOP: 'stop',
-
-  /** Dispatched only when animation comes to its end naturally. */
-  FINISH: 'finish',
-
-  /** Dispatched when an animation is paused. */
-  PAUSE: 'pause'
-};
-
-
-/**
- * Plays the transition.
- */
-goog.fx.Transition.prototype.play;
-
-
-/**
- * Stops the transition.
- */
-goog.fx.Transition.prototype.stop;
-// Copyright 2011 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview An abstract base class for transitions. This is a simple
- * interface that allows for playing, pausing and stopping an animation. It adds
- * a simple event model, and animation status.
- */
-goog.provide('goog.fx.TransitionBase');
-goog.provide('goog.fx.TransitionBase.State');
-
-goog.require('goog.events.EventTarget');
-goog.require('goog.fx.Transition');  // Unreferenced: interface
-goog.require('goog.fx.Transition.EventType');
-
-
-
-/**
- * Constructor for a transition object.
- *
- * @constructor
- * @implements {goog.fx.Transition}
- * @extends {goog.events.EventTarget}
- */
-goog.fx.TransitionBase = function() {
-  goog.fx.TransitionBase.base(this, 'constructor');
-
-  /**
-   * The internal state of the animation.
-   * @type {goog.fx.TransitionBase.State}
-   * @private
-   */
-  this.state_ = goog.fx.TransitionBase.State.STOPPED;
-
-  /**
-   * Timestamp for when the animation was started.
-   * @type {?number}
-   * @protected
-   */
-  this.startTime = null;
-
-  /**
-   * Timestamp for when the animation finished or was stopped.
-   * @type {?number}
-   * @protected
-   */
-  this.endTime = null;
-};
-goog.inherits(goog.fx.TransitionBase, goog.events.EventTarget);
-
-
-/**
- * Enum for the possible states of an animation.
- * @enum {number}
- */
-goog.fx.TransitionBase.State = {
-  STOPPED: 0,
-  PAUSED: -1,
-  PLAYING: 1
-};
-
-
-/**
- * Plays the animation.
- *
- * @param {boolean=} opt_restart Optional parameter to restart the animation.
- * @return {boolean} True iff the animation was started.
- * @override
- */
-goog.fx.TransitionBase.prototype.play = goog.abstractMethod;
-
-
-/**
- * Stops the animation.
- *
- * @param {boolean=} opt_gotoEnd Optional boolean parameter to go the the end of
- *     the animation.
- * @override
- */
-goog.fx.TransitionBase.prototype.stop = goog.abstractMethod;
-
-
-/**
- * Pauses the animation.
- */
-goog.fx.TransitionBase.prototype.pause = goog.abstractMethod;
-
-
-/**
- * Returns the current state of the animation.
- * @return {goog.fx.TransitionBase.State} State of the animation.
- */
-goog.fx.TransitionBase.prototype.getStateInternal = function() {
-  return this.state_;
-};
-
-
-/**
- * Sets the current state of the animation to playing.
- * @protected
- */
-goog.fx.TransitionBase.prototype.setStatePlaying = function() {
-  this.state_ = goog.fx.TransitionBase.State.PLAYING;
-};
-
-
-/**
- * Sets the current state of the animation to paused.
- * @protected
- */
-goog.fx.TransitionBase.prototype.setStatePaused = function() {
-  this.state_ = goog.fx.TransitionBase.State.PAUSED;
-};
-
-
-/**
- * Sets the current state of the animation to stopped.
- * @protected
- */
-goog.fx.TransitionBase.prototype.setStateStopped = function() {
-  this.state_ = goog.fx.TransitionBase.State.STOPPED;
-};
-
-
-/**
- * @return {boolean} True iff the current state of the animation is playing.
- */
-goog.fx.TransitionBase.prototype.isPlaying = function() {
-  return this.state_ == goog.fx.TransitionBase.State.PLAYING;
-};
-
-
-/**
- * @return {boolean} True iff the current state of the animation is paused.
- */
-goog.fx.TransitionBase.prototype.isPaused = function() {
-  return this.state_ == goog.fx.TransitionBase.State.PAUSED;
-};
-
-
-/**
- * @return {boolean} True iff the current state of the animation is stopped.
- */
-goog.fx.TransitionBase.prototype.isStopped = function() {
-  return this.state_ == goog.fx.TransitionBase.State.STOPPED;
-};
-
-
-/**
- * Dispatches the BEGIN event. Sub classes should override this instead
- * of listening to the event, and call this instead of dispatching the event.
- * @protected
- */
-goog.fx.TransitionBase.prototype.onBegin = function() {
-  this.dispatchAnimationEvent(goog.fx.Transition.EventType.BEGIN);
-};
-
-
-/**
- * Dispatches the END event. Sub classes should override this instead
- * of listening to the event, and call this instead of dispatching the event.
- * @protected
- */
-goog.fx.TransitionBase.prototype.onEnd = function() {
-  this.dispatchAnimationEvent(goog.fx.Transition.EventType.END);
-};
-
-
-/**
- * Dispatches the FINISH event. Sub classes should override this instead
- * of listening to the event, and call this instead of dispatching the event.
- * @protected
- */
-goog.fx.TransitionBase.prototype.onFinish = function() {
-  this.dispatchAnimationEvent(goog.fx.Transition.EventType.FINISH);
-};
-
-
-/**
- * Dispatches the PAUSE event. Sub classes should override this instead
- * of listening to the event, and call this instead of dispatching the event.
- * @protected
- */
-goog.fx.TransitionBase.prototype.onPause = function() {
-  this.dispatchAnimationEvent(goog.fx.Transition.EventType.PAUSE);
-};
-
-
-/**
- * Dispatches the PLAY event. Sub classes should override this instead
- * of listening to the event, and call this instead of dispatching the event.
- * @protected
- */
-goog.fx.TransitionBase.prototype.onPlay = function() {
-  this.dispatchAnimationEvent(goog.fx.Transition.EventType.PLAY);
-};
-
-
-/**
- * Dispatches the RESUME event. Sub classes should override this instead
- * of listening to the event, and call this instead of dispatching the event.
- * @protected
- */
-goog.fx.TransitionBase.prototype.onResume = function() {
-  this.dispatchAnimationEvent(goog.fx.Transition.EventType.RESUME);
-};
-
-
-/**
- * Dispatches the STOP event. Sub classes should override this instead
- * of listening to the event, and call this instead of dispatching the event.
- * @protected
- */
-goog.fx.TransitionBase.prototype.onStop = function() {
-  this.dispatchAnimationEvent(goog.fx.Transition.EventType.STOP);
-};
-
-
-/**
- * Dispatches an event object for the current animation.
- * @param {string} type Event type that will be dispatched.
- * @protected
- */
-goog.fx.TransitionBase.prototype.dispatchAnimationEvent = function(type) {
-  this.dispatchEvent(type);
-};
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Classes for doing animations and visual effects.
- *
- * (Based loosly on my animation code for 13thparallel.org, with extra
- * inspiration from the DojoToolkit's modifications to my code)
- */
-
-goog.provide('goog.fx.Animation');
-goog.provide('goog.fx.Animation.EventType');
-goog.provide('goog.fx.Animation.State');
-goog.provide('goog.fx.AnimationEvent');
-
-goog.require('goog.array');
-goog.require('goog.events.Event');
-goog.require('goog.fx.Transition');  // Unreferenced: interface
-goog.require('goog.fx.Transition.EventType');
-goog.require('goog.fx.TransitionBase.State');
-goog.require('goog.fx.anim');
-goog.require('goog.fx.anim.Animated');  // Unreferenced: interface
-
-
-
-/**
- * Constructor for an animation object.
- * @param {Array.<number>} start Array for start coordinates.
- * @param {Array.<number>} end Array for end coordinates.
- * @param {number} duration Length of animation in milliseconds.
- * @param {Function=} opt_acc Acceleration function, returns 0-1 for inputs 0-1.
- * @constructor
- * @implements {goog.fx.anim.Animated}
- * @implements {goog.fx.Transition}
- * @extends {goog.fx.TransitionBase}
- */
-goog.fx.Animation = function(start, end, duration, opt_acc) {
-  goog.fx.Animation.base(this, 'constructor');
-
-  if (!goog.isArray(start) || !goog.isArray(end)) {
-    throw Error('Start and end parameters must be arrays');
-  }
-
-  if (start.length != end.length) {
-    throw Error('Start and end points must be the same length');
-  }
-
-  /**
-   * Start point.
-   * @type {Array.<number>}
-   * @protected
-   */
-  this.startPoint = start;
-
-  /**
-   * End point.
-   * @type {Array.<number>}
-   * @protected
-   */
-  this.endPoint = end;
-
-  /**
-   * Duration of animation in milliseconds.
-   * @type {number}
-   * @protected
-   */
-  this.duration = duration;
-
-  /**
-   * Acceleration function, which must return a number between 0 and 1 for
-   * inputs between 0 and 1.
-   * @type {Function|undefined}
-   * @private
-   */
-  this.accel_ = opt_acc;
-
-  /**
-   * Current coordinate for animation.
-   * @type {Array.<number>}
-   * @protected
-   */
-  this.coords = [];
-
-  /**
-   * Whether the animation should use "right" rather than "left" to position
-   * elements in RTL.  This is a temporary flag to allow clients to transition
-   * to the new behavior at their convenience.  At some point it will be the
-   * default.
-   * @type {boolean}
-   * @private
-   */
-  this.useRightPositioningForRtl_ = false;
-};
-goog.inherits(goog.fx.Animation, goog.fx.TransitionBase);
-
-
-/**
- * Sets whether the animation should use "right" rather than "left" to position
- * elements.  This is a temporary flag to allow clients to transition
- * to the new component at their convenience.  At some point "right" will be
- * used for RTL elements by default.
- * @param {boolean} useRightPositioningForRtl True if "right" should be used for
- *     positioning, false if "left" should be used for positioning.
- */
-goog.fx.Animation.prototype.enableRightPositioningForRtl =
-    function(useRightPositioningForRtl) {
-  this.useRightPositioningForRtl_ = useRightPositioningForRtl;
-};
-
-
-/**
- * Whether the animation should use "right" rather than "left" to position
- * elements.  This is a temporary flag to allow clients to transition
- * to the new component at their convenience.  At some point "right" will be
- * used for RTL elements by default.
- * @return {boolean} True if "right" should be used for positioning, false if
- *     "left" should be used for positioning.
- */
-goog.fx.Animation.prototype.isRightPositioningForRtlEnabled = function() {
-  return this.useRightPositioningForRtl_;
-};
-
-
-/**
- * Events fired by the animation.
- * @enum {string}
- */
-goog.fx.Animation.EventType = {
-  /**
-   * Dispatched when played for the first time OR when it is resumed.
-   * @deprecated Use goog.fx.Transition.EventType.PLAY.
-   */
-  PLAY: goog.fx.Transition.EventType.PLAY,
-
-  /**
-   * Dispatched only when the animation starts from the beginning.
-   * @deprecated Use goog.fx.Transition.EventType.BEGIN.
-   */
-  BEGIN: goog.fx.Transition.EventType.BEGIN,
-
-  /**
-   * Dispatched only when animation is restarted after a pause.
-   * @deprecated Use goog.fx.Transition.EventType.RESUME.
-   */
-  RESUME: goog.fx.Transition.EventType.RESUME,
-
-  /**
-   * Dispatched when animation comes to the end of its duration OR stop
-   * is called.
-   * @deprecated Use goog.fx.Transition.EventType.END.
-   */
-  END: goog.fx.Transition.EventType.END,
-
-  /**
-   * Dispatched only when stop is called.
-   * @deprecated Use goog.fx.Transition.EventType.STOP.
-   */
-  STOP: goog.fx.Transition.EventType.STOP,
-
-  /**
-   * Dispatched only when animation comes to its end naturally.
-   * @deprecated Use goog.fx.Transition.EventType.FINISH.
-   */
-  FINISH: goog.fx.Transition.EventType.FINISH,
-
-  /**
-   * Dispatched when an animation is paused.
-   * @deprecated Use goog.fx.Transition.EventType.PAUSE.
-   */
-  PAUSE: goog.fx.Transition.EventType.PAUSE,
-
-  /**
-   * Dispatched each frame of the animation.  This is where the actual animator
-   * will listen.
-   */
-  ANIMATE: 'animate',
-
-  /**
-   * Dispatched when the animation is destroyed.
-   */
-  DESTROY: 'destroy'
-};
-
-
-/**
- * @deprecated Use goog.fx.anim.TIMEOUT.
- */
-goog.fx.Animation.TIMEOUT = goog.fx.anim.TIMEOUT;
-
-
-/**
- * Enum for the possible states of an animation.
- * @deprecated Use goog.fx.Transition.State instead.
- * @enum {number}
- */
-goog.fx.Animation.State = goog.fx.TransitionBase.State;
-
-
-/**
- * @deprecated Use goog.fx.anim.setAnimationWindow.
- * @param {Window} animationWindow The window in which to animate elements.
- */
-goog.fx.Animation.setAnimationWindow = function(animationWindow) {
-  goog.fx.anim.setAnimationWindow(animationWindow);
-};
-
-
-/**
- * Current frame rate.
- * @type {number}
- * @private
- */
-goog.fx.Animation.prototype.fps_ = 0;
-
-
-/**
- * Percent of the way through the animation.
- * @type {number}
- * @protected
- */
-goog.fx.Animation.prototype.progress = 0;
-
-
-/**
- * Timestamp for when last frame was run.
- * @type {?number}
- * @protected
- */
-goog.fx.Animation.prototype.lastFrame = null;
-
-
-/**
- * Starts or resumes an animation.
- * @param {boolean=} opt_restart Whether to restart the
- *     animation from the beginning if it has been paused.
- * @return {boolean} Whether animation was started.
- * @override
- */
-goog.fx.Animation.prototype.play = function(opt_restart) {
-  if (opt_restart || this.isStopped()) {
-    this.progress = 0;
-    this.coords = this.startPoint;
-  } else if (this.isPlaying()) {
-    return false;
-  }
-
-  goog.fx.anim.unregisterAnimation(this);
-
-  var now = /** @type {number} */ (goog.now());
-
-  this.startTime = now;
-  if (this.isPaused()) {
-    this.startTime -= this.duration * this.progress;
-  }
-
-  this.endTime = this.startTime + this.duration;
-  this.lastFrame = this.startTime;
-
-  if (!this.progress) {
-    this.onBegin();
-  }
-
-  this.onPlay();
-
-  if (this.isPaused()) {
-    this.onResume();
-  }
-
-  this.setStatePlaying();
-
-  goog.fx.anim.registerAnimation(this);
-  this.cycle(now);
-
-  return true;
-};
-
-
-/**
- * Stops the animation.
- * @param {boolean=} opt_gotoEnd If true the animation will move to the
- *     end coords.
- * @override
- */
-goog.fx.Animation.prototype.stop = function(opt_gotoEnd) {
-  goog.fx.anim.unregisterAnimation(this);
-  this.setStateStopped();
-
-  if (!!opt_gotoEnd) {
-    this.progress = 1;
-  }
-
-  this.updateCoords_(this.progress);
-
-  this.onStop();
-  this.onEnd();
-};
-
-
-/**
- * Pauses the animation (iff it's playing).
- * @override
- */
-goog.fx.Animation.prototype.pause = function() {
-  if (this.isPlaying()) {
-    goog.fx.anim.unregisterAnimation(this);
-    this.setStatePaused();
-    this.onPause();
-  }
-};
-
-
-/**
- * @return {number} The current progress of the animation, the number
- *     is between 0 and 1 inclusive.
- */
-goog.fx.Animation.prototype.getProgress = function() {
-  return this.progress;
-};
-
-
-/**
- * Sets the progress of the animation.
- * @param {number} progress The new progress of the animation.
- */
-goog.fx.Animation.prototype.setProgress = function(progress) {
-  this.progress = progress;
-  if (this.isPlaying()) {
-    var now = goog.now();
-    // If the animation is already playing, we recompute startTime and endTime
-    // such that the animation plays consistently, that is:
-    // now = startTime + progress * duration.
-    this.startTime = now - this.duration * this.progress;
-    this.endTime = this.startTime + this.duration;
-  }
-};
-
-
-/**
- * Disposes of the animation.  Stops an animation, fires a 'destroy' event and
- * then removes all the event handlers to clean up memory.
- * @override
- * @protected
- */
-goog.fx.Animation.prototype.disposeInternal = function() {
-  if (!this.isStopped()) {
-    this.stop(false);
-  }
-  this.onDestroy();
-  goog.fx.Animation.base(this, 'disposeInternal');
-};
-
-
-/**
- * Stops an animation, fires a 'destroy' event and then removes all the event
- * handlers to clean up memory.
- * @deprecated Use dispose() instead.
- */
-goog.fx.Animation.prototype.destroy = function() {
-  this.dispose();
-};
-
-
-/** @override */
-goog.fx.Animation.prototype.onAnimationFrame = function(now) {
-  this.cycle(now);
-};
-
-
-/**
- * Handles the actual iteration of the animation in a timeout
- * @param {number} now The current time.
- */
-goog.fx.Animation.prototype.cycle = function(now) {
-  this.progress = (now - this.startTime) / (this.endTime - this.startTime);
-
-  if (this.progress >= 1) {
-    this.progress = 1;
-  }
-
-  this.fps_ = 1000 / (now - this.lastFrame);
-  this.lastFrame = now;
-
-  this.updateCoords_(this.progress);
-
-  // Animation has finished.
-  if (this.progress == 1) {
-    this.setStateStopped();
-    goog.fx.anim.unregisterAnimation(this);
-
-    this.onFinish();
-    this.onEnd();
-
-  // Animation is still under way.
-  } else if (this.isPlaying()) {
-    this.onAnimate();
-  }
-};
-
-
-/**
- * Calculates current coordinates, based on the current state.  Applies
- * the accelleration function if it exists.
- * @param {number} t Percentage of the way through the animation as a decimal.
- * @private
- */
-goog.fx.Animation.prototype.updateCoords_ = function(t) {
-  if (goog.isFunction(this.accel_)) {
-    t = this.accel_(t);
-  }
-  this.coords = new Array(this.startPoint.length);
-  for (var i = 0; i < this.startPoint.length; i++) {
-    this.coords[i] = (this.endPoint[i] - this.startPoint[i]) * t +
-        this.startPoint[i];
-  }
-};
-
-
-/**
- * Dispatches the ANIMATE event. Sub classes should override this instead
- * of listening to the event.
- * @protected
- */
-goog.fx.Animation.prototype.onAnimate = function() {
-  this.dispatchAnimationEvent(goog.fx.Animation.EventType.ANIMATE);
-};
-
-
-/**
- * Dispatches the DESTROY event. Sub classes should override this instead
- * of listening to the event.
- * @protected
- */
-goog.fx.Animation.prototype.onDestroy = function() {
-  this.dispatchAnimationEvent(goog.fx.Animation.EventType.DESTROY);
-};
-
-
-/** @override */
-goog.fx.Animation.prototype.dispatchAnimationEvent = function(type) {
-  this.dispatchEvent(new goog.fx.AnimationEvent(type, this));
-};
-
-
-
-/**
- * Class for an animation event object.
- * @param {string} type Event type.
- * @param {goog.fx.Animation} anim An animation object.
- * @constructor
- * @extends {goog.events.Event}
- */
-goog.fx.AnimationEvent = function(type, anim) {
-  goog.fx.AnimationEvent.base(this, 'constructor', type);
-
-  /**
-   * The current coordinates.
-   * @type {Array.<number>}
-   */
-  this.coords = anim.coords;
-
-  /**
-   * The x coordinate.
-   * @type {number}
-   */
-  this.x = anim.coords[0];
-
-  /**
-   * The y coordinate.
-   * @type {number}
-   */
-  this.y = anim.coords[1];
-
-  /**
-   * The z coordinate.
-   * @type {number}
-   */
-  this.z = anim.coords[2];
-
-  /**
-   * The current duration.
-   * @type {number}
-   */
-  this.duration = anim.duration;
-
-  /**
-   * The current progress.
-   * @type {number}
-   */
-  this.progress = anim.getProgress();
-
-  /**
-   * Frames per second so far.
-   */
-  this.fps = anim.fps_;
-
-  /**
-   * The state of the animation.
-   * @type {number}
-   */
-  this.state = anim.getStateInternal();
-
-  /**
-   * The animation object.
-   * @type {goog.fx.Animation}
-   */
-  // TODO(arv): This can be removed as this is the same as the target
-  this.anim = anim;
-};
-goog.inherits(goog.fx.AnimationEvent, goog.events.Event);
-
-
-/**
- * Returns the coordinates as integers (rounded to nearest integer).
- * @return {Array.<number>} An array of the coordinates rounded to
- *     the nearest integer.
- */
-goog.fx.AnimationEvent.prototype.coordsAsInts = function() {
-  return goog.array.map(this.coords, Math.round);
-};
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Easing functions for animations.
- *
- */
-
-goog.provide('goog.fx.easing');
-
-
-/**
- * Ease in - Start slow and speed up.
- * @param {number} t Input between 0 and 1.
- * @return {number} Output between 0 and 1.
- */
-goog.fx.easing.easeIn = function(t) {
-  return t * t * t;
-};
-
-
-/**
- * Ease out - Start fastest and slows to a stop.
- * @param {number} t Input between 0 and 1.
- * @param {number=} opt_exponent Ease exponent.  If undefined, defaults to 3.
- * @return {number} Output between 0 and 1.
- */
-goog.fx.easing.easeOut = function(t, opt_exponent) {
-  return 1 - Math.pow(1 - t, goog.isDef(opt_exponent) ? opt_exponent : 3);
-};
-
-
-/**
- * Ease out long - Start fastest and slows to a stop with a long ease.
- * @param {number} t Input between 0 and 1.
- * @return {number} Output between 0 and 1.
- */
-goog.fx.easing.easeOutLong = function(t) {
-  return goog.fx.easing.easeOut(t, 4);
-};
-
-
-/**
- * Ease in and out - Start slow, speed up, then slow down.
- * @param {number} t Input between 0 and 1.
- * @return {number} Output between 0 and 1.
- */
-goog.fx.easing.inAndOut = function(t) {
-  return 3 * t * t - 2 * t * t * t;
-};
-// Copyright 2010 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Legacy stub for the goog.fx namespace.  Requires the moved
- * namespaces. Animation and easing have been moved to animation.js and
- * easing.js.  Users of this stub should move off so we may remove it in the
- * future.
- *
- * @author nnaze@google.com (Nathan Naze)
- */
-
-goog.provide('goog.fx');
-
-goog.require('goog.asserts');
-goog.require('goog.fx.Animation');
-goog.require('goog.fx.Animation.EventType');
-goog.require('goog.fx.Animation.State');
-goog.require('goog.fx.AnimationEvent');
-goog.require('goog.fx.Transition.EventType');
-goog.require('goog.fx.easing');
-goog.provide('feng.apps.Main');
-
-goog.require('goog.dom');
-goog.require('goog.fx');
-goog.require('feng.templates.main');
-
-
-feng.apps.Main = function() {
-
-	goog.base(this);
-	
-	goog.fx.anim.setAnimationWindow(window);
-	
-};
-goog.inherits(feng.apps.Main, goog.events.EventTarget);
-goog.addSingletonGetter(feng.apps.Main);// This file was automatically generated from captions.soy.
-// Please don't edit this file by hand.
-
-goog.provide('feng.templates.captions');
-
-goog.require('soy');
-goog.require('soydata');
-goog.require('feng.templates.common');
-
-
-/**
- * @param {Object.<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
- * @return {string}
- * @notypecheck
- */
-feng.templates.captions.Caption = function(opt_data, opt_ignored) {
-  return '<div class="caption ' + opt_data.position + '"><div class="shade"></div><div class="panel"><div class="panel-button"><button class="icon"></button><h3>Learn<br>More</h3></div><div class="panel-controls"><div class="share"><ul><li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-facebook"></a></li><li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-twitter"></a></li><li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-google"></a></li></ul></div></div><div class="panel-content"><div class="content"><h1>' + opt_data.tip.name + '</h1><div class="scroller"><div class="scroller-inner">' + ((opt_data.tip.hint) ? '<section class="hint"><div class="inner"><div class="inner-scroller"><p>' + opt_data.tip.hint + '</p>' + feng.templates.common.PrimaryButton({icon: 'icon-yes', classname: 'hint-button', text: 'I see'}) + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.tip.problem) ? '<section class="problem"><div class="inner"><div class="inner-scroller"><p>' + opt_data.tip.problem + '</p><!-- either close to interact, or scroll down to go interaction section if available -->' + feng.templates.common.PrimaryButton({classname: 'prompt-button', icon: 'icon-yes', text: opt_data.tip.prompt}) + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.interactionContent) ? '<section class="interaction"><div class="inner"><div class="inner-scroller">' + opt_data.interactionContent + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.tip.advice) ? '<section class="advice"><div class="inner"><div class="inner-scroller"><h3>Feng Shui Tips</h3><p>' + opt_data.tip.advice + '</p></div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + '</div></div></div></div></div>' + feng.templates.common.CloseButton(null) + '</div>';
-};
-
-
-/**
- * @param {Object.<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
- * @return {string}
- * @notypecheck
- */
-feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
-  var param102 = '<div class="change-picture"><h2>Click on a picture to change</h2><ul class="pictures">';
-  var pictureKeyList104 = soy.$$getMapKeys(opt_data.tip.details['pictures']);
-  var pictureKeyListLen104 = pictureKeyList104.length;
-  for (var pictureKeyIndex104 = 0; pictureKeyIndex104 < pictureKeyListLen104; pictureKeyIndex104++) {
-    var pictureKeyData104 = pictureKeyList104[pictureKeyIndex104];
-    param102 += '<li><button class="item-button" data-picture="' + pictureKeyData104 + '"></button></li>';
-  }
-  param102 += '</ul><ul class="info">';
-  var pictureKeyList110 = soy.$$getMapKeys(opt_data.tip.details['pictures']);
-  var pictureKeyListLen110 = pictureKeyList110.length;
-  for (var pictureKeyIndex110 = 0; pictureKeyIndex110 < pictureKeyListLen110; pictureKeyIndex110++) {
-    var pictureKeyData110 = pictureKeyList110[pictureKeyIndex110];
-    param102 += '<li data-picture="' + pictureKeyData110 + '"><h3>' + opt_data.tip.details['pictures'][pictureKeyData110]['name'] + '</h3><p>' + opt_data.tip.details['pictures'][pictureKeyData110]['description'] + '</p></li>';
-  }
-  param102 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param102}));
-  return output;
-};
-
-
-/**
- * @param {Object.<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
- * @return {string}
- * @notypecheck
- */
-feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
-  var param122 = '<div class="change-color"><h2>Choose a better color.</h2><ul class="colors">';
-  var colorKeyList124 = soy.$$getMapKeys(opt_data.tip.details['colors']);
-  var colorKeyListLen124 = colorKeyList124.length;
-  for (var colorKeyIndex124 = 0; colorKeyIndex124 < colorKeyListLen124; colorKeyIndex124++) {
-    var colorKeyData124 = colorKeyList124[colorKeyIndex124];
-    param122 += '<li><button class="item-button" style="background-color: ' + opt_data.tip.details['colors'][colorKeyData124]['hex'] + '" data-color="' + colorKeyData124 + '"></button></li>';
-  }
-  param122 += '</ul><ul class="info">';
-  var colorKeyList132 = soy.$$getMapKeys(opt_data.tip.details['colors']);
-  var colorKeyListLen132 = colorKeyList132.length;
-  for (var colorKeyIndex132 = 0; colorKeyIndex132 < colorKeyListLen132; colorKeyIndex132++) {
-    var colorKeyData132 = colorKeyList132[colorKeyIndex132];
-    param122 += '<li data-color="' + colorKeyData132 + '"><h3>' + opt_data.tip.details['colors'][colorKeyData132]['name'] + '</h3><p>' + opt_data.tip.details['colors'][colorKeyData132]['description'] + '</p></li>';
-  }
-  param122 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param122}));
-  return output;
-};
-
-
-/**
- * @param {Object.<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
- * @return {string}
- * @notypecheck
- */
-feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
-  var param144 = '<div class="change-object"><h2>Replace with a new element.</h2><ul class="objects">';
-  var objectKeyList146 = soy.$$getMapKeys(opt_data.tip.details['names']);
-  var objectKeyListLen146 = objectKeyList146.length;
-  for (var objectKeyIndex146 = 0; objectKeyIndex146 < objectKeyListLen146; objectKeyIndex146++) {
-    var objectKeyData146 = objectKeyList146[objectKeyIndex146];
-    param144 += '<li><button class="item-button" data-object="' + objectKeyData146 + '"></button></li>';
-  }
-  param144 += '</ul><ul class="info">';
-  var objectKeyList152 = soy.$$getMapKeys(opt_data.tip.details['descriptions']);
-  var objectKeyListLen152 = objectKeyList152.length;
-  for (var objectKeyIndex152 = 0; objectKeyIndex152 < objectKeyListLen152; objectKeyIndex152++) {
-    var objectKeyData152 = objectKeyList152[objectKeyIndex152];
-    param144 += '<li data-object="' + objectKeyData152 + '"><h3>' + opt_data.tip.details['names'][objectKeyData152] + '</h3><p>' + opt_data.tip.details['descriptions'][objectKeyData152] + '</p></li>';
-  }
-  param144 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param144}));
-  return output;
-};
-
-
-/**
- * @param {Object.<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
- * @return {string}
- * @notypecheck
- */
-feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
-  var param164 = '<h2>Fill the plate with fruits</h2><div class="drop-fruits"><ul class="fruits">';
-  var fruitKeyList166 = soy.$$getMapKeys(opt_data.fruits);
-  var fruitKeyListLen166 = fruitKeyList166.length;
-  for (var fruitKeyIndex166 = 0; fruitKeyIndex166 < fruitKeyListLen166; fruitKeyIndex166++) {
-    var fruitKeyData166 = fruitKeyList166[fruitKeyIndex166];
-    param164 += '<li><button data-fruit-id="' + fruitKeyData166 + '"></button></li>';
-  }
-  param164 += '</ul><ul class="descriptions">';
-  var fruitKeyList172 = soy.$$getMapKeys(opt_data.fruits);
-  var fruitKeyListLen172 = fruitKeyList172.length;
-  for (var fruitKeyIndex172 = 0; fruitKeyIndex172 < fruitKeyListLen172; fruitKeyIndex172++) {
-    var fruitKeyData172 = fruitKeyList172[fruitKeyIndex172];
-    param164 += '<li data-fruit-id="' + fruitKeyData172 + '"><p>' + opt_data.fruits[fruitKeyData172] + '</p></li>';
-  }
-  param164 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param164}));
-  return output;
-};
-
-
-/**
- * @param {Object.<string, *>=} opt_data
- * @param {(null|undefined)=} opt_ignored
- * @return {string}
- * @notypecheck
- */
-feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
-  var output = '<p class="floatText">';
-  var lineList183 = opt_data.lines;
-  var lineListLen183 = lineList183.length;
-  for (var lineIndex183 = 0; lineIndex183 < lineListLen183; lineIndex183++) {
-    var lineData183 = lineList183[lineIndex183];
-    output += '<span>' + lineData183 + '</span>';
-  }
-  output += '</p>';
-  return output;
-};
-goog.provide('feng.fx.FloatText');
-
-goog.require('goog.events.EventTarget');
-goog.require('goog.string');
-goog.require('feng.templates.captions');
-
-
-/**
- * @constructor
- */
-feng.fx.FloatText = function(html, numCharacters, numLines){
-
-	goog.base(this);
-
-	var numCharacters = numCharacters || 30;
-	var numLines = numLines || 10;
-	var lines = [];
-	var paras = html.split('<br>');
-	
-	for(var i = 0; i < paras.length; i++) {
-		var para = paras[i];
-
-		var a = 0, b = Math.floor(para.length / numCharacters);
-		var start, end = -1;
-
-		for(a = 0; a < b; a++) {
-			start = end + 1;
-			end = start + numCharacters;
-
-			if(para.charAt(end+1) === ' ') {
-				end = end + 1;
-			}else {
-				while(para.charAt(end) !== ' ') {
-					end --;
-				}
-			}
-
-			var str = para.substring( start, end );
-			lines.push( str );
-		}
-	}
-
-	var shouldTruncate = (lines.length > numLines);
-
-	lines = lines.slice(0, numLines);
-
-	if(shouldTruncate) {
-		lines[lines.length - 1] = goog.string.truncate( lines[lines.length - 1], numCharacters/2 );
-	}
-	
-
-	this.domElement = soy.renderAsFragment(feng.templates.captions.FloatText, {
-		lines: lines
-	});
-
-	this._lineEls = goog.dom.getChildren( this.domElement );
-	this._numLines = this._lineEls.length;
-
-	this._depths = goog.array.repeat(0, this._numLines);
-	this._alphas = goog.array.repeat(0, this._numLines);
-
-	this._lineProps = goog.array.map(this._lineEls, function(lineEl) {
-		return {
-			el: lineEl,
-			x: 0,
-			z: 0,
-			opacity: 0,
-			opacityMultiplier: 0
-		};
-	});
-
-	this._animateInTweener = new TimelineMax({
-		'paused': true
-	});
-
-	var tweeners = goog.array.map(this._lineEls, function(el, index) {
-
-		var prop = this._lineProps[index];
-
-		this.onLineUpdate( prop );
-
-		return TweenMax.fromTo(prop, 2, {
-			x: -20,
-			opacityMultiplier: 0
-		}, {
-			x: 0,
-			opacityMultiplier: 1,
-			'ease': Quad.easeOut,
-			'onUpdate': this.onLineUpdate,
-			'onUpdateParams': [prop],
-			'onUpdateScope': this
-		});
-	}, this);
-
-	this._animateInTweener.add( tweeners, "+=0", "start", .025 );
-
-	this._animateOutTweener = new TimelineMax({
-		'paused': true,
-		'onComplete': this.onAnimateComplete,
-		'onCompleteScope': this
-	});
-
-	var tweeners = goog.array.map(this._lineEls, function(el, index) {
-		var prop = this._lineProps[index];
-
-		return TweenMax.to(prop, 1, {
-			opacityMultiplier: 0,
-			'ease': Quad.easeInOut,
-			'onUpdate': this.onLineUpdate,
-			'onUpdateParams': [prop],
-			'onUpdateScope': this
-		});
-	}, this);
-
-	this._animateOutTweener.add( tweeners, "+=0", "start", .05 );
-
-	document.body.appendChild( this.domElement );
-	//console.log(html, lines, this.domElement, this._lineEls);
-};
-goog.inherits(feng.fx.FloatText, goog.events.EventTarget);
-
-
-feng.fx.FloatText.prototype.activate = function() {
-
-	goog.fx.anim.registerAnimation( this );
-};
-
-
-feng.fx.FloatText.prototype.deactivate = function() {
-
-	goog.fx.anim.unregisterAnimation( this );
-};
-
-
-feng.fx.FloatText.prototype.animateIn = function() {
-
-	if(this._animateInTweener.isActive()) return;
-
-	goog.style.showElement(this.domElement, true);
-
-	this._animateOutTweener.pause();
-
-	this._animateInTweener.restart();
-
-	this.activate();
-};
-
-
-feng.fx.FloatText.prototype.animateOut = function() {
-
-	if(this._animateOutTweener.isActive()) return;
-
-	this._animateInTweener.pause();
-
-	this._animateOutTweener.restart();
-};
-
-
-feng.fx.FloatText.prototype.onAnimateComplete = function() {
-
-	this.deactivate();
-
-	goog.style.showElement(this.domElement, false);
-};
-
-
-feng.fx.FloatText.prototype.onLineUpdate = function(prop) {
-
-	var el = prop.el;
-	var x = prop.x;
-	var z = prop.z;
-	var opacity = prop.opacity;
-	var opacityMultiplier = prop.opacityMultiplier;
-
-	goog.style.setStyle(el, {
-		'transform': 'translateX(' + x + 'px) translateZ(' + z + 'px)',
-		'opacity': opacity * opacityMultiplier
-	});
-};
-
-
-feng.fx.FloatText.prototype.onAnimationFrame = function(now) {
-
-	var counter = 0;
-	var step = 1 / this._numLines;
-	var increase = Math.PI / this._numLines;
-
-	for ( var i = 0; i < 1; i += step ) {
-
-		var index = Math.round(i * this._numLines);
-
-		var z = Math.sin( counter + now / 1000 ) * 50;
-		this._depths[index] = z.toFixed(2);
-
-		var alpha = goog.math.lerp(.5, 1, (Math.sin( counter + now / 1000 ) + 1) * .5);
-		this._alphas[index] = alpha;
-
-		counter += increase;
-	}
-
-	goog.array.forEach( this._lineEls, function(lineEl, index) {
-
-		this._lineProps[index].z = this._depths[index];
-		this._lineProps[index].opacity = this._alphas[index];
-
-		this.onLineUpdate( this._lineProps[index] );
-
-	}, this);
-};// Copyright 2011 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Defines the collection interface.
- *
- * @author nnaze@google.com (Nathan Naze)
- */
-
-goog.provide('goog.structs.Collection');
-
-
-
-/**
- * An interface for a collection of values.
- * @interface
- * @template T
- */
-goog.structs.Collection = function() {};
-
-
-/**
- * @param {T} value Value to add to the collection.
- */
-goog.structs.Collection.prototype.add;
-
-
-/**
- * @param {T} value Value to remove from the collection.
- */
-goog.structs.Collection.prototype.remove;
-
-
-/**
- * @param {T} value Value to find in the collection.
- * @return {boolean} Whether the collection contains the specified value.
- */
-goog.structs.Collection.prototype.contains;
-
-
-/**
- * @return {number} The number of values stored in the collection.
- */
-goog.structs.Collection.prototype.getCount;
-
-// Copyright 2006 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Datastructure: Set.
- *
- * @author arv@google.com (Erik Arvidsson)
- * @author pallosp@google.com (Peter Pallos)
- *
- * This class implements a set data structure. Adding and removing is O(1). It
- * supports both object and primitive values. Be careful because you can add
- * both 1 and new Number(1), because these are not the same. You can even add
- * multiple new Number(1) because these are not equal.
- */
-
-
-goog.provide('goog.structs.Set');
-
-goog.require('goog.structs');
-goog.require('goog.structs.Collection');
-goog.require('goog.structs.Map');
-
-
-
-/**
- * A set that can contain both primitives and objects.  Adding and removing
- * elements is O(1).  Primitives are treated as identical if they have the same
- * type and convert to the same string.  Objects are treated as identical only
- * if they are references to the same object.  WARNING: A goog.structs.Set can
- * contain both 1 and (new Number(1)), because they are not the same.  WARNING:
- * Adding (new Number(1)) twice will yield two distinct elements, because they
- * are two different objects.  WARNING: Any object that is added to a
- * goog.structs.Set will be modified!  Because goog.getUid() is used to
- * identify objects, every object in the set will be mutated.
- * @param {Array.<T>|Object.<?,T>=} opt_values Initial values to start with.
- * @constructor
- * @implements {goog.structs.Collection.<T>}
- * @final
- * @template T
- */
-goog.structs.Set = function(opt_values) {
-  this.map_ = new goog.structs.Map;
-  if (opt_values) {
-    this.addAll(opt_values);
-  }
-};
-
-
-/**
- * Obtains a unique key for an element of the set.  Primitives will yield the
- * same key if they have the same type and convert to the same string.  Object
- * references will yield the same key only if they refer to the same object.
- * @param {*} val Object or primitive value to get a key for.
- * @return {string} A unique key for this value/object.
- * @private
- */
-goog.structs.Set.getKey_ = function(val) {
-  var type = typeof val;
-  if (type == 'object' && val || type == 'function') {
-    return 'o' + goog.getUid(/** @type {Object} */ (val));
-  } else {
-    return type.substr(0, 1) + val;
-  }
-};
-
-
-/**
- * @return {number} The number of elements in the set.
- * @override
- */
-goog.structs.Set.prototype.getCount = function() {
-  return this.map_.getCount();
-};
-
-
-/**
- * Add a primitive or an object to the set.
- * @param {T} element The primitive or object to add.
- * @override
- */
-goog.structs.Set.prototype.add = function(element) {
-  this.map_.set(goog.structs.Set.getKey_(element), element);
-};
-
-
-/**
- * Adds all the values in the given collection to this set.
- * @param {Array.<T>|goog.structs.Collection.<T>|Object.<?,T>} col A collection
- *     containing the elements to add.
- */
-goog.structs.Set.prototype.addAll = function(col) {
-  var values = goog.structs.getValues(col);
-  var l = values.length;
-  for (var i = 0; i < l; i++) {
-    this.add(values[i]);
-  }
-};
-
-
-/**
- * Removes all values in the given collection from this set.
- * @param {Array.<T>|goog.structs.Collection.<T>|Object.<?,T>} col A collection
- *     containing the elements to remove.
- */
-goog.structs.Set.prototype.removeAll = function(col) {
-  var values = goog.structs.getValues(col);
-  var l = values.length;
-  for (var i = 0; i < l; i++) {
-    this.remove(values[i]);
-  }
-};
-
-
-/**
- * Removes the given element from this set.
- * @param {T} element The primitive or object to remove.
- * @return {boolean} Whether the element was found and removed.
- * @override
- */
-goog.structs.Set.prototype.remove = function(element) {
-  return this.map_.remove(goog.structs.Set.getKey_(element));
-};
-
-
-/**
- * Removes all elements from this set.
- */
-goog.structs.Set.prototype.clear = function() {
-  this.map_.clear();
-};
-
-
-/**
- * Tests whether this set is empty.
- * @return {boolean} True if there are no elements in this set.
- */
-goog.structs.Set.prototype.isEmpty = function() {
-  return this.map_.isEmpty();
-};
-
-
-/**
- * Tests whether this set contains the given element.
- * @param {T} element The primitive or object to test for.
- * @return {boolean} True if this set contains the given element.
- * @override
- */
-goog.structs.Set.prototype.contains = function(element) {
-  return this.map_.containsKey(goog.structs.Set.getKey_(element));
-};
-
-
-/**
- * Tests whether this set contains all the values in a given collection.
- * Repeated elements in the collection are ignored, e.g.  (new
- * goog.structs.Set([1, 2])).containsAll([1, 1]) is True.
- * @param {goog.structs.Collection.<T>|Object} col A collection-like object.
- * @return {boolean} True if the set contains all elements.
- */
-goog.structs.Set.prototype.containsAll = function(col) {
-  return goog.structs.every(col, this.contains, this);
-};
-
-
-/**
- * Finds all values that are present in both this set and the given collection.
- * @param {Array.<S>|Object.<?,S>} col A collection.
- * @return {!goog.structs.Set.<T|S>} A new set containing all the values
- *     (primitives or objects) present in both this set and the given
- *     collection.
- * @template S
- */
-goog.structs.Set.prototype.intersection = function(col) {
-  var result = new goog.structs.Set();
-
-  var values = goog.structs.getValues(col);
-  for (var i = 0; i < values.length; i++) {
-    var value = values[i];
-    if (this.contains(value)) {
-      result.add(value);
-    }
-  }
-
-  return result;
-};
-
-
-/**
- * Finds all values that are present in this set and not in the given
- * collection.
- * @param {Array.<T>|goog.structs.Collection.<T>|Object.<?,T>} col A collection.
- * @return {!goog.structs.Set} A new set containing all the values
- *     (primitives or objects) present in this set but not in the given
- *     collection.
- */
-goog.structs.Set.prototype.difference = function(col) {
-  var result = this.clone();
-  result.removeAll(col);
-  return result;
-};
-
-
-/**
- * Returns an array containing all the elements in this set.
- * @return {!Array.<T>} An array containing all the elements in this set.
- */
-goog.structs.Set.prototype.getValues = function() {
-  return this.map_.getValues();
-};
-
-
-/**
- * Creates a shallow clone of this set.
- * @return {!goog.structs.Set.<T>} A new set containing all the same elements as
- *     this set.
- */
-goog.structs.Set.prototype.clone = function() {
-  return new goog.structs.Set(this);
-};
-
-
-/**
- * Tests whether the given collection consists of the same elements as this set,
- * regardless of order, without repetition.  Primitives are treated as equal if
- * they have the same type and convert to the same string; objects are treated
- * as equal if they are references to the same object.  This operation is O(n).
- * @param {goog.structs.Collection.<T>|Object} col A collection.
- * @return {boolean} True if the given collection consists of the same elements
- *     as this set, regardless of order, without repetition.
- */
-goog.structs.Set.prototype.equals = function(col) {
-  return this.getCount() == goog.structs.getCount(col) && this.isSubsetOf(col);
-};
-
-
-/**
- * Tests whether the given collection contains all the elements in this set.
- * Primitives are treated as equal if they have the same type and convert to the
- * same string; objects are treated as equal if they are references to the same
- * object.  This operation is O(n).
- * @param {goog.structs.Collection.<T>|Object} col A collection.
- * @return {boolean} True if this set is a subset of the given collection.
- */
-goog.structs.Set.prototype.isSubsetOf = function(col) {
-  var colCount = goog.structs.getCount(col);
-  if (this.getCount() > colCount) {
-    return false;
-  }
-  // TODO(user) Find the minimal collection size where the conversion makes
-  // the contains() method faster.
-  if (!(col instanceof goog.structs.Set) && colCount > 5) {
-    // Convert to a goog.structs.Set so that goog.structs.contains runs in
-    // O(1) time instead of O(n) time.
-    col = new goog.structs.Set(col);
-  }
-  return goog.structs.every(this, function(value) {
-    return goog.structs.contains(col, value);
-  });
-};
-
-
-/**
- * Returns an iterator that iterates over the elements in this set.
- * @param {boolean=} opt_keys This argument is ignored.
- * @return {!goog.iter.Iterator} An iterator over the elements in this set.
- */
-goog.structs.Set.prototype.__iterator__ = function(opt_keys) {
-  return this.map_.__iterator__(false);
-};
-//   Copyright 2009 The Closure Library Authors. All Rights Reserved.
-
-/**
- * @fileoverview A generator of lorem ipsum text based on the python
- * implementation at http://code.google.com/p/lorem-ipsum-generator/.
- *
- */
-
-goog.provide('goog.text.LoremIpsum');
-
-goog.require('goog.array');
-goog.require('goog.math');
-goog.require('goog.string');
-goog.require('goog.structs.Map');
-goog.require('goog.structs.Set');
-
-
-/**
- * Generates random strings of "lorem ipsum" text, based on the word
- * distribution of a sample text, using the words in a dictionary.
- * @constructor
- */
-goog.text.LoremIpsum = function() {
-  this.generateChains_(this.sample_);
-  this.generateStatistics_(this.sample_);
-
-  this.initializeDictionary_(this.dictionary_);
-};
-
-
-/**
- * Delimiters that end sentences.
- * @type {Array.<string>}
- * @private
- */
-goog.text.LoremIpsum.DELIMITERS_SENTENCES_ = ['.', '?', '!'];
-
-
-/**
- * Regular expression for spliting a text into sentences.
- * @type {RegExp}
- * @private
- */
-goog.text.LoremIpsum.SENTENCE_SPLIT_REGEX_ = /[\.\?\!]/;
-
-
-/**
- * Delimiters that end words.
- * @type {Array.<string>}
- * @private
- */
-goog.text.LoremIpsum.DELIMITERS_WORDS_ = [',', '.', '?', '!'];
-
-
-/**
- * Regular expression for spliting text into words.
- * @type {RegExp}
- * @private
- */
-goog.text.LoremIpsum.WORD_SPLIT_REGEX_ = /\s/;
-
-
-/**
- * Words that can be used in the generated output.
- * Maps a word-length to a list of words of that length.
- * @type {goog.structs.Map}
- * @private
- */
-goog.text.LoremIpsum.prototype.words_;
-
-
-/**
- * Chains of three words that appear in the sample text
- * Maps a pair of word-lengths to a third word-length and an optional
- * piece of trailing punctuation (for example, a period, comma, etc.).
- * @type {goog.structs.Map}
- * @private
- */
-goog.text.LoremIpsum.prototype.chains_;
-
-
-/**
- * Pairs of word-lengths that can appear at the beginning of sentences.
- * @type {Array}
- */
-goog.text.LoremIpsum.prototype.starts_;
-
-
-/**
- * Averange sentence length in words.
- * @type {number}
- * @private
- */
-goog.text.LoremIpsum.prototype.sentenceMean_;
-
-
-/**
- * Sigma (sqrt of variance) for the sentence length in words.
- * @type {number}
- * @private
- */
-goog.text.LoremIpsum.prototype.sentenceSigma_;
-
-
-/**
- * Averange paragraph length in sentences.
- * @type {number}
- * @private
- */
-goog.text.LoremIpsum.prototype.paragraphMean_;
-
-
-/**
- * Sigma (sqrt of variance) for the paragraph length in sentences.
- * @type {number}
- * @private
- */
-goog.text.LoremIpsum.prototype.paragraphSigma_;
-
-
-/**
- * Generates the chains and starts values required for sentence generation.
- * @param {string} sample The same text.
- * @private
- */
-goog.text.LoremIpsum.prototype.generateChains_ = function(sample) {
-  var words = goog.text.LoremIpsum.splitWords_(sample);
-  var wordInfo = goog.array.map(words, goog.text.LoremIpsum.getWordInfo_);
-
-  var previous = [0, 0];
-  var previousKey = previous.join('-');
-  var chains = new goog.structs.Map();
-  var starts = [previousKey];
-  var chainKeys = {};
-
-  goog.array.forEach(wordInfo, function(pair) {
-    var chain = chains.get(previousKey);
-    if (chain) {
-      chain.push(pair);
-    } else {
-      chain = [pair];
-      chains.set(previousKey, chain);
-    }
-
-    if (goog.array.contains(
-        goog.text.LoremIpsum.DELIMITERS_SENTENCES_, pair[1])) {
-      starts.push(previousKey);
-    }
-    chainKeys[previousKey] = previous;
-    previous = [previous[1], pair[0]];
-    previousKey = previous.join('-');
-  });
-
-  if (chains.getCount() > 0) {
-    this.chains_ = chains;
-    this.starts_ = starts;
-    this.chainKeys_ = chainKeys;
-  } else {
-    throw Error('Could not generate chains from sample text.');
-  }
-};
-
-
-/**
- * Calculates the mean and standard deviation of sentence and paragraph lengths.
- * @param {string} sample The same text.
- * @private
- */
-goog.text.LoremIpsum.prototype.generateStatistics_ = function(sample) {
-  this.generateSentenceStatistics_(sample);
-  this.generateParagraphStatistics_(sample);
-};
-
-
-/**
- * Calculates the mean and standard deviation of the lengths of sentences
- * (in words) in a sample text.
- * @param {string} sample The same text.
- * @private
- */
-goog.text.LoremIpsum.prototype.generateSentenceStatistics_ = function(sample) {
-  var sentences = goog.array.filter(
-      goog.text.LoremIpsum.splitSentences_(sample),
-      goog.text.LoremIpsum.isNotEmptyOrWhitepace_);
-
-  var sentenceLengths = goog.array.map(
-      goog.array.map(sentences, goog.text.LoremIpsum.splitWords_),
-      goog.text.LoremIpsum.arrayLength_);
-  this.sentenceMean_ = goog.math.average.apply(null, sentenceLengths);
-  this.sentenceSigma_ = goog.math.standardDeviation.apply(
-      null, sentenceLengths);
-};
-
-
-/**
- * Calculates the mean and standard deviation of the lengths of paragraphs
- * (in sentences) in a sample text.
- * @param {string} sample The same text.
- * @private
- */
-goog.text.LoremIpsum.prototype.generateParagraphStatistics_ = function(sample) {
-  var paragraphs = goog.array.filter(
-      goog.text.LoremIpsum.splitParagraphs_(sample),
-      goog.text.LoremIpsum.isNotEmptyOrWhitepace_);
-
-  var paragraphLengths = goog.array.map(
-    goog.array.map(paragraphs, goog.text.LoremIpsum.splitSentences_),
-    goog.text.LoremIpsum.arrayLength_);
-
-  this.paragraphMean_ = goog.math.average.apply(null, paragraphLengths);
-  this.paragraphSigma_ = goog.math.standardDeviation.apply(
-      null, paragraphLengths);
-};
-
-
-/**
- * Sets the generator to use a given selection of words for generating
- * sentences with.
- * @param {string} dictionary The dictionary to use.
- */
-goog.text.LoremIpsum.prototype.initializeDictionary_ = function(dictionary) {
-  var dictionaryWords = goog.text.LoremIpsum.splitWords_(dictionary);
-
-  var words = new goog.structs.Map();
-  goog.array.forEach(dictionaryWords, function(word) {
-    var set = words.get(word.length);
-    if (!set) {
-      set = new goog.structs.Set();
-      words.set(word.length, set);
-    }
-    set.add(word);
-  });
-
-  this.words_ = words;
-};
-
-
-/**
- * Picks a random starting chain.
- * @return {Array.<string>} The starting key.
- * @private
- */
-goog.text.LoremIpsum.prototype.chooseRandomStart_ = function() {
-  var key = goog.text.LoremIpsum.randomChoice_(this.starts_);
-  return this.chainKeys_[key];
-};
-
-
-/**
- * Generates a single sentence, of random length.
- * @param {boolean} opt_startWithLorem Whether to start the setnence with the
- *     standard "Lorem ipsum..." first sentence.
- * @return {string} The generated sentence.
- */
-goog.text.LoremIpsum.prototype.generateSentence = function(opt_startWithLorem) {
-  if (this.chains_.getCount() == 0 || this.starts_.length == 0) {
-    throw Error('No chains created');
-  }
-
-  if (this.words_.getCount() == 0) {
-    throw Error('No dictionary');
-  }
-
-  // The length of the sentence is a normally distributed random variable.
-  var sentenceLength = goog.text.LoremIpsum.randomNormal_(
-      this.sentenceMean_, this.sentenceSigma_)
-  sentenceLength = Math.max(Math.floor(sentenceLength), 1);
-
-  var wordDelimiter = ''; // Defined here in case while loop doesn't run
-
-  // Start the sentence with "Lorem ipsum...", if desired
-  var sentence;
-  if (opt_startWithLorem) {
-    var lorem = 'lorem ipsum dolor sit amet, consecteteur adipiscing elit';
-    sentence = goog.text.LoremIpsum.splitWords_(lorem);
-    if (sentence.length > sentenceLength) {
-      sentence.length = sentenceLength;
-    }
-    var lastWord = sentence[sentence.length - 1];
-    var lastChar = lastWord.substring(lastWord.length - 1);
-    if (goog.array.contains(goog.text.LoremIpsum.DELIMITERS_WORDS_, lastChar)) {
-      wordDelimiter = lastChar;
-    }
-  } else {
-    sentence = [];
-  }
-
-  var previous = [];
-  var previousKey = '';
-  // Generate a sentence from the "chains"
-  while (sentence.length < sentenceLength) {
-    // If the current starting point is invalid, choose another randomly
-    if (!this.chains_.containsKey(previousKey)) {
-      previous = this.chooseRandomStart_();
-      previousKey = previous.join('-');
-    }
-
-    // Choose the next "chain" to go to. This determines the next word
-    // length we'll use, and whether there is e.g. a comma at the end of
-    // the word.
-    var chain = /** @type {Array} */ (goog.text.LoremIpsum.randomChoice_(
-        /** @type {Array} */ (this.chains_.get(previousKey))));
-    var wordLength = chain[0];
-
-    // If the word delimiter contained in the chain is also a sentence
-    // delimiter, then we don't include it because we don't want the
-    // sentence to end prematurely (we want the length to match the
-    // sentence_length value).
-    //debugger;
-    if (goog.array.contains(goog.text.LoremIpsum.DELIMITERS_SENTENCES_,
-        chain[1])) {
-      wordDelimiter = '';
-    } else {
-      wordDelimiter = chain[1];
-    }
-
-    // Choose a word randomly that matches (or closely matches) the
-    // length we're after.
-    var closestLength = goog.text.LoremIpsum.chooseClosest(
-            this.words_.getKeys(), wordLength);
-    var word = goog.text.LoremIpsum.randomChoice_(
-        this.words_.get(closestLength).getValues());
-
-    sentence.push(word + wordDelimiter);
-    previous = [previous[1], wordLength];
-    previousKey = previous.join('-');
-  }
-
-  // Finish the sentence off with capitalisation, a period and
-  // form it into a string
-  sentence = sentence.join(' ');
-  sentence = sentence.slice(0, 1).toUpperCase() + sentence.slice(1);
-  if (sentence.substring(sentence.length - 1) == wordDelimiter) {
-    sentence = sentence.slice(0, sentence.length - 1);
-  }
-  return sentence + '.';
-};
-
-/**
- * Generates a single lorem ipsum paragraph, of random length.
- * @param {boolean} opt_startWithLorem Whether to start the sentence with the
- *     standard "Lorem ipsum..." first sentence.
- * @return {string} The generated sentence.
- */
-goog.text.LoremIpsum.prototype.generateParagraph = function(
-    opt_startWithLorem) {
-  // The length of the paragraph is a normally distributed random variable.
-  var paragraphLength = goog.text.LoremIpsum.randomNormal_(
-      this.paragraphMean_, this.paragraphSigma_);
-  paragraphLength = Math.max(Math.floor(paragraphLength), 1);
-
-  // Construct a paragraph from a number of sentences.
-  var paragraph = []
-  var startWithLorem = opt_startWithLorem;
-  while (paragraph.length < paragraphLength) {
-      var sentence = this.generateSentence(startWithLorem);
-      paragraph.push(sentence);
-      startWithLorem = false;
-  }
-
-  // Form the paragraph into a string.
-  paragraph = paragraph.join(' ')
-  return paragraph
-};
-
-
-/**
- * Splits a piece of text into paragraphs.
- * @param {string} text The text to split.
- * @return {Array.<string>} An array of paragraphs.
- * @private
- */
-goog.text.LoremIpsum.splitParagraphs_ = function(text) {
-  return text.split('\n')
-};
-
-
-/**
- * Splits a piece of text into sentences.
- * @param {string} text The text to split.
- * @return {Array.<string>} An array of sentences.
- * @private
- */
-goog.text.LoremIpsum.splitSentences_ = function(text) {
-  return goog.array.filter(
-      text.split(goog.text.LoremIpsum.SENTENCE_SPLIT_REGEX_),
-      goog.text.LoremIpsum.isNotEmptyOrWhitepace_);
-};
-
-
-/**
- * Splits a piece of text into words..
- * @param {string} text The text to split.
- * @return {Array.<string>} An array of words.
- * @private
- */
-goog.text.LoremIpsum.splitWords_ = function(text) {
-  return goog.array.filter(
-      text.split(goog.text.LoremIpsum.WORD_SPLIT_REGEX_),
-      goog.text.LoremIpsum.isNotEmptyOrWhitepace_);
-};
-
-
-/**
- * Returns the text is not empty or just whitespace.
- * @param {string} text The text to check.
- * @return {boolean} Whether the text is nether empty nor whitespace.
- * @private
- */
-goog.text.LoremIpsum.isNotEmptyOrWhitepace_ = function(text) {
-  return goog.string.trim(text).length > 0;
-};
-
-
-/**
- * Returns the length of an array. Written as a function so it can be used
- * as a function parameter.
- * @param {Array} array The array to check.
- * @return {number} The length of the array.
- */
-goog.text.LoremIpsum.arrayLength_ = function(array) {
-  return array.length;
-};
-
-
-/**
- * Find the number in the list of values that is closest to the target.
- * @param {Array.<number>} values The values.
- * @param {number} target The target value.
- * @return {number} The closest value.
- */
-goog.text.LoremIpsum.chooseClosest = function(values, target) {
-  var closest = values[0];
-  goog.array.forEach(values, function(value) {
-    if (Math.abs(target - value) < Math.abs(target - closest)) {
-      closest = value;
-    }
-  });
-
-  return closest;
-};
-
-/**
- * Gets info about a word used as part of the lorem ipsum algorithm.
- * @param {string} word The word to check.
- * @return {Array} A two element array. The first element is the size of the
- *    word. The second element is the delimter used in the word.
- * @private
- */
-goog.text.LoremIpsum.getWordInfo_ = function(word) {
-  var ret;
-  goog.array.some(goog.text.LoremIpsum.DELIMITERS_WORDS_,
-      function (delimiter) {
-        if (goog.string.endsWith(word, delimiter)) {
-          ret = [word.length - delimiter.length, delimiter];
-          return true;
-        }
-        return false;
-      }
-  );
-  return ret || [word.length, ''];
-};
-
-
-/**
- * Constant used for {@link #randomNormal_}.
- * @type {number}
- * @private
- */
-goog.text.LoremIpsum.NV_MAGICCONST_ = 4 * Math.exp(-0.5) / Math.sqrt(2.0);
-
-
-/**
- * Generates a random number for a normal distribution with the specified
- * mean and sigma.
- * @param {number} mu The mean of the distribution.
- * @param {number} sigma The sigma of the distribution.
- * @private
- */
-goog.text.LoremIpsum.randomNormal_ = function(mu, sigma) {
-  while (true) {
-    var u1 = Math.random();
-    var u2 = 1.0 - Math.random();
-    var z = goog.text.LoremIpsum.NV_MAGICCONST_ * (u1 - 0.5) / u2;
-    var zz = z * z / 4.0;
-    if (zz <= -Math.log(u2)) {
-      break;
-    }
-  }
-  return mu + z * sigma;
-};
-
-
-/**
- * Picks a random element of the array.
- * @param {Array} array The array to pick from.
- * @return {*} An element from the array.
- */
-goog.text.LoremIpsum.randomChoice_ = function(array) {
-  return array[goog.math.randomInt(array.length)];
-};
-
-
-/**
- * Dictionary of words for lorem ipsum.
- * @type {string}
- * @private
- */
-goog.text.LoremIpsum.DICT_ =
-    'a ac accumsan ad adipiscing aenean aliquam aliquet amet ante ' +
-    'aptent arcu at auctor augue bibendum blandit class commodo ' +
-    'condimentum congue consectetuer consequat conubia convallis cras ' +
-    'cubilia cum curabitur curae cursus dapibus diam dictum dictumst ' +
-    'dignissim dis dolor donec dui duis egestas eget eleifend elementum ' +
-    'elit eni enim erat eros est et etiam eu euismod facilisi facilisis ' +
-    'fames faucibus felis fermentum feugiat fringilla fusce gravida ' +
-    'habitant habitasse hac hendrerit hymenaeos iaculis id imperdiet ' +
-    'in inceptos integer interdum ipsum justo lacinia lacus laoreet ' +
-    'lectus leo libero ligula litora lobortis lorem luctus maecenas ' +
-    'magna magnis malesuada massa mattis mauris metus mi molestie ' +
-    'mollis montes morbi mus nam nascetur natoque nec neque netus ' +
-    'nibh nisi nisl non nonummy nostra nulla nullam nunc odio orci ' +
-    'ornare parturient pede pellentesque penatibus per pharetra ' +
-    'phasellus placerat platea porta porttitor posuere potenti praesent ' +
-    'pretium primis proin pulvinar purus quam quis quisque rhoncus ' +
-    'ridiculus risus rutrum sagittis sapien scelerisque sed sem semper ' +
-    'senectus sit sociis sociosqu sodales sollicitudin suscipit ' +
-    'suspendisse taciti tellus tempor tempus tincidunt torquent tortor ' +
-    'tristique turpis ullamcorper ultrices ultricies urna ut varius ve ' +
-    'vehicula vel velit venenatis vestibulum vitae vivamus viverra ' +
-    'volutpat vulputate';
-
-
-/**
- * A sample to use for generating the distribution of word and sentence lengths
- * in lorem ipsum.
- * @type {string}
- * @private
- */
-goog.text.LoremIpsum.SAMPLE_ =
-    'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean ' +
-    'commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus ' +
-    'et magnis dis parturient montes, nascetur ridiculus mus. Donec quam ' +
-    'felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla ' +
-    'consequat massa quis enim. Donec pede justo, fringilla vel, aliquet ' +
-    'nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, ' +
-    'venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. ' +
-    'Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean ' +
-    'vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat ' +
-    'vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra ' +
-    'quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius ' +
-    'laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel ' +
-    'augue. Curabitur ullamcorper ultricies nisi. Nam eget dui.\n\n' +
-
-    'Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem ' +
-    'quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam ' +
-    'nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec ' +
-    'odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis ' +
-    'faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus ' +
-    'tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales ' +
-    'sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit ' +
-    'cursus nunc, quis gravida magna mi a libero. Fusce vulputate eleifend ' +
-    'sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, ' +
-    'metus. Nullam accumsan lorem in dui. Cras ultricies mi eu turpis ' +
-    'hendrerit fringilla. Vestibulum ante ipsum primis in faucibus orci ' +
-    'luctus et ultrices posuere cubilia Curae; In ac dui quis mi ' +
-    'consectetuer lacinia.\n\n' +
-
-    'Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet ' +
-    'nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ' +
-    'ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent ' +
-    'adipiscing. Phasellus ullamcorper ipsum rutrum nunc. Nunc nonummy ' +
-    'metus. Vestibulum volutpat pretium libero. Cras id dui. Aenean ut eros ' +
-    'et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, ' +
-    'nonummy id, imperdiet feugiat, pede. Sed lectus. Donec mollis hendrerit ' +
-    'risus. Phasellus nec sem in justo pellentesque facilisis. Etiam ' +
-    'imperdiet imperdiet orci. Nunc nec neque. Phasellus leo dolor, tempus ' +
-    'non, auctor et, hendrerit quis, nisi.\n\n' +
-
-    'Curabitur ligula sapien, tincidunt non, euismod vitae, posuere ' +
-    'imperdiet, leo. Maecenas malesuada. Praesent congue erat at massa. Sed ' +
-    'cursus turpis vitae tortor. Donec posuere vulputate arcu. Phasellus ' +
-    'accumsan cursus velit. Vestibulum ante ipsum primis in faucibus orci ' +
-    'luctus et ultrices posuere cubilia Curae; Sed aliquam, nisi quis ' +
-    'porttitor congue, elit erat euismod orci, ac placerat dolor lectus quis ' +
-    'orci. Phasellus consectetuer vestibulum elit. Aenean tellus metus, ' +
-    'bibendum sed, posuere ac, mattis non, nunc. Vestibulum fringilla pede ' +
-    'sit amet augue. In turpis. Pellentesque posuere. Praesent turpis.\n\n' +
-
-    'Aenean posuere, tortor sed cursus feugiat, nunc augue blandit nunc, eu ' +
-    'sollicitudin urna dolor sagittis lacus. Donec elit libero, sodales ' +
-    'nec, volutpat a, suscipit non, turpis. Nullam sagittis. Suspendisse ' +
-    'pulvinar, augue ac venenatis condimentum, sem libero volutpat nibh, ' +
-    'nec pellentesque velit pede quis nunc. Vestibulum ante ipsum primis in ' +
-    'faucibus orci luctus et ultrices posuere cubilia Curae; Fusce id ' +
-    'purus. Ut varius tincidunt libero. Phasellus dolor. Maecenas vestibulum ' +
-    'mollis diam. Pellentesque ut neque. Pellentesque habitant morbi ' +
-    'tristique senectus et netus et malesuada fames ac turpis egestas.\n\n' +
-
-    'In dui magna, posuere eget, vestibulum et, tempor auctor, justo. In ac ' +
-    'felis quis tortor malesuada pretium. Pellentesque auctor neque nec ' +
-    'urna. Proin sapien ipsum, porta a, auctor quis, euismod ut, mi. Aenean ' +
-    'viverra rhoncus pede. Pellentesque habitant morbi tristique senectus et ' +
-    'netus et malesuada fames ac turpis egestas. Ut non enim eleifend felis ' +
-    'pretium feugiat. Vivamus quis mi. Phasellus a est. Phasellus magna.\n\n' +
-
-    'In hac habitasse platea dictumst. Curabitur at lacus ac velit ornare ' +
-    'lobortis. Curabitur a felis in nunc fringilla tristique. Morbi mattis ' +
-    'ullamcorper velit. Phasellus gravida semper nisi. Nullam vel sem. ' +
-    'Pellentesque libero tortor, tincidunt et, tincidunt eget, semper nec, ' +
-    'quam. Sed hendrerit. Morbi ac felis. Nunc egestas, augue at ' +
-    'pellentesque laoreet, felis eros vehicula leo, at malesuada velit leo ' +
-    'quis pede. Donec interdum, metus et hendrerit aliquet, dolor diam ' +
-    'sagittis ligula, eget egestas libero turpis vel mi. Nunc nulla. Fusce ' +
-    'risus nisl, viverra et, tempor et, pretium in, sapien. Donec venenatis ' +
-    'vulputate lorem.\n\n' +
-
-    'Morbi nec metus. Phasellus blandit leo ut odio. Maecenas ullamcorper, ' +
-    'dui et placerat feugiat, eros pede varius nisi, condimentum viverra ' +
-    'felis nunc et lorem. Sed magna purus, fermentum eu, tincidunt eu, ' +
-    'varius ut, felis. In auctor lobortis lacus. Quisque libero metus, ' +
-    'condimentum nec, tempor a, commodo mollis, magna. Vestibulum ' +
-    'ullamcorper mauris at ligula. Fusce fermentum. Nullam cursus lacinia ' +
-    'erat. Praesent blandit laoreet nibh.\n\n' +
-
-    'Fusce convallis metus id felis luctus adipiscing. Pellentesque egestas, ' +
-    'neque sit amet convallis pulvinar, justo nulla eleifend augue, ac ' +
-    'auctor orci leo non est. Quisque id mi. Ut tincidunt tincidunt erat. ' +
-    'Etiam feugiat lorem non metus. Vestibulum dapibus nunc ac augue. ' +
-    'Curabitur vestibulum aliquam leo. Praesent egestas neque eu enim. In ' +
-    'hac habitasse platea dictumst. Fusce a quam. Etiam ut purus mattis ' +
-    'mauris sodales aliquam. Curabitur nisi. Quisque malesuada placerat ' +
-    'nisl. Nam ipsum risus, rutrum vitae, vestibulum eu, molestie vel, ' +
-    'lacus.\n\n' +
-
-    'Sed augue ipsum, egestas nec, vestibulum et, malesuada adipiscing, ' +
-    'dui. Vestibulum facilisis, purus nec pulvinar iaculis, ligula mi ' +
-    'congue nunc, vitae euismod ligula urna in dolor. Mauris sollicitudin ' +
-    'fermentum libero. Praesent nonummy mi in odio. Nunc interdum lacus sit ' +
-    'amet orci. Vestibulum rutrum, mi nec elementum vehicula, eros quam ' +
-    'gravida nisl, id fringilla neque ante vel mi. Morbi mollis tellus ac ' +
-    'sapien. Phasellus volutpat, metus eget egestas mollis, lacus lacus ' +
-    'blandit dui, id egestas quam mauris ut lacus. Fusce vel dui. Sed in ' +
-    'libero ut nibh placerat accumsan. Proin faucibus arcu quis ante. In ' +
-    'consectetuer turpis ut velit. Nulla sit amet est. Praesent metus ' +
-    'tellus, elementum eu, semper a, adipiscing nec, purus. Cras risus ' +
-    'ipsum, faucibus ut, ullamcorper id, varius ac, leo. Suspendisse ' +
-    'feugiat. Suspendisse enim turpis, dictum sed, iaculis a, condimentum ' +
-    'nec, nisi. Praesent nec nisl a purus blandit viverra. Praesent ac ' +
-    'massa at ligula laoreet iaculis. Nulla neque dolor, sagittis eget, ' +
-    'iaculis quis, molestie non, velit.\n\n' +
-
-    'Mauris turpis nunc, blandit et, volutpat molestie, porta ut, ligula. ' +
-    'Fusce pharetra convallis urna. Quisque ut nisi. Donec mi odio, faucibus ' +
-    'at, scelerisque quis, convallis in, nisi. Suspendisse non nisl sit amet ' +
-    'velit hendrerit rutrum. Ut leo. Ut a nisl id ante tempus hendrerit. ' +
-    'Proin pretium, leo ac pellentesque mollis, felis nunc ultrices eros, ' +
-    'sed gravida augue augue mollis justo. Suspendisse eu ligula. Nulla ' +
-    'facilisi. Donec id justo. Praesent porttitor, nulla vitae posuere ' +
-    'iaculis, arcu nisl dignissim dolor, a pretium mi sem ut ipsum. ' +
-    'Curabitur suscipit suscipit tellus.\n\n' +
-
-    'Praesent vestibulum dapibus nibh. Etiam iaculis nunc ac metus. Ut id ' +
-    'nisl quis enim dignissim sagittis. Etiam sollicitudin, ipsum eu ' +
-    'pulvinar rutrum, tellus ipsum laoreet sapien, quis venenatis ante ' +
-    'odio sit amet eros. Proin magna. Duis vel nibh at velit scelerisque ' +
-    'suscipit. Curabitur turpis. Vestibulum suscipit nulla quis orci. Fusce ' +
-    'ac felis sit amet ligula pharetra condimentum. Maecenas egestas arcu ' +
-    'quis ligula mattis placerat. Duis lobortis massa imperdiet quam. ' +
-    'Suspendisse potenti.\n\n' +
-
-    'Pellentesque commodo eros a enim. Vestibulum turpis sem, aliquet eget, ' +
-    'lobortis pellentesque, rutrum eu, nisl. Sed libero. Aliquam erat ' +
-    'volutpat. Etiam vitae tortor. Morbi vestibulum volutpat enim. Aliquam ' +
-    'eu nunc. Nunc sed turpis. Sed mollis, eros et ultrices tempus, mauris ' +
-    'ipsum aliquam libero, non adipiscing dolor urna a orci. Nulla porta ' +
-    'dolor. Class aptent taciti sociosqu ad litora torquent per conubia ' +
-    'nostra, per inceptos hymenaeos.\n\n' +
-
-    'Pellentesque dapibus hendrerit tortor. Praesent egestas tristique nibh. ' +
-    'Sed a libero. Cras varius. Donec vitae orci sed dolor rutrum auctor. ' +
-    'Fusce egestas elit eget lorem. Suspendisse nisl elit, rhoncus eget, ' +
-    'elementum ac, condimentum eget, diam. Nam at tortor in tellus interdum ' +
-    'sagittis. Aliquam lobortis. Donec orci lectus, aliquam ut, faucibus ' +
-    'non, euismod id, nulla. Curabitur blandit mollis lacus. Nam adipiscing. ' +
-    'Vestibulum eu odio.\n\n' +
-
-    'Vivamus laoreet. Nullam tincidunt adipiscing enim. Phasellus tempus. ' +
-    'Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique ' +
-    'sapien, a accumsan nisi mauris ac eros. Fusce neque. Suspendisse ' +
-    'faucibus, nunc et pellentesque egestas, lacus ante convallis tellus, ' +
-    'vitae iaculis lacus elit id tortor. Vivamus aliquet elit ac nisl. Fusce ' +
-    'fermentum odio nec arcu. Vivamus euismod mauris. In ut quam vitae ' +
-    'odio lacinia tincidunt. Praesent ut ligula non mi varius sagittis. ' +
-    'Cras sagittis. Praesent ac sem eget est egestas volutpat. Vivamus ' +
-    'consectetuer hendrerit lacus. Cras non dolor. Vivamus in erat ut urna ' +
-    'cursus vestibulum. Fusce commodo aliquam arcu. Nam commodo suscipit ' +
-    'quam. Quisque id odio. Praesent venenatis metus at tortor pulvinar ' +
-    'varius.\n\n';
-
-/**
- * Sample that the generated text is based on .
- * @type {string}
- */
-goog.text.LoremIpsum.prototype.sample_ = goog.text.LoremIpsum.SAMPLE_;
-
-
-/**
- * Dictionary of words.
- * @type {string}
- */
-goog.text.LoremIpsum.prototype.dictionary_ = goog.text.LoremIpsum.DICT_;
-goog.provide('feng.apps.Test');
-
-goog.require('goog.dom');
-goog.require('goog.events');
-goog.require('goog.fx.anim');
-goog.require('goog.text.LoremIpsum');
-goog.require('feng.fx.FloatText');
-
-
-feng.apps.Test = function() {
-
-	goog.base(this);
-	
-	goog.fx.anim.setAnimationWindow(window);
-
-	var lorem = new goog.text.LoremIpsum().generateParagraph();
-	var floatText = new feng.fx.FloatText( lorem, 40, 10 );
-	floatText.animateIn();
-
-	goog.events.listenOnce(document.body, 'click', function() {
-		floatText.animateOut();
-	});
-
-};
-goog.inherits(feng.apps.Test, goog.events.EventTarget);
-goog.addSingletonGetter(feng.apps.Test);// Copyright 2011 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -51876,6 +49746,342 @@ goog.net.EventType = {
   TIMEOUT: 'timeout',
   INCREMENTAL_DATA: 'incrementaldata',
   PROGRESS: 'progress'
+};
+// Copyright 2011 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Defines the collection interface.
+ *
+ * @author nnaze@google.com (Nathan Naze)
+ */
+
+goog.provide('goog.structs.Collection');
+
+
+
+/**
+ * An interface for a collection of values.
+ * @interface
+ * @template T
+ */
+goog.structs.Collection = function() {};
+
+
+/**
+ * @param {T} value Value to add to the collection.
+ */
+goog.structs.Collection.prototype.add;
+
+
+/**
+ * @param {T} value Value to remove from the collection.
+ */
+goog.structs.Collection.prototype.remove;
+
+
+/**
+ * @param {T} value Value to find in the collection.
+ * @return {boolean} Whether the collection contains the specified value.
+ */
+goog.structs.Collection.prototype.contains;
+
+
+/**
+ * @return {number} The number of values stored in the collection.
+ */
+goog.structs.Collection.prototype.getCount;
+
+// Copyright 2006 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Datastructure: Set.
+ *
+ * @author arv@google.com (Erik Arvidsson)
+ * @author pallosp@google.com (Peter Pallos)
+ *
+ * This class implements a set data structure. Adding and removing is O(1). It
+ * supports both object and primitive values. Be careful because you can add
+ * both 1 and new Number(1), because these are not the same. You can even add
+ * multiple new Number(1) because these are not equal.
+ */
+
+
+goog.provide('goog.structs.Set');
+
+goog.require('goog.structs');
+goog.require('goog.structs.Collection');
+goog.require('goog.structs.Map');
+
+
+
+/**
+ * A set that can contain both primitives and objects.  Adding and removing
+ * elements is O(1).  Primitives are treated as identical if they have the same
+ * type and convert to the same string.  Objects are treated as identical only
+ * if they are references to the same object.  WARNING: A goog.structs.Set can
+ * contain both 1 and (new Number(1)), because they are not the same.  WARNING:
+ * Adding (new Number(1)) twice will yield two distinct elements, because they
+ * are two different objects.  WARNING: Any object that is added to a
+ * goog.structs.Set will be modified!  Because goog.getUid() is used to
+ * identify objects, every object in the set will be mutated.
+ * @param {Array.<T>|Object.<?,T>=} opt_values Initial values to start with.
+ * @constructor
+ * @implements {goog.structs.Collection.<T>}
+ * @final
+ * @template T
+ */
+goog.structs.Set = function(opt_values) {
+  this.map_ = new goog.structs.Map;
+  if (opt_values) {
+    this.addAll(opt_values);
+  }
+};
+
+
+/**
+ * Obtains a unique key for an element of the set.  Primitives will yield the
+ * same key if they have the same type and convert to the same string.  Object
+ * references will yield the same key only if they refer to the same object.
+ * @param {*} val Object or primitive value to get a key for.
+ * @return {string} A unique key for this value/object.
+ * @private
+ */
+goog.structs.Set.getKey_ = function(val) {
+  var type = typeof val;
+  if (type == 'object' && val || type == 'function') {
+    return 'o' + goog.getUid(/** @type {Object} */ (val));
+  } else {
+    return type.substr(0, 1) + val;
+  }
+};
+
+
+/**
+ * @return {number} The number of elements in the set.
+ * @override
+ */
+goog.structs.Set.prototype.getCount = function() {
+  return this.map_.getCount();
+};
+
+
+/**
+ * Add a primitive or an object to the set.
+ * @param {T} element The primitive or object to add.
+ * @override
+ */
+goog.structs.Set.prototype.add = function(element) {
+  this.map_.set(goog.structs.Set.getKey_(element), element);
+};
+
+
+/**
+ * Adds all the values in the given collection to this set.
+ * @param {Array.<T>|goog.structs.Collection.<T>|Object.<?,T>} col A collection
+ *     containing the elements to add.
+ */
+goog.structs.Set.prototype.addAll = function(col) {
+  var values = goog.structs.getValues(col);
+  var l = values.length;
+  for (var i = 0; i < l; i++) {
+    this.add(values[i]);
+  }
+};
+
+
+/**
+ * Removes all values in the given collection from this set.
+ * @param {Array.<T>|goog.structs.Collection.<T>|Object.<?,T>} col A collection
+ *     containing the elements to remove.
+ */
+goog.structs.Set.prototype.removeAll = function(col) {
+  var values = goog.structs.getValues(col);
+  var l = values.length;
+  for (var i = 0; i < l; i++) {
+    this.remove(values[i]);
+  }
+};
+
+
+/**
+ * Removes the given element from this set.
+ * @param {T} element The primitive or object to remove.
+ * @return {boolean} Whether the element was found and removed.
+ * @override
+ */
+goog.structs.Set.prototype.remove = function(element) {
+  return this.map_.remove(goog.structs.Set.getKey_(element));
+};
+
+
+/**
+ * Removes all elements from this set.
+ */
+goog.structs.Set.prototype.clear = function() {
+  this.map_.clear();
+};
+
+
+/**
+ * Tests whether this set is empty.
+ * @return {boolean} True if there are no elements in this set.
+ */
+goog.structs.Set.prototype.isEmpty = function() {
+  return this.map_.isEmpty();
+};
+
+
+/**
+ * Tests whether this set contains the given element.
+ * @param {T} element The primitive or object to test for.
+ * @return {boolean} True if this set contains the given element.
+ * @override
+ */
+goog.structs.Set.prototype.contains = function(element) {
+  return this.map_.containsKey(goog.structs.Set.getKey_(element));
+};
+
+
+/**
+ * Tests whether this set contains all the values in a given collection.
+ * Repeated elements in the collection are ignored, e.g.  (new
+ * goog.structs.Set([1, 2])).containsAll([1, 1]) is True.
+ * @param {goog.structs.Collection.<T>|Object} col A collection-like object.
+ * @return {boolean} True if the set contains all elements.
+ */
+goog.structs.Set.prototype.containsAll = function(col) {
+  return goog.structs.every(col, this.contains, this);
+};
+
+
+/**
+ * Finds all values that are present in both this set and the given collection.
+ * @param {Array.<S>|Object.<?,S>} col A collection.
+ * @return {!goog.structs.Set.<T|S>} A new set containing all the values
+ *     (primitives or objects) present in both this set and the given
+ *     collection.
+ * @template S
+ */
+goog.structs.Set.prototype.intersection = function(col) {
+  var result = new goog.structs.Set();
+
+  var values = goog.structs.getValues(col);
+  for (var i = 0; i < values.length; i++) {
+    var value = values[i];
+    if (this.contains(value)) {
+      result.add(value);
+    }
+  }
+
+  return result;
+};
+
+
+/**
+ * Finds all values that are present in this set and not in the given
+ * collection.
+ * @param {Array.<T>|goog.structs.Collection.<T>|Object.<?,T>} col A collection.
+ * @return {!goog.structs.Set} A new set containing all the values
+ *     (primitives or objects) present in this set but not in the given
+ *     collection.
+ */
+goog.structs.Set.prototype.difference = function(col) {
+  var result = this.clone();
+  result.removeAll(col);
+  return result;
+};
+
+
+/**
+ * Returns an array containing all the elements in this set.
+ * @return {!Array.<T>} An array containing all the elements in this set.
+ */
+goog.structs.Set.prototype.getValues = function() {
+  return this.map_.getValues();
+};
+
+
+/**
+ * Creates a shallow clone of this set.
+ * @return {!goog.structs.Set.<T>} A new set containing all the same elements as
+ *     this set.
+ */
+goog.structs.Set.prototype.clone = function() {
+  return new goog.structs.Set(this);
+};
+
+
+/**
+ * Tests whether the given collection consists of the same elements as this set,
+ * regardless of order, without repetition.  Primitives are treated as equal if
+ * they have the same type and convert to the same string; objects are treated
+ * as equal if they are references to the same object.  This operation is O(n).
+ * @param {goog.structs.Collection.<T>|Object} col A collection.
+ * @return {boolean} True if the given collection consists of the same elements
+ *     as this set, regardless of order, without repetition.
+ */
+goog.structs.Set.prototype.equals = function(col) {
+  return this.getCount() == goog.structs.getCount(col) && this.isSubsetOf(col);
+};
+
+
+/**
+ * Tests whether the given collection contains all the elements in this set.
+ * Primitives are treated as equal if they have the same type and convert to the
+ * same string; objects are treated as equal if they are references to the same
+ * object.  This operation is O(n).
+ * @param {goog.structs.Collection.<T>|Object} col A collection.
+ * @return {boolean} True if this set is a subset of the given collection.
+ */
+goog.structs.Set.prototype.isSubsetOf = function(col) {
+  var colCount = goog.structs.getCount(col);
+  if (this.getCount() > colCount) {
+    return false;
+  }
+  // TODO(user) Find the minimal collection size where the conversion makes
+  // the contains() method faster.
+  if (!(col instanceof goog.structs.Set) && colCount > 5) {
+    // Convert to a goog.structs.Set so that goog.structs.contains runs in
+    // O(1) time instead of O(n) time.
+    col = new goog.structs.Set(col);
+  }
+  return goog.structs.every(this, function(value) {
+    return goog.structs.contains(col, value);
+  });
+};
+
+
+/**
+ * Returns an iterator that iterates over the elements in this set.
+ * @param {boolean=} opt_keys This argument is ignored.
+ * @return {!goog.iter.Iterator} An iterator over the elements in this set.
+ */
+goog.structs.Set.prototype.__iterator__ = function(opt_keys) {
+  return this.map_.__iterator__(false);
 };
 // Copyright 2006 The Closure Library Authors. All Rights Reserved.
 //
@@ -58060,7 +56266,153 @@ feng.views.sections.overlays.FinaleOverlay.prototype.onResize = function(e){
 	goog.style.setSize(this.domElement, feng.viewportSize);
 
 	feng.utils.Utils.centerAlign( this._popup.domElement, feng.viewportSize );
-};goog.provide('feng.views.sections.captions.Caption');
+};// This file was automatically generated from captions.soy.
+// Please don't edit this file by hand.
+
+goog.provide('feng.templates.captions');
+
+goog.require('soy');
+goog.require('soydata');
+goog.require('feng.templates.common');
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.captions.Caption = function(opt_data, opt_ignored) {
+  return '<div class="caption ' + opt_data.position + '"><div class="shade"></div><div class="panel"><div class="panel-button"><button class="icon"></button><h3>Learn<br>More</h3></div><div class="panel-controls"><div class="share"><ul><li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-facebook"></a></li><li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-twitter"></a></li><li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-google"></a></li></ul></div></div><div class="panel-content"><div class="content"><h1>' + opt_data.tip.name + '</h1><div class="scroller"><div class="scroller-inner">' + ((opt_data.tip.hint) ? '<section class="hint"><div class="inner"><div class="inner-scroller"><p>' + opt_data.tip.hint + '</p>' + feng.templates.common.PrimaryButton({icon: 'icon-yes', classname: 'hint-button', text: 'I see'}) + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.tip.problem) ? '<section class="problem"><div class="inner"><div class="inner-scroller"><p>' + opt_data.tip.problem + '</p><!-- either close to interact, or scroll down to go interaction section if available -->' + feng.templates.common.PrimaryButton({classname: 'prompt-button', icon: 'icon-yes', text: opt_data.tip.prompt}) + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.interactionContent) ? '<section class="interaction"><div class="inner"><div class="inner-scroller">' + opt_data.interactionContent + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.tip.advice) ? '<section class="advice"><div class="inner"><div class="inner-scroller"><h3>Feng Shui Tips</h3><p>' + opt_data.tip.advice + '</p></div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + '</div></div></div></div></div>' + feng.templates.common.CloseButton(null) + '</div>';
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
+  var param102 = '<div class="change-picture"><h2>Click on a picture to change</h2><ul class="pictures">';
+  var pictureKeyList104 = soy.$$getMapKeys(opt_data.tip.details['pictures']);
+  var pictureKeyListLen104 = pictureKeyList104.length;
+  for (var pictureKeyIndex104 = 0; pictureKeyIndex104 < pictureKeyListLen104; pictureKeyIndex104++) {
+    var pictureKeyData104 = pictureKeyList104[pictureKeyIndex104];
+    param102 += '<li><button class="item-button" data-picture="' + pictureKeyData104 + '"></button></li>';
+  }
+  param102 += '</ul><ul class="info">';
+  var pictureKeyList110 = soy.$$getMapKeys(opt_data.tip.details['pictures']);
+  var pictureKeyListLen110 = pictureKeyList110.length;
+  for (var pictureKeyIndex110 = 0; pictureKeyIndex110 < pictureKeyListLen110; pictureKeyIndex110++) {
+    var pictureKeyData110 = pictureKeyList110[pictureKeyIndex110];
+    param102 += '<li data-picture="' + pictureKeyData110 + '"><h3>' + opt_data.tip.details['pictures'][pictureKeyData110]['name'] + '</h3><p>' + opt_data.tip.details['pictures'][pictureKeyData110]['description'] + '</p></li>';
+  }
+  param102 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param102}));
+  return output;
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
+  var param122 = '<div class="change-color"><h2>Choose a better color.</h2><ul class="colors">';
+  var colorKeyList124 = soy.$$getMapKeys(opt_data.tip.details['colors']);
+  var colorKeyListLen124 = colorKeyList124.length;
+  for (var colorKeyIndex124 = 0; colorKeyIndex124 < colorKeyListLen124; colorKeyIndex124++) {
+    var colorKeyData124 = colorKeyList124[colorKeyIndex124];
+    param122 += '<li><button class="item-button" style="background-color: ' + opt_data.tip.details['colors'][colorKeyData124]['hex'] + '" data-color="' + colorKeyData124 + '"></button></li>';
+  }
+  param122 += '</ul><ul class="info">';
+  var colorKeyList132 = soy.$$getMapKeys(opt_data.tip.details['colors']);
+  var colorKeyListLen132 = colorKeyList132.length;
+  for (var colorKeyIndex132 = 0; colorKeyIndex132 < colorKeyListLen132; colorKeyIndex132++) {
+    var colorKeyData132 = colorKeyList132[colorKeyIndex132];
+    param122 += '<li data-color="' + colorKeyData132 + '"><h3>' + opt_data.tip.details['colors'][colorKeyData132]['name'] + '</h3><p>' + opt_data.tip.details['colors'][colorKeyData132]['description'] + '</p></li>';
+  }
+  param122 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param122}));
+  return output;
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
+  var param144 = '<div class="change-object"><h2>Replace with a new element.</h2><ul class="objects">';
+  var objectKeyList146 = soy.$$getMapKeys(opt_data.tip.details['names']);
+  var objectKeyListLen146 = objectKeyList146.length;
+  for (var objectKeyIndex146 = 0; objectKeyIndex146 < objectKeyListLen146; objectKeyIndex146++) {
+    var objectKeyData146 = objectKeyList146[objectKeyIndex146];
+    param144 += '<li><button class="item-button" data-object="' + objectKeyData146 + '"></button></li>';
+  }
+  param144 += '</ul><ul class="info">';
+  var objectKeyList152 = soy.$$getMapKeys(opt_data.tip.details['descriptions']);
+  var objectKeyListLen152 = objectKeyList152.length;
+  for (var objectKeyIndex152 = 0; objectKeyIndex152 < objectKeyListLen152; objectKeyIndex152++) {
+    var objectKeyData152 = objectKeyList152[objectKeyIndex152];
+    param144 += '<li data-object="' + objectKeyData152 + '"><h3>' + opt_data.tip.details['names'][objectKeyData152] + '</h3><p>' + opt_data.tip.details['descriptions'][objectKeyData152] + '</p></li>';
+  }
+  param144 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param144}));
+  return output;
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
+  var param164 = '<h2>Fill the plate with fruits</h2><div class="drop-fruits"><ul class="fruits">';
+  var fruitKeyList166 = soy.$$getMapKeys(opt_data.fruits);
+  var fruitKeyListLen166 = fruitKeyList166.length;
+  for (var fruitKeyIndex166 = 0; fruitKeyIndex166 < fruitKeyListLen166; fruitKeyIndex166++) {
+    var fruitKeyData166 = fruitKeyList166[fruitKeyIndex166];
+    param164 += '<li><button data-fruit-id="' + fruitKeyData166 + '"></button></li>';
+  }
+  param164 += '</ul><ul class="descriptions">';
+  var fruitKeyList172 = soy.$$getMapKeys(opt_data.fruits);
+  var fruitKeyListLen172 = fruitKeyList172.length;
+  for (var fruitKeyIndex172 = 0; fruitKeyIndex172 < fruitKeyListLen172; fruitKeyIndex172++) {
+    var fruitKeyData172 = fruitKeyList172[fruitKeyIndex172];
+    param164 += '<li data-fruit-id="' + fruitKeyData172 + '"><p>' + opt_data.fruits[fruitKeyData172] + '</p></li>';
+  }
+  param164 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param164}));
+  return output;
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
+  var output = '<p class="floatText">';
+  var lineList183 = opt_data.lines;
+  var lineListLen183 = lineList183.length;
+  for (var lineIndex183 = 0; lineIndex183 < lineListLen183; lineIndex183++) {
+    var lineData183 = lineList183[lineIndex183];
+    output += '<span>' + lineData183 + '</span>';
+  }
+  output += '</p>';
+  return output;
+};
+goog.provide('feng.views.sections.captions.Caption');
 
 goog.require('goog.events.EventHandler');
 goog.require('feng.templates.captions');
@@ -58112,8 +56464,8 @@ feng.views.sections.captions.Caption = function( object, cameraController, rende
   this._adviceSection = goog.dom.getElementByClass('advice', this.domElement);
 
   this._sections = goog.array.filter([
-      this._problemSection,
       this._hintSection,
+      this._problemSection,
       this._interactionSection,
       this._adviceSection
     ], function(section) {
@@ -58482,10 +56834,13 @@ feng.views.sections.captions.Caption.prototype.updateStatus = function() {
     if(this._adviceSection) {
       
       this.gotoSection( this._adviceSection );
+      return;
+    }
 
-    }else {
+    if(this._interactionSection){
 
       this.gotoSection( this._interactionSection );
+      return;
     }
   }
 };
@@ -58574,7 +56929,7 @@ feng.views.sections.captions.Caption.prototype.onResize = function( e ) {
 
       this._sectionTweener.updateTo({
         'x': - sectionX
-      })
+      });
 
     }else {
 
@@ -60199,6 +58554,8 @@ feng.views.sections.controls.DropButton.prototype.activate = function( movableOb
 
   this._movableObject = movableObject;
 
+  goog.dom.classes.enable( this.domElement, 'hidden', false );
+
   this.fadeIn();
 
 	this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
@@ -60215,19 +58572,27 @@ feng.views.sections.controls.DropButton.prototype.deactivate = function(){
 
   this._movableObject = null;
 
+  goog.dom.classes.enable( this.domElement, 'hidden', true );
+
   goog.fx.anim.unregisterAnimation( this );
 };
 
 
 feng.views.sections.controls.DropButton.prototype.fadeIn = function(){
 
-	goog.dom.classes.addRemove( this.domElement, 'fadeOut', 'fadeIn' );
+  if( !goog.dom.classes.has(this.domElement, 'fadeIn') ) {
+
+    goog.dom.classes.addRemove( this.domElement, 'fadeOut', 'fadeIn' );
+  }
 };
 
 
 feng.views.sections.controls.DropButton.prototype.fadeOut = function(){
 
-	goog.dom.classes.addRemove( this.domElement, 'fadeIn', 'fadeOut' );
+  if( !goog.dom.classes.has(this.domElement, 'fadeOut') ) {
+
+    goog.dom.classes.addRemove( this.domElement, 'fadeIn', 'fadeOut' );
+  }
 };
 
 
@@ -60255,8 +58620,19 @@ feng.views.sections.controls.DropButton.prototype.onAnimationFrame = function(no
 
   var pos3d = this._movableObject.getDestination();
   var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, camera, viewSize );
-  
-  goog.style.setStyle( this.domElement, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)' );
+
+  var controlPosition = this._view3d.modeController.control.getPosition();
+  var distance = controlPosition.distanceTo( pos3d );
+console.log(distance, this._movableObject.range);
+  var shouldShow = (distance <= this._movableObject.range);
+
+  goog.style.setStyle( this.domElement, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)');
+
+  if(shouldShow) {
+    this.fadeIn();
+  }else {
+    this.fadeOut();
+  }
 };goog.provide('feng.views.sections.controls.Book');
 
 goog.require('goog.dom');
@@ -61075,8 +59451,6 @@ goog.inherits(feng.views.sections.captions.DropFruitsCaption, feng.views.section
 feng.views.sections.captions.DropFruitsCaption.prototype.show = function() {
 
   goog.base(this, 'show');
-
-  this._object.startInteraction();
 
   this._eventHandler.listen( this._object, feng.events.EventType.CHANGE, this.onFruitPlateChange, false, this );
 
@@ -61950,7 +60324,7 @@ feng.controllers.SectionController.prototype.onSectionAnimatedOut = function(e){
 	if(this._section === e.target) {
 		this._section = null;
 	}
-};goog.provide('feng.apps.Demo');
+};goog.provide('feng.apps.Main');
 
 goog.require('goog.dom');
 goog.require('goog.events');
@@ -61972,20 +60346,26 @@ goog.require('feng.PubSub');
 goog.require('feng.utils.Utils');
 
 
-feng.apps.Demo = function() {
+feng.apps.Main = function() {
 
 	goog.base(this);
 	
+	// redirect to fallback page if WebGL is not supported
+	if(!feng.utils.Utils.supportWebGL) {
+		window.location.href = '/unsupported.html';
+		return;
+	}
+
 	goog.fx.anim.setAnimationWindow(window);
 
 	feng.debug = (feng.utils.Utils.getQuery('debug') === 'true') || feng.Config['debug'];
 	feng.office = (feng.utils.Utils.getQuery('office') === 'true') || feng.Config['office'];
 	feng.quality = feng.utils.Utils.getQuery('quality') || feng.Config['quality'];
 	
-	feng.viewportSize = feng.apps.Demo.getViewportSize();
+	feng.viewportSize = feng.apps.Main.getViewportSize();
 
 	goog.events.listen(window, goog.events.EventType.RESIZE, function() {
-		feng.viewportSize = feng.apps.Demo.getViewportSize();
+		feng.viewportSize = feng.apps.Main.getViewportSize();
 	});
 
 	feng.renderSettings = {
@@ -62029,18 +60409,962 @@ feng.apps.Demo = function() {
 	feng.navigationController.init();
 	feng.navigationController.replaceToken( feng.controllers.NavigationController.Token.HOME );
 };
-goog.inherits(feng.apps.Demo, goog.events.EventTarget);
-goog.addSingletonGetter(feng.apps.Demo);
+goog.inherits(feng.apps.Main, goog.events.EventTarget);
+goog.addSingletonGetter(feng.apps.Main);
 
 
-feng.apps.Demo.getViewportSize = function() {
+feng.apps.Main.getViewportSize = function() {
 
 	return goog.style.getSize( document.body );
-};goog.provide('feng');
+};goog.provide('feng.fx.FloatText');
+
+goog.require('goog.events.EventTarget');
+goog.require('goog.string');
+goog.require('feng.templates.captions');
+
+
+/**
+ * @constructor
+ */
+feng.fx.FloatText = function(html, numCharacters, numLines){
+
+	goog.base(this);
+
+	var numCharacters = numCharacters || 30;
+	var numLines = numLines || 10;
+	var lines = [];
+	var paras = html.split('<br>');
+	
+	for(var i = 0; i < paras.length; i++) {
+		var para = paras[i];
+
+		var a = 0, b = Math.floor(para.length / numCharacters);
+		var start, end = -1;
+
+		for(a = 0; a < b; a++) {
+			start = end + 1;
+			end = start + numCharacters;
+
+			if(para.charAt(end+1) === ' ') {
+				end = end + 1;
+			}else {
+				while(para.charAt(end) !== ' ') {
+					end --;
+				}
+			}
+
+			var str = para.substring( start, end );
+			lines.push( str );
+		}
+	}
+
+	var shouldTruncate = (lines.length > numLines);
+
+	lines = lines.slice(0, numLines);
+
+	if(shouldTruncate) {
+		lines[lines.length - 1] = goog.string.truncate( lines[lines.length - 1], numCharacters/2 );
+	}
+	
+
+	this.domElement = soy.renderAsFragment(feng.templates.captions.FloatText, {
+		lines: lines
+	});
+
+	this._lineEls = goog.dom.getChildren( this.domElement );
+	this._numLines = this._lineEls.length;
+
+	this._depths = goog.array.repeat(0, this._numLines);
+	this._alphas = goog.array.repeat(0, this._numLines);
+
+	this._lineProps = goog.array.map(this._lineEls, function(lineEl) {
+		return {
+			el: lineEl,
+			x: 0,
+			z: 0,
+			opacity: 0,
+			opacityMultiplier: 0
+		};
+	});
+
+	this._animateInTweener = new TimelineMax({
+		'paused': true
+	});
+
+	var tweeners = goog.array.map(this._lineEls, function(el, index) {
+
+		var prop = this._lineProps[index];
+
+		this.onLineUpdate( prop );
+
+		return TweenMax.fromTo(prop, 2, {
+			x: -20,
+			opacityMultiplier: 0
+		}, {
+			x: 0,
+			opacityMultiplier: 1,
+			'ease': Quad.easeOut,
+			'onUpdate': this.onLineUpdate,
+			'onUpdateParams': [prop],
+			'onUpdateScope': this
+		});
+	}, this);
+
+	this._animateInTweener.add( tweeners, "+=0", "start", .025 );
+
+	this._animateOutTweener = new TimelineMax({
+		'paused': true,
+		'onComplete': this.onAnimateComplete,
+		'onCompleteScope': this
+	});
+
+	var tweeners = goog.array.map(this._lineEls, function(el, index) {
+		var prop = this._lineProps[index];
+
+		return TweenMax.to(prop, 1, {
+			opacityMultiplier: 0,
+			'ease': Quad.easeInOut,
+			'onUpdate': this.onLineUpdate,
+			'onUpdateParams': [prop],
+			'onUpdateScope': this
+		});
+	}, this);
+
+	this._animateOutTweener.add( tweeners, "+=0", "start", .05 );
+
+	document.body.appendChild( this.domElement );
+	//console.log(html, lines, this.domElement, this._lineEls);
+};
+goog.inherits(feng.fx.FloatText, goog.events.EventTarget);
+
+
+feng.fx.FloatText.prototype.activate = function() {
+
+	goog.fx.anim.registerAnimation( this );
+};
+
+
+feng.fx.FloatText.prototype.deactivate = function() {
+
+	goog.fx.anim.unregisterAnimation( this );
+};
+
+
+feng.fx.FloatText.prototype.animateIn = function() {
+
+	if(this._animateInTweener.isActive()) return;
+
+	goog.style.showElement(this.domElement, true);
+
+	this._animateOutTweener.pause();
+
+	this._animateInTweener.restart();
+
+	this.activate();
+};
+
+
+feng.fx.FloatText.prototype.animateOut = function() {
+
+	if(this._animateOutTweener.isActive()) return;
+
+	this._animateInTweener.pause();
+
+	this._animateOutTweener.restart();
+};
+
+
+feng.fx.FloatText.prototype.onAnimateComplete = function() {
+
+	this.deactivate();
+
+	goog.style.showElement(this.domElement, false);
+};
+
+
+feng.fx.FloatText.prototype.onLineUpdate = function(prop) {
+
+	var el = prop.el;
+	var x = prop.x;
+	var z = prop.z;
+	var opacity = prop.opacity;
+	var opacityMultiplier = prop.opacityMultiplier;
+
+	goog.style.setStyle(el, {
+		'transform': 'translateX(' + x + 'px) translateZ(' + z + 'px)',
+		'opacity': opacity * opacityMultiplier
+	});
+};
+
+
+feng.fx.FloatText.prototype.onAnimationFrame = function(now) {
+
+	var counter = 0;
+	var step = 1 / this._numLines;
+	var increase = Math.PI / this._numLines;
+
+	for ( var i = 0; i < 1; i += step ) {
+
+		var index = Math.round(i * this._numLines);
+
+		var z = Math.sin( counter + now / 1000 ) * 50;
+		this._depths[index] = z.toFixed(2);
+
+		var alpha = goog.math.lerp(.5, 1, (Math.sin( counter + now / 1000 ) + 1) * .5);
+		this._alphas[index] = alpha;
+
+		counter += increase;
+	}
+
+	goog.array.forEach( this._lineEls, function(lineEl, index) {
+
+		this._lineProps[index].z = this._depths[index];
+		this._lineProps[index].opacity = this._alphas[index];
+
+		this.onLineUpdate( this._lineProps[index] );
+
+	}, this);
+};//   Copyright 2009 The Closure Library Authors. All Rights Reserved.
+
+/**
+ * @fileoverview A generator of lorem ipsum text based on the python
+ * implementation at http://code.google.com/p/lorem-ipsum-generator/.
+ *
+ */
+
+goog.provide('goog.text.LoremIpsum');
+
+goog.require('goog.array');
+goog.require('goog.math');
+goog.require('goog.string');
+goog.require('goog.structs.Map');
+goog.require('goog.structs.Set');
+
+
+/**
+ * Generates random strings of "lorem ipsum" text, based on the word
+ * distribution of a sample text, using the words in a dictionary.
+ * @constructor
+ */
+goog.text.LoremIpsum = function() {
+  this.generateChains_(this.sample_);
+  this.generateStatistics_(this.sample_);
+
+  this.initializeDictionary_(this.dictionary_);
+};
+
+
+/**
+ * Delimiters that end sentences.
+ * @type {Array.<string>}
+ * @private
+ */
+goog.text.LoremIpsum.DELIMITERS_SENTENCES_ = ['.', '?', '!'];
+
+
+/**
+ * Regular expression for spliting a text into sentences.
+ * @type {RegExp}
+ * @private
+ */
+goog.text.LoremIpsum.SENTENCE_SPLIT_REGEX_ = /[\.\?\!]/;
+
+
+/**
+ * Delimiters that end words.
+ * @type {Array.<string>}
+ * @private
+ */
+goog.text.LoremIpsum.DELIMITERS_WORDS_ = [',', '.', '?', '!'];
+
+
+/**
+ * Regular expression for spliting text into words.
+ * @type {RegExp}
+ * @private
+ */
+goog.text.LoremIpsum.WORD_SPLIT_REGEX_ = /\s/;
+
+
+/**
+ * Words that can be used in the generated output.
+ * Maps a word-length to a list of words of that length.
+ * @type {goog.structs.Map}
+ * @private
+ */
+goog.text.LoremIpsum.prototype.words_;
+
+
+/**
+ * Chains of three words that appear in the sample text
+ * Maps a pair of word-lengths to a third word-length and an optional
+ * piece of trailing punctuation (for example, a period, comma, etc.).
+ * @type {goog.structs.Map}
+ * @private
+ */
+goog.text.LoremIpsum.prototype.chains_;
+
+
+/**
+ * Pairs of word-lengths that can appear at the beginning of sentences.
+ * @type {Array}
+ */
+goog.text.LoremIpsum.prototype.starts_;
+
+
+/**
+ * Averange sentence length in words.
+ * @type {number}
+ * @private
+ */
+goog.text.LoremIpsum.prototype.sentenceMean_;
+
+
+/**
+ * Sigma (sqrt of variance) for the sentence length in words.
+ * @type {number}
+ * @private
+ */
+goog.text.LoremIpsum.prototype.sentenceSigma_;
+
+
+/**
+ * Averange paragraph length in sentences.
+ * @type {number}
+ * @private
+ */
+goog.text.LoremIpsum.prototype.paragraphMean_;
+
+
+/**
+ * Sigma (sqrt of variance) for the paragraph length in sentences.
+ * @type {number}
+ * @private
+ */
+goog.text.LoremIpsum.prototype.paragraphSigma_;
+
+
+/**
+ * Generates the chains and starts values required for sentence generation.
+ * @param {string} sample The same text.
+ * @private
+ */
+goog.text.LoremIpsum.prototype.generateChains_ = function(sample) {
+  var words = goog.text.LoremIpsum.splitWords_(sample);
+  var wordInfo = goog.array.map(words, goog.text.LoremIpsum.getWordInfo_);
+
+  var previous = [0, 0];
+  var previousKey = previous.join('-');
+  var chains = new goog.structs.Map();
+  var starts = [previousKey];
+  var chainKeys = {};
+
+  goog.array.forEach(wordInfo, function(pair) {
+    var chain = chains.get(previousKey);
+    if (chain) {
+      chain.push(pair);
+    } else {
+      chain = [pair];
+      chains.set(previousKey, chain);
+    }
+
+    if (goog.array.contains(
+        goog.text.LoremIpsum.DELIMITERS_SENTENCES_, pair[1])) {
+      starts.push(previousKey);
+    }
+    chainKeys[previousKey] = previous;
+    previous = [previous[1], pair[0]];
+    previousKey = previous.join('-');
+  });
+
+  if (chains.getCount() > 0) {
+    this.chains_ = chains;
+    this.starts_ = starts;
+    this.chainKeys_ = chainKeys;
+  } else {
+    throw Error('Could not generate chains from sample text.');
+  }
+};
+
+
+/**
+ * Calculates the mean and standard deviation of sentence and paragraph lengths.
+ * @param {string} sample The same text.
+ * @private
+ */
+goog.text.LoremIpsum.prototype.generateStatistics_ = function(sample) {
+  this.generateSentenceStatistics_(sample);
+  this.generateParagraphStatistics_(sample);
+};
+
+
+/**
+ * Calculates the mean and standard deviation of the lengths of sentences
+ * (in words) in a sample text.
+ * @param {string} sample The same text.
+ * @private
+ */
+goog.text.LoremIpsum.prototype.generateSentenceStatistics_ = function(sample) {
+  var sentences = goog.array.filter(
+      goog.text.LoremIpsum.splitSentences_(sample),
+      goog.text.LoremIpsum.isNotEmptyOrWhitepace_);
+
+  var sentenceLengths = goog.array.map(
+      goog.array.map(sentences, goog.text.LoremIpsum.splitWords_),
+      goog.text.LoremIpsum.arrayLength_);
+  this.sentenceMean_ = goog.math.average.apply(null, sentenceLengths);
+  this.sentenceSigma_ = goog.math.standardDeviation.apply(
+      null, sentenceLengths);
+};
+
+
+/**
+ * Calculates the mean and standard deviation of the lengths of paragraphs
+ * (in sentences) in a sample text.
+ * @param {string} sample The same text.
+ * @private
+ */
+goog.text.LoremIpsum.prototype.generateParagraphStatistics_ = function(sample) {
+  var paragraphs = goog.array.filter(
+      goog.text.LoremIpsum.splitParagraphs_(sample),
+      goog.text.LoremIpsum.isNotEmptyOrWhitepace_);
+
+  var paragraphLengths = goog.array.map(
+    goog.array.map(paragraphs, goog.text.LoremIpsum.splitSentences_),
+    goog.text.LoremIpsum.arrayLength_);
+
+  this.paragraphMean_ = goog.math.average.apply(null, paragraphLengths);
+  this.paragraphSigma_ = goog.math.standardDeviation.apply(
+      null, paragraphLengths);
+};
+
+
+/**
+ * Sets the generator to use a given selection of words for generating
+ * sentences with.
+ * @param {string} dictionary The dictionary to use.
+ */
+goog.text.LoremIpsum.prototype.initializeDictionary_ = function(dictionary) {
+  var dictionaryWords = goog.text.LoremIpsum.splitWords_(dictionary);
+
+  var words = new goog.structs.Map();
+  goog.array.forEach(dictionaryWords, function(word) {
+    var set = words.get(word.length);
+    if (!set) {
+      set = new goog.structs.Set();
+      words.set(word.length, set);
+    }
+    set.add(word);
+  });
+
+  this.words_ = words;
+};
+
+
+/**
+ * Picks a random starting chain.
+ * @return {Array.<string>} The starting key.
+ * @private
+ */
+goog.text.LoremIpsum.prototype.chooseRandomStart_ = function() {
+  var key = goog.text.LoremIpsum.randomChoice_(this.starts_);
+  return this.chainKeys_[key];
+};
+
+
+/**
+ * Generates a single sentence, of random length.
+ * @param {boolean} opt_startWithLorem Whether to start the setnence with the
+ *     standard "Lorem ipsum..." first sentence.
+ * @return {string} The generated sentence.
+ */
+goog.text.LoremIpsum.prototype.generateSentence = function(opt_startWithLorem) {
+  if (this.chains_.getCount() == 0 || this.starts_.length == 0) {
+    throw Error('No chains created');
+  }
+
+  if (this.words_.getCount() == 0) {
+    throw Error('No dictionary');
+  }
+
+  // The length of the sentence is a normally distributed random variable.
+  var sentenceLength = goog.text.LoremIpsum.randomNormal_(
+      this.sentenceMean_, this.sentenceSigma_)
+  sentenceLength = Math.max(Math.floor(sentenceLength), 1);
+
+  var wordDelimiter = ''; // Defined here in case while loop doesn't run
+
+  // Start the sentence with "Lorem ipsum...", if desired
+  var sentence;
+  if (opt_startWithLorem) {
+    var lorem = 'lorem ipsum dolor sit amet, consecteteur adipiscing elit';
+    sentence = goog.text.LoremIpsum.splitWords_(lorem);
+    if (sentence.length > sentenceLength) {
+      sentence.length = sentenceLength;
+    }
+    var lastWord = sentence[sentence.length - 1];
+    var lastChar = lastWord.substring(lastWord.length - 1);
+    if (goog.array.contains(goog.text.LoremIpsum.DELIMITERS_WORDS_, lastChar)) {
+      wordDelimiter = lastChar;
+    }
+  } else {
+    sentence = [];
+  }
+
+  var previous = [];
+  var previousKey = '';
+  // Generate a sentence from the "chains"
+  while (sentence.length < sentenceLength) {
+    // If the current starting point is invalid, choose another randomly
+    if (!this.chains_.containsKey(previousKey)) {
+      previous = this.chooseRandomStart_();
+      previousKey = previous.join('-');
+    }
+
+    // Choose the next "chain" to go to. This determines the next word
+    // length we'll use, and whether there is e.g. a comma at the end of
+    // the word.
+    var chain = /** @type {Array} */ (goog.text.LoremIpsum.randomChoice_(
+        /** @type {Array} */ (this.chains_.get(previousKey))));
+    var wordLength = chain[0];
+
+    // If the word delimiter contained in the chain is also a sentence
+    // delimiter, then we don't include it because we don't want the
+    // sentence to end prematurely (we want the length to match the
+    // sentence_length value).
+    //debugger;
+    if (goog.array.contains(goog.text.LoremIpsum.DELIMITERS_SENTENCES_,
+        chain[1])) {
+      wordDelimiter = '';
+    } else {
+      wordDelimiter = chain[1];
+    }
+
+    // Choose a word randomly that matches (or closely matches) the
+    // length we're after.
+    var closestLength = goog.text.LoremIpsum.chooseClosest(
+            this.words_.getKeys(), wordLength);
+    var word = goog.text.LoremIpsum.randomChoice_(
+        this.words_.get(closestLength).getValues());
+
+    sentence.push(word + wordDelimiter);
+    previous = [previous[1], wordLength];
+    previousKey = previous.join('-');
+  }
+
+  // Finish the sentence off with capitalisation, a period and
+  // form it into a string
+  sentence = sentence.join(' ');
+  sentence = sentence.slice(0, 1).toUpperCase() + sentence.slice(1);
+  if (sentence.substring(sentence.length - 1) == wordDelimiter) {
+    sentence = sentence.slice(0, sentence.length - 1);
+  }
+  return sentence + '.';
+};
+
+/**
+ * Generates a single lorem ipsum paragraph, of random length.
+ * @param {boolean} opt_startWithLorem Whether to start the sentence with the
+ *     standard "Lorem ipsum..." first sentence.
+ * @return {string} The generated sentence.
+ */
+goog.text.LoremIpsum.prototype.generateParagraph = function(
+    opt_startWithLorem) {
+  // The length of the paragraph is a normally distributed random variable.
+  var paragraphLength = goog.text.LoremIpsum.randomNormal_(
+      this.paragraphMean_, this.paragraphSigma_);
+  paragraphLength = Math.max(Math.floor(paragraphLength), 1);
+
+  // Construct a paragraph from a number of sentences.
+  var paragraph = []
+  var startWithLorem = opt_startWithLorem;
+  while (paragraph.length < paragraphLength) {
+      var sentence = this.generateSentence(startWithLorem);
+      paragraph.push(sentence);
+      startWithLorem = false;
+  }
+
+  // Form the paragraph into a string.
+  paragraph = paragraph.join(' ')
+  return paragraph
+};
+
+
+/**
+ * Splits a piece of text into paragraphs.
+ * @param {string} text The text to split.
+ * @return {Array.<string>} An array of paragraphs.
+ * @private
+ */
+goog.text.LoremIpsum.splitParagraphs_ = function(text) {
+  return text.split('\n')
+};
+
+
+/**
+ * Splits a piece of text into sentences.
+ * @param {string} text The text to split.
+ * @return {Array.<string>} An array of sentences.
+ * @private
+ */
+goog.text.LoremIpsum.splitSentences_ = function(text) {
+  return goog.array.filter(
+      text.split(goog.text.LoremIpsum.SENTENCE_SPLIT_REGEX_),
+      goog.text.LoremIpsum.isNotEmptyOrWhitepace_);
+};
+
+
+/**
+ * Splits a piece of text into words..
+ * @param {string} text The text to split.
+ * @return {Array.<string>} An array of words.
+ * @private
+ */
+goog.text.LoremIpsum.splitWords_ = function(text) {
+  return goog.array.filter(
+      text.split(goog.text.LoremIpsum.WORD_SPLIT_REGEX_),
+      goog.text.LoremIpsum.isNotEmptyOrWhitepace_);
+};
+
+
+/**
+ * Returns the text is not empty or just whitespace.
+ * @param {string} text The text to check.
+ * @return {boolean} Whether the text is nether empty nor whitespace.
+ * @private
+ */
+goog.text.LoremIpsum.isNotEmptyOrWhitepace_ = function(text) {
+  return goog.string.trim(text).length > 0;
+};
+
+
+/**
+ * Returns the length of an array. Written as a function so it can be used
+ * as a function parameter.
+ * @param {Array} array The array to check.
+ * @return {number} The length of the array.
+ */
+goog.text.LoremIpsum.arrayLength_ = function(array) {
+  return array.length;
+};
+
+
+/**
+ * Find the number in the list of values that is closest to the target.
+ * @param {Array.<number>} values The values.
+ * @param {number} target The target value.
+ * @return {number} The closest value.
+ */
+goog.text.LoremIpsum.chooseClosest = function(values, target) {
+  var closest = values[0];
+  goog.array.forEach(values, function(value) {
+    if (Math.abs(target - value) < Math.abs(target - closest)) {
+      closest = value;
+    }
+  });
+
+  return closest;
+};
+
+/**
+ * Gets info about a word used as part of the lorem ipsum algorithm.
+ * @param {string} word The word to check.
+ * @return {Array} A two element array. The first element is the size of the
+ *    word. The second element is the delimter used in the word.
+ * @private
+ */
+goog.text.LoremIpsum.getWordInfo_ = function(word) {
+  var ret;
+  goog.array.some(goog.text.LoremIpsum.DELIMITERS_WORDS_,
+      function (delimiter) {
+        if (goog.string.endsWith(word, delimiter)) {
+          ret = [word.length - delimiter.length, delimiter];
+          return true;
+        }
+        return false;
+      }
+  );
+  return ret || [word.length, ''];
+};
+
+
+/**
+ * Constant used for {@link #randomNormal_}.
+ * @type {number}
+ * @private
+ */
+goog.text.LoremIpsum.NV_MAGICCONST_ = 4 * Math.exp(-0.5) / Math.sqrt(2.0);
+
+
+/**
+ * Generates a random number for a normal distribution with the specified
+ * mean and sigma.
+ * @param {number} mu The mean of the distribution.
+ * @param {number} sigma The sigma of the distribution.
+ * @private
+ */
+goog.text.LoremIpsum.randomNormal_ = function(mu, sigma) {
+  while (true) {
+    var u1 = Math.random();
+    var u2 = 1.0 - Math.random();
+    var z = goog.text.LoremIpsum.NV_MAGICCONST_ * (u1 - 0.5) / u2;
+    var zz = z * z / 4.0;
+    if (zz <= -Math.log(u2)) {
+      break;
+    }
+  }
+  return mu + z * sigma;
+};
+
+
+/**
+ * Picks a random element of the array.
+ * @param {Array} array The array to pick from.
+ * @return {*} An element from the array.
+ */
+goog.text.LoremIpsum.randomChoice_ = function(array) {
+  return array[goog.math.randomInt(array.length)];
+};
+
+
+/**
+ * Dictionary of words for lorem ipsum.
+ * @type {string}
+ * @private
+ */
+goog.text.LoremIpsum.DICT_ =
+    'a ac accumsan ad adipiscing aenean aliquam aliquet amet ante ' +
+    'aptent arcu at auctor augue bibendum blandit class commodo ' +
+    'condimentum congue consectetuer consequat conubia convallis cras ' +
+    'cubilia cum curabitur curae cursus dapibus diam dictum dictumst ' +
+    'dignissim dis dolor donec dui duis egestas eget eleifend elementum ' +
+    'elit eni enim erat eros est et etiam eu euismod facilisi facilisis ' +
+    'fames faucibus felis fermentum feugiat fringilla fusce gravida ' +
+    'habitant habitasse hac hendrerit hymenaeos iaculis id imperdiet ' +
+    'in inceptos integer interdum ipsum justo lacinia lacus laoreet ' +
+    'lectus leo libero ligula litora lobortis lorem luctus maecenas ' +
+    'magna magnis malesuada massa mattis mauris metus mi molestie ' +
+    'mollis montes morbi mus nam nascetur natoque nec neque netus ' +
+    'nibh nisi nisl non nonummy nostra nulla nullam nunc odio orci ' +
+    'ornare parturient pede pellentesque penatibus per pharetra ' +
+    'phasellus placerat platea porta porttitor posuere potenti praesent ' +
+    'pretium primis proin pulvinar purus quam quis quisque rhoncus ' +
+    'ridiculus risus rutrum sagittis sapien scelerisque sed sem semper ' +
+    'senectus sit sociis sociosqu sodales sollicitudin suscipit ' +
+    'suspendisse taciti tellus tempor tempus tincidunt torquent tortor ' +
+    'tristique turpis ullamcorper ultrices ultricies urna ut varius ve ' +
+    'vehicula vel velit venenatis vestibulum vitae vivamus viverra ' +
+    'volutpat vulputate';
+
+
+/**
+ * A sample to use for generating the distribution of word and sentence lengths
+ * in lorem ipsum.
+ * @type {string}
+ * @private
+ */
+goog.text.LoremIpsum.SAMPLE_ =
+    'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean ' +
+    'commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus ' +
+    'et magnis dis parturient montes, nascetur ridiculus mus. Donec quam ' +
+    'felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla ' +
+    'consequat massa quis enim. Donec pede justo, fringilla vel, aliquet ' +
+    'nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, ' +
+    'venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. ' +
+    'Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean ' +
+    'vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat ' +
+    'vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra ' +
+    'quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius ' +
+    'laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel ' +
+    'augue. Curabitur ullamcorper ultricies nisi. Nam eget dui.\n\n' +
+
+    'Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem ' +
+    'quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam ' +
+    'nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec ' +
+    'odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis ' +
+    'faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus ' +
+    'tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales ' +
+    'sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit ' +
+    'cursus nunc, quis gravida magna mi a libero. Fusce vulputate eleifend ' +
+    'sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, ' +
+    'metus. Nullam accumsan lorem in dui. Cras ultricies mi eu turpis ' +
+    'hendrerit fringilla. Vestibulum ante ipsum primis in faucibus orci ' +
+    'luctus et ultrices posuere cubilia Curae; In ac dui quis mi ' +
+    'consectetuer lacinia.\n\n' +
+
+    'Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet ' +
+    'nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ' +
+    'ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent ' +
+    'adipiscing. Phasellus ullamcorper ipsum rutrum nunc. Nunc nonummy ' +
+    'metus. Vestibulum volutpat pretium libero. Cras id dui. Aenean ut eros ' +
+    'et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, ' +
+    'nonummy id, imperdiet feugiat, pede. Sed lectus. Donec mollis hendrerit ' +
+    'risus. Phasellus nec sem in justo pellentesque facilisis. Etiam ' +
+    'imperdiet imperdiet orci. Nunc nec neque. Phasellus leo dolor, tempus ' +
+    'non, auctor et, hendrerit quis, nisi.\n\n' +
+
+    'Curabitur ligula sapien, tincidunt non, euismod vitae, posuere ' +
+    'imperdiet, leo. Maecenas malesuada. Praesent congue erat at massa. Sed ' +
+    'cursus turpis vitae tortor. Donec posuere vulputate arcu. Phasellus ' +
+    'accumsan cursus velit. Vestibulum ante ipsum primis in faucibus orci ' +
+    'luctus et ultrices posuere cubilia Curae; Sed aliquam, nisi quis ' +
+    'porttitor congue, elit erat euismod orci, ac placerat dolor lectus quis ' +
+    'orci. Phasellus consectetuer vestibulum elit. Aenean tellus metus, ' +
+    'bibendum sed, posuere ac, mattis non, nunc. Vestibulum fringilla pede ' +
+    'sit amet augue. In turpis. Pellentesque posuere. Praesent turpis.\n\n' +
+
+    'Aenean posuere, tortor sed cursus feugiat, nunc augue blandit nunc, eu ' +
+    'sollicitudin urna dolor sagittis lacus. Donec elit libero, sodales ' +
+    'nec, volutpat a, suscipit non, turpis. Nullam sagittis. Suspendisse ' +
+    'pulvinar, augue ac venenatis condimentum, sem libero volutpat nibh, ' +
+    'nec pellentesque velit pede quis nunc. Vestibulum ante ipsum primis in ' +
+    'faucibus orci luctus et ultrices posuere cubilia Curae; Fusce id ' +
+    'purus. Ut varius tincidunt libero. Phasellus dolor. Maecenas vestibulum ' +
+    'mollis diam. Pellentesque ut neque. Pellentesque habitant morbi ' +
+    'tristique senectus et netus et malesuada fames ac turpis egestas.\n\n' +
+
+    'In dui magna, posuere eget, vestibulum et, tempor auctor, justo. In ac ' +
+    'felis quis tortor malesuada pretium. Pellentesque auctor neque nec ' +
+    'urna. Proin sapien ipsum, porta a, auctor quis, euismod ut, mi. Aenean ' +
+    'viverra rhoncus pede. Pellentesque habitant morbi tristique senectus et ' +
+    'netus et malesuada fames ac turpis egestas. Ut non enim eleifend felis ' +
+    'pretium feugiat. Vivamus quis mi. Phasellus a est. Phasellus magna.\n\n' +
+
+    'In hac habitasse platea dictumst. Curabitur at lacus ac velit ornare ' +
+    'lobortis. Curabitur a felis in nunc fringilla tristique. Morbi mattis ' +
+    'ullamcorper velit. Phasellus gravida semper nisi. Nullam vel sem. ' +
+    'Pellentesque libero tortor, tincidunt et, tincidunt eget, semper nec, ' +
+    'quam. Sed hendrerit. Morbi ac felis. Nunc egestas, augue at ' +
+    'pellentesque laoreet, felis eros vehicula leo, at malesuada velit leo ' +
+    'quis pede. Donec interdum, metus et hendrerit aliquet, dolor diam ' +
+    'sagittis ligula, eget egestas libero turpis vel mi. Nunc nulla. Fusce ' +
+    'risus nisl, viverra et, tempor et, pretium in, sapien. Donec venenatis ' +
+    'vulputate lorem.\n\n' +
+
+    'Morbi nec metus. Phasellus blandit leo ut odio. Maecenas ullamcorper, ' +
+    'dui et placerat feugiat, eros pede varius nisi, condimentum viverra ' +
+    'felis nunc et lorem. Sed magna purus, fermentum eu, tincidunt eu, ' +
+    'varius ut, felis. In auctor lobortis lacus. Quisque libero metus, ' +
+    'condimentum nec, tempor a, commodo mollis, magna. Vestibulum ' +
+    'ullamcorper mauris at ligula. Fusce fermentum. Nullam cursus lacinia ' +
+    'erat. Praesent blandit laoreet nibh.\n\n' +
+
+    'Fusce convallis metus id felis luctus adipiscing. Pellentesque egestas, ' +
+    'neque sit amet convallis pulvinar, justo nulla eleifend augue, ac ' +
+    'auctor orci leo non est. Quisque id mi. Ut tincidunt tincidunt erat. ' +
+    'Etiam feugiat lorem non metus. Vestibulum dapibus nunc ac augue. ' +
+    'Curabitur vestibulum aliquam leo. Praesent egestas neque eu enim. In ' +
+    'hac habitasse platea dictumst. Fusce a quam. Etiam ut purus mattis ' +
+    'mauris sodales aliquam. Curabitur nisi. Quisque malesuada placerat ' +
+    'nisl. Nam ipsum risus, rutrum vitae, vestibulum eu, molestie vel, ' +
+    'lacus.\n\n' +
+
+    'Sed augue ipsum, egestas nec, vestibulum et, malesuada adipiscing, ' +
+    'dui. Vestibulum facilisis, purus nec pulvinar iaculis, ligula mi ' +
+    'congue nunc, vitae euismod ligula urna in dolor. Mauris sollicitudin ' +
+    'fermentum libero. Praesent nonummy mi in odio. Nunc interdum lacus sit ' +
+    'amet orci. Vestibulum rutrum, mi nec elementum vehicula, eros quam ' +
+    'gravida nisl, id fringilla neque ante vel mi. Morbi mollis tellus ac ' +
+    'sapien. Phasellus volutpat, metus eget egestas mollis, lacus lacus ' +
+    'blandit dui, id egestas quam mauris ut lacus. Fusce vel dui. Sed in ' +
+    'libero ut nibh placerat accumsan. Proin faucibus arcu quis ante. In ' +
+    'consectetuer turpis ut velit. Nulla sit amet est. Praesent metus ' +
+    'tellus, elementum eu, semper a, adipiscing nec, purus. Cras risus ' +
+    'ipsum, faucibus ut, ullamcorper id, varius ac, leo. Suspendisse ' +
+    'feugiat. Suspendisse enim turpis, dictum sed, iaculis a, condimentum ' +
+    'nec, nisi. Praesent nec nisl a purus blandit viverra. Praesent ac ' +
+    'massa at ligula laoreet iaculis. Nulla neque dolor, sagittis eget, ' +
+    'iaculis quis, molestie non, velit.\n\n' +
+
+    'Mauris turpis nunc, blandit et, volutpat molestie, porta ut, ligula. ' +
+    'Fusce pharetra convallis urna. Quisque ut nisi. Donec mi odio, faucibus ' +
+    'at, scelerisque quis, convallis in, nisi. Suspendisse non nisl sit amet ' +
+    'velit hendrerit rutrum. Ut leo. Ut a nisl id ante tempus hendrerit. ' +
+    'Proin pretium, leo ac pellentesque mollis, felis nunc ultrices eros, ' +
+    'sed gravida augue augue mollis justo. Suspendisse eu ligula. Nulla ' +
+    'facilisi. Donec id justo. Praesent porttitor, nulla vitae posuere ' +
+    'iaculis, arcu nisl dignissim dolor, a pretium mi sem ut ipsum. ' +
+    'Curabitur suscipit suscipit tellus.\n\n' +
+
+    'Praesent vestibulum dapibus nibh. Etiam iaculis nunc ac metus. Ut id ' +
+    'nisl quis enim dignissim sagittis. Etiam sollicitudin, ipsum eu ' +
+    'pulvinar rutrum, tellus ipsum laoreet sapien, quis venenatis ante ' +
+    'odio sit amet eros. Proin magna. Duis vel nibh at velit scelerisque ' +
+    'suscipit. Curabitur turpis. Vestibulum suscipit nulla quis orci. Fusce ' +
+    'ac felis sit amet ligula pharetra condimentum. Maecenas egestas arcu ' +
+    'quis ligula mattis placerat. Duis lobortis massa imperdiet quam. ' +
+    'Suspendisse potenti.\n\n' +
+
+    'Pellentesque commodo eros a enim. Vestibulum turpis sem, aliquet eget, ' +
+    'lobortis pellentesque, rutrum eu, nisl. Sed libero. Aliquam erat ' +
+    'volutpat. Etiam vitae tortor. Morbi vestibulum volutpat enim. Aliquam ' +
+    'eu nunc. Nunc sed turpis. Sed mollis, eros et ultrices tempus, mauris ' +
+    'ipsum aliquam libero, non adipiscing dolor urna a orci. Nulla porta ' +
+    'dolor. Class aptent taciti sociosqu ad litora torquent per conubia ' +
+    'nostra, per inceptos hymenaeos.\n\n' +
+
+    'Pellentesque dapibus hendrerit tortor. Praesent egestas tristique nibh. ' +
+    'Sed a libero. Cras varius. Donec vitae orci sed dolor rutrum auctor. ' +
+    'Fusce egestas elit eget lorem. Suspendisse nisl elit, rhoncus eget, ' +
+    'elementum ac, condimentum eget, diam. Nam at tortor in tellus interdum ' +
+    'sagittis. Aliquam lobortis. Donec orci lectus, aliquam ut, faucibus ' +
+    'non, euismod id, nulla. Curabitur blandit mollis lacus. Nam adipiscing. ' +
+    'Vestibulum eu odio.\n\n' +
+
+    'Vivamus laoreet. Nullam tincidunt adipiscing enim. Phasellus tempus. ' +
+    'Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique ' +
+    'sapien, a accumsan nisi mauris ac eros. Fusce neque. Suspendisse ' +
+    'faucibus, nunc et pellentesque egestas, lacus ante convallis tellus, ' +
+    'vitae iaculis lacus elit id tortor. Vivamus aliquet elit ac nisl. Fusce ' +
+    'fermentum odio nec arcu. Vivamus euismod mauris. In ut quam vitae ' +
+    'odio lacinia tincidunt. Praesent ut ligula non mi varius sagittis. ' +
+    'Cras sagittis. Praesent ac sem eget est egestas volutpat. Vivamus ' +
+    'consectetuer hendrerit lacus. Cras non dolor. Vivamus in erat ut urna ' +
+    'cursus vestibulum. Fusce commodo aliquam arcu. Nam commodo suscipit ' +
+    'quam. Quisque id odio. Praesent venenatis metus at tortor pulvinar ' +
+    'varius.\n\n';
+
+/**
+ * Sample that the generated text is based on .
+ * @type {string}
+ */
+goog.text.LoremIpsum.prototype.sample_ = goog.text.LoremIpsum.SAMPLE_;
+
+
+/**
+ * Dictionary of words.
+ * @type {string}
+ */
+goog.text.LoremIpsum.prototype.dictionary_ = goog.text.LoremIpsum.DICT_;
+goog.provide('feng.apps.Test');
+
+goog.require('goog.dom');
+goog.require('goog.events');
+goog.require('goog.fx.anim');
+goog.require('goog.text.LoremIpsum');
+goog.require('feng.fx.FloatText');
+
+
+feng.apps.Test = function() {
+
+	goog.base(this);
+	
+	goog.fx.anim.setAnimationWindow(window);
+
+	var lorem = new goog.text.LoremIpsum().generateParagraph();
+	var floatText = new feng.fx.FloatText( lorem, 40, 10 );
+	floatText.animateIn();
+
+	goog.events.listenOnce(document.body, 'click', function() {
+		floatText.animateOut();
+	});
+
+};
+goog.inherits(feng.apps.Test, goog.events.EventTarget);
+goog.addSingletonGetter(feng.apps.Test);goog.provide('feng');
 
 goog.require('goog.Uri');
 goog.require('feng.apps.Main');
-goog.require('feng.apps.Demo');
 goog.require('feng.apps.Test');
 goog.require('feng.apps.PathEdit');
 
@@ -62048,7 +61372,7 @@ goog.require('feng.apps.PathEdit');
 /**
  * @expose
  */
-feng.version = '11.30.14';
+feng.version = '12.3.14';
 
 
 feng.Config = {};
@@ -62079,10 +61403,6 @@ feng.init = function( config ) {
 	switch(app) {
 		case 'main':
 		feng.apps.Main.getInstance();
-		break;
-
-		case 'demo':
-		feng.apps.Demo.getInstance();
 		break;
 
 		case 'pathedit':
