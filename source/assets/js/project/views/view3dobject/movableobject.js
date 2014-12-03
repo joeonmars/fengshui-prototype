@@ -12,8 +12,8 @@ feng.views.view3dobject.MovableObject = function( object3d, data, view3d ){
 
   goog.base(this, object3d, data, view3d);
 
-  var dropParentObject = this._view3d.getView3dObject( this.data.parent );
-  this.dropParent = dropParentObject ? dropParentObject.object3d : this._view3d.scene;
+  this.dropParent = null;
+  this.range = this.data.range;
 
   this.hasPicked = false;
   this.hasDropped = false;
@@ -21,6 +21,15 @@ feng.views.view3dobject.MovableObject = function( object3d, data, view3d ){
   this._pickDelay = new goog.async.Delay(this.pick, 1000, this);
 };
 goog.inherits(feng.views.view3dobject.MovableObject, feng.views.view3dobject.TipObject);
+
+
+feng.views.view3dobject.MovableObject.prototype.init = function(){
+
+  goog.base(this, 'init');
+
+  var dropParentObject = this._view3d.getView3dObject( this.data.parent );
+  this.dropParent = dropParentObject ? dropParentObject.object3d : this._view3d.scene;
+};
 
 
 feng.views.view3dobject.MovableObject.prototype.getBoundingBox = function(){

@@ -155,7 +155,7 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.dining-chair-texture",
 				position: new THREE.Vector3(-47.69, 0, -54.87),
 				rotation: new THREE.Euler(0, 0, 0),
-				range: 50,
+				range: 140,
 				tipKey: 'studio.livingroom.diningchair'
 			},
 			'window-books':	{
@@ -512,7 +512,7 @@ feng.models.View3D.Data = {
 				texture: "house.livingroom.knife-on-cabinet-texture",
 				position: new THREE.Vector3(-6.87, -2.21, 10.82),
 				rotation: new THREE.Euler(0, 0, 0),
-				range: 50,
+				range: 100,
 				parent: 'drawer',
 				tipKey: 'house.livingroom.knife'
 			},
@@ -865,7 +865,7 @@ feng.models.View3D.Data = {
 				texture: "house.boysroom.computer-on-table-texture",
 				position: new THREE.Vector3(63.04, 37.75, -97.24),
 				rotation: new THREE.Euler(0, 3.14, 0),
-				range: 50,
+				range: 100,
 				parent: 'desk',
 				tipKey: 'house.boysroom.computer'
 			},
@@ -950,19 +950,18 @@ feng.models.View3D.Data = {
 				texture: "house.boysroom.bear-in-drawer-texture",
 				position: new THREE.Vector3(-50.04, 33.70, -27.77),
 				rotation: new THREE.Euler(0, -1.57, 0),
-				range: 50,
+				range: 100,
 				parent: 'bed',
 				tipKey: 'house.boysroom.bear'
 			},
 			'handheld': {
-				Class: 'tip',
-				camera: {
-					position: new THREE.Vector3(-29, 56, 16),
-					rotation: new THREE.Euler(-0.70, 1.55, 0.00, 'YXZ'),
-					fov: 20
-				},
+				Class: "movable",
 				texture: "house.boysroom.handheld-nightstand-texture",
-				tipKey: 'house.boysroom.handheld'
+				tipKey: 'house.boysroom.handheld',
+				position: new THREE.Vector3(-43.73, 69.26, -100.78),
+				rotation: new THREE.Euler(0, 1.57, 0),
+				range: 60,
+				parent: 'shelf-left'
 			},
 			'window': {
 				texture: "house.boysroom.window-texture"
@@ -1009,7 +1008,7 @@ feng.models.View3D.Data = {
 				texture: "house.homeoffice.swivel-chair-texture",
 				position: new THREE.Vector3(-40, 0, 9),
 				rotation: new THREE.Euler(0, 0, 0),
-				range: 50,
+				range: 200,
 				tipKey: 'house.homeoffice.deskchair'
 			},
 			'storage': {
@@ -1024,7 +1023,7 @@ feng.models.View3D.Data = {
 				tipKey: 'house.homeoffice.setsquare',
 				position: new THREE.Vector3(-36.95, 107.05, 137.10),
 				rotation: new THREE.Euler(0, 1.57, 0.18),
-				range: 50,
+				range: 140,
 				parent: 'block-shelf-1'
 			},
 			'carpet': {

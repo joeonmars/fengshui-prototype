@@ -25,6 +25,8 @@ feng.views.sections.controls.DropButton.prototype.activate = function( movableOb
 
   this._movableObject = movableObject;
 
+  goog.dom.classes.enable( this.domElement, 'hidden', false );
+
   this.fadeIn();
 
 	this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
@@ -41,19 +43,27 @@ feng.views.sections.controls.DropButton.prototype.deactivate = function(){
 
   this._movableObject = null;
 
+  goog.dom.classes.enable( this.domElement, 'hidden', true );
+
   goog.fx.anim.unregisterAnimation( this );
 };
 
 
 feng.views.sections.controls.DropButton.prototype.fadeIn = function(){
 
-	goog.dom.classes.addRemove( this.domElement, 'fadeOut', 'fadeIn' );
+  if( !goog.dom.classes.has(this.domElement, 'fadeIn') ) {
+
+    goog.dom.classes.addRemove( this.domElement, 'fadeOut', 'fadeIn' );
+  }
 };
 
 
 feng.views.sections.controls.DropButton.prototype.fadeOut = function(){
 
-	goog.dom.classes.addRemove( this.domElement, 'fadeIn', 'fadeOut' );
+  if( !goog.dom.classes.has(this.domElement, 'fadeOut') ) {
+
+    goog.dom.classes.addRemove( this.domElement, 'fadeIn', 'fadeOut' );
+  }
 };
 
 
@@ -81,6 +91,17 @@ feng.views.sections.controls.DropButton.prototype.onAnimationFrame = function(no
 
   var pos3d = this._movableObject.getDestination();
   var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, camera, viewSize );
-  
-  goog.style.setStyle( this.domElement, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)' );
+
+  var controlPosition = this._view3d.modeController.control.getPosition();
+  var distance = controlPosition.distanceTo( pos3d );
+console.log(distance, this._movableObject.range);
+  var shouldShow = (distance <= this._movableObject.range);
+
+  goog.style.setStyle( this.domElement, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)');
+
+  if(shouldShow) {
+    this.fadeIn();
+  }else {
+    this.fadeOut();
+  }
 };

@@ -339,22 +339,27 @@ $border_size: 7px;
 	@include absoluteTopLeft;
 	width: 20em;
 	height: 0;
-	@include chromeOSPointerCursor;
+	@include single-transition(opacity, .5s, $easeOutCubic);
 
-	&:hover{
-
+	&.hidden{
+		display: none;
 	}
 
-	&.fadeIn{
-
+	&:not(.hidden){
+		display: block;
+		@include chromeOSPointerCursor;
+		
 		>.circle{
 			@include animation(pulse 1.5s infinite);
 		}
 	}
 
+	&.fadeIn{
+		opacity: 1;
+	}
+
 	&.fadeOut{
-		
-		display: none;
+		opacity: 0;
 	}
 
 	>.circle{

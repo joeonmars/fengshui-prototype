@@ -233,8 +233,8 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderMask = function
 
 		maskedObject.enableRender();
 		this._view3d.arms.enableRender();
-
-		if(maskedObject.hasPicked) {
+		
+		if(maskedObject.hasPicked && maskedObject.dropParent && maskedObject.dropParent.view3dObject) {
 			maskedObject.dropParent.view3dObject.enableRender();
 		}
 	}
