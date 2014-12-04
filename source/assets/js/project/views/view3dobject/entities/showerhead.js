@@ -200,6 +200,9 @@ feng.views.view3dobject.entities.Showerhead.prototype.onDragStart = function(e){
 
 feng.views.view3dobject.entities.Showerhead.prototype.onDragEnd = function(e){
 
+  this._lastDeg = 0;
+  this._totalDeg = 0;
+
   var control = this._view3d.modeController.control;
 
   var prop = {
