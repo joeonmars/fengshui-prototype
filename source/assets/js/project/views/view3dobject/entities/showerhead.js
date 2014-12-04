@@ -37,7 +37,7 @@ feng.views.view3dobject.entities.Showerhead = function( object3d, data, view3d )
 
   this._totalDeg = 0;
   this._lastDeg = 0;
-  this._totalCount = 4;
+  this._totalCount = 6;
   this._count = 0;
 };
 goog.inherits(feng.views.view3dobject.entities.Showerhead, feng.views.view3dobject.TipObject);
@@ -62,16 +62,19 @@ feng.views.view3dobject.entities.Showerhead.prototype.onCameraIn = function(){
     return;
   }
 
-  this._waterPositionTweener = TweenMax.fromTo(this._waterdrop.position, 1, {
+  this._waterPositionTweener = TweenMax.fromTo(this._waterdrop.position, 1.5, {
     'y': this._waterdropStartY
   },{
     'ease': Expo.easeIn,
-    'y': this._waterdropStartY - 200,
+    'y': this._waterdropStartY - 180,
     'repeat': -1,
-    'repeatDelay': 1
+    'repeatDelay': 1,
+    'onRepeat': feng.soundController.playSfx,
+    'onRepeatParams': ['water-drop'],
+    'onRepeatScope': feng.soundController
   });
 
-  this._waterScaleTweener = TweenMax.fromTo(this._waterdrop.scale, 1, {
+  this._waterScaleTweener = TweenMax.fromTo(this._waterdrop.scale, 1.5, {
     'y': 1
   },{
     'ease': Expo.easeIn,

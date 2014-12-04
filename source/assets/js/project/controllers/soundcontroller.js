@@ -85,6 +85,10 @@ feng.controllers.SoundController = function(){
     'refrigerator-close': {
       'urls': urls('sfx/refrigerator-close'),
       'onload': onSoundLoad
+    },
+    'water-drop': {
+      'urls': urls('sfx/water-drop'),
+      'onload': onSoundLoad
     }
   };
 
@@ -150,6 +154,7 @@ feng.controllers.SoundController = function(){
       var tweener = {
         sound: sound,
         volume: sound.volume(),
+        pauseAfterComplete: false,
         stopAfterComplete: false
       };
       this._tweeners[ soundType ][ soundId ] = tweener;
@@ -166,7 +171,9 @@ feng.controllers.SoundController = function(){
   this._mix = {
     'studio': {
       position: 0,
-      timer: new goog.Timer(25000),
+      time: 0,
+      duration: 25000,
+      timer: new goog.Timer(1000),
       sounds: [
         this.getLoop('optimize-loop-1'),
         this.getAmbient('studio'),
@@ -180,7 +187,9 @@ feng.controllers.SoundController = function(){
     },
     'house': {
       position: 0,
-      timer: new goog.Timer(25000),
+      time: 0,
+      duration: 25000,
+      timer: new goog.Timer(1000),
       sounds: [
         this.getLoop('optimize-loop-1'),
         this.getAmbient('house'),
@@ -196,8 +205,7 @@ feng.controllers.SoundController = function(){
 
   goog.object.forEach(this._mix, function(mix) {
 
-    var onMixTick = goog.bind(this.onMixTick, mix);
-    mix.timer.listen( goog.Timer.TICK, onMixTick );
+    mix.timer.listen( goog.Timer.TICK, this.onMixTick, false, mix );
 
   }, this);
 
@@ -359,14 +367,14 @@ feng.controllers.SoundController.prototype.playLoop = function( id ){
 };
 
 
-feng.controllers.SoundController.prototype.playMix = function( mixId, duration ){
+feng.controllers.SoundController.prototype.playMix = function( mixId, duration, reset ){
   
   var mix = this._mix[ mixId ];
 
   if(mix.timer.enabled) return;
   else mix.timer.start();
 
-  mix.position = 0;
+  mix.position = reset ? 0 : mix.position;
 
   var sound = mix.sounds[ mix.position ];
 
@@ -383,7 +391,7 @@ feng.controllers.SoundController.prototype.playMix = function( mixId, duration )
 };
 
 
-feng.controllers.SoundController.prototype.stopMix = function( mixId, duration ){
+feng.controllers.SoundController.prototype.stopMix = function( mixId, duration, reset ){
   
   var mix = this._mix[ mixId ];
 
@@ -403,13 +411,14 @@ feng.controllers.SoundController.prototype.stopMix = function( mixId, duration )
     this.fadeLoop( sound.soundId, null, 0, duration, true );
   }
 
-  mix.position = 0;
+  mix.position = reset ? 0 : mix.position;
 };
 
 
-feng.controllers.SoundController.prototype.fade = function( tweener, from, to, duration, stopAfterComplete ){
+feng.controllers.SoundController.prototype.fade = function( tweener, from, to, duration, pauseAfterComplete, stopAfterComplete ){
 
   tweener.volume = goog.isNumber(from) ? from : tweener.sound.volume();
+  tweener.pauseAfterComplete = pauseAfterComplete;
   tweener.stopAfterComplete = stopAfterComplete;
 
   var duration = duration || 1;
@@ -427,23 +436,23 @@ feng.controllers.SoundController.prototype.fade = function( tweener, from, to, d
 };
 
 
-feng.controllers.SoundController.prototype.fadeLoop = function( id, from, to, duration, stopAfterComplete ){
+feng.controllers.SoundController.prototype.fadeLoop = function( id, from, to, duration, pauseAfterComplete, stopAfterComplete ){
 
   var sound = this.playLoop( id );
 
   var tweener = this.getLoopTweener( id );
 
-  this.fade( tweener, from, to, duration, stopAfterComplete );
+  this.fade( tweener, from, to, duration, pauseAfterComplete, stopAfterComplete );
 };
 
 
-feng.controllers.SoundController.prototype.fadeAmbient = function( id, from, to, duration, stopAfterComplete ){
+feng.controllers.SoundController.prototype.fadeAmbient = function( id, from, to, duration, pauseAfterComplete, stopAfterComplete ){
 
   var sound = this.playAmbient( id );
 
   var tweener = this.getAmbientTweener( id );
   
-  this.fade( tweener, from, to, duration, stopAfterComplete );
+  this.fade( tweener, from, to, duration, pauseAfterComplete, stopAfterComplete );
 };
 
 
@@ -460,9 +469,14 @@ feng.controllers.SoundController.prototype.onFadeComplete = function( param ){
 
   var sound = param.sound;
   var stopAfterComplete = param.stopAfterComplete;
+  var pauseAfterComplete = param.pauseAfterComplete;
 
   if(stopAfterComplete === true) {
     sound.stop();
+  }
+
+  if(pauseAfterComplete === true) {
+    sound.pause();
   }
 };
 
@@ -470,6 +484,25 @@ feng.controllers.SoundController.prototype.onFadeComplete = function( param ){
 feng.controllers.SoundController.prototype.onMixTick = function( e ){
 
   var mix = this;
+
+  var shouldSwitch = false;
+
+  if(mix.time >= mix.duration) {
+
+    shouldSwitch = true;
+
+    mix.time = 0;
+
+  }else {
+
+    mix.time += 1000;
+  }
+
+  if(!shouldSwitch) {
+    
+    return;
+  }
+
   var sounds = mix.sounds;
 
   var lastSound = sounds[ mix.position ];

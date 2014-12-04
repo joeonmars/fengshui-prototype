@@ -115,7 +115,7 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 	}else {
 
 		feng.soundController.playMix( this._view3d.sectionId, 6 );
-		feng.soundController.fadeLoop( 'closeup', null, 0, 3, true );
+		feng.soundController.fadeLoop( 'closeup', null, 0, 3, true, true );
 	}
 
 	//

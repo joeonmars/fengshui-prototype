@@ -604,7 +604,7 @@ feng.views.View3D.prototype.onBookAnimateIn = function(e){
 	this.pause();
 
 	feng.soundController.stopMix( this.sectionId );
-	feng.soundController.fadeLoop( 'book', 0, 1, 2, false );
+	feng.soundController.fadeLoop( 'book', 0, 1, 2 );
 };
 
 
@@ -613,7 +613,7 @@ feng.views.View3D.prototype.onBookAnimateOut = function(e){
 	this.resume();
 
 	feng.soundController.playMix( this.sectionId );
-  	feng.soundController.fadeLoop( 'book', null, 0, 2, true );
+  	feng.soundController.fadeLoop( 'book', null, 0, 2, true, true );
 };
 
 
