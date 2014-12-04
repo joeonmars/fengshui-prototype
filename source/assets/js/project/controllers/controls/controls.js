@@ -178,6 +178,21 @@ feng.controllers.controls.Controls.prototype.reset = function () {
 };
 
 
+feng.controllers.controls.Controls.prototype.lerp = function( startPosition, endPosition, startRotation, endRotation, startFov, endFov, t ) {
+
+	var position = this.getPosition();
+	var rotation = this.getRotation();
+
+	var lerpPosition = position.copy( startPosition ).lerp( endPosition, t );
+	var lerpRotation = feng.utils.ThreeUtils.getLerpedEuler( startRotation, endRotation, t, rotation );
+	var lerpFov = goog.math.lerp( startFov, endFov, t );
+
+	this.setPosition( lerpPosition );
+	this.setRotation( lerpRotation );
+	this.setFov( lerpFov );
+};
+
+
 feng.controllers.controls.Controls.prototype.activate = function() {
 
 	this._eventHandler.listen(this._domElement, 'click', this.onClick, false, this);

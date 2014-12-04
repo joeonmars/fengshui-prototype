@@ -303,9 +303,17 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.towel-texture"
 			},
 			'showerhead': {
-				Class: 'tip',
+				Class: 'showerhead',
 				texture: "studio.bathroom.showerhead-texture",
-				tipKey: 'studio.bathroom.showerhead'
+				tipKey: 'studio.bathroom.showerhead',
+				camera: {
+					position: new THREE.Vector3(11.00, 84.00, 77.00),
+					rotation: new THREE.Euler(0.16, -1.59, 0.00, 'YXZ'),
+					fov: 46.00
+				}
+			},
+			'waterdrop': {
+				glass: true
 			},
 			'shower-handle': {
 				texture: "studio.bathroom.shower-handle-texture"

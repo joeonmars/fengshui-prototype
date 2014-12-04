@@ -40,6 +40,7 @@ goog.require('feng.views.view3dobject.entities.FruitPlate');
 goog.require('feng.views.view3dobject.entities.GlassBowl');
 goog.require('feng.views.view3dobject.entities.Wallpaper');
 goog.require('feng.views.view3dobject.entities.Windows');
+goog.require('feng.views.view3dobject.entities.Showerhead');
 
 
 /**
@@ -476,6 +477,7 @@ feng.views.View3D.prototype.initScene = function() {
 		'sewingmachine': feng.views.view3dobject.entities.SewingMachine,
 		'wallpaper': feng.views.view3dobject.entities.Wallpaper,
 		'windows': feng.views.view3dobject.entities.Windows,
+		'showerhead': feng.views.view3dobject.entities.Showerhead,
 		'fruitplate': feng.views.view3dobject.entities.FruitPlate,
 		'glassbowl': feng.views.view3dobject.entities.GlassBowl
 	};

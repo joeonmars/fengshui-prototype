@@ -6,7 +6,7 @@ goog.require('goog.math');
 /**
  * @constructor
  */
-feng.utils.ThreeUtils.getObjectsBy2DPosition = function ( clientX, clientY, objects, camera, viewSize, recursive ) {
+feng.utils.ThreeUtils.getObjectsBy2DPosition = function( clientX, clientY, objects, camera, viewSize, recursive ) {
 
 	// get camera's world position
 	camera.updateMatrixWorld();
