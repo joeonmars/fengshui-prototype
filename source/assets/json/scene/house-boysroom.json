@@ -928,8 +928,8 @@
 				"uuid": "D6143CB6-54F3-47B6-9257-1A76F5904151",
 				"type": "HemisphereLight",
 				"name": "HemisphereLight",
-				"color": 16776434,
-				"groundColor": 14872051,
+				"color": 16777215,
+				"groundColor": 16777215,
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,200,200,200,1]
 			},
 			{

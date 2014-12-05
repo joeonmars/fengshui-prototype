@@ -286,6 +286,7 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.wall-outer-texture"
 			},
 			'door-frame':	{
+				castShadow: true,
 				texture: "studio.bathroom.door-frame-texture"
 			},
 			'ceiling':	{

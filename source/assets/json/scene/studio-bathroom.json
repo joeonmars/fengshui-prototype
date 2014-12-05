@@ -725,7 +725,7 @@
 			"emissive": 0
 		}],
 	"object": {
-		"uuid": "30C88199-0F10-46A8-B607-1F9859F28319",
+		"uuid": "A090B60B-AD11-4860-8D8B-B8013940F00E",
 		"type": "Scene",
 		"name": "studio-bathroom",
 		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
@@ -734,8 +734,8 @@
 				"uuid": "B7DB66E1-DBD2-41F9-A685-EB64056FC382",
 				"type": "HemisphereLight",
 				"name": "Hemisphere",
-				"color": 16776693,
-				"groundColor": 15266037,
+				"color": 16777215,
+				"groundColor": 16777215,
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,200,200,-200,1]
 			},
 			{

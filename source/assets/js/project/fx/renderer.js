@@ -52,7 +52,7 @@ feng.fx.Renderer = function(canvas, scene, camera){
 
 	this._hueSaturationPass = new THREE.ShaderPass( THREE.HueSaturationShader );
 
-	this._bloomPass = new THREE.BloomPass(.25, 25, 4);
+	this._bloomPass = new THREE.BloomPass(.20);
 
 	this._globalBrightness = 0;
 	this._globalContrast = 0;

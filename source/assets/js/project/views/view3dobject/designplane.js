@@ -42,9 +42,9 @@ feng.views.view3dobject.DesignPlane.prototype.createTextures = function(){
   canvas.width = size;
   canvas.height = size;
   var ctx = canvas.getContext("2d");
-  ctx.fillStyle = "#f5f5f5";
+  ctx.fillStyle = "#e7e7e7";
   ctx.fillRect(0, 0, size, size);
-  ctx.strokeStyle = "#414141";
+  ctx.strokeStyle = "#aaaaaa";
   ctx.strokeRect(0, 0, size, size);
 
   var texture = new THREE.Texture( canvas );
