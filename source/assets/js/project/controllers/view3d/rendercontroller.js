@@ -26,20 +26,22 @@ feng.controllers.view3d.RenderController = function( view3d ){
   this._minVignette = 1;
   this._maxVignette = 3;
 
-  this._blur = 0;
-  this._brightness = 0;
-  this._contrast = 0;
-  this._saturation = 0;
-  this._vignette = this._minVignette;
+  this.blur = 0;
+  this.brightness = 0;
+  this.globalBrightness = 0;
+  this.globalContrast = 0;
+  this.contrast = 0;
+  this.saturation = 0;
+  this.vignette = this._minVignette;
 
   this._closeUpTweener = TweenMax.fromTo(this, .5, {
-  	_blur: 0,
-  	_brightness: 0,
-  	_contrast: 0
+  	blur: 0,
+  	brightness: 0,
+  	contrast: 0
   }, {
-  	_blur: this._maxBlur,
-  	_brightness: this._minBrightness,
-  	_contrast: this._minContrast,
+  	blur: this._maxBlur,
+  	brightness: this._minBrightness,
+  	contrast: this._minContrast,
   	'ease': Quad.easeInOut,
   	'paused': true,
   	'onStart': this.onCloseUpStart,
@@ -49,22 +51,22 @@ feng.controllers.view3d.RenderController = function( view3d ){
   });
 
   this._vignetteTweener = TweenMax.fromTo(this, 1, {
-  	_vignette: this._minVignette
+  	vignette: this._minVignette
   }, {
-  	_vignette: this._maxVignette,
+  	vignette: this._maxVignette,
   	'paused': true
   });
 
   this._brightnessTweener = TweenMax.fromTo(this, .5, {
-  	_brightness: 0,
-  	_contrast: 0,
-  	_blur: this._blur,
-  	_saturation: 0
+  	brightness: 0,
+  	contrast: 0,
+  	blur: this.blur,
+  	saturation: 0
   }, {
-  	_brightness: -.65,
-  	_contrast: -.2,
-  	_blur: 6,
-  	_saturation: -.65,
+  	brightness: -.65,
+  	contrast: -.2,
+  	blur: 6,
+  	saturation: -.65,
   	'ease': Quad.easeInOut,
   	'paused': true,
   	'onStart': this.onBlurInStart,
@@ -100,28 +102,28 @@ feng.controllers.view3d.RenderController.prototype.updateByMode = function(mode,
 
 		this._maskedObject = modeControl._activeObject;
 
-		if(!this._closeUpTweener.isActive() && this._blur < this._maxBlur) {
+		if(!this._closeUpTweener.isActive() && this.blur < this._maxBlur) {
 			this._closeUpTweener.play();
 		}
 	}
 
 	if(modeToCloseUp || modeToDesign) {
 
-		if(!this._vignetteTweener.isActive() && this._vignette < this._maxVignette) {
+		if(!this._vignetteTweener.isActive() && this.vignette < this._maxVignette) {
 			this._vignetteTweener.play();
 		}
 	}
 
 	if(notCloseUp) {
 
-		if(!this._closeUpTweener.reversed() && this._blur > 0) {
+		if(!this._closeUpTweener.reversed() && this.blur > 0) {
 			this._closeUpTweener.reverse();
 		}
 	}
 
 	if(notCloseUp && notDesign) {
 
-		if(!this._vignetteTweener.reversed() && this._vignette > this._minVignette) {
+		if(!this._vignetteTweener.reversed() && this.vignette > this._minVignette) {
 			this._vignetteTweener.reverse();
 		}
 	}
@@ -179,7 +181,7 @@ feng.controllers.view3d.RenderController.prototype.onBlurInStart = function() {
 
 feng.controllers.view3d.RenderController.prototype.onBlurOutComplete = function() {
 
-	if(this._blur === 0) {
+	if(this.blur === 0) {
 		this._renderer._blurTexturePass.enabled = false;
 	}
 };
@@ -187,11 +189,12 @@ feng.controllers.view3d.RenderController.prototype.onBlurOutComplete = function(
 
 feng.controllers.view3d.RenderController.prototype.onBeforeRender = function() {
 
-	this._renderer.setBlur( this._blur, this._blur );
-	this._renderer.setBrightness( this._brightness );
-	this._renderer.setContrast( this._contrast );
-	this._renderer.setSaturation( this._saturation );
-	this._renderer.setVignette( this._vignette );
+	this._renderer.setBlur( this.blur, this.blur );
+	this._renderer.setBrightness( this.brightness );
+	this._renderer.setContrast( this.contrast );
+	this._renderer.setGlobalBrightnessContrast( this.globalBrightness, this.globalContrast );
+	this._renderer.setSaturation( this.saturation );
+	this._renderer.setVignette( this.vignette );
 };
 
 

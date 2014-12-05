@@ -35,7 +35,7 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 		toTarget: ev.toTarget,
 		nextMode: ev.nextMode
 	};
-	
+
 	var dur = goog.math.clamp( 1, 2, goog.math.lerp( 1, 2, fromPosition.distanceTo( toPosition ) / 100 ));
 
 	this._tweener = TweenMax.to( prop, dur, {
@@ -105,6 +105,12 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 			});
 		}
 	}
+
+	//
+	TweenMax.to(this._view3d.renderController, dur, {
+		globalBrightness: 0,
+		'ease': Expo.easeOut
+	});
 
 	// toggle sound loops
 	if(nextMode === feng.controllers.view3d.ModeController.Mode.CLOSE_UP) {

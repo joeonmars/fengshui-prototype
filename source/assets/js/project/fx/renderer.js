@@ -54,9 +54,13 @@ feng.fx.Renderer = function(canvas, scene, camera){
 
 	this._bloomPass = new THREE.BloomPass(.25, 25, 4);
 
-	this._adjustmentBrightnessContrastPass = new THREE.ShaderPass( THREE.BrightnessContrastShader );
-	this._adjustmentBrightnessContrastPass.uniforms['brightness'].value = 0.05;
-	this._adjustmentBrightnessContrastPass.uniforms['contrast'].value = 0.05;
+	this._globalBrightness = 0;
+	this._globalContrast = 0;
+	this._baseGlobalBrightness = 0.05;
+	this._baseGlobalContrast = 0.05;
+
+	this._globalBrightnessContrastPass = new THREE.ShaderPass( THREE.BrightnessContrastShader );
+	this.setGlobalBrightnessContrast( this._globalBrightness, this._globalContrast );
 
 	this._maskPass = new THREE.MaskPass( scene );
 	this._maskPass.enabled = false;
@@ -124,7 +128,7 @@ feng.fx.Renderer = function(canvas, scene, camera){
 
 	this._outputComposer.addPass( this._hueSaturationPass );
 
-	this._outputComposer.addPass( this._adjustmentBrightnessContrastPass );
+	this._outputComposer.addPass( this._globalBrightnessContrastPass );
 
 	this._outputComposer.addPass( this._vignettePass );
 
@@ -165,6 +169,16 @@ feng.fx.Renderer.prototype.setBlur = function( x, y ){
 
 	this._blurXPass.uniforms[ 'delta' ].value.x = blurAmountX;
 	this._blurYPass.uniforms[ 'delta' ].value.y = blurAmountY;
+};
+
+
+feng.fx.Renderer.prototype.setGlobalBrightnessContrast = function( brightness, contrast ){
+
+	this._globalBrightness = brightness;
+	this._globalContrast = contrast;
+
+	this._globalBrightnessContrastPass.uniforms['brightness'].value = this._baseGlobalBrightness + this._globalBrightness;
+	this._globalBrightnessContrastPass.uniforms['contrast'].value = this._baseGlobalContrast + this._globalContrast;
 };
 
 

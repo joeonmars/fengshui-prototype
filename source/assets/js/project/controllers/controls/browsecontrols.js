@@ -112,6 +112,7 @@ feng.controllers.controls.BrowseControls.prototype.activate = function () {
 	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this );
 	this._eventHandler.listen( this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this );
 	this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
+	this._eventHandler.listen( this, feng.events.EventType.CLICK_GATEWAY, this.onClickGateway, false, this );
 
 	this._objectSelector.activate( this._objectSelectorCallbacks );
 };
@@ -248,24 +249,6 @@ feng.controllers.controls.BrowseControls.prototype.onMouseWheel = function ( e )
 		toPosition: toPosition,
 		mousewheel: true
 	});
-
-	
-	/*
-	var distance = 25 * (-e.deltaY / Math.abs(e.deltaY));
-	
-	var forward = this.getForwardVector();
-	
-	var toPosition = forward.multiplyScalar( distance ).add( this.getPosition() );
-	toPosition.y = this.getPosition().y;
-
-	var pathfinder = feng.pathfinder;
-	var matrixData = pathfinder.getMatrixData( this._view3d.getMatrixId() );
-	var isWalkable = pathfinder.isWalkablePosition( toPosition, matrixData );
-
-	if(isWalkable) {
-		this.setPosition( toPosition );
-	}
-	*/
 };
 
 
@@ -301,6 +284,17 @@ feng.controllers.controls.BrowseControls.prototype.onUpdateHud = function(e){
 		this.setYaw( e.rotation );
 		this._targetRotationY = e.rotation;
 	}
+};
+
+
+feng.controllers.controls.BrowseControls.prototype.onClickGateway = function(e) {
+
+  this.dispatchEvent({
+  	type: feng.events.EventType.CHANGE,
+    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+    nextMode: feng.controllers.view3d.ModeController.Mode.EXIT,
+    gateway: e.gateway
+  });
 };
 
 

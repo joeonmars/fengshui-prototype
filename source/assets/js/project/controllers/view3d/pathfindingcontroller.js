@@ -299,9 +299,10 @@ feng.controllers.view3d.PathfindingController.prototype.getTilePosition = functi
 };
 
 
-feng.controllers.view3d.PathfindingController.prototype.getClosestWalkableTilePosition = function( tile, matrixData ) {
+feng.controllers.view3d.PathfindingController.prototype.getClosestWalkablePosition = function( position, matrixData ) {
 
-	var tile = this.getClosestWalkableTile( tile, matrixData );
+	var tile = this.getTileByPosition( position, matrixData );
+	tile = this.getClosestWalkableTile( tile, matrixData );
 
 	return this.getTilePosition( tile, matrixData );
 };

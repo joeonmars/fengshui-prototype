@@ -98,7 +98,7 @@ feng.controllers.controls.DesignControls.prototype.setCamera = function( forward
 	var posX = this._distance * Math.sin( - shouldRad ) + this._focus.x;
 	var posZ = this._distance * Math.cos( - shouldRad ) + this._focus.z;
 
-	console.log( position.x, position.z, posX, posZ, shouldDeg );
+	//console.log( position.x, position.z, posX, posZ, shouldDeg );
 	//
 
 
@@ -181,13 +181,13 @@ feng.controllers.controls.DesignControls.prototype.activate = function () {
 
 	goog.base(this, 'activate');
 
-	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this);
-
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this);
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
 
+	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this);
 	this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
+	this._eventHandler.listen( this, feng.events.EventType.CLICK_GATEWAY, this.onClickGateway, false, this );
 
 	this._zoomSlider.activate();
 };
@@ -330,24 +330,170 @@ feng.controllers.controls.DesignControls.prototype.onDragUpdate = function(){
 };
 
 
+feng.controllers.controls.DesignControls.prototype.onClickGateway = function(e) {
+
+	/*
+  this.dispatchEvent({
+  	type: feng.events.EventType.CHANGE,
+    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+    nextMode: feng.controllers.view3d.ModeController.Mode.EXIT,
+    gateway: e.gateway
+  });
+*/
+
+	// transition camera
+	var lookDirection = this._focus.clone().sub( this.getPosition() ).normalize();
+
+	var endPosition = this.getPosition().clone().add( lookDirection.multiplyScalar( 600 ) );
+
+  var prop = {
+    t: 0,
+    startPosition: this.getPosition().clone(),
+    endPosition: endPosition,
+    startRotation: this.getRotation(),
+    endRotation: this.getRotation(),
+    startFov: this.getFov(),
+    endFov: this.getFov()
+  }
+
+	TweenMax.to( prop, 1, {
+	  t: 1,
+	  'ease': Expo.easeOut,
+	  'onStart': this.onCameraTransitionStart,
+	  'onStartScope': this,
+	  'onUpdate': this.onCameraTransitionUpdate,
+	  'onUpdateParams': [prop],
+	  'onUpdateScope': this,
+	  'onComplete': this.onCameraTransitionToGatewayComplete,
+	  'onCompleteParams': [e.gateway],
+	  'onCompleteScope': this
+	});
+};
+
+
 feng.controllers.controls.DesignControls.prototype.onNavigationChange = function(e) {
 
 	var navController = e.target;
 
 	var goTipResult = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.GO_TIP );
 
-	if(goTipResult) {
+	if(!goTipResult) {
 
-		var achievements = feng.models.achievements.Achievements.getInstance();
-		var tip = achievements.getTip( goTipResult['tipId'], goTipResult['viewId'], goTipResult['sectionId'] );
-
-		var object = this._view3d.getObjectByTip( tip );
-
-		this.dispatchEvent({
-			type: feng.events.EventType.CHANGE,
-			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-			object: object
-		});
+		return;
 	}
+
+	// transition camera
+	var lookDirection = this._focus.clone().sub( this.getPosition() ).normalize();
+
+	var endPosition = this.getPosition().clone().add( lookDirection.multiplyScalar( 600 ) );
+
+  var prop = {
+    t: 0,
+    startPosition: this.getPosition().clone(),
+    endPosition: endPosition,
+    startRotation: this.getRotation(),
+    endRotation: this.getRotation(),
+    startFov: this.getFov(),
+    endFov: this.getFov()
+  }
+
+	TweenMax.to( prop, 1, {
+	  t: 1,
+	  'ease': Expo.easeOut,
+	  'onStart': this.onCameraTransitionStart,
+	  'onStartScope': this,
+	  'onUpdate': this.onCameraTransitionUpdate,
+	  'onUpdateParams': [prop],
+	  'onUpdateScope': this,
+	  'onComplete': this.onCameraTransitionToTipComplete,
+	  'onCompleteParams': [goTipResult],
+	  'onCompleteScope': this
+	});
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onCameraTransitionStart = function(){
+
+	this._view3d.hud.tooltips.deactivate();
+	this.deactivate();
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onCameraTransitionUpdate = function(prop){
+
+  var startPosition = prop.startPosition;
+  var endPosition = prop.endPosition;
+  var startRotation = prop.startRotation;
+  var endRotation = prop.endRotation;
+  var startFov = prop.startFov;
+  var endFov = prop.endFov;
+  var t = prop.t;
+
+  this.lerp( startPosition, endPosition, startRotation, endRotation, startFov, endFov, t );
+
+  this._view3d.renderController.globalBrightness = - t;
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onCameraTransitionToGatewayComplete = function( gateway ){
+
+	var gatewayPosition = gateway.getCenter();
+	var gatewayOriginPosition = gateway.origin.position;
+	var gatewayOriginRotation = gateway.origin.rotation;
+	var gatewayDirection = (new THREE.Vector3()).subVectors(gatewayOriginPosition, gatewayPosition).setY(0).normalize();
+
+	var fromPosition = gatewayOriginPosition.clone().add( gatewayDirection.clone().multiplyScalar(50) ).setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT );
+	
+	var fromRotation = new THREE.Euler(0, 0, 0, 'YXZ');
+  var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(fromPosition, gatewayPosition);
+  fromRotation.setFromQuaternion( quaternion );
+
+  var fromFov = feng.controllers.controls.Controls.Default.FOV;
+
+  this.dispatchEvent({
+  	type: feng.events.EventType.CHANGE,
+    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+    nextMode: feng.controllers.view3d.ModeController.Mode.EXIT,
+    fromPosition: fromPosition,
+		fromRotation: fromRotation,
+		fromFov: fromFov,
+    gateway: gateway
+  });
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onCameraTransitionToTipComplete = function( goTipResult ){
+
+	var achievements = feng.models.achievements.Achievements.getInstance();
+	var tip = achievements.getTip( goTipResult['tipId'], goTipResult['viewId'], goTipResult['sectionId'] );
+
+	var object = this._view3d.getObjectByTip( tip );
+
+	// calculate camera position/rotation/fov before transition
+	var browseControls = this._view3d.modeController.getModeControl(feng.controllers.view3d.ModeController.Mode.BROWSE);
+	var direction = new THREE.Vector3().subVectors( browseControls.getPosition(), object.getCenter() ).normalize();
+	var fromPosition = object.getCenter().clone().add( direction.multiplyScalar(100) );
+	
+	var matrixData = feng.pathfinder.getMatrixData( this._view3d.getMatrixId() );
+	fromPosition = feng.pathfinder.getClosestWalkablePosition( fromPosition, matrixData ).setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT );
+
+	var fromRotation = new THREE.Euler(0, 0, 0, 'YXZ');
+  var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(fromPosition, object.getCenter());
+  fromRotation.setFromQuaternion( quaternion );
+
+  var fromFov = feng.controllers.controls.Controls.Default.FOV;
+
+  browseControls.setPosition( fromPosition );
+  browseControls.setRotation( fromRotation );
+
+	//
+	this.dispatchEvent({
+		type: feng.events.EventType.CHANGE,
+		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+		nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
+		fromPosition: fromPosition,
+		fromRotation: fromRotation,
+		fromFov: fromFov,
+		object: object
+	});
 };

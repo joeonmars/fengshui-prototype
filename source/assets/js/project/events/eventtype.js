@@ -35,6 +35,7 @@ feng.events.EventType = {
 	DRAG_END: 'drag_end',
 	MUTE: 'mute',
 	UNMUTE: 'unmute',
+	CLICK_GATEWAY: 'click_gateway',
 	INPUT_DOWN: (goog.userAgent.MOBILE) ? goog.events.EventType.TOUCHSTART : goog.events.EventType.MOUSEDOWN,
 	INPUT_MOVE: (goog.userAgent.MOBILE) ? goog.events.EventType.TOUCHMOVE : goog.events.EventType.MOUSEMOVE,
 	INPUT_UP: (goog.userAgent.MOBILE) ? [goog.events.EventType.TOUCHEND, goog.events.EventType.TOUCHCANCEL] : goog.events.EventType.MOUSEUP,
