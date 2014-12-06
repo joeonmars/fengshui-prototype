@@ -8,7 +8,7 @@ goog.require('feng.views.sections.captions.Caption');
 /**
  * @constructor
  */
-feng.views.sections.captions.ChangeObjectCaption = function( object, cameraController, renderSize, controls, hud ){
+feng.views.sections.captions.ChangeObjectCaption = function( object, renderController, renderSize, controls, hud ){
 
   this._template = feng.templates.captions.ChangeObjectCaption;
   console.log(object.tip)
@@ -17,7 +17,7 @@ feng.views.sections.captions.ChangeObjectCaption = function( object, cameraContr
     position: 'right'
   };
 
-  goog.base(this, object, cameraController, renderSize, controls, hud);
+  goog.base(this, object, renderController, renderSize, controls, hud);
 
   this._objectId = null;
 

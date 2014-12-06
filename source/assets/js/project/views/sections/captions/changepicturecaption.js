@@ -8,7 +8,7 @@ goog.require('feng.views.sections.captions.Caption');
 /**
  * @constructor
  */
-feng.views.sections.captions.ChangePictureCaption = function( object, cameraController, renderSize, controls, hud ){
+feng.views.sections.captions.ChangePictureCaption = function( object, renderController, renderSize, controls, hud ){
 
   this._template = feng.templates.captions.ChangePictureCaption;
   
@@ -17,7 +17,7 @@ feng.views.sections.captions.ChangePictureCaption = function( object, cameraCont
     position: 'right'
   };
 
-  goog.base(this, object, cameraController, renderSize, controls, hud);
+  goog.base(this, object, renderController, renderSize, controls, hud);
 
   this._pictureId = null;
 

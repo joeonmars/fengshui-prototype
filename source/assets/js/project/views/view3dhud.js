@@ -238,10 +238,10 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls ) {
     break;
   }
   
-  var cameraController = this._view3d.cameraController;
+  var renderController = this._view3d.renderController;
   var viewSize = this._view3d.viewSize;
 
-	var caption = new captionClass( object, cameraController, viewSize, controls, this );
+	var caption = new captionClass( object, renderController, viewSize, controls, this );
 	this._captions[ key ] = caption;
 
 	goog.dom.appendChild( this._captionsEl, caption.domElement );

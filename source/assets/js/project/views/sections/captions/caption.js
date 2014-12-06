@@ -9,12 +9,12 @@ goog.require('feng.fx.ScrollBar');
 /**
  * @constructor
  */
-feng.views.sections.captions.Caption = function( object, cameraController, renderSize, controls, hud ){
+feng.views.sections.captions.Caption = function( object, renderController, renderSize, controls, hud ){
 
   goog.base(this);
 
   this._object = object;
-  this._cameraController = cameraController;
+  this._renderController = renderController;
   this._renderSize = renderSize;
   this._controls = controls;
   this._hud = hud;
@@ -35,7 +35,6 @@ feng.views.sections.captions.Caption = function( object, cameraController, rende
   // render HTML template
   this.domElement = soy.renderAsFragment(this._template, this._templateData);
 
-  this._shadeEl = goog.dom.getElementByClass('shade', this.domElement);
   this._panelEl = goog.dom.getElementByClass('panel', this.domElement);
   this._scrollerInnerEl = goog.dom.getElementByClass('scroller-inner', this.domElement);
 
@@ -224,11 +223,11 @@ feng.views.sections.captions.Caption.prototype.gotoSection = function( section, 
   var fromSection = this._section;
   var toSection = section;
 
-  var duration = instant ? 0 : .25;
+  var duration = instant ? 0 : .45;
 
   this._sectionTweener = TweenMax.to(this._scrollerInnerEl, duration, {
     'x': - this.getSectionX( toSection ),
-    'ease': Quad.easeInOut,
+    'ease': Quad.easeOut,
     'onStart': this.onScrollFromSection,
     'onStartParams': [fromSection],
     'onStartScope': this,
@@ -271,7 +270,9 @@ feng.views.sections.captions.Caption.prototype.onScrollFromSection = function( f
 
 feng.views.sections.captions.Caption.prototype.onScrolledToSection = function( toSection ) {
 
-  goog.dom.classes.addRemove( toSection, 'animate-out', 'animate-in' );
+  if(!this._isPanelAnimatedOut) {
+    goog.dom.classes.addRemove( toSection, 'animate-out', 'animate-in' );
+  }
 
   switch(toSection) {
 
@@ -311,6 +312,18 @@ feng.views.sections.captions.Caption.prototype.animateInPanel = function() {
 
   goog.dom.classes.enable(this.domElement, 'hide-panel', false);
 
+  goog.dom.classes.addRemove(this._panelEl, 'animate-out', 'animate-in' );
+
+  if(this._section) {
+    goog.dom.classes.addRemove( this._section, 'animate-out', 'animate-in' );
+  } 
+
+  TweenMax.to( this._renderController, .5, {
+    globalBrightness: -.15,
+    globalContrast: -.15,
+    'ease': Sine.easeInOut
+  });
+
   TweenMax.to( this._renderSize, .5, {
     ratioX: .7,
     'ease': Sine.easeInOut,
@@ -328,6 +341,18 @@ feng.views.sections.captions.Caption.prototype.animateOutPanel = function( shoul
   }
 
   goog.dom.classes.enable(this.domElement, 'hide-panel', true);
+
+  goog.dom.classes.addRemove(this._panelEl, 'animate-in', 'animate-out' );
+
+  if(this._section) {
+    goog.dom.classes.addRemove( this._section, 'animate-in', 'animate-out' );
+  } 
+
+  TweenMax.to( this._renderController, .5, {
+    globalBrightness: 0,
+    globalContrast: 0,
+    'ease': Sine.easeInOut
+  });
 
   TweenMax.to( this._renderSize, .5, {
     ratioX: 1,
@@ -500,7 +525,6 @@ feng.views.sections.captions.Caption.prototype.onClickShareButton = function( e 
 
 feng.views.sections.captions.Caption.prototype.onResize = function( e ) {
 
-  goog.style.setStyle( this._shadeEl, 'height', this._renderSize.height + 'px' );
   goog.style.setStyle( this._panelEl, 'height', this._renderSize.height + 'px' );
 
   if(this.scrollBar) {

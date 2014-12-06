@@ -97,6 +97,9 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 		caption.setParentEventTarget(this);
 		caption.show();
 
+		// test
+		this._view3d.fx.greenLeaves.animateIn( this._activeObject );
+
 	}else  {
 		
 		var caption = this._view3d.hud.getCaption( this._activeObject, this );

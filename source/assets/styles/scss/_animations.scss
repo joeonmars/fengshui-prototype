@@ -24,7 +24,7 @@
 @include keyframes(fade-in-left) {
   0% {
     opacity: 0;
-    @include translateX(20px);
+    @include translateX(50px);
   }
   100% {
     opacity: 1;
@@ -35,7 +35,7 @@
 @include keyframes(fade-in-right) {
   0% {
     opacity: 0;
-    @include translateX(-20px);
+    @include translateX(-50px);
   }
   100% {
     opacity: 1;

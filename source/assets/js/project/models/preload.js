@@ -21,10 +21,10 @@ feng.models.Preload = function(){
 			'cube-browse': 'images/cube-browse.png',
 			'cube-design': 'images/cube-design.png',
 			'leaf': {
-				'ji': 'images/texture/leaf/ji.png',
-				'sha': 'images/texture/leaf/sha.png',
-				'yin': 'images/texture/leaf/yin.png',
-				'yang': 'images/texture/leaf/yang.png'
+				'green-1': 'images/texture/leaf/ji.png',
+				'green-2': 'images/texture/leaf/sha.png',
+				'yellow-1': 'images/texture/leaf/yin.png',
+				'yellow-2': 'images/texture/leaf/yang.png'
 			}
 		},
 		'home': {

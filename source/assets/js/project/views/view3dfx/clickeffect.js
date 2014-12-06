@@ -33,7 +33,6 @@ feng.views.view3dfx.ClickEffect = function(){
 	texture.needsUpdate = true;
 
 	var material = new THREE.MeshBasicMaterial({
-		//color: 0xff0000,
 		'map': texture,
 		'side': THREE.DoubleSide,
 		'fog': false,

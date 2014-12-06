@@ -13,24 +13,48 @@ feng.fx.LeafSprite = function( texture ){
 		'transparent': true,
 		'side': THREE.DoubleSide,
 		'sizeAttenuation': true,
-		'fog': false
+		'alphaTest': 1,
+		'fog': true
 	});
 
-  THREE.Sprite.call( this, material );
+	THREE.Sprite.call( this, material );
 
-  var numTiles = texture.image.width / 128;
+	var numTiles = texture.image.width / 128;
 	var frameDuration = goog.math.randomInt( 40 ) + 40;
 	this._textureAnimator = new feng.fx.TextureAnimator( texture, numTiles, 1, numTiles, frameDuration );
+
+	this._baseScale = 1;
 
 	this.randomize();
 };
 goog.inherits(feng.fx.LeafSprite, THREE.Sprite);
 
 
+feng.fx.LeafSprite.prototype.start = function(){
+
+	this._textureAnimator.start();
+};
+
+
+feng.fx.LeafSprite.prototype.stop = function(){
+
+	this._textureAnimator.stop();
+};
+
+
+feng.fx.LeafSprite.prototype.setScale = function( scaleMultiplier ){
+
+	var finalScale = this._baseScale * scaleMultiplier;
+
+	this.scale.set( finalScale, finalScale, finalScale );
+};
+
+
 feng.fx.LeafSprite.prototype.randomize = function(){
 
-	var scale = goog.math.uniformRandom(3, 6);
-	this.scale.set( scale, scale, scale );
+	this._baseScale = goog.math.uniformRandom(1, 3);
+
+	this.setScale( 1 );
 
 	var rotation = Math.random() * Math.PI * 2;
 	this.material.rotation = rotation;

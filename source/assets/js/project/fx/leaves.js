@@ -1,5 +1,6 @@
 goog.provide('feng.fx.Leaves');
 
+goog.require('goog.fx.anim.Animated');
 goog.require('feng.fx.LeafSprite');
 goog.require('feng.models.Preload');
 
@@ -11,17 +12,19 @@ feng.fx.Leaves = function( color ){
 
   goog.base(this);
 
+  this.isActive = false;
+
   this._color = color;
 
   // create shared textures if not
 	var preload = feng.models.Preload.getInstance();
 
-	goog.object.forEach(feng.fx.Leaves.LeafType, function(type) {
+	goog.object.forEach(feng.fx.Leaves.LeafType, function(value, key) {
 
-		if(!feng.fx.Leaves.Texture[type]) {
-			var img = preload.getAsset( 'global.leaf.' + type );
+		if(!feng.fx.Leaves.Texture[key]) {
+			var img = preload.getAsset( 'global.leaf.' + value );
 			var texture = new THREE.Texture( img );
-			feng.fx.Leaves.Texture[type] = texture;
+			feng.fx.Leaves.Texture[key] = texture;
 		}
 	});
 
@@ -39,17 +42,34 @@ feng.fx.Leaves = function( color ){
 	}
 
 	for(var i = 0; i < 10; i++) {
-		var randTexture = feng.fx.Leaves.Texture[ goog.math.randomInt(textureIds.length) ];
+		
+		var textureId = textureIds[ goog.math.randomInt(textureIds.length) ];console.log(textureId);
+		var randTexture = feng.fx.Leaves.Texture[ textureId ];
 		var leaf = new feng.fx.LeafSprite( randTexture.clone() );
 
 		this.add( leaf );
 	}
 
-	//
 	this._attributes = {
 		startPosition: [],
 		randomness: []
 	};
+
+	this._leafScaleMultiplier = 1;
+
+	this._leafScaleTweener = TweenMax.fromTo(this, 2, {
+		_leafScaleMultiplier: 0
+	}, {
+		_leafScaleMultiplier: 1,
+		'paused': true,
+		'onUpdate': this.updateLeafScale,
+		'onUpdateScope': this
+	});
+
+	this._startTime = 0;
+
+	this._animated = new goog.fx.anim.Animated();
+	this._animated.onAnimationFrame = goog.bind( this.onAnimationFrame, this );
 };
 goog.inherits(feng.fx.Leaves, THREE.Object3D);
 
@@ -58,64 +78,89 @@ feng.fx.Leaves.prototype.animateIn = function( view3dObject ){
 
 	// calculate object radius
 	var boundingSphere = view3dObject.getBoundingSphere();
-	var radius = boundingSphere.radius;
+	var radius = Math.max( 15, boundingSphere.radius );
+
+	this.position.copy( boundingSphere.center );
 
 	// arrange leaves
 	var leaves = this.children;
 
-	goog.array.forEach(leaves, function(leaf) {
+	this._attributes.startPosition = [];
+	this._attributes.randomness = [];
 
-		leaf.randomize();
+	goog.array.forEach(leaves, function(leaf) {
 
 		leaf.position.set( Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5 );
 
-		// for a cube:
-		// leaf.position.multiplyScalar( radiusRange );
-		// for a solid sphere:
-		// leaf.position.setLength( radiusRange * Math.random() );
 		// for a spherical shell:
 		leaf.position.setLength( radius * (Math.random() * 0.1 + 0.9) );
 
-		// add variable qualities to arrays, if they need to be accessed later
-		attributes.startPosition.push( leaf.position.clone() );
-		attributes.randomness.push( Math.random() );
-	});
+		this._attributes.startPosition.push( leaf.position.clone() );
+		this._attributes.randomness.push( Math.random() );
+
+		leaf.randomize();
+		leaf.start();
+
+	}, this);
+
+	// scale up leaves
+	this._leafScaleTweener.restart();
+	this.updateLeafScale();
+
+	// kick off the animation loop
+	this._startTime = goog.now();
+
+	goog.fx.anim.registerAnimation( this._animated );
+
+	this.isActive = true;
 };
 
 
 feng.fx.Leaves.prototype.animateOut = function(){
 
+	var leaves = this.children;
 
+	goog.array.forEach(leaves, function(leaf) {
+		leaf.stop();
+	});
+
+	goog.fx.anim.unregisterAnimation( this._animated );
+
+	this.isActive = false;
 };
 
 
-feng.fx.Leaves.prototype.onAnimationFrame = function(){
+feng.fx.Leaves.prototype.updateLeafScale = function(){
 
-	var time = 4 * clock.getElapsedTime();
+	var leaves = this.children;
+
+	var i, l = leaves.length;
+	for(i = 0; i < l; i++) {
+		leaves[i].setScale( this._leafScaleMultiplier );
+	}
+};
+
+
+feng.fx.Leaves.prototype.onAnimationFrame = function(now){
+
+	var time = (now - this._startTime) / 1000;
 	
 	for ( var c = 0; c < this.children.length; c ++ ) {
 
 		var leaf = this.children[ c ];
 
-		// particle wiggle
-		// var wiggleScale = 2;
-		// leaf.position.x += wiggleScale * (Math.random() - 0.5);
-		// leaf.position.y += wiggleScale * (Math.random() - 0.5);
-		// leaf.position.z += wiggleScale * (Math.random() - 0.5);
-		
 		// pulse away/towards center
 		// individual rates of movement
-		var a = attributes.randomness[c] + 1;
+		var a = this._attributes.randomness[c] + 1;
 		var pulseFactor = Math.sin(a * time) * 0.1 + 0.9;
-		leaf.position.x = attributes.startPosition[c].x * pulseFactor;
-		leaf.position.y = attributes.startPosition[c].y * pulseFactor;
-		leaf.position.z = attributes.startPosition[c].z * pulseFactor;	
+		var startPosition = this._attributes.startPosition[c];
+		leaf.position.x = startPosition.x * pulseFactor;
+		leaf.position.y = startPosition.y * pulseFactor;
+		leaf.position.z = startPosition.z * pulseFactor;
 	}
 
 	// rotate the entire group
-	// this.rotation.x = time * 0.5;
 	this.rotation.y = time * 0.75;
-	// this.rotation.z = time * 1.0;
 };
 
 

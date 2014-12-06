@@ -8,7 +8,7 @@ goog.require('feng.views.sections.captions.Caption');
 /**
  * @constructor
  */
-feng.views.sections.captions.DropFruitsCaption = function( object, cameraController, renderSize, controls, hud ){
+feng.views.sections.captions.DropFruitsCaption = function( object, renderController, renderSize, controls, hud ){
 
   this._template = feng.templates.captions.DropFruitsCaption;
   
@@ -18,7 +18,7 @@ feng.views.sections.captions.DropFruitsCaption = function( object, cameraControl
     position: 'right'
   };
 
-  goog.base(this, object, cameraController, renderSize, controls, hud);
+  goog.base(this, object, renderController, renderSize, controls, hud);
 
   this._fruitButtonEls = goog.dom.query('.drop-fruits .fruits li button', this.domElement);
   this._descriptionEls = goog.dom.query('.drop-fruits .descriptions li', this.domElement);
