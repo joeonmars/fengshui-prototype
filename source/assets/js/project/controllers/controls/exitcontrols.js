@@ -62,11 +62,11 @@ feng.controllers.controls.ExitControls.prototype.onLoadComplete = function () {
 
 feng.controllers.controls.ExitControls.prototype.onBufferComplete = function () {
 
-	feng.soundController.playSfx('door-open');
+	this._gateway.playOpenSound();
 
 	goog.Timer.callOnce(function() {
-		feng.soundController.playSfx('door-close');
-	}, 2500);
+		this._gateway.playCloseSound();
+	}, 2500, this);
 
 	this._view3d.dispatchEvent({
 		type: feng.events.EventType.CHANGE,

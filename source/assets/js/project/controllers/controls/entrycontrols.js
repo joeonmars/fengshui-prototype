@@ -106,7 +106,7 @@ feng.controllers.controls.EntryControls.prototype.openDoor = function () {
 
 	this._timeline.play();
 
-	feng.soundController.playSfx('entry-open');
+	this._entry.playOpenSound();
 };
 
 
@@ -175,7 +175,7 @@ feng.controllers.controls.EntryControls.prototype.onArriveInComplete = function 
 
 	this._footstepsSound.pause();
 
-	feng.soundController.playSfx('entry-close');
+	this._entry.playCloseSound();
 
 	this._entry.close();
 

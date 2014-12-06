@@ -91,6 +91,9 @@ Howler._muted = {};
 Howler.volume = {};
 
 var Howl = {};
+Howl.play = {};
+Howl.pause = {};
+Howl.stop = {};
 
 /* Preload JS */
 var createjs = {};

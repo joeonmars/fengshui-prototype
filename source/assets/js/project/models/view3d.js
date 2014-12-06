@@ -13,6 +13,8 @@ feng.models.View3D.Data = {
 				toHome: true,
 				isEntry: true,
 				inversed: true,
+				openSound: 'entry-open',
+				closeSound: 'entry-close',
 				origin: {
 					position: new THREE.Vector3(-240, 0, 30),
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
@@ -41,6 +43,8 @@ feng.models.View3D.Data = {
 				viewid: "bathroom",
 				gatewayid: "bathroom-door",
 				castShadow: true,
+				openSound: 'door-open',
+				closeSound: 'door-close',
 				origin: {
 					position: new THREE.Vector3(-176, 0, 20),
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
@@ -429,6 +433,8 @@ feng.models.View3D.Data = {
 				gatewayid: "bathroom-door",
 				castShadow: true,
 				isEntry: true,
+				openSound: 'door-open',
+				closeSound: 'door-close',
 				origin: {
 					position: new THREE.Vector3(12, 0, -60),
 					rotation: new THREE.Euler(0, Math.PI, 0)
@@ -446,6 +452,8 @@ feng.models.View3D.Data = {
 				castShadow: true,
 				toHome: true,
 				isEntry: true,
+				openSound: 'entry-open',
+				closeSound: 'entry-close',
 				origin: {
 					position: new THREE.Vector3(110, 0, 0),
 					rotation: new THREE.Euler(0, Math.PI/2, 0)
@@ -456,6 +464,8 @@ feng.models.View3D.Data = {
 				Class: "gateway",
 				viewid: "corridor",
 				gatewayid: "stairways-door",
+				openSound: null,
+				closeSound: null,
 				origin: {
 					position: new THREE.Vector3(-125, 0, 50),
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
@@ -700,6 +710,8 @@ feng.models.View3D.Data = {
 				viewid: "livingroom",
 				gatewayid: "stairways-door",
 				isEntry: true,
+				openSound: null,
+				closeSound: null,
 				origin: {
 					position: new THREE.Vector3(50, 0, 225),
 					rotation: new THREE.Euler(0, 0, 0)
@@ -728,6 +740,8 @@ feng.models.View3D.Data = {
 				viewid: "boysroom",
 				gatewayid: "boysroom-door",
 				castShadow: true,
+				openSound: 'door-open',
+				closeSound: 'door-close',
 				origin: {
 					position: new THREE.Vector3(60, 0, -170),
 					rotation: new THREE.Euler(0, 0, 0)
@@ -739,6 +753,8 @@ feng.models.View3D.Data = {
 				viewid: "homeoffice",
 				gatewayid: "homeoffice-door",
 				castShadow: true,
+				openSound: 'door-open',
+				closeSound: 'door-close',
 				origin: {
 					position: new THREE.Vector3(20, 0, -50),
 					rotation: new THREE.Euler(0, 0, 0)
@@ -909,6 +925,8 @@ feng.models.View3D.Data = {
 				gatewayid: "boysroom-door",
 				castShadow: true,
 				isEntry: true,
+				openSound: 'door-open',
+				closeSound: 'door-close',
 				origin: {
 					position: new THREE.Vector3(78, 0, 33),
 					rotation: new THREE.Euler(0, Math.PI/2, 0)
@@ -1005,6 +1023,8 @@ feng.models.View3D.Data = {
 				gatewayid: "homeoffice-door",
 				castShadow: true,
 				isEntry: true,
+				openSound: 'door-open',
+				closeSound: 'door-close',
 				origin: {
 					position: new THREE.Vector3(68, 0, -53),
 					rotation: new THREE.Euler(0, Math.PI/2, 0)

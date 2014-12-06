@@ -21,6 +21,9 @@ feng.views.view3dobject.GatewayObject = function( object3d, data, view3d ){
 
   this._startRotationY = this.object3d.rotation.y;
 
+  this._openSound = feng.soundController.getSfx( this.data.openSound );
+  this._closeSound = feng.soundController.getSfx( this.data.closeSound );
+
 	this._openTweener = TweenMax.fromTo( this.object3d.rotation, 2.5, {
 		'y': this._startRotationY
 	}, {
@@ -87,6 +90,30 @@ feng.views.view3dobject.GatewayObject.prototype.pause = function() {
 	this._openTweener.pause();
 
 	this.dispatchEvent( feng.events.EventType.PAUSE );
+};
+
+
+feng.views.view3dobject.GatewayObject.prototype.playOpenSound = function() {
+
+	if(this._openSound) {
+		this._openSound.play();
+	}
+
+	if(this._closeSound) {
+		this._closeSound.stop();
+	}
+};
+
+
+feng.views.view3dobject.GatewayObject.prototype.playCloseSound = function() {
+
+	if(this._closeSound) {
+		this._closeSound.play();
+	}
+
+	if(this._openSound) {
+		this._openSound.stop();
+	}
 };
 
 
