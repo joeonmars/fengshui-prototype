@@ -36,6 +36,8 @@ feng.views.sections.controls.Reminder = function( domElement, tips ){
   this._characterAnimations = null;
   this._characterAnimation = null;
 
+  this._hasOtherWidgetShown = false;
+
   this._hideHintDelay = new goog.async.Delay(this.hideHint, 6000, this);
 };
 goog.inherits(feng.views.sections.controls.Reminder, feng.views.sections.controls.Controls);
@@ -110,6 +112,11 @@ feng.views.sections.controls.Reminder.prototype.activate = function(){
 	this._eventHandler.listen(this._hintDialogueEl, 'mouseout', this.onMouseOut, false, this);
 	this._eventHandler.listen(this._hintTimer, 'tick', this.onHintTick, false, this);
 
+	feng.pubsub.subscribe( feng.PubSub.Topic.SHOW_WIDGET, this.onShowWidget, this );
+	feng.pubsub.subscribe( feng.PubSub.Topic.HIDE_WIDGET, this.onHideWidget, this );
+
+	this._hasOtherWidgetShown = (feng.pubsub.getShownWidgets().length > 0);
+
 	this._hintTimer.start();
 };
 
@@ -119,6 +126,9 @@ feng.views.sections.controls.Reminder.prototype.deactivate = function(){
   var shouldDeactivate = goog.base(this, 'deactivate');
 
   if(!shouldDeactivate) return;
+
+	feng.pubsub.unsubscribe( feng.PubSub.Topic.SHOW_WIDGET, this.onShowWidget, this );
+	feng.pubsub.unsubscribe( feng.PubSub.Topic.HIDE_WIDGET, this.onHideWidget, this );
 
 	this._hintTimer.stop();
 };
@@ -189,6 +199,8 @@ feng.views.sections.controls.Reminder.prototype.getCharacterAnimations = functio
 				this.drawCharacter( img, frames[ 'raise-' + frame ] );
 			},
 			'onUpdateScope': this,
+			'onComplete': this.onCharacterRaiseComplete,
+			'onCompleteScope': this,
 			'onReverseComplete': function() {
 				loopTweener.restart();
 			}
@@ -275,11 +287,16 @@ feng.views.sections.controls.Reminder.prototype.gotoHintByTip = function( tipId 
 
 feng.views.sections.controls.Reminder.prototype.showHint = function( tipId ){
 
-	this._isHintShown = true;
+	if(this._isHintShown) {
+
+		return;
+
+	}else {
+
+		this._isHintShown = true;
+	}
 
 	this.gotoHintByTip( tipId );
-
-	goog.dom.classes.addRemove( this.domElement, 'inactive', 'active' );
 
 	this._hideHintDelay.start();
 
@@ -292,7 +309,14 @@ feng.views.sections.controls.Reminder.prototype.showHint = function( tipId ){
 
 feng.views.sections.controls.Reminder.prototype.hideHint = function( instance ){
 
-	this._isHintShown = false;
+	if(!this._isHintShown) {
+
+		return;
+
+	}else {
+
+		this._isHintShown = false;
+	}
 
 	var duration = instance ? 0 : .4;
 
@@ -363,7 +387,8 @@ feng.views.sections.controls.Reminder.prototype.onHintTick = function(e){
 
 	var tip = this.getCurrentTip();
 
-	if(tip) {
+	if(tip && !this._hasOtherWidgetShown) {
+
 		this.showHint( tip.id );
 	}
 };
@@ -377,6 +402,12 @@ feng.views.sections.controls.Reminder.prototype.onTipUnlock = function(e){
 	goog.dom.removeNode( unlockedHintEl );
 
 	this._currentTips = this.getLockedTipsOfView();
+};
+
+
+feng.views.sections.controls.Reminder.prototype.onCharacterRaiseComplete = function(){
+
+	goog.dom.classes.addRemove( this.domElement, 'inactive', 'active' );
 };
 
 
@@ -396,6 +427,34 @@ feng.views.sections.controls.Reminder.prototype.onModeChange = function(e){
 		default:
 		this.deactivate();
 		break;
+	}
+};
+
+
+feng.views.sections.controls.Reminder.prototype.onShowWidget = function( widget ){
+
+	if(widget === this) {
+
+		return;
+
+	}else {
+
+		this._hasOtherWidgetShown = true;
+	}
+
+	this.hideHint();
+};
+
+
+feng.views.sections.controls.Reminder.prototype.onHideWidget = function( widget ){
+
+	if(widget === this) {
+		
+		return;
+
+	}else {
+
+		this._hasOtherWidgetShown = false;
 	}
 };
 

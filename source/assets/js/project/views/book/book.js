@@ -217,9 +217,12 @@ feng.views.book.Book.prototype.animateIn = function( tipId ) {
 
 		var tipModule = this._tipModules[i];
 		var el = tipModule.domElement;
-		var tweener = TweenMax.fromTo( el, 1.2, {
+
+		TweenMax.set( el, {
 			'x': tipModule.x + this._viewportSize.width
-		}, {
+		});
+
+		var tweener = TweenMax.to( el, 1.2, {
 			'x': tipModule.x,
 			'ease': Strong.easeOut
 		});
@@ -238,7 +241,6 @@ feng.views.book.Book.prototype.animateOut = function( instant ) {
 
 	this.deactivate();
 
-	//
 	feng.navigationController.replaceToken('');
 
 	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );

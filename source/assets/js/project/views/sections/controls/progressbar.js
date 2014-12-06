@@ -13,12 +13,13 @@ feng.views.sections.controls.ProgressBar = function(domElement, tips){
 
   this._tipsWrapperEl = goog.dom.query('.tips-wrapper', this.domElement)[0];
   this._tipsEls = goog.dom.query('.tips', this.domElement);
-  this._tipEls = goog.dom.query('.tips > li', this.domElement);
+  this._allTipEls = goog.dom.query('.tips > li', this.domElement);
   this._dotEls = goog.dom.query('.tips .dot', this.domElement);
   this._prevButtonEl = goog.dom.getElementByClass('prev', this.domElement);
   this._nextButtonEl = goog.dom.getElementByClass('next', this.domElement);
 
   this._tipsEl = this._tipsEls[0];
+  this._tipEls = goog.dom.query( 'li', this._tipsEl );
 
   this._viewIds = goog.array.map( this._tipsEls, function(tipsEl) {
     return tipsEl.getAttribute('data-view-id');
@@ -51,14 +52,20 @@ feng.views.sections.controls.ProgressBar.prototype.setView3D = function( view3d 
 
   goog.base(this, 'setView3D', view3d);
 
-  this.calculateTipsLayout();
+  this._viewId = view3d.id;
+
+  var tipsEl = goog.array.find(this._tipsEls, function(tipsEl) {
+    return (tipsEl.getAttribute('data-view-id') === view3d.id);
+  });
+
+  this.calculateTipsLayout( tipsEl );
   this.goTipsOfView( view3d.id );
 };
 
 
-feng.views.sections.controls.ProgressBar.prototype.calculateTipsLayout = function(){
+feng.views.sections.controls.ProgressBar.prototype.calculateTipsLayout = function( tipsEl ){
 
-  this._tipEls = goog.dom.query( 'li', this._tipsEl );
+  this._tipEls = goog.dom.query( 'li', tipsEl );
 
   // arrange tip dots
   var numDots = this._tipEls.length;
@@ -83,6 +90,11 @@ feng.views.sections.controls.ProgressBar.prototype.activate = function() {
 
   this._eventHandler.listen(this._prevButtonEl, 'click', this.goPrevTips, false, this);
   this._eventHandler.listen(this._nextButtonEl, 'click', this.goNextTips, false, this);
+
+  goog.array.forEach(this._allTipEls, function(tipEl) {
+    this._eventHandler.listen(tipEl, goog.events.EventType.MOUSEOVER, this.onTipMouseOver, false, this);
+    this._eventHandler.listen(tipEl, goog.events.EventType.MOUSEOUT, this.onTipMouseOut, false, this);
+  }, this);
 
   goog.object.forEach(this._tips, function(tip) {
 
@@ -123,6 +135,9 @@ feng.views.sections.controls.ProgressBar.prototype.goTipsOfView = function( view
     return (tipsEl.getAttribute('data-view-id') === viewId);
   });
 
+  // calculate new tips layout before set display none
+  var tipsWrapperWidth = this.calculateTipsLayout( tipsEl );
+
   // animate tips
   var tweener = TweenMax.to(this._tipsEls, 0, {
     'display': 'none'
@@ -130,9 +145,6 @@ feng.views.sections.controls.ProgressBar.prototype.goTipsOfView = function( view
 
   // assign new tips el
   this._tipsEl = tipsEl;
-
-  // calculate new tips layout
-  var tipsWrapperWidth = this.calculateTipsLayout();
 
   var tweener2 = TweenMax.to( this._tipsWrapperEl, .5, {
     'width': tipsWrapperWidth,
@@ -142,7 +154,7 @@ feng.views.sections.controls.ProgressBar.prototype.goTipsOfView = function( view
   //
   var tweener3 = new TimelineMax();
 
-  var tweeners = goog.array.map( goog.dom.query('li', this._tipsEl), function(tipEl) {
+  var tweeners = goog.array.map( this._tipEls, function(tipEl) {
 
     var t = TweenMax.fromTo(tipEl, .25, {
       'opacity': 0,
@@ -239,11 +251,9 @@ feng.views.sections.controls.ProgressBar.prototype.detectNearbyObjects = functio
 
     var tipId = providedTip ? providedTip.id : tip.id;
 
-    var tipEl = goog.array.find(this._tipEls, function(tipEl) {
+    var tipEl = goog.array.find(this._allTipEls, function(tipEl) {
       return (tipEl.getAttribute('data-tip-id') === tipId);
     });
-
-    //console.log(tipEl, tipId, providedTip)
     
     if(this._nearbyTipEl !== tipEl) {
 
@@ -251,8 +261,16 @@ feng.views.sections.controls.ProgressBar.prototype.detectNearbyObjects = functio
         goog.dom.classes.remove(this._nearbyTipEl, 'nearby');
       }
 
+      //console.log(this._nearbyTipEl, tipEl, tipId, providedTip);
+
       this._nearbyTipEl = tipEl;
       goog.dom.classes.add(this._nearbyTipEl, 'nearby');
+
+      var viewId = tipEl.getAttribute('data-view-id');
+
+      if(viewId !== this._viewId) {
+        this.goTipsOfView( viewId );
+      }
     }
 
   }else {
@@ -274,6 +292,32 @@ feng.views.sections.controls.ProgressBar.prototype.unlockTip = function( tipId )
   if(!unlockedTipEl) return;
 
   goog.dom.classes.add( unlockedTipEl, 'unlocked' );
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.onTipMouseOver = function(e){
+
+  if(goog.dom.classes.has(e.currentTarget, 'hover')) {
+
+    return false;
+
+  }else {
+
+    goog.dom.classes.add(e.currentTarget, 'hover');
+
+    feng.pubsub.publish( feng.PubSub.Topic.SHOW_WIDGET, this );
+  }
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.onTipMouseOut = function(e){
+
+  if(!e.relatedTarget || !goog.dom.contains(e.currentTarget, e.relatedTarget)) {
+
+    goog.dom.classes.remove(e.currentTarget, 'hover');
+
+    feng.pubsub.publish( feng.PubSub.Topic.HIDE_WIDGET, this );
+  }
 };
 
 
@@ -311,8 +355,8 @@ feng.views.sections.controls.ProgressBar.prototype.onResize = function(e){
   var domSize = goog.style.getSize( this.domElement );
 
   var y = feng.viewportSize.height - 115;
-	goog.style.setStyle( this.domElement, 'top', y + 'px');
+	goog.style.setStyle( this.domElement, 'top', y + 'px' );
 
-  this.calculateTipsLayout();
+  this.calculateTipsLayout( this._tipsEl );
   this.goTipsOfView( this._viewId );
 };

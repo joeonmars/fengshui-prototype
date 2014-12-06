@@ -192,7 +192,7 @@
 			{foreach $viewId in keys($tipsOfViews)}
 				<ul class="tips" data-view-id="{ $viewId }">
 					{foreach $tip in $tipsOfViews[$viewId]}
-						<li class="tip" data-tip-id="{ $tip.id }">
+						<li class="tip" data-tip-id="{ $tip.id }" data-view-id="{ $viewId }">
 							<div class="dot">
 								<div class="outer"></div>
 								<div class="inner"></div>

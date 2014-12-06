@@ -166,3 +166,55 @@
 {/call}
 
 {/template}
+
+
+/**
+ * The one-time helper tooltip for explaining controls in the scene
+ * @param classname the helper CSS classname
+ * @param content the content
+ */
+{template .Helper}
+
+<div class="helper { $classname }">
+	<div class="content">
+		{ $content }
+	</div>
+	{call .CloseButton}{/call}
+</div>
+
+{/template}
+
+
+/**
+ * Helpers
+ */
+{template .Helpers}
+
+<div class="helpers">
+
+	{call .Helper}
+		{param classname: 'compass' /}
+		{param content}
+			<p class="top">View from top.</p>
+			<p class="normal">Back to normal view.</p>
+		{/param}
+	{/call}
+
+	{call .Helper}
+		{param classname: 'selector' /}
+		{param content}
+			<p>Press down the mouse button and hold for one second to investigate this item.</p>
+		{/param}
+	{/call}
+
+	{call .Helper}
+		{param classname: 'walk' /}
+		{param content}
+			<p class="mousewheel">You can also scroll your mousewheel to move forward or backward.</p>
+			<p class="mousebutton">You can also click to move around in the scene.</p>
+		{/param}
+	{/call}
+
+</div>
+
+{/template}

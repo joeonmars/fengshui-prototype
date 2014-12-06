@@ -1,5 +1,6 @@
 goog.provide('feng.views.View3DHud');
 
+goog.require('feng.views.helpers.Helpers');
 goog.require('feng.views.sections.controls.ObjectSelector');
 goog.require('feng.views.sections.controls.DropButton');
 goog.require('feng.views.sections.controls.Compass');
@@ -37,6 +38,9 @@ feng.views.View3DHud = function( hudEl, view3dController, tips, episode ){
   this._tips = tips;
 
   this._isInEntryMode = false;
+
+  // create the helpers singleton
+  this._helpers = feng.views.helpers.Helpers.getInstance();
 
   // create a captions collection
   this._captions = {};
@@ -188,6 +192,10 @@ feng.views.View3DHud.prototype.activateControls = function() {
     this.tooltips.activate();
   }
 
+  this._helpers.activate();
+  
+  goog.dom.appendChild( this.domElement, this._helpers.domElement );
+
   feng.mainOptions.showHelpButton( true );
 };
 
@@ -201,6 +209,8 @@ feng.views.View3DHud.prototype.deactivateControls = function() {
   this.progressBar.deactivate();
 
   this.tooltips.deactivate();
+
+  this._helpers.deactivate();
 
   feng.mainOptions.showHelpButton( false );
 };

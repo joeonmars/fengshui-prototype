@@ -83,3 +83,25 @@ feng.templates.common.Popup = function(opt_data, opt_ignored) {
 feng.templates.common.TutorialPopup = function(opt_data, opt_ignored) {
   return feng.templates.common.Popup({classname: 'tutorial from-bottom', content: '<h1>Control Instructions</h1><ul class="steps"><li><h6>1. Explore the environment</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-1.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-1.ogv" type="video/ogg"></video></div></li><li><h6>2. Inspect objects for tips</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-2.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-2.ogv" type="video/ogg"></video></div></li><li><h6>3. Ask the client for clues</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-3.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-3.ogv" type="video/ogg"></video></div></li></ul><div class="controls"><div class="loader"><div class="bar"><div class="fill"></div></div><p class="counter">00</p></div>' + feng.templates.common.PrimaryButton({classname: 'skip', icon: 'icon-yes', text: 'Continue'}) + '</div>'});
 };
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.common.Helper = function(opt_data, opt_ignored) {
+  return '<div class="helper ' + opt_data.classname + '"><div class="content">' + opt_data.content + '</div>' + feng.templates.common.CloseButton(null) + '</div>';
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.common.Helpers = function(opt_data, opt_ignored) {
+  return '<div class="helpers">' + feng.templates.common.Helper({classname: 'compass', content: '<p class="top">View from top.</p><p class="normal">Back to normal view.</p>'}) + feng.templates.common.Helper({classname: 'selector', content: '<p>Press down the mouse button and hold for one second to investigate this item.</p>'}) + feng.templates.common.Helper({classname: 'walk', content: '<p class="mousewheel">You can also scroll your mousewheel to move forward or backward.</p><p class="mousebutton">You can also click to move around in the scene.</p>'}) + '</div>';
+};

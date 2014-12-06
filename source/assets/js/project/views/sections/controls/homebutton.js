@@ -48,6 +48,8 @@ feng.views.sections.controls.HomeButton.prototype.showPrompt = function(){
 
 	goog.dom.classes.add( this.domElement, 'pending' );
 	goog.dom.classes.add( this._promptEl, 'shown' );
+
+	feng.pubsub.publish( feng.PubSub.Topic.SHOW_WIDGET, this );
 };
 
 
@@ -57,6 +59,8 @@ feng.views.sections.controls.HomeButton.prototype.hidePrompt = function(){
 
 	goog.dom.classes.remove( this.domElement, 'pending' );
 	goog.dom.classes.remove( this._promptEl, 'shown' );
+
+	feng.pubsub.publish( feng.PubSub.Topic.HIDE_WIDGET, this );
 };
 
 
@@ -66,7 +70,7 @@ feng.views.sections.controls.HomeButton.prototype.onMouseDown = function(e){
 	var isClickedOnPrompt = goog.dom.contains( this._promptEl, e.target );
 
 	var isClickedOutside = (!isClickedOnHomeButton && !isClickedOnPrompt);
-
+	
 	if(isClickedOutside && this._promptShown) {
 
 		this.hidePrompt();

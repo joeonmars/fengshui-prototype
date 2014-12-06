@@ -12,7 +12,8 @@ feng.views.sections.controls.DropButton = function(domElement){
 
   this._movableObject = null;
 
-  this.fadeOut();
+  goog.dom.classes.addRemove( this.domElement, 'fadeIn', 'fadeOut' );
+  goog.dom.classes.enable( this.domElement, 'hidden', true );
 };
 goog.inherits(feng.views.sections.controls.DropButton, feng.views.sections.controls.Controls);
 
