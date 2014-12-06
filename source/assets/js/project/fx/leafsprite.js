@@ -52,7 +52,7 @@ feng.fx.LeafSprite.prototype.setScale = function( scaleMultiplier ){
 
 feng.fx.LeafSprite.prototype.randomize = function(){
 
-	this._baseScale = goog.math.uniformRandom(1, 3);
+	this._baseScale = goog.math.uniformRandom(0.5, 2);
 
 	this.setScale( 1 );
 

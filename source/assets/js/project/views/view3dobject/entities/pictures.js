@@ -14,19 +14,7 @@ feng.views.view3dobject.entities.Pictures = function( object3d, data, view3d ){
   goog.base(this, object3d, data, view3d);
 
   // parse and store pictures data
-  var pictures = this.tip.details['pictures'];
-
-  var preload = feng.models.Preload.getInstance();
-
-  this._pictureTextures = goog.object.map(pictures, function(val, key) {
-
-    var img = preload.getAsset( this._view3d.sectionId + '.' + this._view3d.id + '.pictures.' + key );
-
-    var texture = new THREE.Texture( img );
-    texture.needsUpdate = true;
-
-    return texture;
-  }, this);
+  this._pictureTextures = null;
 
   // get all picture object 3ds
   var pictureObject3ds = [];
@@ -45,6 +33,52 @@ feng.views.view3dobject.entities.Pictures = function( object3d, data, view3d ){
   this._resolvedPictures = {};
 };
 goog.inherits(feng.views.view3dobject.entities.Pictures, feng.views.view3dobject.TipObject);
+
+
+feng.views.view3dobject.entities.Pictures.prototype.createTextures = function(){
+
+  var shouldCreate = goog.base(this, 'createTextures');
+
+  if(!shouldCreate) return;
+
+  // parse and store pictures data
+  var pictures = this.tip.details['pictures'];
+
+  var preload = feng.models.Preload.getInstance();
+
+  this._pictureTextures = goog.object.map(pictures, function(val, key) {
+
+    var img = preload.getAsset( this._view3d.sectionId + '.' + this._view3d.id + '.pictures.' + key );
+
+    var texture = new THREE.Texture( img );
+    texture.needsUpdate = true;
+
+    return texture;
+  }, this);
+
+  // restore texture from picture id
+  var pictureTextures = this._pictureTextures;
+
+  this.object3d.traverse(function(object) {
+    if(object.userData.id) {
+      object.material.map = pictureTextures[ object.userData.id ];
+    }
+  });
+};
+
+
+feng.views.view3dobject.entities.Pictures.prototype.disposeTextures = function(){
+
+  var shouldDispose = goog.base(this, 'disposeTextures');
+
+  if(!shouldDispose) return;
+
+  goog.object.forEach(this._pictureTextures, function(texture) {
+    texture.dispose();
+  });
+
+  this._pictureTextures = null;
+};
 
 
 feng.views.view3dobject.entities.Pictures.prototype.startInteraction = function() {
@@ -109,8 +143,10 @@ feng.views.view3dobject.entities.Pictures.prototype.setActivePicture = function(
 feng.views.view3dobject.entities.Pictures.prototype.setPicture = function( id ){
 
   var texture = this._pictureTextures[ id ];
+  
   this._activePicture.material.map = texture;
   this._activePicture.material.needsUpdate = true;
+  this._activePicture.userData.id = id;
 
   // fit picture texture in UV
   var u, v, offsetU, offsetV;
@@ -131,7 +167,7 @@ feng.views.view3dobject.entities.Pictures.prototype.setPicture = function( id ){
 
   if(imgRatio > meshRatio) {
 
-    u = 1 / imgRatio / meshRatio;
+    u = 1 / (imgRatio / meshRatio);
     v = 1;
 
     actualWidth = meshHeight * imgRatio;
@@ -143,7 +179,7 @@ feng.views.view3dobject.entities.Pictures.prototype.setPicture = function( id ){
   }else {
 
     u = 1;
-    v = 1 * imgRatio / meshRatio;
+    v = 1 * (imgRatio / meshRatio);
 
     actualWidth = meshWidth;
     actualHeight = meshWidth / imgRatio;

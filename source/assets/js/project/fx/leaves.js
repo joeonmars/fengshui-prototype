@@ -1,5 +1,6 @@
 goog.provide('feng.fx.Leaves');
 
+goog.require('goog.events.EventHandler');
 goog.require('goog.fx.anim.Animated');
 goog.require('feng.fx.LeafSprite');
 goog.require('feng.models.Preload');
@@ -8,13 +9,18 @@ goog.require('feng.models.Preload');
  * @constructor
  * based on http://stemkoski.github.io/Three.js/Particles.html
  */
-feng.fx.Leaves = function( color ){
+feng.fx.Leaves = function( eventTarget, color ){
 
   goog.base(this);
 
   this.isActive = false;
 
+  this._eventHandler = new goog.events.EventHandler(this);
+  this._eventTarget = eventTarget;
+
   this._color = color;
+
+  this._activeObject = null;
 
   // create shared textures if not
 	var preload = feng.models.Preload.getInstance();
@@ -30,20 +36,23 @@ feng.fx.Leaves = function( color ){
 
 	// create leaves
 	var textureIds = [];
+	var numLeaves;
 
 	switch(this._color) {
 		case feng.fx.Leaves.Color.GREEN:
 		textureIds.push('GREEN_1', 'GREEN_2');
+		numLeaves = 10;
 		break;
 
 		case feng.fx.Leaves.Color.YELLOW:
 		textureIds.push('YELLOW_1', 'YELLOW_2');
+		numLeaves = 5;
 		break;
 	}
 
-	for(var i = 0; i < 10; i++) {
+	for(var i = 0; i < numLeaves; i++) {
 		
-		var textureId = textureIds[ goog.math.randomInt(textureIds.length) ];console.log(textureId);
+		var textureId = textureIds[ goog.math.randomInt(textureIds.length) ];
 		var randTexture = feng.fx.Leaves.Texture[ textureId ];
 		var leaf = new feng.fx.LeafSprite( randTexture.clone() );
 
@@ -63,7 +72,9 @@ feng.fx.Leaves = function( color ){
 		_leafScaleMultiplier: 1,
 		'paused': true,
 		'onUpdate': this.updateLeafScale,
-		'onUpdateScope': this
+		'onUpdateScope': this,
+		'onReverseComplete': this.deactivate,
+		'onReverseCompleteScope': this
 	});
 
 	this._startTime = 0;
@@ -74,10 +85,45 @@ feng.fx.Leaves = function( color ){
 goog.inherits(feng.fx.Leaves, THREE.Object3D);
 
 
-feng.fx.Leaves.prototype.animateIn = function( view3dObject ){
+feng.fx.Leaves.prototype.activate = function(){
+
+	this.isActive = true;
+
+	this._eventHandler.listen( this._activeObject.tip, feng.events.EventType.UNLOCK, this.onUnlock, false, this );
+};
+
+
+feng.fx.Leaves.prototype.deactivate = function(){
+
+	var leaves = this.children;
+
+	goog.array.forEach(leaves, function(leaf) {
+		leaf.stop();
+	});
+
+	goog.fx.anim.unregisterAnimation( this._animated );
+
+	this._eventHandler.removeAll();
+
+	this._activeObject = null;
+
+	this.isActive = false;
+};
+
+
+feng.fx.Leaves.prototype.animateIn = function( tipObject ){
+
+	if(this._activeObject === tipObject) {
+		
+		return;
+
+	}else {
+
+		this._activeObject = tipObject;
+	}
 
 	// calculate object radius
-	var boundingSphere = view3dObject.getBoundingSphere();
+	var boundingSphere = tipObject.getBoundingSphere();
 	var radius = Math.max( 15, boundingSphere.radius );
 
 	this.position.copy( boundingSphere.center );
@@ -112,21 +158,18 @@ feng.fx.Leaves.prototype.animateIn = function( view3dObject ){
 
 	goog.fx.anim.registerAnimation( this._animated );
 
-	this.isActive = true;
+	this.activate();
 };
 
 
 feng.fx.Leaves.prototype.animateOut = function(){
 
-	var leaves = this.children;
+	if(this._leafScaleTweener.reversed() || !this.isActive) {
+		return;
+	}
 
-	goog.array.forEach(leaves, function(leaf) {
-		leaf.stop();
-	});
-
-	goog.fx.anim.unregisterAnimation( this._animated );
-
-	this.isActive = false;
+	// scale down leaves
+	this._leafScaleTweener.reverse();
 };
 
 
@@ -141,6 +184,15 @@ feng.fx.Leaves.prototype.updateLeafScale = function(){
 };
 
 
+feng.fx.Leaves.prototype.onUnlock = function(e){
+
+	this._eventTarget.dispatchEvent({
+		type: feng.events.EventType.UNLOCK,
+		activeObject: this._activeObject
+	});
+};
+
+
 feng.fx.Leaves.prototype.onAnimationFrame = function(now){
 
 	var time = (now - this._startTime) / 1000;
@@ -152,7 +204,18 @@ feng.fx.Leaves.prototype.onAnimationFrame = function(now){
 		// pulse away/towards center
 		// individual rates of movement
 		var a = this._attributes.randomness[c] + 1;
-		var pulseFactor = Math.sin(a * time) * 0.1 + 0.9;
+
+		var pulseFactor = (Math.sin(a * time) + 1) / 2;
+
+		if(this._color === feng.fx.Leaves.Color.GREEN) {
+
+			pulseFactor = goog.math.lerp( 0.8, 1, pulseFactor );
+
+		}else if(this._color === feng.fx.Leaves.Color.YELLOW) {
+
+			pulseFactor = goog.math.lerp( 0.8, 2, pulseFactor );
+		}
+
 		var startPosition = this._attributes.startPosition[c];
 		leaf.position.x = startPosition.x * pulseFactor;
 		leaf.position.y = startPosition.y * pulseFactor;

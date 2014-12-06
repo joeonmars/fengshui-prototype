@@ -291,6 +291,8 @@ feng.views.View3D.prototype.activate = function(){
 
  	this.modeController.activate();
 
+ 	this.fx.activate();
+
  	goog.fx.anim.registerAnimation(this);
 };
  
@@ -307,6 +309,8 @@ feng.views.View3D.prototype.deactivate = function(){
  	});
 
  	this.modeController.deactivate();
+
+ 	this.fx.deactivate();
 
 	goog.fx.anim.unregisterAnimation(this);
 };

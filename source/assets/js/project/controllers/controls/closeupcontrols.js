@@ -97,8 +97,17 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 		caption.setParentEventTarget(this);
 		caption.show();
 
-		// test
-		this._view3d.fx.greenLeaves.animateIn( this._activeObject );
+		// todo
+		if(this._activeObject.tip.unlocked) {
+
+			this._view3d.fx.greenLeaves.animateIn( this._activeObject );
+			this._view3d.fx.yellowLeaves.animateOut();
+
+		}else {
+
+			this._view3d.fx.yellowLeaves.animateIn( this._activeObject );
+			this._view3d.fx.greenLeaves.animateOut();
+		}
 
 	}else  {
 		

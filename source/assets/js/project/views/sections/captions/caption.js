@@ -223,7 +223,7 @@ feng.views.sections.captions.Caption.prototype.gotoSection = function( section, 
   var fromSection = this._section;
   var toSection = section;
 
-  var duration = instant ? 0 : .45;
+  var duration = instant ? 0 : .25;
 
   this._sectionTweener = TweenMax.to(this._scrollerInnerEl, duration, {
     'x': - this.getSectionX( toSection ),
@@ -501,16 +501,6 @@ feng.views.sections.captions.Caption.prototype.onClick = function( e ) {
     case this._promptButton:
     this._object.startInteraction();
     break;
-
-    /*
-    case this._changeButton:
-    this._object.tip.unlock();
-    break;
-
-    case this._unlockButton:
-    this.unlock();
-    break;
-    */
   }
 };
 

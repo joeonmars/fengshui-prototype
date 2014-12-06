@@ -94,9 +94,9 @@ feng.models.Preload = function(){
 				'window-right-texture': 'images/texture/studio/livingroom/window-right.jpg',
 				'window-right-switch-texture': 'images/texture/studio/livingroom/window-right-switch.jpg',
 				'pictures': {
-					'1': 'images/texture/studio/livingroom/pictures/1.jpg',
-					'2': 'images/texture/studio/livingroom/pictures/2.jpg',
-					'3': 'images/texture/studio/livingroom/pictures/3.jpg'
+					'birds': 'images/texture/studio/livingroom/pictures/birds.jpg',
+					'fish': 'images/texture/studio/livingroom/pictures/fish.jpg',
+					'leaves': 'images/texture/studio/livingroom/pictures/leaves.jpg'
 				},
 				'skybox': {
 					'xpos': 'images/texture/studio/livingroom/skybox/pos-x.png',

@@ -55,17 +55,17 @@
 			"reminder": "I love taking photos and display them above my bed!",
 			"details": {
 				"pictures": {
-					"1": {
-						"name": "Photo 1",
-						"description": "This is a dummy picture. Its name is 1."
+					"birds": {
+						"name": "Flock Of Birds",
+						"description": "To make your living environment feeling secure, and not too lonely for a single person, hang a picture of a couple or display pairs of objects to enhance the feng shui energy."
 					},
-					"2": {
-						"name": "Photo 2",
-						"description": "This is a dummy picture. Its name is 2."
+					"fish": {
+						"name": "Flock Of Fish",
+						"description": "To make your living environment feeling secure, and not too lonely for a single person, hang a picture of a couple or display pairs of objects to enhance the feng shui energy."
 					},
-					"3": {
-						"name": "Photo 3",
-						"description": "This is a dummy picture. Its name is 3."
+					"leaves": {
+						"name": "Leaves",
+						"description": "To make your living environment feeling secure, and not too lonely for a single person, hang a picture of a couple or display pairs of objects to enhance the feng shui energy."
 					}
 				}
 			}
@@ -613,7 +613,7 @@
 				"livingroom": {
 					"character": "ollie",
 					"title": "Welcome to my studio!",
-					"paragraph": "My name is Ollie B. Bowie. I am a fashion designer. This is my apartment. Welcome!<br>I love photos and plants and handcrafts. I have had a hard time recently, and if you have any suggestions on improving the workspace energy in my studio, it would be great!"
+					"paragraph": "My name is Ollie and I am a fashion designer. This is my apartment. Welcome!<br>I love photos and plants and handcrafts. I wish I had someone to truly share my hobbies with... especially when I feel so alone at times.<br>If you have any suggestions on improving my workspace to make it fun and happier, it would be great!"
 				},
 				"bathroom": {
 					"character": "ollie",

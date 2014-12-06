@@ -30,6 +30,18 @@
 				&[data-picture="lecture"] {
 					@include retina-icon("lecture");
 				}
+
+				&[data-picture="birds"] {
+					@include retina-icon("birds");
+				}
+
+				&[data-picture="fish"] {
+					@include retina-icon("fish");
+				}
+
+				&[data-picture="leaves"] {
+					@include retina-icon("leaves");
+				}
 			}
 		}
 	}
