@@ -1,0 +1,44 @@
+.drop-fruits{
+
+	.fruits{
+		width: 100%;
+
+		>li{
+			display: inline-block;
+			vertical-align: top;
+			margin: 10px 20px 10px 0;
+
+			&:last-child{
+				margin-right: 0;
+			}
+			
+			>.item-button{
+
+				&:not(.show-fruit) {
+					background-image: none !important;
+					font-size: 20px;
+					@extend .icon;
+					@extend .icon-plus;
+				}
+
+				// item classes
+				&[data-fruit="apple"] {
+					@include retina-icon("degree");
+				}
+
+				&[data-fruit="peach"] {
+					@include retina-icon("family");
+				}
+
+				&[data-fruit="pineapple"] {
+					@include retina-icon("hug");
+				}
+
+				&[data-fruit="orange"] {
+					@include retina-icon("lecture");
+				}
+
+			}
+		}
+	}
+}

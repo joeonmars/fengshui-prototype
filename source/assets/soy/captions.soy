@@ -225,7 +225,6 @@
 
 /**
  * Drop fruits caption
- * @param fruits fruits
  * @param tip the tip
  * @param? position the caption's position
  */
@@ -235,20 +234,22 @@
 
 	{param interactionContent}
 
-		<h2>Fill the plate with fruits</h2>
-
 		<div class="drop-fruits">
+			<h2>Fill the plate with fruits.</h2>
+
 			<ul class="fruits">
-				{foreach $fruitKey in keys($fruits)}
+				{foreach $fruitKey in keys($tip.details['fruits'])}
 					<li>
-						<button data-fruit-id="{$fruitKey}"></button>
+						<button class="item-button" data-fruit="{$fruitKey}"></button>
 					</li>
 				{/foreach}
 			</ul>
-			<ul class="descriptions">
-				{foreach $fruitKey in keys($fruits)}
-					<li data-fruit-id="{$fruitKey}">
-						<p>{ $fruits[$fruitKey] }</p>
+
+			<ul class="info">
+				{foreach $fruitKey in keys($tip.details['fruits'])}
+					<li data-fruit="{$fruitKey}">
+						<h3>{ $tip.details['fruits'][$fruitKey]['name'] }</h3>
+						<p>{ $tip.details['fruits'][$fruitKey]['description'] }</p>
 					</li>
 				{/foreach}
 			</ul>

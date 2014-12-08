@@ -491,7 +491,14 @@ feng.views.sections.captions.Caption.prototype.onInteractionStart = function( e 
 
 feng.views.sections.captions.Caption.prototype.onInteractionEnd = function( e ) {
 
-  this.animateInPanel();
+  if(this._object.tip.isFinal) {
+
+    this.animateInPanel();
+
+  }else {
+
+    this.close();
+  }
 };
 
 

@@ -13,16 +13,16 @@ feng.views.sections.captions.DropFruitsCaption = function( object, renderControl
   this._template = feng.templates.captions.DropFruitsCaption;
   
   this._templateData = {
-    fruits: object.tip.details['descriptions'],
     tip: object.tip,
     position: 'right'
   };
 
   goog.base(this, object, renderController, renderSize, controls, hud);
 
-  this._fruitButtonEls = goog.dom.query('.drop-fruits .fruits li button', this.domElement);
-  this._descriptionEls = goog.dom.query('.drop-fruits .descriptions li', this.domElement);
-  this._descriptionEl = goog.dom.query('.drop-fruits .descriptions', this.domElement)[0];
+  this._fruitId = null;
+
+  this._itemEls = feng.utils.Utils.createDomCollectionByAttributes( goog.dom.query('.item-button', this.domElement), 'data-fruit' );
+  this._infoEls = feng.utils.Utils.createDomCollectionByAttributes( goog.dom.query('.info li', this.domElement), 'data-fruit' );
 };
 goog.inherits(feng.views.sections.captions.DropFruitsCaption, feng.views.sections.captions.Caption);
 
@@ -31,10 +31,10 @@ feng.views.sections.captions.DropFruitsCaption.prototype.show = function() {
 
   goog.base(this, 'show');
 
-  this._eventHandler.listen( this._object, feng.events.EventType.CHANGE, this.onFruitPlateChange, false, this );
+  //this._eventHandler.listen( this._object, feng.events.EventType.CHANGE, this.onFruitPlateChange, false, this );
 
-  goog.array.forEach(this._fruitButtonEls, function(fruitButtonEl) {
-    this._eventHandler.listen( fruitButtonEl, 'mousedown', this.onClickFruitButton, false, this );
+  goog.object.forEach(this._itemEls, function(itemEl) {
+    this._eventHandler.listen(itemEl, 'click', this.onClickItem, false, this);
   }, this);
 };
 
@@ -69,10 +69,20 @@ feng.views.sections.captions.DropFruitsCaption.prototype.setActiveFruit = functi
 };
 
 
-feng.views.sections.captions.DropFruitsCaption.prototype.onClickFruitButton = function(e) {
+feng.views.sections.captions.DropFruitsCaption.prototype.onClickItem = function(e) {
 
-  if(!this._object.isUnlocked()) return false;
+  if(this._fruitId) {
+    goog.dom.classes.enable( this._itemEls[this._fruitId], 'active', false );
+    goog.dom.classes.enable( this._infoEls[this._fruitId], 'active', false );
+  }
 
-  var fruit = e.currentTarget.getAttribute('data-fruit-id');
-  this.setActiveFruit( fruit );
+  this._fruitId = e.currentTarget.getAttribute("data-fruit");
+
+  goog.dom.classes.enable( this._itemEls[this._fruitId], 'active', true );
+  goog.dom.classes.enable( this._itemEls[this._fruitId], 'show-fruit', true );
+  goog.dom.classes.enable( this._infoEls[this._fruitId], 'active', true );
+
+  this.scrollBar.resize();
+
+  this._object.dropFruit( this._fruitId );
 };

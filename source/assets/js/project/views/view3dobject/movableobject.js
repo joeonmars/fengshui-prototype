@@ -155,8 +155,6 @@ feng.views.view3dobject.MovableObject.prototype.startInteraction = function(){
   goog.base(this, 'startInteraction');
 
   this._pickDelay.start();
-
-  //this._interactionHandler.listen(this._view3d.domElement, 'click', this.onClick, false, this);
 };
 
 
@@ -207,17 +205,3 @@ feng.views.view3dobject.MovableObject.prototype.onCameraIn = function(){
 
   goog.base(this, 'onCameraIn');
 };
-
-/*
-feng.views.view3dobject.MovableObject.prototype.onClick = function(e){
-
-  var camera = this._view3d.cameraController.activeCamera;
-  var viewSize = this._view3d.viewSize;
-  var clickedObjects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, [this.object3d], camera, viewSize );
-  
-  if(clickedObjects.length > 0) {
-
-    this.pick();
-  }
-};
-*/

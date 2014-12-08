@@ -107,19 +107,19 @@ feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
-  var param164 = '<h2>Fill the plate with fruits</h2><div class="drop-fruits"><ul class="fruits">';
-  var fruitKeyList166 = soy.$$getMapKeys(opt_data.fruits);
+  var param164 = '<div class="drop-fruits"><h2>Fill the plate with fruits.</h2><ul class="fruits">';
+  var fruitKeyList166 = soy.$$getMapKeys(opt_data.tip.details['fruits']);
   var fruitKeyListLen166 = fruitKeyList166.length;
   for (var fruitKeyIndex166 = 0; fruitKeyIndex166 < fruitKeyListLen166; fruitKeyIndex166++) {
     var fruitKeyData166 = fruitKeyList166[fruitKeyIndex166];
-    param164 += '<li><button data-fruit-id="' + fruitKeyData166 + '"></button></li>';
+    param164 += '<li><button class="item-button" data-fruit="' + fruitKeyData166 + '"></button></li>';
   }
-  param164 += '</ul><ul class="descriptions">';
-  var fruitKeyList172 = soy.$$getMapKeys(opt_data.fruits);
+  param164 += '</ul><ul class="info">';
+  var fruitKeyList172 = soy.$$getMapKeys(opt_data.tip.details['fruits']);
   var fruitKeyListLen172 = fruitKeyList172.length;
   for (var fruitKeyIndex172 = 0; fruitKeyIndex172 < fruitKeyListLen172; fruitKeyIndex172++) {
     var fruitKeyData172 = fruitKeyList172[fruitKeyIndex172];
-    param164 += '<li data-fruit-id="' + fruitKeyData172 + '"><p>' + opt_data.fruits[fruitKeyData172] + '</p></li>';
+    param164 += '<li data-fruit="' + fruitKeyData172 + '"><h3>' + opt_data.tip.details['fruits'][fruitKeyData172]['name'] + '</h3><p>' + opt_data.tip.details['fruits'][fruitKeyData172]['description'] + '</p></li>';
   }
   param164 += '</ul></div>';
   var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param164}));
@@ -135,11 +135,11 @@ feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
  */
 feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
   var output = '<p class="floatText">';
-  var lineList183 = opt_data.lines;
-  var lineListLen183 = lineList183.length;
-  for (var lineIndex183 = 0; lineIndex183 < lineListLen183; lineIndex183++) {
-    var lineData183 = lineList183[lineIndex183];
-    output += '<span>' + lineData183 + '</span>';
+  var lineList185 = opt_data.lines;
+  var lineListLen185 = lineList185.length;
+  for (var lineIndex185 = 0; lineIndex185 < lineListLen185; lineIndex185++) {
+    var lineData185 = lineList185[lineIndex185];
+    output += '<span>' + lineData185 + '</span>';
   }
   output += '</p>';
   return output;

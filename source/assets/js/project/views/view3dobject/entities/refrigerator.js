@@ -15,26 +15,23 @@ feng.views.view3dobject.entities.Refrigerator = function( object3d, data, view3d
 
   this._door = this.object3d;
 
-  this._fruits = null;
-
   this.cameraInDuration = 3000;
+
+  this._cameraZoomTweener = null;
 };
 goog.inherits(feng.views.view3dobject.entities.Refrigerator, feng.views.view3dobject.TipObject);
 
 
 feng.views.view3dobject.entities.Refrigerator.prototype.getFruits = function(){
 
-  this._fruits = [];
+  var fruits = [];
 
-  goog.array.forEach( ['apple', 'pineapple', 'orange', 'peach'], function(name) {
+  goog.array.forEach( ['peach', 'pineapple', 'orange', 'apple'], function(name) {
 
-    var fruit = this._door.parent.getObjectByName( name );
-    if(fruit) {
-      this._fruits.push( fruit );
-    }
+    fruits.push( this._view3d.getView3dObject(name) );
   }, this );
 
-  return this._fruits;
+  return fruits;
 };
 
 
@@ -42,9 +39,86 @@ feng.views.view3dobject.entities.Refrigerator.prototype.startInteraction = funct
 
   goog.base(this, 'startInteraction');
 
-  this._fruits = this.getFruits();
+  // zoom in camera a bit to start picking fruits
+  var prop = {
+    fov: this.data.camera.fov
+  };
   
-  this._interactionHandler.listen(this._view3d.domElement, 'click', this.onClick, false, this);
+  this._cameraZoomTweener = TweenMax.to(prop, 1, {
+    fov: prop.fov - 20,
+    'ease': Quad.easeInOut,
+    'onUpdate': this.onCameraZoomUpdate,
+    'onUpdateParams': [prop],
+    'onUpdateScope': this,
+    'onComplete': this.onCameraZoomIn,
+    'onCompleteScope': this,
+    'onReverseComplete': this.onCameraZoomOut,
+    'onReverseCompleteScope': this
+  });
+};
+
+
+feng.views.view3dobject.entities.Refrigerator.prototype.onCameraZoomUpdate = function(prop){
+
+  var control = this._view3d.modeController.control;
+
+  control.setFov( prop.fov );
+};
+
+
+feng.views.view3dobject.entities.Refrigerator.prototype.onCameraZoomIn = function(){
+
+  var fruits = this.getFruits();
+  
+  var arms = this._view3d.arms;
+
+  // animate picking up fruits
+  var timeline = new TimelineMax({
+    'onComplete': this.onPickedLastFruit,
+    'onCompleteScope': this
+  });
+
+  goog.array.forEach(fruits, function(fruit) {
+
+    var endOrientation = arms.getWorldOrientation( fruit.name );
+    var endPosition = endOrientation.position;
+    var endRotation = endOrientation.rotation;
+    var startPosition = fruit.object3d.position;
+    var startRotation = fruit.object3d.rotation;
+
+    var prop = {
+      t: 0
+    };
+
+    var position = new THREE.Vector3();
+    var rotation = new THREE.Euler();
+
+    var tweener = TweenMax.to( prop, 1, {
+      t: 1,
+      'ease': Sine.easeIn,
+      'onUpdate': function() {
+        
+        position = position.copy(startPosition).lerp(endPosition, prop.t);
+        fruit.object3d.position.copy( position );
+
+        rotation = feng.utils.ThreeUtils.getLerpedEuler( startRotation, endRotation, prop.t, rotation );
+        fruit.object3d.rotation.copy( rotation );
+      },
+      'onComplete': this.onPickedFruit,
+      'onCompleteParams': [fruit],
+      'onCompleteScope': this
+    });
+
+    timeline.add( tweener );
+
+  }, this);
+};
+
+
+feng.views.view3dobject.entities.Refrigerator.prototype.onCameraZoomOut = function(){
+
+  this.unlock();
+  this.stopInteraction();
 };
 
 
@@ -76,21 +150,15 @@ feng.views.view3dobject.entities.Refrigerator.prototype.onCameraOut = function()
 };
 
 
-feng.views.view3dobject.entities.Refrigerator.prototype.onClick = function(e){
+feng.views.view3dobject.entities.Refrigerator.prototype.onPickedFruit = function(fruit){
 
   var arms = this._view3d.arms;
 
-  var camera = this._view3d.cameraController.activeCamera;
-  var viewSize = this._view3d.viewSize;
-  var clickedObjects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, this._fruits, camera, viewSize );
+  arms.addItem( fruit );
+};
 
-  if(clickedObjects.length > 0) {
-    var fruit = clickedObjects[0];
-    arms.addItem( fruit.object.view3dObject );
-  }
 
-  if(this.getFruits().length === 0) {
-    this.unlock();
-    this.stopInteraction();
-  }
+feng.views.view3dobject.entities.Refrigerator.prototype.onPickedLastFruit = function(){
+
+  this._cameraZoomTweener.reverse();
 };

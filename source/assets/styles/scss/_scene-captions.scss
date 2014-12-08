@@ -138,6 +138,10 @@
 			visibility: visible;
 			opacity: 1;
 			@include transition(opacity .5s $easeInOutQuad, visibility .5s);
+
+			b{
+				color: $blue;
+			}
 		}
 
 		h1{
@@ -336,4 +340,4 @@
 @import "captions/change-color";
 @import "captions/change-picture";
 @import "captions/change-object";
-@import "captions/fruits";
+@import "captions/drop-fruits";

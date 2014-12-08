@@ -95,7 +95,7 @@ feng.views.sections.controls.DropButton.prototype.onAnimationFrame = function(no
 
   var controlPosition = this._view3d.modeController.control.getPosition();
   var distance = controlPosition.distanceTo( pos3d );
-console.log(distance, this._movableObject.range);
+  
   var shouldShow = (distance <= this._movableObject.range);
 
   goog.style.setStyle( this.domElement, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)');
