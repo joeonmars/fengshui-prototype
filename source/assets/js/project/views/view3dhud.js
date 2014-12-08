@@ -15,6 +15,7 @@ goog.require('feng.views.sections.captions.ChangeObjectCaption');
 goog.require('feng.views.sections.captions.ChangePictureCaption');
 goog.require('feng.views.sections.captions.DropFruitsCaption');
 goog.require('feng.views.sections.overlays.TutorialOverlay');
+goog.require('feng.views.sections.overlays.CreditsOverlay');
 goog.require('feng.views.sections.overlays.OpeningOverlay');
 goog.require('feng.views.sections.overlays.EndingOverlay');
 goog.require('feng.views.sections.overlays.FinaleOverlay');
@@ -50,6 +51,9 @@ feng.views.View3DHud = function( hudEl, view3dController, tips, episode ){
 
   var tutorialOverlayEl = goog.dom.getElementByClass('tutorial-overlay', this._overlaysEl);
   this.tutorialOverlay = new feng.views.sections.overlays.TutorialOverlay( tutorialOverlayEl );
+
+  var creditsOverlayEl = goog.dom.getElementByClass('credits-overlay', this._overlaysEl);
+  this.creditsOverlay = new feng.views.sections.overlays.CreditsOverlay( creditsOverlayEl );
 
   var openingOverlayEl = goog.dom.getElementByClass('opening-overlay', this._overlaysEl);
   this.openingOverlay = new feng.views.sections.overlays.OpeningOverlay( openingOverlayEl );
@@ -148,6 +152,9 @@ feng.views.View3DHud.prototype.activate = function() {
   feng.tutorial.listen(feng.events.EventType.ANIMATE_IN, this.tutorialOverlay.animateIn, false, this.tutorialOverlay);
   feng.tutorial.listen(feng.events.EventType.ANIMATE_OUT, this.tutorialOverlay.animateOut, false, this.tutorialOverlay);
 
+  feng.credits.listen(feng.events.EventType.ANIMATE_IN, this.creditsOverlay.animateIn, false, this.creditsOverlay);
+  feng.credits.listen(feng.events.EventType.ANIMATE_OUT, this.creditsOverlay.animateOut, false, this.creditsOverlay);
+
   this._episode.listen(feng.events.EventType.START, this.loaderOverlay.onLoadStart, false, this.loaderOverlay);
   this._episode.listen(feng.events.EventType.PROGRESS, this.loaderOverlay.onLoadProgress, false, this.loaderOverlay);
   this._episode.listen(feng.events.EventType.COMPLETE, this.loaderOverlay.onLoadComplete, false, this.loaderOverlay);
@@ -159,6 +166,7 @@ feng.views.View3DHud.prototype.activate = function() {
   this.endingOverlay.listen(feng.events.EventType.ANIMATE_OUT, this.onOverlayAnimateOut, false, this);
 
   this.tutorialOverlay.activate();
+  this.creditsOverlay.activate();
 
   this.activateControls();
 };
@@ -169,12 +177,14 @@ feng.views.View3DHud.prototype.deactivate = function() {
   this._view3d.modeController.removeAllListeners();
   this._view3dController.removeAllListeners();
   feng.tutorial.removeAllListeners();
+  feng.credits.removeAllListeners();
   this._episode.removeAllListeners();
   this.openingOverlay.removeAllListeners();
 
   this.dropButton.deactivate();
   this.tooltips.deactivate();
   this.tutorialOverlay.deactivate();
+  this.creditsOverlay.deactivate();
 
   this.deactivateControls();
 };
@@ -192,9 +202,11 @@ feng.views.View3DHud.prototype.activateControls = function() {
     this.tooltips.activate();
   }
 
-  this._helpers.activate();
-  
-  goog.dom.appendChild( this.domElement, this._helpers.domElement );
+  if(!this._helpers.isDisposed()) {
+
+    this._helpers.activate();
+    goog.dom.appendChild( this.domElement, this._helpers.domElement );
+  }
 
   feng.mainOptions.showHelpButton( true );
 };
@@ -210,7 +222,10 @@ feng.views.View3DHud.prototype.deactivateControls = function() {
 
   this.tooltips.deactivate();
 
-  this._helpers.deactivate();
+  if(!this._helpers.isDisposed()) {
+    
+    this._helpers.deactivate();
+  }
 
   feng.mainOptions.showHelpButton( false );
 };

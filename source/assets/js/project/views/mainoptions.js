@@ -16,8 +16,12 @@ feng.views.MainOptions = function(){
 
   this.domElement = goog.dom.getElement('main-options');
 
-  this._howtoplayButton = goog.dom.query('.howtoplay', this.domElement)[0];
+  this._infoButton = goog.dom.query('.info', this.domElement)[0];
+  this._instructionsButton = goog.dom.query('.instructions', this.domElement)[0];
+  this._creditsButton = goog.dom.query('.credits', this.domElement)[0];
   this._soundButton = goog.dom.query('.sound', this.domElement)[0];
+  this._soundOnButton = goog.dom.getElementByClass('on', this._soundButton);
+  this._soundOffButton = goog.dom.getElementByClass('off', this._soundButton);
   this._facebookButton = goog.dom.query('.facebook', this.domElement)[0];
   this._twitterButton = goog.dom.query('.twitter', this.domElement)[0];
   this._googleButton = goog.dom.query('.google', this.domElement)[0];
@@ -28,8 +32,10 @@ feng.views.MainOptions = function(){
   	this.onMute();
   }
 
-  goog.events.listen(this._howtoplayButton, 'click', this.onClick, false, this);
-  goog.events.listen(this._soundButton, 'click', this.onClick, false, this);
+  goog.events.listen(this._instructionsButton, 'click', this.onClick, false, this);
+  goog.events.listen(this._creditsButton, 'click', this.onClick, false, this);
+  goog.events.listen(this._soundOnButton, 'click', this.onClick, false, this);
+  goog.events.listen(this._soundOffButton, 'click', this.onClick, false, this);
   goog.events.listen(this._facebookButton, 'click', this.onClick, false, this);
   goog.events.listen(this._twitterButton, 'click', this.onClick, false, this);
   goog.events.listen(this._googleButton, 'click', this.onClick, false, this);
@@ -42,20 +48,28 @@ goog.inherits(feng.views.MainOptions, goog.events.EventTarget);
 
 feng.views.MainOptions.prototype.showHelpButton = function( shouldShow ){
 
-  goog.style.showElement( this._howtoplayButton, shouldShow );
+  goog.style.showElement( this._infoButton, shouldShow );
 };
 
 
 feng.views.MainOptions.prototype.onClick = function(e){
 
 	switch(e.currentTarget) {
-		case this._howtoplayButton:
+		case this._instructionsButton:
     feng.tutorial.toggle();
 		break;
 
-		case this._soundButton:
-		feng.soundController.toggle();
+    case this._creditsButton:
+    feng.credits.toggle();
+    break;
+
+		case this._soundOnButton:
+		feng.soundController.unmute();
 		break;
+
+    case this._soundOffButton:
+    feng.soundController.mute();
+    break;
 
 		case this._facebookButton:
 		case this._twitterButton:

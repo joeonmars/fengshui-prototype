@@ -15,6 +15,7 @@ goog.require('feng.views.debug.Debugger');
 goog.require('feng.views.MainOptions');
 goog.require('feng.views.EpisodeSelection');
 goog.require('feng.views.popups.Tutorial');
+goog.require('feng.views.popups.Credits');
 goog.require('feng.fx.Shaders');
 goog.require('feng.PubSub');
 goog.require('feng.utils.Utils');
@@ -66,6 +67,7 @@ feng.apps.Main = function() {
 	feng.episodeSelection = feng.views.EpisodeSelection.getInstance();
 
 	feng.tutorial = feng.views.popups.Tutorial.getInstance();
+	feng.credits = feng.views.popups.Credits.getInstance();
 
 	feng.controllers.NavigationController.Implementation = feng.controllers.NavigationController.HASH;
 	feng.navigationController = feng.controllers.NavigationController.getInstance();

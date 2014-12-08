@@ -195,6 +195,8 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 			toPosition: toPosition
 		});
 
+		feng.pubsub.publish( feng.PubSub.Topic.TRIGGER_WALK, 'click' );
+
 		// play click effect
 		var normal = intersects[0].face.normal;
 		this._view3d.fx.clickEffect.play( toPosition, normal );
@@ -249,6 +251,8 @@ feng.controllers.controls.BrowseControls.prototype.onMouseWheel = function ( e )
 		toPosition: toPosition,
 		mousewheel: true
 	});
+
+	feng.pubsub.publish( feng.PubSub.Topic.TRIGGER_WALK, 'mousewheel' );
 };
 
 

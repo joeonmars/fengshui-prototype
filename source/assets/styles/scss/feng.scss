@@ -26,17 +26,18 @@ body{
 		position: relative;
 		margin-top: 15px;
 
-		>button{
+		>.icon{
 			position: relative;
 			width: 36px;
 			height: 36px;
+			line-height: 36px;
 			background-color: #fff;
 			text-align: center;
 			font-size: 13px;
 			color: $darkgray-ui;
 			@include border-radius(50%);
 			@include transition(background-color .25s, color .2s);
-			-webkit-font-smoothing: antialiased;
+			z-index: 1;
 
 			&:hover{
 				opacity: 1;
@@ -45,44 +46,78 @@ body{
 			}
 		}
 
-		>.howtoplay{
-			@extend .icon;
-			@extend .icon-help;
+		&.info{
+			>.icon{
+				@extend .icon-help;
+			}
+
+			&:hover{
+				.buttons{
+					width: 200px;
+				}
+			}
 		}
 
-		>.sound{
-			@extend .icon;
-			@extend .icon-sound-on;
+		&.sound{
+			>.icon{
+				@extend .icon-sound-on;
+			}
+
+			.on{
+				opacity: .5;
+			}
+
+			.off{
+				opacity: 1;
+			}
 
 			&.mute{
-				@extend .icon;
-				@extend .icon-sound-off;
+				>.icon{
+					@extend .icon-sound-off;
+				}
+
+				.on{
+					opacity: 1;
+				}
+
+				.off{
+					opacity: .5;
+				}
+			}
+
+			&:hover{
+				.buttons{
+					width: 100px;
+				}
 			}
 		}
 
 		&.share{
 
-			&:hover{
-
-				>button{
-					background-color: $darkgray-ui;
-					color: #fff;
-				}
-				
-				>.slider{
-					opacity: 1;
-
-					>.buttons{
-						opacity: 1;
-						width: 120px;
-					}
-				}
+			>.icon{
+				@extend .icon-share;
 			}
 
-			>button{
-				z-index: 1;
-				@extend .icon;
-				@extend .icon-share;
+			&:hover{
+				.buttons{
+					width: 145px;
+				}
+			}
+		}
+
+		&:hover{
+
+			>.icon{
+				background-color: $darkgray-ui;
+				color: #fff;
+			}
+			
+			>.slider{
+				opacity: 1;
+
+				>.buttons{
+					opacity: 1;
+				}
 			}
 		}
 
@@ -113,20 +148,39 @@ body{
 				overflow: hidden;
 				@include single-transition(width, .2s);
 				width: 0;
+				line-height: 36px !important;
+
+				>button{
+					display: inline-block;
+					vertical-align: middle;
+					text-transform: uppercase;
+					font-family: $font_marineup;
+					font-size: 14px;
+					color: $darkgray-ui;
+					margin: 0 10px;
+					@include single-transition(opacity, .2s);
+
+					&:first-child{
+						margin-left: 32px;
+					}
+
+					&:hover{
+						opacity: .5;
+					}
+				}
 
 				>a{
 					display: inline-block;
 					vertical-align: middle;
 					width: 20px;
+					font-size: 17px;
 					text-align: center;
-					font-size: 18px;
-					line-height: 36px !important;
-					margin: 0 5px;
+					margin: 0 10px;
 					color: $darkgray-ui;
 					@include single-transition(opacity, .25s);
 
 					&:first-child{
-						margin-left: 24px;
+						margin-left: 32px;
 					}
 
 					&:hover{
@@ -181,7 +235,7 @@ body{
 
 			>.overlays{
 				@include absoluteTopLeft;
-				z-index: 1;
+				z-index: 5;
 				@extend %fadeWhenPause;
 
 				@import "scene-overlays";
@@ -191,7 +245,7 @@ body{
 				@include absoluteTopLeft;
 				width: 100%;
 				height: 0;
-				z-index: 3;
+				z-index: 2;
 				@extend %fadeWhenPause;
 
 				@import "scene-controls";
@@ -201,7 +255,7 @@ body{
 				@include absoluteTopLeft;
 				width: 100%;
 				height: 0;
-				z-index: 2;
+				z-index: 1;
 				@extend %fadeWhenPause;
 
 				@import "tooltip";
@@ -217,6 +271,16 @@ body{
 				>.caption{
 					@import "scene-captions";
 				}
+			}
+
+			>.helpers{
+				@include absoluteTopLeft;
+				width: 100%;
+				height: 0;
+				z-index: 3;
+				@extend %fadeWhenPause;
+
+				@import "helpers";
 			}
 		}
 

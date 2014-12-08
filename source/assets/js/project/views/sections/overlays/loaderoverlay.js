@@ -17,8 +17,8 @@ feng.views.sections.overlays.LoaderOverlay = function(domElement){
   this._progressEl = goog.dom.getElementByClass('progress', domElement);
 
   var preload = feng.models.Preload.getInstance();
-  var img = preload.getAsset( 'global.spinner' );
-	var data = preload.getAsset( 'global.spinner-data' );
+  var img = feng.fx.AnimatedHouseLogo.Img;
+	var data = feng.fx.AnimatedHouseLogo.Data;
   this._spinner = new feng.fx.CanvasSprite( img, data, this._spinnerEl );
 
   this._spinnerTweener = this._spinner.getTweener();

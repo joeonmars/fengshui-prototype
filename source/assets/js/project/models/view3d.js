@@ -48,7 +48,8 @@ feng.models.View3D.Data = {
 				origin: {
 					position: new THREE.Vector3(-176, 0, 20),
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
-				}
+				},
+				texture: "studio.livingroom.bathroom-door-texture"
 			},
 			'wall':	{
 				castShadow: true,

@@ -17,6 +17,8 @@
 
 			<div class="tutorial-overlay"></div>
 
+			<div class="credits-overlay"></div>
+
 			<div class="opening-overlay">
 			{call feng.templates.common.Popup}
 				{param classname: 'opening from-bottom' /}
@@ -222,14 +224,26 @@
 	</div>
 
 	<ul id="main-options">
-		<li>
-			<button class="howtoplay"></button>
+		<li class="info">
+			<div class="icon"></div>
+			<div class="slider">
+				<div class="buttons">
+					<button class="instructions">Instructions</button>
+					<button class="credits">Credits</button>
+				</div>
+			</div>
 		</li>
-		<li>
-			<button class="sound"></button>
+		<li class="sound">
+			<div class="icon"></div>
+			<div class="slider">
+				<div class="buttons">
+					<button class="on">On</button>
+					<button class="off">Off</button>
+				</div>
+			</div>
 		</li>
 		<li class="share">
-			<button></button>
+			<div class="icon"></div>
 			<div class="slider">
 				<div class="buttons">
 					<a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/" target="_blank"></a>

@@ -12,7 +12,7 @@
 		overflow: hidden;
 		background-position: center center;
 		background-size: cover;
-		@include single-transition(width, .5s, ease-in-out);
+		@include single-transition(width, .5s, $easeInOutQuad);
 
 		&.studio{
 			background-image: image-url('scene-studio.jpg');

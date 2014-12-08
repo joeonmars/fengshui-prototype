@@ -17,6 +17,7 @@
 $min_width: 1024px;
 $min_height: 640px;
 
+$blue: #82D3FA;
 $gray: #969696;
 $lightgray-ui: #9a9a9a;
 $darkgray-ui: #626262;
@@ -209,7 +210,7 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
 }
 
 %arrow-left{
-  &:before{
+  &:after{
     content: "";
     position: absolute;
     top: 50%;
@@ -225,11 +226,11 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
 }
 
 %arrow-right{
-  &:before{
+  &:after{
     content: "";
     position: absolute;
     top: 50%;
-    right: 0;
+    right: -20px;
     margin-top: -11px;
     width: 0;
     height: 0;
@@ -239,8 +240,24 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   }
 }
 
+%arrow-top{
+  &:after{
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    margin-left: -10px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 11px 20px 11px;
+    border-color: transparent transparent #ffffff transparent;
+  }
+}
+
+
 %arrow-bottom{
-  &:before{
+  &:after{
     content: "";
     position: absolute;
     top: 100%;
@@ -255,7 +272,7 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
 }
 
 %arrow-bottom-right{
-  &:before{
+  &:after{
     content: "";
     position: absolute;
     top: 100%;
@@ -394,6 +411,11 @@ body{
     color: inherit;
     text-decoration: none;
     @include chromeOSPointerCursor;
+  }
+
+  b{
+    font-family: $font_marineup_bold;
+    -webkit-font-smoothing: antialiased;
   }
 
   button{

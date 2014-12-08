@@ -91,6 +91,17 @@ feng.templates.common.TutorialPopup = function(opt_data, opt_ignored) {
  * @return {string}
  * @notypecheck
  */
+feng.templates.common.CreditsPopup = function(opt_data, opt_ignored) {
+  return feng.templates.common.Popup({classname: 'credits from-bottom', content: '<h1>Credits and References</h1><div class="scroller"><div class="content"></div>' + feng.templates.common.ScrollBar(null) + '</div>'});
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
 feng.templates.common.Helper = function(opt_data, opt_ignored) {
   return '<div class="helper ' + opt_data.classname + '"><div class="content">' + opt_data.content + '</div>' + feng.templates.common.CloseButton(null) + '</div>';
 };
@@ -103,5 +114,5 @@ feng.templates.common.Helper = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.common.Helpers = function(opt_data, opt_ignored) {
-  return '<div class="helpers">' + feng.templates.common.Helper({classname: 'compass', content: '<p class="top">View from top.</p><p class="normal">Back to normal view.</p>'}) + feng.templates.common.Helper({classname: 'selector', content: '<p>Press down the mouse button and hold for one second to investigate this item.</p>'}) + feng.templates.common.Helper({classname: 'walk', content: '<p class="mousewheel">You can also scroll your mousewheel to move forward or backward.</p><p class="mousebutton">You can also click to move around in the scene.</p>'}) + '</div>';
+  return '<div class="helpers">' + feng.templates.common.Helper({classname: 'compass', content: '<p class="top">View from <b>top</b>.</p><p class="normal">Back to <b>normal view</b>.</p>'}) + feng.templates.common.Helper({classname: 'selector', content: '<p><b>Pressing down</b> the mouse button for<br><b>one second</b> to investigate this item.</p>'}) + feng.templates.common.Helper({classname: 'walk', content: '<p class="mousewheel">You can also <b>scroll</b> the mousewheel<br>to move forward or backward.</p><p class="click">You can also <b>click</b><br>to move around in the scene.</p>'}) + '</div>';
 };

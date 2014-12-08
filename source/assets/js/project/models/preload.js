@@ -12,8 +12,7 @@ feng.models.Preload = function(){
 	this._assets = {
 		'global': {
 			'fengshui-data': 'json/fengshui.json',
-			'spinner': 'images/spinner.png',
-			'spinner-data': 'json/spinner.json',
+			'loader-small-black': 'images/loader-small-black.gif',
 			'scene-studio': 'images/scene-studio.jpg',
 			'scene-house': 'images/scene-house.jpg',
 			'circular-fill': 'images/circular-fill.png',
@@ -22,8 +21,8 @@ feng.models.Preload = function(){
 			'cube-design': 'images/cube-design.png',
 			'leaf': {
 				'green-1': 'images/texture/leaf/ji.png',
-				'green-2': 'images/texture/leaf/sha.png',
-				'yellow-1': 'images/texture/leaf/yin.png',
+				'green-2': 'images/texture/leaf/yin.png',
+				'yellow-1': 'images/texture/leaf/sha.png',
 				'yellow-2': 'images/texture/leaf/yang.png'
 			}
 		},
@@ -49,6 +48,7 @@ feng.models.Preload = function(){
 				'studio-door-handle-texture': 'images/texture/studio/livingroom/studio-door-handle.jpg',
 				'studio-door-frame-texture': 'images/texture/studio/livingroom/studio-door-frame.jpg',
 				'cactus-texture': 'images/texture/studio/livingroom/cactus.jpg',
+				'bathroom-door-texture': 'images/texture/studio/livingroom/bathroom-door.jpg',
 				'bed-texture': 'images/texture/studio/livingroom/bed.jpg',
 				'shoestorage-texture': 'images/texture/studio/livingroom/shoestorage.jpg',
 				'sofabed-cabinet-texture': 'images/texture/studio/livingroom/sofabed-cabinet.jpg',
@@ -76,7 +76,7 @@ feng.models.Preload = function(){
 				'sewingmachine-cover-texture': 'images/texture/studio/livingroom/sewingmachine-cover.jpg',
 				'coffee-pot-texture': 'images/texture/studio/livingroom/coffee-pot.jpg',
 				'hood-texture': 'images/texture/studio/livingroom/hood.jpg',
-				'round-lamp-texture': 'images/texture/studio/livingroom/round-lamp.png',
+				'round-lamp-texture': 'images/texture/studio/livingroom/round-lamp.jpg',
 				'reading-lamp-texture': 'images/texture/studio/livingroom/reading-lamp.jpg',
 				'boxes-texture': 'images/texture/studio/livingroom/boxes.jpg',
 				'wardrobe-texture': 'images/texture/studio/livingroom/wardrobe.jpg',

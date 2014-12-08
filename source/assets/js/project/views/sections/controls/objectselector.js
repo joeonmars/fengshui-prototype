@@ -31,11 +31,13 @@ feng.views.sections.controls.ObjectSelector = function(domElement){
   this._callbacks = {};
 
   // a delay to kick off the progress, to differentiate the mouse behavior between a fast click and object selecting
-  this._delay = new goog.async.Delay(this.startSelect, 250, this);
+  this._delay = new goog.async.Delay(this.startSelect, 200, this);
 
   // a throttle to not let the object hover detection fire too often
   this._mouseMoveThrottle = new goog.async.Throttle(this.doHoverDetection, 250, this);
   this._mouseMovePosition = {x: 0, y: 0};
+
+  this._intersectedObject = null;
 
   this._hitTestMeshes = [];
 
@@ -88,6 +90,8 @@ feng.views.sections.controls.ObjectSelector.prototype.deactivate = function() {
 	this._delay.stop();
 
 	goog.fx.anim.unregisterAnimation( this );
+
+	feng.pubsub.publish( feng.PubSub.Topic.UNTRIGGER_SELECTOR );
 };
 
 
@@ -135,6 +139,8 @@ feng.views.sections.controls.ObjectSelector.prototype.doSelect = function () {
 	this.animateOut();
 
 	this._callbacks['onComplete']( this._selectedObject );
+
+	feng.pubsub.publish( feng.PubSub.Topic.COMPLETE_SELECTOR );
 };
 
 
@@ -167,7 +173,11 @@ feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = functio
 
 	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( mouseX, mouseY, this._hitTestMeshes, camera, this._viewSize );
 	
-	goog.dom.classes.enable(this._renderEl, 'help', (intersects.length > 0));
+	var isIntersected = (intersects.length > 0);
+
+	this._intersectedObject = isIntersected ? intersects[0].object : null;
+
+	goog.dom.classes.enable(this._renderEl, 'help', isIntersected);
 };
 
 
@@ -212,6 +222,17 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseMove = function ( e
 	this._mouseMovePosition.y = e.clientY;
 
 	this._mouseMoveThrottle.fire();
+
+	if(this._intersectedObject) {
+
+		var camera = this._cameraController.activeCamera;
+
+		feng.pubsub.publish( feng.PubSub.Topic.TRIGGER_SELECTOR, this._intersectedObject, camera, this._viewSize );
+
+	}else {
+
+		feng.pubsub.publish( feng.PubSub.Topic.UNTRIGGER_SELECTOR );
+	}
 };
 
 

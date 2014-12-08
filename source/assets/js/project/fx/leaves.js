@@ -41,12 +41,12 @@ feng.fx.Leaves = function( eventTarget, color ){
 	switch(this._color) {
 		case feng.fx.Leaves.Color.GREEN:
 		textureIds.push('GREEN_1', 'GREEN_2');
-		numLeaves = 10;
+		numLeaves = 16;
 		break;
 
 		case feng.fx.Leaves.Color.YELLOW:
 		textureIds.push('YELLOW_1', 'YELLOW_2');
-		numLeaves = 5;
+		numLeaves = 8;
 		break;
 	}
 
@@ -78,6 +78,8 @@ feng.fx.Leaves = function( eventTarget, color ){
 	});
 
 	this._startTime = 0;
+
+	this._speedFactor = (this._color === feng.fx.Leaves.Color.GREEN) ? 0.001 : 0.004;
 
 	this._animated = new goog.fx.anim.Animated();
 	this._animated.onAnimationFrame = goog.bind( this.onAnimationFrame, this );
@@ -195,7 +197,7 @@ feng.fx.Leaves.prototype.onUnlock = function(e){
 
 feng.fx.Leaves.prototype.onAnimationFrame = function(now){
 
-	var time = (now - this._startTime) / 1000;
+	var time = (now - this._startTime) * this._speedFactor;
 	
 	for ( var c = 0; c < this.children.length; c ++ ) {
 

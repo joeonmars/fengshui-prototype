@@ -1,0 +1,116 @@
+>div{
+	@extend %bordered-ui;
+	position: absolute;
+	min-width: 24em;
+	padding: 2em 3em;
+	opacity: 0;
+	visibility: hidden;
+	@include transition( opacity 250ms ease-in-out, visibility 250ms );
+	@include user-select(none);
+	white-space: nowrap;
+	text-align: center;
+
+	&.arrow-left{
+		margin-left: 20px;
+		@extend %arrow-left;
+	}
+
+	&.arrow-right{
+		margin-left: -20px;
+		@extend %arrow-right;
+	}
+
+	&.arrow-top{
+		margin-top: 20px;
+		@extend %arrow-top;
+	}
+
+	&.arrow-bottom{
+		margin-top: -20px;
+		@extend %arrow-bottom;
+	}
+
+	&.shown{
+		opacity: 1;
+		visibility: visible;
+	}
+
+	p{
+		font-size: 1.7em;
+		line-height: 1.4;
+
+		>b{
+			color: $blue;
+		}
+	}
+
+	.content{
+		display: inline-block;
+		vertical-align: middle;
+		white-space: normal;
+		text-align: left;
+	}
+
+	.close-button{
+		position: absolute;
+		top: 10px;
+		right: 10px;
+	}
+}
+
+>.compass{
+
+	p{
+		line-height: 2;
+	}
+
+	.top{
+		&:before{
+			content: "";
+			display: inline-block;
+			vertical-align: middle;
+			margin-right: .5em;
+			@include retina-icon("cube-design");
+		}
+	}
+
+	.normal{
+		&:before{
+			content: "";
+			display: inline-block;
+			vertical-align: middle;
+			margin-right: .5em;
+			@include retina-icon("cube-browse");
+		}
+	}
+}
+
+>.selector{
+	pointer-events: none;
+
+	.close-button{
+		display: none;
+	}
+
+	&:before{
+		content: "";
+		display: inline-block;
+		vertical-align: middle;
+		width: 45px;
+		height: 45px;
+		margin-right: 2em;
+		background-size: 100% 100%;
+		background-image: image-url('selector.gif');
+	}
+}
+
+>.walk{
+
+	&:before{
+		content: "";
+		display: inline-block;
+		vertical-align: middle;
+		margin-right: 2em;
+		@include retina-icon("mouse");
+	}
+}

@@ -275,6 +275,9 @@ feng.views.View3D.prototype.activate = function(){
  	var tutorialOverlay = this.hud.tutorialOverlay;
  	this._eventHandler.listen( tutorialOverlay, feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this );
 
+ 	var creditsOverlay = this.hud.creditsOverlay;
+ 	this._eventHandler.listen( creditsOverlay, feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this );
+
  	var endingOverlay = this.hud.endingOverlay;
  	this._eventHandler.listen( endingOverlay, feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this );
 

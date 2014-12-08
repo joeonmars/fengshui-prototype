@@ -100,6 +100,12 @@ feng.views.popups.Tutorial.prototype.gotoStep = function( step ){
 };
 
 
+feng.views.popups.Tutorial.prototype.animateIn = function(){
+
+	goog.base(this, 'animateIn', 200);
+};
+
+
 feng.views.popups.Tutorial.prototype.activate = function(){
 
 	goog.base(this, 'activate');
@@ -132,8 +138,6 @@ feng.views.popups.Tutorial.prototype.deactivate = function(){
 	goog.base(this, 'deactivate');
 
 	this._videoEl.pause();
-
-	this._eventHandler.removeAll();
 
 	feng.keyboardController.unbind( this._enterKeyId );
 	feng.keyboardController.unbind( this._escKeyId );

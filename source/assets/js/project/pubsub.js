@@ -50,5 +50,14 @@ feng.PubSub.Topic = {
 	SOUND_OFF: 'sound_off',
 	MAIN_LOAD_COMPLETE: 'main_load_complete',
 	SHOW_WIDGET: 'show_widget',
-	HIDE_WIDGET: 'hide_widget'
+	HIDE_WIDGET: 'hide_widget',
+	TRIGGER_COMPASS: 'trigger_compass',
+	TRIGGER_SELECTOR: 'trigger_selector',
+	TRIGGER_WALK: 'trigger_walk',
+	UNTRIGGER_COMPASS: 'untrigger_compass',
+	UNTRIGGER_SELECTOR: 'untrigger_selector',
+	UNTRIGGER_WALK: 'untrigger_walk',
+	COMPLETE_COMPASS: 'complete_compass',
+	COMPLETE_SELECTOR: 'complete_selector',
+	COMPLETE_WALK: 'complete_walk'
 };

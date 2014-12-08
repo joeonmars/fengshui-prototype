@@ -30,6 +30,7 @@ feng.views.sections.controls.Compass = function(domElement){
   this._startRotation = 0;
 
   this._isInDesignMode = false;
+  this._isInBrowseMode = false;
 };
 goog.inherits(feng.views.sections.controls.Compass, feng.views.sections.controls.Controls);
 
@@ -40,6 +41,7 @@ feng.views.sections.controls.Compass.prototype.activate = function(){
 
   if(!shouldActivate) return;
 
+  this._eventHandler.listen(this.domElement, 'mouseover', this.onMouseOver, false, this);
   this._eventHandler.listen(this.domElement, 'mousemove', this.onMouseMove, false, this);
   this._eventHandler.listen(this.domElement, 'mouseout', this.onMouseOut, false, this);
   this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
@@ -47,6 +49,16 @@ feng.views.sections.controls.Compass.prototype.activate = function(){
   if(this._view3d) {
     this._view3d.modeController.listen( feng.events.EventType.UPDATE, this.onView3dUpdate, false, this );
   }
+};
+
+
+feng.views.sections.controls.Compass.prototype.deactivate = function(){
+
+  var shouldDeactivate = goog.base(this, 'deactivate');
+
+  if(!shouldDeactivate) return;
+
+  feng.pubsub.publish( feng.PubSub.Topic.UNTRIGGER_COMPASS );
 };
 
 
@@ -80,6 +92,14 @@ feng.views.sections.controls.Compass.prototype.setRotation = function(rotation){
 };
 
 
+feng.views.sections.controls.Compass.prototype.onMouseOver = function(e){
+
+	if(e.relatedTarget && goog.dom.contains(this.domElement, e.relatedTarget)) return false;
+
+	feng.pubsub.publish( feng.PubSub.Topic.TRIGGER_COMPASS, this );
+};
+
+
 feng.views.sections.controls.Compass.prototype.onMouseMove = function(e){
 
 	if(e.offsetY > 40) {
@@ -109,6 +129,11 @@ feng.views.sections.controls.Compass.prototype.onMouseOut = function(e){
 	goog.dom.classes.remove(this.domElement, 'hover-design');
 	this._hoveredDesign = false;
 	this._hoveredBrowse = false;
+
+	if(this._isInBrowseMode) {
+
+		feng.pubsub.publish( feng.PubSub.Topic.UNTRIGGER_COMPASS );
+	}
 };
 
 
@@ -124,6 +149,8 @@ feng.views.sections.controls.Compass.prototype.onClick = function(e){
 			nextMode: feng.controllers.view3d.ModeController.Mode.DESIGN
 		});
 
+		feng.pubsub.publish( feng.PubSub.Topic.TRIGGER_COMPASS, this );
+
 	}else if(this._hoveredBrowse) {
 
 		if(!this._isInDesignMode) return false;
@@ -138,6 +165,8 @@ feng.views.sections.controls.Compass.prototype.onClick = function(e){
 			nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
 			toRotation: toRotation
 		});
+
+		feng.pubsub.publish( feng.PubSub.Topic.COMPLETE_COMPASS, this );
 	}
 };
 
@@ -157,6 +186,15 @@ feng.views.sections.controls.Compass.prototype.onView3dUpdate = function(e){
 feng.views.sections.controls.Compass.prototype.onModeChange = function(e){
 
   goog.base(this, 'onModeChange', e);
+
+  if(e.mode === feng.controllers.view3d.ModeController.Mode.BROWSE) {
+
+  	this._isInBrowseMode = true;
+
+  }else {
+
+  	this._isInBrowseMode = false;
+  }
 
   if(e.mode === feng.controllers.view3d.ModeController.Mode.DESIGN) {
 

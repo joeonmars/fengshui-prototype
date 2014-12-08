@@ -15,7 +15,7 @@ goog.require('feng.templates.common');
  * @notypecheck
  */
 feng.templates.book.Book = function(opt_data, opt_ignored) {
-  var output = '<div id="book">' + feng.templates.common.CloseButton(null) + '<h2>FengShui Tips Collected <span class="tip-counter"></span></h2><div class="scroller-wrapper"><div class="scroller"><div class="inner"><ul>';
+  var output = '<div id="book">' + feng.templates.common.CloseButton(null) + '<h2>Feng Shui Tips Collected <span class="tip-counter"></span></h2><div class="scroller-wrapper"><div class="scroller"><div class="inner"><ul>';
   var tipList6 = opt_data.tips;
   var tipListLen6 = tipList6.length;
   for (var tipIndex6 = 0; tipIndex6 < tipListLen6; tipIndex6++) {

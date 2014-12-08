@@ -37,6 +37,8 @@ feng.fx.ScrollBar.prototype.activate = function() {
 	this._eventHandler.listen( this._scrollerEl, 'mouseover', this.onMouseOverScroller, false, this );
 	this._eventHandler.listen( this._scrollerEl, 'mouseout', this.onMouseOutScroller, false, this );
 
+	goog.style.setStyle( this._scrollerEl, 'overflow', 'auto' );
+
 	this.resize();
 };
 
@@ -44,6 +46,8 @@ feng.fx.ScrollBar.prototype.activate = function() {
 feng.fx.ScrollBar.prototype.deactivate = function() {
 
 	this._eventHandler.removeAll();
+
+	goog.style.setStyle( this._scrollerEl, 'overflow', 'hidden' );
 };
 
 
@@ -66,6 +70,13 @@ feng.fx.ScrollBar.prototype.resize = function() {
 };
 
 
+feng.fx.ScrollBar.prototype.scrollTo = function( y ) {
+
+	this._scrollerEl.scrollTop = y;
+	this.onScrollerScroll();
+};
+
+
 feng.fx.ScrollBar.prototype.onDragHandle = function(x, y) {
 
 	goog.style.setPosition( this._handleEl, x, y );
@@ -78,7 +89,7 @@ feng.fx.ScrollBar.prototype.onDragHandle = function(x, y) {
 
 feng.fx.ScrollBar.prototype.onScrollerScroll = function(e) {
 
-	var handleRatio = Math.round(e.currentTarget.scrollTop / e.currentTarget.scrollHeight * 100);
+	var handleRatio = Math.round(this._scrollerEl.scrollTop / this._scrollerEl.scrollHeight * 100);
 
 	goog.style.setStyle( this._handleEl, 'top', handleRatio + '%' );
 };
