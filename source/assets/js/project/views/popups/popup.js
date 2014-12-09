@@ -94,6 +94,8 @@ feng.views.popups.Popup.prototype.animateOut = function() {
 
 	goog.dom.classes.remove( this.domElement, 'shown' );
 
+	feng.soundController.playSfx('close');
+
 	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
 
 	this._animateInDelay.stop();

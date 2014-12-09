@@ -392,6 +392,8 @@ feng.views.sections.captions.Caption.prototype.doClose = function() {
     
     this.animateOutPanel( true );
   }
+
+  feng.soundController.playSfx('close');
 };
 
 
@@ -507,6 +509,7 @@ feng.views.sections.captions.Caption.prototype.onClick = function( e ) {
   switch(e.currentTarget) {
     case this._promptButton:
     this._object.startInteraction();
+    feng.soundController.playSfx('confirm');
     break;
   }
 };

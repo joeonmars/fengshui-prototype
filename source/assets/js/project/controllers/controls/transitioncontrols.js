@@ -36,7 +36,11 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 		nextMode: ev.nextMode
 	};
 
+	var nextMode = ev.nextMode;
+	var nextModeIsDesign = (nextMode === feng.controllers.view3d.ModeController.Mode.DESIGN);
+
 	var dur = goog.math.clamp( 1, 2, goog.math.lerp( 1, 2, fromPosition.distanceTo( toPosition ) / 100 ));
+	dur = nextModeIsDesign ? 1.5 : dur;
 
 	this._tweener = TweenMax.to( prop, dur, {
 		t: 1,
@@ -50,11 +54,10 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 	});
 
 	// toggle ground plane
-	var nextMode = ev.nextMode;
 	var designPlane = this._view3d.designPlane;
 	var skybox = this._view3d.skybox;
 
-	if(nextMode === feng.controllers.view3d.ModeController.Mode.DESIGN) {
+	if(nextModeIsDesign) {
 
 		designPlane.addToScene();
 		skybox.addToScene();
@@ -76,6 +79,8 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 			'onUpdate': designPlane.updateOpacity,
 			'onUpdateScope': designPlane
 		});
+
+		feng.soundController.playSfx('thrust-up');
 
 	}else {
 

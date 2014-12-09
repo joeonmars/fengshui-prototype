@@ -232,6 +232,8 @@ feng.views.book.Book.prototype.animateIn = function( tipId ) {
 
 	this._animateInTweener.add( tipTweeners, '+=0', 'start', .10 );
 	this._animateInTweener.play();
+
+	feng.soundController.playSfx('confirm');
 };
 
 
@@ -242,6 +244,8 @@ feng.views.book.Book.prototype.animateOut = function( instant ) {
 	this.deactivate();
 
 	feng.navigationController.replaceToken('');
+
+	feng.soundController.playSfx('close');
 
 	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
 };

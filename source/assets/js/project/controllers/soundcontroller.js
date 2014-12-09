@@ -57,6 +57,22 @@ feng.controllers.SoundController = function(){
       'urls': urls('sfx/click'),
       'onload': onSoundLoad
     },
+    'close': {
+      'urls': urls('sfx/close'),
+      'onload': onSoundLoad
+    },
+    'confirm': {
+      'urls': urls('sfx/confirm'),
+      'onload': onSoundLoad
+    },
+    'thrust-up': {
+      'urls': urls('sfx/thrust-up'),
+      'onload': onSoundLoad
+    },
+    'thrust-down': {
+      'urls': urls('sfx/thrust-down'),
+      'onload': onSoundLoad
+    },
     'door-open': {
       'urls': urls('sfx/door-open'),
       'onload': onSoundLoad

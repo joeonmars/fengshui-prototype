@@ -60,4 +60,6 @@ feng.views.sections.captions.ChangeColorCaption.prototype.onClickItem = function
   this.scrollBar.resize();
   
   this._object.setColorByName( this._colorId );
+
+  feng.soundController.playSfx('click');
 };

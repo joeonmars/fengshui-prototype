@@ -132,7 +132,6 @@ feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
 
 	this._activeObject.onCameraOut();
 
-	//
 	feng.navigationController.replaceToken("");
 
 	//

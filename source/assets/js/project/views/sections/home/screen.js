@@ -33,17 +33,13 @@ feng.views.sections.home.Screen.prototype.deactivate = function() {
 
 feng.views.sections.home.Screen.prototype.show = function() {
 
-	TweenMax.set(this.domElement, {
-		'display': 'block'
-	});
+	goog.style.showElement( this.domElement, true );
 };
 
 
 feng.views.sections.home.Screen.prototype.hide = function() {
 
-	TweenMax.set(this.domElement, {
-		'display': 'none'
-	});
+	goog.style.showElement( this.domElement, false );
 };
 
 

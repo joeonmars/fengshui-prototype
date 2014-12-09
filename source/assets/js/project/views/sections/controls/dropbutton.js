@@ -74,6 +74,8 @@ feng.views.sections.controls.DropButton.prototype.onClick = function(e){
 
 	this.fadeOut();
 
+  feng.soundController.playSfx('confirm');
+
   var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
 
   browseControls.dispatchEvent({

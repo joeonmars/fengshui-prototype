@@ -62,4 +62,6 @@ feng.views.sections.captions.ChangePictureCaption.prototype.onClickItem = functi
   this._object.setPicture( this._pictureId );
 
   this._object.nextPicture();
+
+  feng.soundController.playSfx('click');
 };

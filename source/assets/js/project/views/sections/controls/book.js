@@ -75,9 +75,9 @@ feng.views.sections.controls.Book.prototype.onModeChange = function(e){
   switch(e.mode) {
 
     case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
-	if(this._isActivated) {
-		this.deactivate();
-	}
+		if(this._isActivated) {
+			this.deactivate();
+		}
     break;
 
     default:

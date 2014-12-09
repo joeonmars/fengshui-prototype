@@ -60,4 +60,6 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.onClickObject = funct
   this.scrollBar.resize();
   
   this._object.change( this._objectId );
+
+  feng.soundController.playSfx('click');
 };

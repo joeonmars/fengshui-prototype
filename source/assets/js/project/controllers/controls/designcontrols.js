@@ -351,6 +351,8 @@ feng.controllers.controls.DesignControls.prototype.onCameraTransitionStart = fun
 
 	this._view3d.hud.tooltips.deactivate();
 	this.deactivate();
+
+	feng.soundController.playSfx('thrust-down');
 };
 
 

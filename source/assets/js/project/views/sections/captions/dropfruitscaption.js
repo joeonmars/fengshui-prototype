@@ -85,4 +85,6 @@ feng.views.sections.captions.DropFruitsCaption.prototype.onClickItem = function(
   this.scrollBar.resize();
 
   this._object.dropFruit( this._fruitId );
+
+  feng.soundController.playSfx('click');
 };
