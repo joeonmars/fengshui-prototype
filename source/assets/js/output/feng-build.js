@@ -20082,15 +20082,15 @@ feng.templates.debug.PathfindingDebugView = function(opt_data, opt_ignored) {
  */
 feng.templates.debug.AchievementsDebugView = function(opt_data, opt_ignored) {
   var output = '\t';
-  var param412 = '<div class="tipsPanel"><button class="unlock-all">Unlock All</button><ul class="tips">';
-  var tipList414 = opt_data.tips;
-  var tipListLen414 = tipList414.length;
-  for (var tipIndex414 = 0; tipIndex414 < tipListLen414; tipIndex414++) {
-    var tipData414 = tipList414[tipIndex414];
-    param412 += '<li data-tip-id="' + tipData414.id + '" data-view-id="' + tipData414.view + '" data-section-id="' + tipData414.section + '"><div class="icon icon-' + tipData414.icon + '"></div><div class="caption"><p>' + tipData414.id + '</p><p>' + tipData414.view + '</p><p>' + tipData414.section + '</p></div></li>';
+  var param446 = '<div class="tipsPanel"><button class="unlock-all">Unlock All</button><ul class="tips">';
+  var tipList448 = opt_data.tips;
+  var tipListLen448 = tipList448.length;
+  for (var tipIndex448 = 0; tipIndex448 < tipListLen448; tipIndex448++) {
+    var tipData448 = tipList448[tipIndex448];
+    param446 += '<li data-tip-id="' + tipData448.id + '" data-view-id="' + tipData448.view + '" data-section-id="' + tipData448.section + '"><div class="icon icon-' + tipData448.icon + '"></div><div class="caption"><p>' + tipData448.id + '</p><p>' + tipData448.view + '</p><p>' + tipData448.section + '</p></div></li>';
   }
-  param412 += '</ul></div>';
-  output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param412});
+  param446 += '</ul></div>';
+  output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param446});
   return output;
 };
 
@@ -27818,6 +27818,7 @@ feng.events.EventType = {
 	DRAG_END: 'drag_end',
 	MUTE: 'mute',
 	UNMUTE: 'unmute',
+	CLICK_GATEWAY: 'click_gateway',
 	INPUT_DOWN: (goog.userAgent.MOBILE) ? goog.events.EventType.TOUCHSTART : goog.events.EventType.MOUSEDOWN,
 	INPUT_MOVE: (goog.userAgent.MOBILE) ? goog.events.EventType.TOUCHMOVE : goog.events.EventType.MOUSEMOVE,
 	INPUT_UP: (goog.userAgent.MOBILE) ? [goog.events.EventType.TOUCHEND, goog.events.EventType.TOUCHCANCEL] : goog.events.EventType.MOUSEUP,
@@ -29303,9 +29304,10 @@ feng.controllers.view3d.PathfindingController.prototype.getTilePosition = functi
 };
 
 
-feng.controllers.view3d.PathfindingController.prototype.getClosestWalkableTilePosition = function( tile, matrixData ) {
+feng.controllers.view3d.PathfindingController.prototype.getClosestWalkablePosition = function( position, matrixData ) {
 
-	var tile = this.getClosestWalkableTile( tile, matrixData );
+	var tile = this.getTileByPosition( position, matrixData );
+	tile = this.getClosestWalkableTile( tile, matrixData );
 
 	return this.getTilePosition( tile, matrixData );
 };
@@ -32611,8 +32613,7 @@ feng.models.Preload = function(){
 	this._assets = {
 		'global': {
 			'fengshui-data': 'json/fengshui.json',
-			'spinner': 'images/spinner.png',
-			'spinner-data': 'json/spinner.json',
+			'loader-small-black': 'images/loader-small-black.gif',
 			'scene-studio': 'images/scene-studio.jpg',
 			'scene-house': 'images/scene-house.jpg',
 			'circular-fill': 'images/circular-fill.png',
@@ -32620,10 +32621,10 @@ feng.models.Preload = function(){
 			'cube-browse': 'images/cube-browse.png',
 			'cube-design': 'images/cube-design.png',
 			'leaf': {
-				'ji': 'images/texture/leaf/ji.png',
-				'sha': 'images/texture/leaf/sha.png',
-				'yin': 'images/texture/leaf/yin.png',
-				'yang': 'images/texture/leaf/yang.png'
+				'green-1': 'images/texture/leaf/ji.png',
+				'green-2': 'images/texture/leaf/yin.png',
+				'yellow-1': 'images/texture/leaf/sha.png',
+				'yellow-2': 'images/texture/leaf/yang.png'
 			}
 		},
 		'home': {
@@ -32648,6 +32649,7 @@ feng.models.Preload = function(){
 				'studio-door-handle-texture': 'images/texture/studio/livingroom/studio-door-handle.jpg',
 				'studio-door-frame-texture': 'images/texture/studio/livingroom/studio-door-frame.jpg',
 				'cactus-texture': 'images/texture/studio/livingroom/cactus.jpg',
+				'bathroom-door-texture': 'images/texture/studio/livingroom/bathroom-door.jpg',
 				'bed-texture': 'images/texture/studio/livingroom/bed.jpg',
 				'shoestorage-texture': 'images/texture/studio/livingroom/shoestorage.jpg',
 				'sofabed-cabinet-texture': 'images/texture/studio/livingroom/sofabed-cabinet.jpg',
@@ -32675,27 +32677,32 @@ feng.models.Preload = function(){
 				'sewingmachine-cover-texture': 'images/texture/studio/livingroom/sewingmachine-cover.jpg',
 				'coffee-pot-texture': 'images/texture/studio/livingroom/coffee-pot.jpg',
 				'hood-texture': 'images/texture/studio/livingroom/hood.jpg',
-				'round-lamp-texture': 'images/texture/studio/livingroom/round-lamp.png',
+				'round-lamp-texture': 'images/texture/studio/livingroom/round-lamp.jpg',
 				'reading-lamp-texture': 'images/texture/studio/livingroom/reading-lamp.jpg',
 				'boxes-texture': 'images/texture/studio/livingroom/boxes.jpg',
 				'wardrobe-texture': 'images/texture/studio/livingroom/wardrobe.jpg',
 				'pictures-texture': 'images/texture/studio/livingroom/pictures.jpg',
 				'refrigerator-texture': 'images/texture/studio/livingroom/refrigerator.jpg',
+				'refrigerator-stuff-texture': 'images/texture/studio/livingroom/refrigerator-stuff.jpg',
 				'refrigerator-door-texture': 'images/texture/studio/livingroom/refrigerator-door.jpg',
 				'carpet-texture': 'images/texture/studio/livingroom/carpet.jpg',
 				'laptop-texture': 'images/texture/studio/livingroom/laptop.jpg',
-				'apple-texture': 'images/texture/studio/livingroom/apple.jpg',
-				'pineapple-texture': 'images/texture/studio/livingroom/pineapple.jpg',
-				'orange-texture': 'images/texture/studio/livingroom/orange.jpg',
-				'peach-texture': 'images/texture/studio/livingroom/peach.jpg',
+				'apple-in-refrigerator-texture': 'images/texture/studio/livingroom/apple-in-refrigerator.jpg',
+				'pineapple-in-refrigerator-texture': 'images/texture/studio/livingroom/pineapple-in-refrigerator.jpg',
+				'orange-in-refrigerator-texture': 'images/texture/studio/livingroom/orange-in-refrigerator.jpg',
+				'peach-in-refrigerator-texture': 'images/texture/studio/livingroom/peach-in-refrigerator.jpg',
+				'apple-in-plate-texture': 'images/texture/studio/livingroom/apple-in-plate.jpg',
+				'pineapple-in-plate-texture': 'images/texture/studio/livingroom/pineapple-in-plate.jpg',
+				'orange-in-plate-texture': 'images/texture/studio/livingroom/orange-in-plate.jpg',
+				'peach-in-plate-texture': 'images/texture/studio/livingroom/peach-in-plate.jpg',
 				'window-left-texture': 'images/texture/studio/livingroom/window-left.jpg',
 				'window-left-switch-texture': 'images/texture/studio/livingroom/window-left-switch.jpg',
 				'window-right-texture': 'images/texture/studio/livingroom/window-right.jpg',
 				'window-right-switch-texture': 'images/texture/studio/livingroom/window-right-switch.jpg',
 				'pictures': {
-					'1': 'images/texture/studio/livingroom/pictures/1.jpg',
-					'2': 'images/texture/studio/livingroom/pictures/2.jpg',
-					'3': 'images/texture/studio/livingroom/pictures/3.jpg'
+					'birds': 'images/texture/studio/livingroom/pictures/birds.jpg',
+					'fish': 'images/texture/studio/livingroom/pictures/fish.jpg',
+					'leaves': 'images/texture/studio/livingroom/pictures/leaves.jpg'
 				},
 				'skybox': {
 					'xpos': 'images/texture/studio/livingroom/skybox/pos-x.png',
@@ -32907,9 +32914,8 @@ feng.models.Preload = function(){
 				'boysroom-door-texture': 'images/texture/house/boysroom/boysroom-door.jpg',
 				'door-frame-texture': 'images/texture/house/boysroom/door-frame.jpg',
 				'pictures': {
-					'1': 'images/texture/house/boysroom/pictures/1.jpg',
-					'2': 'images/texture/house/boysroom/pictures/2.jpg',
-					'3': 'images/texture/house/boysroom/pictures/3.jpg'
+					'family': 'images/texture/house/boysroom/pictures/1.jpg',
+					'hug': 'images/texture/house/boysroom/pictures/2.jpg'
 				},
 				'skybox': {
 					'xpos': 'images/texture/house/boysroom/skybox/pos-x.jpg',
@@ -33982,6 +33988,39 @@ feng.templates.common.Popup = function(opt_data, opt_ignored) {
 feng.templates.common.TutorialPopup = function(opt_data, opt_ignored) {
   return feng.templates.common.Popup({classname: 'tutorial from-bottom', content: '<h1>Control Instructions</h1><ul class="steps"><li><h6>1. Explore the environment</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-1.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-1.ogv" type="video/ogg"></video></div></li><li><h6>2. Inspect objects for tips</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-2.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-2.ogv" type="video/ogg"></video></div></li><li><h6>3. Ask the client for clues</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-3.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-3.ogv" type="video/ogg"></video></div></li></ul><div class="controls"><div class="loader"><div class="bar"><div class="fill"></div></div><p class="counter">00</p></div>' + feng.templates.common.PrimaryButton({classname: 'skip', icon: 'icon-yes', text: 'Continue'}) + '</div>'});
 };
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.common.CreditsPopup = function(opt_data, opt_ignored) {
+  return feng.templates.common.Popup({classname: 'credits from-bottom', content: '<h1>Credits and References</h1><div class="scroller"><div class="content"></div>' + feng.templates.common.ScrollBar(null) + '</div>'});
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.common.Helper = function(opt_data, opt_ignored) {
+  return '<div class="helper ' + opt_data.classname + '"><div class="content">' + opt_data.content + '</div>' + feng.templates.common.CloseButton(null) + '</div>';
+};
+
+
+/**
+ * @param {Object.<string, *>=} opt_data
+ * @param {(null|undefined)=} opt_ignored
+ * @return {string}
+ * @notypecheck
+ */
+feng.templates.common.Helpers = function(opt_data, opt_ignored) {
+  return '<div class="helpers">' + feng.templates.common.Helper({classname: 'compass', content: '<p class="top">View from <b>top</b>.</p><p class="normal">Back to <b>normal view</b>.</p>'}) + feng.templates.common.Helper({classname: 'selector', content: '<p><b>Pressing down</b> the mouse button for<br><b>one second</b> to investigate this item.</p>'}) + feng.templates.common.Helper({classname: 'walk', content: '<p class="mousewheel">You can also <b>scroll</b> the mousewheel<br>to move forward or backward.</p><p class="click">You can also <b>click</b><br>to move around in the scene.</p>'}) + '</div>';
+};
 // This file was automatically generated from controls.soy.
 // Please don't edit this file by hand.
 
@@ -34045,11 +34084,11 @@ feng.templates.controls.Book = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.Reminder = function(opt_data, opt_ignored) {
   var output = '<div class="reminder"><div class="character">' + feng.templates.controls.RoundButton({content: '<canvas></canvas>'}) + '</div><div class="dialogue hint"><div class="wrapper"><button class="prev icon icon-prev"></button><ul class="hints">';
-  var tipList310 = opt_data.tips;
-  var tipListLen310 = tipList310.length;
-  for (var tipIndex310 = 0; tipIndex310 < tipListLen310; tipIndex310++) {
-    var tipData310 = tipList310[tipIndex310];
-    output += '<li data-tip-id="' + tipData310.id + '">' + tipData310.reminder + '</li>';
+  var tipList342 = opt_data.tips;
+  var tipListLen342 = tipList342.length;
+  for (var tipIndex342 = 0; tipIndex342 < tipListLen342; tipIndex342++) {
+    var tipData342 = tipList342[tipIndex342];
+    output += '<li data-tip-id="' + tipData342.id + '">' + tipData342.reminder + '</li>';
   }
   output += '</ul><button class="next icon icon-next"></button></div></div></div>';
   return output;
@@ -34108,16 +34147,16 @@ feng.templates.controls.GatewayTooltip = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var output = '<div class="progressBar"><div class="inner"><button class="prev icon icon-prev"></button><button class="next icon icon-next"></button><div class="tips-wrapper">';
-  var viewIdList344 = soy.$$getMapKeys(opt_data.tipsOfViews);
-  var viewIdListLen344 = viewIdList344.length;
-  for (var viewIdIndex344 = 0; viewIdIndex344 < viewIdListLen344; viewIdIndex344++) {
-    var viewIdData344 = viewIdList344[viewIdIndex344];
-    output += '<ul class="tips" data-view-id="' + viewIdData344 + '">';
-    var tipList348 = opt_data.tipsOfViews[viewIdData344];
-    var tipListLen348 = tipList348.length;
-    for (var tipIndex348 = 0; tipIndex348 < tipListLen348; tipIndex348++) {
-      var tipData348 = tipList348[tipIndex348];
-      output += '<li class="tip" data-tip-id="' + tipData348.id + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content" href="' + tipData348.readTipToken + '"><div class="icon icon-' + tipData348.icon + '" data-tip-id="' + tipData348.id + '" data-view-id="' + tipData348.viewId + '" data-section-id="' + tipData348.sectionId + '"></div><h6>' + tipData348.name + '</h6></a></div></li>';
+  var viewIdList376 = soy.$$getMapKeys(opt_data.tipsOfViews);
+  var viewIdListLen376 = viewIdList376.length;
+  for (var viewIdIndex376 = 0; viewIdIndex376 < viewIdListLen376; viewIdIndex376++) {
+    var viewIdData376 = viewIdList376[viewIdIndex376];
+    output += '<ul class="tips" data-view-id="' + viewIdData376 + '">';
+    var tipList380 = opt_data.tipsOfViews[viewIdData376];
+    var tipListLen380 = tipList380.length;
+    for (var tipIndex380 = 0; tipIndex380 < tipListLen380; tipIndex380++) {
+      var tipData380 = tipList380[tipIndex380];
+      output += '<li class="tip" data-tip-id="' + tipData380.id + '" data-view-id="' + viewIdData376 + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content" href="' + tipData380.readTipToken + '"><div class="icon icon-' + tipData380.icon + '" data-tip-id="' + tipData380.id + '" data-view-id="' + tipData380.viewId + '" data-section-id="' + tipData380.sectionId + '"></div><h6>' + tipData380.name + '</h6></a></div></li>';
     }
     output += '</ul>';
   }
@@ -34143,7 +34182,7 @@ goog.require('feng.templates.debug');
  * @notypecheck
  */
 feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
-  return '<div class="section episode" id="' + opt_data.id + '"><div class="hud"><div class="overlays"><div class="tutorial-overlay"></div><div class="opening-overlay">' + feng.templates.common.Popup({classname: 'opening from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'icon-yes', text: 'I’d be glad to help!'}) + '<div class="character"></div>'}) + '</div><div class="ending-overlay">' + feng.templates.common.Popup({classname: 'ending from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'stay', icon: 'icon-yes', text: 'Stay'}) + feng.templates.common.PrimaryButton({classname: 'next', icon: 'icon-yes', text: 'Next Location', href: opt_data.token.HOME}) + '<div class="character"></div>'}) + '</div><div class="finale-overlay">' + feng.templates.common.Popup({classname: 'finale from-bottom', content: '<h1></h1><p></p><h2>Share With Friends</h2><ul><li><a class="icon icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/" target="_blank"></a></li><li><a class="icon icon-twitter" href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/" target="_blank"></a></li><li><a class="icon icon-google" href="https://plus.google.com/share?url=http://fengshuirealtime.com/" target="_blank"></a></li></ul>'}) + '</div><div class="loader-overlay"><div class="loader"><canvas class="spinner"></canvas><p class="progress"></p></div></div></div><div class="controls">' + feng.templates.controls.HomeButton(opt_data) + feng.templates.controls.Compass(null) + feng.templates.controls.Book(opt_data) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.DropButton(null) + feng.templates.controls.ProgressBar(opt_data) + feng.templates.controls.Reminder(opt_data) + '</div><div class="tooltips"></div><div class="captions"></div></div><div class="scene-container"></div></div>';
+  return '<div class="section episode" id="' + opt_data.id + '"><div class="hud"><div class="overlays"><div class="tutorial-overlay"></div><div class="credits-overlay"></div><div class="opening-overlay">' + feng.templates.common.Popup({classname: 'opening from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'icon-yes', text: 'I’d be glad to help!'}) + '<div class="character"></div>'}) + '</div><div class="ending-overlay">' + feng.templates.common.Popup({classname: 'ending from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'stay', icon: 'icon-yes', text: 'Stay'}) + feng.templates.common.PrimaryButton({classname: 'next', icon: 'icon-yes', text: 'Next Location', href: opt_data.token.HOME}) + '<div class="character"></div>'}) + '</div><div class="finale-overlay">' + feng.templates.common.Popup({classname: 'finale from-bottom', content: '<h1></h1><p></p><h2>Share With Friends</h2><ul><li><a class="icon icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/" target="_blank"></a></li><li><a class="icon icon-twitter" href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/" target="_blank"></a></li><li><a class="icon icon-google" href="https://plus.google.com/share?url=http://fengshuirealtime.com/" target="_blank"></a></li></ul>'}) + '</div><div class="loader-overlay"><div class="loader"><canvas class="spinner"></canvas><p class="progress"></p></div></div></div><div class="controls">' + feng.templates.controls.HomeButton(opt_data) + feng.templates.controls.Compass(null) + feng.templates.controls.Book(opt_data) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.DropButton(null) + feng.templates.controls.ProgressBar(opt_data) + feng.templates.controls.Reminder(opt_data) + '</div><div class="tooltips"></div><div class="captions"></div></div><div class="scene-container"></div></div>';
 };
 
 
@@ -34165,7 +34204,7 @@ feng.templates.main.EpisodeSelection = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.main.Main = function(opt_data, opt_ignored) {
-  return '<div id="main"><div class="section" id="home"><div class="inner"><section id="main-preloader"><div class="content"><h1>FengShui RealTime</h1><canvas class="house-logo"></canvas><p><span>A real-time experience to practice Feng shui.</span><span>Discovering tips for creating an optimal,</span><span>balanced home environment.</span></p></div></section><section id="main-episode-selection"></section></div></div><ul id="main-options"><li><button class="howtoplay"></button></li><li><button class="sound"></button></li><li class="share"><button></button><div class="slider"><div class="buttons"><a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/" target="_blank"></a><a class="twitter" href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/" target="_blank"></a><a class="google" href="https://plus.google.com/share?url=http://fengshuirealtime.com/" target="_blank"></a></div></div></li></ul></div>' + ((opt_data.debug != false) ? feng.templates.debug.Debugger(null) : '');
+  return '<div id="main"><div class="section" id="home"><div class="inner"><section id="main-preloader"><div class="content"><h1>FengShui RealTime</h1><canvas class="house-logo"></canvas><p><span>A real-time experience to practice Feng shui.</span><span>Discovering tips for creating an optimal,</span><span>balanced home environment.</span></p></div></section><section id="main-episode-selection"></section></div></div><ul id="main-options"><li class="info"><div class="icon"></div><div class="slider"><div class="buttons"><button class="instructions">Instructions</button><button class="credits">Credits</button></div></div></li><li class="sound"><div class="icon"></div><div class="slider"><div class="buttons"><button class="on">On</button><button class="off">Off</button></div></div></li><li class="share"><div class="icon"></div><div class="slider"><div class="buttons"><a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/" target="_blank"></a><a class="twitter" href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/" target="_blank"></a><a class="google" href="https://plus.google.com/share?url=http://fengshuirealtime.com/" target="_blank"></a></div></div></li></ul></div>' + ((opt_data.debug != false) ? feng.templates.debug.Debugger(null) : '');
 };
 
 
@@ -34513,9 +34552,37 @@ feng.PubSub = function() {
 
 	goog.base(this);
 
+	this._shownWidgets = [];
+
+	this.subscribe( feng.PubSub.Topic.SHOW_WIDGET, this.onShowWidget, this );
+	this.subscribe( feng.PubSub.Topic.HIDE_WIDGET, this.onHideWidget, this );
 };
 goog.inherits( feng.PubSub, goog.pubsub.PubSub );
 goog.addSingletonGetter( feng.PubSub );
+
+
+feng.PubSub.prototype.getShownWidgets = function() {
+
+	return this._shownWidgets;
+};
+
+
+feng.PubSub.prototype.isWidgetShown = function( widget ) {
+
+	return goog.array.contains( this._shownWidgets, widget );
+};
+
+
+feng.PubSub.prototype.onShowWidget = function( widget ) {
+
+	goog.array.insert( this._shownWidgets, widget );
+};
+
+
+feng.PubSub.prototype.onHideWidget = function( widget ) {
+
+	goog.array.remove( this._shownWidgets, widget );
+};
 
 
 feng.PubSub.Topic = {
@@ -34526,7 +34593,18 @@ feng.PubSub.Topic = {
 	NAVIGATE: 'navigate',
 	SOUND_ON: 'sound_on',
 	SOUND_OFF: 'sound_off',
-	MAIN_LOAD_COMPLETE: 'main_load_complete'
+	MAIN_LOAD_COMPLETE: 'main_load_complete',
+	SHOW_WIDGET: 'show_widget',
+	HIDE_WIDGET: 'hide_widget',
+	TRIGGER_COMPASS: 'trigger_compass',
+	TRIGGER_SELECTOR: 'trigger_selector',
+	TRIGGER_WALK: 'trigger_walk',
+	UNTRIGGER_COMPASS: 'untrigger_compass',
+	UNTRIGGER_SELECTOR: 'untrigger_selector',
+	UNTRIGGER_WALK: 'untrigger_walk',
+	COMPLETE_COMPASS: 'complete_compass',
+	COMPLETE_SELECTOR: 'complete_selector',
+	COMPLETE_WALK: 'complete_walk'
 };goog.provide('feng.controllers.view3d.CameraController');
 
 goog.require('goog.events.EventTarget');
@@ -34676,7 +34754,7 @@ goog.require('goog.math');
 /**
  * @constructor
  */
-feng.utils.ThreeUtils.getObjectsBy2DPosition = function ( clientX, clientY, objects, camera, viewSize, recursive ) {
+feng.utils.ThreeUtils.getObjectsBy2DPosition = function( clientX, clientY, objects, camera, viewSize, recursive ) {
 
 	// get camera's world position
 	camera.updateMatrixWorld();
@@ -34951,6 +35029,8 @@ feng.models.View3D.Data = {
 				toHome: true,
 				isEntry: true,
 				inversed: true,
+				openSound: 'entry-open',
+				closeSound: 'entry-close',
 				origin: {
 					position: new THREE.Vector3(-240, 0, 30),
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
@@ -34979,10 +35059,13 @@ feng.models.View3D.Data = {
 				viewid: "bathroom",
 				gatewayid: "bathroom-door",
 				castShadow: true,
+				openSound: 'door-open',
+				closeSound: 'door-close',
 				origin: {
 					position: new THREE.Vector3(-176, 0, 20),
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
-				}
+				},
+				texture: "studio.livingroom.bathroom-door-texture"
 			},
 			'wall':	{
 				castShadow: true,
@@ -35074,6 +35157,7 @@ feng.models.View3D.Data = {
 			},
 			'fruitplate':	{
 				Class: 'fruitplate',
+				receiveShadow: true,
 				camera: {
 					position: new THREE.Vector3(-84, 80, -87),
 					rotation: new THREE.Euler(-0.59, 2.02, 0.00, 'YXZ'),
@@ -35185,10 +35269,15 @@ feng.models.View3D.Data = {
 			},
 			'refrigerator':	{
 				collidable: true,
+				receiveShadow: true,
 				texture: "studio.livingroom.refrigerator-texture"
+			},
+			'refrigerator-stuff': {
+				texture: "studio.livingroom.refrigerator-stuff-texture"
 			},
 			'refrigerator-door': {
 				Class: "refrigerator",
+				receiveShadow: true,
 				texture: "studio.livingroom.refrigerator-door-texture",
 				camera: {
 					position: new THREE.Vector3(-110, 80, -120),
@@ -35198,16 +35287,24 @@ feng.models.View3D.Data = {
 				tipKey: 'studio.livingroom.refrigerator'
 			},
 			'apple': {
-				texture: "studio.livingroom.apple-texture"
+				Class: 'fruit',
+				castShadow: true,
+				texture: "studio.livingroom.apple-in-refrigerator-texture"
 			},
 			'pineapple': {
-				texture: "studio.livingroom.pineapple-texture"
+				Class: 'fruit',
+				castShadow: true,
+				texture: "studio.livingroom.pineapple-in-refrigerator-texture"
 			},
 			'orange': {
-				texture: "studio.livingroom.orange-texture"
+				Class: 'fruit',
+				castShadow: true,
+				texture: "studio.livingroom.orange-in-refrigerator-texture"
 			},
 			'peach': {
-				texture: "studio.livingroom.peach-texture"
+				Class: 'fruit',
+				castShadow: true,
+				texture: "studio.livingroom.peach-in-refrigerator-texture"
 			}
 		},
 		'bathroom': {
@@ -35224,6 +35321,7 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.wall-outer-texture"
 			},
 			'door-frame':	{
+				castShadow: true,
 				texture: "studio.bathroom.door-frame-texture"
 			},
 			'ceiling':	{
@@ -35241,9 +35339,17 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.towel-texture"
 			},
 			'showerhead': {
-				Class: 'tip',
+				Class: 'showerhead',
 				texture: "studio.bathroom.showerhead-texture",
-				tipKey: 'studio.bathroom.showerhead'
+				tipKey: 'studio.bathroom.showerhead',
+				camera: {
+					position: new THREE.Vector3(11.00, 84.00, 77.00),
+					rotation: new THREE.Euler(0.16, -1.59, 0.00, 'YXZ'),
+					fov: 46.00
+				}
+			},
+			'waterdrop': {
+				glass: true
 			},
 			'shower-handle': {
 				texture: "studio.bathroom.shower-handle-texture"
@@ -35358,6 +35464,8 @@ feng.models.View3D.Data = {
 				gatewayid: "bathroom-door",
 				castShadow: true,
 				isEntry: true,
+				openSound: 'door-open',
+				closeSound: 'door-close',
 				origin: {
 					position: new THREE.Vector3(12, 0, -60),
 					rotation: new THREE.Euler(0, Math.PI, 0)
@@ -35375,6 +35483,8 @@ feng.models.View3D.Data = {
 				castShadow: true,
 				toHome: true,
 				isEntry: true,
+				openSound: 'entry-open',
+				closeSound: 'entry-close',
 				origin: {
 					position: new THREE.Vector3(110, 0, 0),
 					rotation: new THREE.Euler(0, Math.PI/2, 0)
@@ -35385,6 +35495,8 @@ feng.models.View3D.Data = {
 				Class: "gateway",
 				viewid: "corridor",
 				gatewayid: "stairways-door",
+				openSound: null,
+				closeSound: null,
 				origin: {
 					position: new THREE.Vector3(-125, 0, 50),
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
@@ -35436,7 +35548,6 @@ feng.models.View3D.Data = {
 			},
 			'drawer': {
 				Class: "drawer",
-				receiveShadow: true,
 				texture: "house.livingroom.drawer-texture",
 				camera: {
 					position: new THREE.Vector3(-8, 97, -203),
@@ -35629,6 +35740,8 @@ feng.models.View3D.Data = {
 				viewid: "livingroom",
 				gatewayid: "stairways-door",
 				isEntry: true,
+				openSound: null,
+				closeSound: null,
 				origin: {
 					position: new THREE.Vector3(50, 0, 225),
 					rotation: new THREE.Euler(0, 0, 0)
@@ -35657,6 +35770,8 @@ feng.models.View3D.Data = {
 				viewid: "boysroom",
 				gatewayid: "boysroom-door",
 				castShadow: true,
+				openSound: 'door-open',
+				closeSound: 'door-close',
 				origin: {
 					position: new THREE.Vector3(60, 0, -170),
 					rotation: new THREE.Euler(0, 0, 0)
@@ -35668,6 +35783,8 @@ feng.models.View3D.Data = {
 				viewid: "homeoffice",
 				gatewayid: "homeoffice-door",
 				castShadow: true,
+				openSound: 'door-open',
+				closeSound: 'door-close',
 				origin: {
 					position: new THREE.Vector3(20, 0, -50),
 					rotation: new THREE.Euler(0, 0, 0)
@@ -35838,6 +35955,8 @@ feng.models.View3D.Data = {
 				gatewayid: "boysroom-door",
 				castShadow: true,
 				isEntry: true,
+				openSound: 'door-open',
+				closeSound: 'door-close',
 				origin: {
 					position: new THREE.Vector3(78, 0, 33),
 					rotation: new THREE.Euler(0, Math.PI/2, 0)
@@ -35899,7 +36018,7 @@ feng.models.View3D.Data = {
 				tipKey: 'house.boysroom.handheld',
 				position: new THREE.Vector3(-43.73, 69.26, -100.78),
 				rotation: new THREE.Euler(0, 1.57, 0),
-				range: 60,
+				range: 100,
 				parent: 'shelf-left'
 			},
 			'window': {
@@ -35934,6 +36053,8 @@ feng.models.View3D.Data = {
 				gatewayid: "homeoffice-door",
 				castShadow: true,
 				isEntry: true,
+				openSound: 'door-open',
+				closeSound: 'door-close',
 				origin: {
 					position: new THREE.Vector3(68, 0, -53),
 					rotation: new THREE.Euler(0, Math.PI/2, 0)
@@ -36778,8 +36899,6 @@ feng.views.view3dobject.MovableObject.prototype.startInteraction = function(){
   goog.base(this, 'startInteraction');
 
   this._pickDelay.start();
-
-  //this._interactionHandler.listen(this._view3d.domElement, 'click', this.onClick, false, this);
 };
 
 
@@ -36829,21 +36948,57 @@ feng.views.view3dobject.MovableObject.prototype.onCameraIn = function(){
   }
 
   goog.base(this, 'onCameraIn');
+};goog.provide('feng.views.view3dobject.entities.Fruit');
+
+goog.require('feng.views.view3dobject.View3DObject');
+
+
+/**
+ * @constructor
+ * The generic fruit class
+ */
+feng.views.view3dobject.entities.Fruit = function( object3d, data, view3d ){
+
+  goog.base(this, object3d, data, view3d);
+
+  this._inPlateTexture = null;
 };
+goog.inherits(feng.views.view3dobject.entities.Fruit, feng.views.view3dobject.View3DObject);
 
-/*
-feng.views.view3dobject.MovableObject.prototype.onClick = function(e){
 
-  var camera = this._view3d.cameraController.activeCamera;
-  var viewSize = this._view3d.viewSize;
-  var clickedObjects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, [this.object3d], camera, viewSize );
-  
-  if(clickedObjects.length > 0) {
+feng.views.view3dobject.entities.Fruit.prototype.createTextures = function(){
 
-    this.pick();
+  var shouldCreate = goog.base(this, 'createTextures');
+
+  if(!shouldCreate) return;
+
+  var preload = feng.models.Preload.getInstance();
+  var inPlateImg = preload.getAsset(this._view3d.sectionId + '.' + this._view3d.id + '.' + this.name +'-in-plate-texture');
+  this._inPlateTexture = new THREE.Texture( inPlateImg );
+  this._inPlateTexture.needsUpdate = true;
+
+  if(this.object3d.parent.name !== 'refrigerator') {
+    this.object3d.material.map = this._inPlateTexture;
   }
 };
-*/// Copyright 2012 The Closure Library Authors. All Rights Reserved.
+
+
+feng.views.view3dobject.entities.Fruit.prototype.disposeTextures = function(){
+
+  var shouldDispose = goog.base(this, 'disposeTextures');
+
+  if(!shouldDispose) return;
+
+  this._inPlateTexture.dispose();
+  this._inPlateTexture = null;
+};
+
+
+feng.views.view3dobject.entities.Fruit.prototype.onPick = function(){
+
+  this.object3d.material.map = this._inPlateTexture;
+  this.object3d.material.needsUpdate = true;
+};// Copyright 2012 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37883,7 +38038,7 @@ goog.require('feng.templates.common');
  * @notypecheck
  */
 feng.templates.book.Book = function(opt_data, opt_ignored) {
-  var output = '<div id="book">' + feng.templates.common.CloseButton(null) + '<h2>FengShui Tips Collected <span class="tip-counter"></span></h2><div class="scroller-wrapper"><div class="scroller"><div class="inner"><ul>';
+  var output = '<div id="book">' + feng.templates.common.CloseButton(null) + '<h2>Feng Shui Tips Collected <span class="tip-counter"></span></h2><div class="scroller-wrapper"><div class="scroller"><div class="inner"><ul>';
   var tipList6 = opt_data.tips;
   var tipListLen6 = tipList6.length;
   for (var tipIndex6 = 0; tipIndex6 < tipListLen6; tipIndex6++) {
@@ -37899,7 +38054,7 @@ feng.templates.book.Book = function(opt_data, opt_ignored) {
     }
     output += '</p></div>' + feng.templates.common.ScrollBar(null) + '</div><ul class="share"><li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/' + tipData6.id + '.html" target="_blank" class="icon icon-facebook"></a></li><li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/' + tipData6.id + '.html" target="_blank" class="icon icon-twitter"></a></li><li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/' + tipData6.id + '.html" target="_blank" class="icon icon-google"></a></li></ul></div></div></div></li>';
   }
-  output += '</ul></div></div></div><div class="scrubber"><div class="handle"></div></div></div>';
+  output += '</ul></div></div></div><div class="scrubber"><button class="handle"></button></div></div>';
   return output;
 };
 goog.provide('feng.fx.ScrollBar');
@@ -37941,6 +38096,8 @@ feng.fx.ScrollBar.prototype.activate = function() {
 	this._eventHandler.listen( this._scrollerEl, 'mouseover', this.onMouseOverScroller, false, this );
 	this._eventHandler.listen( this._scrollerEl, 'mouseout', this.onMouseOutScroller, false, this );
 
+	goog.style.setStyle( this._scrollerEl, 'overflow', 'auto' );
+
 	this.resize();
 };
 
@@ -37948,6 +38105,8 @@ feng.fx.ScrollBar.prototype.activate = function() {
 feng.fx.ScrollBar.prototype.deactivate = function() {
 
 	this._eventHandler.removeAll();
+
+	goog.style.setStyle( this._scrollerEl, 'overflow', 'hidden' );
 };
 
 
@@ -37970,6 +38129,13 @@ feng.fx.ScrollBar.prototype.resize = function() {
 };
 
 
+feng.fx.ScrollBar.prototype.scrollTo = function( y ) {
+
+	this._scrollerEl.scrollTop = y;
+	this.onScrollerScroll();
+};
+
+
 feng.fx.ScrollBar.prototype.onDragHandle = function(x, y) {
 
 	goog.style.setPosition( this._handleEl, x, y );
@@ -37982,7 +38148,7 @@ feng.fx.ScrollBar.prototype.onDragHandle = function(x, y) {
 
 feng.fx.ScrollBar.prototype.onScrollerScroll = function(e) {
 
-	var handleRatio = Math.round(e.currentTarget.scrollTop / e.currentTarget.scrollHeight * 100);
+	var handleRatio = Math.round(this._scrollerEl.scrollTop / this._scrollerEl.scrollHeight * 100);
 
 	goog.style.setStyle( this._handleEl, 'top', handleRatio + '%' );
 };
@@ -38690,9 +38856,12 @@ feng.views.book.Book.prototype.animateIn = function( tipId ) {
 
 		var tipModule = this._tipModules[i];
 		var el = tipModule.domElement;
-		var tweener = TweenMax.fromTo( el, 1.2, {
+
+		TweenMax.set( el, {
 			'x': tipModule.x + this._viewportSize.width
-		}, {
+		});
+
+		var tweener = TweenMax.to( el, 1.2, {
 			'x': tipModule.x,
 			'ease': Strong.easeOut
 		});
@@ -38711,7 +38880,6 @@ feng.views.book.Book.prototype.animateOut = function( instant ) {
 
 	this.deactivate();
 
-	//
 	feng.navigationController.replaceToken('');
 
 	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
@@ -39105,19 +39273,7 @@ feng.views.view3dobject.entities.Pictures = function( object3d, data, view3d ){
   goog.base(this, object3d, data, view3d);
 
   // parse and store pictures data
-  var pictures = this.tip.details['pictures'];
-
-  var preload = feng.models.Preload.getInstance();
-
-  this._pictureTextures = goog.object.map(pictures, function(val, key) {
-
-    var img = preload.getAsset( this._view3d.sectionId + '.' + this._view3d.id + '.pictures.' + key );
-
-    var texture = new THREE.Texture( img );
-    texture.needsUpdate = true;
-
-    return texture;
-  }, this);
+  this._pictureTextures = null;
 
   // get all picture object 3ds
   var pictureObject3ds = [];
@@ -39136,6 +39292,52 @@ feng.views.view3dobject.entities.Pictures = function( object3d, data, view3d ){
   this._resolvedPictures = {};
 };
 goog.inherits(feng.views.view3dobject.entities.Pictures, feng.views.view3dobject.TipObject);
+
+
+feng.views.view3dobject.entities.Pictures.prototype.createTextures = function(){
+
+  var shouldCreate = goog.base(this, 'createTextures');
+
+  if(!shouldCreate) return;
+
+  // parse and store pictures data
+  var pictures = this.tip.details['pictures'];
+
+  var preload = feng.models.Preload.getInstance();
+
+  this._pictureTextures = goog.object.map(pictures, function(val, key) {
+
+    var img = preload.getAsset( this._view3d.sectionId + '.' + this._view3d.id + '.pictures.' + key );
+
+    var texture = new THREE.Texture( img );
+    texture.needsUpdate = true;
+
+    return texture;
+  }, this);
+
+  // restore texture from picture id
+  var pictureTextures = this._pictureTextures;
+
+  this.object3d.traverse(function(object) {
+    if(object.userData.id) {
+      object.material.map = pictureTextures[ object.userData.id ];
+    }
+  });
+};
+
+
+feng.views.view3dobject.entities.Pictures.prototype.disposeTextures = function(){
+
+  var shouldDispose = goog.base(this, 'disposeTextures');
+
+  if(!shouldDispose) return;
+
+  goog.object.forEach(this._pictureTextures, function(texture) {
+    texture.dispose();
+  });
+
+  this._pictureTextures = null;
+};
 
 
 feng.views.view3dobject.entities.Pictures.prototype.startInteraction = function() {
@@ -39200,8 +39402,10 @@ feng.views.view3dobject.entities.Pictures.prototype.setActivePicture = function(
 feng.views.view3dobject.entities.Pictures.prototype.setPicture = function( id ){
 
   var texture = this._pictureTextures[ id ];
+  
   this._activePicture.material.map = texture;
   this._activePicture.material.needsUpdate = true;
+  this._activePicture.userData.id = id;
 
   // fit picture texture in UV
   var u, v, offsetU, offsetV;
@@ -39222,7 +39426,7 @@ feng.views.view3dobject.entities.Pictures.prototype.setPicture = function( id ){
 
   if(imgRatio > meshRatio) {
 
-    u = 1 / imgRatio / meshRatio;
+    u = 1 / (imgRatio / meshRatio);
     v = 1;
 
     actualWidth = meshHeight * imgRatio;
@@ -39234,7 +39438,7 @@ feng.views.view3dobject.entities.Pictures.prototype.setPicture = function( id ){
   }else {
 
     u = 1;
-    v = 1 * imgRatio / meshRatio;
+    v = 1 * (imgRatio / meshRatio);
 
     actualWidth = meshWidth;
     actualHeight = meshWidth / imgRatio;
@@ -39899,6 +40103,21 @@ feng.controllers.controls.Controls.prototype.reset = function () {
 };
 
 
+feng.controllers.controls.Controls.prototype.lerp = function( startPosition, endPosition, startRotation, endRotation, startFov, endFov, t ) {
+
+	var position = this.getPosition();
+	var rotation = this.getRotation();
+
+	var lerpPosition = position.copy( startPosition ).lerp( endPosition, t );
+	var lerpRotation = feng.utils.ThreeUtils.getLerpedEuler( startRotation, endRotation, t, rotation );
+	var lerpFov = goog.math.lerp( startFov, endFov, t );
+
+	this.setPosition( lerpPosition );
+	this.setRotation( lerpRotation );
+	this.setFov( lerpFov );
+};
+
+
 feng.controllers.controls.Controls.prototype.activate = function() {
 
 	this._eventHandler.listen(this._domElement, 'click', this.onClick, false, this);
@@ -40126,11 +40345,11 @@ feng.controllers.controls.ExitControls.prototype.onLoadComplete = function () {
 
 feng.controllers.controls.ExitControls.prototype.onBufferComplete = function () {
 
-	feng.soundController.playSfx('door-open');
+	this._gateway.playOpenSound();
 
 	goog.Timer.callOnce(function() {
-		feng.soundController.playSfx('door-close');
-	}, 2500);
+		this._gateway.playCloseSound();
+	}, 2500, this);
 
 	this._view3d.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
@@ -40246,7 +40465,7 @@ feng.controllers.controls.EntryControls.prototype.openDoor = function () {
 
 	this._timeline.play();
 
-	feng.soundController.playSfx('entry-open');
+	this._entry.playOpenSound();
 };
 
 
@@ -40315,7 +40534,7 @@ feng.controllers.controls.EntryControls.prototype.onArriveInComplete = function 
 
 	this._footstepsSound.pause();
 
-	feng.soundController.playSfx('entry-close');
+	this._entry.playCloseSound();
 
 	this._entry.close();
 
@@ -40606,7 +40825,7 @@ feng.controllers.controls.DesignControls.prototype.setCamera = function( forward
 	var posX = this._distance * Math.sin( - shouldRad ) + this._focus.x;
 	var posZ = this._distance * Math.cos( - shouldRad ) + this._focus.z;
 
-	console.log( position.x, position.z, posX, posZ, shouldDeg );
+	//console.log( position.x, position.z, posX, posZ, shouldDeg );
 	//
 
 
@@ -40689,13 +40908,13 @@ feng.controllers.controls.DesignControls.prototype.activate = function () {
 
 	goog.base(this, 'activate');
 
-	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this);
-
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this);
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
 
+	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this);
 	this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
+	this._eventHandler.listen( this, feng.events.EventType.CLICK_GATEWAY, this.onClickGateway, false, this );
 
 	this._zoomSlider.activate();
 };
@@ -40838,26 +41057,172 @@ feng.controllers.controls.DesignControls.prototype.onDragUpdate = function(){
 };
 
 
+feng.controllers.controls.DesignControls.prototype.onClickGateway = function(e) {
+
+	/*
+  this.dispatchEvent({
+  	type: feng.events.EventType.CHANGE,
+    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+    nextMode: feng.controllers.view3d.ModeController.Mode.EXIT,
+    gateway: e.gateway
+  });
+*/
+
+	// transition camera
+	var lookDirection = this._focus.clone().sub( this.getPosition() ).normalize();
+
+	var endPosition = this.getPosition().clone().add( lookDirection.multiplyScalar( 600 ) );
+
+  var prop = {
+    t: 0,
+    startPosition: this.getPosition().clone(),
+    endPosition: endPosition,
+    startRotation: this.getRotation(),
+    endRotation: this.getRotation(),
+    startFov: this.getFov(),
+    endFov: this.getFov()
+  }
+
+	TweenMax.to( prop, 1, {
+	  t: 1,
+	  'ease': Expo.easeOut,
+	  'onStart': this.onCameraTransitionStart,
+	  'onStartScope': this,
+	  'onUpdate': this.onCameraTransitionUpdate,
+	  'onUpdateParams': [prop],
+	  'onUpdateScope': this,
+	  'onComplete': this.onCameraTransitionToGatewayComplete,
+	  'onCompleteParams': [e.gateway],
+	  'onCompleteScope': this
+	});
+};
+
+
 feng.controllers.controls.DesignControls.prototype.onNavigationChange = function(e) {
 
 	var navController = e.target;
 
 	var goTipResult = navController.testToken( e.tokenArray, feng.controllers.NavigationController.Token.GO_TIP );
 
-	if(goTipResult) {
+	if(!goTipResult) {
 
-		var achievements = feng.models.achievements.Achievements.getInstance();
-		var tip = achievements.getTip( goTipResult['tipId'], goTipResult['viewId'], goTipResult['sectionId'] );
-
-		var object = this._view3d.getObjectByTip( tip );
-
-		this.dispatchEvent({
-			type: feng.events.EventType.CHANGE,
-			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-			nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
-			object: object
-		});
+		return;
 	}
+
+	// transition camera
+	var lookDirection = this._focus.clone().sub( this.getPosition() ).normalize();
+
+	var endPosition = this.getPosition().clone().add( lookDirection.multiplyScalar( 600 ) );
+
+  var prop = {
+    t: 0,
+    startPosition: this.getPosition().clone(),
+    endPosition: endPosition,
+    startRotation: this.getRotation(),
+    endRotation: this.getRotation(),
+    startFov: this.getFov(),
+    endFov: this.getFov()
+  }
+
+	TweenMax.to( prop, 1, {
+	  t: 1,
+	  'ease': Expo.easeOut,
+	  'onStart': this.onCameraTransitionStart,
+	  'onStartScope': this,
+	  'onUpdate': this.onCameraTransitionUpdate,
+	  'onUpdateParams': [prop],
+	  'onUpdateScope': this,
+	  'onComplete': this.onCameraTransitionToTipComplete,
+	  'onCompleteParams': [goTipResult],
+	  'onCompleteScope': this
+	});
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onCameraTransitionStart = function(){
+
+	this._view3d.hud.tooltips.deactivate();
+	this.deactivate();
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onCameraTransitionUpdate = function(prop){
+
+  var startPosition = prop.startPosition;
+  var endPosition = prop.endPosition;
+  var startRotation = prop.startRotation;
+  var endRotation = prop.endRotation;
+  var startFov = prop.startFov;
+  var endFov = prop.endFov;
+  var t = prop.t;
+
+  this.lerp( startPosition, endPosition, startRotation, endRotation, startFov, endFov, t );
+
+  this._view3d.renderController.globalBrightness = - t;
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onCameraTransitionToGatewayComplete = function( gateway ){
+
+	var gatewayPosition = gateway.getCenter();
+	var gatewayOriginPosition = gateway.origin.position;
+	var gatewayOriginRotation = gateway.origin.rotation;
+	var gatewayDirection = (new THREE.Vector3()).subVectors(gatewayOriginPosition, gatewayPosition).setY(0).normalize();
+
+	var fromPosition = gatewayOriginPosition.clone().add( gatewayDirection.clone().multiplyScalar(50) ).setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT );
+	
+	var fromRotation = new THREE.Euler(0, 0, 0, 'YXZ');
+  var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(fromPosition, gatewayPosition);
+  fromRotation.setFromQuaternion( quaternion );
+
+  var fromFov = feng.controllers.controls.Controls.Default.FOV;
+
+  this.dispatchEvent({
+  	type: feng.events.EventType.CHANGE,
+    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+    nextMode: feng.controllers.view3d.ModeController.Mode.EXIT,
+    fromPosition: fromPosition,
+		fromRotation: fromRotation,
+		fromFov: fromFov,
+    gateway: gateway
+  });
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onCameraTransitionToTipComplete = function( goTipResult ){
+
+	var achievements = feng.models.achievements.Achievements.getInstance();
+	var tip = achievements.getTip( goTipResult['tipId'], goTipResult['viewId'], goTipResult['sectionId'] );
+
+	var object = this._view3d.getObjectByTip( tip );
+
+	// calculate camera position/rotation/fov before transition
+	var browseControls = this._view3d.modeController.getModeControl(feng.controllers.view3d.ModeController.Mode.BROWSE);
+	var direction = new THREE.Vector3().subVectors( browseControls.getPosition(), object.getCenter() ).normalize();
+	var fromPosition = object.getCenter().clone().add( direction.multiplyScalar(100) );
+	
+	var matrixData = feng.pathfinder.getMatrixData( this._view3d.getMatrixId() );
+	fromPosition = feng.pathfinder.getClosestWalkablePosition( fromPosition, matrixData ).setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT );
+
+	var fromRotation = new THREE.Euler(0, 0, 0, 'YXZ');
+  var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(fromPosition, object.getCenter());
+  fromRotation.setFromQuaternion( quaternion );
+
+  var fromFov = feng.controllers.controls.Controls.Default.FOV;
+
+  browseControls.setPosition( fromPosition );
+  browseControls.setRotation( fromRotation );
+
+	//
+	this.dispatchEvent({
+		type: feng.events.EventType.CHANGE,
+		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+		nextMode: feng.controllers.view3d.ModeController.Mode.CLOSE_UP,
+		fromPosition: fromPosition,
+		fromRotation: fromRotation,
+		fromFov: fromFov,
+		object: object
+	});
 };goog.provide('feng.controllers.controls.CloseUpControls');
 
 goog.require('goog.events');
@@ -40953,16 +41318,25 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 
 		this._activeObject.onCameraIn();
 
-		// test...
 		var caption = this._view3d.hud.getCaption( this._activeObject, this );
 		caption.setParentEventTarget(this);
 		caption.show();
 
+		// todo
+		if(this._activeObject.tip.unlocked) {
+
+			this._view3d.fx.greenLeaves.animateIn( this._activeObject );
+			this._view3d.fx.yellowLeaves.animateOut();
+
+		}else {
+
+			this._view3d.fx.yellowLeaves.animateIn( this._activeObject );
+			this._view3d.fx.greenLeaves.animateOut();
+		}
+
 	}else  {
 		
-		// test...
 		var caption = this._view3d.hud.getCaption( this._activeObject, this );
-		caption.setParentEventTarget(this);
 		caption.hide();
 	}
 };
@@ -41108,6 +41482,7 @@ feng.controllers.controls.BrowseControls.prototype.activate = function () {
 	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this );
 	this._eventHandler.listen( this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this );
 	this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
+	this._eventHandler.listen( this, feng.events.EventType.CLICK_GATEWAY, this.onClickGateway, false, this );
 
 	this._objectSelector.activate( this._objectSelectorCallbacks );
 };
@@ -41190,6 +41565,8 @@ feng.controllers.controls.BrowseControls.prototype.onClick = function ( e ) {
 			toPosition: toPosition
 		});
 
+		feng.pubsub.publish( feng.PubSub.Topic.TRIGGER_WALK, 'click' );
+
 		// play click effect
 		var normal = intersects[0].face.normal;
 		this._view3d.fx.clickEffect.play( toPosition, normal );
@@ -41245,23 +41622,7 @@ feng.controllers.controls.BrowseControls.prototype.onMouseWheel = function ( e )
 		mousewheel: true
 	});
 
-	
-	/*
-	var distance = 25 * (-e.deltaY / Math.abs(e.deltaY));
-	
-	var forward = this.getForwardVector();
-	
-	var toPosition = forward.multiplyScalar( distance ).add( this.getPosition() );
-	toPosition.y = this.getPosition().y;
-
-	var pathfinder = feng.pathfinder;
-	var matrixData = pathfinder.getMatrixData( this._view3d.getMatrixId() );
-	var isWalkable = pathfinder.isWalkablePosition( toPosition, matrixData );
-
-	if(isWalkable) {
-		this.setPosition( toPosition );
-	}
-	*/
+	feng.pubsub.publish( feng.PubSub.Topic.TRIGGER_WALK, 'mousewheel' );
 };
 
 
@@ -41297,6 +41658,17 @@ feng.controllers.controls.BrowseControls.prototype.onUpdateHud = function(e){
 		this.setYaw( e.rotation );
 		this._targetRotationY = e.rotation;
 	}
+};
+
+
+feng.controllers.controls.BrowseControls.prototype.onClickGateway = function(e) {
+
+  this.dispatchEvent({
+  	type: feng.events.EventType.CHANGE,
+    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+    nextMode: feng.controllers.view3d.ModeController.Mode.EXIT,
+    gateway: e.gateway
+  });
 };
 
 
@@ -42019,7 +42391,7 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 		toTarget: ev.toTarget,
 		nextMode: ev.nextMode
 	};
-	
+
 	var dur = goog.math.clamp( 1, 2, goog.math.lerp( 1, 2, fromPosition.distanceTo( toPosition ) / 100 ));
 
 	this._tweener = TweenMax.to( prop, dur, {
@@ -42090,6 +42462,12 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 		}
 	}
 
+	//
+	TweenMax.to(this._view3d.renderController, dur, {
+		globalBrightness: 0,
+		'ease': Expo.easeOut
+	});
+
 	// toggle sound loops
 	if(nextMode === feng.controllers.view3d.ModeController.Mode.CLOSE_UP) {
 
@@ -42099,7 +42477,7 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 	}else {
 
 		feng.soundController.playMix( this._view3d.sectionId, 6 );
-		feng.soundController.fadeLoop( 'closeup', null, 0, 3, true );
+		feng.soundController.fadeLoop( 'closeup', null, 0, 3, true, true );
 	}
 
 	//
@@ -42461,26 +42839,23 @@ feng.views.view3dobject.entities.Refrigerator = function( object3d, data, view3d
 
   this._door = this.object3d;
 
-  this._fruits = null;
-
   this.cameraInDuration = 3000;
+
+  this._cameraZoomTweener = null;
 };
 goog.inherits(feng.views.view3dobject.entities.Refrigerator, feng.views.view3dobject.TipObject);
 
 
 feng.views.view3dobject.entities.Refrigerator.prototype.getFruits = function(){
 
-  this._fruits = [];
+  var fruits = [];
 
-  goog.array.forEach( ['apple', 'pineapple', 'orange', 'peach'], function(name) {
+  goog.array.forEach( ['peach', 'pineapple', 'orange', 'apple'], function(name) {
 
-    var fruit = this._door.parent.getObjectByName( name );
-    if(fruit) {
-      this._fruits.push( fruit );
-    }
+    fruits.push( this._view3d.getView3dObject(name) );
   }, this );
 
-  return this._fruits;
+  return fruits;
 };
 
 
@@ -42488,9 +42863,86 @@ feng.views.view3dobject.entities.Refrigerator.prototype.startInteraction = funct
 
   goog.base(this, 'startInteraction');
 
-  this._fruits = this.getFruits();
+  // zoom in camera a bit to start picking fruits
+  var prop = {
+    fov: this.data.camera.fov
+  };
   
-  this._interactionHandler.listen(this._view3d.domElement, 'click', this.onClick, false, this);
+  this._cameraZoomTweener = TweenMax.to(prop, 1, {
+    fov: prop.fov - 20,
+    'ease': Quad.easeInOut,
+    'onUpdate': this.onCameraZoomUpdate,
+    'onUpdateParams': [prop],
+    'onUpdateScope': this,
+    'onComplete': this.onCameraZoomIn,
+    'onCompleteScope': this,
+    'onReverseComplete': this.onCameraZoomOut,
+    'onReverseCompleteScope': this
+  });
+};
+
+
+feng.views.view3dobject.entities.Refrigerator.prototype.onCameraZoomUpdate = function(prop){
+
+  var control = this._view3d.modeController.control;
+
+  control.setFov( prop.fov );
+};
+
+
+feng.views.view3dobject.entities.Refrigerator.prototype.onCameraZoomIn = function(){
+
+  var fruits = this.getFruits();
+  
+  var arms = this._view3d.arms;
+
+  // animate picking up fruits
+  var timeline = new TimelineMax({
+    'onComplete': this.onPickedLastFruit,
+    'onCompleteScope': this
+  });
+
+  goog.array.forEach(fruits, function(fruit) {
+
+    var endOrientation = arms.getWorldOrientation( fruit.name );
+    var endPosition = endOrientation.position;
+    var endRotation = endOrientation.rotation;
+    var startPosition = fruit.object3d.position;
+    var startRotation = fruit.object3d.rotation;
+
+    var prop = {
+      t: 0
+    };
+
+    var position = new THREE.Vector3();
+    var rotation = new THREE.Euler();
+
+    var tweener = TweenMax.to( prop, 1, {
+      t: 1,
+      'ease': Sine.easeIn,
+      'onUpdate': function() {
+        
+        position = position.copy(startPosition).lerp(endPosition, prop.t);
+        fruit.object3d.position.copy( position );
+
+        rotation = feng.utils.ThreeUtils.getLerpedEuler( startRotation, endRotation, prop.t, rotation );
+        fruit.object3d.rotation.copy( rotation );
+      },
+      'onComplete': this.onPickedFruit,
+      'onCompleteParams': [fruit],
+      'onCompleteScope': this
+    });
+
+    timeline.add( tweener );
+
+  }, this);
+};
+
+
+feng.views.view3dobject.entities.Refrigerator.prototype.onCameraZoomOut = function(){
+
+  this.unlock();
+  this.stopInteraction();
 };
 
 
@@ -42522,23 +42974,19 @@ feng.views.view3dobject.entities.Refrigerator.prototype.onCameraOut = function()
 };
 
 
-feng.views.view3dobject.entities.Refrigerator.prototype.onClick = function(e){
+feng.views.view3dobject.entities.Refrigerator.prototype.onPickedFruit = function(fruit){
 
   var arms = this._view3d.arms;
 
-  var camera = this._view3d.cameraController.activeCamera;
-  var viewSize = this._view3d.viewSize;
-  var clickedObjects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, this._fruits, camera, viewSize );
+  arms.addItem( fruit );
 
-  if(clickedObjects.length > 0) {
-    var fruit = clickedObjects[0];
-    arms.addItem( fruit.object.view3dObject );
-  }
+  fruit.onPick();
+};
 
-  if(this.getFruits().length === 0) {
-    this.unlock();
-    this.stopInteraction();
-  }
+
+feng.views.view3dobject.entities.Refrigerator.prototype.onPickedLastFruit = function(){
+
+  this._cameraZoomTweener.reverse();
 };goog.provide('feng.views.view3dobject.DesignPlane');
 
 goog.require('feng.views.view3dobject.View3DObject');
@@ -42583,9 +43031,9 @@ feng.views.view3dobject.DesignPlane.prototype.createTextures = function(){
   canvas.width = size;
   canvas.height = size;
   var ctx = canvas.getContext("2d");
-  ctx.fillStyle = "#f5f5f5";
+  ctx.fillStyle = "#e7e7e7";
   ctx.fillRect(0, 0, size, size);
-  ctx.strokeStyle = "#414141";
+  ctx.strokeStyle = "#aaaaaa";
   ctx.strokeRect(0, 0, size, size);
 
   var texture = new THREE.Texture( canvas );
@@ -42707,11 +43155,15 @@ feng.fx.Renderer = function(canvas, scene, camera){
 
 	this._hueSaturationPass = new THREE.ShaderPass( THREE.HueSaturationShader );
 
-	this._bloomPass = new THREE.BloomPass(.25, 25, 4);
+	this._bloomPass = new THREE.BloomPass(.20);
 
-	this._adjustmentBrightnessContrastPass = new THREE.ShaderPass( THREE.BrightnessContrastShader );
-	this._adjustmentBrightnessContrastPass.uniforms['brightness'].value = 0.05;
-	this._adjustmentBrightnessContrastPass.uniforms['contrast'].value = 0.05;
+	this._globalBrightness = 0;
+	this._globalContrast = 0;
+	this._baseGlobalBrightness = 0.05;
+	this._baseGlobalContrast = 0.05;
+
+	this._globalBrightnessContrastPass = new THREE.ShaderPass( THREE.BrightnessContrastShader );
+	this.setGlobalBrightnessContrast( this._globalBrightness, this._globalContrast );
 
 	this._maskPass = new THREE.MaskPass( scene );
 	this._maskPass.enabled = false;
@@ -42779,7 +43231,7 @@ feng.fx.Renderer = function(canvas, scene, camera){
 
 	this._outputComposer.addPass( this._hueSaturationPass );
 
-	this._outputComposer.addPass( this._adjustmentBrightnessContrastPass );
+	this._outputComposer.addPass( this._globalBrightnessContrastPass );
 
 	this._outputComposer.addPass( this._vignettePass );
 
@@ -42820,6 +43272,16 @@ feng.fx.Renderer.prototype.setBlur = function( x, y ){
 
 	this._blurXPass.uniforms[ 'delta' ].value.x = blurAmountX;
 	this._blurYPass.uniforms[ 'delta' ].value.y = blurAmountY;
+};
+
+
+feng.fx.Renderer.prototype.setGlobalBrightnessContrast = function( brightness, contrast ){
+
+	this._globalBrightness = brightness;
+	this._globalContrast = contrast;
+
+	this._globalBrightnessContrastPass.uniforms['brightness'].value = this._baseGlobalBrightness + this._globalBrightness;
+	this._globalBrightnessContrastPass.uniforms['contrast'].value = this._baseGlobalContrast + this._globalContrast;
 };
 
 
@@ -43414,20 +43876,22 @@ feng.controllers.view3d.RenderController = function( view3d ){
   this._minVignette = 1;
   this._maxVignette = 3;
 
-  this._blur = 0;
-  this._brightness = 0;
-  this._contrast = 0;
-  this._saturation = 0;
-  this._vignette = this._minVignette;
+  this.blur = 0;
+  this.brightness = 0;
+  this.globalBrightness = 0;
+  this.globalContrast = 0;
+  this.contrast = 0;
+  this.saturation = 0;
+  this.vignette = this._minVignette;
 
   this._closeUpTweener = TweenMax.fromTo(this, .5, {
-  	_blur: 0,
-  	_brightness: 0,
-  	_contrast: 0
+  	blur: 0,
+  	brightness: 0,
+  	contrast: 0
   }, {
-  	_blur: this._maxBlur,
-  	_brightness: this._minBrightness,
-  	_contrast: this._minContrast,
+  	blur: this._maxBlur,
+  	brightness: this._minBrightness,
+  	contrast: this._minContrast,
   	'ease': Quad.easeInOut,
   	'paused': true,
   	'onStart': this.onCloseUpStart,
@@ -43437,22 +43901,22 @@ feng.controllers.view3d.RenderController = function( view3d ){
   });
 
   this._vignetteTweener = TweenMax.fromTo(this, 1, {
-  	_vignette: this._minVignette
+  	vignette: this._minVignette
   }, {
-  	_vignette: this._maxVignette,
+  	vignette: this._maxVignette,
   	'paused': true
   });
 
   this._brightnessTweener = TweenMax.fromTo(this, .5, {
-  	_brightness: 0,
-  	_contrast: 0,
-  	_blur: this._blur,
-  	_saturation: 0
+  	brightness: 0,
+  	contrast: 0,
+  	blur: this.blur,
+  	saturation: 0
   }, {
-  	_brightness: -.65,
-  	_contrast: -.2,
-  	_blur: 6,
-  	_saturation: -.65,
+  	brightness: -.65,
+  	contrast: -.2,
+  	blur: 6,
+  	saturation: -.65,
   	'ease': Quad.easeInOut,
   	'paused': true,
   	'onStart': this.onBlurInStart,
@@ -43488,28 +43952,28 @@ feng.controllers.view3d.RenderController.prototype.updateByMode = function(mode,
 
 		this._maskedObject = modeControl._activeObject;
 
-		if(!this._closeUpTweener.isActive() && this._blur < this._maxBlur) {
+		if(!this._closeUpTweener.isActive() && this.blur < this._maxBlur) {
 			this._closeUpTweener.play();
 		}
 	}
 
 	if(modeToCloseUp || modeToDesign) {
 
-		if(!this._vignetteTweener.isActive() && this._vignette < this._maxVignette) {
+		if(!this._vignetteTweener.isActive() && this.vignette < this._maxVignette) {
 			this._vignetteTweener.play();
 		}
 	}
 
 	if(notCloseUp) {
 
-		if(!this._closeUpTweener.reversed() && this._blur > 0) {
+		if(!this._closeUpTweener.reversed() && this.blur > 0) {
 			this._closeUpTweener.reverse();
 		}
 	}
 
 	if(notCloseUp && notDesign) {
 
-		if(!this._vignetteTweener.reversed() && this._vignette > this._minVignette) {
+		if(!this._vignetteTweener.reversed() && this.vignette > this._minVignette) {
 			this._vignetteTweener.reverse();
 		}
 	}
@@ -43567,7 +44031,7 @@ feng.controllers.view3d.RenderController.prototype.onBlurInStart = function() {
 
 feng.controllers.view3d.RenderController.prototype.onBlurOutComplete = function() {
 
-	if(this._blur === 0) {
+	if(this.blur === 0) {
 		this._renderer._blurTexturePass.enabled = false;
 	}
 };
@@ -43575,11 +44039,12 @@ feng.controllers.view3d.RenderController.prototype.onBlurOutComplete = function(
 
 feng.controllers.view3d.RenderController.prototype.onBeforeRender = function() {
 
-	this._renderer.setBlur( this._blur, this._blur );
-	this._renderer.setBrightness( this._brightness );
-	this._renderer.setContrast( this._contrast );
-	this._renderer.setSaturation( this._saturation );
-	this._renderer.setVignette( this._vignette );
+	this._renderer.setBlur( this.blur, this.blur );
+	this._renderer.setBrightness( this.brightness );
+	this._renderer.setContrast( this.contrast );
+	this._renderer.setGlobalBrightnessContrast( this.globalBrightness, this.globalContrast );
+	this._renderer.setSaturation( this.saturation );
+	this._renderer.setVignette( this.vignette );
 };
 
 
@@ -43593,7 +44058,7 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderBlur = function
 		view3dObjects[ name ].enableRender();
 	}
 
-	this._view3d.fx.visible = true;
+	this._view3d.fx.onBeforeRenderBlur();
 
 	if(maskedObject) {
 		
@@ -43615,7 +44080,7 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderMask = function
 		view3dObjects[ name ].disableRender();
 	}
 
-	this._view3d.fx.visible = false;
+	this._view3d.fx.onBeforeRenderMask();
 
 	if(maskedObject) {
 
@@ -43961,6 +44426,9 @@ feng.views.view3dobject.GatewayObject = function( object3d, data, view3d ){
 
   this._startRotationY = this.object3d.rotation.y;
 
+  this._openSound = feng.soundController.getSfx( this.data.openSound );
+  this._closeSound = feng.soundController.getSfx( this.data.closeSound );
+
 	this._openTweener = TweenMax.fromTo( this.object3d.rotation, 2.5, {
 		'y': this._startRotationY
 	}, {
@@ -44030,6 +44498,30 @@ feng.views.view3dobject.GatewayObject.prototype.pause = function() {
 };
 
 
+feng.views.view3dobject.GatewayObject.prototype.playOpenSound = function() {
+
+	if(this._openSound) {
+		this._openSound.play();
+	}
+
+	if(this._closeSound) {
+		this._closeSound.stop();
+	}
+};
+
+
+feng.views.view3dobject.GatewayObject.prototype.playCloseSound = function() {
+
+	if(this._closeSound) {
+		this._closeSound.play();
+	}
+
+	if(this._openSound) {
+		this._openSound.stop();
+	}
+};
+
+
 feng.views.view3dobject.GatewayObject.prototype.onOpenComplete = function(e) {
 
 	this.dispatchEvent( feng.events.EventType.COMPLETE );
@@ -44056,21 +44548,72 @@ feng.views.view3dobject.entities.FruitPlate = function( object3d, data, view3d )
 goog.inherits(feng.views.view3dobject.entities.FruitPlate, feng.views.view3dobject.TipObject);
 
 
-feng.views.view3dobject.entities.FruitPlate.prototype.drop = function( view3dObject ){
+feng.views.view3dobject.entities.FruitPlate.prototype.dropFruit = function( fruitId ){
 
-  var name = view3dObject.name;
-  var orientation = feng.views.view3dobject.entities.FruitPlate.Orientations[ name ];
+  if(this._fruits[ fruitId ]) {
 
-  this._fruits[ name ] = true;
+    return;
 
-  var object3d = view3dObject.object3d;
-  
-  object3d.position.copy( orientation.position );
-  object3d.rotation.copy( orientation.rotation );
+  }else {
 
-  this.object3d.add( object3d );
+    this._fruits[ fruitId ] = true;
+  }
 
-  // check all fruits status for unlock
+  var fruit = this._view3d.getView3dObject( fruitId );
+
+  // animate drop
+  var arms = this._view3d.arms;
+  arms.removeItem( fruit );
+
+  this.object3d.add( fruit.object3d );
+
+  var startOrientation = arms.getWorldOrientation( fruitId );
+  var worldPosition = startOrientation.position;
+  var worldRotation = startOrientation.rotation;
+
+  var startPosition = feng.utils.ThreeUtils.getLocalPositionOfWorld( this.object3d, worldPosition );
+  var startRotation = feng.utils.ThreeUtils.getLocalRotationOfWorld( this.object3d, worldRotation );
+
+  var endOrientation = feng.views.view3dobject.entities.FruitPlate.Orientations[ fruitId ];
+
+  var endPosition = endOrientation.position.clone().setY( endOrientation.position.y + 10 );
+  var endRotation = endOrientation.rotation;
+
+  var prop = {
+    t: 0
+  };
+
+  var position = new THREE.Vector3();
+  var rotation = new THREE.Euler();
+
+  TweenMax.to( prop, .8, {
+    t: 1,
+    'immediateRender': true,
+    'ease': Sine.easeInOut,
+    'onUpdate': function() {
+      
+      position = position.copy(startPosition).lerp(endPosition, prop.t);
+      fruit.object3d.position.copy( position );
+
+      rotation = feng.utils.ThreeUtils.getLerpedEuler( startRotation, endRotation, prop.t, rotation );
+      fruit.object3d.rotation.copy( rotation );
+    },
+    'onUpdateScope': this
+  });
+
+  TweenMax.to( fruit.object3d.position, .8, {
+    'y': endOrientation.position.y,
+    'delay': 1,
+    'ease': Bounce.easeOut,
+    'onComplete': this.onFruitDropped,
+    'onCompleteScope': this
+  });
+};
+
+
+feng.views.view3dobject.entities.FruitPlate.prototype.onFruitDropped = function(){
+
+  // unlock if all fruits are dropped
   var isDone = this._fruits['apple'] && this._fruits['orange'] && this._fruits['pineapple'] && this._fruits['peach'];
 
   if(isDone) {
@@ -44080,60 +44623,22 @@ feng.views.view3dobject.entities.FruitPlate.prototype.drop = function( view3dObj
 };
 
 
-feng.views.view3dobject.entities.FruitPlate.prototype.startInteraction = function(){
-
-  goog.base(this, 'startInteraction');
-
-  if(this.isUnlocked()) return;
-
-  this._interactionHandler.listen(this._view3d.domElement, 'click', this.onClick, false, this);
-};
-
-
-feng.views.view3dobject.entities.FruitPlate.prototype.onClick = function(e){
-
-  var arms = this._view3d.arms;
-
-  var camera = this._view3d.cameraController.activeCamera;
-  var viewSize = this._view3d.viewSize;
-  var fruitPlate = [this.object3d];
-  var clickedObjects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, fruitPlate, camera, viewSize );
-
-  if(clickedObjects.length > 0) {
-
-    var fruitName = goog.object.findKey(this._fruits, function(dropped, name) {
-      return (dropped === false);
-    });
-
-    var fruit = this._view3d.getView3dObject( fruitName );
-
-    arms.removeItem( fruit );
-    this.drop( fruit );
-
-    this.dispatchEvent({
-      type: feng.events.EventType.CHANGE,
-      fruit: fruitName
-    });
-  }
-};
-
-
 feng.views.view3dobject.entities.FruitPlate.Orientations = {
   'apple': {
-    position: new THREE.Vector3(2.38, 2.75, -3.71),
-    rotation: new THREE.Euler(-0.28, -0.28, -0.32)
+    position: new THREE.Vector3(-113.86, 52.80, -69.91),
+    rotation: new THREE.Euler(0.00, -0.67, 0.00)
   },
   'orange': {
-    position: new THREE.Vector3(3.49, 2.32, 1.97),
-    rotation: new THREE.Euler(0.38, 0.24, -0.18)
+    position: new THREE.Vector3(-118.57, 52.17, -70.48),
+    rotation: new THREE.Euler(0.00, 0.96, 0.00)
   },
   'pineapple': {
-    position: new THREE.Vector3(-4.08, 5.76, 5.25),
-    rotation: new THREE.Euler(0.78, -0.3, 0.36)
+    position: new THREE.Vector3(-118.35, 56.99, -63.23),
+    rotation: new THREE.Euler(0.40, 0.00, 0.00)
   },
   'peach': {
-    position: new THREE.Vector3(-3.16, 2, -3.63),
-    rotation: new THREE.Euler(0.14, 0, 0)
+    position: new THREE.Vector3(-112.30, 52.04, -65.70),
+    rotation: new THREE.Euler(0.00, -0.49, 0.00)
   }
 };goog.provide('feng.views.view3dobject.Arms');
 
@@ -44502,7 +45007,6 @@ feng.views.view3dfx.ClickEffect = function(){
 	texture.needsUpdate = true;
 
 	var material = new THREE.MeshBasicMaterial({
-		//color: 0xff0000,
 		'map': texture,
 		'side': THREE.DoubleSide,
 		'fog': false,
@@ -44544,10 +45048,324 @@ feng.views.view3dfx.ClickEffect.prototype.play = function( position, normal ) {
 		'opacity': 0,
 		'ease': Expo.easeOut
 	});
+};goog.provide('feng.fx.LeafSprite');
+
+goog.require('feng.fx.TextureAnimator');
+
+
+/**
+ * @constructor
+ */
+feng.fx.LeafSprite = function( texture ){
+
+	var material = new THREE.SpriteMaterial({
+		'map': texture,
+		'transparent': true,
+		'side': THREE.DoubleSide,
+		'sizeAttenuation': true,
+		'alphaTest': 1,
+		'fog': true
+	});
+
+	THREE.Sprite.call( this, material );
+
+	var numTiles = texture.image.width / 128;
+	var frameDuration = goog.math.randomInt( 40 ) + 40;
+	this._textureAnimator = new feng.fx.TextureAnimator( texture, numTiles, 1, numTiles, frameDuration );
+
+	this._baseScale = 1;
+
+	this.randomize();
+};
+goog.inherits(feng.fx.LeafSprite, THREE.Sprite);
+
+
+feng.fx.LeafSprite.prototype.start = function(){
+
+	this._textureAnimator.start();
+};
+
+
+feng.fx.LeafSprite.prototype.stop = function(){
+
+	this._textureAnimator.stop();
+};
+
+
+feng.fx.LeafSprite.prototype.setScale = function( scaleMultiplier ){
+
+	var finalScale = this._baseScale * scaleMultiplier;
+
+	this.scale.set( finalScale, finalScale, finalScale );
+};
+
+
+feng.fx.LeafSprite.prototype.randomize = function(){
+
+	this._baseScale = goog.math.uniformRandom(0.5, 2);
+
+	this.setScale( 1 );
+
+	var rotation = Math.random() * Math.PI * 2;
+	this.material.rotation = rotation;
+};goog.provide('feng.fx.Leaves');
+
+goog.require('goog.events.EventHandler');
+goog.require('goog.fx.anim.Animated');
+goog.require('feng.fx.LeafSprite');
+goog.require('feng.models.Preload');
+
+/**
+ * @constructor
+ * based on http://stemkoski.github.io/Three.js/Particles.html
+ */
+feng.fx.Leaves = function( eventTarget, color ){
+
+  goog.base(this);
+
+  this.isActive = false;
+
+  this._eventHandler = new goog.events.EventHandler(this);
+  this._eventTarget = eventTarget;
+
+  this._color = color;
+
+  this._activeObject = null;
+
+  // create shared textures if not
+	var preload = feng.models.Preload.getInstance();
+
+	goog.object.forEach(feng.fx.Leaves.LeafType, function(value, key) {
+
+		if(!feng.fx.Leaves.Texture[key]) {
+			var img = preload.getAsset( 'global.leaf.' + value );
+			var texture = new THREE.Texture( img );
+			feng.fx.Leaves.Texture[key] = texture;
+		}
+	});
+
+	// create leaves
+	var textureIds = [];
+	var numLeaves;
+
+	switch(this._color) {
+		case feng.fx.Leaves.Color.GREEN:
+		textureIds.push('GREEN_1', 'GREEN_2');
+		numLeaves = 16;
+		break;
+
+		case feng.fx.Leaves.Color.YELLOW:
+		textureIds.push('YELLOW_1', 'YELLOW_2');
+		numLeaves = 8;
+		break;
+	}
+
+	for(var i = 0; i < numLeaves; i++) {
+		
+		var textureId = textureIds[ goog.math.randomInt(textureIds.length) ];
+		var randTexture = feng.fx.Leaves.Texture[ textureId ];
+		var leaf = new feng.fx.LeafSprite( randTexture.clone() );
+
+		this.add( leaf );
+	}
+
+	this._attributes = {
+		startPosition: [],
+		randomness: []
+	};
+
+	this._leafScaleMultiplier = 1;
+
+	this._leafScaleTweener = TweenMax.fromTo(this, 2, {
+		_leafScaleMultiplier: 0
+	}, {
+		_leafScaleMultiplier: 1,
+		'paused': true,
+		'onUpdate': this.updateLeafScale,
+		'onUpdateScope': this,
+		'onReverseComplete': this.deactivate,
+		'onReverseCompleteScope': this
+	});
+
+	this._startTime = 0;
+
+	this._speedFactor = (this._color === feng.fx.Leaves.Color.GREEN) ? 0.001 : 0.004;
+
+	this._animated = new goog.fx.anim.Animated();
+	this._animated.onAnimationFrame = goog.bind( this.onAnimationFrame, this );
+};
+goog.inherits(feng.fx.Leaves, THREE.Object3D);
+
+
+feng.fx.Leaves.prototype.activate = function(){
+
+	this.isActive = true;
+
+	this._eventHandler.listen( this._activeObject.tip, feng.events.EventType.UNLOCK, this.onUnlock, false, this );
+};
+
+
+feng.fx.Leaves.prototype.deactivate = function(){
+
+	var leaves = this.children;
+
+	goog.array.forEach(leaves, function(leaf) {
+		leaf.stop();
+	});
+
+	goog.fx.anim.unregisterAnimation( this._animated );
+
+	this._eventHandler.removeAll();
+
+	this._activeObject = null;
+
+	this.isActive = false;
+};
+
+
+feng.fx.Leaves.prototype.animateIn = function( tipObject ){
+
+	if(this._activeObject === tipObject) {
+		
+		return;
+
+	}else {
+
+		this._activeObject = tipObject;
+	}
+
+	// calculate object radius
+	var boundingSphere = tipObject.getBoundingSphere();
+	var radius = Math.max( 15, boundingSphere.radius );
+
+	this.position.copy( boundingSphere.center );
+
+	// arrange leaves
+	var leaves = this.children;
+
+	this._attributes.startPosition = [];
+	this._attributes.randomness = [];
+
+	goog.array.forEach(leaves, function(leaf) {
+
+		leaf.position.set( Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5 );
+
+		// for a spherical shell:
+		leaf.position.setLength( radius * (Math.random() * 0.1 + 0.9) );
+
+		this._attributes.startPosition.push( leaf.position.clone() );
+		this._attributes.randomness.push( Math.random() );
+
+		leaf.randomize();
+		leaf.start();
+
+	}, this);
+
+	// scale up leaves
+	this._leafScaleTweener.restart();
+	this.updateLeafScale();
+
+	// kick off the animation loop
+	this._startTime = goog.now();
+
+	goog.fx.anim.registerAnimation( this._animated );
+
+	this.activate();
+};
+
+
+feng.fx.Leaves.prototype.animateOut = function(){
+
+	if(this._leafScaleTweener.reversed() || !this.isActive) {
+		return;
+	}
+
+	// scale down leaves
+	this._leafScaleTweener.reverse();
+};
+
+
+feng.fx.Leaves.prototype.updateLeafScale = function(){
+
+	var leaves = this.children;
+
+	var i, l = leaves.length;
+	for(i = 0; i < l; i++) {
+		leaves[i].setScale( this._leafScaleMultiplier );
+	}
+};
+
+
+feng.fx.Leaves.prototype.onUnlock = function(e){
+
+	this._eventTarget.dispatchEvent({
+		type: feng.events.EventType.UNLOCK,
+		activeObject: this._activeObject
+	});
+};
+
+
+feng.fx.Leaves.prototype.onAnimationFrame = function(now){
+
+	var time = (now - this._startTime) * this._speedFactor;
+	
+	for ( var c = 0; c < this.children.length; c ++ ) {
+
+		var leaf = this.children[ c ];
+
+		// pulse away/towards center
+		// individual rates of movement
+		var a = this._attributes.randomness[c] + 1;
+
+		var pulseFactor = (Math.sin(a * time) + 1) / 2;
+
+		if(this._color === feng.fx.Leaves.Color.GREEN) {
+
+			pulseFactor = goog.math.lerp( 0.8, 1, pulseFactor );
+
+		}else if(this._color === feng.fx.Leaves.Color.YELLOW) {
+
+			pulseFactor = goog.math.lerp( 0.8, 2, pulseFactor );
+		}
+
+		var startPosition = this._attributes.startPosition[c];
+		leaf.position.x = startPosition.x * pulseFactor;
+		leaf.position.y = startPosition.y * pulseFactor;
+		leaf.position.z = startPosition.z * pulseFactor;
+	}
+
+	// rotate the entire group
+	this.rotation.y = time * 0.75;
+};
+
+
+feng.fx.Leaves.Color = {
+	GREEN: 'green',
+	YELLOW: 'yellow'
+};
+
+
+feng.fx.Leaves.LeafType = {
+	'GREEN_1': 'green-1',
+	'GREEN_2': 'green-2',
+	'YELLOW_1': 'yellow-1',
+	'YELLOW_2': 'yellow-2'
+};
+
+
+feng.fx.Leaves.Texture = {
+	'GREEN_1': null,
+	'GREEN_2': null,
+	'YELLOW_1': null,
+	'YELLOW_2': null
 };goog.provide('feng.views.view3dfx.FX');
 
+goog.require('goog.events.EventTarget');
+goog.require('goog.events.EventHandler');
+goog.require('feng.events');
 goog.require('feng.views.view3dfx.ClickEffect');
 goog.require('feng.views.view3dfx.SelectEffect');
+goog.require('feng.fx.Leaves');
 
 /**
  * @constructor
@@ -44556,13 +45374,62 @@ feng.views.view3dfx.FX = function(){
 
   goog.base(this);
 
+  this._eventHandler = new goog.events.EventHandler(this);
+  this._eventTarget = new goog.events.EventTarget();
+
   this.clickEffect = new feng.views.view3dfx.ClickEffect();
   this.add( this.clickEffect );
 
   this.selectEffect = new feng.views.view3dfx.SelectEffect();
   this.add( this.selectEffect );
+
+  this.greenLeaves = new feng.fx.Leaves( this._eventTarget, feng.fx.Leaves.Color.GREEN );
+  this.add( this.greenLeaves );
+
+  this.yellowLeaves = new feng.fx.Leaves( this._eventTarget, feng.fx.Leaves.Color.YELLOW );
+  this.add( this.yellowLeaves );
 };
-goog.inherits(feng.views.view3dfx.FX, THREE.Object3D);goog.provide('feng.views.view3dobject.entities.Lamp');
+goog.inherits(feng.views.view3dfx.FX, THREE.Object3D);
+
+
+feng.views.view3dfx.FX.prototype.activate = function() {
+
+  this._eventHandler.listen( this._eventTarget, feng.events.EventType.UNLOCK, this.onUnlock, false, this );
+};
+
+
+feng.views.view3dfx.FX.prototype.deactivate = function() {
+
+  this.greenLeaves.deactivate();
+  this.yellowLeaves.deactivate();
+
+  this._eventHandler.removeAll();
+};
+
+
+feng.views.view3dfx.FX.prototype.onBeforeRenderBlur = function() {
+
+	this.clickEffect.visible = true;
+	this.selectEffect.visible = true;
+	this.greenLeaves.visible = this.greenLeaves.isActive;
+	this.yellowLeaves.visible = this.yellowLeaves.isActive;
+};
+
+
+feng.views.view3dfx.FX.prototype.onBeforeRenderMask = function() {
+
+	this.clickEffect.visible = false;
+	this.selectEffect.visible = false;
+	this.greenLeaves.visible = this.greenLeaves.isActive;
+	this.yellowLeaves.visible = this.yellowLeaves.isActive;
+};
+
+
+feng.views.view3dfx.FX.prototype.onUnlock = function(e) {
+
+  this.yellowLeaves.animateOut();
+  this.greenLeaves.animateIn( e.activeObject );
+};goog.provide('feng.views.view3dobject.entities.Lamp');
 
 goog.require('feng.fx.TextureAnimator');
 goog.require('feng.models.Preload');
@@ -44745,6 +45612,267 @@ feng.views.view3dobject.entities.Knife.prototype.unlock = function(){
 
   var drawerTipObject = this._view3d.tipObjects['drawer'];
   drawerTipObject.unlock();
+};goog.provide('feng.views.view3dobject.entities.Showerhead');
+
+goog.require('goog.fx.Dragger');
+goog.require('feng.views.view3dobject.TipObject');
+goog.require('feng.utils.ThreeUtils');
+
+
+/**
+ * @constructor
+ * The showerhead that is leaking water
+ */
+feng.views.view3dobject.entities.Showerhead = function( object3d, data, view3d ){
+
+  goog.base(this, object3d, data, view3d);
+
+  this._handle = null;
+
+  this._waterdrop = null;
+
+  this._waterdropStartY = null;
+
+  this._tapCamera = {
+    position: new THREE.Vector3(11, 59, 76.65),
+    rotation: new THREE.Euler(-0.32, -1.59, 0, 'YXZ'),
+    fov: 30
+  };
+
+  this._waterPositionTweener = null;
+  this._waterScaleTweener = null;
+  this._cameraTransitionTweener = null;
+  this._cameraZoomTweener = null;
+
+  // dragger to rotate the handle
+  this._dragger = new goog.fx.Dragger( this._view3d.domElement );
+  this._dragger.setHysteresis( 2 );
+  this._dragger.defaultAction = goog.nullFunction;
+
+  this._totalDeg = 0;
+  this._lastDeg = 0;
+  this._totalCount = 6;
+  this._count = 0;
+};
+goog.inherits(feng.views.view3dobject.entities.Showerhead, feng.views.view3dobject.TipObject);
+
+
+feng.views.view3dobject.entities.Showerhead.prototype.init = function(){
+
+  goog.base(this, 'init');
+
+  this._handle = this.object3d.getObjectByName('shower-handle');
+
+  this._waterdrop = this.object3d.getObjectByName('waterdrop');
+  this._waterdropStartY = this._waterdrop.position.y;
+};
+
+
+feng.views.view3dobject.entities.Showerhead.prototype.onCameraIn = function(){
+
+  goog.base(this, 'onCameraIn');
+
+  if(this.tip.unlocked) {
+    return;
+  }
+
+  this._waterPositionTweener = TweenMax.fromTo(this._waterdrop.position, 1.5, {
+    'y': this._waterdropStartY
+  },{
+    'ease': Expo.easeIn,
+    'y': this._waterdropStartY - 180,
+    'repeat': -1,
+    'repeatDelay': 1,
+    'onRepeat': feng.soundController.playSfx,
+    'onRepeatParams': ['water-drop'],
+    'onRepeatScope': feng.soundController
+  });
+
+  this._waterScaleTweener = TweenMax.fromTo(this._waterdrop.scale, 1.5, {
+    'y': 1
+  },{
+    'ease': Expo.easeIn,
+    'y': 1.5,
+    'repeat': -1,
+    'repeatDelay': 1
+  });
+};
+
+
+feng.views.view3dobject.entities.Showerhead.prototype.onCameraOut = function(){
+
+  goog.base(this, 'onCameraOut');
+
+  if(this._waterPositionTweener) {
+    this._waterPositionTweener.kill();
+  }
+
+  if(this._waterScaleTweener) {
+    this._waterScaleTweener.kill();
+  }
+
+  if(this._cameraTransitionTweener) {
+    this._cameraTransitionTweener.kill();
+  }
+};
+
+
+feng.views.view3dobject.entities.Showerhead.prototype.startInteraction = function(){
+
+  goog.base(this, 'startInteraction');
+
+  // transition camera to look at handle
+  var control = this._view3d.modeController.control;
+
+  var prop = {
+    t: 0,
+    startPosition: control.getPosition().clone(),
+    endPosition: this._tapCamera.position,
+    startRotation: control.getRotation().clone(),
+    endRotation: this._tapCamera.rotation,
+    startFov: control.getFov(),
+    endFov: this._tapCamera.fov
+  }
+
+  this._cameraTransitionTweener = TweenMax.to( prop, 2, {
+    t: 1,
+    'ease': Sine.easeInOut,
+    'onUpdate': this.onCameraTransitionUpdate,
+    'onUpdateParams': [prop],
+    'onUpdateScope': this,
+    'onComplete': this.onCameraTransitionComplete,
+    'onCompleteScope': this
+  });
+};
+
+
+feng.views.view3dobject.entities.Showerhead.prototype.stopInteraction = function(){
+
+  goog.base(this, 'stopInteraction');
+
+  if(this._waterPositionTweener) {
+    this._waterPositionTweener.kill();
+  }
+
+  if(this._waterScaleTweener) {
+    this._waterScaleTweener.kill();
+  }
+
+  if(this._cameraTransitionTweener) {
+    this._cameraTransitionTweener.kill();
+  }
+};
+
+
+feng.views.view3dobject.entities.Showerhead.prototype.onCameraTransitionUpdate = function(prop){
+
+  var startPosition = prop.startPosition;
+  var endPosition = prop.endPosition;
+  var startRotation = prop.startRotation;
+  var endRotation = prop.endRotation;
+  var startFov = prop.startFov;
+  var endFov = prop.endFov;
+  var t = prop.t;
+
+  var control = this._view3d.modeController.control;
+
+  control.lerp( startPosition, endPosition, startRotation, endRotation, startFov, endFov, t );
+};
+
+
+feng.views.view3dobject.entities.Showerhead.prototype.onCameraTransitionComplete = function(){
+
+  this._interactionHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
+  this._interactionHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this);
+  this._interactionHandler.listen( this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
+};
+
+
+feng.views.view3dobject.entities.Showerhead.prototype.onCameraZoomUpdate = function(prop){
+
+  var control = this._view3d.modeController.control;
+
+  control.setFov( prop.fov );
+};
+
+
+feng.views.view3dobject.entities.Showerhead.prototype.onDragStart = function(e){
+
+  var prop = {
+    fov: this._tapCamera.fov
+  };
+
+  this._cameraZoomTweener = TweenMax.to(prop, .5, {
+    fov: this._tapCamera.fov - 5,
+    'ease': Strong.easeOut,
+    'onUpdate': this.onCameraZoomUpdate,
+    'onUpdateParams': [prop],
+    'onUpdateScope': this
+  });
+};
+
+
+feng.views.view3dobject.entities.Showerhead.prototype.onDragEnd = function(e){
+
+  this._lastDeg = 0;
+  this._totalDeg = 0;
+
+  var control = this._view3d.modeController.control;
+
+  var prop = {
+    fov: control.getFov()
+  };
+
+  this._cameraZoomTweener = TweenMax.to(prop, 1, {
+    fov: this._tapCamera.fov,
+    'ease': Strong.easeOut,
+    'onUpdate': this.onCameraZoomUpdate,
+    'onUpdateParams': [prop],
+    'onUpdateScope': this
+  });
+};
+
+
+feng.views.view3dobject.entities.Showerhead.prototype.onDrag = function(e){
+
+  var clientX = e.target.clientX;
+  var clientY = e.target.clientY;
+
+  var startX = e.target.startX;
+  var startY = e.target.startY;
+
+  var originX = feng.viewportSize.width / 2;
+  var originY = feng.viewportSize.height / 2;
+
+  var rad = Math.atan2(clientY - originY, clientX - originX);
+  rad -= Math.atan2(startY - originY, startX - originX);
+
+  var mouseDeg = rad * (180 / Math.PI);
+
+  var a1 = mouseDeg * (Math.PI / 180);
+  var a2 = this._lastDeg * (Math.PI / 180);
+
+  var radians = Math.atan2(Math.sin(a1 - a2), Math.cos(a1 - a2));
+  var diffDeg = radians * (180 / Math.PI);
+
+  this._lastDeg = mouseDeg;
+
+  this._totalDeg += diffDeg;
+
+  var count = Math.floor( this._totalDeg / 360 );
+  var countT = Math.max( 0, Math.min(1, this._totalDeg / (360 * this._totalCount)) );
+
+  this._handle.rotation.x += goog.math.toRadians(diffDeg) * (1 - countT) * .35;
+
+  if(count >= this._totalCount) {
+
+    this._waterdrop.view3dObject.removeFromScene();
+
+    this.onDragEnd();
+
+    this.unlock();
+    this.stopInteraction();
+  }
 };goog.provide('feng.views.View3D');
 
 goog.require('goog.dom');
@@ -44784,9 +45912,11 @@ goog.require('feng.views.view3dobject.entities.Pictures');
 goog.require('feng.views.view3dobject.entities.Refrigerator');
 goog.require('feng.views.view3dobject.entities.SewingMachine');
 goog.require('feng.views.view3dobject.entities.FruitPlate');
+goog.require('feng.views.view3dobject.entities.Fruit');
 goog.require('feng.views.view3dobject.entities.GlassBowl');
 goog.require('feng.views.view3dobject.entities.Wallpaper');
 goog.require('feng.views.view3dobject.entities.Windows');
+goog.require('feng.views.view3dobject.entities.Showerhead');
 
 
 /**
@@ -45021,6 +46151,9 @@ feng.views.View3D.prototype.activate = function(){
  	var tutorialOverlay = this.hud.tutorialOverlay;
  	this._eventHandler.listen( tutorialOverlay, feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this );
 
+ 	var creditsOverlay = this.hud.creditsOverlay;
+ 	this._eventHandler.listen( creditsOverlay, feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this );
+
  	var endingOverlay = this.hud.endingOverlay;
  	this._eventHandler.listen( endingOverlay, feng.events.EventType.ANIMATE_IN, this.onOverlayAnimateIn, false, this );
 
@@ -45036,6 +46169,8 @@ feng.views.View3D.prototype.activate = function(){
  	});
 
  	this.modeController.activate();
+
+ 	this.fx.activate();
 
  	goog.fx.anim.registerAnimation(this);
 };
@@ -45053,6 +46188,8 @@ feng.views.View3D.prototype.deactivate = function(){
  	});
 
  	this.modeController.deactivate();
+
+ 	this.fx.deactivate();
 
 	goog.fx.anim.unregisterAnimation(this);
 };
@@ -45223,7 +46360,9 @@ feng.views.View3D.prototype.initScene = function() {
 		'sewingmachine': feng.views.view3dobject.entities.SewingMachine,
 		'wallpaper': feng.views.view3dobject.entities.Wallpaper,
 		'windows': feng.views.view3dobject.entities.Windows,
+		'showerhead': feng.views.view3dobject.entities.Showerhead,
 		'fruitplate': feng.views.view3dobject.entities.FruitPlate,
+		'fruit': feng.views.view3dobject.entities.Fruit,
 		'glassbowl': feng.views.view3dobject.entities.GlassBowl
 	};
 
@@ -45349,7 +46488,7 @@ feng.views.View3D.prototype.onBookAnimateIn = function(e){
 	this.pause();
 
 	feng.soundController.stopMix( this.sectionId );
-	feng.soundController.fadeLoop( 'book', 0, 1, 2, false );
+	feng.soundController.fadeLoop( 'book', 0, 1, 2 );
 };
 
 
@@ -45358,7 +46497,7 @@ feng.views.View3D.prototype.onBookAnimateOut = function(e){
 	this.resume();
 
 	feng.soundController.playMix( this.sectionId );
-  	feng.soundController.fadeLoop( 'book', null, 0, 2, true );
+  	feng.soundController.fadeLoop( 'book', null, 0, 2, true, true );
 };
 
 
@@ -47625,6 +48764,12 @@ feng.views.popups.Tutorial.prototype.gotoStep = function( step ){
 };
 
 
+feng.views.popups.Tutorial.prototype.animateIn = function(){
+
+	goog.base(this, 'animateIn', 200);
+};
+
+
 feng.views.popups.Tutorial.prototype.activate = function(){
 
 	goog.base(this, 'activate');
@@ -47657,8 +48802,6 @@ feng.views.popups.Tutorial.prototype.deactivate = function(){
 	goog.base(this, 'deactivate');
 
 	this._videoEl.pause();
-
-	this._eventHandler.removeAll();
 
 	feng.keyboardController.unbind( this._enterKeyId );
 	feng.keyboardController.unbind( this._escKeyId );
@@ -47777,8 +48920,12 @@ feng.views.MainOptions = function(){
 
   this.domElement = goog.dom.getElement('main-options');
 
-  this._howtoplayButton = goog.dom.query('.howtoplay', this.domElement)[0];
+  this._infoButton = goog.dom.query('.info', this.domElement)[0];
+  this._instructionsButton = goog.dom.query('.instructions', this.domElement)[0];
+  this._creditsButton = goog.dom.query('.credits', this.domElement)[0];
   this._soundButton = goog.dom.query('.sound', this.domElement)[0];
+  this._soundOnButton = goog.dom.getElementByClass('on', this._soundButton);
+  this._soundOffButton = goog.dom.getElementByClass('off', this._soundButton);
   this._facebookButton = goog.dom.query('.facebook', this.domElement)[0];
   this._twitterButton = goog.dom.query('.twitter', this.domElement)[0];
   this._googleButton = goog.dom.query('.google', this.domElement)[0];
@@ -47789,8 +48936,10 @@ feng.views.MainOptions = function(){
   	this.onMute();
   }
 
-  goog.events.listen(this._howtoplayButton, 'click', this.onClick, false, this);
-  goog.events.listen(this._soundButton, 'click', this.onClick, false, this);
+  goog.events.listen(this._instructionsButton, 'click', this.onClick, false, this);
+  goog.events.listen(this._creditsButton, 'click', this.onClick, false, this);
+  goog.events.listen(this._soundOnButton, 'click', this.onClick, false, this);
+  goog.events.listen(this._soundOffButton, 'click', this.onClick, false, this);
   goog.events.listen(this._facebookButton, 'click', this.onClick, false, this);
   goog.events.listen(this._twitterButton, 'click', this.onClick, false, this);
   goog.events.listen(this._googleButton, 'click', this.onClick, false, this);
@@ -47803,20 +48952,28 @@ goog.inherits(feng.views.MainOptions, goog.events.EventTarget);
 
 feng.views.MainOptions.prototype.showHelpButton = function( shouldShow ){
 
-  goog.style.showElement( this._howtoplayButton, shouldShow );
+  goog.style.showElement( this._infoButton, shouldShow );
 };
 
 
 feng.views.MainOptions.prototype.onClick = function(e){
 
 	switch(e.currentTarget) {
-		case this._howtoplayButton:
+		case this._instructionsButton:
     feng.tutorial.toggle();
 		break;
 
-		case this._soundButton:
-		feng.soundController.toggle();
+    case this._creditsButton:
+    feng.credits.toggle();
+    break;
+
+		case this._soundOnButton:
+		feng.soundController.unmute();
 		break;
+
+    case this._soundOffButton:
+    feng.soundController.mute();
+    break;
 
 		case this._facebookButton:
 		case this._twitterButton:
@@ -48133,6 +49290,10 @@ feng.controllers.SoundController = function(){
     'refrigerator-close': {
       'urls': urls('sfx/refrigerator-close'),
       'onload': onSoundLoad
+    },
+    'water-drop': {
+      'urls': urls('sfx/water-drop'),
+      'onload': onSoundLoad
     }
   };
 
@@ -48198,6 +49359,7 @@ feng.controllers.SoundController = function(){
       var tweener = {
         sound: sound,
         volume: sound.volume(),
+        pauseAfterComplete: false,
         stopAfterComplete: false
       };
       this._tweeners[ soundType ][ soundId ] = tweener;
@@ -48214,7 +49376,9 @@ feng.controllers.SoundController = function(){
   this._mix = {
     'studio': {
       position: 0,
-      timer: new goog.Timer(25000),
+      time: 0,
+      duration: 25000,
+      timer: new goog.Timer(1000),
       sounds: [
         this.getLoop('optimize-loop-1'),
         this.getAmbient('studio'),
@@ -48228,7 +49392,9 @@ feng.controllers.SoundController = function(){
     },
     'house': {
       position: 0,
-      timer: new goog.Timer(25000),
+      time: 0,
+      duration: 25000,
+      timer: new goog.Timer(1000),
       sounds: [
         this.getLoop('optimize-loop-1'),
         this.getAmbient('house'),
@@ -48244,8 +49410,7 @@ feng.controllers.SoundController = function(){
 
   goog.object.forEach(this._mix, function(mix) {
 
-    var onMixTick = goog.bind(this.onMixTick, mix);
-    mix.timer.listen( goog.Timer.TICK, onMixTick );
+    mix.timer.listen( goog.Timer.TICK, this.onMixTick, false, mix );
 
   }, this);
 
@@ -48407,14 +49572,14 @@ feng.controllers.SoundController.prototype.playLoop = function( id ){
 };
 
 
-feng.controllers.SoundController.prototype.playMix = function( mixId, duration ){
+feng.controllers.SoundController.prototype.playMix = function( mixId, duration, reset ){
   
   var mix = this._mix[ mixId ];
 
   if(mix.timer.enabled) return;
   else mix.timer.start();
 
-  mix.position = 0;
+  mix.position = reset ? 0 : mix.position;
 
   var sound = mix.sounds[ mix.position ];
 
@@ -48431,7 +49596,7 @@ feng.controllers.SoundController.prototype.playMix = function( mixId, duration )
 };
 
 
-feng.controllers.SoundController.prototype.stopMix = function( mixId, duration ){
+feng.controllers.SoundController.prototype.stopMix = function( mixId, duration, reset ){
   
   var mix = this._mix[ mixId ];
 
@@ -48451,13 +49616,14 @@ feng.controllers.SoundController.prototype.stopMix = function( mixId, duration )
     this.fadeLoop( sound.soundId, null, 0, duration, true );
   }
 
-  mix.position = 0;
+  mix.position = reset ? 0 : mix.position;
 };
 
 
-feng.controllers.SoundController.prototype.fade = function( tweener, from, to, duration, stopAfterComplete ){
+feng.controllers.SoundController.prototype.fade = function( tweener, from, to, duration, pauseAfterComplete, stopAfterComplete ){
 
   tweener.volume = goog.isNumber(from) ? from : tweener.sound.volume();
+  tweener.pauseAfterComplete = pauseAfterComplete;
   tweener.stopAfterComplete = stopAfterComplete;
 
   var duration = duration || 1;
@@ -48475,23 +49641,23 @@ feng.controllers.SoundController.prototype.fade = function( tweener, from, to, d
 };
 
 
-feng.controllers.SoundController.prototype.fadeLoop = function( id, from, to, duration, stopAfterComplete ){
+feng.controllers.SoundController.prototype.fadeLoop = function( id, from, to, duration, pauseAfterComplete, stopAfterComplete ){
 
   var sound = this.playLoop( id );
 
   var tweener = this.getLoopTweener( id );
 
-  this.fade( tweener, from, to, duration, stopAfterComplete );
+  this.fade( tweener, from, to, duration, pauseAfterComplete, stopAfterComplete );
 };
 
 
-feng.controllers.SoundController.prototype.fadeAmbient = function( id, from, to, duration, stopAfterComplete ){
+feng.controllers.SoundController.prototype.fadeAmbient = function( id, from, to, duration, pauseAfterComplete, stopAfterComplete ){
 
   var sound = this.playAmbient( id );
 
   var tweener = this.getAmbientTweener( id );
   
-  this.fade( tweener, from, to, duration, stopAfterComplete );
+  this.fade( tweener, from, to, duration, pauseAfterComplete, stopAfterComplete );
 };
 
 
@@ -48508,9 +49674,14 @@ feng.controllers.SoundController.prototype.onFadeComplete = function( param ){
 
   var sound = param.sound;
   var stopAfterComplete = param.stopAfterComplete;
+  var pauseAfterComplete = param.pauseAfterComplete;
 
   if(stopAfterComplete === true) {
     sound.stop();
+  }
+
+  if(pauseAfterComplete === true) {
+    sound.pause();
   }
 };
 
@@ -48518,6 +49689,25 @@ feng.controllers.SoundController.prototype.onFadeComplete = function( param ){
 feng.controllers.SoundController.prototype.onMixTick = function( e ){
 
   var mix = this;
+
+  var shouldSwitch = false;
+
+  if(mix.time >= mix.duration) {
+
+    shouldSwitch = true;
+
+    mix.time = 0;
+
+  }else {
+
+    mix.time += 1000;
+  }
+
+  if(!shouldSwitch) {
+    
+    return;
+  }
+
   var sounds = mix.sounds;
 
   var lastSound = sounds[ mix.position ];
@@ -54561,6 +55751,119 @@ feng.views.EpisodeSelection.prototype.onBufferComplete = function(e){
 
 		feng.tutorial.animateOut();
 	}
+};goog.provide('feng.views.popups.Credits');
+
+goog.require('goog.net.XhrIo');
+goog.require('feng.fx.ScrollBar');
+goog.require('feng.views.popups.Popup');
+goog.require('feng.templates.common');
+
+
+/**
+ * @constructor
+ */
+feng.views.popups.Credits = function(){
+
+	var domElement = soy.renderAsFragment(feng.templates.common.CreditsPopup);
+	
+	goog.base( this, domElement );
+
+	this._scrollerEl = goog.dom.getElementByClass('scroller', this.domElement);
+	this._scrollBarEl = goog.dom.getElementByClass('scrollbar', this._scrollerEl);
+	this._scrollerContentEl = goog.dom.getElementByClass('content', this._scrollerEl);
+
+    this._scrollBar = new feng.fx.ScrollBar( this._scrollBarEl, this._scrollerContentEl );
+
+	this._escKeyId = null;
+	this._animateOut = goog.bind(this.animateOut, this);
+
+	this._onContentLoad = goog.bind(this.onContentLoad, this);
+
+	this._hasLoaded = false;
+};
+goog.inherits(feng.views.popups.Credits, feng.views.popups.Popup);
+goog.addSingletonGetter(feng.views.popups.Credits);
+
+
+feng.views.popups.Credits.prototype.animateIn = function(){
+
+	goog.base(this, 'animateIn', 200);
+};
+
+
+feng.views.popups.Credits.prototype.doAnimateIn = function(){
+
+	goog.base(this, 'doAnimateIn');
+
+	if( this._hasLoaded ) {
+
+		this._scrollBar.scrollTo( 0 )
+		this._scrollBar.resize();
+
+	}else {
+
+		goog.dom.classes.add( this.domElement, 'loading' );
+
+		TweenMax.set(this._scrollerEl, {
+			'opacity': 0
+		});
+
+		// load ajax content
+		var url = feng.Config['assetsPath'] + 'html/credits.html';
+		goog.net.XhrIo.send( url, this._onContentLoad );
+	}
+};
+
+
+feng.views.popups.Credits.prototype.activate = function(){
+
+	goog.base(this, 'activate');
+
+	this._scrollBar.activate();
+
+	goog.events.listen(window, 'resize', this.onResize, false, this);
+
+	this._escKeyId = feng.keyboardController.bind( this._animateOut, feng.keyboardController.key.ESC, true );
+};
+
+
+feng.views.popups.Credits.prototype.deactivate = function(){
+
+	goog.base(this, 'deactivate');
+
+	this._scrollBar.deactivate();
+
+	goog.events.unlisten(window, 'resize', this.onResize, false, this);
+
+	feng.keyboardController.unbind( this._escKeyId );
+};
+
+
+feng.views.popups.Credits.prototype.onContentLoad = function(e){
+
+	this._hasLoaded = true;
+
+	var response = e.target.getResponseText();
+	var bodyText = /<body.*?>([\s\S]*)<\/body>/.exec( response )[1];
+
+	this._scrollerContentEl.innerHTML = bodyText;
+
+	this._scrollBar.resize();
+
+	TweenMax.to(this._scrollerEl, .5, {
+		'delay': 1,
+		'opacity': 1,
+		'onComplete': function() {
+			goog.dom.classes.remove( this.domElement, 'loading' );
+		},
+		'onCompleteScope': this
+	});
+};
+
+
+feng.views.popups.Credits.prototype.onResize = function(e){
+
+	this._scrollBar.resize();
 };goog.provide('feng.views.sections.home.Screen');
 
 goog.require('goog.dom');
@@ -56004,8 +57307,8 @@ feng.views.sections.overlays.LoaderOverlay = function(domElement){
   this._progressEl = goog.dom.getElementByClass('progress', domElement);
 
   var preload = feng.models.Preload.getInstance();
-  var img = preload.getAsset( 'global.spinner' );
-	var data = preload.getAsset( 'global.spinner-data' );
+  var img = feng.fx.AnimatedHouseLogo.Img;
+	var data = feng.fx.AnimatedHouseLogo.Data;
   this._spinner = new feng.fx.CanvasSprite( img, data, this._spinnerEl );
 
   this._spinnerTweener = this._spinner.getTweener();
@@ -56283,7 +57586,7 @@ goog.require('feng.templates.common');
  * @notypecheck
  */
 feng.templates.captions.Caption = function(opt_data, opt_ignored) {
-  return '<div class="caption ' + opt_data.position + '"><div class="shade"></div><div class="panel"><div class="panel-button"><button class="icon"></button><h3>Learn<br>More</h3></div><div class="panel-controls"><div class="share"><ul><li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-facebook"></a></li><li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-twitter"></a></li><li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-google"></a></li></ul></div></div><div class="panel-content"><div class="content"><h1>' + opt_data.tip.name + '</h1><div class="scroller"><div class="scroller-inner">' + ((opt_data.tip.hint) ? '<section class="hint"><div class="inner"><div class="inner-scroller"><p>' + opt_data.tip.hint + '</p>' + feng.templates.common.PrimaryButton({icon: 'icon-yes', classname: 'hint-button', text: 'I see'}) + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.tip.problem) ? '<section class="problem"><div class="inner"><div class="inner-scroller"><p>' + opt_data.tip.problem + '</p><!-- either close to interact, or scroll down to go interaction section if available -->' + feng.templates.common.PrimaryButton({classname: 'prompt-button', icon: 'icon-yes', text: opt_data.tip.prompt}) + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.interactionContent) ? '<section class="interaction"><div class="inner"><div class="inner-scroller">' + opt_data.interactionContent + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.tip.advice) ? '<section class="advice"><div class="inner"><div class="inner-scroller"><h3>Feng Shui Tips</h3><p>' + opt_data.tip.advice + '</p></div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + '</div></div></div></div></div>' + feng.templates.common.CloseButton(null) + '</div>';
+  return '<div class="caption ' + opt_data.position + '"><div class="panel"><div class="panel-button"><button class="icon"></button><h3>Learn<br>More</h3></div><div class="panel-controls"><div class="share"><ul><li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-facebook"></a></li><li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-twitter"></a></li><li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-google"></a></li></ul></div></div><div class="panel-content"><div class="content"><h1>' + opt_data.tip.name + '</h1><div class="scroller"><div class="scroller-inner">' + ((opt_data.tip.hint) ? '<section class="hint"><div class="inner"><div class="inner-scroller"><p>' + opt_data.tip.hint + '</p>' + feng.templates.common.PrimaryButton({icon: 'icon-yes', classname: 'hint-button', text: 'I see'}) + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.tip.problem) ? '<section class="problem"><div class="inner"><div class="inner-scroller"><p>' + opt_data.tip.problem + '</p><!-- either close to interact, or scroll down to go interaction section if available -->' + feng.templates.common.PrimaryButton({classname: 'prompt-button', icon: 'icon-yes', text: opt_data.tip.prompt}) + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.interactionContent) ? '<section class="interaction"><div class="inner"><div class="inner-scroller">' + opt_data.interactionContent + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.tip.advice) ? '<section class="advice"><div class="inner"><div class="inner-scroller"><h3>Feng Shui Tips</h3><p>' + opt_data.tip.advice + '</p></div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + '</div></div></div></div></div>' + feng.templates.common.CloseButton(null) + '</div>';
 };
 
 
@@ -56375,19 +57678,19 @@ feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
-  var param164 = '<h2>Fill the plate with fruits</h2><div class="drop-fruits"><ul class="fruits">';
-  var fruitKeyList166 = soy.$$getMapKeys(opt_data.fruits);
+  var param164 = '<div class="drop-fruits"><h2>Fill the plate with fruits.</h2><ul class="fruits">';
+  var fruitKeyList166 = soy.$$getMapKeys(opt_data.tip.details['fruits']);
   var fruitKeyListLen166 = fruitKeyList166.length;
   for (var fruitKeyIndex166 = 0; fruitKeyIndex166 < fruitKeyListLen166; fruitKeyIndex166++) {
     var fruitKeyData166 = fruitKeyList166[fruitKeyIndex166];
-    param164 += '<li><button data-fruit-id="' + fruitKeyData166 + '"></button></li>';
+    param164 += '<li><button class="item-button" data-fruit="' + fruitKeyData166 + '"></button></li>';
   }
-  param164 += '</ul><ul class="descriptions">';
-  var fruitKeyList172 = soy.$$getMapKeys(opt_data.fruits);
+  param164 += '</ul><ul class="info">';
+  var fruitKeyList172 = soy.$$getMapKeys(opt_data.tip.details['fruits']);
   var fruitKeyListLen172 = fruitKeyList172.length;
   for (var fruitKeyIndex172 = 0; fruitKeyIndex172 < fruitKeyListLen172; fruitKeyIndex172++) {
     var fruitKeyData172 = fruitKeyList172[fruitKeyIndex172];
-    param164 += '<li data-fruit-id="' + fruitKeyData172 + '"><p>' + opt_data.fruits[fruitKeyData172] + '</p></li>';
+    param164 += '<li data-fruit="' + fruitKeyData172 + '"><h3>' + opt_data.tip.details['fruits'][fruitKeyData172]['name'] + '</h3><p>' + opt_data.tip.details['fruits'][fruitKeyData172]['description'] + '</p></li>';
   }
   param164 += '</ul></div>';
   var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param164}));
@@ -56403,11 +57706,11 @@ feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
  */
 feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
   var output = '<p class="floatText">';
-  var lineList183 = opt_data.lines;
-  var lineListLen183 = lineList183.length;
-  for (var lineIndex183 = 0; lineIndex183 < lineListLen183; lineIndex183++) {
-    var lineData183 = lineList183[lineIndex183];
-    output += '<span>' + lineData183 + '</span>';
+  var lineList185 = opt_data.lines;
+  var lineListLen185 = lineList185.length;
+  for (var lineIndex185 = 0; lineIndex185 < lineListLen185; lineIndex185++) {
+    var lineData185 = lineList185[lineIndex185];
+    output += '<span>' + lineData185 + '</span>';
   }
   output += '</p>';
   return output;
@@ -56423,12 +57726,12 @@ goog.require('feng.fx.ScrollBar');
 /**
  * @constructor
  */
-feng.views.sections.captions.Caption = function( object, cameraController, renderSize, controls, hud ){
+feng.views.sections.captions.Caption = function( object, renderController, renderSize, controls, hud ){
 
   goog.base(this);
 
   this._object = object;
-  this._cameraController = cameraController;
+  this._renderController = renderController;
   this._renderSize = renderSize;
   this._controls = controls;
   this._hud = hud;
@@ -56449,7 +57752,6 @@ feng.views.sections.captions.Caption = function( object, cameraController, rende
   // render HTML template
   this.domElement = soy.renderAsFragment(this._template, this._templateData);
 
-  this._shadeEl = goog.dom.getElementByClass('shade', this.domElement);
   this._panelEl = goog.dom.getElementByClass('panel', this.domElement);
   this._scrollerInnerEl = goog.dom.getElementByClass('scroller-inner', this.domElement);
 
@@ -56642,7 +57944,7 @@ feng.views.sections.captions.Caption.prototype.gotoSection = function( section, 
 
   this._sectionTweener = TweenMax.to(this._scrollerInnerEl, duration, {
     'x': - this.getSectionX( toSection ),
-    'ease': Quad.easeInOut,
+    'ease': Quad.easeOut,
     'onStart': this.onScrollFromSection,
     'onStartParams': [fromSection],
     'onStartScope': this,
@@ -56685,7 +57987,9 @@ feng.views.sections.captions.Caption.prototype.onScrollFromSection = function( f
 
 feng.views.sections.captions.Caption.prototype.onScrolledToSection = function( toSection ) {
 
-  goog.dom.classes.addRemove( toSection, 'animate-out', 'animate-in' );
+  if(!this._isPanelAnimatedOut) {
+    goog.dom.classes.addRemove( toSection, 'animate-out', 'animate-in' );
+  }
 
   switch(toSection) {
 
@@ -56725,6 +58029,18 @@ feng.views.sections.captions.Caption.prototype.animateInPanel = function() {
 
   goog.dom.classes.enable(this.domElement, 'hide-panel', false);
 
+  goog.dom.classes.addRemove(this._panelEl, 'animate-out', 'animate-in' );
+
+  if(this._section) {
+    goog.dom.classes.addRemove( this._section, 'animate-out', 'animate-in' );
+  } 
+
+  TweenMax.to( this._renderController, .5, {
+    globalBrightness: -.15,
+    globalContrast: -.15,
+    'ease': Sine.easeInOut
+  });
+
   TweenMax.to( this._renderSize, .5, {
     ratioX: .7,
     'ease': Sine.easeInOut,
@@ -56742,6 +58058,18 @@ feng.views.sections.captions.Caption.prototype.animateOutPanel = function( shoul
   }
 
   goog.dom.classes.enable(this.domElement, 'hide-panel', true);
+
+  goog.dom.classes.addRemove(this._panelEl, 'animate-in', 'animate-out' );
+
+  if(this._section) {
+    goog.dom.classes.addRemove( this._section, 'animate-in', 'animate-out' );
+  } 
+
+  TweenMax.to( this._renderController, .5, {
+    globalBrightness: 0,
+    globalContrast: 0,
+    'ease': Sine.easeInOut
+  });
 
   TweenMax.to( this._renderSize, .5, {
     ratioX: 1,
@@ -56880,7 +58208,14 @@ feng.views.sections.captions.Caption.prototype.onInteractionStart = function( e 
 
 feng.views.sections.captions.Caption.prototype.onInteractionEnd = function( e ) {
 
-  this.animateInPanel();
+  if(this._object.tip.isFinal) {
+
+    this.animateInPanel();
+
+  }else {
+
+    this.close();
+  }
 };
 
 
@@ -56890,16 +58225,6 @@ feng.views.sections.captions.Caption.prototype.onClick = function( e ) {
     case this._promptButton:
     this._object.startInteraction();
     break;
-
-    /*
-    case this._changeButton:
-    this._object.tip.unlock();
-    break;
-
-    case this._unlockButton:
-    this.unlock();
-    break;
-    */
   }
 };
 
@@ -56914,7 +58239,6 @@ feng.views.sections.captions.Caption.prototype.onClickShareButton = function( e 
 
 feng.views.sections.captions.Caption.prototype.onResize = function( e ) {
 
-  goog.style.setStyle( this._shadeEl, 'height', this._renderSize.height + 'px' );
   goog.style.setStyle( this._panelEl, 'height', this._renderSize.height + 'px' );
 
   if(this.scrollBar) {
@@ -56948,7 +58272,7 @@ goog.require('feng.views.sections.captions.Caption');
 /**
  * @constructor
  */
-feng.views.sections.captions.ChangeColorCaption = function( object, cameraController, renderSize, controls, hud ){
+feng.views.sections.captions.ChangeColorCaption = function( object, renderController, renderSize, controls, hud ){
 
   this._template = feng.templates.captions.ChangeColorCaption;
   
@@ -56957,7 +58281,7 @@ feng.views.sections.captions.ChangeColorCaption = function( object, cameraContro
     position: 'right'
   };
 
-  goog.base(this, object, cameraController, renderSize, controls, hud);
+  goog.base(this, object, renderController, renderSize, controls, hud);
 
   this._colorId = null;
 
@@ -57208,12 +58532,13 @@ feng.views.sections.controls.ProgressBar = function(domElement, tips){
 
   this._tipsWrapperEl = goog.dom.query('.tips-wrapper', this.domElement)[0];
   this._tipsEls = goog.dom.query('.tips', this.domElement);
-  this._tipEls = goog.dom.query('.tips > li', this.domElement);
+  this._allTipEls = goog.dom.query('.tips > li', this.domElement);
   this._dotEls = goog.dom.query('.tips .dot', this.domElement);
   this._prevButtonEl = goog.dom.getElementByClass('prev', this.domElement);
   this._nextButtonEl = goog.dom.getElementByClass('next', this.domElement);
 
   this._tipsEl = this._tipsEls[0];
+  this._tipEls = goog.dom.query( 'li', this._tipsEl );
 
   this._viewIds = goog.array.map( this._tipsEls, function(tipsEl) {
     return tipsEl.getAttribute('data-view-id');
@@ -57246,14 +58571,20 @@ feng.views.sections.controls.ProgressBar.prototype.setView3D = function( view3d 
 
   goog.base(this, 'setView3D', view3d);
 
-  this.calculateTipsLayout();
+  this._viewId = view3d.id;
+
+  var tipsEl = goog.array.find(this._tipsEls, function(tipsEl) {
+    return (tipsEl.getAttribute('data-view-id') === view3d.id);
+  });
+
+  this.calculateTipsLayout( tipsEl );
   this.goTipsOfView( view3d.id );
 };
 
 
-feng.views.sections.controls.ProgressBar.prototype.calculateTipsLayout = function(){
+feng.views.sections.controls.ProgressBar.prototype.calculateTipsLayout = function( tipsEl ){
 
-  this._tipEls = goog.dom.query( 'li', this._tipsEl );
+  this._tipEls = goog.dom.query( 'li', tipsEl );
 
   // arrange tip dots
   var numDots = this._tipEls.length;
@@ -57278,6 +58609,11 @@ feng.views.sections.controls.ProgressBar.prototype.activate = function() {
 
   this._eventHandler.listen(this._prevButtonEl, 'click', this.goPrevTips, false, this);
   this._eventHandler.listen(this._nextButtonEl, 'click', this.goNextTips, false, this);
+
+  goog.array.forEach(this._allTipEls, function(tipEl) {
+    this._eventHandler.listen(tipEl, goog.events.EventType.MOUSEOVER, this.onTipMouseOver, false, this);
+    this._eventHandler.listen(tipEl, goog.events.EventType.MOUSEOUT, this.onTipMouseOut, false, this);
+  }, this);
 
   goog.object.forEach(this._tips, function(tip) {
 
@@ -57318,6 +58654,9 @@ feng.views.sections.controls.ProgressBar.prototype.goTipsOfView = function( view
     return (tipsEl.getAttribute('data-view-id') === viewId);
   });
 
+  // calculate new tips layout before set display none
+  var tipsWrapperWidth = this.calculateTipsLayout( tipsEl );
+
   // animate tips
   var tweener = TweenMax.to(this._tipsEls, 0, {
     'display': 'none'
@@ -57325,9 +58664,6 @@ feng.views.sections.controls.ProgressBar.prototype.goTipsOfView = function( view
 
   // assign new tips el
   this._tipsEl = tipsEl;
-
-  // calculate new tips layout
-  var tipsWrapperWidth = this.calculateTipsLayout();
 
   var tweener2 = TweenMax.to( this._tipsWrapperEl, .5, {
     'width': tipsWrapperWidth,
@@ -57337,7 +58673,7 @@ feng.views.sections.controls.ProgressBar.prototype.goTipsOfView = function( view
   //
   var tweener3 = new TimelineMax();
 
-  var tweeners = goog.array.map( goog.dom.query('li', this._tipsEl), function(tipEl) {
+  var tweeners = goog.array.map( this._tipEls, function(tipEl) {
 
     var t = TweenMax.fromTo(tipEl, .25, {
       'opacity': 0,
@@ -57434,11 +58770,9 @@ feng.views.sections.controls.ProgressBar.prototype.detectNearbyObjects = functio
 
     var tipId = providedTip ? providedTip.id : tip.id;
 
-    var tipEl = goog.array.find(this._tipEls, function(tipEl) {
+    var tipEl = goog.array.find(this._allTipEls, function(tipEl) {
       return (tipEl.getAttribute('data-tip-id') === tipId);
     });
-
-    //console.log(tipEl, tipId, providedTip)
     
     if(this._nearbyTipEl !== tipEl) {
 
@@ -57446,8 +58780,16 @@ feng.views.sections.controls.ProgressBar.prototype.detectNearbyObjects = functio
         goog.dom.classes.remove(this._nearbyTipEl, 'nearby');
       }
 
+      //console.log(this._nearbyTipEl, tipEl, tipId, providedTip);
+
       this._nearbyTipEl = tipEl;
       goog.dom.classes.add(this._nearbyTipEl, 'nearby');
+
+      var viewId = tipEl.getAttribute('data-view-id');
+
+      if(viewId !== this._viewId) {
+        this.goTipsOfView( viewId );
+      }
     }
 
   }else {
@@ -57469,6 +58811,32 @@ feng.views.sections.controls.ProgressBar.prototype.unlockTip = function( tipId )
   if(!unlockedTipEl) return;
 
   goog.dom.classes.add( unlockedTipEl, 'unlocked' );
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.onTipMouseOver = function(e){
+
+  if(goog.dom.classes.has(e.currentTarget, 'hover')) {
+
+    return false;
+
+  }else {
+
+    goog.dom.classes.add(e.currentTarget, 'hover');
+
+    feng.pubsub.publish( feng.PubSub.Topic.SHOW_WIDGET, this );
+  }
+};
+
+
+feng.views.sections.controls.ProgressBar.prototype.onTipMouseOut = function(e){
+
+  if(!e.relatedTarget || !goog.dom.contains(e.currentTarget, e.relatedTarget)) {
+
+    goog.dom.classes.remove(e.currentTarget, 'hover');
+
+    feng.pubsub.publish( feng.PubSub.Topic.HIDE_WIDGET, this );
+  }
 };
 
 
@@ -57506,96 +58874,624 @@ feng.views.sections.controls.ProgressBar.prototype.onResize = function(e){
   var domSize = goog.style.getSize( this.domElement );
 
   var y = feng.viewportSize.height - 115;
-	goog.style.setStyle( this.domElement, 'top', y + 'px');
+	goog.style.setStyle( this.domElement, 'top', y + 'px' );
 
-  this.calculateTipsLayout();
+  this.calculateTipsLayout( this._tipsEl );
   this.goTipsOfView( this._viewId );
-};goog.provide('feng.views.sections.controls.HomeButton');
+};goog.provide('feng.views.helpers.Helper');
 
-goog.require('goog.dom');
-goog.require('feng.events');
-goog.require('feng.views.sections.controls.Controls');
-
+goog.require('goog.style');
 
 /**
  * @constructor
  */
-feng.views.sections.controls.HomeButton = function(domElement){
+feng.views.helpers.Helper = function( domElement ){
+
+  goog.base(this);
+
+  this.domElement = domElement;
+
+  this._closeButton = goog.dom.getElementByClass('close-button', this.domElement);
+
+  this._x = 0;
+  this._y = 0;
+
+  this._size = goog.style.getSize( this.domElement );
+  this._box = new goog.math.Box();
+
+  this._positionPriority = feng.views.helpers.Helper.POSITION_PRIORITY.HORIZONTAL;
+
+  this._arrowClasses = ['arrow-left', 'arrow-right', 'arrow-top', 'arrow-bottom'];
+
+  this.hasOtherWidgetShown = false;
+  this.isShown = false;
+  this.isCompleted = false;
+};
+goog.inherits(feng.views.helpers.Helper, goog.events.EventTarget);
+
+
+feng.views.helpers.Helper.prototype.disposeInternal = function() {
+
+  goog.base(this, 'disposeInternal');
+
+  this.deactivate();
+
+  this._closeButton = null;
+};
+
+
+feng.views.helpers.Helper.prototype.activate = function() {
+
+	goog.events.listen( this._closeButton, 'click', this.doComplete, false, this );
+	goog.events.listen( window, 'resize', this.onResize, false, this );
+
+	feng.pubsub.subscribe( feng.PubSub.Topic.SHOW_WIDGET, this.onShowWidget, this );
+	feng.pubsub.subscribe( feng.PubSub.Topic.HIDE_WIDGET, this.onHideWidget, this );
+
+	this.hasOtherWidgetShown = (feng.pubsub.getShownWidgets().length > 0);
+
+	this._size = goog.style.getSize( this.domElement );
+};
+
+
+feng.views.helpers.Helper.prototype.deactivate = function() {
+
+  	goog.events.unlisten( this._closeButton, 'click', this.doComplete, false, this );
+  	goog.events.unlisten( window, 'resize', this.onResize, false, this );
+};
+
+
+feng.views.helpers.Helper.prototype.show = function( box ) {
+
+	if(this.isShown) return;
+	else this.isShown = true;
+
+	goog.dom.classes.enable( this.domElement, 'shown', true );
+
+	if(box) {
 	
+		this.calculatePosition( box );
+
+		this.updatePosition();
+	}
+
+	feng.pubsub.publish( feng.PubSub.Topic.SHOW_WIDGET, this );
+};
+
+
+feng.views.helpers.Helper.prototype.hide = function() {
+
+	if(!this.isShown) return;
+	else this.isShown = false;
+
+	goog.dom.classes.enable( this.domElement, 'shown', false );
+
+	feng.pubsub.publish( feng.PubSub.Topic.HIDE_WIDGET, this );
+};
+
+
+feng.views.helpers.Helper.prototype.doComplete = function() {
+
+	this.isCompleted = true;
+
+	this.deactivate();
+
+	this.hide();
+
+	this.dispatchEvent( feng.events.EventType.COMPLETE );
+};
+
+
+feng.views.helpers.Helper.prototype.updatePosition = function() {
+
+	goog.style.setStyle( this.domElement, 'transform', 'translate(' + this._x + 'px, ' + this._y + 'px)' );
+};
+
+
+feng.views.helpers.Helper.prototype.resolveHorizontalPosition = function( box ) {
+
+	var size = this._size;
+	var viewportSize = feng.viewportSize;
+
+	var isFit = false;
+
+	if( viewportSize.width - box.right > size.width ) {
+
+		// snap to right
+		this._x = box.right;
+
+		goog.dom.classes.addRemove( this.domElement, this._arrowClasses, 'arrow-left' );
+
+		isFit = true;
+
+	}else if( box.left > size.width ) {
+
+		// snap to left
+		this._x = box.left - size.width;
+
+		goog.dom.classes.addRemove( this.domElement, this._arrowClasses, 'arrow-right' );
+
+		isFit = true;
+	}
+
+	this._y = box.top - (size.height - (box.bottom - box.top)) / 2;
+
+	if(this._y < 25 || (this._y + size.height) > (viewportSize.height - 150)) {
+
+		isFit = false;
+	}
+
+	return isFit;
+};
+
+
+feng.views.helpers.Helper.prototype.resolveVerticalPosition = function( box ) {
+
+	var size = this._size;
+	var viewportSize = feng.viewportSize;
+
+	var isFit = false;
+
+	if( box.top > size.height ) {
+
+		this._y = box.top - size.height;
+
+		goog.dom.classes.addRemove( this.domElement, this._arrowClasses, 'arrow-bottom' );
+
+		isFit = true;
+
+	}else if( viewportSize.height - box.bottom > size.height ) {
+
+		this._y = box.bottom;
+
+		goog.dom.classes.addRemove( this.domElement, this._arrowClasses, 'arrow-top' );
+
+		isFit = true;
+	}
+
+	this._x = box.left - (size.width - (box.right - box.left)) / 2;
+
+	if(this._x < 150 || (this._x + size.width) > (viewportSize.width - 150)) {
+
+		isFit = false;
+	}
+
+	return isFit;
+};
+
+
+feng.views.helpers.Helper.prototype.calculatePosition = function( box ) {
+
+	var size = this._size;
+	var viewportSize = feng.viewportSize;
+
+	switch(this._positionPriority) {
+
+		case feng.views.helpers.Helper.POSITION_PRIORITY.HORIZONTAL:
+
+		var resolveHorizontal = this.resolveHorizontalPosition( box );
+
+		if(!resolveHorizontal) {
+			this.resolveVerticalPosition( box );
+		}
+		break;
+
+		case feng.views.helpers.Helper.POSITION_PRIORITY.VERTICAL:
+
+		var resolveVertical = this.resolveVerticalPosition( box );
+
+		if(!resolveVertical) {
+			this.resolveHorizontalPosition( box );
+		}
+		break;
+	}
+	
+	this._x = Math.max(150, Math.min(viewportSize.width - 150 - size.width, this._x));
+	this._y = Math.max(25, Math.min(viewportSize.height - 150 - size.height, this._y));
+};
+
+
+feng.views.helpers.Helper.prototype.onShowWidget = function( widget ){
+
+	if(widget === this) {
+
+		return;
+
+	}else {
+
+		this.hasOtherWidgetShown = true;
+
+		this.hide();
+	}
+};
+
+
+feng.views.helpers.Helper.prototype.onHideWidget = function( widget ){
+
+	if(widget === this) {
+		
+		return;
+
+	}else {
+
+		this.hasOtherWidgetShown = false;
+	}
+};
+
+
+feng.views.helpers.Helper.prototype.onResize = function( e ) {
+
+	this._size = goog.style.getSize( this.domElement );
+};
+
+
+feng.views.helpers.Helper.POSITION_PRIORITY = {
+	HORIZONTAL: 'horizontal',
+	VERTICAL: 'vertical'
+};goog.provide('feng.views.helpers.SelectorHelper');
+
+goog.require('feng.views.helpers.Helper');
+
+/**
+ * @constructor
+ */
+feng.views.helpers.SelectorHelper = function( domElement ){
+
   goog.base(this, domElement);
 
-  this._promptShown = false;
-  this._promptEl = goog.dom.getElementByClass('home-button-prompt', this.domElement.parentNode);
+  this._positionPriority = feng.views.helpers.Helper.POSITION_PRIORITY.VERTICAL;
 
-  this._yesButtonEl = goog.dom.getElementByClass('yes', this._promptEl);
-  this._noButtonEl = goog.dom.getElementByClass('no', this._promptEl);
+  this._object3d = null;
+  this._camera = null;
+  this._viewSize = null;
+  this._box3 = new THREE.Box3();
 };
-goog.inherits(feng.views.sections.controls.HomeButton, feng.views.sections.controls.Controls);
+goog.inherits(feng.views.helpers.SelectorHelper, feng.views.helpers.Helper);
 
 
-feng.views.sections.controls.HomeButton.prototype.activate = function(){
+feng.views.helpers.SelectorHelper.prototype.disposeInternal = function() {
 
-  var shouldActivate = goog.base(this, 'activate');
+	goog.base(this, 'disposeInternal');
 
-  if(!shouldActivate) return;
-
-  this._eventHandler.listen( document.body, 'mousedown', this.onMouseDown, false, this );
-  this._eventHandler.listen( this._noButtonEl, 'click', this.hidePrompt, false, this );
+	this._object3d = null;
+	this._camera = null;
+	this._viewSize = null;
 };
 
 
-feng.views.sections.controls.HomeButton.prototype.deactivate = function(){
+feng.views.helpers.SelectorHelper.prototype.activate = function() {
 
-  var shouldDeactivate = goog.base(this, 'deactivate');
+	goog.base(this, 'activate');
+
+	feng.pubsub.subscribe( feng.PubSub.Topic.TRIGGER_SELECTOR, this.onTriggerSelector, this );
+	feng.pubsub.subscribe( feng.PubSub.Topic.UNTRIGGER_SELECTOR, this.onUntriggerSelector, this );
+	feng.pubsub.subscribe( feng.PubSub.Topic.COMPLETE_SELECTOR, this.onCompleteSelector, this );
+};
+
+
+feng.views.helpers.SelectorHelper.prototype.deactivate = function() {
+
+  	goog.base(this, 'deactivate');
+
+  	feng.pubsub.unsubscribe( feng.PubSub.Topic.TRIGGER_SELECTOR, this.onTriggerSelector, this );
+  	feng.pubsub.unsubscribe( feng.PubSub.Topic.UNTRIGGER_SELECTOR, this.onUntriggerSelector, this );
+  	feng.pubsub.unsubscribe( feng.PubSub.Topic.COMPLETE_SELECTOR, this.onCompleteSelector, this );
+
+  	goog.fx.anim.unregisterAnimation( this );
+};
+
+
+feng.views.helpers.SelectorHelper.prototype.onTriggerSelector = function( object3d, camera, viewSize ) {
+
+	if(this.hasOtherWidgetShown) {
+		return;
+	}
+	
+	this._object3d = object3d;
+	this._camera = camera;
+	this._viewSize = viewSize;
+
+	this.show();
+
+	goog.fx.anim.registerAnimation( this );
+};
+
+
+feng.views.helpers.SelectorHelper.prototype.onUntriggerSelector = function() {
+
+	this.hide();
+
+	goog.fx.anim.unregisterAnimation( this );
+};
+
+
+feng.views.helpers.SelectorHelper.prototype.onCompleteSelector = function() {
+
+	this.doComplete();
+};
+
+
+feng.views.helpers.SelectorHelper.prototype.onAnimationFrame = function( now ) {
+
+	var pos3d = this._box3.setFromObject( this._object3d ).center();
+	var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, this._camera, this._viewSize );
+
+	this._box.top = pos2d.y - 50;
+	this._box.right = pos2d.x + 50;
+	this._box.bottom = pos2d.y + 50;
+	this._box.left = pos2d.x - 50;
+
+	this.calculatePosition( this._box );
+
+	this.updatePosition();
+};goog.provide('feng.views.helpers.CompassHelper');
+
+goog.require('feng.views.helpers.Helper');
+
+/**
+ * @constructor
+ */
+feng.views.helpers.CompassHelper = function( domElement ){
+
+  goog.base(this, domElement);
+
+};
+goog.inherits(feng.views.helpers.CompassHelper, feng.views.helpers.Helper);
+
+
+feng.views.helpers.CompassHelper.prototype.activate = function() {
+
+	goog.base(this, 'activate');
+
+	feng.pubsub.subscribe( feng.PubSub.Topic.TRIGGER_COMPASS, this.onTriggerCompass, this );
+	feng.pubsub.subscribe( feng.PubSub.Topic.UNTRIGGER_COMPASS, this.onUntriggerCompass, this );
+	feng.pubsub.subscribe( feng.PubSub.Topic.COMPLETE_COMPASS, this.onCompleteCompass, this );
+};
+
+
+feng.views.helpers.CompassHelper.prototype.deactivate = function() {
+
+  	goog.base(this, 'deactivate');
+
+  	feng.pubsub.unsubscribe( feng.PubSub.Topic.TRIGGER_COMPASS, this.onTriggerCompass, this );
+  	feng.pubsub.unsubscribe( feng.PubSub.Topic.UNTRIGGER_COMPASS, this.onUntriggerCompass, this );
+  	feng.pubsub.unsubscribe( feng.PubSub.Topic.COMPLETE_COMPASS, this.onCompleteCompass, this );
+};
+
+
+feng.views.helpers.CompassHelper.prototype.onTriggerCompass = function( compass ) {
+
+	if(this.hasOtherWidgetShown) {
+		return;
+	}
+	
+	var domElement = compass.domElement;
+	var position = goog.style.getPageOffset( domElement );
+	var size = goog.style.getSize( domElement );
+
+	this._box.top = position.y;
+	this._box.right = position.x + size.width;
+	this._box.bottom = position.y + size.height;
+	this._box.left = position.x;
+
+	this.show( this._box );
+};
+
+
+feng.views.helpers.CompassHelper.prototype.onUntriggerCompass = function() {
+
+	this.hide();
+};
+
+
+feng.views.helpers.CompassHelper.prototype.onCompleteCompass = function() {
+
+	this.doComplete();
+};goog.provide('feng.views.helpers.WalkHelper');
+
+goog.require('goog.async.Delay');
+goog.require('feng.views.helpers.Helper');
+
+/**
+ * @constructor
+ */
+feng.views.helpers.WalkHelper = function( domElement ){
+
+  goog.base(this, domElement);
+
+  this._mousewheelEl = goog.dom.getElementByClass('mousewheel', this.domElement);
+  this._clickEl = goog.dom.getElementByClass('click', this.domElement);
+
+  this._hasShownMousewheel = false;
+  this._hasShownClick = false;
+
+  this._delayToShow = new goog.async.Delay( this.show, 1000, this );
+  this._delayToComplete = new goog.async.Delay( this.doComplete, 5000, this );
+};
+goog.inherits(feng.views.helpers.WalkHelper, feng.views.helpers.Helper);
+
+
+feng.views.helpers.WalkHelper.prototype.disposeInternal = function() {
+
+	goog.base(this, 'disposeInternal');
+
+	this._delayToComplete.dispose();
+};
+
+
+feng.views.helpers.WalkHelper.prototype.show = function() {
+
+	goog.base(this, 'show');
+
+	this._delayToShow.dispose();
+
+	this.calculatePosition();
+
+	this.updatePosition();
+};
+
+
+feng.views.helpers.WalkHelper.prototype.hide = function() {
+
+	goog.base(this, 'hide');
+
+	this._delayToShow.stop();
+	this._delayToComplete.stop();
+};
+
+
+feng.views.helpers.WalkHelper.prototype.calculatePosition = function() {
+
+	var size = goog.style.getSize( this.domElement );
+	var viewportSize = feng.viewportSize;
+
+	this._x = ( viewportSize.width - size.width ) / 2;
+	this._y = ( viewportSize.height - size.height ) / 2;
+};
+
+
+feng.views.helpers.WalkHelper.prototype.activate = function() {
+
+	goog.base(this, 'activate');
+
+	feng.pubsub.subscribe( feng.PubSub.Topic.TRIGGER_WALK, this.onTriggerWalk, this );
+};
+
+
+feng.views.helpers.WalkHelper.prototype.deactivate = function() {
+
+  	goog.base(this, 'deactivate');
+
+  	feng.pubsub.unsubscribe( feng.PubSub.Topic.TRIGGER_WALK, this.onTriggerWalk, this );
+};
+
+
+feng.views.helpers.WalkHelper.prototype.onTriggerWalk = function( type ) {
+
+	if(this._hasShownClick && this._hasShownMousewheel) {
+		return;
+	}
+
+	if(this.hasOtherWidgetShown) {
+		return;
+	}
+
+	if(type === 'mousewheel') {
+
+		goog.style.showElement(this._mousewheelEl, false);
+		goog.style.showElement(this._clickEl, true);
+
+		this._hasShownClick = true;
+	
+	}else if(type === 'click') {
+
+		goog.style.showElement(this._mousewheelEl, true);
+		goog.style.showElement(this._clickEl, false);
+
+		this._hasShownMousewheel = true;
+	}
+
+	if(!this._delayToShow.isActive() && !this._delayToShow.isDisposed()) {
+		this._delayToShow.start();
+	}
+
+	this._delayToComplete.start();
+};goog.provide('feng.views.helpers.Helpers');
+
+goog.require('feng.templates.common');
+goog.require('feng.views.helpers.CompassHelper');
+goog.require('feng.views.helpers.SelectorHelper');
+goog.require('feng.views.helpers.WalkHelper');
+
+/**
+ * @constructor
+ */
+feng.views.helpers.Helpers = function(){
+
+  goog.base(this);
+
+  this.domElement = soy.renderAsFragment(feng.templates.common.Helpers);
+
+  var compassHelperEl = goog.dom.getElementByClass('compass', this.domElement);
+  this._compassHelper = new feng.views.helpers.CompassHelper( compassHelperEl );
+  this._compassHelper.setParentEventTarget( this );
+
+  var selectorHelperEl = goog.dom.getElementByClass('selector', this.domElement);
+  this._selectorHelper = new feng.views.helpers.SelectorHelper( selectorHelperEl );
+  this._selectorHelper.setParentEventTarget( this );
+
+  var walkHelperEl = goog.dom.getElementByClass('walk', this.domElement);
+  this._walkHelper = new feng.views.helpers.WalkHelper( walkHelperEl );
+  this._walkHelper.setParentEventTarget( this );
+
+  this._numCompletedHelpers = 0;
+  this._totalHelpers = 3;
+};
+goog.inherits(feng.views.helpers.Helpers, goog.events.EventTarget);
+goog.addSingletonGetter(feng.views.helpers.Helpers);
+
+
+feng.views.helpers.Helpers.prototype.disposeInternal = function() {
+
+  goog.base(this, 'disposeInternal');
+
+  this.deactivate();
+
+  this._compassHelper.dispose();
+  this._selectorHelper.dispose();
+  this._walkHelper.dispose();
+
+  this._compassHelper = null;
+  this._selectorHelper = null;
+  this._walkHelper = null;
+
+  this.domElement = null;
+};
+
+
+feng.views.helpers.Helpers.prototype.activate = function() {
+
+  if(this.isDisposed()) {
+    return;
+  }
+
+  goog.events.listen( this, feng.events.EventType.COMPLETE, this.onHelperComplete, false, this );
+
+  if(!this._compassHelper.isCompleted) {
+    this._compassHelper.activate();
+  }
+
+  if(!this._selectorHelper.isCompleted) {
+    this._selectorHelper.activate();
+  }
+
+  if(!this._walkHelper.isCompleted) {
+    this._walkHelper.activate();
+  }
+};
+
+
+feng.views.helpers.Helpers.prototype.deactivate = function() {
+
+  if(this.isDisposed()) {
+    return;
+  }
   
-  if(!shouldDeactivate) return;
+  goog.events.unlisten( this, feng.events.EventType.COMPLETE, this.onHelperComplete, false, this );
 
-  this.hidePrompt();
+  this._compassHelper.deactivate();
+  this._selectorHelper.deactivate();
+  this._walkHelper.deactivate();
 };
 
 
-feng.views.sections.controls.HomeButton.prototype.showPrompt = function(){
+feng.views.helpers.Helpers.prototype.onHelperComplete = function(e) {
 
-	this._promptShown = true;
+  this._numCompletedHelpers ++;
 
-	goog.dom.classes.add( this.domElement, 'pending' );
-	goog.dom.classes.add( this._promptEl, 'shown' );
-};
-
-
-feng.views.sections.controls.HomeButton.prototype.hidePrompt = function(){
-
-	this._promptShown = false;
-
-	goog.dom.classes.remove( this.domElement, 'pending' );
-	goog.dom.classes.remove( this._promptEl, 'shown' );
-};
-
-
-feng.views.sections.controls.HomeButton.prototype.onMouseDown = function(e){
-
-	var isClickedOnHomeButton = goog.dom.contains( this.domElement, e.target );
-	var isClickedOnPrompt = goog.dom.contains( this._promptEl, e.target );
-
-	var isClickedOutside = (!isClickedOnHomeButton && !isClickedOnPrompt);
-
-	if(isClickedOutside && this._promptShown) {
-
-		this.hidePrompt();
-		return false;
-	}
-
-	if(isClickedOnHomeButton) {
-		
-		if(this._promptShown) {
-
-			this.hidePrompt();
-
-		}else {
-
-			this.showPrompt();
-		}
-	}
+  if(this._numCompletedHelpers === this._totalHelpers) {
+    this.dispose();
+  }
 };goog.provide('feng.fx.AnimatedSprite');
 
 goog.require('goog.math.Size');
@@ -57708,6 +59604,7 @@ feng.views.sections.controls.Compass = function(domElement){
   this._startRotation = 0;
 
   this._isInDesignMode = false;
+  this._isInBrowseMode = false;
 };
 goog.inherits(feng.views.sections.controls.Compass, feng.views.sections.controls.Controls);
 
@@ -57718,6 +59615,7 @@ feng.views.sections.controls.Compass.prototype.activate = function(){
 
   if(!shouldActivate) return;
 
+  this._eventHandler.listen(this.domElement, 'mouseover', this.onMouseOver, false, this);
   this._eventHandler.listen(this.domElement, 'mousemove', this.onMouseMove, false, this);
   this._eventHandler.listen(this.domElement, 'mouseout', this.onMouseOut, false, this);
   this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
@@ -57725,6 +59623,16 @@ feng.views.sections.controls.Compass.prototype.activate = function(){
   if(this._view3d) {
     this._view3d.modeController.listen( feng.events.EventType.UPDATE, this.onView3dUpdate, false, this );
   }
+};
+
+
+feng.views.sections.controls.Compass.prototype.deactivate = function(){
+
+  var shouldDeactivate = goog.base(this, 'deactivate');
+
+  if(!shouldDeactivate) return;
+
+  feng.pubsub.publish( feng.PubSub.Topic.UNTRIGGER_COMPASS );
 };
 
 
@@ -57758,6 +59666,14 @@ feng.views.sections.controls.Compass.prototype.setRotation = function(rotation){
 };
 
 
+feng.views.sections.controls.Compass.prototype.onMouseOver = function(e){
+
+	if(e.relatedTarget && goog.dom.contains(this.domElement, e.relatedTarget)) return false;
+
+	feng.pubsub.publish( feng.PubSub.Topic.TRIGGER_COMPASS, this );
+};
+
+
 feng.views.sections.controls.Compass.prototype.onMouseMove = function(e){
 
 	if(e.offsetY > 40) {
@@ -57787,6 +59703,11 @@ feng.views.sections.controls.Compass.prototype.onMouseOut = function(e){
 	goog.dom.classes.remove(this.domElement, 'hover-design');
 	this._hoveredDesign = false;
 	this._hoveredBrowse = false;
+
+	if(this._isInBrowseMode) {
+
+		feng.pubsub.publish( feng.PubSub.Topic.UNTRIGGER_COMPASS );
+	}
 };
 
 
@@ -57802,6 +59723,8 @@ feng.views.sections.controls.Compass.prototype.onClick = function(e){
 			nextMode: feng.controllers.view3d.ModeController.Mode.DESIGN
 		});
 
+		feng.pubsub.publish( feng.PubSub.Topic.TRIGGER_COMPASS, this );
+
 	}else if(this._hoveredBrowse) {
 
 		if(!this._isInDesignMode) return false;
@@ -57816,6 +59739,8 @@ feng.views.sections.controls.Compass.prototype.onClick = function(e){
 			nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
 			toRotation: toRotation
 		});
+
+		feng.pubsub.publish( feng.PubSub.Topic.COMPLETE_COMPASS, this );
 	}
 };
 
@@ -57835,6 +59760,15 @@ feng.views.sections.controls.Compass.prototype.onView3dUpdate = function(e){
 feng.views.sections.controls.Compass.prototype.onModeChange = function(e){
 
   goog.base(this, 'onModeChange', e);
+
+  if(e.mode === feng.controllers.view3d.ModeController.Mode.BROWSE) {
+
+  	this._isInBrowseMode = true;
+
+  }else {
+
+  	this._isInBrowseMode = false;
+  }
 
   if(e.mode === feng.controllers.view3d.ModeController.Mode.DESIGN) {
 
@@ -57869,7 +59803,7 @@ goog.require('feng.views.sections.captions.Caption');
 /**
  * @constructor
  */
-feng.views.sections.captions.ChangePictureCaption = function( object, cameraController, renderSize, controls, hud ){
+feng.views.sections.captions.ChangePictureCaption = function( object, renderController, renderSize, controls, hud ){
 
   this._template = feng.templates.captions.ChangePictureCaption;
   
@@ -57878,7 +59812,7 @@ feng.views.sections.captions.ChangePictureCaption = function( object, cameraCont
     position: 'right'
   };
 
-  goog.base(this, object, cameraController, renderSize, controls, hud);
+  goog.base(this, object, renderController, renderSize, controls, hud);
 
   this._pictureId = null;
 
@@ -57956,11 +59890,13 @@ feng.views.sections.controls.ObjectSelector = function(domElement){
   this._callbacks = {};
 
   // a delay to kick off the progress, to differentiate the mouse behavior between a fast click and object selecting
-  this._delay = new goog.async.Delay(this.startSelect, 250, this);
+  this._delay = new goog.async.Delay(this.startSelect, 200, this);
 
   // a throttle to not let the object hover detection fire too often
   this._mouseMoveThrottle = new goog.async.Throttle(this.doHoverDetection, 250, this);
   this._mouseMovePosition = {x: 0, y: 0};
+
+  this._intersectedObject = null;
 
   this._hitTestMeshes = [];
 
@@ -58013,6 +59949,8 @@ feng.views.sections.controls.ObjectSelector.prototype.deactivate = function() {
 	this._delay.stop();
 
 	goog.fx.anim.unregisterAnimation( this );
+
+	feng.pubsub.publish( feng.PubSub.Topic.UNTRIGGER_SELECTOR );
 };
 
 
@@ -58060,6 +59998,8 @@ feng.views.sections.controls.ObjectSelector.prototype.doSelect = function () {
 	this.animateOut();
 
 	this._callbacks['onComplete']( this._selectedObject );
+
+	feng.pubsub.publish( feng.PubSub.Topic.COMPLETE_SELECTOR );
 };
 
 
@@ -58092,7 +60032,11 @@ feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = functio
 
 	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( mouseX, mouseY, this._hitTestMeshes, camera, this._viewSize );
 	
-	goog.dom.classes.enable(this._renderEl, 'help', (intersects.length > 0));
+	var isIntersected = (intersects.length > 0);
+
+	this._intersectedObject = isIntersected ? intersects[0].object : null;
+
+	goog.dom.classes.enable(this._renderEl, 'help', isIntersected);
 };
 
 
@@ -58137,6 +60081,17 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseMove = function ( e
 	this._mouseMovePosition.y = e.clientY;
 
 	this._mouseMoveThrottle.fire();
+
+	if(this._intersectedObject) {
+
+		var camera = this._cameraController.activeCamera;
+
+		feng.pubsub.publish( feng.PubSub.Topic.TRIGGER_SELECTOR, this._intersectedObject, camera, this._viewSize );
+
+	}else {
+
+		feng.pubsub.publish( feng.PubSub.Topic.UNTRIGGER_SELECTOR );
+	}
 };
 
 
@@ -58180,7 +60135,7 @@ goog.require('feng.views.sections.captions.Caption');
 /**
  * @constructor
  */
-feng.views.sections.captions.ChangeObjectCaption = function( object, cameraController, renderSize, controls, hud ){
+feng.views.sections.captions.ChangeObjectCaption = function( object, renderController, renderSize, controls, hud ){
 
   this._template = feng.templates.captions.ChangeObjectCaption;
   console.log(object.tip)
@@ -58189,7 +60144,7 @@ feng.views.sections.captions.ChangeObjectCaption = function( object, cameraContr
     position: 'right'
   };
 
-  goog.base(this, object, cameraController, renderSize, controls, hud);
+  goog.base(this, object, renderController, renderSize, controls, hud);
 
   this._objectId = null;
 
@@ -58232,6 +60187,96 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.onClickObject = funct
   this.scrollBar.resize();
   
   this._object.change( this._objectId );
+};goog.provide('feng.views.sections.controls.HomeButton');
+
+goog.require('goog.dom');
+goog.require('feng.events');
+goog.require('feng.views.sections.controls.Controls');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.controls.HomeButton = function(domElement){
+	
+  goog.base(this, domElement);
+
+  this._promptShown = false;
+  this._promptEl = goog.dom.getElementByClass('home-button-prompt', this.domElement.parentNode);
+
+  this._yesButtonEl = goog.dom.getElementByClass('yes', this._promptEl);
+  this._noButtonEl = goog.dom.getElementByClass('no', this._promptEl);
+};
+goog.inherits(feng.views.sections.controls.HomeButton, feng.views.sections.controls.Controls);
+
+
+feng.views.sections.controls.HomeButton.prototype.activate = function(){
+
+  var shouldActivate = goog.base(this, 'activate');
+
+  if(!shouldActivate) return;
+
+  this._eventHandler.listen( document.body, 'mousedown', this.onMouseDown, false, this );
+  this._eventHandler.listen( this._noButtonEl, 'click', this.hidePrompt, false, this );
+};
+
+
+feng.views.sections.controls.HomeButton.prototype.deactivate = function(){
+
+  var shouldDeactivate = goog.base(this, 'deactivate');
+  
+  if(!shouldDeactivate) return;
+
+  this.hidePrompt();
+};
+
+
+feng.views.sections.controls.HomeButton.prototype.showPrompt = function(){
+
+	this._promptShown = true;
+
+	goog.dom.classes.add( this.domElement, 'pending' );
+	goog.dom.classes.add( this._promptEl, 'shown' );
+
+	feng.pubsub.publish( feng.PubSub.Topic.SHOW_WIDGET, this );
+};
+
+
+feng.views.sections.controls.HomeButton.prototype.hidePrompt = function(){
+
+	this._promptShown = false;
+
+	goog.dom.classes.remove( this.domElement, 'pending' );
+	goog.dom.classes.remove( this._promptEl, 'shown' );
+
+	feng.pubsub.publish( feng.PubSub.Topic.HIDE_WIDGET, this );
+};
+
+
+feng.views.sections.controls.HomeButton.prototype.onMouseDown = function(e){
+
+	var isClickedOnHomeButton = goog.dom.contains( this.domElement, e.target );
+	var isClickedOnPrompt = goog.dom.contains( this._promptEl, e.target );
+
+	var isClickedOutside = (!isClickedOnHomeButton && !isClickedOnPrompt);
+	
+	if(isClickedOutside && this._promptShown) {
+
+		this.hidePrompt();
+		return false;
+	}
+
+	if(isClickedOnHomeButton) {
+		
+		if(this._promptShown) {
+
+			this.hidePrompt();
+
+		}else {
+
+			this.showPrompt();
+		}
+	}
 };goog.provide('feng.views.sections.overlays.OpeningOverlay');
 
 goog.require('goog.dom');
@@ -58541,7 +60586,8 @@ feng.views.sections.controls.DropButton = function(domElement){
 
   this._movableObject = null;
 
-  this.fadeOut();
+  goog.dom.classes.addRemove( this.domElement, 'fadeIn', 'fadeOut' );
+  goog.dom.classes.enable( this.domElement, 'hidden', true );
 };
 goog.inherits(feng.views.sections.controls.DropButton, feng.views.sections.controls.Controls);
 
@@ -58623,7 +60669,7 @@ feng.views.sections.controls.DropButton.prototype.onAnimationFrame = function(no
 
   var controlPosition = this._view3d.modeController.control.getPosition();
   var distance = controlPosition.distanceTo( pos3d );
-console.log(distance, this._movableObject.range);
+  
   var shouldShow = (distance <= this._movableObject.range);
 
   goog.style.setStyle( this.domElement, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)');
@@ -58960,9 +61006,8 @@ feng.views.sections.controls.Tooltips.prototype.onClickGatewayTooltip = function
   var gatewayId = e.currentTarget.getAttribute('data-id');
   var gateway = this._view3d.getView3dObject( gatewayId );
 
-  this._view3d.modeController.setMode({
-    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-    nextMode: feng.controllers.view3d.ModeController.Mode.EXIT,
+  this._view3d.modeController.control.dispatchEvent({
+    type: feng.events.EventType.CLICK_GATEWAY,
     gateway: gateway
   });
 };
@@ -59014,6 +61059,67 @@ feng.views.sections.controls.Tooltips.prototype.onAnimationFrame = function(now)
   }, this);
 
   this._detectBlockingThrottle.fire();
+};goog.provide('feng.views.sections.overlays.CreditsOverlay');
+
+goog.require('goog.dom');
+goog.require('goog.style');
+goog.require('feng.views.Overlay');
+
+
+/**
+ * @constructor
+ */
+feng.views.sections.overlays.CreditsOverlay = function(domElement){
+
+	var canHalt = true;
+
+  goog.base(this, domElement, canHalt);
+};
+goog.inherits(feng.views.sections.overlays.CreditsOverlay, feng.views.Overlay);
+goog.addSingletonGetter(feng.views.sections.overlays.CreditsOverlay);
+
+
+feng.views.sections.overlays.CreditsOverlay.prototype.show = function( shouldDispatch ){
+
+	goog.base(this, 'show', shouldDispatch);
+	
+	goog.dom.appendChild( this.domElement, feng.credits.domElement );
+};
+
+
+feng.views.sections.overlays.CreditsOverlay.prototype.animateIn = function(){
+
+	goog.base(this, 'animateIn');
+
+	TweenMax.fromTo(this.domElement, .8, {
+		'opacity': 0
+	}, {
+		'opacity': 1,
+		'ease': Strong.easeInOut
+	});
+};
+
+
+feng.views.sections.overlays.CreditsOverlay.prototype.animateOut = function(){
+
+	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
+
+	TweenMax.to(this.domElement, .8, {
+		'delay': .25,
+		'opacity': 0,
+		'ease': Strong.easeInOut,
+		'onComplete': this.hide,
+		'onCompleteParams': [ true ],
+		'onCompleteScope': this
+	});
+};
+
+
+feng.views.sections.overlays.CreditsOverlay.prototype.onResize = function(e){
+
+	goog.base(this, 'onResize', e);
+
+	goog.style.setSize(this.domElement, feng.viewportSize);
 };goog.provide('feng.views.sections.controls.Reminder');
 
 goog.require('goog.async.Delay');
@@ -59051,6 +61157,8 @@ feng.views.sections.controls.Reminder = function( domElement, tips ){
 
   this._characterAnimations = null;
   this._characterAnimation = null;
+
+  this._hasOtherWidgetShown = false;
 
   this._hideHintDelay = new goog.async.Delay(this.hideHint, 6000, this);
 };
@@ -59126,6 +61234,11 @@ feng.views.sections.controls.Reminder.prototype.activate = function(){
 	this._eventHandler.listen(this._hintDialogueEl, 'mouseout', this.onMouseOut, false, this);
 	this._eventHandler.listen(this._hintTimer, 'tick', this.onHintTick, false, this);
 
+	feng.pubsub.subscribe( feng.PubSub.Topic.SHOW_WIDGET, this.onShowWidget, this );
+	feng.pubsub.subscribe( feng.PubSub.Topic.HIDE_WIDGET, this.onHideWidget, this );
+
+	this._hasOtherWidgetShown = (feng.pubsub.getShownWidgets().length > 0);
+
 	this._hintTimer.start();
 };
 
@@ -59135,6 +61248,9 @@ feng.views.sections.controls.Reminder.prototype.deactivate = function(){
   var shouldDeactivate = goog.base(this, 'deactivate');
 
   if(!shouldDeactivate) return;
+
+	feng.pubsub.unsubscribe( feng.PubSub.Topic.SHOW_WIDGET, this.onShowWidget, this );
+	feng.pubsub.unsubscribe( feng.PubSub.Topic.HIDE_WIDGET, this.onHideWidget, this );
 
 	this._hintTimer.stop();
 };
@@ -59205,6 +61321,8 @@ feng.views.sections.controls.Reminder.prototype.getCharacterAnimations = functio
 				this.drawCharacter( img, frames[ 'raise-' + frame ] );
 			},
 			'onUpdateScope': this,
+			'onComplete': this.onCharacterRaiseComplete,
+			'onCompleteScope': this,
 			'onReverseComplete': function() {
 				loopTweener.restart();
 			}
@@ -59291,11 +61409,16 @@ feng.views.sections.controls.Reminder.prototype.gotoHintByTip = function( tipId 
 
 feng.views.sections.controls.Reminder.prototype.showHint = function( tipId ){
 
-	this._isHintShown = true;
+	if(this._isHintShown) {
+
+		return;
+
+	}else {
+
+		this._isHintShown = true;
+	}
 
 	this.gotoHintByTip( tipId );
-
-	goog.dom.classes.addRemove( this.domElement, 'inactive', 'active' );
 
 	this._hideHintDelay.start();
 
@@ -59308,7 +61431,14 @@ feng.views.sections.controls.Reminder.prototype.showHint = function( tipId ){
 
 feng.views.sections.controls.Reminder.prototype.hideHint = function( instance ){
 
-	this._isHintShown = false;
+	if(!this._isHintShown) {
+
+		return;
+
+	}else {
+
+		this._isHintShown = false;
+	}
 
 	var duration = instance ? 0 : .4;
 
@@ -59379,7 +61509,8 @@ feng.views.sections.controls.Reminder.prototype.onHintTick = function(e){
 
 	var tip = this.getCurrentTip();
 
-	if(tip) {
+	if(tip && !this._hasOtherWidgetShown) {
+
 		this.showHint( tip.id );
 	}
 };
@@ -59393,6 +61524,12 @@ feng.views.sections.controls.Reminder.prototype.onTipUnlock = function(e){
 	goog.dom.removeNode( unlockedHintEl );
 
 	this._currentTips = this.getLockedTipsOfView();
+};
+
+
+feng.views.sections.controls.Reminder.prototype.onCharacterRaiseComplete = function(){
+
+	goog.dom.classes.addRemove( this.domElement, 'inactive', 'active' );
 };
 
 
@@ -59416,6 +61553,34 @@ feng.views.sections.controls.Reminder.prototype.onModeChange = function(e){
 };
 
 
+feng.views.sections.controls.Reminder.prototype.onShowWidget = function( widget ){
+
+	if(widget === this) {
+
+		return;
+
+	}else {
+
+		this._hasOtherWidgetShown = true;
+	}
+
+	this.hideHint();
+};
+
+
+feng.views.sections.controls.Reminder.prototype.onHideWidget = function( widget ){
+
+	if(widget === this) {
+		
+		return;
+
+	}else {
+
+		this._hasOtherWidgetShown = false;
+	}
+};
+
+
 feng.views.sections.controls.Reminder.prototype.onResize = function(e){
 
 	goog.style.setPosition(this.domElement, feng.viewportSize.width - 100 - 30, feng.viewportSize.height - 100 - 30);
@@ -59429,21 +61594,21 @@ goog.require('feng.views.sections.captions.Caption');
 /**
  * @constructor
  */
-feng.views.sections.captions.DropFruitsCaption = function( object, cameraController, renderSize, controls, hud ){
+feng.views.sections.captions.DropFruitsCaption = function( object, renderController, renderSize, controls, hud ){
 
   this._template = feng.templates.captions.DropFruitsCaption;
   
   this._templateData = {
-    fruits: object.tip.details['descriptions'],
     tip: object.tip,
     position: 'right'
   };
 
-  goog.base(this, object, cameraController, renderSize, controls, hud);
+  goog.base(this, object, renderController, renderSize, controls, hud);
 
-  this._fruitButtonEls = goog.dom.query('.drop-fruits .fruits li button', this.domElement);
-  this._descriptionEls = goog.dom.query('.drop-fruits .descriptions li', this.domElement);
-  this._descriptionEl = goog.dom.query('.drop-fruits .descriptions', this.domElement)[0];
+  this._fruitId = null;
+
+  this._itemEls = feng.utils.Utils.createDomCollectionByAttributes( goog.dom.query('.item-button', this.domElement), 'data-fruit' );
+  this._infoEls = feng.utils.Utils.createDomCollectionByAttributes( goog.dom.query('.info li', this.domElement), 'data-fruit' );
 };
 goog.inherits(feng.views.sections.captions.DropFruitsCaption, feng.views.sections.captions.Caption);
 
@@ -59452,10 +61617,10 @@ feng.views.sections.captions.DropFruitsCaption.prototype.show = function() {
 
   goog.base(this, 'show');
 
-  this._eventHandler.listen( this._object, feng.events.EventType.CHANGE, this.onFruitPlateChange, false, this );
+  //this._eventHandler.listen( this._object, feng.events.EventType.CHANGE, this.onFruitPlateChange, false, this );
 
-  goog.array.forEach(this._fruitButtonEls, function(fruitButtonEl) {
-    this._eventHandler.listen( fruitButtonEl, 'mousedown', this.onClickFruitButton, false, this );
+  goog.object.forEach(this._itemEls, function(itemEl) {
+    this._eventHandler.listen(itemEl, 'click', this.onClickItem, false, this);
   }, this);
 };
 
@@ -59490,14 +61655,25 @@ feng.views.sections.captions.DropFruitsCaption.prototype.setActiveFruit = functi
 };
 
 
-feng.views.sections.captions.DropFruitsCaption.prototype.onClickFruitButton = function(e) {
+feng.views.sections.captions.DropFruitsCaption.prototype.onClickItem = function(e) {
 
-  if(!this._object.isUnlocked()) return false;
+  if(this._fruitId) {
+    goog.dom.classes.enable( this._itemEls[this._fruitId], 'active', false );
+    goog.dom.classes.enable( this._infoEls[this._fruitId], 'active', false );
+  }
 
-  var fruit = e.currentTarget.getAttribute('data-fruit-id');
-  this.setActiveFruit( fruit );
+  this._fruitId = e.currentTarget.getAttribute("data-fruit");
+
+  goog.dom.classes.enable( this._itemEls[this._fruitId], 'active', true );
+  goog.dom.classes.enable( this._itemEls[this._fruitId], 'show-fruit', true );
+  goog.dom.classes.enable( this._infoEls[this._fruitId], 'active', true );
+
+  this.scrollBar.resize();
+
+  this._object.dropFruit( this._fruitId );
 };goog.provide('feng.views.View3DHud');
 
+goog.require('feng.views.helpers.Helpers');
 goog.require('feng.views.sections.controls.ObjectSelector');
 goog.require('feng.views.sections.controls.DropButton');
 goog.require('feng.views.sections.controls.Compass');
@@ -59512,6 +61688,7 @@ goog.require('feng.views.sections.captions.ChangeObjectCaption');
 goog.require('feng.views.sections.captions.ChangePictureCaption');
 goog.require('feng.views.sections.captions.DropFruitsCaption');
 goog.require('feng.views.sections.overlays.TutorialOverlay');
+goog.require('feng.views.sections.overlays.CreditsOverlay');
 goog.require('feng.views.sections.overlays.OpeningOverlay');
 goog.require('feng.views.sections.overlays.EndingOverlay');
 goog.require('feng.views.sections.overlays.FinaleOverlay');
@@ -59536,6 +61713,9 @@ feng.views.View3DHud = function( hudEl, view3dController, tips, episode ){
 
   this._isInEntryMode = false;
 
+  // create the helpers singleton
+  this._helpers = feng.views.helpers.Helpers.getInstance();
+
   // create a captions collection
   this._captions = {};
 
@@ -59544,6 +61724,9 @@ feng.views.View3DHud = function( hudEl, view3dController, tips, episode ){
 
   var tutorialOverlayEl = goog.dom.getElementByClass('tutorial-overlay', this._overlaysEl);
   this.tutorialOverlay = new feng.views.sections.overlays.TutorialOverlay( tutorialOverlayEl );
+
+  var creditsOverlayEl = goog.dom.getElementByClass('credits-overlay', this._overlaysEl);
+  this.creditsOverlay = new feng.views.sections.overlays.CreditsOverlay( creditsOverlayEl );
 
   var openingOverlayEl = goog.dom.getElementByClass('opening-overlay', this._overlaysEl);
   this.openingOverlay = new feng.views.sections.overlays.OpeningOverlay( openingOverlayEl );
@@ -59642,6 +61825,9 @@ feng.views.View3DHud.prototype.activate = function() {
   feng.tutorial.listen(feng.events.EventType.ANIMATE_IN, this.tutorialOverlay.animateIn, false, this.tutorialOverlay);
   feng.tutorial.listen(feng.events.EventType.ANIMATE_OUT, this.tutorialOverlay.animateOut, false, this.tutorialOverlay);
 
+  feng.credits.listen(feng.events.EventType.ANIMATE_IN, this.creditsOverlay.animateIn, false, this.creditsOverlay);
+  feng.credits.listen(feng.events.EventType.ANIMATE_OUT, this.creditsOverlay.animateOut, false, this.creditsOverlay);
+
   this._episode.listen(feng.events.EventType.START, this.loaderOverlay.onLoadStart, false, this.loaderOverlay);
   this._episode.listen(feng.events.EventType.PROGRESS, this.loaderOverlay.onLoadProgress, false, this.loaderOverlay);
   this._episode.listen(feng.events.EventType.COMPLETE, this.loaderOverlay.onLoadComplete, false, this.loaderOverlay);
@@ -59653,6 +61839,7 @@ feng.views.View3DHud.prototype.activate = function() {
   this.endingOverlay.listen(feng.events.EventType.ANIMATE_OUT, this.onOverlayAnimateOut, false, this);
 
   this.tutorialOverlay.activate();
+  this.creditsOverlay.activate();
 
   this.activateControls();
 };
@@ -59663,12 +61850,14 @@ feng.views.View3DHud.prototype.deactivate = function() {
   this._view3d.modeController.removeAllListeners();
   this._view3dController.removeAllListeners();
   feng.tutorial.removeAllListeners();
+  feng.credits.removeAllListeners();
   this._episode.removeAllListeners();
   this.openingOverlay.removeAllListeners();
 
   this.dropButton.deactivate();
   this.tooltips.deactivate();
   this.tutorialOverlay.deactivate();
+  this.creditsOverlay.deactivate();
 
   this.deactivateControls();
 };
@@ -59686,6 +61875,12 @@ feng.views.View3DHud.prototype.activateControls = function() {
     this.tooltips.activate();
   }
 
+  if(!this._helpers.isDisposed()) {
+
+    this._helpers.activate();
+    goog.dom.appendChild( this.domElement, this._helpers.domElement );
+  }
+
   feng.mainOptions.showHelpButton( true );
 };
 
@@ -59699,6 +61894,11 @@ feng.views.View3DHud.prototype.deactivateControls = function() {
   this.progressBar.deactivate();
 
   this.tooltips.deactivate();
+
+  if(!this._helpers.isDisposed()) {
+    
+    this._helpers.deactivate();
+  }
 
   feng.mainOptions.showHelpButton( false );
 };
@@ -59736,10 +61936,10 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls ) {
     break;
   }
   
-  var cameraController = this._view3d.cameraController;
+  var renderController = this._view3d.renderController;
   var viewSize = this._view3d.viewSize;
 
-	var caption = new captionClass( object, cameraController, viewSize, controls, this );
+	var caption = new captionClass( object, renderController, viewSize, controls, this );
 	this._captions[ key ] = caption;
 
 	goog.dom.appendChild( this._captionsEl, caption.domElement );
@@ -60341,6 +62541,7 @@ goog.require('feng.views.debug.Debugger');
 goog.require('feng.views.MainOptions');
 goog.require('feng.views.EpisodeSelection');
 goog.require('feng.views.popups.Tutorial');
+goog.require('feng.views.popups.Credits');
 goog.require('feng.fx.Shaders');
 goog.require('feng.PubSub');
 goog.require('feng.utils.Utils');
@@ -60392,6 +62593,7 @@ feng.apps.Main = function() {
 	feng.episodeSelection = feng.views.EpisodeSelection.getInstance();
 
 	feng.tutorial = feng.views.popups.Tutorial.getInstance();
+	feng.credits = feng.views.popups.Credits.getInstance();
 
 	feng.controllers.NavigationController.Implementation = feng.controllers.NavigationController.HASH;
 	feng.navigationController = feng.controllers.NavigationController.getInstance();
@@ -61372,7 +63574,7 @@ goog.require('feng.apps.PathEdit');
 /**
  * @expose
  */
-feng.version = '12.3.14';
+feng.version = '12.9.14';
 
 
 feng.Config = {};
