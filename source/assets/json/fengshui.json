@@ -82,9 +82,9 @@
 			"provide": null,
 			"final": true,
 			"problem": "The chair, on which you sit, should be located in the right position so as to retain the energy of your body. If you sit between two doors or, between a door and a window or, if your chair is aligned with a door, then <b>your body energy can drain quickly</b> due to ‘yang activity‘.",
-			"advice": "Relocate the chair to a quiet place.",
+			"advice": "Now the chair is located in the right position that sits away from the door or windows.<br>Always try to avoid sitting with your back to the door or a window if you can.",
 			"character": "ollie",
-			"prompt": "Now the chair is located in the right position that sits away from the door or windows.<br>Always try to avoid sitting with your back to the door or a window if you can.",
+			"prompt": "Relocate the chair.",
 			"reminder": "Oh, sorry! The chair in the middle of the room blocks your way. Maybe I should move it somewhere else."
 		},
 		{
@@ -266,7 +266,7 @@
 					},
 					"peach": {
 						"name": "The Peach",
-						"description": "The peach signifies longevity, wealth and health."
+						"description": "The peach signifies <b>longevity, wealth and health</b>."
 					},
 					"orange": {
 						"name": "The Orange",
@@ -481,16 +481,12 @@
 			"reminder": "Do you like that picture hanging on my wall?",
 			"details": {
 				"pictures": {
-					"1": {
-						"name": "Photo 1",
+					"family": {
+						"name": "Photo of Family",
 						"description": "According to feng shui philosophy <b>the bond between parents and children</b> can be strengthened in a healthy environment. Furthermore, a healing environment tends to have a positive effect on a person’s relationship and it paves the floor for his or her success."
 					},
-					"2": {
-						"name": "Photo 2",
-						"description": "According to feng shui philosophy <b>the bond between parents and children</b> can be strengthened in a healthy environment. Furthermore, a healing environment tends to have a positive effect on a person’s relationship and it paves the floor for his or her success."
-					},
-					"3": {
-						"name": "Photo 3",
+					"hug": {
+						"name": "Photo of Family Moment",
 						"description": "According to feng shui philosophy <b>the bond between parents and children</b> can be strengthened in a healthy environment. Furthermore, a healing environment tends to have a positive effect on a person’s relationship and it paves the floor for his or her success."
 					}
 				}

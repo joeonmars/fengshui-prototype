@@ -23,19 +23,19 @@
 
 				// item classes
 				&[data-fruit="apple"] {
-					@include retina-icon("degree");
+					@include retina-icon("apple");
 				}
 
 				&[data-fruit="peach"] {
-					@include retina-icon("family");
+					@include retina-icon("peach");
 				}
 
 				&[data-fruit="pineapple"] {
-					@include retina-icon("hug");
+					@include retina-icon("pineapple");
 				}
 
 				&[data-fruit="orange"] {
-					@include retina-icon("lecture");
+					@include retina-icon("orange");
 				}
 
 			}

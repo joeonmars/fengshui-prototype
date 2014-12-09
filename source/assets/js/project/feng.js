@@ -9,7 +9,7 @@ goog.require('feng.apps.PathEdit');
 /**
  * @expose
  */
-feng.version = '12.3.14';
+feng.version = '12.9.14';
 
 
 feng.Config = {};

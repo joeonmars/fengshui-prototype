@@ -141,6 +141,7 @@ feng.models.View3D.Data = {
 			},
 			'fruitplate':	{
 				Class: 'fruitplate',
+				receiveShadow: true,
 				camera: {
 					position: new THREE.Vector3(-84, 80, -87),
 					rotation: new THREE.Euler(-0.59, 2.02, 0.00, 'YXZ'),
@@ -252,10 +253,15 @@ feng.models.View3D.Data = {
 			},
 			'refrigerator':	{
 				collidable: true,
+				receiveShadow: true,
 				texture: "studio.livingroom.refrigerator-texture"
+			},
+			'refrigerator-stuff': {
+				texture: "studio.livingroom.refrigerator-stuff-texture"
 			},
 			'refrigerator-door': {
 				Class: "refrigerator",
+				receiveShadow: true,
 				texture: "studio.livingroom.refrigerator-door-texture",
 				camera: {
 					position: new THREE.Vector3(-110, 80, -120),
@@ -265,16 +271,24 @@ feng.models.View3D.Data = {
 				tipKey: 'studio.livingroom.refrigerator'
 			},
 			'apple': {
-				texture: "studio.livingroom.apple-texture"
+				Class: 'fruit',
+				castShadow: true,
+				texture: "studio.livingroom.apple-in-refrigerator-texture"
 			},
 			'pineapple': {
-				texture: "studio.livingroom.pineapple-texture"
+				Class: 'fruit',
+				castShadow: true,
+				texture: "studio.livingroom.pineapple-in-refrigerator-texture"
 			},
 			'orange': {
-				texture: "studio.livingroom.orange-texture"
+				Class: 'fruit',
+				castShadow: true,
+				texture: "studio.livingroom.orange-in-refrigerator-texture"
 			},
 			'peach': {
-				texture: "studio.livingroom.peach-texture"
+				Class: 'fruit',
+				castShadow: true,
+				texture: "studio.livingroom.peach-in-refrigerator-texture"
 			}
 		},
 		'bathroom': {
@@ -518,7 +532,6 @@ feng.models.View3D.Data = {
 			},
 			'drawer': {
 				Class: "drawer",
-				receiveShadow: true,
 				texture: "house.livingroom.drawer-texture",
 				camera: {
 					position: new THREE.Vector3(-8, 97, -203),
@@ -989,7 +1002,7 @@ feng.models.View3D.Data = {
 				tipKey: 'house.boysroom.handheld',
 				position: new THREE.Vector3(-43.73, 69.26, -100.78),
 				rotation: new THREE.Euler(0, 1.57, 0),
-				range: 60,
+				range: 100,
 				parent: 'shelf-left'
 			},
 			'window': {

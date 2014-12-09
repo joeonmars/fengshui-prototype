@@ -155,6 +155,8 @@ feng.views.view3dobject.entities.Refrigerator.prototype.onPickedFruit = function
   var arms = this._view3d.arms;
 
   arms.addItem( fruit );
+
+  fruit.onPick();
 };
 
 

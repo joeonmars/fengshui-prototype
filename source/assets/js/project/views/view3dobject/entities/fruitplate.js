@@ -61,6 +61,7 @@ feng.views.view3dobject.entities.FruitPlate.prototype.dropFruit = function( frui
 
   TweenMax.to( prop, .8, {
     t: 1,
+    'immediateRender': true,
     'ease': Sine.easeInOut,
     'onUpdate': function() {
       
@@ -97,19 +98,19 @@ feng.views.view3dobject.entities.FruitPlate.prototype.onFruitDropped = function(
 
 feng.views.view3dobject.entities.FruitPlate.Orientations = {
   'apple': {
-    position: new THREE.Vector3(-115.46, 55.00, -67.47),
-    rotation: new THREE.Euler(-0.28, -0.28, -0.32)
+    position: new THREE.Vector3(-113.86, 52.80, -69.91),
+    rotation: new THREE.Euler(0.00, -0.67, 0.00)
   },
   'orange': {
-    position: new THREE.Vector3(-115.46, 55.00, -67.47),
-    rotation: new THREE.Euler(-0.28, -0.28, -0.32)
+    position: new THREE.Vector3(-118.57, 52.17, -70.48),
+    rotation: new THREE.Euler(0.00, 0.96, 0.00)
   },
   'pineapple': {
-    position: new THREE.Vector3(-115.46, 55.00, -67.47),
-    rotation: new THREE.Euler(-0.28, -0.28, -0.32)
+    position: new THREE.Vector3(-118.35, 56.99, -63.23),
+    rotation: new THREE.Euler(0.40, 0.00, 0.00)
   },
   'peach': {
-    position: new THREE.Vector3(-115.46, 55.00, -67.47),
-    rotation: new THREE.Euler(-0.28, -0.28, -0.32)
+    position: new THREE.Vector3(-112.30, 52.04, -65.70),
+    rotation: new THREE.Euler(0.00, -0.49, 0.00)
   }
 };

@@ -563,10 +563,11 @@ body{
     position: absolute;
     top: 0;
     right: 0;
-    width: 5px;
+    width: 6px;
     height: 100%;
     background-color: rgba(0,0,0,0.05);
     overflow: hidden;
+    @include border-radius(3px);
 
     >.handle{
       position: relative;
@@ -574,6 +575,7 @@ body{
       background-color: $lightgray-ui;
       opacity: .8;
       @include single-transition(opacity, .25s);
+      @include border-radius(3px);
 
       &:hover, &:active{
         opacity: 1;

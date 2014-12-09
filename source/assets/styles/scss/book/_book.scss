@@ -92,21 +92,23 @@
 									text-align: center;
 
 									>.icon{
-										font-size: 10em;
+										font-size: 8em;
 										line-height: 1.2;
 									}
 
 									>h1{
-										font-size: 2em;
-										line-height: 3;
+										font-size: 2.8em;
+										line-height: 1.4;
 									}
 
 									>h2{
-										font-size: 2em;
+										margin-top: 1.4em;
+										font-size: 1.5em;
 										line-height: 1.5;
+										text-transform: capitalize;
+										color: $darkgray-ui;
 
 										>span{
-											font-size: .65em;
 											display: block;
 										}
 									}
@@ -188,6 +190,10 @@
 												>br{
 													line-height: 3em;
 												}
+
+												>b{
+													color: $blue;
+												}
 											}
 										}
 									}
@@ -228,13 +234,15 @@
 		bottom: 8%;
 		margin-left: -200px;
 		width: 400px;
-		height: 10px;
+		height: 6px;
 		background: #555;
+		@include border-radius(3px);
 	 
 		>.handle{
 			position: relative;
 			height: 100%;
 			background: #fff;
+			@include border-radius(3px);
 		}
 	}
 }
