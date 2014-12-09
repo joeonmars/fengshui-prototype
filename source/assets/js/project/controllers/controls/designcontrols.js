@@ -176,9 +176,11 @@ feng.controllers.controls.DesignControls.prototype.activate = function () {
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this);
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
 
-	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this);
 	this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
-	this._eventHandler.listen( this, feng.events.EventType.CLICK_GATEWAY, this.onClickGateway, false, this );
+
+	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this);
+	this._eventHandler.listen( this._view3d.hud.compass, feng.events.EventType.CLICK_COMPASS, this.onClickCompass, false, this );
+	this._eventHandler.listen( this._view3d.hud.tooltips, feng.events.EventType.CLICK_GATEWAY, this.onClickGateway, false, this );
 
 	this._zoomSlider.activate();
 };
@@ -221,6 +223,37 @@ feng.controllers.controls.DesignControls.prototype.applyDragRotation = function(
 	this._cameraRotation.setFromQuaternion( quaternion );
 
 	this.setRotation( this._cameraRotation );
+};
+
+
+feng.controllers.controls.DesignControls.prototype.thrustDown = function( onComplete, onCompleteParams ){
+
+	var lookDirection = this._focus.clone().sub( this.getPosition() ).normalize();
+
+	var endPosition = this.getPosition().clone().add( lookDirection.multiplyScalar( 600 ) );
+
+  var prop = {
+    t: 0,
+    startPosition: this.getPosition().clone(),
+    endPosition: endPosition,
+    startRotation: this.getRotation(),
+    endRotation: this.getRotation(),
+    startFov: this.getFov(),
+    endFov: this.getFov()
+  }
+
+	TweenMax.to( prop, 1, {
+	  t: 1,
+	  'ease': Expo.easeOut,
+	  'onStart': this.onCameraTransitionStart,
+	  'onStartScope': this,
+	  'onUpdate': this.onCameraTransitionUpdate,
+	  'onUpdateParams': [prop],
+	  'onUpdateScope': this,
+	  'onComplete': onComplete,
+	  'onCompleteParams': onCompleteParams,
+	  'onCompleteScope': this
+	});
 };
 
 
@@ -276,33 +309,16 @@ feng.controllers.controls.DesignControls.prototype.onDragUpdate = function(){
 
 feng.controllers.controls.DesignControls.prototype.onClickGateway = function(e) {
 
-	// transition camera
-	var lookDirection = this._focus.clone().sub( this.getPosition() ).normalize();
+	this.thrustDown( this.onCameraTransitionToGatewayComplete, [e.gateway] );
+};
 
-	var endPosition = this.getPosition().clone().add( lookDirection.multiplyScalar( 600 ) );
 
-  var prop = {
-    t: 0,
-    startPosition: this.getPosition().clone(),
-    endPosition: endPosition,
-    startRotation: this.getRotation(),
-    endRotation: this.getRotation(),
-    startFov: this.getFov(),
-    endFov: this.getFov()
-  }
+feng.controllers.controls.DesignControls.prototype.onClickCompass = function(e) {
 
-	TweenMax.to( prop, 1, {
-	  t: 1,
-	  'ease': Expo.easeOut,
-	  'onStart': this.onCameraTransitionStart,
-	  'onStartScope': this,
-	  'onUpdate': this.onCameraTransitionUpdate,
-	  'onUpdateParams': [prop],
-	  'onUpdateScope': this,
-	  'onComplete': this.onCameraTransitionToGatewayComplete,
-	  'onCompleteParams': [e.gateway],
-	  'onCompleteScope': this
-	});
+	if(e.mode === 'browse') {
+
+		this.thrustDown( this.onCameraTransitionToBrowseModeComplete, [] );
+	}
 };
 
 
@@ -317,33 +333,7 @@ feng.controllers.controls.DesignControls.prototype.onNavigationChange = function
 		return;
 	}
 
-	// transition camera
-	var lookDirection = this._focus.clone().sub( this.getPosition() ).normalize();
-
-	var endPosition = this.getPosition().clone().add( lookDirection.multiplyScalar( 600 ) );
-
-  var prop = {
-    t: 0,
-    startPosition: this.getPosition().clone(),
-    endPosition: endPosition,
-    startRotation: this.getRotation(),
-    endRotation: this.getRotation(),
-    startFov: this.getFov(),
-    endFov: this.getFov()
-  }
-
-	TweenMax.to( prop, 1, {
-	  t: 1,
-	  'ease': Expo.easeOut,
-	  'onStart': this.onCameraTransitionStart,
-	  'onStartScope': this,
-	  'onUpdate': this.onCameraTransitionUpdate,
-	  'onUpdateParams': [prop],
-	  'onUpdateScope': this,
-	  'onComplete': this.onCameraTransitionToTipComplete,
-	  'onCompleteParams': [goTipResult],
-	  'onCompleteScope': this
-	});
+	this.thrustDown( this.onCameraTransitionToTipComplete, [goTipResult] );
 };
 
 
@@ -432,5 +422,28 @@ feng.controllers.controls.DesignControls.prototype.onCameraTransitionToTipComple
 		fromRotation: fromRotation,
 		fromFov: fromFov,
 		object: object
+	});
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onCameraTransitionToBrowseModeComplete = function(){
+
+	var browseControls = this._view3d.modeController.getModeControl(feng.controllers.view3d.ModeController.Mode.BROWSE);
+
+	var fromPosition = browseControls.getPosition();
+
+	var fromRotation = browseControls.getRotation().clone();
+	fromRotation.x = Math.PI / 4;
+
+	var fromFov = feng.controllers.controls.Controls.Default.FOV;
+
+  this.setPosition( fromPosition );
+  this.setRotation( fromRotation );
+  this.setFov( fromFov );
+
+	this.dispatchEvent({
+		type: feng.events.EventType.CHANGE,
+		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+		nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE
 	});
 };

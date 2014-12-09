@@ -237,7 +237,7 @@ feng.views.sections.controls.Tooltips.prototype.onClickGatewayTooltip = function
   var gatewayId = e.currentTarget.getAttribute('data-id');
   var gateway = this._view3d.getView3dObject( gatewayId );
 
-  this._view3d.modeController.control.dispatchEvent({
+  this.dispatchEvent({
     type: feng.events.EventType.CLICK_GATEWAY,
     gateway: gateway
   });

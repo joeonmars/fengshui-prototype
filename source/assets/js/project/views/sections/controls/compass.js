@@ -143,10 +143,9 @@ feng.views.sections.controls.Compass.prototype.onClick = function(e){
 
 		if(this._isInDesignMode) return false;
 
-		this._view3d.modeController.setMode({
-			type: feng.events.EventType.CHANGE,
-			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-			nextMode: feng.controllers.view3d.ModeController.Mode.DESIGN
+		this.dispatchEvent({
+			type: feng.events.EventType.CLICK_COMPASS,
+			mode: 'design'
 		});
 
 		feng.pubsub.publish( feng.PubSub.Topic.TRIGGER_COMPASS, this );
@@ -155,15 +154,9 @@ feng.views.sections.controls.Compass.prototype.onClick = function(e){
 
 		if(!this._isInDesignMode) return false;
 
-		var designControl = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.DESIGN );
-		var toRotation = designControl.getRotation().clone();
-		toRotation.x = 0;
-
-		this._view3d.modeController.setMode({
-			type: feng.events.EventType.CHANGE,
-			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-			nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
-			toRotation: toRotation
+		this.dispatchEvent({
+			type: feng.events.EventType.CLICK_COMPASS,
+			mode: 'browse'
 		});
 
 		feng.pubsub.publish( feng.PubSub.Topic.COMPLETE_COMPASS, this );

@@ -110,9 +110,11 @@ feng.controllers.controls.BrowseControls.prototype.activate = function () {
 	goog.base(this, 'activate');
 
 	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this );
+	this._eventHandler.listen( this._view3d.hud.compass, feng.events.EventType.CLICK_COMPASS, this.onClickCompass, false, this );
+	this._eventHandler.listen( this._view3d.hud.tooltips, feng.events.EventType.CLICK_GATEWAY, this.onClickGateway, false, this );
+	
 	this._eventHandler.listen( this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this );
 	this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
-	this._eventHandler.listen( this, feng.events.EventType.CLICK_GATEWAY, this.onClickGateway, false, this );
 
 	this._objectSelector.activate( this._objectSelectorCallbacks );
 };
@@ -287,6 +289,19 @@ feng.controllers.controls.BrowseControls.prototype.onUpdateHud = function(e){
 	if(e.target instanceof feng.views.sections.controls.Compass) {
 		this.setYaw( e.rotation );
 		this._targetRotationY = e.rotation;
+	}
+};
+
+
+feng.controllers.controls.BrowseControls.prototype.onClickCompass = function(e) {
+
+	if(e.mode === 'design') {
+
+  	this.dispatchEvent({
+  		type: feng.events.EventType.CHANGE,
+			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+			nextMode: feng.controllers.view3d.ModeController.Mode.DESIGN
+		});
 	}
 };
 
