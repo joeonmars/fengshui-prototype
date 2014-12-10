@@ -297,6 +297,8 @@ feng.views.EpisodeSelection.prototype.onClickStartButton = function(e){
 	goog.Timer.callOnce(function() {
 		window.location.href = e.currentTarget.href;
 	}, 2000);
+
+	feng.soundController.playSfx('confirm');
 };
 
 

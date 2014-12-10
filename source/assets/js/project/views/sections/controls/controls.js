@@ -80,7 +80,10 @@ feng.views.sections.controls.Controls.prototype.show = function( shouldShow ){
 
   goog.dom.classes.enable( this.domElement, 'hidden', !shouldShow );
 
-  this.onResize();
+  if(shouldShow) {
+    
+    this.onResize();
+  }
 };
 
 

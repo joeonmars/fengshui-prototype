@@ -9,7 +9,7 @@ goog.require('feng.apps.PathEdit');
 /**
  * @expose
  */
-feng.version = '12.9.14';
+feng.version = '12.10.14';
 
 
 feng.Config = {};
@@ -32,6 +32,15 @@ feng.init = function( config ) {
 	if(queryData.get('office') === 'true') {
 
 		feng.Config['office'] = true;
+	}
+
+	if(queryData.get('console')) {
+
+		feng.Config['escapeConsole'] = (queryData.get('console') === 'false');
+
+	}else {
+
+		feng.Config['escapeConsole'] = (feng.Config['escapeConsole'] === 'true');
 	}
 
 	// execute app

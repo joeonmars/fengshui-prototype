@@ -27818,6 +27818,7 @@ feng.events.EventType = {
 	DRAG_END: 'drag_end',
 	MUTE: 'mute',
 	UNMUTE: 'unmute',
+	CLICK_COMPASS: 'click_compass',
 	CLICK_GATEWAY: 'click_gateway',
 	INPUT_DOWN: (goog.userAgent.MOBILE) ? goog.events.EventType.TOUCHSTART : goog.events.EventType.MOUSEDOWN,
 	INPUT_MOVE: (goog.userAgent.MOBILE) ? goog.events.EventType.TOUCHMOVE : goog.events.EventType.MOUSEMOVE,
@@ -29182,8 +29183,8 @@ feng.controllers.view3d.PathfindingController.prototype.getTileByPosition = func
 	var numCols = matrixData.numCols;
 	var numRows = matrixData.numRows;
 
-	var tileCol = Math.round((position.x - gridMinX) / tileSize);
-	var tileRow = Math.round((position.z - gridMinZ) / tileSize);
+	var tileCol = goog.math.clamp( Math.round((position.x - gridMinX) / tileSize), 0, numCols-1 );
+	var tileRow = goog.math.clamp( Math.round((position.z - gridMinZ) / tileSize), 0, numRows-1 );
 
 	var tile = [ tileCol, tileRow ];
 
@@ -32490,9 +32491,23 @@ goog.require('goog.Uri');
 goog.require('goog.window');
 
 
-/**
- * @constructor
- */
+feng.utils.Utils.escapeConsole = function() {
+
+  window.console = {};
+  
+  var methods = [
+      'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+      'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+      'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+      'timeStamp', 'trace', 'warn'
+    ];
+  
+  for(var i=0;i<methods.length;i++){
+    console[methods[i]] = function(){};
+  }
+};
+
+
 feng.utils.Utils.setValueByKeys = function(key, val, obj) {
 	
   var ka = key.split(/\./);
@@ -34084,11 +34099,11 @@ feng.templates.controls.Book = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.Reminder = function(opt_data, opt_ignored) {
   var output = '<div class="reminder"><div class="character">' + feng.templates.controls.RoundButton({content: '<canvas></canvas>'}) + '</div><div class="dialogue hint"><div class="wrapper"><button class="prev icon icon-prev"></button><ul class="hints">';
-  var tipList342 = opt_data.tips;
-  var tipListLen342 = tipList342.length;
-  for (var tipIndex342 = 0; tipIndex342 < tipListLen342; tipIndex342++) {
-    var tipData342 = tipList342[tipIndex342];
-    output += '<li data-tip-id="' + tipData342.id + '">' + tipData342.reminder + '</li>';
+  var tipList344 = opt_data.tips;
+  var tipListLen344 = tipList344.length;
+  for (var tipIndex344 = 0; tipIndex344 < tipListLen344; tipIndex344++) {
+    var tipData344 = tipList344[tipIndex344];
+    output += '<li data-tip-id="' + tipData344.id + '">' + tipData344.reminder + '</li>';
   }
   output += '</ul><button class="next icon icon-next"></button></div></div></div>';
   return output;
@@ -34147,16 +34162,16 @@ feng.templates.controls.GatewayTooltip = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var output = '<div class="progressBar"><div class="inner"><button class="prev icon icon-prev"></button><button class="next icon icon-next"></button><div class="tips-wrapper">';
-  var viewIdList376 = soy.$$getMapKeys(opt_data.tipsOfViews);
-  var viewIdListLen376 = viewIdList376.length;
-  for (var viewIdIndex376 = 0; viewIdIndex376 < viewIdListLen376; viewIdIndex376++) {
-    var viewIdData376 = viewIdList376[viewIdIndex376];
-    output += '<ul class="tips" data-view-id="' + viewIdData376 + '">';
-    var tipList380 = opt_data.tipsOfViews[viewIdData376];
-    var tipListLen380 = tipList380.length;
-    for (var tipIndex380 = 0; tipIndex380 < tipListLen380; tipIndex380++) {
-      var tipData380 = tipList380[tipIndex380];
-      output += '<li class="tip" data-tip-id="' + tipData380.id + '" data-view-id="' + viewIdData376 + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content" href="' + tipData380.readTipToken + '"><div class="icon icon-' + tipData380.icon + '" data-tip-id="' + tipData380.id + '" data-view-id="' + tipData380.viewId + '" data-section-id="' + tipData380.sectionId + '"></div><h6>' + tipData380.name + '</h6></a></div></li>';
+  var viewIdList378 = soy.$$getMapKeys(opt_data.tipsOfViews);
+  var viewIdListLen378 = viewIdList378.length;
+  for (var viewIdIndex378 = 0; viewIdIndex378 < viewIdListLen378; viewIdIndex378++) {
+    var viewIdData378 = viewIdList378[viewIdIndex378];
+    output += '<ul class="tips" data-view-id="' + viewIdData378 + '">';
+    var tipList382 = opt_data.tipsOfViews[viewIdData378];
+    var tipListLen382 = tipList382.length;
+    for (var tipIndex382 = 0; tipIndex382 < tipListLen382; tipIndex382++) {
+      var tipData382 = tipList382[tipIndex382];
+      output += '<li class="tip" data-tip-id="' + tipData382.id + '" data-view-id="' + viewIdData378 + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content"><div class="icon icon-' + tipData382.icon + '" data-tip-id="' + tipData382.id + '" data-view-id="' + tipData382.viewId + '" data-section-id="' + tipData382.sectionId + '"></div><h6>' + tipData382.name + '</h6></a></div></li>';
     }
     output += '</ul>';
   }
@@ -38043,13 +38058,13 @@ feng.templates.book.Book = function(opt_data, opt_ignored) {
   var tipListLen6 = tipList6.length;
   for (var tipIndex6 = 0; tipIndex6 < tipListLen6; tipIndex6++) {
     var tipData6 = tipList6[tipIndex6];
-    output += '<li class="tip-module" data-tip-id="' + tipData6.id + '"><div class="card"><div class="curtain"><div class="wrapper"><div class="icon icon-' + tipData6.icon + '"></div><h1>' + tipData6.name + '</h1><h2><span>Found in</span> ' + tipData6.character + '\'s ' + tipData6.sectionId + '</h2></div></div><div class="detail"><div class="screen" data-src="' + tipData6.shareImageUrl + '"><div class="loader"></div></div><div class="advice"><h3>' + tipData6.name + '</h3><div class="scroller"><div class="content"><p>' + ((tipData6.problem) ? tipData6.problem + '<br>' : '') + ((tipData6.advice) ? tipData6.advice + '<br>' : '');
+    output += '<li class="tip-module" data-tip-id="' + tipData6.id + '"><div class="card"><div class="curtain"><div class="wrapper unlocked"><div class="icon icon-' + tipData6.icon + '"></div><h1>' + tipData6.name + '</h1><h2><span>Located at</span> ' + tipData6.character + '\'s ' + tipData6.sectionId + '</h2></div><div class="wrapper locked"><div class="icon icon-lock"></div><h1>Unknown Tip</h1><h2><span>Unlock in</span>' + tipData6.sectionId + '</h2></div></div><div class="detail"><div class="screen" data-src="' + tipData6.shareImageUrl + '"><div class="loader"></div></div><div class="advice"><h3>' + tipData6.name + '</h3><div class="scroller"><div class="content"><p>' + ((tipData6.problem) ? tipData6.problem + '<br>' : '') + ((tipData6.advice) ? tipData6.advice + '<br>' : '');
     if (tipData6.details['descriptions']) {
-      var keyList32 = soy.$$getMapKeys(tipData6.details['descriptions']);
-      var keyListLen32 = keyList32.length;
-      for (var keyIndex32 = 0; keyIndex32 < keyListLen32; keyIndex32++) {
-        var keyData32 = keyList32[keyIndex32];
-        output += tipData6.details['descriptions'][keyData32] + '</br>';
+      var keyList34 = soy.$$getMapKeys(tipData6.details['descriptions']);
+      var keyListLen34 = keyList34.length;
+      for (var keyIndex34 = 0; keyIndex34 < keyListLen34; keyIndex34++) {
+        var keyData34 = keyList34[keyIndex34];
+        output += tipData6.details['descriptions'][keyData34] + '</br>';
       }
     }
     output += '</p></div>' + feng.templates.common.ScrollBar(null) + '</div><ul class="share"><li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/' + tipData6.id + '.html" target="_blank" class="icon icon-facebook"></a></li><li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/' + tipData6.id + '.html" target="_blank" class="icon icon-twitter"></a></li><li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/' + tipData6.id + '.html" target="_blank" class="icon icon-google"></a></li></ul></div></div></div></li>';
@@ -38195,6 +38210,8 @@ feng.views.book.TipModule = function( domElement, index, widthChangeCallback ) {
 
 	this._shareButtons = goog.dom.query('.share a', this.domElement);
 
+	this.id = this.domElement.getAttribute('data-tip-id');
+
 	this.index = index;
 	
 	this._widthChangeCallback = widthChangeCallback;
@@ -38212,6 +38229,8 @@ feng.views.book.TipModule = function( domElement, index, widthChangeCallback ) {
 	this._coverWidth = 0;
 
 	this._imageLoaded = false;
+
+	this._isUnlocked = false;
 
 	this._outerEventHandler = new goog.events.EventHandler(this);
 	this._innerEventHandler = new goog.events.EventHandler(this);
@@ -38240,7 +38259,7 @@ feng.views.book.TipModule.prototype.getFinalWidth = function() {
 
 feng.views.book.TipModule.prototype.setActive = function( isActive ) {
 
-	if(isActive) {
+	if(isActive && this._isUnlocked) {
 
 		goog.dom.classes.add(this.domElement, 'active');
 
@@ -38322,6 +38341,14 @@ feng.views.book.TipModule.prototype.updateWidth = function() {
 	goog.style.setSize( this.domElement, this.size );
 
 	this._widthChangeCallback( this.index, this.size.width );
+};
+
+
+feng.views.book.TipModule.prototype.unlock = function() {
+
+	this._isUnlocked = true;
+
+	goog.dom.classes.enable( this.domElement, 'unlocked', true );
 };
 
 
@@ -38676,7 +38703,6 @@ feng.views.book.Book = function() {
 	this._closeButton = goog.dom.getElementByClass('close-button', this.domElement);
 
 	this._tipCounterEl = goog.dom.getElementByClass('tip-counter', this.domElement);
-	this.updateTipCounter();
 
 	this._scrollerEl = goog.dom.getElementByClass('scroller', this.domElement);
 	this._scrollerInnerEl = goog.dom.getElementByClass('inner', this._scrollerEl);
@@ -38699,6 +38725,12 @@ feng.views.book.Book = function() {
 		var tipModule = new feng.views.book.TipModule( tipModuleEl, index, widthChangeCallback );
 		tipModule.setParentEventTarget( this );
 		return tipModule;
+	}, this);
+
+	this._tipModulesDic = {};
+
+	goog.array.forEach(this._tipModules, function(tipModule) {
+		this._tipModulesDic[ tipModule.id ] = tipModule;
 	}, this);
 
 	this._tipModuleWidths = [];
@@ -38735,6 +38767,8 @@ feng.views.book.Book = function() {
 	goog.events.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
 
 	this.animateOut( true );
+
+	this.updateTips();
 };
 goog.inherits(feng.views.book.Book, goog.events.EventTarget);
 goog.addSingletonGetter(feng.views.book.Book);
@@ -38871,6 +38905,8 @@ feng.views.book.Book.prototype.animateIn = function( tipId ) {
 
 	this._animateInTweener.add( tipTweeners, '+=0', 'start', .10 );
 	this._animateInTweener.play();
+
+	feng.soundController.playSfx('confirm');
 };
 
 
@@ -38881,6 +38917,8 @@ feng.views.book.Book.prototype.animateOut = function( instant ) {
 	this.deactivate();
 
 	feng.navigationController.replaceToken('');
+
+	feng.soundController.playSfx('close');
 
 	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
 };
@@ -39012,11 +39050,18 @@ feng.views.book.Book.prototype.applyScrollX = function() {
 };
 
 
-feng.views.book.Book.prototype.updateTipCounter = function() {
+feng.views.book.Book.prototype.updateTips = function() {
 
-	var numUnlocked = goog.array.count(this._tips, function(tip) {
-		return tip.unlocked;
-	});
+	var numUnlocked = 0;
+
+	goog.array.forEach(this._tips, function(tip) {
+
+		if(tip.unlocked) {
+
+			numUnlocked ++;
+			this._tipModulesDic[ tip.id ].unlock();
+		}
+	}, this);
 
 	this._tipCounterEl.innerHTML = numUnlocked + '/' + this._tips.length;
 };
@@ -39133,7 +39178,7 @@ feng.views.book.Book.prototype.onNavigationChange = function( e ) {
 
 feng.views.book.Book.prototype.onTipUnlock = function( e ) {
 
-	this.updateTipCounter();
+	this.updateTips();
 };
 
 
@@ -39611,6 +39656,11 @@ feng.views.view3dobject.ReplaceableObject.prototype.change = function( objectId 
 		}
 	]);
 
+	this.dispatchEvent({
+		type: feng.events.EventType.LOAD,
+		id: this._idToLoad
+	});
+
 	//
 };
 
@@ -39668,6 +39718,11 @@ feng.views.view3dobject.ReplaceableObject.prototype.onLoadComplete = function( e
 	this.updateObject( view3dObject );
 
 	this.unlock();
+
+	this.dispatchEvent({
+		type: feng.events.EventType.LOAD_COMPLETE,
+		id: this._idToLoad
+	});
 };
 
 
@@ -39759,11 +39814,11 @@ feng.views.view3dobject.Skybox.prototype.disposeTextures = function(){
 
 feng.views.view3dobject.Skybox.prototype.updateOpacity = function( opt_opacity ){
 
-  var opacity = goog.isNumber(opt_opacity) ? opt_opacity : this.opacity;
+  this.opacity = goog.isNumber(opt_opacity) ? opt_opacity : this.opacity;
 
   goog.array.forEach(this._material.materials, function(material) {
-    material.opacity = opacity;
-  });
+    material.opacity = this.opacity;
+  }, this);
 };goog.provide('feng.views.view3dobject.Mirror');
 
 goog.require('feng.views.view3dobject.View3DObject');
@@ -40627,7 +40682,10 @@ feng.views.sections.controls.Controls.prototype.show = function( shouldShow ){
 
   goog.dom.classes.enable( this.domElement, 'hidden', !shouldShow );
 
-  this.onResize();
+  if(shouldShow) {
+    
+    this.onResize();
+  }
 };
 
 
@@ -40765,7 +40823,7 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement){
 
   // dragger to drag the view
   this._dragger = new goog.fx.Dragger( this._view3d.domElement );
-  this._dragger.setHysteresis( 2 );
+  this._dragger.setHysteresis( 10 );
   this._dragger.defaultAction = goog.nullFunction;
   this._dragger.setEnabled( false );
 
@@ -40784,15 +40842,14 @@ feng.controllers.controls.DesignControls = function(camera, view3d, domElement){
   var zoomCallback = goog.bind(this.setFov, this);
   this._zoomSlider = new feng.views.sections.controls.ZoomSlider( zoomSliderDom, this._view3d.domElement, zoomCallback );
 
-  //TODO
-  this._controlProps = {
+  this._dragProps = {
   	'x': 0,
   	'y': 0,
   	startX: 0,
   	startY: 0
   };
 
-  this._startDragRotation = 0;
+  this._startDragRotationX = 0;
 
   this._cameraRotation = new THREE.Euler(0, 0, 0, 'YXZ');
 };
@@ -40809,25 +40866,17 @@ feng.controllers.controls.DesignControls.prototype.setCamera = function( forward
 	
 	this.setFov( this._zoomSlider.calculateFov( .6 ) );
 
-	//
+	// calculate start rotation for dragging
 	var position = this.getPosition();
-	//atan(opposite/adjacent) = angle
-	//this._startDragRotation = Math.atan( position.x / position.z ) - Math.PI/2;
+	var startDeg = goog.math.angle(position.x, position.z, this._focus.x, this._focus.z) + 90;
+	this._startDragRotationX = goog.math.toRadians( startDeg );
 
-	//console.log(position.x, position.z);
+	// reset drag props
+	this._dragProps['x'] = 0;
+	this._dragProps.startX = 0;
 
-	//var shouldDeg = goog.math.angle(position.x, position.y, 0, 0);
-	//var shouldRad = THREE.Math.degToRad( shouldDeg ); 
-
-	var shouldRad = Math.atan( position.x/position.z );
-	var shouldDeg = THREE.Math.radToDeg( shouldRad );
-
-	var posX = this._distance * Math.sin( - shouldRad ) + this._focus.x;
-	var posZ = this._distance * Math.cos( - shouldRad ) + this._focus.z;
-
-	//console.log( position.x, position.z, posX, posZ, shouldDeg );
-	//
-
+	this._dragProps['y'] = 1;
+	this._dragProps.startY = 1;
 
 	this._zoomSlider.reset();
 
@@ -40912,9 +40961,11 @@ feng.controllers.controls.DesignControls.prototype.activate = function () {
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this);
 	this._eventHandler.listen( this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
 
-	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this);
 	this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
-	this._eventHandler.listen( this, feng.events.EventType.CLICK_GATEWAY, this.onClickGateway, false, this );
+
+	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this);
+	this._eventHandler.listen( this._view3d.hud.compass, feng.events.EventType.CLICK_COMPASS, this.onClickCompass, false, this );
+	this._eventHandler.listen( this._view3d.hud.tooltips, feng.events.EventType.CLICK_GATEWAY, this.onClickGateway, false, this );
 
 	this._zoomSlider.activate();
 };
@@ -40944,13 +40995,10 @@ feng.controllers.controls.DesignControls.prototype.update = function () {
 };
 
 
-feng.controllers.controls.DesignControls.prototype.applyDragRotation = function( rad ){
+feng.controllers.controls.DesignControls.prototype.applyDragRotation = function( rad, distanceFactor ){
 
-	//var posX = this._distance * Math.cos( rad ) - this._distance * Math.sin( rad );
-	//var posZ = this._distance * Math.sin( rad ) + this._distance * Math.cos( rad );
-
-	var posX = this._distance * Math.sin( - rad ) + this._focus.x;
-	var posZ = this._distance * Math.cos( - rad ) + this._focus.z;
+	var posX = this._distance * distanceFactor * Math.sin( - rad ) + this._focus.x;
+	var posZ = this._distance * distanceFactor * Math.cos( - rad ) + this._focus.z;
 	var posY = this._distance;
 
 	this.setPosition( posX, posY, posZ );
@@ -40963,112 +41011,8 @@ feng.controllers.controls.DesignControls.prototype.applyDragRotation = function(
 };
 
 
-feng.controllers.controls.DesignControls.prototype.onDragStart = function(e){
+feng.controllers.controls.DesignControls.prototype.thrustDown = function( onComplete, onCompleteParams ){
 
-	this._controlProps.startX = this._controlProps['x'];
-
-	TweenLite.killTweensOf( this._controlProps );
-	ThrowPropsPlugin.untrack( this._controlProps );
-	ThrowPropsPlugin.track( this._controlProps, 'x' );
-
-	/*
-	// set origin focus position
-	this._dragOrigin.copy( this._focus );
-	this._dragToPosition.copy( this._focus );
-
-	// relocate drag camera
-	this._dragCamera.position.copy( this.getPosition() );
-	this._dragCamera.fov = this.getFov();
-	this._dragCamera.aspect = this._camera.aspect;
-	this._dragCamera.updateProjectionMatrix();
-	this._dragCamera.lookAt( this._focus );
-	*/
-};
-
-
-feng.controllers.controls.DesignControls.prototype.onDrag = function(e){
-
-	var deltaX = this._dragger.deltaX;
-	var deltaY = this._dragger.deltaY;
-
-	this._controlProps['x'] = this._controlProps.startX + deltaX / this._view3d.viewSize.width / 2;
-
-	this.onDragUpdate();
-
-	/*
-	var fov = this.getFov();
-	var minFov = this._zoomSlider.fovRange.min;
-	var maxFov = this._zoomSlider.fovRange.max;
-	var fovFraction = (fov - minFov) / (maxFov - minFov);
-	var deltaFactor = goog.math.lerp( 6, 4, fovFraction );
-
-	var cameraDeltaX = deltaX / deltaFactor;
-	var cameraDeltaY = deltaY / deltaFactor;
-
-	// drag object by camera direction
-	var forward = new THREE.Vector3( 0, 0, -1 );
-	forward.applyQuaternion( this._dragCamera.quaternion ).setY(0).normalize();
-	
-	var right = new THREE.Vector3( 1, 0, 0 );
-	right.applyQuaternion( this._dragCamera.quaternion ).setY(0).normalize();
-
-	this._dragToPosition.addVectors( forward.multiplyScalar(cameraDeltaY), right.multiplyScalar(-cameraDeltaX) );
-	this._dragToPosition.add( this._dragOrigin );
-
-	this._dragToPosition.x = goog.math.clamp( this._dragToPosition.x, this._boundingBox.min.x, this._boundingBox.max.x );
-	this._dragToPosition.z = goog.math.clamp( this._dragToPosition.z, this._boundingBox.min.z, this._boundingBox.max.z );
-
-	this._focus.copy( this._dragToPosition );
-
-	this._tracker.position.copy( this._focus );
-
-	// look at
-	var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
-	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(this.getPosition(), this._focus);
-	rotation.setFromQuaternion( quaternion );
-
-	this.setRotation( rotation );
-	*/
-};
-
-
-feng.controllers.controls.DesignControls.prototype.onDragEnd = function(e){
-
-	ThrowPropsPlugin.to(this._controlProps, {
-		'throwProps': {
-			'x': 'auto',
-			'resistance': 100
-		},
-		//ease: Quad.easeOut,
-		'onUpdate': this.onDragUpdate,
-		'onUpdateScope': this
-	}, 4, .5);
-};
-
-
-feng.controllers.controls.DesignControls.prototype.onDragUpdate = function(){
-
-	var deg = this._controlProps['x'] * 360;
-	var rad = THREE.Math.degToRad( deg );
-
-	//this.applyDragRotation( this._startDragRotation );
-
-	this.applyDragRotation( this._startDragRotation + rad );
-};
-
-
-feng.controllers.controls.DesignControls.prototype.onClickGateway = function(e) {
-
-	/*
-  this.dispatchEvent({
-  	type: feng.events.EventType.CHANGE,
-    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-    nextMode: feng.controllers.view3d.ModeController.Mode.EXIT,
-    gateway: e.gateway
-  });
-*/
-
-	// transition camera
 	var lookDirection = this._focus.clone().sub( this.getPosition() ).normalize();
 
 	var endPosition = this.getPosition().clone().add( lookDirection.multiplyScalar( 600 ) );
@@ -41091,10 +41035,75 @@ feng.controllers.controls.DesignControls.prototype.onClickGateway = function(e) 
 	  'onUpdate': this.onCameraTransitionUpdate,
 	  'onUpdateParams': [prop],
 	  'onUpdateScope': this,
-	  'onComplete': this.onCameraTransitionToGatewayComplete,
-	  'onCompleteParams': [e.gateway],
+	  'onComplete': onComplete,
+	  'onCompleteParams': onCompleteParams,
 	  'onCompleteScope': this
 	});
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onDragStart = function(e){
+
+	this._dragProps.startX = this._dragProps['x'];
+	this._dragProps.startY = this._dragProps['y'];
+
+	TweenLite.killTweensOf( this._dragProps );
+	ThrowPropsPlugin.untrack( this._dragProps );
+
+	ThrowPropsPlugin.track( this._dragProps, 'x,y' );
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onDrag = function(e){
+
+	var deltaX = this._dragger.deltaX;
+	this._dragProps['x'] = this._dragProps.startX + deltaX / this._view3d.viewSize.width / 2;
+
+	var deltaY = this._dragger.deltaY;
+	var deltaFraction = deltaY / (this._view3d.viewSize.height/2);
+	this._dragProps['y'] = goog.math.clamp( this._dragProps.startY - deltaFraction, 0.05, 1 );
+
+	this.onDragUpdate();
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onDragEnd = function(e){
+
+	ThrowPropsPlugin.to(this._dragProps, {
+		'throwProps': {
+			'x': 'auto',
+			'y': 'auto',
+			'resistance': 100
+		},
+		'onUpdate': this.onDragUpdate,
+		'onUpdateScope': this
+	}, 4, .5);
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onDragUpdate = function(){
+
+	var deg = this._dragProps['x'] * 360;
+	var rad = THREE.Math.degToRad( deg );
+
+	var distanceFactor = goog.math.clamp( this._dragProps['y'], 0.05, 1 );
+
+	this.applyDragRotation( this._startDragRotationX + rad, distanceFactor );
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onClickGateway = function(e) {
+
+	this.thrustDown( this.onCameraTransitionToGatewayComplete, [e.gateway] );
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onClickCompass = function(e) {
+
+	if(e.mode === 'browse') {
+
+		this.thrustDown( this.onCameraTransitionToBrowseModeComplete, [] );
+	}
 };
 
 
@@ -41109,33 +41118,7 @@ feng.controllers.controls.DesignControls.prototype.onNavigationChange = function
 		return;
 	}
 
-	// transition camera
-	var lookDirection = this._focus.clone().sub( this.getPosition() ).normalize();
-
-	var endPosition = this.getPosition().clone().add( lookDirection.multiplyScalar( 600 ) );
-
-  var prop = {
-    t: 0,
-    startPosition: this.getPosition().clone(),
-    endPosition: endPosition,
-    startRotation: this.getRotation(),
-    endRotation: this.getRotation(),
-    startFov: this.getFov(),
-    endFov: this.getFov()
-  }
-
-	TweenMax.to( prop, 1, {
-	  t: 1,
-	  'ease': Expo.easeOut,
-	  'onStart': this.onCameraTransitionStart,
-	  'onStartScope': this,
-	  'onUpdate': this.onCameraTransitionUpdate,
-	  'onUpdateParams': [prop],
-	  'onUpdateScope': this,
-	  'onComplete': this.onCameraTransitionToTipComplete,
-	  'onCompleteParams': [goTipResult],
-	  'onCompleteScope': this
-	});
+	this.thrustDown( this.onCameraTransitionToTipComplete, [goTipResult] );
 };
 
 
@@ -41143,6 +41126,8 @@ feng.controllers.controls.DesignControls.prototype.onCameraTransitionStart = fun
 
 	this._view3d.hud.tooltips.deactivate();
 	this.deactivate();
+
+	feng.soundController.playSfx('thrust-down');
 };
 
 
@@ -41222,6 +41207,29 @@ feng.controllers.controls.DesignControls.prototype.onCameraTransitionToTipComple
 		fromRotation: fromRotation,
 		fromFov: fromFov,
 		object: object
+	});
+};
+
+
+feng.controllers.controls.DesignControls.prototype.onCameraTransitionToBrowseModeComplete = function(){
+
+	var browseControls = this._view3d.modeController.getModeControl(feng.controllers.view3d.ModeController.Mode.BROWSE);
+
+	var fromPosition = browseControls.getPosition();
+
+	var fromRotation = browseControls.getRotation().clone();
+	fromRotation.x = Math.PI / 4;
+
+	var fromFov = feng.controllers.controls.Controls.Default.FOV;
+
+  this.setPosition( fromPosition );
+  this.setRotation( fromRotation );
+  this.setFov( fromFov );
+
+	this.dispatchEvent({
+		type: feng.events.EventType.CHANGE,
+		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+		nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE
 	});
 };goog.provide('feng.controllers.controls.CloseUpControls');
 
@@ -41357,7 +41365,6 @@ feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
 
 	this._activeObject.onCameraOut();
 
-	//
 	feng.navigationController.replaceToken("");
 
 	//
@@ -41480,9 +41487,11 @@ feng.controllers.controls.BrowseControls.prototype.activate = function () {
 	goog.base(this, 'activate');
 
 	this._eventHandler.listen( this._view3d.hud, feng.events.EventType.UPDATE, this.onUpdateHud, false, this );
+	this._eventHandler.listen( this._view3d.hud.compass, feng.events.EventType.CLICK_COMPASS, this.onClickCompass, false, this );
+	this._eventHandler.listen( this._view3d.hud.tooltips, feng.events.EventType.CLICK_GATEWAY, this.onClickGateway, false, this );
+	
 	this._eventHandler.listen( this._mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.onMouseWheel, false, this );
 	this._eventHandler.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
-	this._eventHandler.listen( this, feng.events.EventType.CLICK_GATEWAY, this.onClickGateway, false, this );
 
 	this._objectSelector.activate( this._objectSelectorCallbacks );
 };
@@ -41657,6 +41666,19 @@ feng.controllers.controls.BrowseControls.prototype.onUpdateHud = function(e){
 	if(e.target instanceof feng.views.sections.controls.Compass) {
 		this.setYaw( e.rotation );
 		this._targetRotationY = e.rotation;
+	}
+};
+
+
+feng.controllers.controls.BrowseControls.prototype.onClickCompass = function(e) {
+
+	if(e.mode === 'design') {
+
+  	this.dispatchEvent({
+  		type: feng.events.EventType.CHANGE,
+			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+			nextMode: feng.controllers.view3d.ModeController.Mode.DESIGN
+		});
 	}
 };
 
@@ -42198,7 +42220,10 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 	var coordinates = pathfinder.findPath( matrixId, start, end );
 
 	if(!coordinates) {
-
+		
+		var matrixData = feng.pathfinder.getMatrixData( this._view3d.getMatrixId() );
+		console.log(coordinates, matrixId, start, end, feng.pathfinder.getTileByPosition(start, matrixData), feng.pathfinder.getTileByPosition(end, matrixData));
+		
 		this.bounceBack( nextMode );
 		return;
 	}
@@ -42392,7 +42417,11 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 		nextMode: ev.nextMode
 	};
 
+	var nextMode = ev.nextMode;
+	var nextModeIsDesign = (nextMode === feng.controllers.view3d.ModeController.Mode.DESIGN);
+
 	var dur = goog.math.clamp( 1, 2, goog.math.lerp( 1, 2, fromPosition.distanceTo( toPosition ) / 100 ));
+	dur = nextModeIsDesign ? 1.5 : dur;
 
 	this._tweener = TweenMax.to( prop, dur, {
 		t: 1,
@@ -42406,18 +42435,15 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 	});
 
 	// toggle ground plane
-	var nextMode = ev.nextMode;
 	var designPlane = this._view3d.designPlane;
 	var skybox = this._view3d.skybox;
 
-	if(nextMode === feng.controllers.view3d.ModeController.Mode.DESIGN) {
+	if(nextModeIsDesign) {
 
-		designPlane.addToScene();
+		skybox.updateOpacity(1);
 		skybox.addToScene();
 
-		TweenMax.fromTo(skybox, dur, {
-			opacity: 1
-		}, {
+		TweenMax.to(skybox, dur, {
 			opacity: 0,
 			'onUpdate': skybox.updateOpacity,
 			'onUpdateScope': skybox,
@@ -42425,40 +42451,26 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 			'onCompleteScope': skybox
 		});
 
-		TweenMax.fromTo(designPlane, dur, {
-			opacity: 0
-		}, {
+		designPlane.updateOpacity(0);
+		designPlane.addToScene();
+
+		TweenMax.to(designPlane, dur, {
 			opacity: 1,
 			'onUpdate': designPlane.updateOpacity,
 			'onUpdateScope': designPlane
 		});
 
+		feng.soundController.playSfx('thrust-up');
+
 	}else {
 
 		if(!skybox.isInScene()) {
 
+			skybox.updateOpacity( 1 );
 			skybox.addToScene();
 
-			var halfDur = dur/2;
-
-			TweenMax.fromTo(skybox, halfDur, {
-				opacity: 0
-			}, {
-				opacity: 1,
-				'delay': halfDur,
-				'onUpdate': skybox.updateOpacity,
-				'onUpdateScope': skybox
-			});
-
-			TweenMax.fromTo(designPlane, dur, {
-				opacity: 1
-			}, {
-				opacity: 0,
-				'onUpdate': designPlane.updateOpacity,
-				'onUpdateScope': designPlane,
-				'onComplete': designPlane.removeFromScene,
-				'onCompleteScope': designPlane
-			});
+			designPlane.updateOpacity( 0 );
+			designPlane.removeFromScene();
 		}
 	}
 
@@ -43048,9 +43060,9 @@ feng.views.view3dobject.DesignPlane.prototype.createTextures = function(){
 
 feng.views.view3dobject.DesignPlane.prototype.updateOpacity = function( opt_opacity ){
 
-  var opacity = goog.isNumber(opt_opacity) ? opt_opacity : this.opacity;
+  this.opacity = goog.isNumber(opt_opacity) ? opt_opacity : this.opacity;
 
-  this.object3d.material.opacity = opacity;
+  this.object3d.material.opacity = this.opacity;
 };goog.provide('feng.views.view3dobject.entities.Computer');
 
 goog.require('feng.views.view3dobject.TipObject');
@@ -48642,6 +48654,8 @@ feng.views.popups.Popup.prototype.animateOut = function() {
 
 	goog.dom.classes.remove( this.domElement, 'shown' );
 
+	feng.soundController.playSfx('close');
+
 	this.dispatchEvent( feng.events.EventType.ANIMATE_OUT );
 
 	this._animateInDelay.stop();
@@ -49260,6 +49274,22 @@ feng.controllers.SoundController = function(){
   this._data[ feng.controllers.SoundController.SoundType.SFX ] = {
     'click': {
       'urls': urls('sfx/click'),
+      'onload': onSoundLoad
+    },
+    'close': {
+      'urls': urls('sfx/close'),
+      'onload': onSoundLoad
+    },
+    'confirm': {
+      'urls': urls('sfx/confirm'),
+      'onload': onSoundLoad
+    },
+    'thrust-up': {
+      'urls': urls('sfx/thrust-up'),
+      'onload': onSoundLoad
+    },
+    'thrust-down': {
+      'urls': urls('sfx/thrust-down'),
       'onload': onSoundLoad
     },
     'door-open': {
@@ -55678,6 +55708,8 @@ feng.views.EpisodeSelection.prototype.onClickStartButton = function(e){
 	goog.Timer.callOnce(function() {
 		window.location.href = e.currentTarget.href;
 	}, 2000);
+
+	feng.soundController.playSfx('confirm');
 };
 
 
@@ -55899,17 +55931,13 @@ feng.views.sections.home.Screen.prototype.deactivate = function() {
 
 feng.views.sections.home.Screen.prototype.show = function() {
 
-	TweenMax.set(this.domElement, {
-		'display': 'block'
-	});
+	goog.style.showElement( this.domElement, true );
 };
 
 
 feng.views.sections.home.Screen.prototype.hide = function() {
 
-	TweenMax.set(this.domElement, {
-		'display': 'none'
-	});
+	goog.style.showElement( this.domElement, false );
 };
 
 
@@ -57597,22 +57625,22 @@ feng.templates.captions.Caption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
-  var param102 = '<div class="change-picture"><h2>Click on a picture to change</h2><ul class="pictures">';
-  var pictureKeyList104 = soy.$$getMapKeys(opt_data.tip.details['pictures']);
-  var pictureKeyListLen104 = pictureKeyList104.length;
-  for (var pictureKeyIndex104 = 0; pictureKeyIndex104 < pictureKeyListLen104; pictureKeyIndex104++) {
-    var pictureKeyData104 = pictureKeyList104[pictureKeyIndex104];
-    param102 += '<li><button class="item-button" data-picture="' + pictureKeyData104 + '"></button></li>';
+  var param104 = '<div class="change-picture"><h2>Click on a picture to change</h2><ul class="pictures">';
+  var pictureKeyList106 = soy.$$getMapKeys(opt_data.tip.details['pictures']);
+  var pictureKeyListLen106 = pictureKeyList106.length;
+  for (var pictureKeyIndex106 = 0; pictureKeyIndex106 < pictureKeyListLen106; pictureKeyIndex106++) {
+    var pictureKeyData106 = pictureKeyList106[pictureKeyIndex106];
+    param104 += '<li><button class="item-button" data-picture="' + pictureKeyData106 + '"></button></li>';
   }
-  param102 += '</ul><ul class="info">';
-  var pictureKeyList110 = soy.$$getMapKeys(opt_data.tip.details['pictures']);
-  var pictureKeyListLen110 = pictureKeyList110.length;
-  for (var pictureKeyIndex110 = 0; pictureKeyIndex110 < pictureKeyListLen110; pictureKeyIndex110++) {
-    var pictureKeyData110 = pictureKeyList110[pictureKeyIndex110];
-    param102 += '<li data-picture="' + pictureKeyData110 + '"><h3>' + opt_data.tip.details['pictures'][pictureKeyData110]['name'] + '</h3><p>' + opt_data.tip.details['pictures'][pictureKeyData110]['description'] + '</p></li>';
+  param104 += '</ul><ul class="info">';
+  var pictureKeyList112 = soy.$$getMapKeys(opt_data.tip.details['pictures']);
+  var pictureKeyListLen112 = pictureKeyList112.length;
+  for (var pictureKeyIndex112 = 0; pictureKeyIndex112 < pictureKeyListLen112; pictureKeyIndex112++) {
+    var pictureKeyData112 = pictureKeyList112[pictureKeyIndex112];
+    param104 += '<li data-picture="' + pictureKeyData112 + '"><h3>' + opt_data.tip.details['pictures'][pictureKeyData112]['name'] + '</h3><p>' + opt_data.tip.details['pictures'][pictureKeyData112]['description'] + '</p></li>';
   }
-  param102 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param102}));
+  param104 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param104}));
   return output;
 };
 
@@ -57624,22 +57652,22 @@ feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
-  var param122 = '<div class="change-color"><h2>Choose a better color.</h2><ul class="colors">';
-  var colorKeyList124 = soy.$$getMapKeys(opt_data.tip.details['colors']);
-  var colorKeyListLen124 = colorKeyList124.length;
-  for (var colorKeyIndex124 = 0; colorKeyIndex124 < colorKeyListLen124; colorKeyIndex124++) {
-    var colorKeyData124 = colorKeyList124[colorKeyIndex124];
-    param122 += '<li><button class="item-button" style="background-color: ' + opt_data.tip.details['colors'][colorKeyData124]['hex'] + '" data-color="' + colorKeyData124 + '"></button></li>';
+  var param124 = '<div class="change-color"><h2>Choose a better color.</h2><ul class="colors">';
+  var colorKeyList126 = soy.$$getMapKeys(opt_data.tip.details['colors']);
+  var colorKeyListLen126 = colorKeyList126.length;
+  for (var colorKeyIndex126 = 0; colorKeyIndex126 < colorKeyListLen126; colorKeyIndex126++) {
+    var colorKeyData126 = colorKeyList126[colorKeyIndex126];
+    param124 += '<li><button class="item-button" style="background-color: ' + opt_data.tip.details['colors'][colorKeyData126]['hex'] + '" data-color="' + colorKeyData126 + '"></button></li>';
   }
-  param122 += '</ul><ul class="info">';
-  var colorKeyList132 = soy.$$getMapKeys(opt_data.tip.details['colors']);
-  var colorKeyListLen132 = colorKeyList132.length;
-  for (var colorKeyIndex132 = 0; colorKeyIndex132 < colorKeyListLen132; colorKeyIndex132++) {
-    var colorKeyData132 = colorKeyList132[colorKeyIndex132];
-    param122 += '<li data-color="' + colorKeyData132 + '"><h3>' + opt_data.tip.details['colors'][colorKeyData132]['name'] + '</h3><p>' + opt_data.tip.details['colors'][colorKeyData132]['description'] + '</p></li>';
+  param124 += '</ul><ul class="info">';
+  var colorKeyList134 = soy.$$getMapKeys(opt_data.tip.details['colors']);
+  var colorKeyListLen134 = colorKeyList134.length;
+  for (var colorKeyIndex134 = 0; colorKeyIndex134 < colorKeyListLen134; colorKeyIndex134++) {
+    var colorKeyData134 = colorKeyList134[colorKeyIndex134];
+    param124 += '<li data-color="' + colorKeyData134 + '"><h3>' + opt_data.tip.details['colors'][colorKeyData134]['name'] + '</h3><p>' + opt_data.tip.details['colors'][colorKeyData134]['description'] + '</p></li>';
   }
-  param122 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param122}));
+  param124 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param124}));
   return output;
 };
 
@@ -57651,22 +57679,22 @@ feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
-  var param144 = '<div class="change-object"><h2>Replace with a new element.</h2><ul class="objects">';
-  var objectKeyList146 = soy.$$getMapKeys(opt_data.tip.details['names']);
-  var objectKeyListLen146 = objectKeyList146.length;
-  for (var objectKeyIndex146 = 0; objectKeyIndex146 < objectKeyListLen146; objectKeyIndex146++) {
-    var objectKeyData146 = objectKeyList146[objectKeyIndex146];
-    param144 += '<li><button class="item-button" data-object="' + objectKeyData146 + '"></button></li>';
+  var param146 = '<div class="change-object"><h2>Replace with a new element.</h2><ul class="objects">';
+  var objectKeyList148 = soy.$$getMapKeys(opt_data.tip.details['names']);
+  var objectKeyListLen148 = objectKeyList148.length;
+  for (var objectKeyIndex148 = 0; objectKeyIndex148 < objectKeyListLen148; objectKeyIndex148++) {
+    var objectKeyData148 = objectKeyList148[objectKeyIndex148];
+    param146 += '<li><button class="item-button" data-object="' + objectKeyData148 + '"></button></li>';
   }
-  param144 += '</ul><ul class="info">';
-  var objectKeyList152 = soy.$$getMapKeys(opt_data.tip.details['descriptions']);
-  var objectKeyListLen152 = objectKeyList152.length;
-  for (var objectKeyIndex152 = 0; objectKeyIndex152 < objectKeyListLen152; objectKeyIndex152++) {
-    var objectKeyData152 = objectKeyList152[objectKeyIndex152];
-    param144 += '<li data-object="' + objectKeyData152 + '"><h3>' + opt_data.tip.details['names'][objectKeyData152] + '</h3><p>' + opt_data.tip.details['descriptions'][objectKeyData152] + '</p></li>';
+  param146 += '</ul><ul class="info">';
+  var objectKeyList154 = soy.$$getMapKeys(opt_data.tip.details['descriptions']);
+  var objectKeyListLen154 = objectKeyList154.length;
+  for (var objectKeyIndex154 = 0; objectKeyIndex154 < objectKeyListLen154; objectKeyIndex154++) {
+    var objectKeyData154 = objectKeyList154[objectKeyIndex154];
+    param146 += '<li data-object="' + objectKeyData154 + '"><h3>' + opt_data.tip.details['names'][objectKeyData154] + '</h3><p>' + opt_data.tip.details['descriptions'][objectKeyData154] + '</p></li>';
   }
-  param144 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param144}));
+  param146 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param146}));
   return output;
 };
 
@@ -57678,22 +57706,22 @@ feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
-  var param164 = '<div class="drop-fruits"><h2>Fill the plate with fruits.</h2><ul class="fruits">';
-  var fruitKeyList166 = soy.$$getMapKeys(opt_data.tip.details['fruits']);
-  var fruitKeyListLen166 = fruitKeyList166.length;
-  for (var fruitKeyIndex166 = 0; fruitKeyIndex166 < fruitKeyListLen166; fruitKeyIndex166++) {
-    var fruitKeyData166 = fruitKeyList166[fruitKeyIndex166];
-    param164 += '<li><button class="item-button" data-fruit="' + fruitKeyData166 + '"></button></li>';
+  var param166 = '<div class="drop-fruits"><h2>Fill the plate with fruits.</h2><ul class="fruits">';
+  var fruitKeyList168 = soy.$$getMapKeys(opt_data.tip.details['fruits']);
+  var fruitKeyListLen168 = fruitKeyList168.length;
+  for (var fruitKeyIndex168 = 0; fruitKeyIndex168 < fruitKeyListLen168; fruitKeyIndex168++) {
+    var fruitKeyData168 = fruitKeyList168[fruitKeyIndex168];
+    param166 += '<li><button class="item-button" data-fruit="' + fruitKeyData168 + '"></button></li>';
   }
-  param164 += '</ul><ul class="info">';
-  var fruitKeyList172 = soy.$$getMapKeys(opt_data.tip.details['fruits']);
-  var fruitKeyListLen172 = fruitKeyList172.length;
-  for (var fruitKeyIndex172 = 0; fruitKeyIndex172 < fruitKeyListLen172; fruitKeyIndex172++) {
-    var fruitKeyData172 = fruitKeyList172[fruitKeyIndex172];
-    param164 += '<li data-fruit="' + fruitKeyData172 + '"><h3>' + opt_data.tip.details['fruits'][fruitKeyData172]['name'] + '</h3><p>' + opt_data.tip.details['fruits'][fruitKeyData172]['description'] + '</p></li>';
+  param166 += '</ul><ul class="info">';
+  var fruitKeyList174 = soy.$$getMapKeys(opt_data.tip.details['fruits']);
+  var fruitKeyListLen174 = fruitKeyList174.length;
+  for (var fruitKeyIndex174 = 0; fruitKeyIndex174 < fruitKeyListLen174; fruitKeyIndex174++) {
+    var fruitKeyData174 = fruitKeyList174[fruitKeyIndex174];
+    param166 += '<li data-fruit="' + fruitKeyData174 + '"><h3>' + opt_data.tip.details['fruits'][fruitKeyData174]['name'] + '</h3><p>' + opt_data.tip.details['fruits'][fruitKeyData174]['description'] + '</p></li>';
   }
-  param164 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param164}));
+  param166 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param166}));
   return output;
 };
 
@@ -57706,11 +57734,11 @@ feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
  */
 feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
   var output = '<p class="floatText">';
-  var lineList185 = opt_data.lines;
-  var lineListLen185 = lineList185.length;
-  for (var lineIndex185 = 0; lineIndex185 < lineListLen185; lineIndex185++) {
-    var lineData185 = lineList185[lineIndex185];
-    output += '<span>' + lineData185 + '</span>';
+  var lineList187 = opt_data.lines;
+  var lineListLen187 = lineList187.length;
+  for (var lineIndex187 = 0; lineIndex187 < lineListLen187; lineIndex187++) {
+    var lineData187 = lineList187[lineIndex187];
+    output += '<span>' + lineData187 + '</span>';
   }
   output += '</p>';
   return output;
@@ -58109,6 +58137,8 @@ feng.views.sections.captions.Caption.prototype.doClose = function() {
     
     this.animateOutPanel( true );
   }
+
+  feng.soundController.playSfx('close');
 };
 
 
@@ -58224,6 +58254,7 @@ feng.views.sections.captions.Caption.prototype.onClick = function( e ) {
   switch(e.currentTarget) {
     case this._promptButton:
     this._object.startInteraction();
+    feng.soundController.playSfx('confirm');
     break;
   }
 };
@@ -58324,6 +58355,8 @@ feng.views.sections.captions.ChangeColorCaption.prototype.onClickItem = function
   this.scrollBar.resize();
   
   this._object.setColorByName( this._colorId );
+
+  feng.soundController.playSfx('click');
 };// Copyright 2007 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -58810,6 +58843,9 @@ feng.views.sections.controls.ProgressBar.prototype.unlockTip = function( tipId )
 
   if(!unlockedTipEl) return;
 
+  // assign url to book
+  goog.dom.query('a', unlockedTipEl)[0].href = this._tips[tipId].readTipToken;
+
   goog.dom.classes.add( unlockedTipEl, 'unlocked' );
 };
 
@@ -58955,6 +58991,11 @@ feng.views.helpers.Helper.prototype.show = function( box ) {
 		this.updatePosition();
 	}
 
+	if(this.isShown) {
+
+		this.onResize();
+	}
+
 	feng.pubsub.publish( feng.PubSub.Topic.SHOW_WIDGET, this );
 };
 
@@ -59088,6 +59129,8 @@ feng.views.helpers.Helper.prototype.calculatePosition = function( box ) {
 	
 	this._x = Math.max(150, Math.min(viewportSize.width - 150 - size.width, this._x));
 	this._y = Math.max(25, Math.min(viewportSize.height - 150 - size.height, this._y));
+
+	this._box = box;
 };
 
 
@@ -59122,6 +59165,13 @@ feng.views.helpers.Helper.prototype.onHideWidget = function( widget ){
 feng.views.helpers.Helper.prototype.onResize = function( e ) {
 
 	this._size = goog.style.getSize( this.domElement );
+
+	if(this._box) {
+	
+		this.calculatePosition( this._box );
+
+		this.updatePosition();
+	}
 };
 
 
@@ -59235,8 +59285,17 @@ feng.views.helpers.CompassHelper = function( domElement ){
 
   goog.base(this, domElement);
 
+  this._compassEl = null;
 };
 goog.inherits(feng.views.helpers.CompassHelper, feng.views.helpers.Helper);
+
+
+feng.views.helpers.CompassHelper.prototype.disposeInternal = function() {
+
+  goog.base(this, 'disposeInternal');
+
+  this._compassEl = null;
+};
 
 
 feng.views.helpers.CompassHelper.prototype.activate = function() {
@@ -59259,20 +59318,29 @@ feng.views.helpers.CompassHelper.prototype.deactivate = function() {
 };
 
 
+feng.views.helpers.CompassHelper.prototype.updateCompassBox = function() {
+
+	if(!this._compassEl) return;
+
+	var position = goog.style.getPageOffset( this._compassEl );
+	var size = goog.style.getSize( this._compassEl );
+
+	this._box.top = position.y;
+	this._box.right = position.x + size.width;
+	this._box.bottom = position.y + size.height;
+	this._box.left = position.x;
+};
+
+
 feng.views.helpers.CompassHelper.prototype.onTriggerCompass = function( compass ) {
 
 	if(this.hasOtherWidgetShown) {
 		return;
 	}
 	
-	var domElement = compass.domElement;
-	var position = goog.style.getPageOffset( domElement );
-	var size = goog.style.getSize( domElement );
+	this._compassEl = compass.domElement;
 
-	this._box.top = position.y;
-	this._box.right = position.x + size.width;
-	this._box.bottom = position.y + size.height;
-	this._box.left = position.x;
+	this.updateCompassBox();
 
 	this.show( this._box );
 };
@@ -59287,6 +59355,14 @@ feng.views.helpers.CompassHelper.prototype.onUntriggerCompass = function() {
 feng.views.helpers.CompassHelper.prototype.onCompleteCompass = function() {
 
 	this.doComplete();
+};
+
+
+feng.views.helpers.CompassHelper.prototype.onResize = function(e) {
+
+	this.updateCompassBox();
+
+	goog.base(this, 'onResize', e);
 };goog.provide('feng.views.helpers.WalkHelper');
 
 goog.require('goog.async.Delay');
@@ -59426,6 +59502,8 @@ feng.views.helpers.Helpers = function(){
 
   this._numCompletedHelpers = 0;
   this._totalHelpers = 3;
+
+  this._isActivated = false;
 };
 goog.inherits(feng.views.helpers.Helpers, goog.events.EventTarget);
 goog.addSingletonGetter(feng.views.helpers.Helpers);
@@ -59445,6 +59523,10 @@ feng.views.helpers.Helpers.prototype.disposeInternal = function() {
   this._selectorHelper = null;
   this._walkHelper = null;
 
+  if(this.domElement.parentNode) {
+    goog.dom.removeNode( this.domElement );
+  }
+
   this.domElement = null;
 };
 
@@ -59453,6 +59535,12 @@ feng.views.helpers.Helpers.prototype.activate = function() {
 
   if(this.isDisposed()) {
     return;
+  }
+
+  if(this._isActivated) {
+    return;
+  }else {
+    this._isActivated = true;
   }
 
   goog.events.listen( this, feng.events.EventType.COMPLETE, this.onHelperComplete, false, this );
@@ -59477,11 +59565,32 @@ feng.views.helpers.Helpers.prototype.deactivate = function() {
     return;
   }
   
+  if(!this._isActivated) {
+    return;
+  }else {
+    this._isActivated = false;
+  }
+
   goog.events.unlisten( this, feng.events.EventType.COMPLETE, this.onHelperComplete, false, this );
 
   this._compassHelper.deactivate();
   this._selectorHelper.deactivate();
   this._walkHelper.deactivate();
+};
+
+
+feng.views.helpers.Helpers.prototype.show = function( shouldShow ){
+
+  var shouldShow = goog.isBoolean(shouldShow) ? shouldShow : true;
+
+  goog.dom.classes.enable( this.domElement, 'hidden', !shouldShow );
+  
+  if(!shouldShow) {
+
+    this._compassHelper.hide();
+    this._selectorHelper.hide();
+    this._walkHelper.hide();
+  }
 };
 
 
@@ -59717,10 +59826,9 @@ feng.views.sections.controls.Compass.prototype.onClick = function(e){
 
 		if(this._isInDesignMode) return false;
 
-		this._view3d.modeController.setMode({
-			type: feng.events.EventType.CHANGE,
-			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-			nextMode: feng.controllers.view3d.ModeController.Mode.DESIGN
+		this.dispatchEvent({
+			type: feng.events.EventType.CLICK_COMPASS,
+			mode: 'design'
 		});
 
 		feng.pubsub.publish( feng.PubSub.Topic.TRIGGER_COMPASS, this );
@@ -59729,15 +59837,9 @@ feng.views.sections.controls.Compass.prototype.onClick = function(e){
 
 		if(!this._isInDesignMode) return false;
 
-		var designControl = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.DESIGN );
-		var toRotation = designControl.getRotation().clone();
-		toRotation.x = 0;
-
-		this._view3d.modeController.setMode({
-			type: feng.events.EventType.CHANGE,
-			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-			nextMode: feng.controllers.view3d.ModeController.Mode.BROWSE,
-			toRotation: toRotation
+		this.dispatchEvent({
+			type: feng.events.EventType.CLICK_COMPASS,
+			mode: 'browse'
 		});
 
 		feng.pubsub.publish( feng.PubSub.Topic.COMPLETE_COMPASS, this );
@@ -59857,6 +59959,8 @@ feng.views.sections.captions.ChangePictureCaption.prototype.onClickItem = functi
   this._object.setPicture( this._pictureId );
 
   this._object.nextPicture();
+
+  feng.soundController.playSfx('click');
 };goog.provide('feng.views.sections.controls.ObjectSelector');
 
 goog.require('goog.events');
@@ -60158,9 +60262,13 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.show = function() {
 
   goog.base(this, 'show');
 
-  goog.object.forEach(this._itemEls, function(objectEl) {
-    this._eventHandler.listen(objectEl, 'click', this.onClickObject, false, this);
+  goog.object.forEach(this._itemEls, function(itemEl) {
+    goog.dom.classes.enable( itemEl, 'loading', false );
+    this._eventHandler.listen(itemEl, 'click', this.onClickItem, false, this);
   }, this);
+
+  this._eventHandler.listen( this._object, feng.events.EventType.LOAD, this.onLoadStart, false, this );
+  this._eventHandler.listen( this._object, feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this );
 };
 
 
@@ -60172,7 +60280,7 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.hide = function() {
 };
 
 
-feng.views.sections.captions.ChangeObjectCaption.prototype.onClickObject = function(e) {
+feng.views.sections.captions.ChangeObjectCaption.prototype.onClickItem = function(e) {
 
   if(this._objectId) {
     goog.dom.classes.enable( this._itemEls[this._objectId], 'active', false );
@@ -60187,6 +60295,20 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.onClickObject = funct
   this.scrollBar.resize();
   
   this._object.change( this._objectId );
+
+  feng.soundController.playSfx('click');
+};
+
+
+feng.views.sections.captions.ChangeObjectCaption.prototype.onLoadStart = function(e) {
+
+  goog.dom.classes.enable( this._itemEls[e.id], 'loading', true );
+};
+
+
+feng.views.sections.captions.ChangeObjectCaption.prototype.onLoadComplete = function(e) {
+
+  goog.dom.classes.enable( this._itemEls[e.id], 'loading', false );
 };goog.provide('feng.views.sections.controls.HomeButton');
 
 goog.require('goog.dom');
@@ -60648,6 +60770,8 @@ feng.views.sections.controls.DropButton.prototype.onClick = function(e){
 
 	this.fadeOut();
 
+  feng.soundController.playSfx('confirm');
+
   var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
 
   browseControls.dispatchEvent({
@@ -60756,9 +60880,9 @@ feng.views.sections.controls.Book.prototype.onModeChange = function(e){
   switch(e.mode) {
 
     case feng.controllers.view3d.ModeController.Mode.CLOSE_UP:
-	if(this._isActivated) {
-		this.deactivate();
-	}
+		if(this._isActivated) {
+			this.deactivate();
+		}
     break;
 
     default:
@@ -61006,7 +61130,7 @@ feng.views.sections.controls.Tooltips.prototype.onClickGatewayTooltip = function
   var gatewayId = e.currentTarget.getAttribute('data-id');
   var gateway = this._view3d.getView3dObject( gatewayId );
 
-  this._view3d.modeController.control.dispatchEvent({
+  this.dispatchEvent({
     type: feng.events.EventType.CLICK_GATEWAY,
     gateway: gateway
   });
@@ -61671,6 +61795,8 @@ feng.views.sections.captions.DropFruitsCaption.prototype.onClickItem = function(
   this.scrollBar.resize();
 
   this._object.dropFruit( this._fruitId );
+
+  feng.soundController.playSfx('click');
 };goog.provide('feng.views.View3DHud');
 
 goog.require('feng.views.helpers.Helpers');
@@ -61813,6 +61939,10 @@ feng.views.View3DHud.prototype.pause = function( shouldPause ) {
 
   goog.dom.classes.enable( this._controlsEl, 'hidden', shouldPause );
 
+  if(!this._helpers.isDisposed()) {
+    this._helpers.show( !shouldPause );
+  }
+
   feng.mainOptions.showHelpButton( !shouldPause );
 };
 
@@ -61953,6 +62083,10 @@ feng.views.View3DHud.prototype.showControls = function( shouldShow ) {
   goog.dom.classes.enable( this._controlsEl, 'hidden', !shouldShow );
   
   this.tooltips.show( shouldShow );
+
+  if(!this._helpers.isDisposed()) {
+    this._helpers.show( shouldShow );
+  }
 
   feng.mainOptions.showHelpButton( shouldShow );
 };
@@ -62563,6 +62697,10 @@ feng.apps.Main = function() {
 	feng.office = (feng.utils.Utils.getQuery('office') === 'true') || feng.Config['office'];
 	feng.quality = feng.utils.Utils.getQuery('quality') || feng.Config['quality'];
 	
+	if(feng.Config['escapeConsole'] === true) {
+		feng.utils.Utils.escapeConsole();
+	}
+
 	feng.viewportSize = feng.apps.Main.getViewportSize();
 
 	goog.events.listen(window, goog.events.EventType.RESIZE, function() {
@@ -63574,7 +63712,7 @@ goog.require('feng.apps.PathEdit');
 /**
  * @expose
  */
-feng.version = '12.9.14';
+feng.version = '12.10.14';
 
 
 feng.Config = {};
@@ -63597,6 +63735,15 @@ feng.init = function( config ) {
 	if(queryData.get('office') === 'true') {
 
 		feng.Config['office'] = true;
+	}
+
+	if(queryData.get('console')) {
+
+		feng.Config['escapeConsole'] = (queryData.get('console') === 'false');
+
+	}else {
+
+		feng.Config['escapeConsole'] = (feng.Config['escapeConsole'] === 'true');
 	}
 
 	// execute app

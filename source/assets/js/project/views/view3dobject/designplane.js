@@ -59,7 +59,7 @@ feng.views.view3dobject.DesignPlane.prototype.createTextures = function(){
 
 feng.views.view3dobject.DesignPlane.prototype.updateOpacity = function( opt_opacity ){
 
-  var opacity = goog.isNumber(opt_opacity) ? opt_opacity : this.opacity;
+  this.opacity = goog.isNumber(opt_opacity) ? opt_opacity : this.opacity;
 
-  this.object3d.material.opacity = opacity;
+  this.object3d.material.opacity = this.opacity;
 };

@@ -140,6 +140,10 @@ feng.views.View3DHud.prototype.pause = function( shouldPause ) {
 
   goog.dom.classes.enable( this._controlsEl, 'hidden', shouldPause );
 
+  if(!this._helpers.isDisposed()) {
+    this._helpers.show( !shouldPause );
+  }
+
   feng.mainOptions.showHelpButton( !shouldPause );
 };
 
@@ -280,6 +284,10 @@ feng.views.View3DHud.prototype.showControls = function( shouldShow ) {
   goog.dom.classes.enable( this._controlsEl, 'hidden', !shouldShow );
   
   this.tooltips.show( shouldShow );
+
+  if(!this._helpers.isDisposed()) {
+    this._helpers.show( shouldShow );
+  }
 
   feng.mainOptions.showHelpButton( shouldShow );
 };

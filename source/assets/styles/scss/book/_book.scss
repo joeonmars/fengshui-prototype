@@ -69,6 +69,27 @@
 							}
 						}
 
+						&.unlocked {
+							>.card{
+								>.curtain{
+									>.wrapper{
+
+										&.unlocked{
+											display: table-cell;
+										}
+
+										&.locked{
+											display: none;
+										}
+									}
+								}
+
+								>.detail{
+									visibility: visible;
+								}
+							}
+						}
+
 						>.card{
 							position: relative;
 							margin: 0 auto;
@@ -77,11 +98,11 @@
 
 							>.curtain{
 								position: absolute;
-								z-index: 1;
+								z-index: 3;
 								display: table;
 								width: 100%;
 								height: 100%;
-								background-color: rgba(255, 255, 255, 1);
+								background-color: #fff;
 								visibility: visible;
 								opacity: 1;
 								@include transition(visibility .25s, opacity .25s ease-out);
@@ -90,6 +111,14 @@
 									display: table-cell;
 									vertical-align: middle;
 									text-align: center;
+
+									&.unlocked{
+										display: none;
+									}
+
+									&.locked{
+										display: table-cell;
+									}
 
 									>.icon{
 										font-size: 8em;
@@ -120,6 +149,7 @@
 								z-index: 0;
 								width: 100%;
 								height: 100%;
+								visibility: visible;
 
 								>.screen{
 									position: relative;
@@ -138,7 +168,6 @@
 										background-color: #fff;
 										opacity: 1;
 										visibility: visible;
-										-webkit-backface-visibility: hidden;
 										@include transition(opacity .4s, visibility .4s);
 										@include transition-delay(.5s);
 									}

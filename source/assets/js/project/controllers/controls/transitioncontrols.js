@@ -59,12 +59,10 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 
 	if(nextModeIsDesign) {
 
-		designPlane.addToScene();
+		skybox.updateOpacity(1);
 		skybox.addToScene();
 
-		TweenMax.fromTo(skybox, dur, {
-			opacity: 1
-		}, {
+		TweenMax.to(skybox, dur, {
 			opacity: 0,
 			'onUpdate': skybox.updateOpacity,
 			'onUpdateScope': skybox,
@@ -72,9 +70,10 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 			'onCompleteScope': skybox
 		});
 
-		TweenMax.fromTo(designPlane, dur, {
-			opacity: 0
-		}, {
+		designPlane.updateOpacity(0);
+		designPlane.addToScene();
+
+		TweenMax.to(designPlane, dur, {
 			opacity: 1,
 			'onUpdate': designPlane.updateOpacity,
 			'onUpdateScope': designPlane
@@ -86,28 +85,11 @@ feng.controllers.controls.TransitionControls.prototype.start = function ( ev ) {
 
 		if(!skybox.isInScene()) {
 
+			skybox.updateOpacity( 1 );
 			skybox.addToScene();
 
-			var halfDur = dur/2;
-
-			TweenMax.fromTo(skybox, halfDur, {
-				opacity: 0
-			}, {
-				opacity: 1,
-				'delay': halfDur,
-				'onUpdate': skybox.updateOpacity,
-				'onUpdateScope': skybox
-			});
-
-			TweenMax.fromTo(designPlane, dur, {
-				opacity: 1
-			}, {
-				opacity: 0,
-				'onUpdate': designPlane.updateOpacity,
-				'onUpdateScope': designPlane,
-				'onComplete': designPlane.removeFromScene,
-				'onCompleteScope': designPlane
-			});
+			designPlane.updateOpacity( 0 );
+			designPlane.removeFromScene();
 		}
 	}
 

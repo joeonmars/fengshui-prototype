@@ -83,9 +83,9 @@ feng.views.view3dobject.Skybox.prototype.disposeTextures = function(){
 
 feng.views.view3dobject.Skybox.prototype.updateOpacity = function( opt_opacity ){
 
-  var opacity = goog.isNumber(opt_opacity) ? opt_opacity : this.opacity;
+  this.opacity = goog.isNumber(opt_opacity) ? opt_opacity : this.opacity;
 
   goog.array.forEach(this._material.materials, function(material) {
-    material.opacity = opacity;
-  });
+    material.opacity = this.opacity;
+  }, this);
 };

@@ -31,9 +31,13 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.show = function() {
 
   goog.base(this, 'show');
 
-  goog.object.forEach(this._itemEls, function(objectEl) {
-    this._eventHandler.listen(objectEl, 'click', this.onClickObject, false, this);
+  goog.object.forEach(this._itemEls, function(itemEl) {
+    goog.dom.classes.enable( itemEl, 'loading', false );
+    this._eventHandler.listen(itemEl, 'click', this.onClickItem, false, this);
   }, this);
+
+  this._eventHandler.listen( this._object, feng.events.EventType.LOAD, this.onLoadStart, false, this );
+  this._eventHandler.listen( this._object, feng.events.EventType.LOAD_COMPLETE, this.onLoadComplete, false, this );
 };
 
 
@@ -45,7 +49,7 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.hide = function() {
 };
 
 
-feng.views.sections.captions.ChangeObjectCaption.prototype.onClickObject = function(e) {
+feng.views.sections.captions.ChangeObjectCaption.prototype.onClickItem = function(e) {
 
   if(this._objectId) {
     goog.dom.classes.enable( this._itemEls[this._objectId], 'active', false );
@@ -62,4 +66,16 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.onClickObject = funct
   this._object.change( this._objectId );
 
   feng.soundController.playSfx('click');
+};
+
+
+feng.views.sections.captions.ChangeObjectCaption.prototype.onLoadStart = function(e) {
+
+  goog.dom.classes.enable( this._itemEls[e.id], 'loading', true );
+};
+
+
+feng.views.sections.captions.ChangeObjectCaption.prototype.onLoadComplete = function(e) {
+
+  goog.dom.classes.enable( this._itemEls[e.id], 'loading', false );
 };

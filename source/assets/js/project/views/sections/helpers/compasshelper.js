@@ -9,8 +9,17 @@ feng.views.helpers.CompassHelper = function( domElement ){
 
   goog.base(this, domElement);
 
+  this._compassEl = null;
 };
 goog.inherits(feng.views.helpers.CompassHelper, feng.views.helpers.Helper);
+
+
+feng.views.helpers.CompassHelper.prototype.disposeInternal = function() {
+
+  goog.base(this, 'disposeInternal');
+
+  this._compassEl = null;
+};
 
 
 feng.views.helpers.CompassHelper.prototype.activate = function() {
@@ -33,20 +42,29 @@ feng.views.helpers.CompassHelper.prototype.deactivate = function() {
 };
 
 
+feng.views.helpers.CompassHelper.prototype.updateCompassBox = function() {
+
+	if(!this._compassEl) return;
+
+	var position = goog.style.getPageOffset( this._compassEl );
+	var size = goog.style.getSize( this._compassEl );
+
+	this._box.top = position.y;
+	this._box.right = position.x + size.width;
+	this._box.bottom = position.y + size.height;
+	this._box.left = position.x;
+};
+
+
 feng.views.helpers.CompassHelper.prototype.onTriggerCompass = function( compass ) {
 
 	if(this.hasOtherWidgetShown) {
 		return;
 	}
 	
-	var domElement = compass.domElement;
-	var position = goog.style.getPageOffset( domElement );
-	var size = goog.style.getSize( domElement );
+	this._compassEl = compass.domElement;
 
-	this._box.top = position.y;
-	this._box.right = position.x + size.width;
-	this._box.bottom = position.y + size.height;
-	this._box.left = position.x;
+	this.updateCompassBox();
 
 	this.show( this._box );
 };
@@ -61,4 +79,12 @@ feng.views.helpers.CompassHelper.prototype.onUntriggerCompass = function() {
 feng.views.helpers.CompassHelper.prototype.onCompleteCompass = function() {
 
 	this.doComplete();
+};
+
+
+feng.views.helpers.CompassHelper.prototype.onResize = function(e) {
+
+	this.updateCompassBox();
+
+	goog.base(this, 'onResize', e);
 };

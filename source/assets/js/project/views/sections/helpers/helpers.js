@@ -28,6 +28,8 @@ feng.views.helpers.Helpers = function(){
 
   this._numCompletedHelpers = 0;
   this._totalHelpers = 3;
+
+  this._isActivated = false;
 };
 goog.inherits(feng.views.helpers.Helpers, goog.events.EventTarget);
 goog.addSingletonGetter(feng.views.helpers.Helpers);
@@ -47,6 +49,10 @@ feng.views.helpers.Helpers.prototype.disposeInternal = function() {
   this._selectorHelper = null;
   this._walkHelper = null;
 
+  if(this.domElement.parentNode) {
+    goog.dom.removeNode( this.domElement );
+  }
+
   this.domElement = null;
 };
 
@@ -55,6 +61,12 @@ feng.views.helpers.Helpers.prototype.activate = function() {
 
   if(this.isDisposed()) {
     return;
+  }
+
+  if(this._isActivated) {
+    return;
+  }else {
+    this._isActivated = true;
   }
 
   goog.events.listen( this, feng.events.EventType.COMPLETE, this.onHelperComplete, false, this );
@@ -79,11 +91,32 @@ feng.views.helpers.Helpers.prototype.deactivate = function() {
     return;
   }
   
+  if(!this._isActivated) {
+    return;
+  }else {
+    this._isActivated = false;
+  }
+
   goog.events.unlisten( this, feng.events.EventType.COMPLETE, this.onHelperComplete, false, this );
 
   this._compassHelper.deactivate();
   this._selectorHelper.deactivate();
   this._walkHelper.deactivate();
+};
+
+
+feng.views.helpers.Helpers.prototype.show = function( shouldShow ){
+
+  var shouldShow = goog.isBoolean(shouldShow) ? shouldShow : true;
+
+  goog.dom.classes.enable( this.domElement, 'hidden', !shouldShow );
+  
+  if(!shouldShow) {
+
+    this._compassHelper.hide();
+    this._selectorHelper.hide();
+    this._walkHelper.hide();
+  }
 };
 
 

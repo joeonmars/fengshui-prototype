@@ -291,6 +291,9 @@ feng.views.sections.controls.ProgressBar.prototype.unlockTip = function( tipId )
 
   if(!unlockedTipEl) return;
 
+  // assign url to book
+  goog.dom.query('a', unlockedTipEl)[0].href = this._tips[tipId].readTipToken;
+
   goog.dom.classes.add( unlockedTipEl, 'unlocked' );
 };
 

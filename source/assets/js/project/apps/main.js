@@ -37,6 +37,10 @@ feng.apps.Main = function() {
 	feng.office = (feng.utils.Utils.getQuery('office') === 'true') || feng.Config['office'];
 	feng.quality = feng.utils.Utils.getQuery('quality') || feng.Config['quality'];
 	
+	if(feng.Config['escapeConsole'] === true) {
+		feng.utils.Utils.escapeConsole();
+	}
+
 	feng.viewportSize = feng.apps.Main.getViewportSize();
 
 	goog.events.listen(window, goog.events.EventType.RESIZE, function() {

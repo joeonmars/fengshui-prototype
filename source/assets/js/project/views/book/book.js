@@ -37,7 +37,6 @@ feng.views.book.Book = function() {
 	this._closeButton = goog.dom.getElementByClass('close-button', this.domElement);
 
 	this._tipCounterEl = goog.dom.getElementByClass('tip-counter', this.domElement);
-	this.updateTipCounter();
 
 	this._scrollerEl = goog.dom.getElementByClass('scroller', this.domElement);
 	this._scrollerInnerEl = goog.dom.getElementByClass('inner', this._scrollerEl);
@@ -60,6 +59,12 @@ feng.views.book.Book = function() {
 		var tipModule = new feng.views.book.TipModule( tipModuleEl, index, widthChangeCallback );
 		tipModule.setParentEventTarget( this );
 		return tipModule;
+	}, this);
+
+	this._tipModulesDic = {};
+
+	goog.array.forEach(this._tipModules, function(tipModule) {
+		this._tipModulesDic[ tipModule.id ] = tipModule;
 	}, this);
 
 	this._tipModuleWidths = [];
@@ -96,6 +101,8 @@ feng.views.book.Book = function() {
 	goog.events.listen( feng.navigationController, feng.events.EventType.CHANGE, this.onNavigationChange, false, this );
 
 	this.animateOut( true );
+
+	this.updateTips();
 };
 goog.inherits(feng.views.book.Book, goog.events.EventTarget);
 goog.addSingletonGetter(feng.views.book.Book);
@@ -377,11 +384,18 @@ feng.views.book.Book.prototype.applyScrollX = function() {
 };
 
 
-feng.views.book.Book.prototype.updateTipCounter = function() {
+feng.views.book.Book.prototype.updateTips = function() {
 
-	var numUnlocked = goog.array.count(this._tips, function(tip) {
-		return tip.unlocked;
-	});
+	var numUnlocked = 0;
+
+	goog.array.forEach(this._tips, function(tip) {
+
+		if(tip.unlocked) {
+
+			numUnlocked ++;
+			this._tipModulesDic[ tip.id ].unlock();
+		}
+	}, this);
 
 	this._tipCounterEl.innerHTML = numUnlocked + '/' + this._tips.length;
 };
@@ -498,7 +512,7 @@ feng.views.book.Book.prototype.onNavigationChange = function( e ) {
 
 feng.views.book.Book.prototype.onTipUnlock = function( e ) {
 
-	this.updateTipCounter();
+	this.updateTips();
 };
 
 

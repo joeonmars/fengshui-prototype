@@ -75,6 +75,11 @@ feng.views.helpers.Helper.prototype.show = function( box ) {
 		this.updatePosition();
 	}
 
+	if(this.isShown) {
+
+		this.onResize();
+	}
+
 	feng.pubsub.publish( feng.PubSub.Topic.SHOW_WIDGET, this );
 };
 
@@ -208,6 +213,8 @@ feng.views.helpers.Helper.prototype.calculatePosition = function( box ) {
 	
 	this._x = Math.max(150, Math.min(viewportSize.width - 150 - size.width, this._x));
 	this._y = Math.max(25, Math.min(viewportSize.height - 150 - size.height, this._y));
+
+	this._box = box;
 };
 
 
@@ -242,6 +249,13 @@ feng.views.helpers.Helper.prototype.onHideWidget = function( widget ){
 feng.views.helpers.Helper.prototype.onResize = function( e ) {
 
 	this._size = goog.style.getSize( this.domElement );
+
+	if(this._box) {
+	
+		this.calculatePosition( this._box );
+
+		this.updatePosition();
+	}
 };
 
 

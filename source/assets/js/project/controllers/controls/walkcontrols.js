@@ -56,7 +56,10 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 	var coordinates = pathfinder.findPath( matrixId, start, end );
 
 	if(!coordinates) {
-
+		
+		var matrixData = feng.pathfinder.getMatrixData( this._view3d.getMatrixId() );
+		console.log(coordinates, matrixId, start, end, feng.pathfinder.getTileByPosition(start, matrixData), feng.pathfinder.getTileByPosition(end, matrixData));
+		
 		this.bounceBack( nextMode );
 		return;
 	}

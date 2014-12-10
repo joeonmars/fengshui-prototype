@@ -78,6 +78,8 @@
 					<script src="assets/js/project/feng.js"></script>
 				');
 			}
+
+			$ESCAPE_CONSOLE = $USE_COMPILE_JS;
 		?>
 
 		<!-- execute project js-->
@@ -88,7 +90,8 @@
 				app: 'main',//'pathedit',
 				quality: 'high',
 				debug: !true,
-				office: !true
+				office: !true,
+				escapeConsole: '<?php echo json_encode($ESCAPE_CONSOLE); ?>'
 			};
 
 			feng.init( config );

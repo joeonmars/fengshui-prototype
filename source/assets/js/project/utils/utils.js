@@ -7,9 +7,23 @@ goog.require('goog.Uri');
 goog.require('goog.window');
 
 
-/**
- * @constructor
- */
+feng.utils.Utils.escapeConsole = function() {
+
+  window.console = {};
+  
+  var methods = [
+      'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+      'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+      'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+      'timeStamp', 'trace', 'warn'
+    ];
+  
+  for(var i=0;i<methods.length;i++){
+    console[methods[i]] = function(){};
+  }
+};
+
+
 feng.utils.Utils.setValueByKeys = function(key, val, obj) {
 	
   var ka = key.split(/\./);

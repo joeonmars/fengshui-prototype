@@ -177,8 +177,8 @@ feng.controllers.view3d.PathfindingController.prototype.getTileByPosition = func
 	var numCols = matrixData.numCols;
 	var numRows = matrixData.numRows;
 
-	var tileCol = Math.round((position.x - gridMinX) / tileSize);
-	var tileRow = Math.round((position.z - gridMinZ) / tileSize);
+	var tileCol = goog.math.clamp( Math.round((position.x - gridMinX) / tileSize), 0, numCols-1 );
+	var tileRow = goog.math.clamp( Math.round((position.z - gridMinZ) / tileSize), 0, numRows-1 );
 
 	var tile = [ tileCol, tileRow ];
 

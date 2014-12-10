@@ -23,6 +23,8 @@ feng.views.book.TipModule = function( domElement, index, widthChangeCallback ) {
 
 	this._shareButtons = goog.dom.query('.share a', this.domElement);
 
+	this.id = this.domElement.getAttribute('data-tip-id');
+
 	this.index = index;
 	
 	this._widthChangeCallback = widthChangeCallback;
@@ -40,6 +42,8 @@ feng.views.book.TipModule = function( domElement, index, widthChangeCallback ) {
 	this._coverWidth = 0;
 
 	this._imageLoaded = false;
+
+	this._isUnlocked = false;
 
 	this._outerEventHandler = new goog.events.EventHandler(this);
 	this._innerEventHandler = new goog.events.EventHandler(this);
@@ -68,7 +72,7 @@ feng.views.book.TipModule.prototype.getFinalWidth = function() {
 
 feng.views.book.TipModule.prototype.setActive = function( isActive ) {
 
-	if(isActive) {
+	if(isActive && this._isUnlocked) {
 
 		goog.dom.classes.add(this.domElement, 'active');
 
@@ -150,6 +154,14 @@ feng.views.book.TipModule.prototype.updateWidth = function() {
 	goog.style.setSize( this.domElement, this.size );
 
 	this._widthChangeCallback( this.index, this.size.width );
+};
+
+
+feng.views.book.TipModule.prototype.unlock = function() {
+
+	this._isUnlocked = true;
+
+	goog.dom.classes.enable( this.domElement, 'unlocked', true );
 };
 
 

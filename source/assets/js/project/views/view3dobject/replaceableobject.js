@@ -60,6 +60,11 @@ feng.views.view3dobject.ReplaceableObject.prototype.change = function( objectId 
 		}
 	]);
 
+	this.dispatchEvent({
+		type: feng.events.EventType.LOAD,
+		id: this._idToLoad
+	});
+
 	//
 };
 
@@ -117,6 +122,11 @@ feng.views.view3dobject.ReplaceableObject.prototype.onLoadComplete = function( e
 	this.updateObject( view3dObject );
 
 	this.unlock();
+
+	this.dispatchEvent({
+		type: feng.events.EventType.LOAD_COMPLETE,
+		id: this._idToLoad
+	});
 };
 
 

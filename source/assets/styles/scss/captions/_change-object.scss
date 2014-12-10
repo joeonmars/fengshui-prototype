@@ -14,6 +14,13 @@
 
 			>.item-button{
 
+				&.loading{
+					background-image: image-url("loader-small-black.gif") !important;
+					background-position: center !important;
+					background-repeat: no-repeat !important;
+					background-size: 40% 40% !important;
+				}
+
 				// item classes
 				&[data-object="rubberplant"] {
 					@include retina-icon("rubberplant");

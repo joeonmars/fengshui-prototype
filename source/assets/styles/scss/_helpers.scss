@@ -32,7 +32,7 @@
 
 	&.shown{
 		opacity: 1;
-		visibility: visible;
+		visibility: inherit;
 	}
 
 	p{
