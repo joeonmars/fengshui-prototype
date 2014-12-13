@@ -32,8 +32,9 @@ feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
   this._proxyBox.view3dObject = this;
 
   this._canRender = this.object3d.visible;
-  this._isRenderEnabled = this._canRender;
-  this._isTextureCreated = false;
+  
+  this.isRenderEnabled = this._canRender;
+  this.isTextureCreated = false;
 
   this._isGlass = this.data.glass;
 
@@ -78,13 +79,13 @@ feng.views.view3dobject.View3DObject.prototype.init = function(){
 
 feng.views.view3dobject.View3DObject.prototype.createTextures = function(){
 
-  if(this._isTextureCreated) {
+  if(this.isTextureCreated) {
 
     return false;
 
   }else {
 
-    this._isTextureCreated = true;
+    this.isTextureCreated = true;
   }
 
   var preloadModel = feng.models.Preload.getInstance();
@@ -140,13 +141,13 @@ feng.views.view3dobject.View3DObject.prototype.createTextures = function(){
 
 feng.views.view3dobject.View3DObject.prototype.disposeTextures = function(){
 
-  if(!this._isTextureCreated) {
+  if(!this.isTextureCreated) {
 
     return false;
 
   }else {
 
-    this._isTextureCreated = false;
+    this.isTextureCreated = false;
   }
 
   this.object3d.traverse(function(object) {
@@ -296,8 +297,8 @@ feng.views.view3dobject.View3DObject.prototype.enableRender = function(){
 
   if(!this._canRender) return;
 
-  if(this._isRenderEnabled) return;
-  else this._isRenderEnabled = true;
+  if(this.isRenderEnabled) return;
+  else this.isRenderEnabled = true;
 
   // itself, its parent and its children should be renderable
   this.object3d.visible = true;
@@ -325,8 +326,8 @@ feng.views.view3dobject.View3DObject.prototype.enableRender = function(){
 
 feng.views.view3dobject.View3DObject.prototype.disableRender = function(){
 
-  if(!this._isRenderEnabled) return;
-  else this._isRenderEnabled = false;
+  if(!this.isRenderEnabled) return;
+  else this.isRenderEnabled = false;
 
   // itself and its children should not be renderable
   this.object3d.visible = false;

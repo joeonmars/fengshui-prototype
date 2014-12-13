@@ -235,8 +235,15 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderMask = function
 	if(maskedObject) {
 
 		maskedObject.enableRender();
+
+		// force arms to render
 		this._view3d.arms.enableRender();
 		
+		// force skybox to render with wall when enabled
+		if(this._view3d.getView3dObject('wall').isRenderEnabled) {
+			this._view3d.skybox.enableRender();
+		}
+
 		if(maskedObject.hasPicked && maskedObject.dropParent && maskedObject.dropParent.view3dObject) {
 			maskedObject.dropParent.view3dObject.enableRender();
 		}
