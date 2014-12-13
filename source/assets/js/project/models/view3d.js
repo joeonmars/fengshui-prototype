@@ -36,6 +36,7 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.studio-door-handle-texture"
 			},
 			'studio-door-frame': {
+				castShadow: true,
 				texture: "studio.livingroom.studio-door-frame-texture"
 			},
 			'bathroom-door': {
@@ -52,7 +53,6 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.bathroom-door-texture"
 			},
 			'wall':	{
-				castShadow: true,
 				collidable: true,
 				texture: "studio.livingroom.wall-texture"
 			},
@@ -71,8 +71,7 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.ceiling-lamp-2-texture"
 			},
 			'floor': {
-				texture: "studio.livingroom.floor-texture",
-				receiveShadow: true
+				texture: "studio.livingroom.floor-texture"
 			},
 			'plant': {
 				Class: "replaceable",
@@ -240,10 +239,24 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.wardrobe-texture"
 			},
 			'window-left': {
-				texture: "studio.livingroom.window-left-texture"
+				Class: "windows",
+				tipKey: 'studio.livingroom.windows',
+				texture: "studio.livingroom.window-left-texture",
+				camera: {
+					position: new THREE.Vector3(51.37, 80.49, -57.52),
+					rotation: new THREE.Euler(-0.12, -1.52, 0.00, 'YXZ'),
+					fov: 58
+				}
 			},
 			'window-right': {
-				texture: "studio.livingroom.window-right-texture"
+				Class: "windows",
+				tipKey: 'studio.livingroom.windows',
+				texture: "studio.livingroom.window-right-texture",
+				camera: {
+					position: new THREE.Vector3(-11.90, 80.00, 76.44),
+					rotation: new THREE.Euler(-0.06, -1.67, 0.00, 'YXZ'),
+					fov: 36
+				}
 			},
 			'window-left-switch': {
 				texture: "studio.livingroom.window-left-switch-texture"

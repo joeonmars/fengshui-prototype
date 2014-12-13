@@ -325,10 +325,8 @@ feng.controllers.controls.BrowseControls.prototype.onNavigationChange = function
 	
 	if(goTipResult) {
 
-		var achievements = feng.models.achievements.Achievements.getInstance();
-		var tip = achievements.getTip( goTipResult['tipId'], goTipResult['viewId'], goTipResult['sectionId'] );
-
-		var object = this._view3d.getObjectByTip( tip );
+		var object = this._view3d.getView3dObjectById( goTipResult['objectId'] );
+		var tip = object.tip;
 
 		this.dispatchEvent({
 			type: feng.events.EventType.CHANGE,

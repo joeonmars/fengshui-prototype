@@ -143,18 +143,19 @@
 
 /**
  * Tooltip on tip object
- * @param tip the tip
+ * @param object the view3d tip object
+ * @param goTipToken the href to go tip
  */
 {template .TipTooltip}
-<a class="tooltip fadeOut tip locked" data-id="{ $tip.id }" href="{ $tip.goTipToken }">
+<a class="tooltip fadeOut tip locked" data-id="{ $object.id }" data-tip-id="{ $object.tip.id }" href="{ $goTipToken }">
 	<div class="bar">
 		<div class="symbol">
 			<div class="inner">
 				<div class="icon icon-eye-open"></div>
-				<div class="icon icon-{ $tip.icon }"></div>
+				<div class="icon icon-{ $object.tip.icon }"></div>
 			</div>
 		</div>
-		<h6>{ $tip.name }</h6>
+		<h6>{ $object.tip.name }</h6>
 	</div>
 </a>
 {/template}

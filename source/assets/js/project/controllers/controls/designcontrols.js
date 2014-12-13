@@ -370,31 +370,29 @@ feng.controllers.controls.DesignControls.prototype.onCameraTransitionToGatewayCo
 	var gatewayDirection = (new THREE.Vector3()).subVectors(gatewayOriginPosition, gatewayPosition).setY(0).normalize();
 
 	var fromPosition = gatewayOriginPosition.clone().add( gatewayDirection.clone().multiplyScalar(50) ).setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT );
-	
+
 	var fromRotation = new THREE.Euler(0, 0, 0, 'YXZ');
-  var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(fromPosition, gatewayPosition);
-  fromRotation.setFromQuaternion( quaternion );
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(fromPosition, gatewayPosition);
+	fromRotation.setFromQuaternion( quaternion );
 
-  var fromFov = feng.controllers.controls.Controls.Default.FOV;
+	var fromFov = feng.controllers.controls.Controls.Default.FOV;
 
-  this.dispatchEvent({
-  	type: feng.events.EventType.CHANGE,
-    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-    nextMode: feng.controllers.view3d.ModeController.Mode.EXIT,
-    fromPosition: fromPosition,
+	this.dispatchEvent({
+		type: feng.events.EventType.CHANGE,
+	  mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+	  nextMode: feng.controllers.view3d.ModeController.Mode.EXIT,
+	  fromPosition: fromPosition,
 		fromRotation: fromRotation,
 		fromFov: fromFov,
-    gateway: gateway
-  });
+	  gateway: gateway
+	});
 };
 
 
 feng.controllers.controls.DesignControls.prototype.onCameraTransitionToTipComplete = function( goTipResult ){
 
-	var achievements = feng.models.achievements.Achievements.getInstance();
-	var tip = achievements.getTip( goTipResult['tipId'], goTipResult['viewId'], goTipResult['sectionId'] );
-
-	var object = this._view3d.getObjectByTip( tip );
+	var object = this._view3d.getView3dObjectById( goTipResult['objectId'] );
+	var tip = object.tip;
 
 	// calculate camera position/rotation/fov before transition
 	var browseControls = this._view3d.modeController.getModeControl(feng.controllers.view3d.ModeController.Mode.BROWSE);

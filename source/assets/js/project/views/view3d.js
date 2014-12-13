@@ -226,6 +226,16 @@ feng.views.View3D.prototype.getView3dObject = function( name ){
 };
 
 
+feng.views.View3D.prototype.getView3dObjectById = function( id ){
+
+	var view3dObject = goog.object.findValue( this.view3dObjects, function(object) {
+		return (object.id === id);
+	});
+
+	return view3dObject;
+};
+
+
 feng.views.View3D.prototype.getObjectsByClass = function( objectClass ){
 
 	var result = [];

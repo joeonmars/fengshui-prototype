@@ -129,7 +129,7 @@ goog.addDependency('../../../../project/views/view3dobject/entities/refrigerator
 goog.addDependency('../../../../project/views/view3dobject/entities/sewingmachine.js', ['feng.views.view3dobject.entities.SewingMachine'], ['feng.utils.ThreeUtils', 'feng.views.view3dobject.TipObject']);
 goog.addDependency('../../../../project/views/view3dobject/entities/showerhead.js', ['feng.views.view3dobject.entities.Showerhead'], ['feng.utils.ThreeUtils', 'feng.views.view3dobject.TipObject', 'goog.fx.Dragger']);
 goog.addDependency('../../../../project/views/view3dobject/entities/wallpaper.js', ['feng.views.view3dobject.entities.Wallpaper'], ['feng.views.view3dobject.TipObject']);
-goog.addDependency('../../../../project/views/view3dobject/entities/windows.js', ['feng.views.view3dobject.entities.Windows'], ['feng.fx.TextureAnimator', 'feng.views.view3dobject.TipObject']);
+goog.addDependency('../../../../project/views/view3dobject/entities/windows.js', ['feng.views.view3dobject.entities.Windows'], ['feng.fx.TextureAnimator', 'feng.views.view3dobject.TipObject', 'goog.fx.Dragger']);
 goog.addDependency('../../../../project/views/view3dobject/gatewayobject.js', ['feng.views.view3dobject.GatewayObject'], ['feng.views.view3dobject.InteractiveObject']);
 goog.addDependency('../../../../project/views/view3dobject/interactiveobject.js', ['feng.views.view3dobject.InteractiveObject'], ['feng.views.view3dobject.View3DObject', 'goog.async.Delay', 'goog.events.EventHandler']);
 goog.addDependency('../../../../project/views/view3dobject/mirror.js', ['feng.views.view3dobject.Mirror'], ['feng.views.view3dobject.View3DObject']);
