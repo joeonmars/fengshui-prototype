@@ -239,6 +239,8 @@ feng.controllers.controls.BrowseControls.prototype.onInputMove = function ( e ) 
 
 feng.controllers.controls.BrowseControls.prototype.onMouseWheel = function ( e ) {
 
+	e.preventDefault();
+
 	var distance = goog.math.lerp( 100, 400, Math.abs(e.deltaY) / this._maxMouseWheelDeltaY );
 	distance *= - e.deltaY / Math.abs(e.deltaY);
 
