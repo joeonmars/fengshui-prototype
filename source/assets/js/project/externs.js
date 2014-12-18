@@ -18,6 +18,7 @@ TweenMax.reverse = {};
 TweenMax.reversed = {};
 TweenMax.updateTo = {};
 TweenMax.delayedCall = {};
+TweenMax.isTweening = {};
 
 var TweenLite = {};
 TweenLite.killTweensOf = {};

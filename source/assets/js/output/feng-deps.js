@@ -115,7 +115,7 @@ goog.addDependency('../../../../project/views/view3dobject/arms.js', ['feng.view
 goog.addDependency('../../../../project/views/view3dobject/designplane.js', ['feng.views.view3dobject.DesignPlane'], ['feng.views.view3dobject.View3DObject']);
 goog.addDependency('../../../../project/views/view3dobject/entities/bear.js', ['feng.views.view3dobject.entities.Bear'], ['feng.views.view3dobject.TipObject']);
 goog.addDependency('../../../../project/views/view3dobject/entities/cat.js', ['feng.views.view3dobject.entities.Cat'], ['feng.views.view3dobject.TipObject']);
-goog.addDependency('../../../../project/views/view3dobject/entities/closet.js', ['feng.views.view3dobject.entities.Closet'], ['feng.models.Preload', 'feng.utils.ThreeUtils', 'feng.views.view3dobject.TipObject']);
+goog.addDependency('../../../../project/views/view3dobject/entities/closet.js', ['feng.views.view3dobject.entities.Closet'], ['feng.utils.ThreeUtils', 'feng.views.view3dobject.TipObject', 'goog.fx.Dragger']);
 goog.addDependency('../../../../project/views/view3dobject/entities/computer.js', ['feng.views.view3dobject.entities.Computer'], ['feng.views.view3dobject.TipObject']);
 goog.addDependency('../../../../project/views/view3dobject/entities/desktopwallpaper.js', ['feng.views.view3dobject.entities.DesktopWallpaper'], ['feng.fx.TextureAnimator', 'feng.models.Preload', 'feng.views.view3dobject.TipObject']);
 goog.addDependency('../../../../project/views/view3dobject/entities/drawer.js', ['feng.views.view3dobject.entities.Drawer'], ['feng.views.view3dobject.TipObject']);

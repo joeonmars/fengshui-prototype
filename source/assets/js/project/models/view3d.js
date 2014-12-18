@@ -407,8 +407,8 @@ feng.models.View3D.Data = {
 				Class: "closet",
 				receiveShadow: true,
 				camera: {
-					position: new THREE.Vector3(35, 81, -47),
-					rotation: new THREE.Euler(-0.07, 1.70, 0.00, 'YXZ'),
+					position: new THREE.Vector3(27, 71, -49),
+					rotation: new THREE.Euler(0.07, 1.57, 0.00, 'YXZ'),
 					fov: 40
 				},
 				tipKey: 'studio.bathroom.closet',

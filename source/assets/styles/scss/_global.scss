@@ -507,52 +507,6 @@ body{
     }
   }
 
-  .fengshui-logo{
-
-    >.symbol{
-      position: relative;
-      margin: 0 auto;
-
-      >div{
-        @include absoluteTopLeft;
-        width: 100%;
-        height: 100%;
-        background-size: 100% 100%;
-
-        &.needle{
-          @include single-transition(transform, 2s, $easeInOutSine);
-          background-image: image-url('logo/needle.png');
-        }
-
-        &.frame{
-          @include single-transition(transform, .5s, $easeInOutSine);
-          background-image: image-url('logo/frame.png');
-        }
-      }
-    }
-
-    >h1{
-      position: relative;
-      display: block;
-
-      >div{
-        @include absoluteTopLeft;
-        width: 100%;
-        height: 100%;
-        background-size: 100% 100%;
-        font-size: 0;
-
-        &.line1{
-          background-image: image-url('logo/line-1.png');
-        }
-
-        &.line2{
-          background-image: image-url('logo/line-2.png');
-        }
-      }
-    }
-  }
-
   .close-button{
     &:disabled{
       display: none;
