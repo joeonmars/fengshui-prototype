@@ -21,9 +21,6 @@ feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
   this.id = object3d.name + '-' + object3d.uuid;
   this.data = data;
 
-  this.basePosition = this.object3d.position.clone();
-  this.baseRotation = this.object3d.rotation.clone();
-
   this._view3d = view3d;
   this._boundingBox = new THREE.Box3();
   this._boundingSphere = new THREE.Sphere();

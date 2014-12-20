@@ -356,40 +356,34 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.shelf-texture"
 			},
 			'jar-1': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-1-texture"
 			},
 			'jar-2': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-2-texture"
 			},
 			'jar-3': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-3-texture"
 			},
 			'jar-4': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-4-texture"
 			},
 			'jar-5': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-5-texture"
 			},
 			'jar-6': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-6-texture"
 			},
 			'jar-7': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-7-texture"
 			},
 			'jar-8': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-8-texture"
 			},
 			'jar-9': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-9-texture"
+			},
+			'jar-10': {
+				texture: "studio.bathroom.jar-10-texture"
 			},
 			'bottles': {
 				texture: "studio.bathroom.bottles-texture"
@@ -401,17 +395,17 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.cosmetic-bag-texture"
 			},
 			'closet': {
-				texture: "studio.bathroom.closet-texture"
-			},
-			'closet-door': {
 				Class: "closet",
 				receiveShadow: true,
 				camera: {
-					position: new THREE.Vector3(27, 71, -49),
+					position: new THREE.Vector3(27, 73, -52),
 					rotation: new THREE.Euler(0.07, 1.57, 0.00, 'YXZ'),
-					fov: 40
+					fov: 45
 				},
 				tipKey: 'studio.bathroom.closet',
+				texture: "studio.bathroom.closet-texture"
+			},
+			'closet-door': {
 				texture: "studio.bathroom.closet-door-texture"
 			},
 			'trashcan': {

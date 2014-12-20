@@ -138,6 +138,7 @@ feng.models.Preload = function(){
 				'jar-7-texture': 'images/texture/studio/bathroom/jar-7.jpg',
 				'jar-8-texture': 'images/texture/studio/bathroom/jar-8.jpg',
 				'jar-9-texture': 'images/texture/studio/bathroom/jar-9.jpg',
+				'jar-10-texture': 'images/texture/studio/bathroom/jar-10.jpg',
 				'closet-texture': 'images/texture/studio/bathroom/closet.jpg',
 				'closet-door-texture': 'images/texture/studio/bathroom/closet-door.jpg',
 				'trashcan-texture': 'images/texture/studio/bathroom/trashcan.jpg',
