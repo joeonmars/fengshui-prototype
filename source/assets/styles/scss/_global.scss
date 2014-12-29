@@ -465,12 +465,12 @@ body{
     text-align: center;
     line-height: 0;
     letter-spacing: .025em;
-    color: $gray-ui;
+    color: $blue;
     overflow: hidden;
-    border: 2px solid $gray-ui;
+    border: 2px solid $blue;
     vertical-align: middle;
-    font-size: 3em;
-    padding: 1em 1.1em;
+    font-size: 2.4em;
+    padding: 1.25em;
     @include border-radius( 40px );
     @include box-sizing( border-box );
     @include transition( color .4s $easeInOutCirc, border-color .2s, background-color .2s );
@@ -497,7 +497,7 @@ body{
 
     &:hover{
       color: #fff;
-      background-color: $gray-ui;
+      background-color: $blue;
 
       >.icon{
         @include translateX( 0px );

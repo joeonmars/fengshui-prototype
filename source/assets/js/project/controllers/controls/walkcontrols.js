@@ -97,7 +97,8 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 
 	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( actualEndPosition, toPosition );
 	this._endRotation.setFromQuaternion( quaternion );
-
+	this._endRotation.x = Math.max(this._endRotation.x, THREE.Math.degToRad(-40));
+	
 	this._startRotation.copy( ev.fromRotation );
 	
 	// adult walking speed is 1.564 meter per second
