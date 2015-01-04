@@ -151,9 +151,11 @@ feng.controllers.controls.DesignControls.prototype.isDragging = function() {
 
 feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 
-	var shouldEnable = goog.base(this, 'enable', enable);
+	var shouldDo = goog.base(this, 'enable', enable);
 
-	if(shouldEnable) {
+	if(!shouldDo) return false;
+	
+	if(this.isEnabled) {
 
 		this._zoomSlider.show(true);
 
@@ -164,7 +166,7 @@ feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 		this._zoomSlider.show(false);
 	}
 
-	this._dragger.setEnabled( shouldEnable );
+	this._dragger.setEnabled( this.isEnabled );
 };
 
 

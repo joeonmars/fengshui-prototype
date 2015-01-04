@@ -55,9 +55,11 @@ feng.controllers.controls.BrowseControls.prototype.setCamera = function( toRotat
 
 feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mouseEventToTrigger ) {
 
-	var shouldEnable = goog.base(this, 'enable', enable);
+	var shouldDo = goog.base(this, 'enable', enable);
 
-	if(shouldEnable) {
+	if(!shouldDo) return false;
+
+	if(this.isEnabled) {
 
 		if(mouseEventToTrigger) {
 			this.onInputDown( mouseEventToTrigger );
@@ -299,8 +301,8 @@ feng.controllers.controls.BrowseControls.prototype.onClickCompass = function(e) 
 
 	if(e.mode === 'design') {
 
-  	this.dispatchEvent({
-  		type: feng.events.EventType.CHANGE,
+  		this.dispatchEvent({
+  			type: feng.events.EventType.CHANGE,
 			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
 			nextMode: feng.controllers.view3d.ModeController.Mode.DESIGN
 		});

@@ -21,9 +21,10 @@ feng.controllers.NavigationController = function(){
   	this._navHistory = new goog.history.Html5History();
   	this._navHistory.setUseFragment(false);
   }else {
+  	var hideHistory = false;
   	var input = goog.dom.createDom('input');
   	var iframe = goog.dom.createDom('iframe');
-  	this._navHistory = new goog.History(false, null, input, iframe);
+  	this._navHistory = new goog.History(hideHistory, null, input, iframe);
   }
 
   // the current token

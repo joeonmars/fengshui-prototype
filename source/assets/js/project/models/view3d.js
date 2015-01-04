@@ -486,6 +486,7 @@ feng.models.View3D.Data = {
 				Class: "gateway",
 				viewid: "corridor",
 				gatewayid: "stairways-door",
+				isStairs: true,
 				openSound: null,
 				closeSound: null,
 				origin: {
@@ -731,6 +732,7 @@ feng.models.View3D.Data = {
 				viewid: "livingroom",
 				gatewayid: "stairways-door",
 				isEntry: true,
+				isStairs: true,
 				openSound: null,
 				closeSound: null,
 				origin: {

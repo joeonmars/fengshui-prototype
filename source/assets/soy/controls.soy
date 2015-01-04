@@ -151,7 +151,7 @@
 	<div class="bar">
 		<div class="symbol">
 			<div class="inner">
-				<div class="icon icon-eye-open"></div>
+				<div class="icon icon-magnifier"></div>
 				<div class="icon icon-{ $object.tip.icon }"></div>
 			</div>
 		</div>
@@ -170,8 +170,8 @@
 	<div class="bar">
 		<div class="symbol">
 			<div class="inner">
-				<div class="icon icon-eye-open"></div>
-				<div class="icon icon-enter"></div>
+				<div class="icon icon-magnifier"></div>
+				<div class="icon {if $gateway.isStairs == true}icon-stairs{else}icon-door{/if}"></div>
 			</div>
 		</div>
 		<h6>To { $gateway.viewId }</h6>

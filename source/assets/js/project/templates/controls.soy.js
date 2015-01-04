@@ -101,7 +101,7 @@ feng.templates.controls.DropButton = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.controls.TipTooltip = function(opt_data, opt_ignored) {
-  return '<a class="tooltip fadeOut tip locked" data-id="' + opt_data.object.id + '" data-tip-id="' + opt_data.object.tip.id + '" href="' + opt_data.goTipToken + '"><div class="bar"><div class="symbol"><div class="inner"><div class="icon icon-eye-open"></div><div class="icon icon-' + opt_data.object.tip.icon + '"></div></div></div><h6>' + opt_data.object.tip.name + '</h6></div></a>';
+  return '<a class="tooltip fadeOut tip locked" data-id="' + opt_data.object.id + '" data-tip-id="' + opt_data.object.tip.id + '" href="' + opt_data.goTipToken + '"><div class="bar"><div class="symbol"><div class="inner"><div class="icon icon-magnifier"></div><div class="icon icon-' + opt_data.object.tip.icon + '"></div></div></div><h6>' + opt_data.object.tip.name + '</h6></div></a>';
 };
 
 
@@ -112,7 +112,7 @@ feng.templates.controls.TipTooltip = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.controls.GatewayTooltip = function(opt_data, opt_ignored) {
-  return '<a class="tooltip fadeOut gateway" data-id="' + opt_data.gateway.gatewayId + '"><div class="bar"><div class="symbol"><div class="inner"><div class="icon icon-eye-open"></div><div class="icon icon-enter"></div></div></div><h6>To ' + opt_data.gateway.viewId + '</h6></div></a>';
+  return '<a class="tooltip fadeOut gateway" data-id="' + opt_data.gateway.gatewayId + '"><div class="bar"><div class="symbol"><div class="inner"><div class="icon icon-magnifier"></div><div class="icon ' + ((opt_data.gateway.isStairs == true) ? 'icon-stairs' : 'icon-door') + '"></div></div></div><h6>To ' + opt_data.gateway.viewId + '</h6></div></a>';
 };
 
 
@@ -124,16 +124,16 @@ feng.templates.controls.GatewayTooltip = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var output = '<div class="progressBar"><div class="inner"><button class="prev icon icon-prev"></button><button class="next icon icon-next"></button><div class="tips-wrapper">';
-  var viewIdList380 = soy.$$getMapKeys(opt_data.tipsOfViews);
-  var viewIdListLen380 = viewIdList380.length;
-  for (var viewIdIndex380 = 0; viewIdIndex380 < viewIdListLen380; viewIdIndex380++) {
-    var viewIdData380 = viewIdList380[viewIdIndex380];
-    output += '<ul class="tips" data-view-id="' + viewIdData380 + '">';
-    var tipList384 = opt_data.tipsOfViews[viewIdData380];
-    var tipListLen384 = tipList384.length;
-    for (var tipIndex384 = 0; tipIndex384 < tipListLen384; tipIndex384++) {
-      var tipData384 = tipList384[tipIndex384];
-      output += '<li class="tip" data-tip-id="' + tipData384.id + '" data-view-id="' + viewIdData380 + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content"><div class="icon icon-' + tipData384.icon + '" data-tip-id="' + tipData384.id + '" data-view-id="' + tipData384.viewId + '" data-section-id="' + tipData384.sectionId + '"></div><h6>' + tipData384.name + '</h6></a></div></li>';
+  var viewIdList386 = soy.$$getMapKeys(opt_data.tipsOfViews);
+  var viewIdListLen386 = viewIdList386.length;
+  for (var viewIdIndex386 = 0; viewIdIndex386 < viewIdListLen386; viewIdIndex386++) {
+    var viewIdData386 = viewIdList386[viewIdIndex386];
+    output += '<ul class="tips" data-view-id="' + viewIdData386 + '">';
+    var tipList390 = opt_data.tipsOfViews[viewIdData386];
+    var tipListLen390 = tipList390.length;
+    for (var tipIndex390 = 0; tipIndex390 < tipListLen390; tipIndex390++) {
+      var tipData390 = tipList390[tipIndex390];
+      output += '<li class="tip" data-tip-id="' + tipData390.id + '" data-view-id="' + viewIdData386 + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content"><div class="icon icon-' + tipData390.icon + '" data-tip-id="' + tipData390.id + '" data-view-id="' + tipData390.viewId + '" data-section-id="' + tipData390.sectionId + '"></div><h6>' + tipData390.name + '</h6></a></div></li>';
     }
     output += '</ul>';
   }

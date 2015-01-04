@@ -74,6 +74,7 @@ feng.views.MainOptions.prototype.onClick = function(e){
 		case this._facebookButton:
 		case this._twitterButton:
 		case this._googleButton:
+    e.preventDefault();
     feng.utils.Utils.popUp( e.currentTarget.href );
 		break;
 	}

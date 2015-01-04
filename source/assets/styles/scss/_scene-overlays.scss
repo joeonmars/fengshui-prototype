@@ -30,15 +30,14 @@
 >.ending-overlay,
 >.finale-overlay{
 	@include absoluteTopLeft;
-	background-color: rgba(0, 0, 0, .65);
 
 	.content{
 		>.primary-button{
 			display: inline-block;
 			vertical-align: top;
 
-			&.stay{
-				margin-left: 0;
+			&.next{
+				margin-left: 1em;
 			}
 		}
 	}
@@ -49,6 +48,10 @@
 	.close-button{
 		display: none;
 	}
+}
+
+>.opening-overlay{
+	background-color: rgba(0, 0, 0, .65);
 }
 
 >.finale-overlay{

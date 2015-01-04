@@ -1,6 +1,7 @@
 goog.provide('feng.fx.Leaves');
 
 goog.require('goog.events.EventHandler');
+goog.require('goog.async.Delay');
 goog.require('goog.fx.anim.Animated');
 goog.require('feng.fx.LeafSprite');
 goog.require('feng.models.Preload');
@@ -83,6 +84,8 @@ feng.fx.Leaves = function( eventTarget, color ){
 
 	this._animated = new goog.fx.anim.Animated();
 	this._animated.onAnimationFrame = goog.bind( this.onAnimationFrame, this );
+
+	this._animateOutDelay = new goog.async.Delay( this.animateOut, 2000, this );
 };
 goog.inherits(feng.fx.Leaves, THREE.Object3D);
 
@@ -107,6 +110,8 @@ feng.fx.Leaves.prototype.deactivate = function(){
 
 	this._eventHandler.removeAll();
 
+	this._animateOutDelay.stop();
+
 	this._activeObject = null;
 
 	this.isActive = false;
@@ -123,6 +128,8 @@ feng.fx.Leaves.prototype.animateIn = function( tipObject ){
 
 		this._activeObject = tipObject;
 	}
+
+	this._animateOutDelay.stop();
 
 	// calculate object radius
 	var boundingSphere = tipObject.getBoundingSphere();
@@ -164,14 +171,21 @@ feng.fx.Leaves.prototype.animateIn = function( tipObject ){
 };
 
 
-feng.fx.Leaves.prototype.animateOut = function(){
+feng.fx.Leaves.prototype.animateOut = function( hasDelay ){
 
 	if(this._leafScaleTweener.reversed() || !this.isActive) {
 		return;
 	}
 
-	// scale down leaves
-	this._leafScaleTweener.reverse();
+	if(hasDelay) {
+
+		this._animateOutDelay.start();
+
+	}else {
+
+		// scale down leaves
+		this._leafScaleTweener.reverse();
+	}
 };
 
 

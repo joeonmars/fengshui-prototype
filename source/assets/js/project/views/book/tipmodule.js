@@ -179,6 +179,6 @@ feng.views.book.TipModule.prototype.onClickShareButton = function(e) {
 };
 
 
-feng.views.book.TipModule.RATIO_OF_WIDTH = 0.25;
-feng.views.book.TipModule.RATIO_OF_MARGIN = 0.045;
+feng.views.book.TipModule.RATIO_OF_WIDTH = 0.35;
+feng.views.book.TipModule.RATIO_OF_MARGIN = 0.025;
 feng.views.book.TipModule.MIN_SIZE = new goog.math.Size(300, 440);

@@ -114,13 +114,13 @@
 					height: 100px;
 					text-align: center;
 					line-height: 100px !important;
-					color: $gray-ui;
+					color: $blue;
 					font-size: 50px;
 				}
 
-				>.icon-eye-open{
+				>.icon-magnifier{
 					font-size: 30px;
-					color: $yellow-ui;
+					color: #fff;
 				}
 			}
 		}
@@ -143,7 +143,7 @@
 		&:hover{
 			width: 400px;
 			left: -200px;
-			background-color: $gray-ui;
+			background-color: $blue;
 
 			.inner{
 				@include translateY(0px);

@@ -30,7 +30,7 @@ goog.addDependency('../../../../project/fx/energyflow.js', ['feng.fx.EnergyFlow'
 goog.addDependency('../../../../project/fx/floattext.js', ['feng.fx.FloatText'], ['feng.templates.captions', 'goog.events.EventTarget', 'goog.string']);
 goog.addDependency('../../../../project/fx/leaf.js', ['feng.fx.Leaf'], ['feng.fx.Particle', 'feng.fx.TextureAnimator', 'goog.math']);
 goog.addDependency('../../../../project/fx/leafsprite.js', ['feng.fx.LeafSprite'], ['feng.fx.TextureAnimator']);
-goog.addDependency('../../../../project/fx/leaves.js', ['feng.fx.Leaves'], ['feng.fx.LeafSprite', 'feng.models.Preload', 'goog.events.EventHandler', 'goog.fx.anim.Animated']);
+goog.addDependency('../../../../project/fx/leaves.js', ['feng.fx.Leaves'], ['feng.fx.LeafSprite', 'feng.models.Preload', 'goog.async.Delay', 'goog.events.EventHandler', 'goog.fx.anim.Animated']);
 goog.addDependency('../../../../project/fx/particle.js', ['feng.fx.Particle'], ['goog.math']);
 goog.addDependency('../../../../project/fx/pathtrack.js', ['feng.fx.PathTrack'], ['feng.utils.Randomizer']);
 goog.addDependency('../../../../project/fx/renderer.js', ['feng.fx.Renderer'], ['goog.array']);

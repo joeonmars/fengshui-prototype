@@ -13,7 +13,6 @@ feng.views.view3dobject.InteractiveObject = function( object3d, data, view3d ){
   goog.base(this, object3d, data, view3d);
 
   this.object3d.interactiveObject = this;
-  this.isPhysical = true;
 
   this.isSpecialCameraEnabled = data.camera ? true : false;
   this.specialCameraSettings = data.camera || {};

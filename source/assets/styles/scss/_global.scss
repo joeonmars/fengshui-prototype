@@ -354,9 +354,10 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   color: $darkgray-ui;
   @include border-radius(50%);
   @include box-sizing(border-box);
+  @include single-transition(border-color, .25s);
 
   &:hover{
-    border-color: $yellow-ui;
+    border-color: $darkgray-ui;
   }
 }
 //
@@ -485,7 +486,7 @@ body{
       display: inline-block;
       vertical-align: middle;
       width: 0;
-      color: $yellow-ui;
+      color: #fff;
       text-align: center;
       line-height: 0;
       margin-left: -.2em;

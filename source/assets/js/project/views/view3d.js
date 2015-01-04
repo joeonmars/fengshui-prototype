@@ -316,6 +316,8 @@ feng.views.View3D.prototype.deactivate = function(){
  	if(!this.isActivated) return;
 	else this.isActivated = false;
 
+	goog.fx.anim.unregisterAnimation(this);
+	
 	this._eventHandler.removeAll();
 
  	goog.object.forEach(this.interactiveObjects, function(interactiveObject) {
@@ -325,8 +327,6 @@ feng.views.View3D.prototype.deactivate = function(){
  	this.modeController.deactivate();
 
  	this.fx.deactivate();
-
-	goog.fx.anim.unregisterAnimation(this);
 };
 
 

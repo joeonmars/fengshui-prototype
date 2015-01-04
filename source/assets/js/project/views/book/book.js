@@ -333,12 +333,12 @@ feng.views.book.Book.prototype.scrollToTipModule = function( index, instant ) {
 
 	var scrollX = tipModuleX - (this._viewportSize.width - tipModuleWidth) / 2;
 
-	var duration = instant ? 0 : .5;
+	var duration = instant ? 0 : .65;
 
 	this._scrollTweener = TweenMax.to(this, duration, {
 		_scrollX: scrollX,
 		_targetScrollX: scrollX,
-		'ease': Quad.easeInOut,
+		'ease': Strong.easeOut,
 		'onUpdate': this.applyScrollX,
 		'onUpdateScope': this
 	});

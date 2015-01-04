@@ -15,6 +15,7 @@ feng.views.view3dobject.GatewayObject = function( object3d, data, view3d ){
 
 	this.toHome = this.data.toHome;  
   this.isEntry = this.data.isEntry;
+  this.isStairs = this.data.isStairs;
 
   this.origin = this.data.origin;
   this.origin.position.y = feng.controllers.controls.Controls.Default.STANCE_HEIGHT;

@@ -61,12 +61,22 @@ feng.controllers.view3d.ModeController.prototype.init = function(){
 feng.controllers.view3d.ModeController.prototype.activate = function(){
 
 	this._eventHandler.listen( this, feng.events.EventType.CHANGE, this.onModeChange, false, this );
+
+	this.control = (this.control === this._exitControls) ? this._browseControls : this.control;
+	
+	if(this.control) {
+		this.control.enable( true );
+	}
 };
 
 
 feng.controllers.view3d.ModeController.prototype.deactivate = function(){
 
 	this._eventHandler.removeAll();
+
+	if(this.control) {
+		this.control.enable( false );
+	}
 };
 
 
@@ -149,15 +159,7 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	var newMode = e.mode;
 	var nextMode = e.nextMode;
 
-	if(!newMode) return false;
-
-	if(this._mode === newMode) {
-
-		return;
-	}else {
-
-		this._mode = newMode;
-	}
+	this._mode = newMode;
 
 	console.log('view3D mode changed from ' + oldMode + ' to ' + newMode);
 	

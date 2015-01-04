@@ -85,9 +85,11 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 	
 	this._activeObject = object || this._activeObject;
 
-	var shouldEnable = goog.base(this, 'enable', enable);
+	var shouldDo = goog.base(this, 'enable', enable);
 
-	if(shouldEnable) {
+	if(!shouldDo) return false;
+
+	if(this.isEnabled) {
 
 		this.distanceToObject = this.getPosition().distanceTo( this._activeObject.object3d.position );
 
@@ -113,6 +115,9 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 		
 		var caption = this._view3d.hud.getCaption( this._activeObject, this );
 		caption.hide();
+
+		this._view3d.fx.greenLeaves.animateOut( 4 );
+		this._view3d.fx.yellowLeaves.animateOut( 4 );
 	}
 };
 

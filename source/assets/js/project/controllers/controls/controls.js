@@ -217,7 +217,10 @@ feng.controllers.controls.Controls.prototype.deactivate = function() {
 
 feng.controllers.controls.Controls.prototype.enable = function( enable ) {
 
-	if(this.isEnabled === enable) return;
+	if(this.isEnabled === enable) {
+
+		return false;
+	}
 	
 	this.isEnabled = enable;
 
@@ -230,7 +233,7 @@ feng.controllers.controls.Controls.prototype.enable = function( enable ) {
 		this.deactivate();
 	}
 
-	return this.isEnabled;
+	return true;
 };
 
 
