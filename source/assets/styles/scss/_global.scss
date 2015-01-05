@@ -472,6 +472,7 @@ body{
     vertical-align: middle;
     font-size: 2.4em;
     padding: 1.25em;
+    -webkit-backface-visibility: hidden;
     @include border-radius( 40px );
     @include box-sizing( border-box );
     @include transition( color .4s $easeInOutCirc, border-color .2s, background-color .2s );

@@ -24,22 +24,10 @@ feng.views.view3dobject.entities.Wallpaper = function( object3d, data, view3d ){
     })
   ]);
 
-  this._video.load();
+  this._videoCanvas = null;
+  this._videoCanvasContext = null;
 
-  this._videoCanvas = goog.dom.createDom('canvas', {
-    'width': 480,
-    'height': 268
-  });
-
-  this._videoCanvasContext = this._videoCanvas.getContext( '2d' );
-  this._videoCanvasContext.fillStyle = '#000000';
-  this._videoCanvasContext.fillRect( 0, 0, this._videoCanvas.width, this._videoCanvas.height );
-
-  this._videoTexture = new THREE.Texture( this._videoCanvas );
-  this._videoTexture.minFilter = THREE.LinearFilter;
-  this._videoTexture.magFilter = THREE.LinearFilter;
-
-  this.object3d.material.map = this._videoTexture;
+  this._videoTexture = null;
 };
 goog.inherits(feng.views.view3dobject.entities.Wallpaper, feng.views.view3dobject.TipObject);
 
@@ -57,6 +45,29 @@ feng.views.view3dobject.entities.Wallpaper.prototype.deactivate = function(){
   goog.base(this, 'deactivate');
 
   goog.events.unlisten( this._video, 'canplay', this.onVideoUpdate, false, this );
+};
+
+
+feng.views.view3dobject.entities.Wallpaper.prototype.createTextures = function(){
+
+  goog.base(this, 'createTextures');
+
+  this._videoCanvas = goog.dom.createDom('canvas', {
+    'width': 480,
+    'height': 268
+  });
+
+  this._videoCanvasContext = this._videoCanvas.getContext( '2d' );
+  this._videoCanvasContext.fillStyle = '#000000';
+  this._videoCanvasContext.fillRect( 0, 0, this._videoCanvas.width, this._videoCanvas.height );
+
+  this._videoTexture = new THREE.Texture( this._videoCanvas );
+  this._videoTexture.minFilter = THREE.LinearFilter;
+  this._videoTexture.magFilter = THREE.LinearFilter;
+
+  this.object3d.material.map = this._videoTexture;
+
+  this._video.load();
 };
 
 
