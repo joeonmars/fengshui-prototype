@@ -67,10 +67,6 @@ feng.views.popups.Tutorial.prototype.nextStep = function(){
 	if(this._step < this._totalSteps) {
 
 		this.gotoStep( this._step );
-
-	}else {
-
-		this.dispatchEvent( feng.events.EventType.COMPLETE );
 	}
 };
 

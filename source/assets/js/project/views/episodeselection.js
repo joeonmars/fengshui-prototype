@@ -19,7 +19,6 @@ feng.views.EpisodeSelection = function(){
 
   this.domElement = soy.renderAsFragment(feng.templates.main.EpisodeSelection, templateData);
 
-  this._isTutorialComplete = false;
   this._isBuffering = false;
 
   feng.pubsub.subscribeOnce( feng.PubSub.Topic.MAIN_LOAD_COMPLETE, this.init, this );
@@ -309,7 +308,6 @@ feng.views.EpisodeSelection.prototype.onLoadStart = function(e){
 	this._episode = e.target.getParentEventTarget();
 	console.log(this._episode.id + ': load start');
 
-	this._isTutorialComplete = false;
 	this._isBuffering = false;
 
 	feng.pubsub.subscribeOnce( feng.PubSub.Topic.BUFFER_START, this.onBufferStart, this );
@@ -340,19 +338,7 @@ feng.views.EpisodeSelection.prototype.onLoadComplete = function(e){
 	feng.sectionController.unlisten( feng.events.EventType.PROGRESS, this.onLoadProgress, false, this );
 	feng.sectionController.unlisten( feng.events.EventType.COMPLETE, this.onLoadComplete, false, this );
 
-	feng.tutorial.listenOnce( feng.events.EventType.COMPLETE, this.onTutorialComplete, false, this );
 	feng.tutorial.listenOnce( feng.events.EventType.CLOSE, this.doAfterComplete, false, this );
-};
-
-
-feng.views.EpisodeSelection.prototype.onTutorialComplete = function(e){
-
-	this._isTutorialComplete = true;
-
-	if(!this._isBuffering) {
-
-		feng.tutorial.animateOut();
-	}
 };
 
 
@@ -367,9 +353,4 @@ feng.views.EpisodeSelection.prototype.onBufferComplete = function(e){
 	this._isBuffering = false;
 
 	feng.tutorial.showSkipButton();
-
-	if(this._isTutorialComplete) {
-
-		feng.tutorial.animateOut();
-	}
 };
