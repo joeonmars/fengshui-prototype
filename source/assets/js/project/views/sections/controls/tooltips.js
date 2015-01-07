@@ -1,7 +1,7 @@
 goog.provide('feng.views.sections.controls.Tooltips');
 
 goog.require('goog.async.Throttle');
-goog.require('goog.dom.classes');
+goog.require('goog.dom.classlist');
 goog.require('feng.views.sections.controls.Controls');
 goog.require('feng.utils.ThreeUtils');
 
@@ -105,7 +105,7 @@ feng.views.sections.controls.Tooltips.prototype.setView3D = function( view3d ){
     var tooltipEl = this._tooltips[ id ];
 
     var tip = tipObject.tip;
-    goog.dom.classes.enable( tooltipEl, 'locked', !(tip.unlocked && tip.isFinal) );
+    goog.dom.classlist.enable( tooltipEl, 'locked', !(tip.unlocked && tip.isFinal) );
 
     if(!tip.unlocked && tip.isFinal) {
       goog.events.listenOnce( tip, feng.events.EventType.UNLOCK, this.onTipUnlock, false, this );
@@ -130,7 +130,7 @@ feng.views.sections.controls.Tooltips.prototype.activate = function(){
   if(!shouldActivate) return;
 
   goog.object.forEach( this._currentTooltips, function(tooltip) {
-    goog.dom.classes.addRemove( tooltip, 'fadeOut', 'fadeIn' );
+    goog.dom.classlist.addRemove( tooltip, 'fadeOut', 'fadeIn' );
   });
 
   this.updateDetectObjects();
@@ -146,7 +146,7 @@ feng.views.sections.controls.Tooltips.prototype.deactivate = function(){
   if(!shouldDeactivate) return;
 
   goog.object.forEach( this._currentTooltips, function(tooltip) {
-    goog.dom.classes.addRemove( tooltip, 'fadeIn', 'fadeOut' );
+    goog.dom.classlist.addRemove( tooltip, 'fadeIn', 'fadeOut' );
   });
 
   goog.fx.anim.unregisterAnimation( this );
@@ -203,11 +203,11 @@ feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
 
     if(dot >= thresholdDot) {
 
-      goog.dom.classes.enable( tooltip, 'hidden', false );
+      goog.dom.classlist.enable( tooltip, 'hidden', false );
 
     }else {
 
-      goog.dom.classes.enable( tooltip, 'hidden', true );
+      goog.dom.classlist.enable( tooltip, 'hidden', true );
       return;
     }
     
@@ -217,7 +217,7 @@ feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
       (intersects[0].object.view3dObject === object || intersects[0].object.parent.view3dObject === object || goog.array.contains(intersects[0].object.children, object.object3d))
       );
 
-    goog.dom.classes.enable( tooltip, 'hidden', !shouldShow );
+    goog.dom.classlist.enable( tooltip, 'hidden', !shouldShow );
 
   }, this);
 };
@@ -228,7 +228,7 @@ feng.views.sections.controls.Tooltips.prototype.onTipUnlock = function(e){
   var tooltipEls = goog.dom.query('.tooltip[data-tip-id=' + e.tip.id + ']', this.domElement);
 
   goog.array.forEach(tooltipEls, function(tooltipEl) {
-    goog.dom.classes.remove( tooltipEl, 'locked' );
+    goog.dom.classlist.remove( tooltipEl, 'locked' );
   });
 };
 
@@ -251,7 +251,7 @@ feng.views.sections.controls.Tooltips.prototype.onModeChange = function(e){
 
   goog.base(this, 'onModeChange', e);
 
-  goog.dom.classes.enable(this.domElement, 'design', (e.mode === feng.controllers.view3d.ModeController.Mode.DESIGN));
+  goog.dom.classlist.enable(this.domElement, 'design', (e.mode === feng.controllers.view3d.ModeController.Mode.DESIGN));
 
   switch(e.mode) {
     case feng.controllers.view3d.ModeController.Mode.ENTRY:
@@ -285,9 +285,21 @@ feng.views.sections.controls.Tooltips.prototype.onAnimationFrame = function(now)
 
     var pos3d = object.getCenter();
     var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, camera, viewSize );
-    
+
     var id = object.id;
-    var tooltip = this._currentTooltips[ id ];
+    var tooltip = this._currentTooltips[ id ];    
+
+    var inScreenRect = (pos2d.x > 140 && pos2d.x < (viewSize.width - 140) && pos2d.y > 140 && pos2d.y < (viewSize.height - 140));
+
+    if(inScreenRect) {
+
+      goog.dom.classlist.addRemove( tooltip, 'fadeOut', 'fadeIn' );
+
+    }else {
+
+      goog.dom.classlist.addRemove( tooltip, 'fadeIn', 'fadeOut' );
+    }
+
     goog.style.setStyle( tooltip, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)' );
 
   }, this);
