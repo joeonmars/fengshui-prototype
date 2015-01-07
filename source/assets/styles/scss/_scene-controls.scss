@@ -270,9 +270,14 @@ $border_size: 7px;
 		right: 0;
 		width: 45em;
 		height: 10em;
-		padding: 2.7em 2em;
+		padding: 2em 0;
 		text-align: center;
 		visibility: hidden;
+
+		@media screen and (max-width: 1300px) {
+			font-size: .85em;
+			bottom: 14.5em;
+		}
 
 		>.wrapper{
 			display: table-cell;
@@ -285,12 +290,13 @@ $border_size: 7px;
 				text-align: left;
 
 				>li{
-					color: $gray;
+					color: $darkgray-ui;
 					font-size: 1.7em;
 				    font-family: $font_marine_light;
 				    letter-spacing: 0.12em;
 				    line-height: 1.4;
 					display: none;
+					-webkit-font-smoothing: antialiased;
 
 					&.shown{
 						display: block;
@@ -302,7 +308,8 @@ $border_size: 7px;
 			>button{
 				display: inline-block;
 				vertical-align: middle;
-				@include arrow-button( 3.6em, $gray-ui, transparent, #fff, $gray-ui );
+				@include arrow-button( 3.6em, $lightgray-ui, transparent, #fff, $blue );
+				border-color: transparent;
 				margin: 0 (2em/3.6);
 
 				&:first-child{
@@ -404,14 +411,15 @@ $border_size: 7px;
 		display: inline-block;
 		padding: 0 8em;
 		height: 6.8em;
-		background-color: rgba(255, 255, 255, .22);
+		background-color: rgba(#fff, .22);
 		@include box-sizing(border-box);
 		@include border-radius(4em);
 
 		>button{
 			position: absolute;
 			margin: .25em;
-			@include arrow-button( 4.5em, rgba(255, 255, 255, .6), transparent, #fff, $darkgray-ui );
+			@include arrow-button( 4.5em, rgba(#fff, .5), transparent, #fff, $blue );
+			border-color: transparent;
 
 			&.prev{
 				left: 0;

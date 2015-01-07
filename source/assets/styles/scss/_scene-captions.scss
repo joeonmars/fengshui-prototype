@@ -22,7 +22,7 @@
 		}
 
 		>.close-button{
-			@include arrow-button( 4.8em, $darkgray-ui, transparent, #fff, $darkgray-ui );
+			@include arrow-button( 4.8em, $blue, transparent, #fff, $blue );
 		}
 
 		&.hide-panel{
@@ -43,7 +43,7 @@
 			}
 
 			>.close-button{
-				@include arrow-button( 4.8em, #fff, transparent, #fff, $darkgray-ui );
+				@include arrow-button( 4.8em, $blue, transparent, #fff, $blue );
 			}
 		}
 	}
@@ -87,7 +87,8 @@
 
 			>.icon{
 				display: inline-block;
-				@include arrow-button( 4.5em, #fff, transparent, #fff, $darkgray-ui );
+				@include arrow-button( 4.5em, #fff, transparent, #fff, $blue );
+				border-color: transparent;
 			}
 
 			>h3{

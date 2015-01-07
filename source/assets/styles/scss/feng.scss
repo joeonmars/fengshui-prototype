@@ -38,12 +38,6 @@ body{
 			@include border-radius(50%);
 			@include transition(background-color .25s, color .2s);
 			z-index: 1;
-
-			&:hover{
-				opacity: 1;
-				background-color: $darkgray-ui;
-				color: #fff;
-			}
 		}
 
 		&.info{
@@ -108,7 +102,7 @@ body{
 		&:hover{
 
 			>.icon{
-				background-color: $darkgray-ui;
+				background-color: $blue;
 				color: #fff;
 			}
 			

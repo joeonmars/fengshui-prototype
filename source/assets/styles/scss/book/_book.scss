@@ -11,7 +11,7 @@
 		right: 40px;
 		margin-top: -5px;
 		z-index: 2;
-		@include arrow-button( 4.8em, #fff, transparent, #fff, $darkgray-ui );
+		@include arrow-button( 4.8em, $blue, transparent, #fff, $blue );
 	}
 
 	>h2{
@@ -94,7 +94,7 @@
 						>.card{
 							position: relative;
 							margin: 0 auto;
-							color: #000;
+							color: $darkgray-ui;
 							background-color: #fff;
 
 							>.curtain{
@@ -127,8 +127,11 @@
 									}
 
 									>h1{
-										font-size: 2.8em;
+										font-size: 2.4em;
 										line-height: 1.4;
+										text-transform: uppercase;
+										font-family: $font_marine;
+										font-weight: bold;
 									}
 
 									>h2{
@@ -136,7 +139,6 @@
 										font-size: 1.5em;
 										line-height: 1.5;
 										text-transform: capitalize;
-										color: $darkgray-ui;
 
 										>span{
 											display: block;
@@ -189,15 +191,30 @@
 									@include box-sizing(border-box);
 
 									>h3{
-										font-size: 2.8em;
+										width: 100%;
+										text-align: center;
+										font-size: 2.4em;
 										line-height: 1.4;
 										color: $darkgray-ui;
-										text-transform: capitalize;
+										text-transform: uppercase;
+										font-family: $font_marine;
+										font-weight: bold;
+
+										&:after{
+											content: "";
+											position: relative;
+											z-index: 2;
+											display: block;
+											margin: .25em auto 0 auto;
+											width: 33px;
+											height: 1px;
+											background-color: $lightgray-ui;
+										}
 									}
 
 									>.scroller{
 										@include absoluteTopLeft;
-										padding: 60px 2.5em 90px 2.5em;
+										padding: 60px 2.5em 80px 2.5em;
 										width: 100%;
 										height: 100%;
 										overflow: hidden;
@@ -219,7 +236,7 @@
 										&:after{
 											content: "";
 											position: absolute;
-											bottom: 90px;
+											bottom: 80px;
 											left: 0;
 											display: block;
 											width: 100%;
@@ -261,13 +278,15 @@
 
 									>.share{
 										position: absolute;
-										bottom: 2.5em;
-										text-align: left;
+										left: 0;
+										bottom: 2em;
+										width: 100%;
+										text-align: center;
 
 										>li{
 											display: inline-block;
 											vertical-align: middle;
-											margin: 0 .65em;
+											margin: 0 .8em;
 
 											&:first-child{
 												margin-left: 0;
@@ -275,7 +294,7 @@
 
 											>a{
 												@extend %round-social-button;
-												font-size: 2.2em;
+												font-size: 1.8em;
 											}
 										}
 									}
