@@ -20082,15 +20082,15 @@ feng.templates.debug.PathfindingDebugView = function(opt_data, opt_ignored) {
  */
 feng.templates.debug.AchievementsDebugView = function(opt_data, opt_ignored) {
   var output = '\t';
-  var param446 = '<div class="tipsPanel"><button class="unlock-all">Unlock All</button><ul class="tips">';
-  var tipList448 = opt_data.tips;
-  var tipListLen448 = tipList448.length;
-  for (var tipIndex448 = 0; tipIndex448 < tipListLen448; tipIndex448++) {
-    var tipData448 = tipList448[tipIndex448];
-    param446 += '<li data-tip-id="' + tipData448.id + '" data-view-id="' + tipData448.view + '" data-section-id="' + tipData448.section + '"><div class="icon icon-' + tipData448.icon + '"></div><div class="caption"><p>' + tipData448.id + '</p><p>' + tipData448.view + '</p><p>' + tipData448.section + '</p></div></li>';
+  var param454 = '<div class="tipsPanel"><button class="unlock-all">Unlock All</button><ul class="tips">';
+  var tipList456 = opt_data.tips;
+  var tipListLen456 = tipList456.length;
+  for (var tipIndex456 = 0; tipIndex456 < tipListLen456; tipIndex456++) {
+    var tipData456 = tipList456[tipIndex456];
+    param454 += '<li data-tip-id="' + tipData456.id + '" data-view-id="' + tipData456.view + '" data-section-id="' + tipData456.section + '"><div class="icon icon-' + tipData456.icon + '"></div><div class="caption"><p>' + tipData456.id + '</p><p>' + tipData456.view + '</p><p>' + tipData456.section + '</p></div></li>';
   }
-  param446 += '</ul></div>';
-  output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param446});
+  param454 += '</ul></div>';
+  output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param454});
   return output;
 };
 
@@ -27621,9 +27621,10 @@ feng.controllers.NavigationController = function(){
   	this._navHistory = new goog.history.Html5History();
   	this._navHistory.setUseFragment(false);
   }else {
+  	var hideHistory = false;
   	var input = goog.dom.createDom('input');
   	var iframe = goog.dom.createDom('iframe');
-  	this._navHistory = new goog.History(false, null, input, iframe);
+  	this._navHistory = new goog.History(hideHistory, null, input, iframe);
   }
 
   // the current token
@@ -27779,7 +27780,7 @@ feng.controllers.NavigationController.Token = {
 	SECTION: '#/{sectionId}',
 	VIEW: '#/{sectionId}/{viewId}',
 	READ_TIP: '#/book/{tipId}',
-	GO_TIP: '#/{sectionId}/{viewId}/{tipId}',
+	GO_TIP: '#/{sectionId}/{viewId}/{objectId}',
 	TEST_TIP: '#/testtip/{sectionId}/{viewId}/{tipId}'
 };goog.provide('feng.events');
 
@@ -27855,7 +27856,6 @@ feng.models.achievements.Tip = function( tipId, viewId, sectionId, data ){
 
   this.shareImageUrl = feng.Config['assetsPath'] + 'images/share/' + this.id + '.jpg';
 
-  this.goTipToken = feng.controllers.NavigationController.Token.GO_TIP.replace('{sectionId}', this.sectionId).replace('{viewId}', this.viewId).replace('{tipId}', this.id);
   this.readTipToken = feng.controllers.NavigationController.Token.READ_TIP.replace('{tipId}', this.id);
 
   this.unlocked = (feng.storageController.isTipUnlocked( this.id ) === true) ? true : data['unlocked'];
@@ -32754,6 +32754,7 @@ feng.models.Preload = function(){
 				'jar-7-texture': 'images/texture/studio/bathroom/jar-7.jpg',
 				'jar-8-texture': 'images/texture/studio/bathroom/jar-8.jpg',
 				'jar-9-texture': 'images/texture/studio/bathroom/jar-9.jpg',
+				'jar-10-texture': 'images/texture/studio/bathroom/jar-10.jpg',
 				'closet-texture': 'images/texture/studio/bathroom/closet.jpg',
 				'closet-door-texture': 'images/texture/studio/bathroom/closet-door.jpg',
 				'trashcan-texture': 'images/texture/studio/bathroom/trashcan.jpg',
@@ -34139,7 +34140,7 @@ feng.templates.controls.DropButton = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.controls.TipTooltip = function(opt_data, opt_ignored) {
-  return '<a class="tooltip fadeOut tip locked" data-id="' + opt_data.tip.id + '" href="' + opt_data.tip.goTipToken + '"><div class="bar"><div class="symbol"><div class="inner"><div class="icon icon-eye-open"></div><div class="icon icon-' + opt_data.tip.icon + '"></div></div></div><h6>' + opt_data.tip.name + '</h6></div></a>';
+  return '<a class="tooltip fadeOut tip locked" data-id="' + opt_data.object.id + '" data-tip-id="' + opt_data.object.tip.id + '" href="' + opt_data.goTipToken + '"><div class="bar"><div class="symbol"><div class="inner"><div class="icon icon-magnifier"></div><div class="icon icon-' + opt_data.object.tip.icon + '"></div></div></div><h6>' + opt_data.object.tip.name + '</h6></div></a>';
 };
 
 
@@ -34150,7 +34151,7 @@ feng.templates.controls.TipTooltip = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.controls.GatewayTooltip = function(opt_data, opt_ignored) {
-  return '<a class="tooltip fadeOut gateway" data-id="' + opt_data.gateway.gatewayId + '"><div class="bar"><div class="symbol"><div class="inner"><div class="icon icon-eye-open"></div><div class="icon icon-enter"></div></div></div><h6>To ' + opt_data.gateway.viewId + '</h6></div></a>';
+  return '<a class="tooltip fadeOut gateway" data-id="' + opt_data.gateway.gatewayId + '"><div class="bar"><div class="symbol"><div class="inner"><div class="icon icon-magnifier"></div><div class="icon ' + ((opt_data.gateway.isStairs == true) ? 'icon-stairs' : 'icon-door') + '"></div></div></div><h6>To ' + opt_data.gateway.viewId + '</h6></div></a>';
 };
 
 
@@ -34162,16 +34163,16 @@ feng.templates.controls.GatewayTooltip = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var output = '<div class="progressBar"><div class="inner"><button class="prev icon icon-prev"></button><button class="next icon icon-next"></button><div class="tips-wrapper">';
-  var viewIdList378 = soy.$$getMapKeys(opt_data.tipsOfViews);
-  var viewIdListLen378 = viewIdList378.length;
-  for (var viewIdIndex378 = 0; viewIdIndex378 < viewIdListLen378; viewIdIndex378++) {
-    var viewIdData378 = viewIdList378[viewIdIndex378];
-    output += '<ul class="tips" data-view-id="' + viewIdData378 + '">';
-    var tipList382 = opt_data.tipsOfViews[viewIdData378];
-    var tipListLen382 = tipList382.length;
-    for (var tipIndex382 = 0; tipIndex382 < tipListLen382; tipIndex382++) {
-      var tipData382 = tipList382[tipIndex382];
-      output += '<li class="tip" data-tip-id="' + tipData382.id + '" data-view-id="' + viewIdData378 + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content"><div class="icon icon-' + tipData382.icon + '" data-tip-id="' + tipData382.id + '" data-view-id="' + tipData382.viewId + '" data-section-id="' + tipData382.sectionId + '"></div><h6>' + tipData382.name + '</h6></a></div></li>';
+  var viewIdList386 = soy.$$getMapKeys(opt_data.tipsOfViews);
+  var viewIdListLen386 = viewIdList386.length;
+  for (var viewIdIndex386 = 0; viewIdIndex386 < viewIdListLen386; viewIdIndex386++) {
+    var viewIdData386 = viewIdList386[viewIdIndex386];
+    output += '<ul class="tips" data-view-id="' + viewIdData386 + '">';
+    var tipList390 = opt_data.tipsOfViews[viewIdData386];
+    var tipListLen390 = tipList390.length;
+    for (var tipIndex390 = 0; tipIndex390 < tipListLen390; tipIndex390++) {
+      var tipData390 = tipList390[tipIndex390];
+      output += '<li class="tip" data-tip-id="' + tipData390.id + '" data-view-id="' + viewIdData386 + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content"><div class="icon icon-' + tipData390.icon + '" data-tip-id="' + tipData390.id + '" data-view-id="' + tipData390.viewId + '" data-section-id="' + tipData390.sectionId + '"></div><h6>' + tipData390.name + '</h6></a></div></li>';
     }
     output += '</ul>';
   }
@@ -34208,7 +34209,7 @@ feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.main.EpisodeSelection = function(opt_data, opt_ignored) {
-  return '<div class="episode-selection"><div class="scene studio"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Ollie\'s Studio</h1><p>Ollie lives in a small, delicate studio in the crowded downtown. How could we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'studio', href: opt_data.token.STUDIO, icon: 'icon-yes', text: 'start'})}) + '</div></div><div class="scene house"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Scott\'s House</h1><p>Scott lives in a two story house, with his wife Joanna and son Nick. How could we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'house', href: opt_data.token.HOUSE, icon: 'icon-yes', text: 'start'})}) + '</div></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="question">' + feng.templates.common.FengshuiLogo({noText: true}) + '<div><h1>Help your first<br>feng shui client!</h1><p>Please make some<br>improvements to their<br>home environments.</p><h2><div class="arrow left"></div><span>CHOOSE ONE</span><div class="arrow right"></div></h2></div></div>'}) + '</div></div>';
+  return '<div class="episode-selection"><div class="scene studio"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Ollie\'s Studio</h1><p>Ollie lives in a small, delicate studio in the crowded downtown. How could we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'studio', href: opt_data.token.STUDIO, icon: 'icon-yes', text: 'Start'})}) + '</div></div><div class="scene house"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Scott\'s House</h1><p>Scott lives in a two story house, with his wife Joanna and son Nick. How could we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'house', href: opt_data.token.HOUSE, icon: 'icon-yes', text: 'Start'})}) + '</div></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="question">' + feng.templates.common.FengshuiLogo({noText: true}) + '<div><h1>Help your first<br>feng shui client!</h1><p>Please make some<br>improvements to their<br>home environments.</p><h2><div class="arrow left"></div><span>CHOOSE ONE</span><div class="arrow right"></div></h2></div></div>'}) + '</div></div>';
 };
 
 
@@ -35067,6 +35068,7 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.studio-door-handle-texture"
 			},
 			'studio-door-frame': {
+				castShadow: true,
 				texture: "studio.livingroom.studio-door-frame-texture"
 			},
 			'bathroom-door': {
@@ -35083,7 +35085,6 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.bathroom-door-texture"
 			},
 			'wall':	{
-				castShadow: true,
 				collidable: true,
 				texture: "studio.livingroom.wall-texture"
 			},
@@ -35102,8 +35103,7 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.ceiling-lamp-2-texture"
 			},
 			'floor': {
-				texture: "studio.livingroom.floor-texture",
-				receiveShadow: true
+				texture: "studio.livingroom.floor-texture"
 			},
 			'plant': {
 				Class: "replaceable",
@@ -35271,10 +35271,24 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.wardrobe-texture"
 			},
 			'window-left': {
-				texture: "studio.livingroom.window-left-texture"
+				Class: "windows",
+				tipKey: 'studio.livingroom.windows',
+				texture: "studio.livingroom.window-left-texture",
+				camera: {
+					position: new THREE.Vector3(51.37, 80.49, -57.52),
+					rotation: new THREE.Euler(-0.12, -1.52, 0.00, 'YXZ'),
+					fov: 58
+				}
 			},
 			'window-right': {
-				texture: "studio.livingroom.window-right-texture"
+				Class: "windows",
+				tipKey: 'studio.livingroom.windows',
+				texture: "studio.livingroom.window-right-texture",
+				camera: {
+					position: new THREE.Vector3(-11.90, 80.00, 76.44),
+					rotation: new THREE.Euler(-0.06, -1.67, 0.00, 'YXZ'),
+					fov: 36
+				}
 			},
 			'window-left-switch': {
 				texture: "studio.livingroom.window-left-switch-texture"
@@ -35374,40 +35388,34 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.shelf-texture"
 			},
 			'jar-1': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-1-texture"
 			},
 			'jar-2': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-2-texture"
 			},
 			'jar-3': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-3-texture"
 			},
 			'jar-4': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-4-texture"
 			},
 			'jar-5': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-5-texture"
 			},
 			'jar-6': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-6-texture"
 			},
 			'jar-7': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-7-texture"
 			},
 			'jar-8': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-8-texture"
 			},
 			'jar-9': {
-				castShadow: true,
 				texture: "studio.bathroom.jar-9-texture"
+			},
+			'jar-10': {
+				texture: "studio.bathroom.jar-10-texture"
 			},
 			'bottles': {
 				texture: "studio.bathroom.bottles-texture"
@@ -35419,17 +35427,17 @@ feng.models.View3D.Data = {
 				texture: "studio.bathroom.cosmetic-bag-texture"
 			},
 			'closet': {
-				texture: "studio.bathroom.closet-texture"
-			},
-			'closet-door': {
 				Class: "closet",
 				receiveShadow: true,
 				camera: {
-					position: new THREE.Vector3(35, 81, -47),
-					rotation: new THREE.Euler(-0.07, 1.70, 0.00, 'YXZ'),
-					fov: 40
+					position: new THREE.Vector3(27, 73, -52),
+					rotation: new THREE.Euler(0.07, 1.57, 0.00, 'YXZ'),
+					fov: 45
 				},
 				tipKey: 'studio.bathroom.closet',
+				texture: "studio.bathroom.closet-texture"
+			},
+			'closet-door': {
 				texture: "studio.bathroom.closet-door-texture"
 			},
 			'trashcan': {
@@ -35510,6 +35518,7 @@ feng.models.View3D.Data = {
 				Class: "gateway",
 				viewid: "corridor",
 				gatewayid: "stairways-door",
+				isStairs: true,
 				openSound: null,
 				closeSound: null,
 				origin: {
@@ -35755,6 +35764,7 @@ feng.models.View3D.Data = {
 				viewid: "livingroom",
 				gatewayid: "stairways-door",
 				isEntry: true,
+				isStairs: true,
 				openSound: null,
 				closeSound: null,
 				origin: {
@@ -36306,8 +36316,9 @@ feng.views.view3dobject.View3DObject = function( object3d, data, view3d ){
   this._proxyBox.view3dObject = this;
 
   this._canRender = this.object3d.visible;
-  this._isRenderEnabled = this._canRender;
-  this._isTextureCreated = false;
+  
+  this.isRenderEnabled = this._canRender;
+  this.isTextureCreated = false;
 
   this._isGlass = this.data.glass;
 
@@ -36352,13 +36363,13 @@ feng.views.view3dobject.View3DObject.prototype.init = function(){
 
 feng.views.view3dobject.View3DObject.prototype.createTextures = function(){
 
-  if(this._isTextureCreated) {
+  if(this.isTextureCreated) {
 
     return false;
 
   }else {
 
-    this._isTextureCreated = true;
+    this.isTextureCreated = true;
   }
 
   var preloadModel = feng.models.Preload.getInstance();
@@ -36414,13 +36425,13 @@ feng.views.view3dobject.View3DObject.prototype.createTextures = function(){
 
 feng.views.view3dobject.View3DObject.prototype.disposeTextures = function(){
 
-  if(!this._isTextureCreated) {
+  if(!this.isTextureCreated) {
 
     return false;
 
   }else {
 
-    this._isTextureCreated = false;
+    this.isTextureCreated = false;
   }
 
   this.object3d.traverse(function(object) {
@@ -36570,8 +36581,8 @@ feng.views.view3dobject.View3DObject.prototype.enableRender = function(){
 
   if(!this._canRender) return;
 
-  if(this._isRenderEnabled) return;
-  else this._isRenderEnabled = true;
+  if(this.isRenderEnabled) return;
+  else this.isRenderEnabled = true;
 
   // itself, its parent and its children should be renderable
   this.object3d.visible = true;
@@ -36599,8 +36610,8 @@ feng.views.view3dobject.View3DObject.prototype.enableRender = function(){
 
 feng.views.view3dobject.View3DObject.prototype.disableRender = function(){
 
-  if(!this._isRenderEnabled) return;
-  else this._isRenderEnabled = false;
+  if(!this.isRenderEnabled) return;
+  else this.isRenderEnabled = false;
 
   // itself and its children should not be renderable
   this.object3d.visible = false;
@@ -36627,7 +36638,6 @@ feng.views.view3dobject.InteractiveObject = function( object3d, data, view3d ){
   goog.base(this, object3d, data, view3d);
 
   this.object3d.interactiveObject = this;
-  this.isPhysical = true;
 
   this.isSpecialCameraEnabled = data.camera ? true : false;
   this.specialCameraSettings = data.camera || {};
@@ -38366,8 +38376,8 @@ feng.views.book.TipModule.prototype.onClickShareButton = function(e) {
 };
 
 
-feng.views.book.TipModule.RATIO_OF_WIDTH = 0.25;
-feng.views.book.TipModule.RATIO_OF_MARGIN = 0.045;
+feng.views.book.TipModule.RATIO_OF_WIDTH = 0.35;
+feng.views.book.TipModule.RATIO_OF_MARGIN = 0.025;
 feng.views.book.TipModule.MIN_SIZE = new goog.math.Size(300, 440);// Copyright 2006 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -38999,12 +39009,12 @@ feng.views.book.Book.prototype.scrollToTipModule = function( index, instant ) {
 
 	var scrollX = tipModuleX - (this._viewportSize.width - tipModuleWidth) / 2;
 
-	var duration = instant ? 0 : .5;
+	var duration = instant ? 0 : .65;
 
 	this._scrollTweener = TweenMax.to(this, duration, {
 		_scrollX: scrollX,
 		_targetScrollX: scrollX,
-		'ease': Quad.easeInOut,
+		'ease': Strong.easeOut,
 		'onUpdate': this.applyScrollX,
 		'onUpdateScope': this
 	});
@@ -39907,20 +39917,45 @@ feng.fx.TextureAnimator.prototype.onAnimationFrame = function( now ) {
   }
 };goog.provide('feng.views.view3dobject.entities.Windows');
 
+goog.require('goog.fx.Dragger');
 goog.require('feng.fx.TextureAnimator');
 goog.require('feng.views.view3dobject.TipObject');
 
 
 /**
  * @constructor
- * Two windows that can be opened or closed
+ * Two windows in ollie's studio to be be lifted up or pulled down
  */
 feng.views.view3dobject.entities.Windows = function( object3d, data, view3d ){
 
   goog.base(this, object3d, data, view3d);
 
+  this._window = null;
+  this._switch = null;
+
   this._windowLeft = null;
   this._windowRight = null;
+  this._windowLeftSwitch = null;
+  this._windowRightSwitch = null;
+
+  this._switchTopY = 30;
+  this._switchBottomY = 0;
+  this._switchStartY = 0;
+
+  this._startFov = 0;
+
+  this._canDrag = false;
+
+  this._cameraTransitionTweener = null;
+  this._cameraZoomTweener = null;
+
+  this._hasDoneWindowLeft = false;
+  this._hasDoneWindowRight = false;
+
+  // dragger to drag the windows
+  this._dragger = new goog.fx.Dragger( this._view3d.domElement );
+  this._dragger.setHysteresis( 5 );
+  this._dragger.defaultAction = goog.nullFunction;
 };
 goog.inherits(feng.views.view3dobject.entities.Windows, feng.views.view3dobject.TipObject);
 
@@ -39929,8 +39964,193 @@ feng.views.view3dobject.entities.Windows.prototype.init = function(){
 
 	goog.base(this, 'init');
 	
-  this._windowLeft = this.object3d.getObjectByName('window-left').view3dObject;
-  this._windowRight = this.object3d.getObjectByName('window-right').view3dObject;
+  this._windowLeft = this._view3d.getView3dObject('window-left');
+  this._windowRight = this._view3d.getView3dObject('window-right');
+
+  this._windowLeftSwitch = this._view3d.getView3dObject( 'window-left-switch' );
+  this._windowRightSwitch = this._view3d.getView3dObject( 'window-right-switch' );
+};
+
+
+feng.views.view3dobject.entities.Windows.prototype.startInteraction = function(){
+
+  goog.base(this, 'startInteraction');
+
+  this.enableWindowDragging( this );
+};
+
+
+feng.views.view3dobject.entities.Windows.prototype.stopInteraction = function(){
+
+  goog.base(this, 'stopInteraction');
+};
+
+
+feng.views.view3dobject.entities.Windows.prototype.transitionToWindow = function( opt_window ){
+
+	this._interactionHandler.removeAll();
+
+	this._window = opt_window;
+
+	var toCameraSettings = opt_window.specialCameraSettings;
+
+  var control = this._view3d.modeController.control;
+
+  var prop = {
+    t: 0,
+    startPosition: control.getPosition().clone(),
+    endPosition: toCameraSettings.position,
+    startRotation: control.getRotation().clone(),
+    endRotation: toCameraSettings.rotation,
+    startFov: control.getFov(),
+    endFov: toCameraSettings.fov
+  }
+
+  this._cameraTransitionTweener = TweenMax.to( prop, 1, {
+    t: 1,
+    'ease': Sine.easeInOut,
+    'onUpdate': this.onCameraTransitionUpdate,
+    'onUpdateParams': [prop],
+    'onUpdateScope': this,
+    'onComplete': this.onCameraTransitionComplete,
+    'onCompleteScope': this
+  });
+};
+
+
+feng.views.view3dobject.entities.Windows.prototype.enableWindowDragging = function( opt_window ){
+
+  this._window = (opt_window === this._windowLeft) ? this._windowLeft : this._windowRight;
+  this._switch = (this._window === this._windowLeft) ? this._windowLeftSwitch : this._windowRightSwitch;
+
+  this._startFov = this._view3d.modeController.control.getFov();
+  
+  this._interactionHandler.listen( this._view3d.domElement, feng.events.EventType.INPUT_DOWN, this.onDown, false, this);
+  this._interactionHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
+  this._interactionHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this);
+  this._interactionHandler.listen( this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
+};
+
+
+feng.views.view3dobject.entities.Windows.prototype.onDown = function(e){
+
+	var camera = this._view3d.cameraController.activeCamera;
+  var viewSize = this._view3d.viewSize;
+  var objects = [this._window.getProxyBox()];
+  var clickedObjects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, objects, camera, viewSize );
+
+  this._canDrag = (clickedObjects.length > 0);
+};
+
+
+feng.views.view3dobject.entities.Windows.prototype.onDragStart = function(e){
+
+	if(!this._canDrag) return;
+
+	this._switchStartY = this._switch.object3d.position.y;
+
+	var control = this._view3d.modeController.control;
+
+	var prop = {
+    fov: control.getFov()
+  };
+
+  this._cameraZoomTweener = TweenMax.to(prop, 1, {
+    fov: this._startFov - 5,
+    'ease': Strong.easeOut,
+    'onUpdate': this.onCameraZoomUpdate,
+    'onUpdateParams': [prop],
+    'onUpdateScope': this
+  });
+};
+
+
+feng.views.view3dobject.entities.Windows.prototype.onDrag = function(e){
+
+	if(!this._canDrag) return;
+
+	var dist = (this._switchTopY - this._switchBottomY) * (this._dragger.deltaY / feng.viewportSize.height);
+	var switchY = this._switchStartY - dist;
+
+	this._switch.object3d.position.y = goog.math.clamp( switchY, this._switchBottomY, this._switchTopY );
+};
+
+
+feng.views.view3dobject.entities.Windows.prototype.onDragEnd = function(e){
+
+	if(!this._canDrag) return;
+
+	this._hasDoneWindowLeft = (this._windowLeftSwitch.object3d.position.y === this._switchTopY);
+	this._hasDoneWindowRight = (this._windowRightSwitch.object3d.position.y === this._switchBottomY);
+
+	var justDoneWindowLeft = (this._window === this._windowLeft && this._hasDoneWindowLeft);
+	var justDoneWindowRight = (this._window === this._windowRight && this._hasDoneWindowRight);
+
+	if(justDoneWindowLeft || justDoneWindowRight) {
+
+		var control = this._view3d.modeController.control;
+
+		var prop = {
+	    fov: control.getFov()
+	  };
+
+	  this._cameraZoomTweener = TweenMax.to(prop, 1, {
+	    fov: this._startFov,
+	    'onUpdate': this.onCameraZoomUpdate,
+	    'onUpdateParams': [prop],
+	    'onUpdateScope': this,
+	    'onComplete': this.onCameraZoomOutComplete,
+	    'onCompleteScope': this
+	  });
+	}
+};
+
+
+feng.views.view3dobject.entities.Windows.prototype.onCameraTransitionUpdate = function(prop){
+
+  var startPosition = prop.startPosition;
+  var endPosition = prop.endPosition;
+  var startRotation = prop.startRotation;
+  var endRotation = prop.endRotation;
+  var startFov = prop.startFov;
+  var endFov = prop.endFov;
+  var t = prop.t;
+
+  var control = this._view3d.modeController.control;
+
+  control.lerp( startPosition, endPosition, startRotation, endRotation, startFov, endFov, t );
+};
+
+
+feng.views.view3dobject.entities.Windows.prototype.onCameraTransitionComplete = function(){
+
+  this.enableWindowDragging( this._window );
+};
+
+
+feng.views.view3dobject.entities.Windows.prototype.onCameraZoomUpdate = function(prop){
+
+  var control = this._view3d.modeController.control;
+
+  control.setFov( prop.fov );
+};
+
+
+feng.views.view3dobject.entities.Windows.prototype.onCameraZoomOutComplete = function(){
+
+	if(this._hasDoneWindowLeft && this._hasDoneWindowRight) {
+
+    this.unlock();
+    this.stopInteraction();
+
+	}else if(this._hasDoneWindowLeft) {
+
+		this.transitionToWindow( this._windowRight );
+
+	}else if(this._hasDoneWindowRight) {
+
+		this.transitionToWindow( this._windowLeft );
+	}
 };goog.provide('feng.views.view3dobject.entities.Cat');
 
 goog.require('feng.views.view3dobject.TipObject');
@@ -40197,7 +40417,10 @@ feng.controllers.controls.Controls.prototype.deactivate = function() {
 
 feng.controllers.controls.Controls.prototype.enable = function( enable ) {
 
-	if(this.isEnabled === enable) return;
+	if(this.isEnabled === enable) {
+
+		return false;
+	}
 	
 	this.isEnabled = enable;
 
@@ -40210,7 +40433,7 @@ feng.controllers.controls.Controls.prototype.enable = function( enable ) {
 		this.deactivate();
 	}
 
-	return this.isEnabled;
+	return true;
 };
 
 
@@ -40936,9 +41159,11 @@ feng.controllers.controls.DesignControls.prototype.isDragging = function() {
 
 feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 
-	var shouldEnable = goog.base(this, 'enable', enable);
+	var shouldDo = goog.base(this, 'enable', enable);
 
-	if(shouldEnable) {
+	if(!shouldDo) return false;
+	
+	if(this.isEnabled) {
 
 		this._zoomSlider.show(true);
 
@@ -40949,7 +41174,7 @@ feng.controllers.controls.DesignControls.prototype.enable = function( enable ) {
 		this._zoomSlider.show(false);
 	}
 
-	this._dragger.setEnabled( shouldEnable );
+	this._dragger.setEnabled( this.isEnabled );
 };
 
 
@@ -41155,31 +41380,29 @@ feng.controllers.controls.DesignControls.prototype.onCameraTransitionToGatewayCo
 	var gatewayDirection = (new THREE.Vector3()).subVectors(gatewayOriginPosition, gatewayPosition).setY(0).normalize();
 
 	var fromPosition = gatewayOriginPosition.clone().add( gatewayDirection.clone().multiplyScalar(50) ).setY( feng.controllers.controls.Controls.Default.STANCE_HEIGHT );
-	
+
 	var fromRotation = new THREE.Euler(0, 0, 0, 'YXZ');
-  var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(fromPosition, gatewayPosition);
-  fromRotation.setFromQuaternion( quaternion );
+	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt(fromPosition, gatewayPosition);
+	fromRotation.setFromQuaternion( quaternion );
 
-  var fromFov = feng.controllers.controls.Controls.Default.FOV;
+	var fromFov = feng.controllers.controls.Controls.Default.FOV;
 
-  this.dispatchEvent({
-  	type: feng.events.EventType.CHANGE,
-    mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
-    nextMode: feng.controllers.view3d.ModeController.Mode.EXIT,
-    fromPosition: fromPosition,
+	this.dispatchEvent({
+		type: feng.events.EventType.CHANGE,
+	  mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
+	  nextMode: feng.controllers.view3d.ModeController.Mode.EXIT,
+	  fromPosition: fromPosition,
 		fromRotation: fromRotation,
 		fromFov: fromFov,
-    gateway: gateway
-  });
+	  gateway: gateway
+	});
 };
 
 
 feng.controllers.controls.DesignControls.prototype.onCameraTransitionToTipComplete = function( goTipResult ){
 
-	var achievements = feng.models.achievements.Achievements.getInstance();
-	var tip = achievements.getTip( goTipResult['tipId'], goTipResult['viewId'], goTipResult['sectionId'] );
-
-	var object = this._view3d.getObjectByTip( tip );
+	var object = this._view3d.getView3dObjectById( goTipResult['objectId'] );
+	var tip = object.tip;
 
 	// calculate camera position/rotation/fov before transition
 	var browseControls = this._view3d.modeController.getModeControl(feng.controllers.view3d.ModeController.Mode.BROWSE);
@@ -41318,9 +41541,11 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 	
 	this._activeObject = object || this._activeObject;
 
-	var shouldEnable = goog.base(this, 'enable', enable);
+	var shouldDo = goog.base(this, 'enable', enable);
 
-	if(shouldEnable) {
+	if(!shouldDo) return false;
+
+	if(this.isEnabled) {
 
 		this.distanceToObject = this.getPosition().distanceTo( this._activeObject.object3d.position );
 
@@ -41346,6 +41571,9 @@ feng.controllers.controls.CloseUpControls.prototype.enable = function( enable, o
 		
 		var caption = this._view3d.hud.getCaption( this._activeObject, this );
 		caption.hide();
+
+		this._view3d.fx.greenLeaves.animateOut( 4 );
+		this._view3d.fx.yellowLeaves.animateOut( 4 );
 	}
 };
 
@@ -41432,9 +41660,11 @@ feng.controllers.controls.BrowseControls.prototype.setCamera = function( toRotat
 
 feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mouseEventToTrigger ) {
 
-	var shouldEnable = goog.base(this, 'enable', enable);
+	var shouldDo = goog.base(this, 'enable', enable);
 
-	if(shouldEnable) {
+	if(!shouldDo) return false;
+
+	if(this.isEnabled) {
 
 		if(mouseEventToTrigger) {
 			this.onInputDown( mouseEventToTrigger );
@@ -41616,6 +41846,8 @@ feng.controllers.controls.BrowseControls.prototype.onInputMove = function ( e ) 
 
 feng.controllers.controls.BrowseControls.prototype.onMouseWheel = function ( e ) {
 
+	e.preventDefault();
+
 	var distance = goog.math.lerp( 100, 400, Math.abs(e.deltaY) / this._maxMouseWheelDeltaY );
 	distance *= - e.deltaY / Math.abs(e.deltaY);
 
@@ -41674,8 +41906,8 @@ feng.controllers.controls.BrowseControls.prototype.onClickCompass = function(e) 
 
 	if(e.mode === 'design') {
 
-  	this.dispatchEvent({
-  		type: feng.events.EventType.CHANGE,
+  		this.dispatchEvent({
+  			type: feng.events.EventType.CHANGE,
 			mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
 			nextMode: feng.controllers.view3d.ModeController.Mode.DESIGN
 		});
@@ -41702,10 +41934,8 @@ feng.controllers.controls.BrowseControls.prototype.onNavigationChange = function
 	
 	if(goTipResult) {
 
-		var achievements = feng.models.achievements.Achievements.getInstance();
-		var tip = achievements.getTip( goTipResult['tipId'], goTipResult['viewId'], goTipResult['sectionId'] );
-
-		var object = this._view3d.getObjectByTip( tip );
+		var object = this._view3d.getView3dObjectById( goTipResult['objectId'] );
+		var tip = object.tip;
 
 		this.dispatchEvent({
 			type: feng.events.EventType.CHANGE,
@@ -42261,7 +42491,8 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 
 	var quaternion = feng.utils.ThreeUtils.getQuaternionByLookAt( actualEndPosition, toPosition );
 	this._endRotation.setFromQuaternion( quaternion );
-
+	this._endRotation.x = Math.max(this._endRotation.x, THREE.Math.degToRad(-40));
+	
 	this._startRotation.copy( ev.fromRotation );
 	
 	// adult walking speed is 1.564 meter per second
@@ -42610,12 +42841,22 @@ feng.controllers.view3d.ModeController.prototype.init = function(){
 feng.controllers.view3d.ModeController.prototype.activate = function(){
 
 	this._eventHandler.listen( this, feng.events.EventType.CHANGE, this.onModeChange, false, this );
+
+	this.control = (this.control === this._exitControls) ? this._browseControls : this.control;
+	
+	if(this.control) {
+		this.control.enable( true );
+	}
 };
 
 
 feng.controllers.view3d.ModeController.prototype.deactivate = function(){
 
 	this._eventHandler.removeAll();
+
+	if(this.control) {
+		this.control.enable( false );
+	}
 };
 
 
@@ -42698,15 +42939,7 @@ feng.controllers.view3d.ModeController.prototype.onModeChange = function(e) {
 	var newMode = e.mode;
 	var nextMode = e.nextMode;
 
-	if(!newMode) return false;
-
-	if(this._mode === newMode) {
-
-		return;
-	}else {
-
-		this._mode = newMode;
-	}
+	this._mode = newMode;
 
 	console.log('view3D mode changed from ' + oldMode + ' to ' + newMode);
 	
@@ -44097,8 +44330,15 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderMask = function
 	if(maskedObject) {
 
 		maskedObject.enableRender();
+
+		// force arms to render
 		this._view3d.arms.enableRender();
 		
+		// force skybox to render with wall when enabled
+		if(this._view3d.getView3dObject('wall').isRenderEnabled) {
+			this._view3d.skybox.enableRender();
+		}
+
 		if(maskedObject.hasPicked && maskedObject.dropParent && maskedObject.dropParent.view3dObject) {
 			maskedObject.dropParent.view3dObject.enableRender();
 		}
@@ -44267,7 +44507,7 @@ feng.views.view3dobject.entities.GlassBowl.prototype.onFishDropped = function(){
   this._hasDroppedFish = true;
 };goog.provide('feng.views.view3dobject.entities.Closet');
 
-goog.require('feng.models.Preload');
+goog.require('goog.fx.Dragger');
 goog.require('feng.views.view3dobject.TipObject');
 goog.require('feng.utils.ThreeUtils');
 
@@ -44280,24 +44520,303 @@ feng.views.view3dobject.entities.Closet = function( object3d, data, view3d ){
 
   goog.base(this, object3d, data, view3d);
 
-  this._door = this.object3d;
+  this._door = this.object3d.getObjectByName('closet-door');
+
+  this._jarsPullOutTweener = null;
+
+  this._anchorX = -41;
+
+  this._anchors = [
+    new THREE.Vector3(this._anchorX, 85.489, -40.44),
+    new THREE.Vector3(this._anchorX, 74.602, -39.45),
+    new THREE.Vector3(this._anchorX, 74.602, -44.72),
+    new THREE.Vector3(this._anchorX, 74.602, -50.22),
+    new THREE.Vector3(this._anchorX, 74.602, -55.70),
+    new THREE.Vector3(this._anchorX, 63.715, -39.70),
+    new THREE.Vector3(this._anchorX, 63.715, -46.23),
+    new THREE.Vector3(this._anchorX, 63.715, -52.54),
+    new THREE.Vector3(this._anchorX, 63.715, -59.22),
+    new THREE.Vector3(this._anchorX, 63.715, -65.45)
+  ];
+
+  this._anchorFlags = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
+
+  this._anchorPlane = null;
+  this._dragPlane = null;
+
+  this._dummyJar = null;
+
+  this._dummyJars = [];
+
+  this._dragStartPosition = new THREE.Vector3();
+
+  this._cameraZoomTweener = null;
+
+  this._mousePosition = {
+    x: 0,
+    y: 0
+  };
+
+  this._cameraTweenerProp = {
+    fov: 0,
+    updateDragOffset: false
+  };
+
+  this._swingProgress = 0;
+  this._rotationProgress = 0;
+
+  // dragger to drag the item
+  this._dragger = new goog.fx.Dragger( this._view3d.domElement );
+  this._dragger.defaultAction = goog.nullFunction;
 };
 goog.inherits(feng.views.view3dobject.entities.Closet, feng.views.view3dobject.TipObject);
+
+
+feng.views.view3dobject.entities.Closet.prototype.init = function(){
+
+  goog.base(this, 'init');
+
+  // calculate pulled out position
+  var center = this.getCenter();
+  var pulledOutPosition = center.clone().setX( center.x + 20 );
+
+  // create plane
+  this._dragPlane = new THREE.Mesh( new THREE.PlaneBufferGeometry( 50, 50, 1, 1 ) );
+  this._dragPlane.visible = false;
+  this._dragPlane.rotation.y = Math.PI/2;
+  this._dragPlane.position.copy( pulledOutPosition );
+
+  this._anchorPlane = new THREE.Mesh( new THREE.PlaneBufferGeometry( 50, 50, 1, 1 ) );
+  this._anchorPlane.visible = false;
+  this._anchorPlane.rotation.y = Math.PI/2;
+  this._anchorPlane.position.copy( center ).setX( this._anchorX );
+
+  // get jars
+  var jarNames = [
+    'jar-1',
+    'jar-2',
+    'jar-3',
+    'jar-4',
+    'jar-5',
+    'jar-6',
+    'jar-7',
+    'jar-8',
+    'jar-9',
+    'jar-10'
+  ];
+
+  var swingValues = [.15, .1, -.08, .3, -.07, .1, .05, .2, .05, -.05];
+
+  var pulledOutPositions = {
+    'jar-1': {y: 72, z: -36},
+    'jar-2': {y: 64, z: -40},
+    'jar-3': {y: 72, z: -65},
+    'jar-4': {y: 80, z: -58},
+    'jar-5': {y: 82, z: -40},
+    'jar-6': {y: 64, z: -48},
+    'jar-7': {y: 65, z: -60},
+    'jar-8': {y: 68, z: -63},
+    'jar-9': {y: 64, z: -55},
+    'jar-10': {y: 82, z: -67}
+  };
+
+  var pulledOutRotations = {
+    'jar-1': {x: -0.12, y: 0.04, z: 0.20},
+    'jar-2': {x: 1.00, y: 0.06, z: -0.46},
+    'jar-3': {x: 0.58, y: 0.08, z: -0.42},
+    'jar-4': {x: -0.50, y: -0.64, z: -0.82},
+    'jar-5': {x: 0.8, y: 0.06, z: -0.54},
+    'jar-6': {x: 0.38, y: -0.18, z: -0.34},
+    'jar-7': {x: 0.56, y: -0.82, z: 0.06},
+    'jar-8': {x: -0.04, y: 1.00, z: -0.14},
+    'jar-9': {x: -0.52, y: -0.08, z: -0.14},
+    'jar-10': {x: -0.64, y: -1.08, z: -0.38}
+  };
+
+  var jarTweeners = goog.array.map(jarNames, function(jarName, index) {
+
+    // create dummyJars for dragging
+    var jar = this.object3d.getObjectByName(jarName).view3dObject;
+    var dummyJar = jar.object3d.clone();
+    dummyJar.visible = false;
+    this._dummyJars.push( dummyJar );
+
+    dummyJar.userData.jar = jar;
+    dummyJar.userData.isAnchored = false;
+    dummyJar.userData.anchor = null;
+
+    dummyJar.userData.orientation = {
+      positionX: dummyJar.position.x,
+      positionY: dummyJar.position.y,
+      positionZ: dummyJar.position.z,
+      rotationX: dummyJar.rotation.x,
+      rotationY: dummyJar.rotation.y,
+      rotationZ: dummyJar.rotation.z
+    };
+
+    dummyJar.userData.dragOffset = new THREE.Vector3();
+    dummyJar.userData.swingMultiplier = 1;
+    dummyJar.userData.swing = swingValues[index];
+    dummyJar.userData.rotationMultiplier = 1;
+
+    var jarTweener = TweenMax.to(dummyJar.userData.orientation, .65, {
+      positionX: pulledOutPosition.x,
+      positionY: pulledOutPositions[jar.name].y,
+      positionZ: pulledOutPositions[jar.name].z,
+      rotationX: pulledOutRotations[jar.name].x,
+      rotationY: pulledOutRotations[jar.name].y,
+      rotationZ: pulledOutRotations[jar.name].z
+    });
+
+    return jarTweener;
+
+  }, this);
+
+  this._jarsPullOutTweener = new TimelineMax({
+    'paused': true,
+    'onComplete': this.onJarsPulledComplete,
+    'onCompleteScope': this
+  });
+
+  this._jarsPullOutTweener.add( jarTweeners, '+=0', 'start', .1 );
+};
+
+
+feng.views.view3dobject.entities.Closet.prototype.updateRaycaster = function(){
+
+  var mouseX = ( this._mousePosition.x / feng.viewportSize.width ) * 2 - 1;
+  var mouseY = - ( this._mousePosition.y / feng.viewportSize.height ) * 2 + 1;
+  var camera = this._view3d.cameraController.activeCamera;
+  var cameraPosition = this._view3d.modeController.control.getPosition();
+
+  var vector = new THREE.Vector3( mouseX, mouseY, 0.5 ).unproject( camera );
+  var direction = vector.sub( cameraPosition ).normalize();
+
+  var raycaster = feng.utils.ThreeUtils.raycaster;
+  raycaster.set( cameraPosition, direction );
+
+  return raycaster;
+};
+
+
+feng.views.view3dobject.entities.Closet.prototype.getRaycastPositionOnPlane = function( plane ){
+
+  var raycaster = feng.utils.ThreeUtils.raycaster;
+  var intersects = raycaster.intersectObject( plane );
+
+  return (intersects.length > 0 ? intersects[0].point : null);
+};
+
+
+feng.views.view3dobject.entities.Closet.prototype.detectNearestAnchor = function(){
+
+  var raycastPosition = this.getRaycastPositionOnPlane( this._anchorPlane );
+
+  if(raycastPosition) {
+
+    var i, l = this._anchors.length;
+    var shortestDistance = 4;
+    var nearestAnchor;
+
+    for(i = 0; i < l; i++) {
+
+      var anchor = this._anchors[i];
+
+      if(this._anchorFlags[i]) continue;
+
+      var distance = raycastPosition.distanceTo( anchor );
+
+      if(distance < shortestDistance) {
+
+        shortestDistance = distance;
+        nearestAnchor = anchor;
+      }
+    }
+
+    return nearestAnchor;
+
+  }else {
+
+    return null;
+  }
+};
 
 
 feng.views.view3dobject.entities.Closet.prototype.startInteraction = function(){
 
   goog.base(this, 'startInteraction');
 
-  this._interactionHandler.listen(this._view3d.domElement, 'click', this.onClick, false, this);
+  // add extra meshes to scene for calculation
+  var scene = this._view3d.scene;
+
+  scene.add( this._dragPlane );
+  scene.add( this._anchorPlane );
+
+  goog.array.forEach(this._dummyJars, function(dummyJar) {
+    scene.add( dummyJar );
+  });
+
+  // pull out jars
+  this._jarsPullOutTweener.restart();
+
+  TweenMax.to(this, .5, {
+    _swingProgress: 1,
+    _rotationProgress: 1
+  });
+
+  goog.fx.anim.registerAnimation( this );
+};
+
+
+feng.views.view3dobject.entities.Closet.prototype.stopInteraction = function(){
+
+  goog.base(this, 'stopInteraction');
+
+  // remove extra meshes to scene for calculation
+  var scene = this._view3d.scene;
+
+  scene.remove( this._dragPlane );
+  scene.remove( this._anchorPlane );
+
+  goog.array.forEach(this._dummyJars, function(dummyJar) {
+    scene.remove( dummyJar );
+  });
+
+  TweenMax.to(this, .5, {
+    _swingProgress: 0,
+    _rotationProgress: 0
+  });
+
+  goog.fx.anim.unregisterAnimation( this );
+};
+
+
+feng.views.view3dobject.entities.Closet.prototype.updateDragOffsetOfJar = function(){
+
+  var raycastPosition = this.getRaycastPositionOnPlane( this._dragPlane );
+
+  this._dummyJar.userData.dragOffset.subVectors( raycastPosition, this._dragStartPosition );
 };
 
 
 feng.views.view3dobject.entities.Closet.prototype.onCameraIn = function(){
 
+  this.cameraInDuration = 2000;
+
   goog.base(this, 'onCameraIn');
 
-  TweenMax.to(this._door.rotation, 1, {
+  TweenMax.to(this._door.rotation, 1.5, {
     'y': -2.8,
     'ease': Quad.easeInOut
   });
@@ -44310,7 +44829,7 @@ feng.views.view3dobject.entities.Closet.prototype.onCameraOut = function(){
 
   goog.base(this, 'onCameraOut');
 
-  TweenMax.to(this._door.rotation, 1, {
+  TweenMax.to(this._door.rotation, 1.5, {
     'y': 0,
     'ease': Quad.easeInOut
   });
@@ -44321,8 +44840,194 @@ feng.views.view3dobject.entities.Closet.prototype.onCameraOut = function(){
 };
 
 
-feng.views.view3dobject.entities.Closet.prototype.onClick = function(e){
+feng.views.view3dobject.entities.Closet.prototype.onJarsPulledComplete = function(){
 
+  this._interactionHandler.listen( this._dragger, goog.fx.Dragger.EventType.START, this.onDragStart, false, this);
+  this._interactionHandler.listen( this._dragger, goog.fx.Dragger.EventType.DRAG, this.onDrag, false, this);
+  this._interactionHandler.listen( this._dragger, goog.fx.Dragger.EventType.END, this.onDragEnd, false, this);
+};
+
+
+feng.views.view3dobject.entities.Closet.prototype.onDragStart = function(e){
+
+  var camera = this._view3d.cameraController.activeCamera;
+  var viewSize = this._view3d.viewSize;
+  var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, this._dummyJars, camera, viewSize );
+
+  if ( intersects.length > 0 ) {
+
+    var dummyJar = intersects[0].object;
+
+    if(dummyJar.userData.isAnchored) {
+
+      this._dummyJar = null;
+      return;
+
+    }else {
+
+      this._dummyJar = dummyJar;
+    }
+
+    this._mousePosition.x = e.clientX;
+    this._mousePosition.y = e.clientY;
+
+    TweenMax.to(this._dummyJar.userData, .5, {
+      swingMultiplier: 0,
+      rotationMultiplier: 0
+    });
+
+    // set drag start position of jar
+    this.updateRaycaster();
+
+    var raycastPosition = this.getRaycastPositionOnPlane( this._dragPlane );
+
+    var relPosition = feng.utils.ThreeUtils.getLocalPositionOfWorld( this._dummyJar, raycastPosition );
+    var actualPositionX = relPosition.x + this._dummyJar.userData.orientation.positionX;
+    var actualPositionY = relPosition.y + this._dummyJar.userData.orientation.positionY;
+    var actualPositionZ = relPosition.z + this._dummyJar.userData.orientation.positionZ;
+
+    this._dragStartPosition.set( actualPositionX, actualPositionY, actualPositionZ );
+
+    // update drag offset of jar
+    this.updateDragOffsetOfJar();
+
+    // zoom in on first drag occurs
+    if(!this._cameraZoomTweener) {
+
+      this._cameraTweenerProp.fov = this.specialCameraSettings.fov;
+      this._cameraTweenerProp.updateDragOffset = true;
+
+      this._cameraZoomTweener = TweenMax.to(this._cameraTweenerProp, 1, {
+        fov: this.specialCameraSettings.fov - 12,
+        'ease': Strong.easeOut,
+        'onUpdate': this.onCameraZoomUpdate,
+        'onUpdateParams': [this._cameraTweenerProp],
+        'onUpdateScope': this
+      });
+    }
+  }
+};
+
+
+feng.views.view3dobject.entities.Closet.prototype.onDragEnd = function(e){
+
+  if(!this._dummyJar) {
+    return;
+  }
+
+  TweenMax.to(this._dummyJar.userData.dragOffset, .5, {
+    'x': 0,
+    'y': 0,
+    'z': 0
+  });
+
+  var isAnchored = this._dummyJar.userData.isAnchored;
+
+  TweenMax.to(this._dummyJar.userData, .5, {
+    swingMultiplier: isAnchored ? 0 : 1,
+    rotationMultiplier: isAnchored ? 0 : 1,
+  });
+
+  this._dummyJar = null;
+
+  // update anchor flags
+  goog.array.forEach(this._dummyJars, function(dummyJar) {
+    var anchorIndex = goog.array.indexOf(this._anchors, dummyJar.userData.anchor);
+    this._anchorFlags[ anchorIndex ] = dummyJar.userData.isAnchored;
+  }, this);
+
+  // zoom out when complete
+  var notAnchoredJar = goog.array.find(this._dummyJars, function(dummyJar) {
+    return (dummyJar.userData.isAnchored === false);
+  });
+
+  if(!notAnchoredJar) {
+
+    var control = this._view3d.modeController.control;
+
+    this._cameraTweenerProp.fov = control.getFov();
+    this._cameraTweenerProp.updateDragOffset = false;
+
+    this._cameraZoomTweener = TweenMax.to(this._cameraTweenerProp, 1, {
+      fov: this.specialCameraSettings.fov,
+      'onUpdate': this.onCameraZoomUpdate,
+      'onUpdateParams': [this._cameraTweenerProp],
+      'onUpdateScope': this,
+      'onComplete': this.onCameraZoomOutComplete,
+      'onCompleteScope': this
+    });
+  }
+};
+
+
+feng.views.view3dobject.entities.Closet.prototype.onDrag = function(e){
+
+  if(!this._dummyJar) {
+    return;
+  }
+
+  this._mousePosition.x = e.clientX;
+  this._mousePosition.y = e.clientY;
+
+  this.updateRaycaster();
+
+  this.updateDragOffsetOfJar();
+
+  var anchor = this.detectNearestAnchor();
+  this._dummyJar.userData.isAnchored = anchor ? true : false;
+  this._dummyJar.userData.anchor = anchor;
+};
+
+
+feng.views.view3dobject.entities.Closet.prototype.onCameraZoomUpdate = function(prop){
+
+  var control = this._view3d.modeController.control;
+
+  control.setFov( prop.fov );
+
+  if(prop.updateDragOffset) {
+    this.updateDragOffsetOfJar();
+  }
+};
+
+
+feng.views.view3dobject.entities.Closet.prototype.onCameraZoomOutComplete = function(){
+
+  this.unlock();
+  this.stopInteraction();
+};
+
+
+feng.views.view3dobject.entities.Closet.prototype.onAnimationFrame = function(now){
+
+  goog.array.forEach(this._dummyJars, function(dummyJar, index) {
+
+    var userData = dummyJar.userData;
+
+    var swing = userData.swing;
+    var swingMultiplier = userData.swingMultiplier;
+    var rotationMultiplier = userData.rotationMultiplier;
+    var dragOffset = userData.dragOffset;
+    var orientation = userData.orientation;
+
+    dummyJar.position.x = orientation.positionX;
+    dummyJar.position.y = orientation.positionY + Math.sin( now * 0.001 * swing ) * this._swingProgress * swingMultiplier + dragOffset.y;
+    dummyJar.position.z = orientation.positionZ + Math.cos( now * 0.001 * swing ) * this._swingProgress * swingMultiplier + dragOffset.z;
+  
+    dummyJar.rotation.x = orientation.rotationX * this._rotationProgress * rotationMultiplier;
+    dummyJar.rotation.y = orientation.rotationY * this._rotationProgress * rotationMultiplier;
+    dummyJar.rotation.z = orientation.rotationZ * this._rotationProgress * rotationMultiplier;
+
+    var jarTargetPosition = userData.isAnchored ? userData.anchor : dummyJar.position;
+
+    var jar = dummyJar.userData.jar;
+    jar.object3d.position.x += ( jarTargetPosition.x - jar.object3d.position.x ) * .2;
+    jar.object3d.position.y += ( jarTargetPosition.y - jar.object3d.position.y ) * .2;
+    jar.object3d.position.z += ( jarTargetPosition.z - jar.object3d.position.z ) * .2;
+
+    jar.object3d.rotation.copy( dummyJar.rotation );
+
+  }, this);
 };goog.provide('feng.views.view3dobject.entities.Wallpaper');
 
 goog.require('feng.views.view3dobject.TipObject');
@@ -44349,22 +45054,10 @@ feng.views.view3dobject.entities.Wallpaper = function( object3d, data, view3d ){
     })
   ]);
 
-  this._video.load();
+  this._videoCanvas = null;
+  this._videoCanvasContext = null;
 
-  this._videoCanvas = goog.dom.createDom('canvas', {
-    'width': 480,
-    'height': 268
-  });
-
-  this._videoCanvasContext = this._videoCanvas.getContext( '2d' );
-  this._videoCanvasContext.fillStyle = '#000000';
-  this._videoCanvasContext.fillRect( 0, 0, this._videoCanvas.width, this._videoCanvas.height );
-
-  this._videoTexture = new THREE.Texture( this._videoCanvas );
-  this._videoTexture.minFilter = THREE.LinearFilter;
-  this._videoTexture.magFilter = THREE.LinearFilter;
-
-  this.object3d.material.map = this._videoTexture;
+  this._videoTexture = null;
 };
 goog.inherits(feng.views.view3dobject.entities.Wallpaper, feng.views.view3dobject.TipObject);
 
@@ -44382,6 +45075,29 @@ feng.views.view3dobject.entities.Wallpaper.prototype.deactivate = function(){
   goog.base(this, 'deactivate');
 
   goog.events.unlisten( this._video, 'canplay', this.onVideoUpdate, false, this );
+};
+
+
+feng.views.view3dobject.entities.Wallpaper.prototype.createTextures = function(){
+
+  goog.base(this, 'createTextures');
+
+  this._videoCanvas = goog.dom.createDom('canvas', {
+    'width': 480,
+    'height': 268
+  });
+
+  this._videoCanvasContext = this._videoCanvas.getContext( '2d' );
+  this._videoCanvasContext.fillStyle = '#000000';
+  this._videoCanvasContext.fillRect( 0, 0, this._videoCanvas.width, this._videoCanvas.height );
+
+  this._videoTexture = new THREE.Texture( this._videoCanvas );
+  this._videoTexture.minFilter = THREE.LinearFilter;
+  this._videoTexture.magFilter = THREE.LinearFilter;
+
+  this.object3d.material.map = this._videoTexture;
+
+  this._video.load();
 };
 
 
@@ -44432,6 +45148,7 @@ feng.views.view3dobject.GatewayObject = function( object3d, data, view3d ){
 
 	this.toHome = this.data.toHome;  
   this.isEntry = this.data.isEntry;
+  this.isStairs = this.data.isStairs;
 
   this.origin = this.data.origin;
   this.origin.position.y = feng.controllers.controls.Controls.Default.STANCE_HEIGHT;
@@ -45123,6 +45840,7 @@ feng.fx.LeafSprite.prototype.randomize = function(){
 };goog.provide('feng.fx.Leaves');
 
 goog.require('goog.events.EventHandler');
+goog.require('goog.async.Delay');
 goog.require('goog.fx.anim.Animated');
 goog.require('feng.fx.LeafSprite');
 goog.require('feng.models.Preload');
@@ -45205,6 +45923,8 @@ feng.fx.Leaves = function( eventTarget, color ){
 
 	this._animated = new goog.fx.anim.Animated();
 	this._animated.onAnimationFrame = goog.bind( this.onAnimationFrame, this );
+
+	this._animateOutDelay = new goog.async.Delay( this.animateOut, 2000, this );
 };
 goog.inherits(feng.fx.Leaves, THREE.Object3D);
 
@@ -45229,6 +45949,8 @@ feng.fx.Leaves.prototype.deactivate = function(){
 
 	this._eventHandler.removeAll();
 
+	this._animateOutDelay.stop();
+
 	this._activeObject = null;
 
 	this.isActive = false;
@@ -45245,6 +45967,8 @@ feng.fx.Leaves.prototype.animateIn = function( tipObject ){
 
 		this._activeObject = tipObject;
 	}
+
+	this._animateOutDelay.stop();
 
 	// calculate object radius
 	var boundingSphere = tipObject.getBoundingSphere();
@@ -45286,14 +46010,21 @@ feng.fx.Leaves.prototype.animateIn = function( tipObject ){
 };
 
 
-feng.fx.Leaves.prototype.animateOut = function(){
+feng.fx.Leaves.prototype.animateOut = function( hasDelay ){
 
 	if(this._leafScaleTweener.reversed() || !this.isActive) {
 		return;
 	}
 
-	// scale down leaves
-	this._leafScaleTweener.reverse();
+	if(hasDelay) {
+
+		this._animateOutDelay.start();
+
+	}else {
+
+		// scale down leaves
+		this._leafScaleTweener.reverse();
+	}
 };
 
 
@@ -46113,6 +46844,16 @@ feng.views.View3D.prototype.getView3dObject = function( name ){
 };
 
 
+feng.views.View3D.prototype.getView3dObjectById = function( id ){
+
+	var view3dObject = goog.object.findValue( this.view3dObjects, function(object) {
+		return (object.id === id);
+	});
+
+	return view3dObject;
+};
+
+
 feng.views.View3D.prototype.getObjectsByClass = function( objectClass ){
 
 	var result = [];
@@ -46193,6 +46934,8 @@ feng.views.View3D.prototype.deactivate = function(){
  	if(!this.isActivated) return;
 	else this.isActivated = false;
 
+	goog.fx.anim.unregisterAnimation(this);
+	
 	this._eventHandler.removeAll();
 
  	goog.object.forEach(this.interactiveObjects, function(interactiveObject) {
@@ -46202,8 +46945,6 @@ feng.views.View3D.prototype.deactivate = function(){
  	this.modeController.deactivate();
 
  	this.fx.deactivate();
-
-	goog.fx.anim.unregisterAnimation(this);
 };
 
 
@@ -48745,10 +49486,6 @@ feng.views.popups.Tutorial.prototype.nextStep = function(){
 	if(this._step < this._totalSteps) {
 
 		this.gotoStep( this._step );
-
-	}else {
-
-		this.dispatchEvent( feng.events.EventType.COMPLETE );
 	}
 };
 
@@ -48992,6 +49729,7 @@ feng.views.MainOptions.prototype.onClick = function(e){
 		case this._facebookButton:
 		case this._twitterButton:
 		case this._googleButton:
+    e.preventDefault();
     feng.utils.Utils.popUp( e.currentTarget.href );
 		break;
 	}
@@ -55430,7 +56168,6 @@ feng.views.EpisodeSelection = function(){
 
   this.domElement = soy.renderAsFragment(feng.templates.main.EpisodeSelection, templateData);
 
-  this._isTutorialComplete = false;
   this._isBuffering = false;
 
   feng.pubsub.subscribeOnce( feng.PubSub.Topic.MAIN_LOAD_COMPLETE, this.init, this );
@@ -55720,7 +56457,6 @@ feng.views.EpisodeSelection.prototype.onLoadStart = function(e){
 	this._episode = e.target.getParentEventTarget();
 	console.log(this._episode.id + ': load start');
 
-	this._isTutorialComplete = false;
 	this._isBuffering = false;
 
 	feng.pubsub.subscribeOnce( feng.PubSub.Topic.BUFFER_START, this.onBufferStart, this );
@@ -55751,19 +56487,7 @@ feng.views.EpisodeSelection.prototype.onLoadComplete = function(e){
 	feng.sectionController.unlisten( feng.events.EventType.PROGRESS, this.onLoadProgress, false, this );
 	feng.sectionController.unlisten( feng.events.EventType.COMPLETE, this.onLoadComplete, false, this );
 
-	feng.tutorial.listenOnce( feng.events.EventType.COMPLETE, this.onTutorialComplete, false, this );
 	feng.tutorial.listenOnce( feng.events.EventType.CLOSE, this.doAfterComplete, false, this );
-};
-
-
-feng.views.EpisodeSelection.prototype.onTutorialComplete = function(e){
-
-	this._isTutorialComplete = true;
-
-	if(!this._isBuffering) {
-
-		feng.tutorial.animateOut();
-	}
 };
 
 
@@ -55778,11 +56502,6 @@ feng.views.EpisodeSelection.prototype.onBufferComplete = function(e){
 	this._isBuffering = false;
 
 	feng.tutorial.showSkipButton();
-
-	if(this._isTutorialComplete) {
-
-		feng.tutorial.animateOut();
-	}
 };goog.provide('feng.views.popups.Credits');
 
 goog.require('goog.net.XhrIo');
@@ -57134,30 +57853,7 @@ feng.views.sections.Home.prototype.onScreenClose = function(e){
 	switch( e.target ) {
 		case this._preloadScreen:
 		this._preloadScreen.animateOut();
-
-		// for test tip
-		var testTipPattern = feng.controllers.NavigationController.Token.TEST_TIP;
-
-		if(feng.initialToken.length === 4 && goog.string.startsWith(testTipPattern.replace('#/', ''), feng.initialToken[0])) {
-
-			var sectionId = feng.initialToken[1];
-			var viewId = feng.initialToken[2];
-			var tipId = feng.initialToken[3];
-
-			var testTipToken = testTipPattern.replace('{sectionId}', sectionId).replace('{viewId}', viewId).replace('{tipId}', tipId);
-
-			console.log('parsed test tip token: ' + testTipToken);
-
-			this._episodeScreen.animateIn();
-			feng.episodeSelection.activate();
-
-			feng.navigationController.setToken( feng.controllers.NavigationController.Token.STUDIO );
-		}
-		// animate in episode selection
-		else {
-
-			this._episodeScreen.animateIn();
-		}
+		this._episodeScreen.animateIn();
 		break;
 
 		case this._episodeScreen:
@@ -60891,10 +61587,270 @@ feng.views.sections.controls.Book.prototype.onModeChange = function(e){
     }
     break;
   }
-};goog.provide('feng.views.sections.controls.Tooltips');
+};// Copyright 2012 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Utilities for detecting, adding and removing classes.  Prefer
+ * this over goog.dom.classes for new code since it attempts to use classList
+ * (DOMTokenList: http://dom.spec.whatwg.org/#domtokenlist) which is faster
+ * and requires less code.
+ *
+ * Note: these utilities are meant to operate on HTMLElements
+ * and may have unexpected behavior on elements with differing interfaces
+ * (such as SVGElements).
+ */
+
+
+goog.provide('goog.dom.classlist');
+
+goog.require('goog.array');
+
+
+/**
+ * Override this define at build-time if you know your target supports it.
+ * @define {boolean} Whether to use the classList property (DOMTokenList).
+ */
+goog.define('goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST', false);
+
+
+/**
+ * Gets an array-like object of class names on an element.
+ * @param {Element} element DOM node to get the classes of.
+ * @return {!goog.array.ArrayLike} Class names on {@code element}.
+ */
+goog.dom.classlist.get = function(element) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    return element.classList;
+  }
+
+  var className = element.className;
+  // Some types of elements don't have a className in IE (e.g. iframes).
+  // Furthermore, in Firefox, className is not a string when the element is
+  // an SVG element.
+  return goog.isString(className) && className.match(/\S+/g) || [];
+};
+
+
+/**
+ * Sets the entire class name of an element.
+ * @param {Element} element DOM node to set class of.
+ * @param {string} className Class name(s) to apply to element.
+ */
+goog.dom.classlist.set = function(element, className) {
+  element.className = className;
+};
+
+
+/**
+ * Returns true if an element has a class.  This method may throw a DOM
+ * exception for an invalid or empty class name if DOMTokenList is used.
+ * @param {Element} element DOM node to test.
+ * @param {string} className Class name to test for.
+ * @return {boolean} Whether element has the class.
+ */
+goog.dom.classlist.contains = function(element, className) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    return element.classList.contains(className);
+  }
+  return goog.array.contains(goog.dom.classlist.get(element), className);
+};
+
+
+/**
+ * Adds a class to an element.  Does not add multiples of class names.  This
+ * method may throw a DOM exception for an invalid or empty class name if
+ * DOMTokenList is used.
+ * @param {Element} element DOM node to add class to.
+ * @param {string} className Class name to add.
+ */
+goog.dom.classlist.add = function(element, className) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    element.classList.add(className);
+    return;
+  }
+
+  if (!goog.dom.classlist.contains(element, className)) {
+    // Ensure we add a space if this is not the first class name added.
+    element.className += element.className.length > 0 ?
+        (' ' + className) : className;
+  }
+};
+
+
+/**
+ * Convenience method to add a number of class names at once.
+ * @param {Element} element The element to which to add classes.
+ * @param {goog.array.ArrayLike.<string>} classesToAdd An array-like object
+ * containing a collection of class names to add to the element.
+ * This method may throw a DOM exception if classesToAdd contains invalid
+ * or empty class names.
+ */
+goog.dom.classlist.addAll = function(element, classesToAdd) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    goog.array.forEach(classesToAdd, function(className) {
+      goog.dom.classlist.add(element, className);
+    });
+    return;
+  }
+
+  var classMap = {};
+
+  // Get all current class names into a map.
+  goog.array.forEach(goog.dom.classlist.get(element),
+      function(className) {
+        classMap[className] = true;
+      });
+
+  // Add new class names to the map.
+  goog.array.forEach(classesToAdd,
+      function(className) {
+        classMap[className] = true;
+      });
+
+  // Flatten the keys of the map into the className.
+  element.className = '';
+  for (var className in classMap) {
+    element.className += element.className.length > 0 ?
+        (' ' + className) : className;
+  }
+};
+
+
+/**
+ * Removes a class from an element.  This method may throw a DOM exception
+ * for an invalid or empty class name if DOMTokenList is used.
+ * @param {Element} element DOM node to remove class from.
+ * @param {string} className Class name to remove.
+ */
+goog.dom.classlist.remove = function(element, className) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    element.classList.remove(className);
+    return;
+  }
+
+  if (goog.dom.classlist.contains(element, className)) {
+    // Filter out the class name.
+    element.className = goog.array.filter(
+        goog.dom.classlist.get(element),
+        function(c) {
+          return c != className;
+        }).join(' ');
+  }
+};
+
+
+/**
+ * Removes a set of classes from an element.  Prefer this call to
+ * repeatedly calling {@code goog.dom.classlist.remove} if you want to remove
+ * a large set of class names at once.
+ * @param {Element} element The element from which to remove classes.
+ * @param {goog.array.ArrayLike.<string>} classesToRemove An array-like object
+ * containing a collection of class names to remove from the element.
+ * This method may throw a DOM exception if classesToRemove contains invalid
+ * or empty class names.
+ */
+goog.dom.classlist.removeAll = function(element, classesToRemove) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    goog.array.forEach(classesToRemove, function(className) {
+      goog.dom.classlist.remove(element, className);
+    });
+    return;
+  }
+  // Filter out those classes in classesToRemove.
+  element.className = goog.array.filter(
+      goog.dom.classlist.get(element),
+      function(className) {
+        // If this class is not one we are trying to remove,
+        // add it to the array of new class names.
+        return !goog.array.contains(classesToRemove, className);
+      }).join(' ');
+};
+
+
+/**
+ * Adds or removes a class depending on the enabled argument.  This method
+ * may throw a DOM exception for an invalid or empty class name if DOMTokenList
+ * is used.
+ * @param {Element} element DOM node to add or remove the class on.
+ * @param {string} className Class name to add or remove.
+ * @param {boolean} enabled Whether to add or remove the class (true adds,
+ *     false removes).
+ */
+goog.dom.classlist.enable = function(element, className, enabled) {
+  if (enabled) {
+    goog.dom.classlist.add(element, className);
+  } else {
+    goog.dom.classlist.remove(element, className);
+  }
+};
+
+
+/**
+ * Switches a class on an element from one to another without disturbing other
+ * classes. If the fromClass isn't removed, the toClass won't be added.  This
+ * method may throw a DOM exception if the class names are empty or invalid.
+ * @param {Element} element DOM node to swap classes on.
+ * @param {string} fromClass Class to remove.
+ * @param {string} toClass Class to add.
+ * @return {boolean} Whether classes were switched.
+ */
+goog.dom.classlist.swap = function(element, fromClass, toClass) {
+  if (goog.dom.classlist.contains(element, fromClass)) {
+    goog.dom.classlist.remove(element, fromClass);
+    goog.dom.classlist.add(element, toClass);
+    return true;
+  }
+  return false;
+};
+
+
+/**
+ * Removes a class if an element has it, and adds it the element doesn't have
+ * it.  Won't affect other classes on the node.  This method may throw a DOM
+ * exception if the class name is empty or invalid.
+ * @param {Element} element DOM node to toggle class on.
+ * @param {string} className Class to toggle.
+ * @return {boolean} True if class was added, false if it was removed
+ *     (in other words, whether element has the class after this function has
+ *     been called).
+ */
+goog.dom.classlist.toggle = function(element, className) {
+  var add = !goog.dom.classlist.contains(element, className);
+  goog.dom.classlist.enable(element, className, add);
+  return add;
+};
+
+
+/**
+ * Adds and removes a class of an element.  Unlike
+ * {@link goog.dom.classlist.swap}, this method adds the classToAdd regardless
+ * of whether the classToRemove was present and had been removed.  This method
+ * may throw a DOM exception if the class names are empty or invalid.
+ *
+ * @param {Element} element DOM node to swap classes on.
+ * @param {string} classToRemove Class to remove.
+ * @param {string} classToAdd Class to add.
+ */
+goog.dom.classlist.addRemove = function(element, classToRemove, classToAdd) {
+  goog.dom.classlist.remove(element, classToRemove);
+  goog.dom.classlist.add(element, classToAdd);
+};
+goog.provide('feng.views.sections.controls.Tooltips');
 
 goog.require('goog.async.Throttle');
-goog.require('goog.dom.classes');
+goog.require('goog.dom.classlist');
 goog.require('feng.views.sections.controls.Controls');
 goog.require('feng.utils.ThreeUtils');
 
@@ -60914,6 +61870,7 @@ feng.views.sections.controls.Tooltips = function( domElement ){
 
   this._detectObjects = [];
 
+  // object id as keys
   this._tooltips = {};
 
   // tooltips of current view3d
@@ -60926,19 +61883,25 @@ goog.inherits(feng.views.sections.controls.Tooltips, feng.views.sections.control
 feng.views.sections.controls.Tooltips.prototype.createTooltips = function( view3d ){
 
   // create tip tooltips
+  var sectionId = view3d.sectionId;
+  var viewId = view3d.id;
+
   goog.object.forEach( view3d.tipObjects, function(tipObject) {
 
-    var tip = tipObject.tip;
+    var objectId = tipObject.id;
+    
+    if(!this._tooltips[ objectId ]) {
 
-    if(!this._tooltips[ tip.id ]) {
+      var goTipToken = feng.controllers.NavigationController.Token.GO_TIP.replace('{sectionId}', sectionId).replace('{viewId}', viewId).replace('{objectId}', objectId);
 
       var tooltipEl = soy.renderAsFragment(feng.templates.controls.TipTooltip, {
-        tip: tipObject.tip
+        object: tipObject,
+        goTipToken: goTipToken
       });
 
       goog.dom.appendChild( this.domElement, tooltipEl );
 
-      this._tooltips[ tip.id ] = tooltipEl;
+      this._tooltips[ tipObject.id ] = tooltipEl;
     }
   }, this);
 
@@ -60956,12 +61919,6 @@ feng.views.sections.controls.Tooltips.prototype.createTooltips = function( view3
       this._tooltips[ gatewayObject.id ] = tooltipEl;
     }
   }, this);
-};
-
-
-feng.views.sections.controls.Tooltips.prototype.getTooltip = function( id ){
-
-  return goog.dom.query('.tooltip[data-id=' + id + ']', this.domElement)[0];
 };
 
 
@@ -60986,17 +61943,18 @@ feng.views.sections.controls.Tooltips.prototype.setView3D = function( view3d ){
 
   goog.array.forEach( this._tooltipObjects, function(object) {
 
-    var id = object.tip ? object.tip.id : object.id;
+    var id = object.id;
     this._currentTooltips[ id ] = this._tooltips[ id ];
   }, this);
 
   // listen to tip unlock event
   goog.array.forEach( tipObjects, function(tipObject) {
 
-    var tip = tipObject.tip;
-    var tooltipEl = this._tooltips[ tip.id ];
+    var id = tipObject.id;
+    var tooltipEl = this._tooltips[ id ];
 
-    goog.dom.classes.enable( tooltipEl, 'locked', !(tip.unlocked && tip.isFinal) );
+    var tip = tipObject.tip;
+    goog.dom.classlist.enable( tooltipEl, 'locked', !(tip.unlocked && tip.isFinal) );
 
     if(!tip.unlocked && tip.isFinal) {
       goog.events.listenOnce( tip, feng.events.EventType.UNLOCK, this.onTipUnlock, false, this );
@@ -61021,7 +61979,7 @@ feng.views.sections.controls.Tooltips.prototype.activate = function(){
   if(!shouldActivate) return;
 
   goog.object.forEach( this._currentTooltips, function(tooltip) {
-    goog.dom.classes.addRemove( tooltip, 'fadeOut', 'fadeIn' );
+    goog.dom.classlist.addRemove( tooltip, 'fadeOut', 'fadeIn' );
   });
 
   this.updateDetectObjects();
@@ -61037,7 +61995,7 @@ feng.views.sections.controls.Tooltips.prototype.deactivate = function(){
   if(!shouldDeactivate) return;
 
   goog.object.forEach( this._currentTooltips, function(tooltip) {
-    goog.dom.classes.addRemove( tooltip, 'fadeIn', 'fadeOut' );
+    goog.dom.classlist.addRemove( tooltip, 'fadeIn', 'fadeOut' );
   });
 
   goog.fx.anim.unregisterAnimation( this );
@@ -61081,7 +62039,7 @@ feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
 
   goog.array.forEach( this._tooltipObjects, function(object) {
 
-    var id = object.tip ? object.tip.id : object.id;
+    var id = object.id;
 
     var tooltip = this._currentTooltips[ id ];
 
@@ -61094,11 +62052,11 @@ feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
 
     if(dot >= thresholdDot) {
 
-      goog.dom.classes.enable( tooltip, 'hidden', false );
+      goog.dom.classlist.enable( tooltip, 'hidden', false );
 
     }else {
 
-      goog.dom.classes.enable( tooltip, 'hidden', true );
+      goog.dom.classlist.enable( tooltip, 'hidden', true );
       return;
     }
     
@@ -61108,7 +62066,7 @@ feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
       (intersects[0].object.view3dObject === object || intersects[0].object.parent.view3dObject === object || goog.array.contains(intersects[0].object.children, object.object3d))
       );
 
-    goog.dom.classes.enable( tooltip, 'hidden', !shouldShow );
+    goog.dom.classlist.enable( tooltip, 'hidden', !shouldShow );
 
   }, this);
 };
@@ -61116,10 +62074,11 @@ feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
 
 feng.views.sections.controls.Tooltips.prototype.onTipUnlock = function(e){
 
-  var tipId = e.tip.id;
-  var tooltipEl = this.getTooltip( tipId );
+  var tooltipEls = goog.dom.query('.tooltip[data-tip-id=' + e.tip.id + ']', this.domElement);
 
-  goog.dom.classes.remove( tooltipEl, 'locked' );
+  goog.array.forEach(tooltipEls, function(tooltipEl) {
+    goog.dom.classlist.remove( tooltipEl, 'locked' );
+  });
 };
 
 
@@ -61141,7 +62100,7 @@ feng.views.sections.controls.Tooltips.prototype.onModeChange = function(e){
 
   goog.base(this, 'onModeChange', e);
 
-  goog.dom.classes.enable(this.domElement, 'design', (e.mode === feng.controllers.view3d.ModeController.Mode.DESIGN));
+  goog.dom.classlist.enable(this.domElement, 'design', (e.mode === feng.controllers.view3d.ModeController.Mode.DESIGN));
 
   switch(e.mode) {
     case feng.controllers.view3d.ModeController.Mode.ENTRY:
@@ -61175,9 +62134,21 @@ feng.views.sections.controls.Tooltips.prototype.onAnimationFrame = function(now)
 
     var pos3d = object.getCenter();
     var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, camera, viewSize );
-    
-    var id = object.tip ? object.tip.id : object.id;
-    var tooltip = this._currentTooltips[ id ];
+
+    var id = object.id;
+    var tooltip = this._currentTooltips[ id ];    
+
+    var inScreenRect = (pos2d.x > 140 && pos2d.x < (viewSize.width - 140) && pos2d.y > 140 && pos2d.y < (viewSize.height - 140));
+
+    if(inScreenRect) {
+
+      goog.dom.classlist.addRemove( tooltip, 'fadeOut', 'fadeIn' );
+
+    }else {
+
+      goog.dom.classlist.addRemove( tooltip, 'fadeIn', 'fadeOut' );
+    }
+
     goog.style.setStyle( tooltip, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)' );
 
   }, this);
