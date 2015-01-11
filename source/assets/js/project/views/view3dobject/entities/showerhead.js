@@ -37,8 +37,9 @@ feng.views.view3dobject.entities.Showerhead = function( object3d, data, view3d )
 
   this._totalDeg = 0;
   this._lastDeg = 0;
-  this._totalCount = 6;
+  this._totalCount = 2;
   this._count = 0;
+  this._hasDone = false;
 };
 goog.inherits(feng.views.view3dobject.entities.Showerhead, feng.views.view3dobject.TipObject);
 
@@ -150,6 +151,15 @@ feng.views.view3dobject.entities.Showerhead.prototype.stopInteraction = function
 };
 
 
+feng.views.view3dobject.entities.Showerhead.prototype.finish = function(){
+
+  this._waterdrop.view3dObject.removeFromScene();
+
+  this.unlock();
+  this.stopInteraction();
+};
+
+
 feng.views.view3dobject.entities.Showerhead.prototype.onCameraTransitionUpdate = function(prop){
 
   var startPosition = prop.startPosition;
@@ -184,8 +194,14 @@ feng.views.view3dobject.entities.Showerhead.prototype.onCameraZoomUpdate = funct
 
 feng.views.view3dobject.entities.Showerhead.prototype.onDragStart = function(e){
 
+  if(this._hasDone) {
+    return;
+  }
+
+  var control = this._view3d.modeController.control;
+
   var prop = {
-    fov: this._tapCamera.fov
+    fov: control.getFov()
   };
 
   this._cameraZoomTweener = TweenMax.to(prop, .5, {
@@ -201,25 +217,14 @@ feng.views.view3dobject.entities.Showerhead.prototype.onDragStart = function(e){
 feng.views.view3dobject.entities.Showerhead.prototype.onDragEnd = function(e){
 
   this._lastDeg = 0;
-  this._totalDeg = 0;
-
-  var control = this._view3d.modeController.control;
-
-  var prop = {
-    fov: control.getFov()
-  };
-
-  this._cameraZoomTweener = TweenMax.to(prop, 1, {
-    fov: this._tapCamera.fov,
-    'ease': Strong.easeOut,
-    'onUpdate': this.onCameraZoomUpdate,
-    'onUpdateParams': [prop],
-    'onUpdateScope': this
-  });
 };
 
 
 feng.views.view3dobject.entities.Showerhead.prototype.onDrag = function(e){
+
+  if(this._hasDone) {
+    return;
+  }
 
   var clientX = e.target.clientX;
   var clientY = e.target.clientY;
@@ -239,7 +244,7 @@ feng.views.view3dobject.entities.Showerhead.prototype.onDrag = function(e){
   var a2 = this._lastDeg * (Math.PI / 180);
 
   var radians = Math.atan2(Math.sin(a1 - a2), Math.cos(a1 - a2));
-  var diffDeg = radians * (180 / Math.PI);
+  var diffDeg = Math.max(0, radians * (180 / Math.PI));
 
   this._lastDeg = mouseDeg;
 
@@ -252,11 +257,22 @@ feng.views.view3dobject.entities.Showerhead.prototype.onDrag = function(e){
 
   if(count >= this._totalCount) {
 
-    this._waterdrop.view3dObject.removeFromScene();
+    this._hasDone = true;
 
-    this.onDragEnd();
+    var control = this._view3d.modeController.control;
 
-    this.unlock();
-    this.stopInteraction();
+    var prop = {
+      fov: control.getFov()
+    };
+
+    this._cameraZoomTweener = TweenMax.to(prop, 1, {
+      fov: this._tapCamera.fov,
+      'ease': Strong.easeOut,
+      'onUpdate': this.onCameraZoomUpdate,
+      'onUpdateParams': [prop],
+      'onUpdateScope': this,
+      'onComplete': this.finish,
+      'onCompleteScope': this
+    });
   }
 };
