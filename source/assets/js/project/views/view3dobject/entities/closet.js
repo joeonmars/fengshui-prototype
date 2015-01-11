@@ -67,7 +67,7 @@ feng.views.view3dobject.entities.Closet = function( object3d, data, view3d ){
   };
 
   this._swingProgress = 0;
-  this._rotationProgress = 0;
+  this._positionProgress = 0;
 
   // dragger to drag the item
   this._dragger = new goog.fx.Dragger( this._view3d.domElement );
@@ -182,7 +182,7 @@ feng.views.view3dobject.entities.Closet.prototype.init = function(){
     'onCompleteScope': this
   });
 
-  this._jarsPullOutTweener.add( jarTweeners, '+=0', 'start', .1 );
+  this._jarsPullOutTweener.add( jarTweeners, '+=0', 'start', .15 );
 };
 
 
@@ -263,9 +263,9 @@ feng.views.view3dobject.entities.Closet.prototype.startInteraction = function(){
   // pull out jars
   this._jarsPullOutTweener.restart();
 
-  TweenMax.to(this, .5, {
+  TweenMax.to(this, 4, {
     _swingProgress: 1,
-    _rotationProgress: 1
+    _positionProgress: 1
   });
 
   goog.fx.anim.registerAnimation( this );
@@ -288,7 +288,7 @@ feng.views.view3dobject.entities.Closet.prototype.stopInteraction = function(){
 
   TweenMax.to(this, .5, {
     _swingProgress: 0,
-    _rotationProgress: 0
+    _positionProgress: 0
   });
 
   goog.fx.anim.unregisterAnimation( this );
@@ -478,7 +478,7 @@ feng.views.view3dobject.entities.Closet.prototype.onCameraZoomUpdate = function(
 
   control.setFov( prop.fov );
 
-  if(prop.updateDragOffset) {
+  if(prop.updateDragOffset && this._dummyJar) {
     this.updateDragOffsetOfJar();
   }
 };
@@ -504,12 +504,12 @@ feng.views.view3dobject.entities.Closet.prototype.onAnimationFrame = function(no
     var orientation = userData.orientation;
 
     dummyJar.position.x = orientation.positionX;
-    dummyJar.position.y = orientation.positionY + Math.sin( now * 0.001 * swing ) * this._swingProgress * swingMultiplier + dragOffset.y;
-    dummyJar.position.z = orientation.positionZ + Math.cos( now * 0.001 * swing ) * this._swingProgress * swingMultiplier + dragOffset.z;
+    dummyJar.position.y = orientation.positionY + Math.sin( now * 0.001 * swing ) * this._swingProgress * swingMultiplier * this._positionProgress + dragOffset.y;
+    dummyJar.position.z = orientation.positionZ + Math.cos( now * 0.001 * swing ) * this._swingProgress * swingMultiplier * this._positionProgress + dragOffset.z;
   
-    dummyJar.rotation.x = orientation.rotationX * this._rotationProgress * rotationMultiplier;
-    dummyJar.rotation.y = orientation.rotationY * this._rotationProgress * rotationMultiplier;
-    dummyJar.rotation.z = orientation.rotationZ * this._rotationProgress * rotationMultiplier;
+    dummyJar.rotation.x = orientation.rotationX * rotationMultiplier;
+    dummyJar.rotation.y = orientation.rotationY * rotationMultiplier;
+    dummyJar.rotation.z = orientation.rotationZ * rotationMultiplier;
 
     var jarTargetPosition = userData.isAnchored ? userData.anchor : dummyJar.position;
 

@@ -30,7 +30,7 @@ feng.views.sections.captions.Caption = function( object, renderController, rende
 
   this._closeKeyId = null;
 
-  this._close = goog.bind( this.close, this );
+  this._onESC = goog.bind( this.onESC, this );
 
   // render HTML template
   this.domElement = soy.renderAsFragment(this._template, this._templateData);
@@ -76,6 +76,7 @@ feng.views.sections.captions.Caption = function( object, renderController, rende
   this._sectionTweener = null;
 
   // set default status
+  this._isInteracting = false;
   this._isPanelAnimatedOut = true;
   goog.dom.classes.enable( this.domElement, 'hide-panel', this._isPanelAnimatedOut );
 
@@ -134,7 +135,7 @@ feng.views.sections.captions.Caption.prototype.activate = function() {
   }, this);
 
   //
-  this._closeKeyId = feng.keyboardController.bind( this._close, feng.keyboardController.key.ESC, true );
+  this._closeKeyId = feng.keyboardController.bind( this._onESC, feng.keyboardController.key.ESC, false );
 
   goog.style.showElement(this._panelButton, false);
 
@@ -312,7 +313,7 @@ feng.views.sections.captions.Caption.prototype.animateInPanel = function() {
 
   goog.style.showElement(this._panelButton, true);
 
-  this.enableControls( true );
+  this.enableControls( !this._isInteracting );
 
   goog.dom.classes.enable(this.domElement, 'hide-panel', false);
 
@@ -382,12 +383,6 @@ feng.views.sections.captions.Caption.prototype.togglePanel = function() {
 
 feng.views.sections.captions.Caption.prototype.close = function() {
 
-  this.doClose();
-};
-
-
-feng.views.sections.captions.Caption.prototype.doClose = function() {
-
   if(this._isPanelAnimatedOut) {
 
     this.onPanelAnimatedOut( true );
@@ -396,6 +391,8 @@ feng.views.sections.captions.Caption.prototype.doClose = function() {
     
     this.animateOutPanel( true );
   }
+
+  feng.keyboardController.unbind( this._closeKeyId );
 
   feng.soundController.playSfx('close');
 };
@@ -482,6 +479,8 @@ feng.views.sections.captions.Caption.prototype.onPanelAnimatedOut = function( sh
 
 feng.views.sections.captions.Caption.prototype.onInteractionStart = function( e ) {
 
+  this._isInteracting = true;
+
   if(this._interactionSection) {
 
     this.gotoSection( this._interactionSection );
@@ -497,11 +496,22 @@ feng.views.sections.captions.Caption.prototype.onInteractionStart = function( e 
 
 feng.views.sections.captions.Caption.prototype.onInteractionEnd = function( e ) {
 
+  this._isInteracting = false;
+
   if(this._object.tip.isFinal) {
 
     this.animateInPanel();
 
   }else {
+
+    this.close();
+  }
+};
+
+
+feng.views.sections.captions.Caption.prototype.onESC = function() {
+
+  if(!this._isInteracting) {
 
     this.close();
   }
