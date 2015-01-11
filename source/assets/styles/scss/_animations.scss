@@ -252,11 +252,6 @@
 }
 /* -- end -- */
 
-@include keyframes(pulse-button) {
-  to{
-    box-shadow: 0 0 0 15px rgba( $yellow-ui,  0 );
-  }
-}
 
 /* -- reminder dialogue -- */
 /* Generated with Bounce.js. Edit at http://goo.gl/oeCR1n */

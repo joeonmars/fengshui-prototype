@@ -68,6 +68,8 @@ feng.views.sections.captions.Caption = function( object, renderController, rende
 
   this.scrollBar = null;
 
+  this._controlsEl = goog.dom.getElementByClass('controls', this.domElement);
+
   this._shareEl = goog.dom.getElementByClass('share', this.domElement);
   this._shareButtons = goog.dom.query('a', this._shareEl);
 
@@ -136,7 +138,7 @@ feng.views.sections.captions.Caption.prototype.activate = function() {
 
   goog.style.showElement(this._panelButton, false);
 
-  this.enableCloseButton( false );
+  this.enableControls( false );
 
   this.updateStatus();
 };
@@ -156,9 +158,11 @@ feng.views.sections.captions.Caption.prototype.deactivate = function() {
 };
 
 
-feng.views.sections.captions.Caption.prototype.enableCloseButton = function( enabled ) {
+feng.views.sections.captions.Caption.prototype.enableControls = function( enabled ) {
 
-  this._closeButton.disabled = goog.isBoolean(enabled) ? !enabled : false;
+  var shouldEnable = goog.isBoolean(enabled) ? enabled : true;
+
+  goog.dom.classlist.enable( this._controlsEl, 'hidden', !shouldEnable );
 };
 
 
@@ -308,7 +312,7 @@ feng.views.sections.captions.Caption.prototype.animateInPanel = function() {
 
   goog.style.showElement(this._panelButton, true);
 
-  this.enableCloseButton( true );
+  this.enableControls( true );
 
   goog.dom.classes.enable(this.domElement, 'hide-panel', false);
 
@@ -484,7 +488,7 @@ feng.views.sections.captions.Caption.prototype.onInteractionStart = function( e 
 
   }else {
 
-    this.enableCloseButton( false );
+    this.enableControls( false );
 
     this.animateOutPanel();
   }

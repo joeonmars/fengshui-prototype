@@ -15,8 +15,6 @@ feng.views.popups.Popup = function(domElement){
 
   this.domElement = domElement;
 
-  this._closeButton = goog.dom.getElementByClass('close-button', this.domElement);
-
   this._isShown = false;
 
   this._eventHandler = new goog.events.EventHandler(this);
@@ -34,7 +32,6 @@ goog.inherits(feng.views.popups.Popup, goog.events.EventTarget);
 
 feng.views.popups.Popup.prototype.activate = function() {
 
-	this._eventHandler.listen(this._closeButton, 'click', this.animateOut, false, this);
 };
 
 
@@ -51,18 +48,6 @@ feng.views.popups.Popup.prototype.toggle = function() {
 
 	if(!this._isShown) this.animateIn();
 	else this.animateOut();
-};
-
-
-feng.views.popups.Popup.prototype.showCloseButton = function() {
-
-	goog.style.showElement(this._closeButton, true);
-};
-
-
-feng.views.popups.Popup.prototype.hideCloseButton = function() {
-
-	goog.style.showElement(this._closeButton, false);
 };
 
 

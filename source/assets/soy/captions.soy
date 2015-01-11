@@ -14,18 +14,6 @@
 				<button class="icon"></button>
 				<h3>Learn<br>More</h3>
 			</div>
-
-			<div class="panel-controls">
-
-				<div class="share">
-					<ul>
-						<li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-facebook"></a></li>
-						<li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-twitter"></a></li>
-						<li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-google"></a></li>
-					</ul>
-				</div>
-				
-			</div>
 			
 			<div class="panel-content">
 
@@ -101,7 +89,15 @@
 			</div>
 		</div>
 
-		{call feng.templates.common.CloseButton}{/call}
+		<div class="controls">
+			<ul class="share">
+				<li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-facebook"></a></li>
+				<li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-twitter"></a></li>
+				<li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/{ $tip.id }.html" target="_blank" class="icon icon-google"></a></li>
+			</ul>
+
+			{call feng.templates.common.CloseButton}{/call}
+		</div>
 </div>
 {/template}
 

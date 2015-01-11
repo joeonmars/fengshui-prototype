@@ -287,7 +287,7 @@ feng.views.sections.controls.Tooltips.prototype.onAnimationFrame = function(now)
     var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, camera, viewSize );
 
     var id = object.id;
-    var tooltip = this._currentTooltips[ id ];    
+    var tooltip = this._currentTooltips[ id ];
 
     var inScreenRect = (pos2d.x > 140 && pos2d.x < (viewSize.width - 140) && pos2d.y > 140 && pos2d.y < (viewSize.height - 140));
 

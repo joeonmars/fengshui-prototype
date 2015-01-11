@@ -26,7 +26,7 @@ feng.views.sections.controls.ObjectSelector = function(domElement){
   this._downObject = null;
   this._isEnabled = false;
   this._startTime = 0;
-  this._duration = 800;
+  this._duration = 600;
 
   this._callbacks = {};
 

@@ -325,14 +325,16 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   display: inline-block;
   vertical-align: top;
   padding: .5em .25em;
-  border: 2px solid rgba(0, 0, 0, .05);
-  color: $darkgray-ui;
+  border: 2px solid $blue;
+  color: $blue;
+  background-color: transparent;
   @include border-radius(50%);
   @include box-sizing(border-box);
-  @include single-transition(border-color, .25s);
+  @include transition(color .25s, background-color .25s);
 
   &:hover{
-    border-color: $darkgray-ui;
+    color: #fff;
+    background-color: $blue;
   }
 }
 //
@@ -364,8 +366,9 @@ body{
   @include chromeOSDefaultCursor;
   
   h1, h2{
-    font-family: $font_marineup;
-    text-transform: camelcase;
+    text-transform: uppercase;
+    font-family: $font_marine;
+    font-weight: bold;
     letter-spacing: 0.025em;
     -webkit-font-smoothing: antialiased;
   }
@@ -437,6 +440,7 @@ body{
   .primary-button{
     position: relative;
     display: block;
+    min-width: 5em;
     font-family: $font_marineup;
     text-align: center;
     line-height: 0;

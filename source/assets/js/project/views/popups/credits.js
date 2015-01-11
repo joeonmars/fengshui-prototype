@@ -19,6 +19,8 @@ feng.views.popups.Credits = function(){
 	this._scrollBarEl = goog.dom.getElementByClass('scrollbar', this._scrollerEl);
 	this._scrollerContentEl = goog.dom.getElementByClass('content', this._scrollerEl);
 
+	this._skipButton = goog.dom.getElementByClass('skip', this.domElement);
+
     this._scrollBar = new feng.fx.ScrollBar( this._scrollBarEl, this._scrollerContentEl );
 
 	this._escKeyId = null;
@@ -71,6 +73,8 @@ feng.views.popups.Credits.prototype.activate = function(){
 	goog.events.listen(window, 'resize', this.onResize, false, this);
 
 	this._escKeyId = feng.keyboardController.bind( this._animateOut, feng.keyboardController.key.ESC, true );
+
+	this._eventHandler.listen( this._skipButton, 'click', this.animateOut, false, this );
 };
 
 

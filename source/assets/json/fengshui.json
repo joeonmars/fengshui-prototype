@@ -550,7 +550,7 @@
 			"id": "setsquare",
 			"section": "house",
 			"view": "homeoffice",
-			"name": "Sharp Decorations",
+			"name": "Sharp Object",
 			"icon": "setsquare",
 			"unlocked": false,
 			"mandatory": true,

@@ -21,8 +21,8 @@
 			}
 		}
 
-		>.close-button{
-			@include arrow-button( 4.8em, $blue, transparent, #fff, $blue );
+		.close-button{
+			@include arrow-button( 48px, $blue, transparent, #fff, $blue );
 		}
 
 		&.hide-panel{
@@ -41,10 +41,6 @@
 					}
 				}
 			}
-
-			>.close-button{
-				@include arrow-button( 4.8em, $blue, transparent, #fff, $blue );
-			}
 		}
 	}
 
@@ -58,6 +54,12 @@
 			>.panel-content{
 				opacity: 0;
 				visibility: hidden;
+			}
+		}
+
+		>.controls{
+			>.share{
+				width: 307px;
 			}
 		}
 	}
@@ -97,37 +99,6 @@
 				font-size: 1.8em;
 				color: rgba(#fff, .35);
 				@include single-transition(opacity, .5s);
-			}
-		}
-
-		>.panel-controls{
-			@include absoluteTopLeft;
-			padding: 40px;
-			width: 100%;
-			height: 15%;
-			overflow: hidden;
-			@include box-sizing(border-box);
-
-			.share{
-
-				>ul{
-					padding: 0;
-
-					>li{
-						display: inline-block;
-						vertical-align: top;
-						margin: 0 .65em;
-
-						&:last-child{
-							margin-right: 0;
-						}
-
-						>a{
-							@extend %round-social-button;
-							font-size: 2.2em;
-						}
-					}
-				}
 			}
 		}
 
@@ -273,7 +244,6 @@
 						}
 
 						&.animate-out{
-
 						}
 
 						>.inner{
@@ -307,32 +277,69 @@
 		}
 	}
 
-	>.close-button{
+	>.controls{
 		position: absolute;
-		top: 40px;
-		right: 40px;
 		z-index: 10;
+		top: 0;
+		right: 0;
+		width: 35%;
+		min-width: 450px;
+		padding: 40px;
+		@include box-sizing(border-box);
+		opacity: 1;
+		visibility: visible;
+		@include transition(opacity .5s, visibility .5s);
+		
+		&.hidden{
+			opacity: 0;
+			visibility: hidden;
+		}
+
+		>.share{
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 100%;
+			padding: 40px;
+			@include box-sizing(border-box);
+			@include transition(width .5s $easeInOutSine);
+
+			>li{
+				display: inline-block;
+				vertical-align: top;
+				margin: 0 5px;
+
+				>a{
+					display: inline-block;
+					vertical-align: top;
+					@extend %round-social-button;
+					font-size: 22px;
+				}
+			}
+		}
+
+		>.close-button{
+			position: relative;
+			z-index: 1;
+			float: right;
+		}
 	}
 
 	/* common */
 	.item-button{
 		width: 100px;
 		height: 100px;
-		border: solid 2px $lightgray-ui;
 		@include border-radius(50%);
 		background-color: #fff;
 		opacity: .3;
-		@include transition(opacity .2s, border-color .2s);
-		box-shadow: 0 0 0 0 rgba( $yellow-ui,  1 );
+		@include transition(opacity .2s);
 
 		&:hover{
 			opacity: .5;
 		}
 
 		&.active{
-			border-color: $yellow-ui;
 			opacity: 1;
-			@include animation( pulse-button 1.25s infinite $easeInOutCubic );
 		}
 	}
 

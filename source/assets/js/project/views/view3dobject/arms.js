@@ -141,7 +141,7 @@ feng.views.view3dobject.Arms.Orientations = {
   },
   'knife': {
     position: new THREE.Vector3(0, 10, -2),
-    rotation: new THREE.Euler(0.05, -0.09, -0.50)
+    rotation: new THREE.Euler(1.4, -0.6, -0.50)
   },
   'handheld': {
     position: new THREE.Vector3(0, 7.5, -2),

@@ -77,6 +77,11 @@
 
 										&.unlocked{
 											display: table-cell;
+											color: $blue;
+
+											h1:after{
+												background-color: $blue;
+											}
 										}
 
 										&.locked{
@@ -122,8 +127,8 @@
 									}
 
 									>.icon{
-										font-size: 8em;
-										line-height: 1.2;
+										font-size: 10em;
+										line-height: 1.4;
 									}
 
 									>h1{
@@ -132,13 +137,25 @@
 										text-transform: uppercase;
 										font-family: $font_marine;
 										font-weight: bold;
+
+										&:after{
+											content: "";
+											position: relative;
+											z-index: 2;
+											display: block;
+											margin: .25em auto 0 auto;
+											width: 33px;
+											height: 1px;
+											background-color: $lightgray-ui;
+										}
 									}
 
 									>h2{
-										margin-top: 1.4em;
-										font-size: 1.5em;
-										line-height: 1.5;
-										text-transform: capitalize;
+										margin-top: 1.8em;
+										font-size: 1.4em;
+										line-height: 1.4;
+										font-family: $font_marineup_bold;
+										text-transform: uppercase;
 
 										>span{
 											display: block;
