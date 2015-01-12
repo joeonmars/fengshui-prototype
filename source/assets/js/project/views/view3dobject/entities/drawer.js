@@ -55,9 +55,12 @@ feng.views.view3dobject.entities.Drawer.prototype.onDrawerOpened = function(){
 
   if(this.tip.unlocked) return;
 
-  var knife = this._view3d.tipObjects['knife'];
+  goog.Timer.callOnce(function() {
 
-  if(knife.hasPicked) {
-    knife.drop();
-  }
+    var knife = this._view3d.tipObjects['knife'];
+
+    if(knife.hasPicked) {
+      knife.drop();
+    }
+  }, 400, this);
 };

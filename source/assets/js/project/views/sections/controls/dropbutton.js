@@ -92,10 +92,16 @@ feng.views.sections.controls.DropButton.prototype.onAnimationFrame = function(no
   var pos3d = this._movableObject.getDestination();
   var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, camera, viewSize );
 
-  var controlPosition = this._view3d.modeController.control.getPosition();
+  var control = this._view3d.modeController.control;
+  var controlPosition = control.getPosition();
   var distance = controlPosition.distanceTo( pos3d );
   
-  var shouldShow = (distance <= this._movableObject.range);
+  //
+  var directionToObject = pos3d.sub( controlPosition ).normalize();
+  var forward = control.getForwardVector();
+  var dot = directionToObject.dot( forward );
+
+  var shouldShow = (distance <= this._movableObject.range && dot > 0);
 
   goog.style.setStyle( this.domElement, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)');
 

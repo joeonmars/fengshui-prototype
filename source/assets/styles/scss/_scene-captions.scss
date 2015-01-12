@@ -72,7 +72,7 @@
 		height: 100%;
 		padding: 40px 0;
 		@include box-sizing(border-box);
-		color: #000;
+		color: $darkgray-ui;
 		background-color: #fff;
 		opacity: 1;
 		z-index: 1;
@@ -164,7 +164,6 @@
 		p{
 			font-size: 1.7em;
 			padding: 1em 0;
-			color: $darkgray-ui;
 			-webkit-font-smoothing: antialiased;
 
 			br{
