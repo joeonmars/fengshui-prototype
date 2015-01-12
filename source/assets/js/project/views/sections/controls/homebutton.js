@@ -46,8 +46,8 @@ feng.views.sections.controls.HomeButton.prototype.showPrompt = function(){
 
 	this._promptShown = true;
 
-	goog.dom.classes.add( this.domElement, 'pending' );
-	goog.dom.classes.add( this._promptEl, 'shown' );
+	goog.dom.classlist.add( this.domElement, 'pending' );
+	goog.dom.classlist.add( this._promptEl, 'shown' );
 
 	feng.pubsub.publish( feng.PubSub.Topic.SHOW_WIDGET, this );
 };
@@ -57,8 +57,8 @@ feng.views.sections.controls.HomeButton.prototype.hidePrompt = function(){
 
 	this._promptShown = false;
 
-	goog.dom.classes.remove( this.domElement, 'pending' );
-	goog.dom.classes.remove( this._promptEl, 'shown' );
+	goog.dom.classlist.remove( this.domElement, 'pending' );
+	goog.dom.classlist.remove( this._promptEl, 'shown' );
 
 	feng.pubsub.publish( feng.PubSub.Topic.HIDE_WIDGET, this );
 };

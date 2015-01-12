@@ -177,7 +177,7 @@ feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = functio
 
 	this._intersectedObject = isIntersected ? intersects[0].object : null;
 
-	goog.dom.classes.enable(this._renderEl, 'help', isIntersected);
+	goog.dom.classlist.enable(this._renderEl, 'help', isIntersected);
 };
 
 

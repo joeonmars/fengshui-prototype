@@ -104,7 +104,7 @@ feng.views.sections.controls.ProgressBar.prototype.activate = function() {
 
   this._detectNearbyThrottle.fire();
 
-  goog.dom.classes.enable(this.domElement, 'hidden', false);
+  goog.dom.classlist.enable(this.domElement, 'hidden', false);
 };
 
 
@@ -122,7 +122,7 @@ feng.views.sections.controls.ProgressBar.prototype.deactivate = function() {
 
   this._tweener.kill();
 
-  goog.dom.classes.enable(this.domElement, 'hidden', true);
+  goog.dom.classlist.enable(this.domElement, 'hidden', true);
 };
 
 
@@ -258,13 +258,13 @@ feng.views.sections.controls.ProgressBar.prototype.detectNearbyObjects = functio
     if(this._nearbyTipEl !== tipEl) {
 
       if(this._nearbyTipEl) {
-        goog.dom.classes.remove(this._nearbyTipEl, 'nearby');
+        goog.dom.classlist.remove(this._nearbyTipEl, 'nearby');
       }
 
       //console.log(this._nearbyTipEl, tipEl, tipId, providedTip);
 
       this._nearbyTipEl = tipEl;
-      goog.dom.classes.add(this._nearbyTipEl, 'nearby');
+      goog.dom.classlist.add(this._nearbyTipEl, 'nearby');
 
       var viewId = tipEl.getAttribute('data-view-id');
 
@@ -276,7 +276,7 @@ feng.views.sections.controls.ProgressBar.prototype.detectNearbyObjects = functio
   }else {
 
     if(this._nearbyTipEl) {
-      goog.dom.classes.remove(this._nearbyTipEl, 'nearby');
+      goog.dom.classlist.remove(this._nearbyTipEl, 'nearby');
       this._nearbyTipEl = null;
     }
   }
@@ -294,19 +294,19 @@ feng.views.sections.controls.ProgressBar.prototype.unlockTip = function( tipId )
   // assign url to book
   goog.dom.query('a', unlockedTipEl)[0].href = this._tips[tipId].readTipToken;
 
-  goog.dom.classes.add( unlockedTipEl, 'unlocked' );
+  goog.dom.classlist.add( unlockedTipEl, 'unlocked' );
 };
 
 
 feng.views.sections.controls.ProgressBar.prototype.onTipMouseOver = function(e){
 
-  if(goog.dom.classes.has(e.currentTarget, 'hover')) {
+  if(goog.dom.classlist.contains(e.currentTarget, 'hover')) {
 
     return false;
 
   }else {
 
-    goog.dom.classes.add(e.currentTarget, 'hover');
+    goog.dom.classlist.add(e.currentTarget, 'hover');
 
     feng.pubsub.publish( feng.PubSub.Topic.SHOW_WIDGET, this );
   }
@@ -317,7 +317,7 @@ feng.views.sections.controls.ProgressBar.prototype.onTipMouseOut = function(e){
 
   if(!e.relatedTarget || !goog.dom.contains(e.currentTarget, e.relatedTarget)) {
 
-    goog.dom.classes.remove(e.currentTarget, 'hover');
+    goog.dom.classlist.remove(e.currentTarget, 'hover');
 
     feng.pubsub.publish( feng.PubSub.Topic.HIDE_WIDGET, this );
   }

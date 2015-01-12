@@ -50,37 +50,37 @@ feng.views.sections.captions.DropFruitsCaption.prototype.setActiveFruit = functi
   goog.array.forEach(this._fruitButtonEls, function(fruitButtonEl) {
 
     if(fruitButtonEl.getAttribute('data-fruit-id') === fruit) {
-      goog.dom.classes.add(fruitButtonEl, 'active');
+      goog.dom.classlist.add(fruitButtonEl, 'active');
     }else {
-      goog.dom.classes.remove(fruitButtonEl, 'active');
+      goog.dom.classlist.remove(fruitButtonEl, 'active');
     }
   });
 
   goog.array.forEach(this._descriptionEls, function(descriptionEl) {
 
     if(descriptionEl.getAttribute('data-fruit-id') === fruit) {
-      goog.dom.classes.add(descriptionEl, 'active');
+      goog.dom.classlist.add(descriptionEl, 'active');
     }else {
-      goog.dom.classes.remove(descriptionEl, 'active');
+      goog.dom.classlist.remove(descriptionEl, 'active');
     }
   });
 
-  goog.dom.classes.add( this._descriptionEl, 'shown' );
+  goog.dom.classlist.add( this._descriptionEl, 'shown' );
 };
 
 
 feng.views.sections.captions.DropFruitsCaption.prototype.onClickItem = function(e) {
 
   if(this._fruitId) {
-    goog.dom.classes.enable( this._itemEls[this._fruitId], 'active', false );
-    goog.dom.classes.enable( this._infoEls[this._fruitId], 'active', false );
+    goog.dom.classlist.enable( this._itemEls[this._fruitId], 'active', false );
+    goog.dom.classlist.enable( this._infoEls[this._fruitId], 'active', false );
   }
 
   this._fruitId = e.currentTarget.getAttribute("data-fruit");
 
-  goog.dom.classes.enable( this._itemEls[this._fruitId], 'active', true );
-  goog.dom.classes.enable( this._itemEls[this._fruitId], 'show-fruit', true );
-  goog.dom.classes.enable( this._infoEls[this._fruitId], 'active', true );
+  goog.dom.classlist.enable( this._itemEls[this._fruitId], 'active', true );
+  goog.dom.classlist.enable( this._itemEls[this._fruitId], 'show-fruit', true );
+  goog.dom.classlist.enable( this._infoEls[this._fruitId], 'active', true );
 
   this.scrollBar.resize();
 

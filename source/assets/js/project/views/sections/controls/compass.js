@@ -105,14 +105,14 @@ feng.views.sections.controls.Compass.prototype.onMouseMove = function(e){
 	if(e.offsetY > 40) {
 
 		// browse mode
-		goog.dom.classes.addRemove(this.domElement, 'hover-design', 'hover-browse');
+		goog.dom.classlist.addRemove(this.domElement, 'hover-design', 'hover-browse');
 		this._hoveredDesign = false;
 		this._hoveredBrowse = true;
 
 	}else {
 
 		// design mode
-		goog.dom.classes.addRemove(this.domElement, 'hover-browse', 'hover-design');
+		goog.dom.classlist.addRemove(this.domElement, 'hover-browse', 'hover-design');
 		this._hoveredDesign = true;
 		this._hoveredBrowse = false;
 	}
@@ -125,8 +125,8 @@ feng.views.sections.controls.Compass.prototype.onMouseOut = function(e){
 		return false;
 	}
 
-	goog.dom.classes.remove(this.domElement, 'hover-browse');
-	goog.dom.classes.remove(this.domElement, 'hover-design');
+	goog.dom.classlist.remove(this.domElement, 'hover-browse');
+	goog.dom.classlist.remove(this.domElement, 'hover-design');
 	this._hoveredDesign = false;
 	this._hoveredBrowse = false;
 
@@ -191,13 +191,13 @@ feng.views.sections.controls.Compass.prototype.onModeChange = function(e){
 
   if(e.mode === feng.controllers.view3d.ModeController.Mode.DESIGN) {
 
-  	goog.dom.classes.addRemove(this.domElement, 'browse', 'design');
+  	goog.dom.classlist.addRemove(this.domElement, 'browse', 'design');
 
   	this._isInDesignMode = true;
 
   }else {
 
-  	goog.dom.classes.addRemove(this.domElement, 'design', 'browse');
+  	goog.dom.classlist.addRemove(this.domElement, 'design', 'browse');
 
   	this._isInDesignMode = false;
   }

@@ -51,15 +51,15 @@ feng.views.debug.Achievements.prototype.onUnlock = function(e){
   var sectionId = e.currentTarget.sectionId;
 
   var tipEl = this.getTipByAttributes(tipId, viewId, sectionId);
-  goog.dom.classes.add(tipEl, 'unlocked');
+  goog.dom.classlist.add(tipEl, 'unlocked');
 };
 
 
 feng.views.debug.Achievements.prototype.onClickTip = function(e){
 
   goog.array.forEach(this._tipEls, function(tipEl) {
-    goog.dom.classes.remove(tipEl, 'clicked');
-    goog.dom.classes.remove(tipEl, 'required');
+    goog.dom.classlist.remove(tipEl, 'clicked');
+    goog.dom.classlist.remove(tipEl, 'required');
   });
 
   var tipId = e.currentTarget.getAttribute('data-tip-id');
@@ -69,11 +69,11 @@ feng.views.debug.Achievements.prototype.onClickTip = function(e){
   var clickedTip = this._achievementsModel.getTip(tipId, viewId, sectionId);
   var requiredTip = clickedTip.getRequiredTip();
 
-  goog.dom.classes.add(e.currentTarget, 'clicked');
+  goog.dom.classlist.add(e.currentTarget, 'clicked');
 
   if(requiredTip) {
     var requireTipEl = goog.dom.query('.tips li[data-tip-id="' + requiredTip.id + '"]')[0];
-    goog.dom.classes.add(requireTipEl, 'required');
+    goog.dom.classlist.add(requireTipEl, 'required');
   }
 };
 

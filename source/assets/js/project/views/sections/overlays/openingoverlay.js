@@ -95,8 +95,14 @@ feng.views.sections.overlays.OpeningOverlay.prototype.updateContent = function( 
 	titleEl.innerHTML = title;
 	paragraphEl.innerHTML = paragraph;
 
-	goog.dom.classes.addRemove( characterEl, this._character, character );
+	if(this._character.length > 0) {
+		
+		goog.dom.classlist.remove( characterEl, this._character );
+	}
+
 	this._character = character;
+
+	goog.dom.classlist.add( characterEl, this._character );
 };
 
 

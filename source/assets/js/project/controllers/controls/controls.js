@@ -200,7 +200,7 @@ feng.controllers.controls.Controls.prototype.activate = function() {
 
 	goog.fx.anim.registerAnimation(this);
 
-	goog.dom.classes.add(this._view3d.domElement, 'grab');
+	goog.dom.classlist.add(this._view3d.domElement, 'grab');
 };
 
 
@@ -210,8 +210,8 @@ feng.controllers.controls.Controls.prototype.deactivate = function() {
 
 	goog.fx.anim.unregisterAnimation(this);
 
-	goog.dom.classes.remove(this._view3d.domElement, 'grab');
-	goog.dom.classes.remove(this._mainEl, 'grabbing');
+	goog.dom.classlist.remove(this._view3d.domElement, 'grab');
+	goog.dom.classlist.remove(this._mainEl, 'grabbing');
 };
 
 
@@ -343,7 +343,7 @@ feng.controllers.controls.Controls.prototype.onInputUp = function ( e ) {
 	this._eventHandler.unlisten(this._domElement, feng.events.EventType.INPUT_MOVE, this.onInputMove, false, this);
 	this._eventHandler.unlisten(document, feng.events.EventType.INPUT_UP, this.onInputUp, false, this);
 
-	goog.dom.classes.remove(this._mainEl, 'grabbing');
+	goog.dom.classlist.remove(this._mainEl, 'grabbing');
 };
 
 
@@ -351,7 +351,7 @@ feng.controllers.controls.Controls.prototype.onInputMove = function ( e ) {
 
 	e.preventDefault();
 
-	goog.dom.classes.add(this._mainEl, 'grabbing');
+	goog.dom.classlist.add(this._mainEl, 'grabbing');
 };
 
 

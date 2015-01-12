@@ -64,7 +64,7 @@ feng.views.popups.Popup.prototype.doAnimateIn = function() {
 
 	this._isShown = true;
 
-	goog.dom.classes.add( this.domElement, 'shown' );
+	goog.dom.classlist.add( this.domElement, 'shown' );
 
 	this._animateInDelay.stop();
 	this._onAnimatedOutDelay.stop();
@@ -77,7 +77,7 @@ feng.views.popups.Popup.prototype.animateOut = function() {
 
 	this.deactivate();
 
-	goog.dom.classes.remove( this.domElement, 'shown' );
+	goog.dom.classlist.remove( this.domElement, 'shown' );
 
 	feng.soundController.playSfx('close');
 

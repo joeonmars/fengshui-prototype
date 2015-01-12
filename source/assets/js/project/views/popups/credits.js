@@ -51,7 +51,7 @@ feng.views.popups.Credits.prototype.doAnimateIn = function(){
 
 	}else {
 
-		goog.dom.classes.add( this.domElement, 'loading' );
+		goog.dom.classlist.add( this.domElement, 'loading' );
 
 		TweenMax.set(this._scrollerEl, {
 			'opacity': 0
@@ -105,7 +105,7 @@ feng.views.popups.Credits.prototype.onContentLoad = function(e){
 		'delay': 1,
 		'opacity': 1,
 		'onComplete': function() {
-			goog.dom.classes.remove( this.domElement, 'loading' );
+			goog.dom.classlist.remove( this.domElement, 'loading' );
 		},
 		'onCompleteScope': this
 	});

@@ -1,7 +1,7 @@
 goog.provide('feng.views.EpisodeSelection');
 
 goog.require('goog.dom');
-goog.require('goog.dom.classes');
+goog.require('goog.dom.classlist');
 goog.require('goog.dom.query');
 goog.require('goog.testing.events');
 
@@ -98,15 +98,15 @@ feng.views.EpisodeSelection.prototype.reset = function(){
 
 	goog.dom.removeNode( feng.tutorial.domElement );
 
-	goog.dom.classes.enable( this._promptEl, 'hidden', false );
-	goog.dom.classes.enable( this._studioEl, 'active', false );
-	goog.dom.classes.enable( this._studioEl, 'inactive', false );
-	goog.dom.classes.enable( this._studioEl, 'loading', false );
-	goog.dom.classes.enable( this._studioEl, 'hidden', false );
-	goog.dom.classes.enable( this._houseEl, 'active', false );
-	goog.dom.classes.enable( this._houseEl, 'inactive', false );
-	goog.dom.classes.enable( this._houseEl, 'loading', false );
-	goog.dom.classes.enable( this._houseEl, 'hidden', false );
+	goog.dom.classlist.enable( this._promptEl, 'hidden', false );
+	goog.dom.classlist.enable( this._studioEl, 'active', false );
+	goog.dom.classlist.enable( this._studioEl, 'inactive', false );
+	goog.dom.classlist.enable( this._studioEl, 'loading', false );
+	goog.dom.classlist.enable( this._studioEl, 'hidden', false );
+	goog.dom.classlist.enable( this._houseEl, 'active', false );
+	goog.dom.classlist.enable( this._houseEl, 'inactive', false );
+	goog.dom.classlist.enable( this._houseEl, 'loading', false );
+	goog.dom.classlist.enable( this._houseEl, 'hidden', false );
 	
 	this._hoveredSceneEl = null;
 };
@@ -142,40 +142,40 @@ feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
 
 	if(this._hoveredSceneEl === this._studioEl) {
 
-		goog.dom.classes.enable( this._studioEl, 'active', true );
-		goog.dom.classes.enable( this._studioEl, 'inactive', false );
-		goog.dom.classes.enable( this._houseEl, 'active', false );
-		goog.dom.classes.enable( this._houseEl, 'inactive', true );
+		goog.dom.classlist.enable( this._studioEl, 'active', true );
+		goog.dom.classlist.enable( this._studioEl, 'inactive', false );
+		goog.dom.classlist.enable( this._houseEl, 'active', false );
+		goog.dom.classlist.enable( this._houseEl, 'inactive', true );
 
-		goog.dom.classes.enable( this._promptEl, 'hidden', true );
-		goog.dom.classes.addRemove( this._promptEl, 'house', 'studio' );
+		goog.dom.classlist.enable( this._promptEl, 'hidden', true );
+		goog.dom.classlist.addRemove( this._promptEl, 'house', 'studio' );
 
 	  feng.soundController.fadeAmbient( 'studio', null, 1, 4 );
 	  feng.soundController.fadeAmbient( 'house', null, 0, 4 );
 
 	}else if(this._hoveredSceneEl === this._houseEl) {
 
-		goog.dom.classes.enable( this._studioEl, 'active', false );
-		goog.dom.classes.enable( this._studioEl, 'inactive', true );
-		goog.dom.classes.enable( this._houseEl, 'active', true );
-		goog.dom.classes.enable( this._houseEl, 'inactive', false );
+		goog.dom.classlist.enable( this._studioEl, 'active', false );
+		goog.dom.classlist.enable( this._studioEl, 'inactive', true );
+		goog.dom.classlist.enable( this._houseEl, 'active', true );
+		goog.dom.classlist.enable( this._houseEl, 'inactive', false );
 
-		goog.dom.classes.enable( this._promptEl, 'hidden', true );
-		goog.dom.classes.addRemove( this._promptEl, 'studio', 'house' );
+		goog.dom.classlist.enable( this._promptEl, 'hidden', true );
+		goog.dom.classlist.addRemove( this._promptEl, 'studio', 'house' );
 
 		feng.soundController.fadeAmbient( 'studio', null, 0, 4 );
 	  feng.soundController.fadeAmbient( 'house', null, 1, 4 );
 
 	}else {
 
-		goog.dom.classes.enable( this._studioEl, 'active', false );
-		goog.dom.classes.enable( this._studioEl, 'inactive', false );
-		goog.dom.classes.enable( this._houseEl, 'active', false );
-		goog.dom.classes.enable( this._houseEl, 'inactive', false );
+		goog.dom.classlist.enable( this._studioEl, 'active', false );
+		goog.dom.classlist.enable( this._studioEl, 'inactive', false );
+		goog.dom.classlist.enable( this._houseEl, 'active', false );
+		goog.dom.classlist.enable( this._houseEl, 'inactive', false );
 
-		goog.dom.classes.enable( this._promptEl, 'hidden', false );
-		goog.dom.classes.remove( this._promptEl, 'studio' );
-		goog.dom.classes.remove( this._promptEl, 'house' );
+		goog.dom.classlist.enable( this._promptEl, 'hidden', false );
+		goog.dom.classlist.remove( this._promptEl, 'studio' );
+		goog.dom.classlist.remove( this._promptEl, 'house' );
 
 		feng.soundController.fadeAmbient( 'studio', null, 0, 4 );
 	  feng.soundController.fadeAmbient( 'house', null, 0, 4 );
@@ -271,7 +271,7 @@ feng.views.EpisodeSelection.prototype.onClickStartButton = function(e){
 
 	this.deactivate();
 
-	goog.dom.classes.enable( this._promptEl, 'hidden', true );
+	goog.dom.classlist.enable( this._promptEl, 'hidden', true );
 
 	feng.tutorial.setProgress( 0 );
 	feng.tutorial.showLoader();
@@ -281,14 +281,14 @@ feng.views.EpisodeSelection.prototype.onClickStartButton = function(e){
 	switch(e.currentTarget) {
 
 		case this._studioButton:
-		goog.dom.classes.enable( this._studioEl, 'loading', true );
-		goog.dom.classes.enable( this._houseEl, 'hidden', true );
+		goog.dom.classlist.enable( this._studioEl, 'loading', true );
+		goog.dom.classlist.enable( this._houseEl, 'hidden', true );
 		goog.dom.appendChild( this._studioEl, feng.tutorial.domElement );
 		break;
 
 		case this._houseButton:
-		goog.dom.classes.enable( this._studioEl, 'hidden', true );
-		goog.dom.classes.enable( this._houseEl, 'loading', true );
+		goog.dom.classlist.enable( this._studioEl, 'hidden', true );
+		goog.dom.classlist.enable( this._houseEl, 'loading', true );
 		goog.dom.appendChild( this._houseEl, feng.tutorial.domElement );
 		break;
 	}

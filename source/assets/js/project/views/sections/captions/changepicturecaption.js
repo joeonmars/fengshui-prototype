@@ -48,14 +48,14 @@ feng.views.sections.captions.ChangePictureCaption.prototype.hide = function() {
 feng.views.sections.captions.ChangePictureCaption.prototype.onClickItem = function(e) {
 
   if(this._pictureId) {
-    goog.dom.classes.enable( this._itemEls[this._pictureId], 'active', false );
-    goog.dom.classes.enable( this._infoEls[this._pictureId], 'active', false );
+    goog.dom.classlist.enable( this._itemEls[this._pictureId], 'active', false );
+    goog.dom.classlist.enable( this._infoEls[this._pictureId], 'active', false );
   }
 
   this._pictureId = e.currentTarget.getAttribute("data-picture");
 
-  goog.dom.classes.enable( this._itemEls[this._pictureId], 'active', true );
-  goog.dom.classes.enable( this._infoEls[this._pictureId], 'active', true );
+  goog.dom.classlist.enable( this._itemEls[this._pictureId], 'active', true );
+  goog.dom.classlist.enable( this._infoEls[this._pictureId], 'active', true );
 
   this.scrollBar.resize();
   

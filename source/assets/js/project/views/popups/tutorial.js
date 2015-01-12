@@ -79,7 +79,7 @@ feng.views.popups.Tutorial.prototype.gotoStep = function( step ){
 		this._videoEl.pause();
 		this._eventHandler.unlisten( this._videoEl, 'ended', this.onVideoEnded, false, this );
 		
-		goog.dom.classes.remove( this._stepEl, 'active' );
+		goog.dom.classlist.remove( this._stepEl, 'active' );
 	}
 
 	// handle next step
@@ -90,7 +90,7 @@ feng.views.popups.Tutorial.prototype.gotoStep = function( step ){
 
 	this._stepEl = this._stepEls[ this._step ];
 
-	goog.dom.classes.add( this._stepEl, 'active' );
+	goog.dom.classlist.add( this._stepEl, 'active' );
 
 	this._eventHandler.listenOnce( this._videoEl, 'ended', this.onVideoEnded, false, this );
 };

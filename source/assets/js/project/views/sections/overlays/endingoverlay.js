@@ -78,7 +78,7 @@ feng.views.sections.overlays.EndingOverlay.prototype.updateContent = function( s
 	titleEl.innerHTML = title;
 	paragraphEl.innerHTML = paragraph;
 
-	goog.dom.classes.addRemove( characterEl, this._character, character );
+	goog.dom.classlist.addRemove( characterEl, this._character, character );
 	this._character = character;
 };
 

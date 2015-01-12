@@ -78,7 +78,7 @@ feng.views.sections.captions.Caption = function( object, renderController, rende
   // set default status
   this._isInteracting = false;
   this._isPanelAnimatedOut = true;
-  goog.dom.classes.enable( this.domElement, 'hide-panel', this._isPanelAnimatedOut );
+  goog.dom.classlist.enable( this.domElement, 'hide-panel', this._isPanelAnimatedOut );
 
   // set elements status by tip
   this.updateStatus();
@@ -250,7 +250,7 @@ feng.views.sections.captions.Caption.prototype.onScrollFromSection = function( f
     return;
   }
 
-  goog.dom.classes.addRemove( fromSection, 'animate-in', 'animate-out' );
+  goog.dom.classlist.addRemove( fromSection, 'animate-in', 'animate-out' );
 
   switch(fromSection) {
 
@@ -276,7 +276,7 @@ feng.views.sections.captions.Caption.prototype.onScrollFromSection = function( f
 feng.views.sections.captions.Caption.prototype.onScrolledToSection = function( toSection ) {
 
   if(!this._isPanelAnimatedOut) {
-    goog.dom.classes.addRemove( toSection, 'animate-out', 'animate-in' );
+    goog.dom.classlist.addRemove( toSection, 'animate-out', 'animate-in' );
   }
 
   switch(toSection) {
@@ -315,12 +315,12 @@ feng.views.sections.captions.Caption.prototype.animateInPanel = function() {
 
   this.enableControls( !this._isInteracting );
 
-  goog.dom.classes.enable(this.domElement, 'hide-panel', false);
+  goog.dom.classlist.enable(this.domElement, 'hide-panel', false);
 
-  goog.dom.classes.addRemove(this._panelEl, 'animate-out', 'animate-in' );
+  goog.dom.classlist.addRemove(this._panelEl, 'animate-out', 'animate-in' );
 
   if(this._section) {
-    goog.dom.classes.addRemove( this._section, 'animate-out', 'animate-in' );
+    goog.dom.classlist.addRemove( this._section, 'animate-out', 'animate-in' );
   } 
 
   TweenMax.to( this._renderController, .5, {
@@ -345,12 +345,12 @@ feng.views.sections.captions.Caption.prototype.animateOutPanel = function( shoul
     return;
   }
 
-  goog.dom.classes.enable(this.domElement, 'hide-panel', true);
+  goog.dom.classlist.enable(this.domElement, 'hide-panel', true);
 
-  goog.dom.classes.addRemove(this._panelEl, 'animate-in', 'animate-out' );
+  goog.dom.classlist.addRemove(this._panelEl, 'animate-in', 'animate-out' );
 
   if(this._section) {
-    goog.dom.classes.addRemove( this._section, 'animate-in', 'animate-out' );
+    goog.dom.classlist.addRemove( this._section, 'animate-in', 'animate-out' );
   } 
 
   TweenMax.to( this._renderController, .5, {
@@ -439,7 +439,7 @@ feng.views.sections.captions.Caption.prototype.updateStatus = function() {
   goog.style.showElement( this._shareEl, tip.unlocked );
   
   if(this._interactionSection) {
-    goog.dom.classes.add( this._interactionSection, 'unlocked' );
+    goog.dom.classlist.add( this._interactionSection, 'unlocked' );
   }
 
   // check if should go advice section
@@ -498,7 +498,7 @@ feng.views.sections.captions.Caption.prototype.onInteractionEnd = function( e ) 
 
   this._isInteracting = false;
 
-  if(this._object.tip.isFinal) {
+  if(this._object.tip.isFinal && this._object.tip.unlocked) {
 
     this.animateInPanel();
 

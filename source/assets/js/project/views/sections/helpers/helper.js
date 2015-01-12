@@ -66,7 +66,7 @@ feng.views.helpers.Helper.prototype.show = function( box ) {
 	if(this.isShown) return;
 	else this.isShown = true;
 
-	goog.dom.classes.enable( this.domElement, 'shown', true );
+	goog.dom.classlist.enable( this.domElement, 'shown', true );
 
 	if(box) {
 	
@@ -89,7 +89,7 @@ feng.views.helpers.Helper.prototype.hide = function() {
 	if(!this.isShown) return;
 	else this.isShown = false;
 
-	goog.dom.classes.enable( this.domElement, 'shown', false );
+	goog.dom.classlist.enable( this.domElement, 'shown', false );
 
 	feng.pubsub.publish( feng.PubSub.Topic.HIDE_WIDGET, this );
 };
@@ -125,7 +125,7 @@ feng.views.helpers.Helper.prototype.resolveHorizontalPosition = function( box ) 
 		// snap to right
 		this._x = box.right;
 
-		goog.dom.classes.addRemove( this.domElement, this._arrowClasses, 'arrow-left' );
+		goog.dom.classlist.addRemove( this.domElement, this._arrowClasses, 'arrow-left' );
 
 		isFit = true;
 
@@ -134,7 +134,7 @@ feng.views.helpers.Helper.prototype.resolveHorizontalPosition = function( box ) 
 		// snap to left
 		this._x = box.left - size.width;
 
-		goog.dom.classes.addRemove( this.domElement, this._arrowClasses, 'arrow-right' );
+		goog.dom.classlist.addRemove( this.domElement, this._arrowClasses, 'arrow-right' );
 
 		isFit = true;
 	}
@@ -161,7 +161,7 @@ feng.views.helpers.Helper.prototype.resolveVerticalPosition = function( box ) {
 
 		this._y = box.top - size.height;
 
-		goog.dom.classes.addRemove( this.domElement, this._arrowClasses, 'arrow-bottom' );
+		goog.dom.classlist.addRemove( this.domElement, this._arrowClasses, 'arrow-bottom' );
 
 		isFit = true;
 
@@ -169,7 +169,7 @@ feng.views.helpers.Helper.prototype.resolveVerticalPosition = function( box ) {
 
 		this._y = box.bottom;
 
-		goog.dom.classes.addRemove( this.domElement, this._arrowClasses, 'arrow-top' );
+		goog.dom.classlist.addRemove( this.domElement, this._arrowClasses, 'arrow-top' );
 
 		isFit = true;
 	}

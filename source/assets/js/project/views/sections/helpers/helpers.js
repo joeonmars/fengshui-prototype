@@ -109,7 +109,7 @@ feng.views.helpers.Helpers.prototype.show = function( shouldShow ){
 
   var shouldShow = goog.isBoolean(shouldShow) ? shouldShow : true;
 
-  goog.dom.classes.enable( this.domElement, 'hidden', !shouldShow );
+  goog.dom.classlist.enable( this.domElement, 'hidden', !shouldShow );
   
   if(!shouldShow) {
 

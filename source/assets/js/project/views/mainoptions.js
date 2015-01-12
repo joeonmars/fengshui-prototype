@@ -1,7 +1,7 @@
 goog.provide('feng.views.MainOptions');
 
 goog.require('goog.dom');
-goog.require('goog.dom.classes');
+goog.require('goog.dom.classlist');
 goog.require('goog.dom.query');
 goog.require('goog.events');
 goog.require('feng.utils.Utils');
@@ -83,11 +83,11 @@ feng.views.MainOptions.prototype.onClick = function(e){
 
 feng.views.MainOptions.prototype.onMute = function(e){
 
-	goog.dom.classes.add( this._soundButton, 'mute' );
+	goog.dom.classlist.add( this._soundButton, 'mute' );
 };
 
 
 feng.views.MainOptions.prototype.onUnmute = function(e){
 
-	goog.dom.classes.remove( this._soundButton, 'mute' );
+	goog.dom.classlist.remove( this._soundButton, 'mute' );
 };

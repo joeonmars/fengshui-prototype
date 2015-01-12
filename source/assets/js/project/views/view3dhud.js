@@ -134,11 +134,11 @@ feng.views.View3DHud.prototype.setView3D = function( view3d ) {
 
 feng.views.View3DHud.prototype.pause = function( shouldPause ) {
 
-  goog.dom.classes.enable( this._captionsEl, 'paused', shouldPause );
-  goog.dom.classes.enable( this._tooltipsEl, 'paused', shouldPause );
-  goog.dom.classes.enable( this._controlsEl, 'paused', shouldPause );
+  goog.dom.classlist.enable( this._captionsEl, 'paused', shouldPause );
+  goog.dom.classlist.enable( this._tooltipsEl, 'paused', shouldPause );
+  goog.dom.classlist.enable( this._controlsEl, 'paused', shouldPause );
 
-  goog.dom.classes.enable( this._controlsEl, 'hidden', shouldPause );
+  goog.dom.classlist.enable( this._controlsEl, 'hidden', shouldPause );
 
   if(!this._helpers.isDisposed()) {
     this._helpers.show( !shouldPause );
@@ -281,7 +281,7 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls ) {
 
 feng.views.View3DHud.prototype.showControls = function( shouldShow ) {
 
-  goog.dom.classes.enable( this._controlsEl, 'hidden', !shouldShow );
+  goog.dom.classlist.enable( this._controlsEl, 'hidden', !shouldShow );
   
   this.tooltips.show( shouldShow );
 
@@ -322,7 +322,7 @@ feng.views.View3DHud.prototype.onModeChange = function( e ) {
     break;
   }
 
-  goog.dom.classes.enable( this._view3d.containerElement, 'bg-white', (e.mode === feng.controllers.view3d.ModeController.Mode.CLOSE_UP) );
+  goog.dom.classlist.enable( this._view3d.containerElement, 'bg-white', (e.mode === feng.controllers.view3d.ModeController.Mode.CLOSE_UP) );
 
   if(e.gateway) {
     shouldShowControls = false;

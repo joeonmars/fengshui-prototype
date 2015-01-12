@@ -170,11 +170,10 @@ feng.views.view3dobject.MovableObject.prototype.onPicked = function(){
 
   this.hasPicked = true;
 
+  this.stopInteraction();
+  
   var arms = this._view3d.arms;
   arms.addItem( this );
-
-  var closeUpControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.CLOSE_UP );
-  closeUpControls.close();
 };
 
 

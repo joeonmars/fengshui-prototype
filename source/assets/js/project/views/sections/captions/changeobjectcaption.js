@@ -32,7 +32,7 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.show = function() {
   goog.base(this, 'show');
 
   goog.object.forEach(this._itemEls, function(itemEl) {
-    goog.dom.classes.enable( itemEl, 'loading', false );
+    goog.dom.classlist.enable( itemEl, 'loading', false );
     this._eventHandler.listen(itemEl, 'click', this.onClickItem, false, this);
   }, this);
 
@@ -52,14 +52,14 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.hide = function() {
 feng.views.sections.captions.ChangeObjectCaption.prototype.onClickItem = function(e) {
 
   if(this._objectId) {
-    goog.dom.classes.enable( this._itemEls[this._objectId], 'active', false );
-    goog.dom.classes.enable( this._infoEls[this._objectId], 'active', false );
+    goog.dom.classlist.enable( this._itemEls[this._objectId], 'active', false );
+    goog.dom.classlist.enable( this._infoEls[this._objectId], 'active', false );
   }
 
   this._objectId = e.currentTarget.getAttribute('data-object');
 
-  goog.dom.classes.enable( this._itemEls[this._objectId], 'active', true );
-  goog.dom.classes.enable( this._infoEls[this._objectId], 'active', true );
+  goog.dom.classlist.enable( this._itemEls[this._objectId], 'active', true );
+  goog.dom.classlist.enable( this._infoEls[this._objectId], 'active', true );
 
   this.scrollBar.resize();
   
@@ -71,11 +71,11 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.onClickItem = functio
 
 feng.views.sections.captions.ChangeObjectCaption.prototype.onLoadStart = function(e) {
 
-  goog.dom.classes.enable( this._itemEls[e.id], 'loading', true );
+  goog.dom.classlist.enable( this._itemEls[e.id], 'loading', true );
 };
 
 
 feng.views.sections.captions.ChangeObjectCaption.prototype.onLoadComplete = function(e) {
 
-  goog.dom.classes.enable( this._itemEls[e.id], 'loading', false );
+  goog.dom.classlist.enable( this._itemEls[e.id], 'loading', false );
 };

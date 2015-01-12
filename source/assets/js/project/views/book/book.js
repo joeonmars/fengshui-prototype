@@ -420,13 +420,13 @@ feng.views.book.Book.prototype.onDragStart = function( e ) {
 		this._scrollTweener.kill();
 	}
 
-	goog.dom.classes.addRemove(this._scrollerEl, 'zoom-in', 'zoom-out');
+	goog.dom.classlist.addRemove(this._scrollerEl, 'zoom-in', 'zoom-out');
 };
 
 
 feng.views.book.Book.prototype.onDragEnd = function( e ) {
 
-	goog.dom.classes.addRemove(this._scrollerEl, 'zoom-out', 'zoom-in');
+	goog.dom.classlist.addRemove(this._scrollerEl, 'zoom-out', 'zoom-in');
 };
 
 

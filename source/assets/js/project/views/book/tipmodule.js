@@ -74,7 +74,7 @@ feng.views.book.TipModule.prototype.setActive = function( isActive ) {
 
 	if(isActive && this._isUnlocked) {
 
-		goog.dom.classes.add(this.domElement, 'active');
+		goog.dom.classlist.add(this.domElement, 'active');
 
 		if(!this._imageLoaded) {
 			
@@ -85,7 +85,7 @@ feng.views.book.TipModule.prototype.setActive = function( isActive ) {
 
 			goog.events.listenOnce(img, 'load', function() {
 				goog.style.setStyle(screenEl, 'background-image', 'url(' + img.src + ')');
-				goog.dom.classes.enable( screenEl, 'loaded', true );
+				goog.dom.classlist.enable( screenEl, 'loaded', true );
 			});
 		}
 
@@ -98,7 +98,7 @@ feng.views.book.TipModule.prototype.setActive = function( isActive ) {
 
 	}else {
 
-		goog.dom.classes.remove(this.domElement, 'active');
+		goog.dom.classlist.remove(this.domElement, 'active');
 
 		this._scrollBar.deactivate();
 
@@ -161,7 +161,7 @@ feng.views.book.TipModule.prototype.unlock = function() {
 
 	this._isUnlocked = true;
 
-	goog.dom.classes.enable( this.domElement, 'unlocked', true );
+	goog.dom.classlist.enable( this.domElement, 'unlocked', true );
 };
 
 

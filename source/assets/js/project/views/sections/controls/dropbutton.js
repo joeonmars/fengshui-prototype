@@ -12,8 +12,8 @@ feng.views.sections.controls.DropButton = function(domElement){
 
   this._movableObject = null;
 
-  goog.dom.classes.addRemove( this.domElement, 'fadeIn', 'fadeOut' );
-  goog.dom.classes.enable( this.domElement, 'hidden', true );
+  goog.dom.classlist.addRemove( this.domElement, 'fadeIn', 'fadeOut' );
+  goog.dom.classlist.enable( this.domElement, 'hidden', true );
 };
 goog.inherits(feng.views.sections.controls.DropButton, feng.views.sections.controls.Controls);
 
@@ -26,7 +26,7 @@ feng.views.sections.controls.DropButton.prototype.activate = function( movableOb
 
   this._movableObject = movableObject;
 
-  goog.dom.classes.enable( this.domElement, 'hidden', false );
+  goog.dom.classlist.enable( this.domElement, 'hidden', false );
 
   this.fadeIn();
 
@@ -44,7 +44,7 @@ feng.views.sections.controls.DropButton.prototype.deactivate = function(){
 
   this._movableObject = null;
 
-  goog.dom.classes.enable( this.domElement, 'hidden', true );
+  goog.dom.classlist.enable( this.domElement, 'hidden', true );
 
   goog.fx.anim.unregisterAnimation( this );
 };
@@ -52,32 +52,29 @@ feng.views.sections.controls.DropButton.prototype.deactivate = function(){
 
 feng.views.sections.controls.DropButton.prototype.fadeIn = function(){
 
-  if( !goog.dom.classes.has(this.domElement, 'fadeIn') ) {
-
-    goog.dom.classes.addRemove( this.domElement, 'fadeOut', 'fadeIn' );
-  }
+  goog.dom.classlist.addRemove( this.domElement, 'fadeOut', 'fadeIn' );
 };
 
 
 feng.views.sections.controls.DropButton.prototype.fadeOut = function(){
 
-  if( !goog.dom.classes.has(this.domElement, 'fadeOut') ) {
-
-    goog.dom.classes.addRemove( this.domElement, 'fadeIn', 'fadeOut' );
-  }
+  goog.dom.classlist.addRemove( this.domElement, 'fadeIn', 'fadeOut' );
 };
 
 
 feng.views.sections.controls.DropButton.prototype.onClick = function(e){
 
-	if(goog.dom.classes.has(this.domElement, 'fadeOut')) return false;
+	if(goog.dom.classlist.contains(this.domElement, 'fadeOut')) {
+
+    return false;
+  }
 
 	this.fadeOut();
 
   feng.soundController.playSfx('confirm');
 
   var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
-
+  
   browseControls.dispatchEvent({
     type: feng.events.EventType.CHANGE,
     mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,

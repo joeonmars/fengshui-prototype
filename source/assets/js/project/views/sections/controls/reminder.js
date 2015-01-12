@@ -276,12 +276,12 @@ feng.views.sections.controls.Reminder.prototype.gotoHintByTip = function( tipId 
 	});
 
 	if(this._hintEl) {
-		goog.dom.classes.remove( this._hintEl, 'shown' );
+		goog.dom.classlist.remove( this._hintEl, 'shown' );
 	}
 
 	this._hintEl = this._hintEls[ domIndex ];
 
-	goog.dom.classes.add( this._hintEl, 'shown' );
+	goog.dom.classlist.add( this._hintEl, 'shown' );
 };
 
 
@@ -320,7 +320,7 @@ feng.views.sections.controls.Reminder.prototype.hideHint = function( instance ){
 
 	var duration = instance ? 0 : .4;
 
-	goog.dom.classes.addRemove( this.domElement, 'active', 'inactive' );
+	goog.dom.classlist.addRemove( this.domElement, 'active', 'inactive' );
 
 	this._hintTimer.start();
 
@@ -407,7 +407,7 @@ feng.views.sections.controls.Reminder.prototype.onTipUnlock = function(e){
 
 feng.views.sections.controls.Reminder.prototype.onCharacterRaiseComplete = function(){
 
-	goog.dom.classes.addRemove( this.domElement, 'inactive', 'active' );
+	goog.dom.classlist.addRemove( this.domElement, 'inactive', 'active' );
 };
 
 

@@ -48,14 +48,14 @@ feng.views.sections.captions.ChangeColorCaption.prototype.hide = function() {
 feng.views.sections.captions.ChangeColorCaption.prototype.onClickItem = function(e) {
 
   if(this._colorId) {
-    goog.dom.classes.enable( this._itemEls[this._colorId], 'active', false );
-    goog.dom.classes.enable( this._infoEls[this._colorId], 'active', false );
+    goog.dom.classlist.enable( this._itemEls[this._colorId], 'active', false );
+    goog.dom.classlist.enable( this._infoEls[this._colorId], 'active', false );
   }
 
   this._colorId = e.currentTarget.getAttribute('data-color');
 
-  goog.dom.classes.enable( this._itemEls[this._colorId], 'active', true );
-  goog.dom.classes.enable( this._infoEls[this._colorId], 'active', true );
+  goog.dom.classlist.enable( this._itemEls[this._colorId], 'active', true );
+  goog.dom.classlist.enable( this._infoEls[this._colorId], 'active', true );
 
   this.scrollBar.resize();
   
