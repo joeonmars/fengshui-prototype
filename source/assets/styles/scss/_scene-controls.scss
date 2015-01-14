@@ -32,7 +32,7 @@ $border_size: 7px;
 	}
 
 	>.reminder{
-		@extend .hidden;
+		visibility: hidden;
 	}
 }
 
@@ -170,7 +170,7 @@ $border_size: 7px;
 		height: $cube_size;
 		left: ($circle_size - $border_size * 2 - $cube_size) / 2;
 		top: ($circle_size - $border_size * 2 - $cube_size) / 2;
-		@include border-radius(50%);
+		@include border-radius(100%);
 		overflow: hidden;
 
 		>div{
@@ -376,7 +376,7 @@ $border_size: 7px;
 		width: 14em;
 		height: 14em;
 		background-color: rgba(255, 255, 255, .2);
-		@include border-radius(50%);
+		@include border-radius(100%);
 	}
 
 	>button{
@@ -472,7 +472,7 @@ $border_size: 7px;
 							width: 16px;
 							height: 16px;
 							background-color: #fff;
-							@include border-radius(50%);
+							@include border-radius(100%);
 						}
 
 						>.outer{
@@ -482,7 +482,7 @@ $border_size: 7px;
 							width: 22px;
 							height: 22px;
 							background-color: rgba(255, 255, 255, .25);
-							@include border-radius(50%);
+							@include border-radius(100%);
 							@include scale(1);
 							@include transition(transform .25s, opacity .25s);
 						}

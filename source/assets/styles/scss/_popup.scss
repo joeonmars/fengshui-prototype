@@ -27,77 +27,113 @@
 }
 
 &.tutorial{
-	width: 86em;
-	height: 50em;
-
-	>.close-button{
-		display: none;
-	}
+	width: 62em;
+	height: 62em;
+	@include border-radius(100%);
 
 	>.content{
 		padding: 4.2em;
 		@include box-sizing(border-box);
+		text-align: center;
 
-		>h1{
-			text-align: center;
+		>.subtitle{
+			margin-top: -5px;
+
+			>p{
+				font-family: $font_marineup_light;
+				font-size: 1.2em;
+				color: $gray;
+				line-height: 0 !important;
+				margin: 1em auto 1.5em auto;
+				opacity: .5;
+			}
+
+			>.line{
+				margin: 0 auto 10px auto;
+				width: 100px;
+				height: 1px;
+				background-color: $gray;
+				opacity: .2;
+			}
 		}
 
-		>.steps{
-			margin-top: 5em;
-			width: 100%;
-			text-align: center;
-			white-space: nowrap;
+		>.title{
+			position: relative;
+			height: 8em;
 
 			>li{
-				position: relative;
-				display: inline-block;
-				vertical-align: top;
-				margin: 0 4%;
-				padding-bottom: 27.5%;
-				width: 27.5%;
-				height: 0;
-				border: 1px solid $gray-ui;
-				@include box-sizing( border-box );
-				opacity: .4;
-				@include single-transition(opacity, .5s);
-				cursor: none !important;
+				@include absoluteTopLeft;
+				width: 100%;
+				opacity: 1;
+				visibility: visible;
+				@include transition(opacity .4s $easeOutCubic, visibility .4s);
+				@include transition-delay(.25s);
 
-				&:first-child{
-					margin-left: 0;
+				>h1{
+					font-size: 2.8em;
+					color: $darkgray-ui;
 				}
 
-				&:last-child{
-					margin-right: 0;
+				&:not(.active){
+					opacity: 0;
+					visibility: hidden;
+					@include transition-delay(0s);
+				}
+			}
+		}
+
+		>.instructions{
+			position: relative;
+			margin: 3em auto;
+			padding-bottom: 35%;
+			width: 100%;
+			height: 0;
+
+			>button{
+				position: absolute;
+				top: 50%;
+				margin-top: (-2.25em/4.5);
+				@include arrow-button( 4.5em, $lightgray-ui, transparent, #fff, $blue );
+				border-color: transparent;
+				z-index: 1;
+
+				&.prev{
+					left: 0;	
 				}
 
-				&.active, &:hover{
-					opacity: 1;
+				&.next{
+					right: 0;
 				}
 
-				>h6{
-					position: relative;
-					z-index: 1;
-					padding: 1em 2em;
-					text-transform: uppercase;
-					white-space: normal;
-					text-align: center;
-					font-size: 1.6em;
-					line-height: 1.25;
-					color: $gray-ui;
+				&:disabled{
+					visibility: hidden;
 				}
+			}
 
-				>.video-wrapper{
-					position: absolute;
-					top: 0;
+			>.steps{
+				position: absolute;
+				width: 100%;
+				height: 100%;
+
+				>li{
+					@include absoluteTopLeft;
 					width: 100%;
 					height: 100%;
 					text-align: center;
+					opacity: 1;
+					visibility: visible;
+					@include transition(opacity .4s $easeOutCubic, visibility .4s);
+					@include transition-delay(.55s);
 
 					>video{
-						margin-top: 40%;
 						display: inline-block;
-						max-width: 100%;
-						background-color: #fff;
+						height: 100%;
+					}
+
+					&:not(.active){
+						opacity: 0;
+						visibility: hidden;
+						@include transition-delay(.10s);
 					}
 				}
 			}
@@ -105,8 +141,11 @@
 
 		>.controls{
 			width: 100%;
-			margin-top: 3.8em;
-			height: 6em;
+			height: 8em;
+			opacity: 1;
+			visibility: visible;
+			@include transition(opacity .5s $easeInOutCubic, visibility .5s, transform .25s);
+			@include transition-delay(1s);
 
 			.loader{
 				text-align: center;
@@ -126,16 +165,23 @@
 				}
 
 				>.counter{
-					font-family: $font_marineup_light;
-					font-size: 18px;
+					text-transform: uppercase;
+					font-family: $font_marine;
+					font-weight: bold;
+					font-size: 14px;
+					line-height: 14px;
 					color: $darkgray-ui;
-					line-height: 18px;
-					letter-spacing: 2px;
 				}
 			}
 
 			.skip{
 				margin: 0 auto;
+			}
+
+			&.hidden{
+				opacity: 0;
+				visibility: hidden;
+				@include translateY(10px);
 			}
 		}
 	}

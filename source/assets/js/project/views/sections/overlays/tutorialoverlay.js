@@ -22,7 +22,6 @@ feng.views.sections.overlays.TutorialOverlay.prototype.show = function( shouldDi
 
 	goog.base(this, 'show', shouldDispatch);
 	
-	feng.tutorial.enableAutoPlay(false);
 	goog.dom.appendChild( this.domElement, feng.tutorial.domElement );
 };
 

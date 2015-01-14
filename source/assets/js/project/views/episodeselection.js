@@ -275,7 +275,6 @@ feng.views.EpisodeSelection.prototype.onClickStartButton = function(e){
 
 	feng.tutorial.setProgress( 0 );
 	feng.tutorial.showLoader();
-	feng.tutorial.enableAutoPlay( true );
 	feng.tutorial.animateIn();
 
 	switch(e.currentTarget) {

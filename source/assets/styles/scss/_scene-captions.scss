@@ -328,7 +328,7 @@
 	.item-button{
 		width: 100px;
 		height: 100px;
-		@include border-radius(50%);
+		@include border-radius(100%);
 		background-color: #fff;
 		opacity: .3;
 		@include transition(opacity .2s);

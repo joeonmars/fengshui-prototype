@@ -65,7 +65,7 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
     width: $size;
     height: $size;
     background-color: rgba(255, 255, 255, .5);
-    @include border-radius(50%);
+    @include border-radius(100%);
   }
 
   >.inner{
@@ -76,7 +76,7 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
     width: $size - 10px;
     height: $size - 10px;
     background-color: #fff;
-    @include border-radius(50%);
+    @include border-radius(100%);
     @include single-box-shadow(1px, 1px, 2px, 0px, rgba(0, 0, 0, .14));
 
     >.content{
@@ -91,7 +91,7 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   width: $size;
   height: $size;
   background-color: rgba(255, 255, 255, .25);
-  @include border-radius(50%);
+  @include border-radius(100%);
 
   &:not(.disabled){
     &:hover{
@@ -120,7 +120,7 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
     width: $size;
     height: $size;
     border: $border_size solid $gray-ui;
-    @include border-radius(50%);
+    @include border-radius(100%);
     @include box-sizing(border-box);
     @include transition(transform .2s ease-in-out, opacity .35s ease-in-out);
     @include scale(0.95);
@@ -136,7 +136,7 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
     height: $size - $border_size * 2;
     background-color: #fff;
     overflow: hidden;
-    @include border-radius(50%);
+    @include border-radius(100%);
     @include single-box-shadow(1px, 1px, 2px, 0px, rgba(0, 0, 0, .14));
 
     >.circle-content{
@@ -300,7 +300,7 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   border-width: 2px;
   border-style: solid;
   border-color: $color;
-  @include border-radius(50%);
+  @include border-radius(100%);
   @include background-clip(border-box);
   @include transition(opacity .25s, color .25s, border-color .25s, background-color .25s, transform .1s);
 
@@ -328,7 +328,7 @@ $easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
   border: 2px solid $blue;
   color: $blue;
   background-color: transparent;
-  @include border-radius(50%);
+  @include border-radius(100%);
   @include box-sizing(border-box);
   @include transition(color .25s, background-color .25s);
 

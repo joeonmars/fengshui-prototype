@@ -20,18 +20,17 @@ feng.views.popups.Tutorial = function(){
 	// steps
 	this._videoEls = goog.dom.query('video', this.domElement);
 	this._stepEls = goog.dom.query('.steps li', this.domElement);
+	this._titleEls = goog.dom.query('.title li', this.domElement);
 
 	goog.array.forEach(this._videoEls, function(videoEl) {
 		goog.style.setStyle( videoEl, 'visibility', 'hidden' );
 	}, this);
 
-	this._step = 0;
+	this._step = -1;
 	this._totalSteps = this._stepEls.length;
 
 	this._videoEl = null;
 	this._stepEl = null;
-
-	this._isAutoPlayEnabled = false;
 
 	this._numLoaded = 0;
 	this._isLoaded = false;
@@ -40,7 +39,12 @@ feng.views.popups.Tutorial = function(){
 	this._escKeyId = null;
 	this._animateOut = goog.bind(this.animateOut, this);
 
+	// buttons
+	this._prevButton = goog.dom.query('.prev', this.domElement)[0];
+	this._nextButton = goog.dom.query('.next', this.domElement)[0];
+
 	// loader
+	this._controlsEl = goog.dom.getElementByClass('controls', this.domElement);
 	this._loaderEl = goog.dom.getElementByClass('loader', this.domElement);
 	this._fillEl = goog.dom.getElementByClass('fill', this.domElement);
 	this._counterEl = goog.dom.getElementByClass('counter', this.domElement);
@@ -51,47 +55,66 @@ goog.inherits(feng.views.popups.Tutorial, feng.views.popups.Popup);
 goog.addSingletonGetter(feng.views.popups.Tutorial);
 
 
-feng.views.popups.Tutorial.prototype.enableAutoPlay = function( enabled ){
+feng.views.popups.Tutorial.prototype.prevStep = function(){
 
-	this._isAutoPlayEnabled = ( enabled === false ) ? false : true;
+	var step = Math.max(0, this._step - 1);
+
+	if(this._step !== step) {
+
+		this.gotoStep( step );
+	}
 };
 
 
 feng.views.popups.Tutorial.prototype.nextStep = function(){
 
-	this._videoEl.pause();
-	this._eventHandler.unlisten( this._videoEl, 'ended', this.onVideoEnded, false, this );
+	var step = Math.min(this._totalSteps - 1, this._step + 1);
 
-	this._step ++;
+	if(this._step !== step) {
 
-	if(this._step < this._totalSteps) {
-
-		this.gotoStep( this._step );
+		this.gotoStep( step );
 	}
 };
 
 
 feng.views.popups.Tutorial.prototype.gotoStep = function( step ){
 
+	this._step = step;
+
 	// handle last step
-	if(this._videoEl && this._stepEl) {
+	if(this._videoEl && this._stepEl && this._titleEl) {
 
 		this._videoEl.pause();
 		this._eventHandler.unlisten( this._videoEl, 'ended', this.onVideoEnded, false, this );
 		
+		goog.dom.classlist.remove( this._titleEl, 'active' );
 		goog.dom.classlist.remove( this._stepEl, 'active' );
 	}
 
-	// handle next step
-	this._step = step;
+	this._prevButton.disabled = false;
+	this._nextButton.disabled = false;
 
-	this._videoEl = this._videoEls[ this._step ];
-	this._videoEl.play();
+	if(this._step === 0) {
 
+		this._prevButton.disabled = true;
+
+	}else if(this._step === this._totalSteps - 1) {
+
+		this._nextButton.disabled = true;
+
+		goog.dom.classlist.enable( this._controlsEl, 'hidden', false );
+	}
+
+	this._titleEl = this._titleEls[ this._step ];
 	this._stepEl = this._stepEls[ this._step ];
 
+	goog.dom.classlist.add( this._titleEl, 'active' );
 	goog.dom.classlist.add( this._stepEl, 'active' );
 
+	this._videoEl = this._videoEls[ this._step ];
+	this._videoEl.currentTime = 0;
+	this._videoEl.play();
+	
 	this._eventHandler.listenOnce( this._videoEl, 'ended', this.onVideoEnded, false, this );
 };
 
@@ -106,11 +129,9 @@ feng.views.popups.Tutorial.prototype.activate = function(){
 
 	goog.base(this, 'activate');
 
-	goog.array.forEach(this._stepEls, function(stepEl) {
-		this._eventHandler.listen( stepEl, 'mousedown', this.onMouseDownStep, false, this );
-	}, this);
-
 	this._eventHandler.listen( this._skipButton, 'click', this.animateOut, false, this );
+	this._eventHandler.listen( this._prevButton, 'click', this.prevStep, false, this );
+	this._eventHandler.listen( this._nextButton, 'click', this.nextStep, false, this );
 
 	this._enterKeyId = feng.keyboardController.bind( this._animateOut, feng.keyboardController.key.ENTER, true );
 	this._escKeyId = feng.keyboardController.bind( this._animateOut, feng.keyboardController.key.ESC, true );
@@ -193,7 +214,7 @@ feng.views.popups.Tutorial.prototype.setProgress = function(progress){
 
 feng.views.popups.Tutorial.prototype.setBuffering = function(){
 
-	this._counterEl.innerHTML = "Please Wait...";
+	this._counterEl.innerHTML = "Preparing for your visit";
 };
 
 
@@ -217,21 +238,13 @@ feng.views.popups.Tutorial.prototype.onVideoCanPlay = function(e){
 
 feng.views.popups.Tutorial.prototype.onVideoEnded = function(e){
 
-	if(!this._isAutoPlayEnabled) {
-
-		e.currentTarget.play();
-
-	}else {
-
-		this.nextStep();
-	}
+	e.currentTarget.play();
 };
 
 
-feng.views.popups.Tutorial.prototype.onMouseDownStep = function(e){
+feng.views.popups.Tutorial.prototype.onAnimatedOut = function() {
 
-	this.enableAutoPlay( false );
+	goog.base(this, 'onAnimatedOut');
 
-	var step = goog.array.indexOf(this._stepEls, e.currentTarget);
-	this.gotoStep( step );
+	this.gotoStep( 0 );
 };
