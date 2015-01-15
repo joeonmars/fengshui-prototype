@@ -28100,15 +28100,15 @@ feng.views.debug.Achievements.prototype.onUnlock = function(e){
   var sectionId = e.currentTarget.sectionId;
 
   var tipEl = this.getTipByAttributes(tipId, viewId, sectionId);
-  goog.dom.classes.add(tipEl, 'unlocked');
+  goog.dom.classlist.add(tipEl, 'unlocked');
 };
 
 
 feng.views.debug.Achievements.prototype.onClickTip = function(e){
 
   goog.array.forEach(this._tipEls, function(tipEl) {
-    goog.dom.classes.remove(tipEl, 'clicked');
-    goog.dom.classes.remove(tipEl, 'required');
+    goog.dom.classlist.remove(tipEl, 'clicked');
+    goog.dom.classlist.remove(tipEl, 'required');
   });
 
   var tipId = e.currentTarget.getAttribute('data-tip-id');
@@ -28118,11 +28118,11 @@ feng.views.debug.Achievements.prototype.onClickTip = function(e){
   var clickedTip = this._achievementsModel.getTip(tipId, viewId, sectionId);
   var requiredTip = clickedTip.getRequiredTip();
 
-  goog.dom.classes.add(e.currentTarget, 'clicked');
+  goog.dom.classlist.add(e.currentTarget, 'clicked');
 
   if(requiredTip) {
     var requireTipEl = goog.dom.query('.tips li[data-tip-id="' + requiredTip.id + '"]')[0];
-    goog.dom.classes.add(requireTipEl, 'required');
+    goog.dom.classlist.add(requireTipEl, 'required');
   }
 };
 
@@ -33991,7 +33991,7 @@ feng.templates.common.FengshuiLogo = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.common.Popup = function(opt_data, opt_ignored) {
-  return '<div class="popup ' + ((opt_data.classname) ? opt_data.classname : '') + '">' + feng.templates.common.CloseButton(null) + '<div class="content">' + opt_data.content + '</div></div>';
+  return '<div class="popup ' + ((opt_data.classname) ? opt_data.classname : '') + '"><div class="content">' + opt_data.content + '</div></div>';
 };
 
 
@@ -34002,7 +34002,7 @@ feng.templates.common.Popup = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.common.TutorialPopup = function(opt_data, opt_ignored) {
-  return feng.templates.common.Popup({classname: 'tutorial from-bottom', content: '<h1>Control Instructions</h1><ul class="steps"><li><h6>1. Explore the environment</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-1.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-1.ogv" type="video/ogg"></video></div></li><li><h6>2. Inspect objects for tips</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-2.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-2.ogv" type="video/ogg"></video></div></li><li><h6>3. Ask the client for clues</h6><div class="video-wrapper"><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-3.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-3.ogv" type="video/ogg"></video></div></li></ul><div class="controls"><div class="loader"><div class="bar"><div class="fill"></div></div><p class="counter">00</p></div>' + feng.templates.common.PrimaryButton({classname: 'skip', icon: 'icon-yes', text: 'Continue'}) + '</div>'});
+  return feng.templates.common.Popup({classname: 'tutorial from-bottom', content: '<div class="subtitle"><p>WHAT TO DO</p><div class="line"></div></div><ul class="title"><li><h1>Explore<br>the environment</h1></li><li><h1>Discover<br>Feng Shui tips</h1></li><li><h1>Inquire<br>clues from your clients</h1></li></ul><div class="instructions"><button class="prev icon icon-prev" disabled></button><button class="next icon icon-next" disabled></button><ul class="steps"><li><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-1.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-1.ogv" type="video/ogg"></video></li><li><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-2.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-2.ogv" type="video/ogg"></video></li><li><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-3.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-3.ogv" type="video/ogg"></video></li></ul></div><div class="controls hidden"><div class="loader"><div class="bar"><div class="fill"></div></div><p class="counter">00</p></div>' + feng.templates.common.PrimaryButton({classname: 'skip', icon: 'icon-yes', text: 'OK'}) + '</div>'});
 };
 
 
@@ -34013,7 +34013,7 @@ feng.templates.common.TutorialPopup = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.common.CreditsPopup = function(opt_data, opt_ignored) {
-  return feng.templates.common.Popup({classname: 'credits from-bottom', content: '<h1>Credits and References</h1><div class="scroller"><div class="content"></div>' + feng.templates.common.ScrollBar(null) + '</div>'});
+  return feng.templates.common.Popup({classname: 'credits from-bottom', content: '<h1>Credits and References</h1><div class="scroller"><div class="content"></div>' + feng.templates.common.ScrollBar(null) + '</div>' + feng.templates.common.PrimaryButton({classname: 'skip', icon: 'icon-yes', text: 'OK'})});
 };
 
 
@@ -34100,11 +34100,11 @@ feng.templates.controls.Book = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.Reminder = function(opt_data, opt_ignored) {
   var output = '<div class="reminder"><div class="character">' + feng.templates.controls.RoundButton({content: '<canvas></canvas>'}) + '</div><div class="dialogue hint"><div class="wrapper"><button class="prev icon icon-prev"></button><ul class="hints">';
-  var tipList344 = opt_data.tips;
-  var tipListLen344 = tipList344.length;
-  for (var tipIndex344 = 0; tipIndex344 < tipListLen344; tipIndex344++) {
-    var tipData344 = tipList344[tipIndex344];
-    output += '<li data-tip-id="' + tipData344.id + '">' + tipData344.reminder + '</li>';
+  var tipList346 = opt_data.tips;
+  var tipListLen346 = tipList346.length;
+  for (var tipIndex346 = 0; tipIndex346 < tipListLen346; tipIndex346++) {
+    var tipData346 = tipList346[tipIndex346];
+    output += '<li data-tip-id="' + tipData346.id + '">' + tipData346.reminder + '</li>';
   }
   output += '</ul><button class="next icon icon-next"></button></div></div></div>';
   return output;
@@ -34163,16 +34163,16 @@ feng.templates.controls.GatewayTooltip = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
   var output = '<div class="progressBar"><div class="inner"><button class="prev icon icon-prev"></button><button class="next icon icon-next"></button><div class="tips-wrapper">';
-  var viewIdList386 = soy.$$getMapKeys(opt_data.tipsOfViews);
-  var viewIdListLen386 = viewIdList386.length;
-  for (var viewIdIndex386 = 0; viewIdIndex386 < viewIdListLen386; viewIdIndex386++) {
-    var viewIdData386 = viewIdList386[viewIdIndex386];
-    output += '<ul class="tips" data-view-id="' + viewIdData386 + '">';
-    var tipList390 = opt_data.tipsOfViews[viewIdData386];
-    var tipListLen390 = tipList390.length;
-    for (var tipIndex390 = 0; tipIndex390 < tipListLen390; tipIndex390++) {
-      var tipData390 = tipList390[tipIndex390];
-      output += '<li class="tip" data-tip-id="' + tipData390.id + '" data-view-id="' + viewIdData386 + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content"><div class="icon icon-' + tipData390.icon + '" data-tip-id="' + tipData390.id + '" data-view-id="' + tipData390.viewId + '" data-section-id="' + tipData390.sectionId + '"></div><h6>' + tipData390.name + '</h6></a></div></li>';
+  var viewIdList388 = soy.$$getMapKeys(opt_data.tipsOfViews);
+  var viewIdListLen388 = viewIdList388.length;
+  for (var viewIdIndex388 = 0; viewIdIndex388 < viewIdListLen388; viewIdIndex388++) {
+    var viewIdData388 = viewIdList388[viewIdIndex388];
+    output += '<ul class="tips" data-view-id="' + viewIdData388 + '">';
+    var tipList392 = opt_data.tipsOfViews[viewIdData388];
+    var tipListLen392 = tipList392.length;
+    for (var tipIndex392 = 0; tipIndex392 < tipListLen392; tipIndex392++) {
+      var tipData392 = tipList392[tipIndex392];
+      output += '<li class="tip" data-tip-id="' + tipData392.id + '" data-view-id="' + viewIdData388 + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content"><div class="icon icon-' + tipData392.icon + '" data-tip-id="' + tipData392.id + '" data-view-id="' + tipData392.viewId + '" data-section-id="' + tipData392.sectionId + '"></div></a></div></li>';
     }
     output += '</ul>';
   }
@@ -34209,7 +34209,7 @@ feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.main.EpisodeSelection = function(opt_data, opt_ignored) {
-  return '<div class="episode-selection"><div class="scene studio"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Ollie\'s Studio</h1><p>Ollie lives in a small, delicate studio in the crowded downtown. How could we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'studio', href: opt_data.token.STUDIO, icon: 'icon-yes', text: 'Start'})}) + '</div></div><div class="scene house"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Scott\'s House</h1><p>Scott lives in a two story house, with his wife Joanna and son Nick. How could we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'house', href: opt_data.token.HOUSE, icon: 'icon-yes', text: 'Start'})}) + '</div></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="question">' + feng.templates.common.FengshuiLogo({noText: true}) + '<div><h1>Help your first<br>feng shui client!</h1><p>Please make some<br>improvements to their<br>home environments.</p><h2><div class="arrow left"></div><span>CHOOSE ONE</span><div class="arrow right"></div></h2></div></div>'}) + '</div></div>';
+  return '<div class="episode-selection"><div class="scene studio"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Ollie\'s Studio</h1><p>Ollie lives in a small, delicate studio in the crowded downtown. How could we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'studio', href: opt_data.token.STUDIO, icon: 'icon-yes', text: 'Start'})}) + '</div></div><div class="scene house"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Scott\'s House</h1><p>Scott lives in a two story house, with his wife Joanna and son Nick. How could we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'house', href: opt_data.token.HOUSE, icon: 'icon-yes', text: 'Start'})}) + '</div></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="question">' + feng.templates.common.FengshuiLogo({noText: true}) + '<div><h1>Help your<br>feng shui<br>clients</h1><p>Please make some<br>improvements to their<br>home environments.</p><h2><div class="arrow left"></div><span>CHOOSE ONE</span><div class="arrow right"></div></h2></div></div>'}) + '</div></div>';
 };
 
 
@@ -36939,11 +36939,10 @@ feng.views.view3dobject.MovableObject.prototype.onPicked = function(){
 
   this.hasPicked = true;
 
+  this.stopInteraction();
+  
   var arms = this._view3d.arms;
   arms.addItem( this );
-
-  var closeUpControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.CLOSE_UP );
-  closeUpControls.close();
 };
 
 
@@ -38271,7 +38270,7 @@ feng.views.book.TipModule.prototype.setActive = function( isActive ) {
 
 	if(isActive && this._isUnlocked) {
 
-		goog.dom.classes.add(this.domElement, 'active');
+		goog.dom.classlist.add(this.domElement, 'active');
 
 		if(!this._imageLoaded) {
 			
@@ -38282,7 +38281,7 @@ feng.views.book.TipModule.prototype.setActive = function( isActive ) {
 
 			goog.events.listenOnce(img, 'load', function() {
 				goog.style.setStyle(screenEl, 'background-image', 'url(' + img.src + ')');
-				goog.dom.classes.enable( screenEl, 'loaded', true );
+				goog.dom.classlist.enable( screenEl, 'loaded', true );
 			});
 		}
 
@@ -38295,7 +38294,7 @@ feng.views.book.TipModule.prototype.setActive = function( isActive ) {
 
 	}else {
 
-		goog.dom.classes.remove(this.domElement, 'active');
+		goog.dom.classlist.remove(this.domElement, 'active');
 
 		this._scrollBar.deactivate();
 
@@ -38358,7 +38357,7 @@ feng.views.book.TipModule.prototype.unlock = function() {
 
 	this._isUnlocked = true;
 
-	goog.dom.classes.enable( this.domElement, 'unlocked', true );
+	goog.dom.classlist.enable( this.domElement, 'unlocked', true );
 };
 
 
@@ -39096,13 +39095,13 @@ feng.views.book.Book.prototype.onDragStart = function( e ) {
 		this._scrollTweener.kill();
 	}
 
-	goog.dom.classes.addRemove(this._scrollerEl, 'zoom-in', 'zoom-out');
+	goog.dom.classlist.addRemove(this._scrollerEl, 'zoom-in', 'zoom-out');
 };
 
 
 feng.views.book.Book.prototype.onDragEnd = function( e ) {
 
-	goog.dom.classes.addRemove(this._scrollerEl, 'zoom-out', 'zoom-in');
+	goog.dom.classlist.addRemove(this._scrollerEl, 'zoom-out', 'zoom-in');
 };
 
 
@@ -40400,7 +40399,7 @@ feng.controllers.controls.Controls.prototype.activate = function() {
 
 	goog.fx.anim.registerAnimation(this);
 
-	goog.dom.classes.add(this._view3d.domElement, 'grab');
+	goog.dom.classlist.add(this._view3d.domElement, 'grab');
 };
 
 
@@ -40410,8 +40409,8 @@ feng.controllers.controls.Controls.prototype.deactivate = function() {
 
 	goog.fx.anim.unregisterAnimation(this);
 
-	goog.dom.classes.remove(this._view3d.domElement, 'grab');
-	goog.dom.classes.remove(this._mainEl, 'grabbing');
+	goog.dom.classlist.remove(this._view3d.domElement, 'grab');
+	goog.dom.classlist.remove(this._mainEl, 'grabbing');
 };
 
 
@@ -40543,7 +40542,7 @@ feng.controllers.controls.Controls.prototype.onInputUp = function ( e ) {
 	this._eventHandler.unlisten(this._domElement, feng.events.EventType.INPUT_MOVE, this.onInputMove, false, this);
 	this._eventHandler.unlisten(document, feng.events.EventType.INPUT_UP, this.onInputUp, false, this);
 
-	goog.dom.classes.remove(this._mainEl, 'grabbing');
+	goog.dom.classlist.remove(this._mainEl, 'grabbing');
 };
 
 
@@ -40551,7 +40550,7 @@ feng.controllers.controls.Controls.prototype.onInputMove = function ( e ) {
 
 	e.preventDefault();
 
-	goog.dom.classes.add(this._mainEl, 'grabbing');
+	goog.dom.classlist.add(this._mainEl, 'grabbing');
 };
 
 
@@ -40903,7 +40902,7 @@ feng.views.sections.controls.Controls.prototype.show = function( shouldShow ){
 
   var shouldShow = goog.isBoolean(shouldShow) ? shouldShow : true;
 
-  goog.dom.classes.enable( this.domElement, 'hidden', !shouldShow );
+  goog.dom.classlist.enable( this.domElement, 'hidden', !shouldShow );
 
   if(shouldShow) {
     
@@ -44574,7 +44573,7 @@ feng.views.view3dobject.entities.Closet = function( object3d, data, view3d ){
   };
 
   this._swingProgress = 0;
-  this._rotationProgress = 0;
+  this._positionProgress = 0;
 
   // dragger to drag the item
   this._dragger = new goog.fx.Dragger( this._view3d.domElement );
@@ -44689,7 +44688,7 @@ feng.views.view3dobject.entities.Closet.prototype.init = function(){
     'onCompleteScope': this
   });
 
-  this._jarsPullOutTweener.add( jarTweeners, '+=0', 'start', .1 );
+  this._jarsPullOutTweener.add( jarTweeners, '+=0', 'start', .15 );
 };
 
 
@@ -44770,9 +44769,9 @@ feng.views.view3dobject.entities.Closet.prototype.startInteraction = function(){
   // pull out jars
   this._jarsPullOutTweener.restart();
 
-  TweenMax.to(this, .5, {
+  TweenMax.to(this, 4, {
     _swingProgress: 1,
-    _rotationProgress: 1
+    _positionProgress: 1
   });
 
   goog.fx.anim.registerAnimation( this );
@@ -44795,7 +44794,7 @@ feng.views.view3dobject.entities.Closet.prototype.stopInteraction = function(){
 
   TweenMax.to(this, .5, {
     _swingProgress: 0,
-    _rotationProgress: 0
+    _positionProgress: 0
   });
 
   goog.fx.anim.unregisterAnimation( this );
@@ -44985,7 +44984,7 @@ feng.views.view3dobject.entities.Closet.prototype.onCameraZoomUpdate = function(
 
   control.setFov( prop.fov );
 
-  if(prop.updateDragOffset) {
+  if(prop.updateDragOffset && this._dummyJar) {
     this.updateDragOffsetOfJar();
   }
 };
@@ -45011,12 +45010,12 @@ feng.views.view3dobject.entities.Closet.prototype.onAnimationFrame = function(no
     var orientation = userData.orientation;
 
     dummyJar.position.x = orientation.positionX;
-    dummyJar.position.y = orientation.positionY + Math.sin( now * 0.001 * swing ) * this._swingProgress * swingMultiplier + dragOffset.y;
-    dummyJar.position.z = orientation.positionZ + Math.cos( now * 0.001 * swing ) * this._swingProgress * swingMultiplier + dragOffset.z;
+    dummyJar.position.y = orientation.positionY + Math.sin( now * 0.001 * swing ) * this._swingProgress * swingMultiplier * this._positionProgress + dragOffset.y;
+    dummyJar.position.z = orientation.positionZ + Math.cos( now * 0.001 * swing ) * this._swingProgress * swingMultiplier * this._positionProgress + dragOffset.z;
   
-    dummyJar.rotation.x = orientation.rotationX * this._rotationProgress * rotationMultiplier;
-    dummyJar.rotation.y = orientation.rotationY * this._rotationProgress * rotationMultiplier;
-    dummyJar.rotation.z = orientation.rotationZ * this._rotationProgress * rotationMultiplier;
+    dummyJar.rotation.x = orientation.rotationX * rotationMultiplier;
+    dummyJar.rotation.y = orientation.rotationY * rotationMultiplier;
+    dummyJar.rotation.z = orientation.rotationZ * rotationMultiplier;
 
     var jarTargetPosition = userData.isAnchored ? userData.anchor : dummyJar.position;
 
@@ -45512,7 +45511,7 @@ feng.views.view3dobject.Arms.Orientations = {
   },
   'knife': {
     position: new THREE.Vector3(0, 10, -2),
-    rotation: new THREE.Euler(0.05, -0.09, -0.50)
+    rotation: new THREE.Euler(1.4, -0.6, -0.50)
   },
   'handheld': {
     position: new THREE.Vector3(0, 7.5, -2),
@@ -46285,11 +46284,14 @@ feng.views.view3dobject.entities.Drawer.prototype.onDrawerOpened = function(){
 
   if(this.tip.unlocked) return;
 
-  var knife = this._view3d.tipObjects['knife'];
+  goog.Timer.callOnce(function() {
 
-  if(knife.hasPicked) {
-    knife.drop();
-  }
+    var knife = this._view3d.tipObjects['knife'];
+
+    if(knife.hasPicked) {
+      knife.drop();
+    }
+  }, 400, this);
 };goog.provide('feng.views.view3dobject.entities.Knife');
 
 goog.require('feng.views.view3dobject.MovableObject');
@@ -46394,8 +46396,9 @@ feng.views.view3dobject.entities.Showerhead = function( object3d, data, view3d )
 
   this._totalDeg = 0;
   this._lastDeg = 0;
-  this._totalCount = 6;
+  this._totalCount = 2;
   this._count = 0;
+  this._hasDone = false;
 };
 goog.inherits(feng.views.view3dobject.entities.Showerhead, feng.views.view3dobject.TipObject);
 
@@ -46507,6 +46510,15 @@ feng.views.view3dobject.entities.Showerhead.prototype.stopInteraction = function
 };
 
 
+feng.views.view3dobject.entities.Showerhead.prototype.finish = function(){
+
+  this._waterdrop.view3dObject.removeFromScene();
+
+  this.unlock();
+  this.stopInteraction();
+};
+
+
 feng.views.view3dobject.entities.Showerhead.prototype.onCameraTransitionUpdate = function(prop){
 
   var startPosition = prop.startPosition;
@@ -46541,8 +46553,14 @@ feng.views.view3dobject.entities.Showerhead.prototype.onCameraZoomUpdate = funct
 
 feng.views.view3dobject.entities.Showerhead.prototype.onDragStart = function(e){
 
+  if(this._hasDone) {
+    return;
+  }
+
+  var control = this._view3d.modeController.control;
+
   var prop = {
-    fov: this._tapCamera.fov
+    fov: control.getFov()
   };
 
   this._cameraZoomTweener = TweenMax.to(prop, .5, {
@@ -46558,25 +46576,14 @@ feng.views.view3dobject.entities.Showerhead.prototype.onDragStart = function(e){
 feng.views.view3dobject.entities.Showerhead.prototype.onDragEnd = function(e){
 
   this._lastDeg = 0;
-  this._totalDeg = 0;
-
-  var control = this._view3d.modeController.control;
-
-  var prop = {
-    fov: control.getFov()
-  };
-
-  this._cameraZoomTweener = TweenMax.to(prop, 1, {
-    fov: this._tapCamera.fov,
-    'ease': Strong.easeOut,
-    'onUpdate': this.onCameraZoomUpdate,
-    'onUpdateParams': [prop],
-    'onUpdateScope': this
-  });
 };
 
 
 feng.views.view3dobject.entities.Showerhead.prototype.onDrag = function(e){
+
+  if(this._hasDone) {
+    return;
+  }
 
   var clientX = e.target.clientX;
   var clientY = e.target.clientY;
@@ -46596,7 +46603,7 @@ feng.views.view3dobject.entities.Showerhead.prototype.onDrag = function(e){
   var a2 = this._lastDeg * (Math.PI / 180);
 
   var radians = Math.atan2(Math.sin(a1 - a2), Math.cos(a1 - a2));
-  var diffDeg = radians * (180 / Math.PI);
+  var diffDeg = Math.max(0, radians * (180 / Math.PI));
 
   this._lastDeg = mouseDeg;
 
@@ -46609,12 +46616,23 @@ feng.views.view3dobject.entities.Showerhead.prototype.onDrag = function(e){
 
   if(count >= this._totalCount) {
 
-    this._waterdrop.view3dObject.removeFromScene();
+    this._hasDone = true;
 
-    this.onDragEnd();
+    var control = this._view3d.modeController.control;
 
-    this.unlock();
-    this.stopInteraction();
+    var prop = {
+      fov: control.getFov()
+    };
+
+    this._cameraZoomTweener = TweenMax.to(prop, 1, {
+      fov: this._tapCamera.fov,
+      'ease': Strong.easeOut,
+      'onUpdate': this.onCameraZoomUpdate,
+      'onUpdateParams': [prop],
+      'onUpdateScope': this,
+      'onComplete': this.finish,
+      'onCompleteScope': this
+    });
   }
 };goog.provide('feng.views.View3D');
 
@@ -49316,8 +49334,6 @@ feng.views.popups.Popup = function(domElement){
 
   this.domElement = domElement;
 
-  this._closeButton = goog.dom.getElementByClass('close-button', this.domElement);
-
   this._isShown = false;
 
   this._eventHandler = new goog.events.EventHandler(this);
@@ -49335,7 +49351,6 @@ goog.inherits(feng.views.popups.Popup, goog.events.EventTarget);
 
 feng.views.popups.Popup.prototype.activate = function() {
 
-	this._eventHandler.listen(this._closeButton, 'click', this.animateOut, false, this);
 };
 
 
@@ -49355,18 +49370,6 @@ feng.views.popups.Popup.prototype.toggle = function() {
 };
 
 
-feng.views.popups.Popup.prototype.showCloseButton = function() {
-
-	goog.style.showElement(this._closeButton, true);
-};
-
-
-feng.views.popups.Popup.prototype.hideCloseButton = function() {
-
-	goog.style.showElement(this._closeButton, false);
-};
-
-
 feng.views.popups.Popup.prototype.animateIn = function( delay ) {
 
 	var delay = goog.isNumber(delay) ? delay : this._defaultAnimateInDelay;
@@ -49380,7 +49383,7 @@ feng.views.popups.Popup.prototype.doAnimateIn = function() {
 
 	this._isShown = true;
 
-	goog.dom.classes.add( this.domElement, 'shown' );
+	goog.dom.classlist.add( this.domElement, 'shown' );
 
 	this._animateInDelay.stop();
 	this._onAnimatedOutDelay.stop();
@@ -49393,7 +49396,7 @@ feng.views.popups.Popup.prototype.animateOut = function() {
 
 	this.deactivate();
 
-	goog.dom.classes.remove( this.domElement, 'shown' );
+	goog.dom.classlist.remove( this.domElement, 'shown' );
 
 	feng.soundController.playSfx('close');
 
@@ -49439,18 +49442,17 @@ feng.views.popups.Tutorial = function(){
 	// steps
 	this._videoEls = goog.dom.query('video', this.domElement);
 	this._stepEls = goog.dom.query('.steps li', this.domElement);
+	this._titleEls = goog.dom.query('.title li', this.domElement);
 
 	goog.array.forEach(this._videoEls, function(videoEl) {
 		goog.style.setStyle( videoEl, 'visibility', 'hidden' );
 	}, this);
 
-	this._step = 0;
+	this._step = -1;
 	this._totalSteps = this._stepEls.length;
 
 	this._videoEl = null;
 	this._stepEl = null;
-
-	this._isAutoPlayEnabled = false;
 
 	this._numLoaded = 0;
 	this._isLoaded = false;
@@ -49459,7 +49461,12 @@ feng.views.popups.Tutorial = function(){
 	this._escKeyId = null;
 	this._animateOut = goog.bind(this.animateOut, this);
 
+	// buttons
+	this._prevButton = goog.dom.query('.prev', this.domElement)[0];
+	this._nextButton = goog.dom.query('.next', this.domElement)[0];
+
 	// loader
+	this._controlsEl = goog.dom.getElementByClass('controls', this.domElement);
 	this._loaderEl = goog.dom.getElementByClass('loader', this.domElement);
 	this._fillEl = goog.dom.getElementByClass('fill', this.domElement);
 	this._counterEl = goog.dom.getElementByClass('counter', this.domElement);
@@ -49470,47 +49477,66 @@ goog.inherits(feng.views.popups.Tutorial, feng.views.popups.Popup);
 goog.addSingletonGetter(feng.views.popups.Tutorial);
 
 
-feng.views.popups.Tutorial.prototype.enableAutoPlay = function( enabled ){
+feng.views.popups.Tutorial.prototype.prevStep = function(){
 
-	this._isAutoPlayEnabled = ( enabled === false ) ? false : true;
+	var step = Math.max(0, this._step - 1);
+
+	if(this._step !== step) {
+
+		this.gotoStep( step );
+	}
 };
 
 
 feng.views.popups.Tutorial.prototype.nextStep = function(){
 
-	this._videoEl.pause();
-	this._eventHandler.unlisten( this._videoEl, 'ended', this.onVideoEnded, false, this );
+	var step = Math.min(this._totalSteps - 1, this._step + 1);
 
-	this._step ++;
+	if(this._step !== step) {
 
-	if(this._step < this._totalSteps) {
-
-		this.gotoStep( this._step );
+		this.gotoStep( step );
 	}
 };
 
 
 feng.views.popups.Tutorial.prototype.gotoStep = function( step ){
 
+	this._step = step;
+
 	// handle last step
-	if(this._videoEl && this._stepEl) {
+	if(this._videoEl && this._stepEl && this._titleEl) {
 
 		this._videoEl.pause();
 		this._eventHandler.unlisten( this._videoEl, 'ended', this.onVideoEnded, false, this );
 		
-		goog.dom.classes.remove( this._stepEl, 'active' );
+		goog.dom.classlist.remove( this._titleEl, 'active' );
+		goog.dom.classlist.remove( this._stepEl, 'active' );
 	}
 
-	// handle next step
-	this._step = step;
+	this._prevButton.disabled = false;
+	this._nextButton.disabled = false;
 
-	this._videoEl = this._videoEls[ this._step ];
-	this._videoEl.play();
+	if(this._step === 0) {
 
+		this._prevButton.disabled = true;
+
+	}else if(this._step === this._totalSteps - 1) {
+
+		this._nextButton.disabled = true;
+
+		goog.dom.classlist.enable( this._controlsEl, 'hidden', false );
+	}
+
+	this._titleEl = this._titleEls[ this._step ];
 	this._stepEl = this._stepEls[ this._step ];
 
-	goog.dom.classes.add( this._stepEl, 'active' );
+	goog.dom.classlist.add( this._titleEl, 'active' );
+	goog.dom.classlist.add( this._stepEl, 'active' );
 
+	this._videoEl = this._videoEls[ this._step ];
+	this._videoEl.currentTime = 0;
+	this._videoEl.play();
+	
 	this._eventHandler.listenOnce( this._videoEl, 'ended', this.onVideoEnded, false, this );
 };
 
@@ -49525,11 +49551,9 @@ feng.views.popups.Tutorial.prototype.activate = function(){
 
 	goog.base(this, 'activate');
 
-	goog.array.forEach(this._stepEls, function(stepEl) {
-		this._eventHandler.listen( stepEl, 'mousedown', this.onMouseDownStep, false, this );
-	}, this);
-
 	this._eventHandler.listen( this._skipButton, 'click', this.animateOut, false, this );
+	this._eventHandler.listen( this._prevButton, 'click', this.prevStep, false, this );
+	this._eventHandler.listen( this._nextButton, 'click', this.nextStep, false, this );
 
 	this._enterKeyId = feng.keyboardController.bind( this._animateOut, feng.keyboardController.key.ENTER, true );
 	this._escKeyId = feng.keyboardController.bind( this._animateOut, feng.keyboardController.key.ESC, true );
@@ -49612,7 +49636,7 @@ feng.views.popups.Tutorial.prototype.setProgress = function(progress){
 
 feng.views.popups.Tutorial.prototype.setBuffering = function(){
 
-	this._counterEl.innerHTML = "Please Wait...";
+	this._counterEl.innerHTML = "Preparing for your visit";
 };
 
 
@@ -49636,27 +49660,279 @@ feng.views.popups.Tutorial.prototype.onVideoCanPlay = function(e){
 
 feng.views.popups.Tutorial.prototype.onVideoEnded = function(e){
 
-	if(!this._isAutoPlayEnabled) {
-
-		e.currentTarget.play();
-
-	}else {
-
-		this.nextStep();
-	}
+	e.currentTarget.play();
 };
 
 
-feng.views.popups.Tutorial.prototype.onMouseDownStep = function(e){
+feng.views.popups.Tutorial.prototype.onAnimatedOut = function() {
 
-	this.enableAutoPlay( false );
+	goog.base(this, 'onAnimatedOut');
 
-	var step = goog.array.indexOf(this._stepEls, e.currentTarget);
-	this.gotoStep( step );
-};goog.provide('feng.views.MainOptions');
+	this.gotoStep( 0 );
+};// Copyright 2012 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Utilities for detecting, adding and removing classes.  Prefer
+ * this over goog.dom.classes for new code since it attempts to use classList
+ * (DOMTokenList: http://dom.spec.whatwg.org/#domtokenlist) which is faster
+ * and requires less code.
+ *
+ * Note: these utilities are meant to operate on HTMLElements
+ * and may have unexpected behavior on elements with differing interfaces
+ * (such as SVGElements).
+ */
+
+
+goog.provide('goog.dom.classlist');
+
+goog.require('goog.array');
+
+
+/**
+ * Override this define at build-time if you know your target supports it.
+ * @define {boolean} Whether to use the classList property (DOMTokenList).
+ */
+goog.define('goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST', false);
+
+
+/**
+ * Gets an array-like object of class names on an element.
+ * @param {Element} element DOM node to get the classes of.
+ * @return {!goog.array.ArrayLike} Class names on {@code element}.
+ */
+goog.dom.classlist.get = function(element) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    return element.classList;
+  }
+
+  var className = element.className;
+  // Some types of elements don't have a className in IE (e.g. iframes).
+  // Furthermore, in Firefox, className is not a string when the element is
+  // an SVG element.
+  return goog.isString(className) && className.match(/\S+/g) || [];
+};
+
+
+/**
+ * Sets the entire class name of an element.
+ * @param {Element} element DOM node to set class of.
+ * @param {string} className Class name(s) to apply to element.
+ */
+goog.dom.classlist.set = function(element, className) {
+  element.className = className;
+};
+
+
+/**
+ * Returns true if an element has a class.  This method may throw a DOM
+ * exception for an invalid or empty class name if DOMTokenList is used.
+ * @param {Element} element DOM node to test.
+ * @param {string} className Class name to test for.
+ * @return {boolean} Whether element has the class.
+ */
+goog.dom.classlist.contains = function(element, className) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    return element.classList.contains(className);
+  }
+  return goog.array.contains(goog.dom.classlist.get(element), className);
+};
+
+
+/**
+ * Adds a class to an element.  Does not add multiples of class names.  This
+ * method may throw a DOM exception for an invalid or empty class name if
+ * DOMTokenList is used.
+ * @param {Element} element DOM node to add class to.
+ * @param {string} className Class name to add.
+ */
+goog.dom.classlist.add = function(element, className) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    element.classList.add(className);
+    return;
+  }
+
+  if (!goog.dom.classlist.contains(element, className)) {
+    // Ensure we add a space if this is not the first class name added.
+    element.className += element.className.length > 0 ?
+        (' ' + className) : className;
+  }
+};
+
+
+/**
+ * Convenience method to add a number of class names at once.
+ * @param {Element} element The element to which to add classes.
+ * @param {goog.array.ArrayLike.<string>} classesToAdd An array-like object
+ * containing a collection of class names to add to the element.
+ * This method may throw a DOM exception if classesToAdd contains invalid
+ * or empty class names.
+ */
+goog.dom.classlist.addAll = function(element, classesToAdd) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    goog.array.forEach(classesToAdd, function(className) {
+      goog.dom.classlist.add(element, className);
+    });
+    return;
+  }
+
+  var classMap = {};
+
+  // Get all current class names into a map.
+  goog.array.forEach(goog.dom.classlist.get(element),
+      function(className) {
+        classMap[className] = true;
+      });
+
+  // Add new class names to the map.
+  goog.array.forEach(classesToAdd,
+      function(className) {
+        classMap[className] = true;
+      });
+
+  // Flatten the keys of the map into the className.
+  element.className = '';
+  for (var className in classMap) {
+    element.className += element.className.length > 0 ?
+        (' ' + className) : className;
+  }
+};
+
+
+/**
+ * Removes a class from an element.  This method may throw a DOM exception
+ * for an invalid or empty class name if DOMTokenList is used.
+ * @param {Element} element DOM node to remove class from.
+ * @param {string} className Class name to remove.
+ */
+goog.dom.classlist.remove = function(element, className) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    element.classList.remove(className);
+    return;
+  }
+
+  if (goog.dom.classlist.contains(element, className)) {
+    // Filter out the class name.
+    element.className = goog.array.filter(
+        goog.dom.classlist.get(element),
+        function(c) {
+          return c != className;
+        }).join(' ');
+  }
+};
+
+
+/**
+ * Removes a set of classes from an element.  Prefer this call to
+ * repeatedly calling {@code goog.dom.classlist.remove} if you want to remove
+ * a large set of class names at once.
+ * @param {Element} element The element from which to remove classes.
+ * @param {goog.array.ArrayLike.<string>} classesToRemove An array-like object
+ * containing a collection of class names to remove from the element.
+ * This method may throw a DOM exception if classesToRemove contains invalid
+ * or empty class names.
+ */
+goog.dom.classlist.removeAll = function(element, classesToRemove) {
+  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
+    goog.array.forEach(classesToRemove, function(className) {
+      goog.dom.classlist.remove(element, className);
+    });
+    return;
+  }
+  // Filter out those classes in classesToRemove.
+  element.className = goog.array.filter(
+      goog.dom.classlist.get(element),
+      function(className) {
+        // If this class is not one we are trying to remove,
+        // add it to the array of new class names.
+        return !goog.array.contains(classesToRemove, className);
+      }).join(' ');
+};
+
+
+/**
+ * Adds or removes a class depending on the enabled argument.  This method
+ * may throw a DOM exception for an invalid or empty class name if DOMTokenList
+ * is used.
+ * @param {Element} element DOM node to add or remove the class on.
+ * @param {string} className Class name to add or remove.
+ * @param {boolean} enabled Whether to add or remove the class (true adds,
+ *     false removes).
+ */
+goog.dom.classlist.enable = function(element, className, enabled) {
+  if (enabled) {
+    goog.dom.classlist.add(element, className);
+  } else {
+    goog.dom.classlist.remove(element, className);
+  }
+};
+
+
+/**
+ * Switches a class on an element from one to another without disturbing other
+ * classes. If the fromClass isn't removed, the toClass won't be added.  This
+ * method may throw a DOM exception if the class names are empty or invalid.
+ * @param {Element} element DOM node to swap classes on.
+ * @param {string} fromClass Class to remove.
+ * @param {string} toClass Class to add.
+ * @return {boolean} Whether classes were switched.
+ */
+goog.dom.classlist.swap = function(element, fromClass, toClass) {
+  if (goog.dom.classlist.contains(element, fromClass)) {
+    goog.dom.classlist.remove(element, fromClass);
+    goog.dom.classlist.add(element, toClass);
+    return true;
+  }
+  return false;
+};
+
+
+/**
+ * Removes a class if an element has it, and adds it the element doesn't have
+ * it.  Won't affect other classes on the node.  This method may throw a DOM
+ * exception if the class name is empty or invalid.
+ * @param {Element} element DOM node to toggle class on.
+ * @param {string} className Class to toggle.
+ * @return {boolean} True if class was added, false if it was removed
+ *     (in other words, whether element has the class after this function has
+ *     been called).
+ */
+goog.dom.classlist.toggle = function(element, className) {
+  var add = !goog.dom.classlist.contains(element, className);
+  goog.dom.classlist.enable(element, className, add);
+  return add;
+};
+
+
+/**
+ * Adds and removes a class of an element.  Unlike
+ * {@link goog.dom.classlist.swap}, this method adds the classToAdd regardless
+ * of whether the classToRemove was present and had been removed.  This method
+ * may throw a DOM exception if the class names are empty or invalid.
+ *
+ * @param {Element} element DOM node to swap classes on.
+ * @param {string} classToRemove Class to remove.
+ * @param {string} classToAdd Class to add.
+ */
+goog.dom.classlist.addRemove = function(element, classToRemove, classToAdd) {
+  goog.dom.classlist.remove(element, classToRemove);
+  goog.dom.classlist.add(element, classToAdd);
+};
+goog.provide('feng.views.MainOptions');
 
 goog.require('goog.dom');
-goog.require('goog.dom.classes');
+goog.require('goog.dom.classlist');
 goog.require('goog.dom.query');
 goog.require('goog.events');
 goog.require('feng.utils.Utils');
@@ -49738,13 +50014,13 @@ feng.views.MainOptions.prototype.onClick = function(e){
 
 feng.views.MainOptions.prototype.onMute = function(e){
 
-	goog.dom.classes.add( this._soundButton, 'mute' );
+	goog.dom.classlist.add( this._soundButton, 'mute' );
 };
 
 
 feng.views.MainOptions.prototype.onUnmute = function(e){
 
-	goog.dom.classes.remove( this._soundButton, 'mute' );
+	goog.dom.classlist.remove( this._soundButton, 'mute' );
 };// Copyright 2013 The Closure Library Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -56150,7 +56426,7 @@ goog.testing.events.mixinListenable = function(obj) {
 goog.provide('feng.views.EpisodeSelection');
 
 goog.require('goog.dom');
-goog.require('goog.dom.classes');
+goog.require('goog.dom.classlist');
 goog.require('goog.dom.query');
 goog.require('goog.testing.events');
 
@@ -56247,15 +56523,15 @@ feng.views.EpisodeSelection.prototype.reset = function(){
 
 	goog.dom.removeNode( feng.tutorial.domElement );
 
-	goog.dom.classes.enable( this._promptEl, 'hidden', false );
-	goog.dom.classes.enable( this._studioEl, 'active', false );
-	goog.dom.classes.enable( this._studioEl, 'inactive', false );
-	goog.dom.classes.enable( this._studioEl, 'loading', false );
-	goog.dom.classes.enable( this._studioEl, 'hidden', false );
-	goog.dom.classes.enable( this._houseEl, 'active', false );
-	goog.dom.classes.enable( this._houseEl, 'inactive', false );
-	goog.dom.classes.enable( this._houseEl, 'loading', false );
-	goog.dom.classes.enable( this._houseEl, 'hidden', false );
+	goog.dom.classlist.enable( this._promptEl, 'hidden', false );
+	goog.dom.classlist.enable( this._studioEl, 'active', false );
+	goog.dom.classlist.enable( this._studioEl, 'inactive', false );
+	goog.dom.classlist.enable( this._studioEl, 'loading', false );
+	goog.dom.classlist.enable( this._studioEl, 'hidden', false );
+	goog.dom.classlist.enable( this._houseEl, 'active', false );
+	goog.dom.classlist.enable( this._houseEl, 'inactive', false );
+	goog.dom.classlist.enable( this._houseEl, 'loading', false );
+	goog.dom.classlist.enable( this._houseEl, 'hidden', false );
 	
 	this._hoveredSceneEl = null;
 };
@@ -56291,40 +56567,40 @@ feng.views.EpisodeSelection.prototype.updateSceneStatus = function(){
 
 	if(this._hoveredSceneEl === this._studioEl) {
 
-		goog.dom.classes.enable( this._studioEl, 'active', true );
-		goog.dom.classes.enable( this._studioEl, 'inactive', false );
-		goog.dom.classes.enable( this._houseEl, 'active', false );
-		goog.dom.classes.enable( this._houseEl, 'inactive', true );
+		goog.dom.classlist.enable( this._studioEl, 'active', true );
+		goog.dom.classlist.enable( this._studioEl, 'inactive', false );
+		goog.dom.classlist.enable( this._houseEl, 'active', false );
+		goog.dom.classlist.enable( this._houseEl, 'inactive', true );
 
-		goog.dom.classes.enable( this._promptEl, 'hidden', true );
-		goog.dom.classes.addRemove( this._promptEl, 'house', 'studio' );
+		goog.dom.classlist.enable( this._promptEl, 'hidden', true );
+		goog.dom.classlist.addRemove( this._promptEl, 'house', 'studio' );
 
 	  feng.soundController.fadeAmbient( 'studio', null, 1, 4 );
 	  feng.soundController.fadeAmbient( 'house', null, 0, 4 );
 
 	}else if(this._hoveredSceneEl === this._houseEl) {
 
-		goog.dom.classes.enable( this._studioEl, 'active', false );
-		goog.dom.classes.enable( this._studioEl, 'inactive', true );
-		goog.dom.classes.enable( this._houseEl, 'active', true );
-		goog.dom.classes.enable( this._houseEl, 'inactive', false );
+		goog.dom.classlist.enable( this._studioEl, 'active', false );
+		goog.dom.classlist.enable( this._studioEl, 'inactive', true );
+		goog.dom.classlist.enable( this._houseEl, 'active', true );
+		goog.dom.classlist.enable( this._houseEl, 'inactive', false );
 
-		goog.dom.classes.enable( this._promptEl, 'hidden', true );
-		goog.dom.classes.addRemove( this._promptEl, 'studio', 'house' );
+		goog.dom.classlist.enable( this._promptEl, 'hidden', true );
+		goog.dom.classlist.addRemove( this._promptEl, 'studio', 'house' );
 
 		feng.soundController.fadeAmbient( 'studio', null, 0, 4 );
 	  feng.soundController.fadeAmbient( 'house', null, 1, 4 );
 
 	}else {
 
-		goog.dom.classes.enable( this._studioEl, 'active', false );
-		goog.dom.classes.enable( this._studioEl, 'inactive', false );
-		goog.dom.classes.enable( this._houseEl, 'active', false );
-		goog.dom.classes.enable( this._houseEl, 'inactive', false );
+		goog.dom.classlist.enable( this._studioEl, 'active', false );
+		goog.dom.classlist.enable( this._studioEl, 'inactive', false );
+		goog.dom.classlist.enable( this._houseEl, 'active', false );
+		goog.dom.classlist.enable( this._houseEl, 'inactive', false );
 
-		goog.dom.classes.enable( this._promptEl, 'hidden', false );
-		goog.dom.classes.remove( this._promptEl, 'studio' );
-		goog.dom.classes.remove( this._promptEl, 'house' );
+		goog.dom.classlist.enable( this._promptEl, 'hidden', false );
+		goog.dom.classlist.remove( this._promptEl, 'studio' );
+		goog.dom.classlist.remove( this._promptEl, 'house' );
 
 		feng.soundController.fadeAmbient( 'studio', null, 0, 4 );
 	  feng.soundController.fadeAmbient( 'house', null, 0, 4 );
@@ -56420,24 +56696,23 @@ feng.views.EpisodeSelection.prototype.onClickStartButton = function(e){
 
 	this.deactivate();
 
-	goog.dom.classes.enable( this._promptEl, 'hidden', true );
+	goog.dom.classlist.enable( this._promptEl, 'hidden', true );
 
 	feng.tutorial.setProgress( 0 );
 	feng.tutorial.showLoader();
-	feng.tutorial.enableAutoPlay( true );
 	feng.tutorial.animateIn();
 
 	switch(e.currentTarget) {
 
 		case this._studioButton:
-		goog.dom.classes.enable( this._studioEl, 'loading', true );
-		goog.dom.classes.enable( this._houseEl, 'hidden', true );
+		goog.dom.classlist.enable( this._studioEl, 'loading', true );
+		goog.dom.classlist.enable( this._houseEl, 'hidden', true );
 		goog.dom.appendChild( this._studioEl, feng.tutorial.domElement );
 		break;
 
 		case this._houseButton:
-		goog.dom.classes.enable( this._studioEl, 'hidden', true );
-		goog.dom.classes.enable( this._houseEl, 'loading', true );
+		goog.dom.classlist.enable( this._studioEl, 'hidden', true );
+		goog.dom.classlist.enable( this._houseEl, 'loading', true );
 		goog.dom.appendChild( this._houseEl, feng.tutorial.domElement );
 		break;
 	}
@@ -56523,6 +56798,8 @@ feng.views.popups.Credits = function(){
 	this._scrollBarEl = goog.dom.getElementByClass('scrollbar', this._scrollerEl);
 	this._scrollerContentEl = goog.dom.getElementByClass('content', this._scrollerEl);
 
+	this._skipButton = goog.dom.getElementByClass('skip', this.domElement);
+
     this._scrollBar = new feng.fx.ScrollBar( this._scrollBarEl, this._scrollerContentEl );
 
 	this._escKeyId = null;
@@ -56553,7 +56830,7 @@ feng.views.popups.Credits.prototype.doAnimateIn = function(){
 
 	}else {
 
-		goog.dom.classes.add( this.domElement, 'loading' );
+		goog.dom.classlist.add( this.domElement, 'loading' );
 
 		TweenMax.set(this._scrollerEl, {
 			'opacity': 0
@@ -56575,6 +56852,8 @@ feng.views.popups.Credits.prototype.activate = function(){
 	goog.events.listen(window, 'resize', this.onResize, false, this);
 
 	this._escKeyId = feng.keyboardController.bind( this._animateOut, feng.keyboardController.key.ESC, true );
+
+	this._eventHandler.listen( this._skipButton, 'click', this.animateOut, false, this );
 };
 
 
@@ -56605,7 +56884,7 @@ feng.views.popups.Credits.prototype.onContentLoad = function(e){
 		'delay': 1,
 		'opacity': 1,
 		'onComplete': function() {
-			goog.dom.classes.remove( this.domElement, 'loading' );
+			goog.dom.classlist.remove( this.domElement, 'loading' );
 		},
 		'onCompleteScope': this
 	});
@@ -58136,7 +58415,6 @@ feng.views.sections.overlays.TutorialOverlay.prototype.show = function( shouldDi
 
 	goog.base(this, 'show', shouldDispatch);
 	
-	feng.tutorial.enableAutoPlay(false);
 	goog.dom.appendChild( this.domElement, feng.tutorial.domElement );
 };
 
@@ -58310,7 +58588,7 @@ goog.require('feng.templates.common');
  * @notypecheck
  */
 feng.templates.captions.Caption = function(opt_data, opt_ignored) {
-  return '<div class="caption ' + opt_data.position + '"><div class="panel"><div class="panel-button"><button class="icon"></button><h3>Learn<br>More</h3></div><div class="panel-controls"><div class="share"><ul><li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-facebook"></a></li><li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-twitter"></a></li><li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-google"></a></li></ul></div></div><div class="panel-content"><div class="content"><h1>' + opt_data.tip.name + '</h1><div class="scroller"><div class="scroller-inner">' + ((opt_data.tip.hint) ? '<section class="hint"><div class="inner"><div class="inner-scroller"><p>' + opt_data.tip.hint + '</p>' + feng.templates.common.PrimaryButton({icon: 'icon-yes', classname: 'hint-button', text: 'I see'}) + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.tip.problem) ? '<section class="problem"><div class="inner"><div class="inner-scroller"><p>' + opt_data.tip.problem + '</p><!-- either close to interact, or scroll down to go interaction section if available -->' + feng.templates.common.PrimaryButton({classname: 'prompt-button', icon: 'icon-yes', text: opt_data.tip.prompt}) + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.interactionContent) ? '<section class="interaction"><div class="inner"><div class="inner-scroller">' + opt_data.interactionContent + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.tip.advice) ? '<section class="advice"><div class="inner"><div class="inner-scroller"><h3>Feng Shui Tips</h3><p>' + opt_data.tip.advice + '</p></div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + '</div></div></div></div></div>' + feng.templates.common.CloseButton(null) + '</div>';
+  return '<div class="caption ' + opt_data.position + '"><div class="panel"><div class="panel-button"><button class="icon"></button><h3>Learn<br>More</h3></div><div class="panel-content"><div class="content"><h1>' + opt_data.tip.name + '</h1><div class="scroller"><div class="scroller-inner">' + ((opt_data.tip.hint) ? '<section class="hint"><div class="inner"><div class="inner-scroller"><p>' + opt_data.tip.hint + '</p>' + feng.templates.common.PrimaryButton({icon: 'icon-yes', classname: 'hint-button', text: 'I see'}) + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.tip.problem) ? '<section class="problem"><div class="inner"><div class="inner-scroller"><p>' + opt_data.tip.problem + '</p><!-- either close to interact, or scroll down to go interaction section if available -->' + feng.templates.common.PrimaryButton({classname: 'prompt-button', icon: 'icon-yes', text: opt_data.tip.prompt}) + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.interactionContent) ? '<section class="interaction"><div class="inner"><div class="inner-scroller">' + opt_data.interactionContent + '</div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + ((opt_data.tip.advice) ? '<section class="advice"><div class="inner"><div class="inner-scroller"><h3>Feng Shui Tips</h3><p>' + opt_data.tip.advice + '</p></div></div>' + feng.templates.common.ScrollBar(null) + '</section>' : '') + '</div></div></div></div></div><div class="controls"><ul class="share"><li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-facebook"></a></li><li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-twitter"></a></li><li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/' + opt_data.tip.id + '.html" target="_blank" class="icon icon-google"></a></li></ul>' + feng.templates.common.CloseButton(null) + '</div></div>';
 };
 
 
@@ -58471,7 +58749,7 @@ feng.views.sections.captions.Caption = function( object, renderController, rende
 
   this._closeKeyId = null;
 
-  this._close = goog.bind( this.close, this );
+  this._onESC = goog.bind( this.onESC, this );
 
   // render HTML template
   this.domElement = soy.renderAsFragment(this._template, this._templateData);
@@ -58509,14 +58787,17 @@ feng.views.sections.captions.Caption = function( object, renderController, rende
 
   this.scrollBar = null;
 
+  this._controlsEl = goog.dom.getElementByClass('controls', this.domElement);
+
   this._shareEl = goog.dom.getElementByClass('share', this.domElement);
   this._shareButtons = goog.dom.query('a', this._shareEl);
 
   this._sectionTweener = null;
 
   // set default status
+  this._isInteracting = false;
   this._isPanelAnimatedOut = true;
-  goog.dom.classes.enable( this.domElement, 'hide-panel', this._isPanelAnimatedOut );
+  goog.dom.classlist.enable( this.domElement, 'hide-panel', this._isPanelAnimatedOut );
 
   // set elements status by tip
   this.updateStatus();
@@ -58573,11 +58854,11 @@ feng.views.sections.captions.Caption.prototype.activate = function() {
   }, this);
 
   //
-  this._closeKeyId = feng.keyboardController.bind( this._close, feng.keyboardController.key.ESC, true );
+  this._closeKeyId = feng.keyboardController.bind( this._onESC, feng.keyboardController.key.ESC, false );
 
   goog.style.showElement(this._panelButton, false);
 
-  this.enableCloseButton( false );
+  this.enableControls( false );
 
   this.updateStatus();
 };
@@ -58597,9 +58878,11 @@ feng.views.sections.captions.Caption.prototype.deactivate = function() {
 };
 
 
-feng.views.sections.captions.Caption.prototype.enableCloseButton = function( enabled ) {
+feng.views.sections.captions.Caption.prototype.enableControls = function( enabled ) {
 
-  this._closeButton.disabled = goog.isBoolean(enabled) ? !enabled : false;
+  var shouldEnable = goog.isBoolean(enabled) ? enabled : true;
+
+  goog.dom.classlist.enable( this._controlsEl, 'hidden', !shouldEnable );
 };
 
 
@@ -58686,7 +58969,7 @@ feng.views.sections.captions.Caption.prototype.onScrollFromSection = function( f
     return;
   }
 
-  goog.dom.classes.addRemove( fromSection, 'animate-in', 'animate-out' );
+  goog.dom.classlist.addRemove( fromSection, 'animate-in', 'animate-out' );
 
   switch(fromSection) {
 
@@ -58712,7 +58995,7 @@ feng.views.sections.captions.Caption.prototype.onScrollFromSection = function( f
 feng.views.sections.captions.Caption.prototype.onScrolledToSection = function( toSection ) {
 
   if(!this._isPanelAnimatedOut) {
-    goog.dom.classes.addRemove( toSection, 'animate-out', 'animate-in' );
+    goog.dom.classlist.addRemove( toSection, 'animate-out', 'animate-in' );
   }
 
   switch(toSection) {
@@ -58749,14 +59032,14 @@ feng.views.sections.captions.Caption.prototype.animateInPanel = function() {
 
   goog.style.showElement(this._panelButton, true);
 
-  this.enableCloseButton( true );
+  this.enableControls( !this._isInteracting );
 
-  goog.dom.classes.enable(this.domElement, 'hide-panel', false);
+  goog.dom.classlist.enable(this.domElement, 'hide-panel', false);
 
-  goog.dom.classes.addRemove(this._panelEl, 'animate-out', 'animate-in' );
+  goog.dom.classlist.addRemove(this._panelEl, 'animate-out', 'animate-in' );
 
   if(this._section) {
-    goog.dom.classes.addRemove( this._section, 'animate-out', 'animate-in' );
+    goog.dom.classlist.addRemove( this._section, 'animate-out', 'animate-in' );
   } 
 
   TweenMax.to( this._renderController, .5, {
@@ -58781,12 +59064,12 @@ feng.views.sections.captions.Caption.prototype.animateOutPanel = function( shoul
     return;
   }
 
-  goog.dom.classes.enable(this.domElement, 'hide-panel', true);
+  goog.dom.classlist.enable(this.domElement, 'hide-panel', true);
 
-  goog.dom.classes.addRemove(this._panelEl, 'animate-in', 'animate-out' );
+  goog.dom.classlist.addRemove(this._panelEl, 'animate-in', 'animate-out' );
 
   if(this._section) {
-    goog.dom.classes.addRemove( this._section, 'animate-in', 'animate-out' );
+    goog.dom.classlist.addRemove( this._section, 'animate-in', 'animate-out' );
   } 
 
   TweenMax.to( this._renderController, .5, {
@@ -58819,12 +59102,6 @@ feng.views.sections.captions.Caption.prototype.togglePanel = function() {
 
 feng.views.sections.captions.Caption.prototype.close = function() {
 
-  this.doClose();
-};
-
-
-feng.views.sections.captions.Caption.prototype.doClose = function() {
-
   if(this._isPanelAnimatedOut) {
 
     this.onPanelAnimatedOut( true );
@@ -58833,6 +59110,8 @@ feng.views.sections.captions.Caption.prototype.doClose = function() {
     
     this.animateOutPanel( true );
   }
+
+  feng.keyboardController.unbind( this._closeKeyId );
 
   feng.soundController.playSfx('close');
 };
@@ -58879,7 +59158,7 @@ feng.views.sections.captions.Caption.prototype.updateStatus = function() {
   goog.style.showElement( this._shareEl, tip.unlocked );
   
   if(this._interactionSection) {
-    goog.dom.classes.add( this._interactionSection, 'unlocked' );
+    goog.dom.classlist.add( this._interactionSection, 'unlocked' );
   }
 
   // check if should go advice section
@@ -58919,13 +59198,15 @@ feng.views.sections.captions.Caption.prototype.onPanelAnimatedOut = function( sh
 
 feng.views.sections.captions.Caption.prototype.onInteractionStart = function( e ) {
 
+  this._isInteracting = true;
+
   if(this._interactionSection) {
 
     this.gotoSection( this._interactionSection );
 
   }else {
 
-    this.enableCloseButton( false );
+    this.enableControls( false );
 
     this.animateOutPanel();
   }
@@ -58934,11 +59215,22 @@ feng.views.sections.captions.Caption.prototype.onInteractionStart = function( e 
 
 feng.views.sections.captions.Caption.prototype.onInteractionEnd = function( e ) {
 
-  if(this._object.tip.isFinal) {
+  this._isInteracting = false;
+
+  if(this._object.tip.isFinal && this._object.tip.unlocked) {
 
     this.animateInPanel();
 
   }else {
+
+    this.close();
+  }
+};
+
+
+feng.views.sections.captions.Caption.prototype.onESC = function() {
+
+  if(!this._isInteracting) {
 
     this.close();
   }
@@ -59039,14 +59331,14 @@ feng.views.sections.captions.ChangeColorCaption.prototype.hide = function() {
 feng.views.sections.captions.ChangeColorCaption.prototype.onClickItem = function(e) {
 
   if(this._colorId) {
-    goog.dom.classes.enable( this._itemEls[this._colorId], 'active', false );
-    goog.dom.classes.enable( this._infoEls[this._colorId], 'active', false );
+    goog.dom.classlist.enable( this._itemEls[this._colorId], 'active', false );
+    goog.dom.classlist.enable( this._infoEls[this._colorId], 'active', false );
   }
 
   this._colorId = e.currentTarget.getAttribute('data-color');
 
-  goog.dom.classes.enable( this._itemEls[this._colorId], 'active', true );
-  goog.dom.classes.enable( this._infoEls[this._colorId], 'active', true );
+  goog.dom.classlist.enable( this._itemEls[this._colorId], 'active', true );
+  goog.dom.classlist.enable( this._infoEls[this._colorId], 'active', true );
 
   this.scrollBar.resize();
   
@@ -59352,7 +59644,7 @@ feng.views.sections.controls.ProgressBar.prototype.activate = function() {
 
   this._detectNearbyThrottle.fire();
 
-  goog.dom.classes.enable(this.domElement, 'hidden', false);
+  goog.dom.classlist.enable(this.domElement, 'hidden', false);
 };
 
 
@@ -59370,7 +59662,7 @@ feng.views.sections.controls.ProgressBar.prototype.deactivate = function() {
 
   this._tweener.kill();
 
-  goog.dom.classes.enable(this.domElement, 'hidden', true);
+  goog.dom.classlist.enable(this.domElement, 'hidden', true);
 };
 
 
@@ -59506,13 +59798,13 @@ feng.views.sections.controls.ProgressBar.prototype.detectNearbyObjects = functio
     if(this._nearbyTipEl !== tipEl) {
 
       if(this._nearbyTipEl) {
-        goog.dom.classes.remove(this._nearbyTipEl, 'nearby');
+        goog.dom.classlist.remove(this._nearbyTipEl, 'nearby');
       }
 
       //console.log(this._nearbyTipEl, tipEl, tipId, providedTip);
 
       this._nearbyTipEl = tipEl;
-      goog.dom.classes.add(this._nearbyTipEl, 'nearby');
+      goog.dom.classlist.add(this._nearbyTipEl, 'nearby');
 
       var viewId = tipEl.getAttribute('data-view-id');
 
@@ -59524,7 +59816,7 @@ feng.views.sections.controls.ProgressBar.prototype.detectNearbyObjects = functio
   }else {
 
     if(this._nearbyTipEl) {
-      goog.dom.classes.remove(this._nearbyTipEl, 'nearby');
+      goog.dom.classlist.remove(this._nearbyTipEl, 'nearby');
       this._nearbyTipEl = null;
     }
   }
@@ -59542,19 +59834,19 @@ feng.views.sections.controls.ProgressBar.prototype.unlockTip = function( tipId )
   // assign url to book
   goog.dom.query('a', unlockedTipEl)[0].href = this._tips[tipId].readTipToken;
 
-  goog.dom.classes.add( unlockedTipEl, 'unlocked' );
+  goog.dom.classlist.add( unlockedTipEl, 'unlocked' );
 };
 
 
 feng.views.sections.controls.ProgressBar.prototype.onTipMouseOver = function(e){
 
-  if(goog.dom.classes.has(e.currentTarget, 'hover')) {
+  if(goog.dom.classlist.contains(e.currentTarget, 'hover')) {
 
     return false;
 
   }else {
 
-    goog.dom.classes.add(e.currentTarget, 'hover');
+    goog.dom.classlist.add(e.currentTarget, 'hover');
 
     feng.pubsub.publish( feng.PubSub.Topic.SHOW_WIDGET, this );
   }
@@ -59565,7 +59857,7 @@ feng.views.sections.controls.ProgressBar.prototype.onTipMouseOut = function(e){
 
   if(!e.relatedTarget || !goog.dom.contains(e.currentTarget, e.relatedTarget)) {
 
-    goog.dom.classes.remove(e.currentTarget, 'hover');
+    goog.dom.classlist.remove(e.currentTarget, 'hover');
 
     feng.pubsub.publish( feng.PubSub.Topic.HIDE_WIDGET, this );
   }
@@ -59678,7 +59970,7 @@ feng.views.helpers.Helper.prototype.show = function( box ) {
 	if(this.isShown) return;
 	else this.isShown = true;
 
-	goog.dom.classes.enable( this.domElement, 'shown', true );
+	goog.dom.classlist.enable( this.domElement, 'shown', true );
 
 	if(box) {
 	
@@ -59701,7 +59993,7 @@ feng.views.helpers.Helper.prototype.hide = function() {
 	if(!this.isShown) return;
 	else this.isShown = false;
 
-	goog.dom.classes.enable( this.domElement, 'shown', false );
+	goog.dom.classlist.enable( this.domElement, 'shown', false );
 
 	feng.pubsub.publish( feng.PubSub.Topic.HIDE_WIDGET, this );
 };
@@ -59737,7 +60029,7 @@ feng.views.helpers.Helper.prototype.resolveHorizontalPosition = function( box ) 
 		// snap to right
 		this._x = box.right;
 
-		goog.dom.classes.addRemove( this.domElement, this._arrowClasses, 'arrow-left' );
+		goog.dom.classlist.addRemove( this.domElement, this._arrowClasses, 'arrow-left' );
 
 		isFit = true;
 
@@ -59746,7 +60038,7 @@ feng.views.helpers.Helper.prototype.resolveHorizontalPosition = function( box ) 
 		// snap to left
 		this._x = box.left - size.width;
 
-		goog.dom.classes.addRemove( this.domElement, this._arrowClasses, 'arrow-right' );
+		goog.dom.classlist.addRemove( this.domElement, this._arrowClasses, 'arrow-right' );
 
 		isFit = true;
 	}
@@ -59773,7 +60065,7 @@ feng.views.helpers.Helper.prototype.resolveVerticalPosition = function( box ) {
 
 		this._y = box.top - size.height;
 
-		goog.dom.classes.addRemove( this.domElement, this._arrowClasses, 'arrow-bottom' );
+		goog.dom.classlist.addRemove( this.domElement, this._arrowClasses, 'arrow-bottom' );
 
 		isFit = true;
 
@@ -59781,7 +60073,7 @@ feng.views.helpers.Helper.prototype.resolveVerticalPosition = function( box ) {
 
 		this._y = box.bottom;
 
-		goog.dom.classes.addRemove( this.domElement, this._arrowClasses, 'arrow-top' );
+		goog.dom.classlist.addRemove( this.domElement, this._arrowClasses, 'arrow-top' );
 
 		isFit = true;
 	}
@@ -60279,7 +60571,7 @@ feng.views.helpers.Helpers.prototype.show = function( shouldShow ){
 
   var shouldShow = goog.isBoolean(shouldShow) ? shouldShow : true;
 
-  goog.dom.classes.enable( this.domElement, 'hidden', !shouldShow );
+  goog.dom.classlist.enable( this.domElement, 'hidden', !shouldShow );
   
   if(!shouldShow) {
 
@@ -60484,14 +60776,14 @@ feng.views.sections.controls.Compass.prototype.onMouseMove = function(e){
 	if(e.offsetY > 40) {
 
 		// browse mode
-		goog.dom.classes.addRemove(this.domElement, 'hover-design', 'hover-browse');
+		goog.dom.classlist.addRemove(this.domElement, 'hover-design', 'hover-browse');
 		this._hoveredDesign = false;
 		this._hoveredBrowse = true;
 
 	}else {
 
 		// design mode
-		goog.dom.classes.addRemove(this.domElement, 'hover-browse', 'hover-design');
+		goog.dom.classlist.addRemove(this.domElement, 'hover-browse', 'hover-design');
 		this._hoveredDesign = true;
 		this._hoveredBrowse = false;
 	}
@@ -60504,8 +60796,8 @@ feng.views.sections.controls.Compass.prototype.onMouseOut = function(e){
 		return false;
 	}
 
-	goog.dom.classes.remove(this.domElement, 'hover-browse');
-	goog.dom.classes.remove(this.domElement, 'hover-design');
+	goog.dom.classlist.remove(this.domElement, 'hover-browse');
+	goog.dom.classlist.remove(this.domElement, 'hover-design');
 	this._hoveredDesign = false;
 	this._hoveredBrowse = false;
 
@@ -60570,13 +60862,13 @@ feng.views.sections.controls.Compass.prototype.onModeChange = function(e){
 
   if(e.mode === feng.controllers.view3d.ModeController.Mode.DESIGN) {
 
-  	goog.dom.classes.addRemove(this.domElement, 'browse', 'design');
+  	goog.dom.classlist.addRemove(this.domElement, 'browse', 'design');
 
   	this._isInDesignMode = true;
 
   }else {
 
-  	goog.dom.classes.addRemove(this.domElement, 'design', 'browse');
+  	goog.dom.classlist.addRemove(this.domElement, 'design', 'browse');
 
   	this._isInDesignMode = false;
   }
@@ -60641,14 +60933,14 @@ feng.views.sections.captions.ChangePictureCaption.prototype.hide = function() {
 feng.views.sections.captions.ChangePictureCaption.prototype.onClickItem = function(e) {
 
   if(this._pictureId) {
-    goog.dom.classes.enable( this._itemEls[this._pictureId], 'active', false );
-    goog.dom.classes.enable( this._infoEls[this._pictureId], 'active', false );
+    goog.dom.classlist.enable( this._itemEls[this._pictureId], 'active', false );
+    goog.dom.classlist.enable( this._infoEls[this._pictureId], 'active', false );
   }
 
   this._pictureId = e.currentTarget.getAttribute("data-picture");
 
-  goog.dom.classes.enable( this._itemEls[this._pictureId], 'active', true );
-  goog.dom.classes.enable( this._infoEls[this._pictureId], 'active', true );
+  goog.dom.classlist.enable( this._itemEls[this._pictureId], 'active', true );
+  goog.dom.classlist.enable( this._infoEls[this._pictureId], 'active', true );
 
   this.scrollBar.resize();
   
@@ -60685,7 +60977,7 @@ feng.views.sections.controls.ObjectSelector = function(domElement){
   this._downObject = null;
   this._isEnabled = false;
   this._startTime = 0;
-  this._duration = 800;
+  this._duration = 600;
 
   this._callbacks = {};
 
@@ -60836,7 +61128,7 @@ feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = functio
 
 	this._intersectedObject = isIntersected ? intersects[0].object : null;
 
-	goog.dom.classes.enable(this._renderEl, 'help', isIntersected);
+	goog.dom.classlist.enable(this._renderEl, 'help', isIntersected);
 };
 
 
@@ -60959,7 +61251,7 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.show = function() {
   goog.base(this, 'show');
 
   goog.object.forEach(this._itemEls, function(itemEl) {
-    goog.dom.classes.enable( itemEl, 'loading', false );
+    goog.dom.classlist.enable( itemEl, 'loading', false );
     this._eventHandler.listen(itemEl, 'click', this.onClickItem, false, this);
   }, this);
 
@@ -60979,14 +61271,14 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.hide = function() {
 feng.views.sections.captions.ChangeObjectCaption.prototype.onClickItem = function(e) {
 
   if(this._objectId) {
-    goog.dom.classes.enable( this._itemEls[this._objectId], 'active', false );
-    goog.dom.classes.enable( this._infoEls[this._objectId], 'active', false );
+    goog.dom.classlist.enable( this._itemEls[this._objectId], 'active', false );
+    goog.dom.classlist.enable( this._infoEls[this._objectId], 'active', false );
   }
 
   this._objectId = e.currentTarget.getAttribute('data-object');
 
-  goog.dom.classes.enable( this._itemEls[this._objectId], 'active', true );
-  goog.dom.classes.enable( this._infoEls[this._objectId], 'active', true );
+  goog.dom.classlist.enable( this._itemEls[this._objectId], 'active', true );
+  goog.dom.classlist.enable( this._infoEls[this._objectId], 'active', true );
 
   this.scrollBar.resize();
   
@@ -60998,13 +61290,13 @@ feng.views.sections.captions.ChangeObjectCaption.prototype.onClickItem = functio
 
 feng.views.sections.captions.ChangeObjectCaption.prototype.onLoadStart = function(e) {
 
-  goog.dom.classes.enable( this._itemEls[e.id], 'loading', true );
+  goog.dom.classlist.enable( this._itemEls[e.id], 'loading', true );
 };
 
 
 feng.views.sections.captions.ChangeObjectCaption.prototype.onLoadComplete = function(e) {
 
-  goog.dom.classes.enable( this._itemEls[e.id], 'loading', false );
+  goog.dom.classlist.enable( this._itemEls[e.id], 'loading', false );
 };goog.provide('feng.views.sections.controls.HomeButton');
 
 goog.require('goog.dom');
@@ -61053,8 +61345,8 @@ feng.views.sections.controls.HomeButton.prototype.showPrompt = function(){
 
 	this._promptShown = true;
 
-	goog.dom.classes.add( this.domElement, 'pending' );
-	goog.dom.classes.add( this._promptEl, 'shown' );
+	goog.dom.classlist.add( this.domElement, 'pending' );
+	goog.dom.classlist.add( this._promptEl, 'shown' );
 
 	feng.pubsub.publish( feng.PubSub.Topic.SHOW_WIDGET, this );
 };
@@ -61064,8 +61356,8 @@ feng.views.sections.controls.HomeButton.prototype.hidePrompt = function(){
 
 	this._promptShown = false;
 
-	goog.dom.classes.remove( this.domElement, 'pending' );
-	goog.dom.classes.remove( this._promptEl, 'shown' );
+	goog.dom.classlist.remove( this.domElement, 'pending' );
+	goog.dom.classlist.remove( this._promptEl, 'shown' );
 
 	feng.pubsub.publish( feng.PubSub.Topic.HIDE_WIDGET, this );
 };
@@ -61192,8 +61484,14 @@ feng.views.sections.overlays.OpeningOverlay.prototype.updateContent = function( 
 	titleEl.innerHTML = title;
 	paragraphEl.innerHTML = paragraph;
 
-	goog.dom.classes.addRemove( characterEl, this._character, character );
+	if(this._character.length > 0) {
+		
+		goog.dom.classlist.remove( characterEl, this._character );
+	}
+
 	this._character = character;
+
+	goog.dom.classlist.add( characterEl, this._character );
 };
 
 
@@ -61327,8 +61625,14 @@ feng.views.sections.overlays.EndingOverlay.prototype.updateContent = function( s
 	titleEl.innerHTML = title;
 	paragraphEl.innerHTML = paragraph;
 
-	goog.dom.classes.addRemove( characterEl, this._character, character );
+	if(this._character.length > 0) {
+		
+		goog.dom.classlist.remove( characterEl, this._character );
+	}
+
 	this._character = character;
+
+	goog.dom.classlist.add( characterEl, this._character );
 };
 
 
@@ -61404,8 +61708,8 @@ feng.views.sections.controls.DropButton = function(domElement){
 
   this._movableObject = null;
 
-  goog.dom.classes.addRemove( this.domElement, 'fadeIn', 'fadeOut' );
-  goog.dom.classes.enable( this.domElement, 'hidden', true );
+  goog.dom.classlist.addRemove( this.domElement, 'fadeIn', 'fadeOut' );
+  goog.dom.classlist.enable( this.domElement, 'hidden', true );
 };
 goog.inherits(feng.views.sections.controls.DropButton, feng.views.sections.controls.Controls);
 
@@ -61418,7 +61722,7 @@ feng.views.sections.controls.DropButton.prototype.activate = function( movableOb
 
   this._movableObject = movableObject;
 
-  goog.dom.classes.enable( this.domElement, 'hidden', false );
+  goog.dom.classlist.enable( this.domElement, 'hidden', false );
 
   this.fadeIn();
 
@@ -61436,7 +61740,7 @@ feng.views.sections.controls.DropButton.prototype.deactivate = function(){
 
   this._movableObject = null;
 
-  goog.dom.classes.enable( this.domElement, 'hidden', true );
+  goog.dom.classlist.enable( this.domElement, 'hidden', true );
 
   goog.fx.anim.unregisterAnimation( this );
 };
@@ -61444,32 +61748,29 @@ feng.views.sections.controls.DropButton.prototype.deactivate = function(){
 
 feng.views.sections.controls.DropButton.prototype.fadeIn = function(){
 
-  if( !goog.dom.classes.has(this.domElement, 'fadeIn') ) {
-
-    goog.dom.classes.addRemove( this.domElement, 'fadeOut', 'fadeIn' );
-  }
+  goog.dom.classlist.addRemove( this.domElement, 'fadeOut', 'fadeIn' );
 };
 
 
 feng.views.sections.controls.DropButton.prototype.fadeOut = function(){
 
-  if( !goog.dom.classes.has(this.domElement, 'fadeOut') ) {
-
-    goog.dom.classes.addRemove( this.domElement, 'fadeIn', 'fadeOut' );
-  }
+  goog.dom.classlist.addRemove( this.domElement, 'fadeIn', 'fadeOut' );
 };
 
 
 feng.views.sections.controls.DropButton.prototype.onClick = function(e){
 
-	if(goog.dom.classes.has(this.domElement, 'fadeOut')) return false;
+	if(goog.dom.classlist.contains(this.domElement, 'fadeOut')) {
+
+    return false;
+  }
 
 	this.fadeOut();
 
   feng.soundController.playSfx('confirm');
 
   var browseControls = this._view3d.modeController.getModeControl( feng.controllers.view3d.ModeController.Mode.BROWSE );
-
+  
   browseControls.dispatchEvent({
     type: feng.events.EventType.CHANGE,
     mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
@@ -61487,10 +61788,16 @@ feng.views.sections.controls.DropButton.prototype.onAnimationFrame = function(no
   var pos3d = this._movableObject.getDestination();
   var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, camera, viewSize );
 
-  var controlPosition = this._view3d.modeController.control.getPosition();
+  var control = this._view3d.modeController.control;
+  var controlPosition = control.getPosition();
   var distance = controlPosition.distanceTo( pos3d );
   
-  var shouldShow = (distance <= this._movableObject.range);
+  //
+  var directionToObject = pos3d.sub( controlPosition ).normalize();
+  var forward = control.getForwardVector();
+  var dot = directionToObject.dot( forward );
+
+  var shouldShow = (distance <= this._movableObject.range && dot > 0);
 
   goog.style.setStyle( this.domElement, 'transform', 'translateX(' + pos2d.x + 'px) translateY(' + pos2d.y + 'px)');
 
@@ -61587,267 +61894,7 @@ feng.views.sections.controls.Book.prototype.onModeChange = function(e){
     }
     break;
   }
-};// Copyright 2012 The Closure Library Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS-IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/**
- * @fileoverview Utilities for detecting, adding and removing classes.  Prefer
- * this over goog.dom.classes for new code since it attempts to use classList
- * (DOMTokenList: http://dom.spec.whatwg.org/#domtokenlist) which is faster
- * and requires less code.
- *
- * Note: these utilities are meant to operate on HTMLElements
- * and may have unexpected behavior on elements with differing interfaces
- * (such as SVGElements).
- */
-
-
-goog.provide('goog.dom.classlist');
-
-goog.require('goog.array');
-
-
-/**
- * Override this define at build-time if you know your target supports it.
- * @define {boolean} Whether to use the classList property (DOMTokenList).
- */
-goog.define('goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST', false);
-
-
-/**
- * Gets an array-like object of class names on an element.
- * @param {Element} element DOM node to get the classes of.
- * @return {!goog.array.ArrayLike} Class names on {@code element}.
- */
-goog.dom.classlist.get = function(element) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    return element.classList;
-  }
-
-  var className = element.className;
-  // Some types of elements don't have a className in IE (e.g. iframes).
-  // Furthermore, in Firefox, className is not a string when the element is
-  // an SVG element.
-  return goog.isString(className) && className.match(/\S+/g) || [];
-};
-
-
-/**
- * Sets the entire class name of an element.
- * @param {Element} element DOM node to set class of.
- * @param {string} className Class name(s) to apply to element.
- */
-goog.dom.classlist.set = function(element, className) {
-  element.className = className;
-};
-
-
-/**
- * Returns true if an element has a class.  This method may throw a DOM
- * exception for an invalid or empty class name if DOMTokenList is used.
- * @param {Element} element DOM node to test.
- * @param {string} className Class name to test for.
- * @return {boolean} Whether element has the class.
- */
-goog.dom.classlist.contains = function(element, className) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    return element.classList.contains(className);
-  }
-  return goog.array.contains(goog.dom.classlist.get(element), className);
-};
-
-
-/**
- * Adds a class to an element.  Does not add multiples of class names.  This
- * method may throw a DOM exception for an invalid or empty class name if
- * DOMTokenList is used.
- * @param {Element} element DOM node to add class to.
- * @param {string} className Class name to add.
- */
-goog.dom.classlist.add = function(element, className) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    element.classList.add(className);
-    return;
-  }
-
-  if (!goog.dom.classlist.contains(element, className)) {
-    // Ensure we add a space if this is not the first class name added.
-    element.className += element.className.length > 0 ?
-        (' ' + className) : className;
-  }
-};
-
-
-/**
- * Convenience method to add a number of class names at once.
- * @param {Element} element The element to which to add classes.
- * @param {goog.array.ArrayLike.<string>} classesToAdd An array-like object
- * containing a collection of class names to add to the element.
- * This method may throw a DOM exception if classesToAdd contains invalid
- * or empty class names.
- */
-goog.dom.classlist.addAll = function(element, classesToAdd) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    goog.array.forEach(classesToAdd, function(className) {
-      goog.dom.classlist.add(element, className);
-    });
-    return;
-  }
-
-  var classMap = {};
-
-  // Get all current class names into a map.
-  goog.array.forEach(goog.dom.classlist.get(element),
-      function(className) {
-        classMap[className] = true;
-      });
-
-  // Add new class names to the map.
-  goog.array.forEach(classesToAdd,
-      function(className) {
-        classMap[className] = true;
-      });
-
-  // Flatten the keys of the map into the className.
-  element.className = '';
-  for (var className in classMap) {
-    element.className += element.className.length > 0 ?
-        (' ' + className) : className;
-  }
-};
-
-
-/**
- * Removes a class from an element.  This method may throw a DOM exception
- * for an invalid or empty class name if DOMTokenList is used.
- * @param {Element} element DOM node to remove class from.
- * @param {string} className Class name to remove.
- */
-goog.dom.classlist.remove = function(element, className) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    element.classList.remove(className);
-    return;
-  }
-
-  if (goog.dom.classlist.contains(element, className)) {
-    // Filter out the class name.
-    element.className = goog.array.filter(
-        goog.dom.classlist.get(element),
-        function(c) {
-          return c != className;
-        }).join(' ');
-  }
-};
-
-
-/**
- * Removes a set of classes from an element.  Prefer this call to
- * repeatedly calling {@code goog.dom.classlist.remove} if you want to remove
- * a large set of class names at once.
- * @param {Element} element The element from which to remove classes.
- * @param {goog.array.ArrayLike.<string>} classesToRemove An array-like object
- * containing a collection of class names to remove from the element.
- * This method may throw a DOM exception if classesToRemove contains invalid
- * or empty class names.
- */
-goog.dom.classlist.removeAll = function(element, classesToRemove) {
-  if (goog.dom.classlist.ALWAYS_USE_DOM_TOKEN_LIST || element.classList) {
-    goog.array.forEach(classesToRemove, function(className) {
-      goog.dom.classlist.remove(element, className);
-    });
-    return;
-  }
-  // Filter out those classes in classesToRemove.
-  element.className = goog.array.filter(
-      goog.dom.classlist.get(element),
-      function(className) {
-        // If this class is not one we are trying to remove,
-        // add it to the array of new class names.
-        return !goog.array.contains(classesToRemove, className);
-      }).join(' ');
-};
-
-
-/**
- * Adds or removes a class depending on the enabled argument.  This method
- * may throw a DOM exception for an invalid or empty class name if DOMTokenList
- * is used.
- * @param {Element} element DOM node to add or remove the class on.
- * @param {string} className Class name to add or remove.
- * @param {boolean} enabled Whether to add or remove the class (true adds,
- *     false removes).
- */
-goog.dom.classlist.enable = function(element, className, enabled) {
-  if (enabled) {
-    goog.dom.classlist.add(element, className);
-  } else {
-    goog.dom.classlist.remove(element, className);
-  }
-};
-
-
-/**
- * Switches a class on an element from one to another without disturbing other
- * classes. If the fromClass isn't removed, the toClass won't be added.  This
- * method may throw a DOM exception if the class names are empty or invalid.
- * @param {Element} element DOM node to swap classes on.
- * @param {string} fromClass Class to remove.
- * @param {string} toClass Class to add.
- * @return {boolean} Whether classes were switched.
- */
-goog.dom.classlist.swap = function(element, fromClass, toClass) {
-  if (goog.dom.classlist.contains(element, fromClass)) {
-    goog.dom.classlist.remove(element, fromClass);
-    goog.dom.classlist.add(element, toClass);
-    return true;
-  }
-  return false;
-};
-
-
-/**
- * Removes a class if an element has it, and adds it the element doesn't have
- * it.  Won't affect other classes on the node.  This method may throw a DOM
- * exception if the class name is empty or invalid.
- * @param {Element} element DOM node to toggle class on.
- * @param {string} className Class to toggle.
- * @return {boolean} True if class was added, false if it was removed
- *     (in other words, whether element has the class after this function has
- *     been called).
- */
-goog.dom.classlist.toggle = function(element, className) {
-  var add = !goog.dom.classlist.contains(element, className);
-  goog.dom.classlist.enable(element, className, add);
-  return add;
-};
-
-
-/**
- * Adds and removes a class of an element.  Unlike
- * {@link goog.dom.classlist.swap}, this method adds the classToAdd regardless
- * of whether the classToRemove was present and had been removed.  This method
- * may throw a DOM exception if the class names are empty or invalid.
- *
- * @param {Element} element DOM node to swap classes on.
- * @param {string} classToRemove Class to remove.
- * @param {string} classToAdd Class to add.
- */
-goog.dom.classlist.addRemove = function(element, classToRemove, classToAdd) {
-  goog.dom.classlist.remove(element, classToRemove);
-  goog.dom.classlist.add(element, classToAdd);
-};
-goog.provide('feng.views.sections.controls.Tooltips');
+};goog.provide('feng.views.sections.controls.Tooltips');
 
 goog.require('goog.async.Throttle');
 goog.require('goog.dom.classlist');
@@ -62136,7 +62183,7 @@ feng.views.sections.controls.Tooltips.prototype.onAnimationFrame = function(now)
     var pos2d = feng.utils.ThreeUtils.get2DCoordinates( pos3d, camera, viewSize );
 
     var id = object.id;
-    var tooltip = this._currentTooltips[ id ];    
+    var tooltip = this._currentTooltips[ id ];
 
     var inScreenRect = (pos2d.x > 140 && pos2d.x < (viewSize.width - 140) && pos2d.y > 140 && pos2d.y < (viewSize.height - 140));
 
@@ -62493,12 +62540,12 @@ feng.views.sections.controls.Reminder.prototype.gotoHintByTip = function( tipId 
 	});
 
 	if(this._hintEl) {
-		goog.dom.classes.remove( this._hintEl, 'shown' );
+		goog.dom.classlist.remove( this._hintEl, 'shown' );
 	}
 
 	this._hintEl = this._hintEls[ domIndex ];
 
-	goog.dom.classes.add( this._hintEl, 'shown' );
+	goog.dom.classlist.add( this._hintEl, 'shown' );
 };
 
 
@@ -62537,7 +62584,7 @@ feng.views.sections.controls.Reminder.prototype.hideHint = function( instance ){
 
 	var duration = instance ? 0 : .4;
 
-	goog.dom.classes.addRemove( this.domElement, 'active', 'inactive' );
+	goog.dom.classlist.addRemove( this.domElement, 'active', 'inactive' );
 
 	this._hintTimer.start();
 
@@ -62624,7 +62671,7 @@ feng.views.sections.controls.Reminder.prototype.onTipUnlock = function(e){
 
 feng.views.sections.controls.Reminder.prototype.onCharacterRaiseComplete = function(){
 
-	goog.dom.classes.addRemove( this.domElement, 'inactive', 'active' );
+	goog.dom.classlist.addRemove( this.domElement, 'inactive', 'active' );
 };
 
 
@@ -62731,37 +62778,37 @@ feng.views.sections.captions.DropFruitsCaption.prototype.setActiveFruit = functi
   goog.array.forEach(this._fruitButtonEls, function(fruitButtonEl) {
 
     if(fruitButtonEl.getAttribute('data-fruit-id') === fruit) {
-      goog.dom.classes.add(fruitButtonEl, 'active');
+      goog.dom.classlist.add(fruitButtonEl, 'active');
     }else {
-      goog.dom.classes.remove(fruitButtonEl, 'active');
+      goog.dom.classlist.remove(fruitButtonEl, 'active');
     }
   });
 
   goog.array.forEach(this._descriptionEls, function(descriptionEl) {
 
     if(descriptionEl.getAttribute('data-fruit-id') === fruit) {
-      goog.dom.classes.add(descriptionEl, 'active');
+      goog.dom.classlist.add(descriptionEl, 'active');
     }else {
-      goog.dom.classes.remove(descriptionEl, 'active');
+      goog.dom.classlist.remove(descriptionEl, 'active');
     }
   });
 
-  goog.dom.classes.add( this._descriptionEl, 'shown' );
+  goog.dom.classlist.add( this._descriptionEl, 'shown' );
 };
 
 
 feng.views.sections.captions.DropFruitsCaption.prototype.onClickItem = function(e) {
 
   if(this._fruitId) {
-    goog.dom.classes.enable( this._itemEls[this._fruitId], 'active', false );
-    goog.dom.classes.enable( this._infoEls[this._fruitId], 'active', false );
+    goog.dom.classlist.enable( this._itemEls[this._fruitId], 'active', false );
+    goog.dom.classlist.enable( this._infoEls[this._fruitId], 'active', false );
   }
 
   this._fruitId = e.currentTarget.getAttribute("data-fruit");
 
-  goog.dom.classes.enable( this._itemEls[this._fruitId], 'active', true );
-  goog.dom.classes.enable( this._itemEls[this._fruitId], 'show-fruit', true );
-  goog.dom.classes.enable( this._infoEls[this._fruitId], 'active', true );
+  goog.dom.classlist.enable( this._itemEls[this._fruitId], 'active', true );
+  goog.dom.classlist.enable( this._itemEls[this._fruitId], 'show-fruit', true );
+  goog.dom.classlist.enable( this._infoEls[this._fruitId], 'active', true );
 
   this.scrollBar.resize();
 
@@ -62904,11 +62951,11 @@ feng.views.View3DHud.prototype.setView3D = function( view3d ) {
 
 feng.views.View3DHud.prototype.pause = function( shouldPause ) {
 
-  goog.dom.classes.enable( this._captionsEl, 'paused', shouldPause );
-  goog.dom.classes.enable( this._tooltipsEl, 'paused', shouldPause );
-  goog.dom.classes.enable( this._controlsEl, 'paused', shouldPause );
+  goog.dom.classlist.enable( this._captionsEl, 'paused', shouldPause );
+  goog.dom.classlist.enable( this._tooltipsEl, 'paused', shouldPause );
+  goog.dom.classlist.enable( this._controlsEl, 'paused', shouldPause );
 
-  goog.dom.classes.enable( this._controlsEl, 'hidden', shouldPause );
+  goog.dom.classlist.enable( this._controlsEl, 'hidden', shouldPause );
 
   if(!this._helpers.isDisposed()) {
     this._helpers.show( !shouldPause );
@@ -63051,7 +63098,7 @@ feng.views.View3DHud.prototype.getCaption = function( object, controls ) {
 
 feng.views.View3DHud.prototype.showControls = function( shouldShow ) {
 
-  goog.dom.classes.enable( this._controlsEl, 'hidden', !shouldShow );
+  goog.dom.classlist.enable( this._controlsEl, 'hidden', !shouldShow );
   
   this.tooltips.show( shouldShow );
 
@@ -63092,7 +63139,7 @@ feng.views.View3DHud.prototype.onModeChange = function( e ) {
     break;
   }
 
-  goog.dom.classes.enable( this._view3d.containerElement, 'bg-white', (e.mode === feng.controllers.view3d.ModeController.Mode.CLOSE_UP) );
+  goog.dom.classlist.enable( this._view3d.containerElement, 'bg-white', (e.mode === feng.controllers.view3d.ModeController.Mode.CLOSE_UP) );
 
   if(e.gateway) {
     shouldShowControls = false;
