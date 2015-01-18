@@ -667,6 +667,18 @@
 		"finale": {
 			"title": "Congratulations!",
 			"paragraph": "Hi you did great there! Now that you have completed all tasks. It's time to take a rest."
+		},
+		"resolved": {
+			"studio": {
+				"livingroom": "It indeed feels like a better living room now. Thanks for the help.",
+				"bathroom": "Oops, I should have been careful about all these details. Thanks for the tips!"
+			},
+			"house": {
+				"livingroom": "Thanks for helping us improve the living room! Isn't it feel livable now?",
+				"corridor": "Could you please drop by Scott and Nick's room through this way?",
+				"homeoffice": "Now it feels like a better place and I can totally relax myself here. Thank you.",
+				"boysroom": "Hurrah, it looks like a new territory for myself! Maybe I can grow into a true Superman here?"
+			}
 		}
 	}
 }

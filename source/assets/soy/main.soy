@@ -7,6 +7,7 @@
  * @param tips fengshui tips of episode
  * @param tipsOfViews fengshui tips categorized by episode views
  * @param token the navigation token collection
+ * @param copy the global copy
  */
 {template .EpisodeSection}
 <div class="section episode" id="{ $id }">
@@ -97,6 +98,7 @@
 			{/call}
 			{call feng.templates.controls.Reminder}
 				{param tips: $tips /}
+				{param copy: $copy['dialog']['resolved'][$id] /}
 			{/call}
 		</div>
 

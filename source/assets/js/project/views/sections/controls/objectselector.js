@@ -26,7 +26,7 @@ feng.views.sections.controls.ObjectSelector = function(domElement){
   this._downObject = null;
   this._isEnabled = false;
   this._startTime = 0;
-  this._duration = 600;
+  this._duration = 500;
 
   this._callbacks = {};
 
@@ -175,9 +175,23 @@ feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = functio
 	
 	var isIntersected = (intersects.length > 0);
 
-	this._intersectedObject = isIntersected ? intersects[0].object : null;
+	if(isIntersected) {
 
-	goog.dom.classlist.enable(this._renderEl, 'help', isIntersected);
+		var intersectedObject = intersects[0].object;
+
+		if(this._intersectedObject !== intersectedObject) {
+
+			this._intersectedObject = intersectedObject;
+
+			this._view3d.fx.selectEffect.animateIn( this._intersectedObject.view3dObject );
+		}
+
+	}else {
+
+		this._intersectedObject = null;
+
+		this._view3d.fx.selectEffect.animateOut();
+	}
 };
 
 

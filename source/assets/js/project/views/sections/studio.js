@@ -27,7 +27,8 @@ feng.views.sections.Studio = function(){
 		id: sectionId,
 		tips: tips,
 		tipsOfViews: tipsOfViews,
-		token: feng.controllers.NavigationController.Token
+		token: feng.controllers.NavigationController.Token,
+		copy: feng.models.Preload.getInstance().getAsset('global.fengshui-data')
 	};
 
   goog.base(this, template, templateData);

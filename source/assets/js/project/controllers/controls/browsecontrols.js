@@ -264,13 +264,13 @@ feng.controllers.controls.BrowseControls.prototype.onMouseWheel = function ( e )
 
 feng.controllers.controls.BrowseControls.prototype.onObjectSelectCancel = function () {
 
-	this._view3d.fx.selectEffect.animateOut();
+
 };
 
 
 feng.controllers.controls.BrowseControls.prototype.onObjectSelectStart = function ( object ) {
 
-	this._view3d.fx.selectEffect.animateIn( object );
+	
 };
 
 

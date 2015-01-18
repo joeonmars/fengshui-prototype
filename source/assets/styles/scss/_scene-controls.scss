@@ -319,6 +319,10 @@ $border_size: 7px;
 				&:last-child{
 					margin-right: 0;
 				}
+
+				&:disabled{
+					visibility: hidden;
+				}
 			}
 		}
 	}
@@ -409,12 +413,13 @@ $border_size: 7px;
 	>.inner{
 		position: relative;
 		display: inline-block;
-		padding: 0 8em;
+		//padding: 0 8em;
+		padding: 0 3em;
 		height: 6.8em;
 		background-color: rgba(#fff, .22);
 		@include box-sizing(border-box);
 		@include border-radius(4em);
-
+/*
 		>button{
 			position: absolute;
 			margin: .25em;
@@ -429,7 +434,7 @@ $border_size: 7px;
 				right: 0;
 			}
 		}
-
+*/
 		>.tips-wrapper{
 			height: 100%;
 

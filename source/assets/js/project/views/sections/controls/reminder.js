@@ -267,21 +267,35 @@ feng.views.sections.controls.Reminder.prototype.nextHint = function(){
 };
 
 
-feng.views.sections.controls.Reminder.prototype.gotoHintByTip = function( tipId ){
-
-	var domIndex = goog.array.findIndex(this._hintEls, function(el, index) {
-		if(el.getAttribute('data-tip-id') === tipId) {
-			return true;
-		}
-	});
+feng.views.sections.controls.Reminder.prototype.gotoResolvedHint = function(){
 
 	if(this._hintEl) {
 		goog.dom.classlist.remove( this._hintEl, 'shown' );
 	}
 
-	this._hintEl = this._hintEls[ domIndex ];
+	this._hintEl = goog.array.find(this._hintEls, function(el) {
+		return (el.getAttribute('data-view-id') === this._view3d.id);
+	}, this);
 
 	goog.dom.classlist.add( this._hintEl, 'shown' );
+
+	this._prevEl.disabled = this._nextEl.disabled = true;
+};
+
+
+feng.views.sections.controls.Reminder.prototype.gotoHintByTip = function( tipId ){
+
+	if(this._hintEl) {
+		goog.dom.classlist.remove( this._hintEl, 'shown' );
+	}
+
+	this._hintEl = goog.array.find(this._hintEls, function(el) {
+		return (el.getAttribute('data-tip-id') === tipId);
+	});
+
+	goog.dom.classlist.add( this._hintEl, 'shown' );
+
+	this._prevEl.disabled = this._nextEl.disabled = false;
 };
 
 
@@ -296,7 +310,14 @@ feng.views.sections.controls.Reminder.prototype.showHint = function( tipId ){
 		this._isHintShown = true;
 	}
 
-	this.gotoHintByTip( tipId );
+	if(tipId) {
+
+		this.gotoHintByTip( tipId );
+
+	}else {
+
+		this.gotoResolvedHint();
+	}
 
 	this._hideHintDelay.start();
 
@@ -355,10 +376,7 @@ feng.views.sections.controls.Reminder.prototype.onMouseDown = function(e){
 	}else {
 
 		var tip = this.getCurrentTip();
-		
-		if(tip) {
-			this.showHint( tip.id );
-		}
+		this.showHint( tip ? tip.id : null );
 	}
 };
 
@@ -385,11 +403,10 @@ feng.views.sections.controls.Reminder.prototype.onMouseOut = function(e){
 
 feng.views.sections.controls.Reminder.prototype.onHintTick = function(e){
 
-	var tip = this.getCurrentTip();
+	if(!this._hasOtherWidgetShown) {
 
-	if(tip && !this._hasOtherWidgetShown) {
-
-		this.showHint( tip.id );
+		var tip = this.getCurrentTip();
+		this.showHint( tip ? tip.id : null );
 	}
 };
 

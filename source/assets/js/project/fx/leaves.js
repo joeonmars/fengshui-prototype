@@ -47,7 +47,7 @@ feng.fx.Leaves = function( eventTarget, color ){
 
 		case feng.fx.Leaves.Color.YELLOW:
 		textureIds.push('YELLOW_1', 'YELLOW_2');
-		numLeaves = 8;
+		numLeaves = 10;
 		break;
 	}
 
@@ -80,7 +80,7 @@ feng.fx.Leaves = function( eventTarget, color ){
 
 	this._startTime = 0;
 
-	this._speedFactor = (this._color === feng.fx.Leaves.Color.GREEN) ? 0.001 : 0.004;
+	this._speedFactor = (this._color === feng.fx.Leaves.Color.GREEN) ? 0.001 : 0.002;
 
 	this._animated = new goog.fx.anim.Animated();
 	this._animated.onAnimationFrame = goog.bind( this.onAnimationFrame, this );

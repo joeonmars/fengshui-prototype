@@ -89,6 +89,7 @@
 /**
  * Reminder
  * @param tips the tips holding reminders
+ * @param copy the resolved copy
  */
 {template .Reminder}
 <div class="reminder">
@@ -107,6 +108,9 @@
 			<ul class="hints">
 			{foreach $tip in $tips}
 				<li data-tip-id="{ $tip.id }">{ $tip.reminder }</li>
+			{/foreach}
+			{foreach $key in keys($copy)}
+			<li data-view-id="{$key}">{$copy[$key]}</li>
 			{/foreach}
 			</ul>
 			<button class="next icon icon-next"></button>
@@ -187,8 +191,10 @@
 {template .ProgressBar}
 <div class="progressBar">
 	<div class="inner">
+		/*
 		<button class="prev icon icon-prev"></button>
 		<button class="next icon icon-next"></button>
+		*/
 		<div class="tips-wrapper">
 			{foreach $viewId in keys($tipsOfViews)}
 				<ul class="tips" data-view-id="{ $viewId }">

@@ -15,8 +15,8 @@ feng.views.sections.controls.ProgressBar = function(domElement, tips){
   this._tipsEls = goog.dom.query('.tips', this.domElement);
   this._allTipEls = goog.dom.query('.tips > li', this.domElement);
   this._dotEls = goog.dom.query('.tips .dot', this.domElement);
-  this._prevButtonEl = goog.dom.getElementByClass('prev', this.domElement);
-  this._nextButtonEl = goog.dom.getElementByClass('next', this.domElement);
+  //this._prevButtonEl = goog.dom.getElementByClass('prev', this.domElement);
+  //this._nextButtonEl = goog.dom.getElementByClass('next', this.domElement);
 
   this._tipsEl = this._tipsEls[0];
   this._tipEls = goog.dom.query( 'li', this._tipsEl );
@@ -88,8 +88,8 @@ feng.views.sections.controls.ProgressBar.prototype.activate = function() {
 
   if(!shouldActivate) return;
 
-  this._eventHandler.listen(this._prevButtonEl, 'click', this.goPrevTips, false, this);
-  this._eventHandler.listen(this._nextButtonEl, 'click', this.goNextTips, false, this);
+  //this._eventHandler.listen(this._prevButtonEl, 'click', this.goPrevTips, false, this);
+  //this._eventHandler.listen(this._nextButtonEl, 'click', this.goNextTips, false, this);
 
   goog.array.forEach(this._allTipEls, function(tipEl) {
     this._eventHandler.listen(tipEl, goog.events.EventType.MOUSEOVER, this.onTipMouseOver, false, this);
@@ -178,7 +178,7 @@ feng.views.sections.controls.ProgressBar.prototype.goTipsOfView = function( view
   this._tweener.add([tweener, tweener2, tweener3, tweener4]);
 };
 
-
+/*
 feng.views.sections.controls.ProgressBar.prototype.goPrevTips = function() {
 
   var currentTipsIndex = goog.array.indexOf(this._viewIds, this._tipsEl.getAttribute('data-view-id'));
@@ -201,7 +201,7 @@ feng.views.sections.controls.ProgressBar.prototype.goNextTips = function() {
 
   this.goTipsOfView( this._viewIds[currentTipsIndex] );
 };
-
+*/
 
 feng.views.sections.controls.ProgressBar.prototype.setNearbyObjects = function( objects ){
 
