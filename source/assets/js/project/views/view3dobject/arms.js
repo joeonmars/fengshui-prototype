@@ -16,18 +16,6 @@ feng.views.view3dobject.Arms = function( view3d ){
   this._orientationTester = new THREE.Object3D();
   object3d.add( this._orientationTester );
 
-  // -- test
-  /*
-  var geometry = new THREE.BoxGeometry( 10, 10, 10 );
-  var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
-
-  mesh = new THREE.Mesh( geometry, material );
-  mesh.translateY( 5 );
-
-  object3d.add( mesh );
-  */
-  // -- end
-
   var data = {};
 
   goog.base(this, object3d, data, view3d);
@@ -62,11 +50,16 @@ feng.views.view3dobject.Arms.prototype.addItem = function( view3dObject ){
 
   goog.array.insert( this._items, view3dObject );
 
-  this.object3d.add( view3dObject.object3d );
+  var object3d = view3dObject.object3d;
+  object3d.material.depthTest = false;
+  object3d.material.depthWrite = false;
+  object3d.material.transparent = true;
+
+  this.object3d.add( object3d );
 
   var objectOrientation = feng.views.view3dobject.Arms.Orientations[ view3dObject.name ];
-  view3dObject.object3d.position.copy( objectOrientation.position );
-  view3dObject.object3d.rotation.copy( objectOrientation.rotation );
+  object3d.position.copy( objectOrientation.position );
+  object3d.rotation.copy( objectOrientation.rotation );
 
   // activate drop button if a movable object is added
   if(view3dObject instanceof feng.views.view3dobject.MovableObject) {
@@ -82,7 +75,12 @@ feng.views.view3dobject.Arms.prototype.removeItem = function( view3dObject ){
 
   goog.array.remove( this._items, view3dObject );
 
-  this.object3d.remove( view3dObject.object3d );
+  var object3d = view3dObject.object3d;
+  object3d.material.depthTest = true;
+  object3d.material.depthWrite = true;
+  object3d.material.transparent = false;
+
+  this.object3d.remove( object3d );
 
   // deactivate drop button if a movable object is removed
   if(view3dObject instanceof feng.views.view3dobject.MovableObject) {

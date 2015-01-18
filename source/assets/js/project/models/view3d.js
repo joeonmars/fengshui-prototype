@@ -285,22 +285,18 @@ feng.models.View3D.Data = {
 			},
 			'apple': {
 				Class: 'fruit',
-				castShadow: true,
 				texture: "studio.livingroom.apple-in-refrigerator-texture"
 			},
 			'pineapple': {
 				Class: 'fruit',
-				castShadow: true,
 				texture: "studio.livingroom.pineapple-in-refrigerator-texture"
 			},
 			'orange': {
 				Class: 'fruit',
-				castShadow: true,
 				texture: "studio.livingroom.orange-in-refrigerator-texture"
 			},
 			'peach': {
 				Class: 'fruit',
-				castShadow: true,
 				texture: "studio.livingroom.peach-in-refrigerator-texture"
 			}
 		},
