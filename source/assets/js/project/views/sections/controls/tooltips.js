@@ -188,17 +188,19 @@ feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
   var controlDirection = control.getForwardVector( true );
   var thresholdDot = Math.cos( THREE.Math.degToRad(45) );
 
-  goog.array.forEach( this._tooltipObjects, function(object) {
+  var i, l = this._tooltipObjects.length;
 
-    var id = object.id;
+  for(i = 0; i < l; i++) {
 
-    var tooltip = this._currentTooltips[ id ];
+    var object = this._tooltipObjects[i];
+
+    var tooltip = this._currentTooltips[ object.id ];
 
     var objectCenter = object.getCenter();
     var direction = this._rayDirection.subVectors( objectCenter, controlPosition ).normalize();
     this._raycaster.set( controlPosition, direction );
 
-    var objectDirection = objectCenter.clone().sub( controlPosition ).normalize();
+    var objectDirection = objectCenter.sub( controlPosition ).normalize();
     var dot = objectDirection.dot( controlDirection );
 
     if(dot >= thresholdDot) {
@@ -208,18 +210,13 @@ feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
     }else {
 
       goog.dom.classlist.enable( tooltip, 'hidden', true );
-      return;
+      continue;
     }
-    
-    var intersects = this._raycaster.intersectObjects( this._detectObjects );
 
-    var shouldShow = (intersects.length > 0 && 
-      (intersects[0].object.view3dObject === object || intersects[0].object.parent.view3dObject === object || goog.array.contains(intersects[0].object.children, object.object3d))
-      );
+    var shouldShow = feng.utils.ThreeUtils.isFirstIntersectedObject( this._detectObjects, object.object3d, object.getProxyBox(), this._raycaster );
 
     goog.dom.classlist.enable( tooltip, 'hidden', !shouldShow );
-
-  }, this);
+  }
 };
 
 
