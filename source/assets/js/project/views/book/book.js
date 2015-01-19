@@ -312,7 +312,7 @@ feng.views.book.Book.prototype.getTipModuleIndexByX = function( x ) {
 
 feng.views.book.Book.prototype.scrollToTipModule = function( index, instant ) {
 
-	goog.fx.anim.unregisterAnimation( this );
+	TweenMax.ticker.removeEventListener("tick", this.update, this);
 
 	if(this._activeTipModule) {
 		this._activeTipModule.setActive(false);
@@ -414,7 +414,7 @@ feng.views.book.Book.prototype.onDrag = function( e ) {
 
 feng.views.book.Book.prototype.onDragStart = function( e ) {
 
-	goog.fx.anim.registerAnimation( this );
+	TweenMax.ticker.addEventListener("tick", this.update, this);
 
 	if(this._scrollTweener && this._scrollTweener.isActive()) {
 		this._scrollTweener.kill();
@@ -465,7 +465,7 @@ feng.views.book.Book.prototype.onMouseWheel = function( e ) {
 
 	this._targetScrollX = Math.max( Math.min( rightX, this._targetScrollX ), leftX );
 
-	goog.fx.anim.registerAnimation( this );
+	TweenMax.ticker.addEventListener("tick", this.update, this);
 
 	if(this._scrollTweener && this._scrollTweener.isActive()) {
 		this._scrollTweener.kill();
@@ -473,7 +473,7 @@ feng.views.book.Book.prototype.onMouseWheel = function( e ) {
 };
 
 
-feng.views.book.Book.prototype.onAnimationFrame = function( now ) {
+feng.views.book.Book.prototype.update = function() {
 
 	this._scrollX += (this._targetScrollX - this._scrollX) * .1;
 	this.applyScrollX();
@@ -481,7 +481,7 @@ feng.views.book.Book.prototype.onAnimationFrame = function( now ) {
 	// if reached the target scroll x, stop animating and lock to the nearest tip module
 	if( goog.math.nearlyEquals(this._scrollX, this._targetScrollX, 1) && !this._dragger.isDragging()) {
 
-		goog.fx.anim.unregisterAnimation( this );
+		TweenMax.ticker.removeEventListener("tick", this.update, this);
 
 		this._scrollX = this._targetScrollX;
 

@@ -84,7 +84,7 @@ feng.views.view3dobject.entities.Wallpaper.prototype.onCameraIn = function(){
 
   this._video.play();
 
-  goog.fx.anim.registerAnimation(this);
+  TweenMax.ticker.addEventListener("tick", this.onVideoUpdate, this);
 };
 
 
@@ -94,11 +94,5 @@ feng.views.view3dobject.entities.Wallpaper.prototype.onCameraOut = function(){
 
   this._video.pause();
 
-  goog.fx.anim.unregisterAnimation(this);
-};
-
-
-feng.views.view3dobject.entities.Wallpaper.prototype.onAnimationFrame = function(now){
-
-  this.onVideoUpdate();
+  TweenMax.ticker.removeEventListener("tick", this.onVideoUpdate, this);
 };

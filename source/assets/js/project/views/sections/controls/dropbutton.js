@@ -32,7 +32,7 @@ feng.views.sections.controls.DropButton.prototype.activate = function( movableOb
 
 	this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
 
-	goog.fx.anim.registerAnimation( this );
+	TweenMax.ticker.addEventListener("tick", this.update, this);
 };
 
 
@@ -46,7 +46,7 @@ feng.views.sections.controls.DropButton.prototype.deactivate = function(){
 
   goog.dom.classlist.enable( this.domElement, 'hidden', true );
 
-  goog.fx.anim.unregisterAnimation( this );
+  TweenMax.ticker.removeEventListener("tick", this.update, this);
 };
 
 
@@ -84,7 +84,7 @@ feng.views.sections.controls.DropButton.prototype.onClick = function(e){
 };
 
 
-feng.views.sections.controls.DropButton.prototype.onAnimationFrame = function(now) {
+feng.views.sections.controls.DropButton.prototype.update = function() {
 
   var camera = this._cameraController.activeCamera;
   var viewSize = this._viewSize;

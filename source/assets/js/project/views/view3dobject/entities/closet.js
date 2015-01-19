@@ -268,7 +268,7 @@ feng.views.view3dobject.entities.Closet.prototype.startInteraction = function(){
     _positionProgress: 1
   });
 
-  goog.fx.anim.registerAnimation( this );
+  TweenMax.ticker.addEventListener("tick", this.update, this);
 };
 
 
@@ -291,7 +291,7 @@ feng.views.view3dobject.entities.Closet.prototype.stopInteraction = function(){
     _positionProgress: 0
   });
 
-  goog.fx.anim.unregisterAnimation( this );
+  TweenMax.ticker.removeEventListener("tick", this.update, this);
 };
 
 
@@ -300,6 +300,44 @@ feng.views.view3dobject.entities.Closet.prototype.updateDragOffsetOfJar = functi
   var raycastPosition = this.getRaycastPositionOnPlane( this._dragPlane );
 
   this._dummyJar.userData.dragOffset.subVectors( raycastPosition, this._dragStartPosition );
+};
+
+
+feng.views.view3dobject.entities.Closet.prototype.update = function(){
+
+  var now = goog.now();
+
+  var i, l = this._dummyJars.length;
+
+  for(i = 0; i < l; i++) {
+
+    var dummyJar = this._dummyJars[i];
+
+    var userData = dummyJar.userData;
+
+    var swing = userData.swing;
+    var swingMultiplier = userData.swingMultiplier;
+    var rotationMultiplier = userData.rotationMultiplier;
+    var dragOffset = userData.dragOffset;
+    var orientation = userData.orientation;
+
+    dummyJar.position.x = orientation.positionX;
+    dummyJar.position.y = orientation.positionY + Math.sin( now * 0.001 * swing ) * this._swingProgress * swingMultiplier * this._positionProgress + dragOffset.y;
+    dummyJar.position.z = orientation.positionZ + Math.cos( now * 0.001 * swing ) * this._swingProgress * swingMultiplier * this._positionProgress + dragOffset.z;
+  
+    dummyJar.rotation.x = orientation.rotationX * rotationMultiplier;
+    dummyJar.rotation.y = orientation.rotationY * rotationMultiplier;
+    dummyJar.rotation.z = orientation.rotationZ * rotationMultiplier;
+
+    var jarTargetPosition = userData.isAnchored ? userData.anchor : dummyJar.position;
+
+    var jar = dummyJar.userData.jar;
+    jar.object3d.position.x += ( jarTargetPosition.x - jar.object3d.position.x ) * .2;
+    jar.object3d.position.y += ( jarTargetPosition.y - jar.object3d.position.y ) * .2;
+    jar.object3d.position.z += ( jarTargetPosition.z - jar.object3d.position.z ) * .2;
+
+    jar.object3d.rotation.copy( dummyJar.rotation );
+  }
 };
 
 
@@ -488,37 +526,4 @@ feng.views.view3dobject.entities.Closet.prototype.onCameraZoomOutComplete = func
 
   this.unlock();
   this.stopInteraction();
-};
-
-
-feng.views.view3dobject.entities.Closet.prototype.onAnimationFrame = function(now){
-
-  goog.array.forEach(this._dummyJars, function(dummyJar, index) {
-
-    var userData = dummyJar.userData;
-
-    var swing = userData.swing;
-    var swingMultiplier = userData.swingMultiplier;
-    var rotationMultiplier = userData.rotationMultiplier;
-    var dragOffset = userData.dragOffset;
-    var orientation = userData.orientation;
-
-    dummyJar.position.x = orientation.positionX;
-    dummyJar.position.y = orientation.positionY + Math.sin( now * 0.001 * swing ) * this._swingProgress * swingMultiplier * this._positionProgress + dragOffset.y;
-    dummyJar.position.z = orientation.positionZ + Math.cos( now * 0.001 * swing ) * this._swingProgress * swingMultiplier * this._positionProgress + dragOffset.z;
-  
-    dummyJar.rotation.x = orientation.rotationX * rotationMultiplier;
-    dummyJar.rotation.y = orientation.rotationY * rotationMultiplier;
-    dummyJar.rotation.z = orientation.rotationZ * rotationMultiplier;
-
-    var jarTargetPosition = userData.isAnchored ? userData.anchor : dummyJar.position;
-
-    var jar = dummyJar.userData.jar;
-    jar.object3d.position.x += ( jarTargetPosition.x - jar.object3d.position.x ) * .2;
-    jar.object3d.position.y += ( jarTargetPosition.y - jar.object3d.position.y ) * .2;
-    jar.object3d.position.z += ( jarTargetPosition.z - jar.object3d.position.z ) * .2;
-
-    jar.object3d.rotation.copy( dummyJar.rotation );
-
-  }, this);
 };

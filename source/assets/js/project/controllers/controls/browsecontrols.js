@@ -89,7 +89,7 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 
 			var withinRange = this._detectorSphere.intersectsSphere( tipObject.getBoundingSphere() );
 
-			var inArms = this._view3d.arms.hasObject( tipObject );
+			var inArms = this._view3d.arms.containsObject( tipObject );
 
 			//console.log(tipObject.name + ' withinRange: ' + withinRange + ', locked: ' + locked);
 

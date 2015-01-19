@@ -20,6 +20,10 @@ TweenMax.updateTo = {};
 TweenMax.delayedCall = {};
 TweenMax.isTweening = {};
 
+TweenMax.ticker = {};
+TweenMax.ticker.addEventListener = {};
+TweenMax.ticker.removeEventListener = {};
+
 var TweenLite = {};
 TweenLite.killTweensOf = {};
 

@@ -198,7 +198,7 @@ feng.controllers.controls.Controls.prototype.activate = function() {
 	this._eventHandler.listen(this._domElement, 'click', this.onClick, false, this);
 	this._eventHandler.listen(this._domElement, feng.events.EventType.INPUT_DOWN, this.onInputDown, false, this);
 
-	goog.fx.anim.registerAnimation(this);
+	TweenMax.ticker.addEventListener("tick", this.update, this);
 
 	goog.dom.classlist.add(this._view3d.domElement, 'grab');
 };
@@ -208,7 +208,7 @@ feng.controllers.controls.Controls.prototype.deactivate = function() {
 
 	this._eventHandler.removeAll();
 
-	goog.fx.anim.unregisterAnimation(this);
+	TweenMax.ticker.removeEventListener("tick", this.update, this);
 
 	goog.dom.classlist.remove(this._view3d.domElement, 'grab');
 	goog.dom.classlist.remove(this._mainEl, 'grabbing');
@@ -313,12 +313,6 @@ feng.controllers.controls.Controls.prototype.onPauseAnimate = function() {
 feng.controllers.controls.Controls.prototype.onPauseResumed = function() {
 
 	this.activate();
-};
-
-
-feng.controllers.controls.Controls.prototype.onAnimationFrame = function ( now ) {
-
-	this.update();
 };
 
 

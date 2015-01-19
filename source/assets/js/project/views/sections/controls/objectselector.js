@@ -166,6 +166,10 @@ feng.views.sections.controls.ObjectSelector.prototype.startSelect = function () 
 
 feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = function () {
 
+	if(this._view3d.arms.hasObject()) {
+		return false;
+	}
+	
 	var mouseX = this._mouseMovePosition.x;
 	var mouseY = this._mouseMovePosition.y;
 
@@ -196,6 +200,10 @@ feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = functio
 
 
 feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e ) {
+
+	if(this._view3d.arms.hasObject()) {
+		return false;
+	}
 
 	this._selectedObject = null;
 

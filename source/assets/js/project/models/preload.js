@@ -33,7 +33,8 @@ feng.models.Preload = function(){
 			'global': {
 				'character': {
 					'ollie-data': 'json/character/ollie.json',
-					'ollie': 'images/character/ollie.png'
+					'ollie': 'images/character/ollie.png',
+					'ollie-open': 'images/character/ollie-open.png'
 				}
 			},
 			'livingroom': {
@@ -171,7 +172,11 @@ feng.models.Preload = function(){
 					'scott-data': 'json/character/scott.json',
 					'scott': 'images/character/scott.png',
 					'nick-data': 'json/character/nick.json',
-					'nick': 'images/character/nick.png'
+					'nick': 'images/character/nick.png',
+					'joanna-open': 'images/character/joanna-open.png',
+					'scott-open': 'images/character/scott-open.png',
+					'nick-open': 'images/character/nick-open.png',
+					'family-open': 'images/character/family-open.png'
 				}
 			},
 			'livingroom': {

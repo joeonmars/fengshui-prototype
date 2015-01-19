@@ -125,7 +125,8 @@ feng.views.helpers.Helper.prototype.resolveHorizontalPosition = function( box ) 
 		// snap to right
 		this._x = box.right;
 
-		goog.dom.classlist.addRemove( this.domElement, this._arrowClasses, 'arrow-left' );
+		goog.dom.classlist.removeAll( this.domElement, this._arrowClasses );
+		goog.dom.classlist.add( this.domElement, 'arrow-left' );
 
 		isFit = true;
 
@@ -134,7 +135,8 @@ feng.views.helpers.Helper.prototype.resolveHorizontalPosition = function( box ) 
 		// snap to left
 		this._x = box.left - size.width;
 
-		goog.dom.classlist.addRemove( this.domElement, this._arrowClasses, 'arrow-right' );
+		goog.dom.classlist.removeAll( this.domElement, this._arrowClasses );
+		goog.dom.classlist.add( this.domElement, 'arrow-right' );
 
 		isFit = true;
 	}
@@ -161,7 +163,8 @@ feng.views.helpers.Helper.prototype.resolveVerticalPosition = function( box ) {
 
 		this._y = box.top - size.height;
 
-		goog.dom.classlist.addRemove( this.domElement, this._arrowClasses, 'arrow-bottom' );
+		goog.dom.classlist.removeAll( this.domElement, this._arrowClasses );
+		goog.dom.classlist.add( this.domElement, 'arrow-bottom' );
 
 		isFit = true;
 
@@ -169,7 +172,8 @@ feng.views.helpers.Helper.prototype.resolveVerticalPosition = function( box ) {
 
 		this._y = box.bottom;
 
-		goog.dom.classlist.addRemove( this.domElement, this._arrowClasses, 'arrow-top' );
+		goog.dom.classlist.removeAll( this.domElement, this._arrowClasses );
+		goog.dom.classlist.add( this.domElement, 'arrow-top' );
 
 		isFit = true;
 	}

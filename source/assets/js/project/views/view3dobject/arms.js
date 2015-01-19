@@ -40,7 +40,13 @@ feng.views.view3dobject.Arms.prototype.getWorldOrientation = function( id, opt_p
 };
 
 
-feng.views.view3dobject.Arms.prototype.hasObject = function( view3dObject ){
+feng.views.view3dobject.Arms.prototype.hasObject = function(){
+
+  return (this.object3d.children.length > 1);
+};
+
+
+feng.views.view3dobject.Arms.prototype.containsObject = function( view3dObject ){
 
   return goog.array.contains( this.object3d.children, view3dObject.object3d );
 };
@@ -51,9 +57,9 @@ feng.views.view3dobject.Arms.prototype.addItem = function( view3dObject ){
   goog.array.insert( this._items, view3dObject );
 
   var object3d = view3dObject.object3d;
-  object3d.material.depthTest = false;
-  object3d.material.depthWrite = false;
-  object3d.material.transparent = true;
+  //object3d.material.depthTest = false;
+  //object3d.material.depthWrite = false;
+  //object3d.material.transparent = true;
 
   this.object3d.add( object3d );
 
@@ -76,9 +82,9 @@ feng.views.view3dobject.Arms.prototype.removeItem = function( view3dObject ){
   goog.array.remove( this._items, view3dObject );
 
   var object3d = view3dObject.object3d;
-  object3d.material.depthTest = true;
-  object3d.material.depthWrite = true;
-  object3d.material.transparent = false;
+  //object3d.material.depthTest = true;
+  //object3d.material.depthWrite = true;
+  //object3d.material.transparent = false;
 
   this.object3d.remove( object3d );
 

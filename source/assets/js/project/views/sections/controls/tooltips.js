@@ -135,7 +135,7 @@ feng.views.sections.controls.Tooltips.prototype.activate = function(){
 
   this.updateDetectObjects();
 
-  goog.fx.anim.registerAnimation( this );
+  TweenMax.ticker.addEventListener("tick", this.update, this);
 };
 
 
@@ -149,7 +149,7 @@ feng.views.sections.controls.Tooltips.prototype.deactivate = function(){
     goog.dom.classlist.addRemove( tooltip, 'fadeIn', 'fadeOut' );
   });
 
-  goog.fx.anim.unregisterAnimation( this );
+  TweenMax.ticker.removeEventListener("tick", this.update, this);
 };
 
 
@@ -183,6 +183,10 @@ feng.views.sections.controls.Tooltips.prototype.updateDetectObjects = function()
 
 feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
 
+  if(this._view3d.arms.hasObject()) {
+    return false;
+  }
+  
   var control = this._view3d.modeController.control;
   var controlPosition = control.getPosition();
   var controlDirection = control.getForwardVector( true );
@@ -273,7 +277,7 @@ feng.views.sections.controls.Tooltips.prototype.onModeChange = function(e){
 };
 
 
-feng.views.sections.controls.Tooltips.prototype.onAnimationFrame = function(now) {
+feng.views.sections.controls.Tooltips.prototype.update = function() {
 
   var camera = this._cameraController.activeCamera;
   var viewSize = this._viewSize;

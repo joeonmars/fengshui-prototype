@@ -307,7 +307,7 @@ feng.views.View3D.prototype.activate = function(){
 
  	this.fx.activate();
 
- 	goog.fx.anim.registerAnimation(this);
+ 	TweenMax.ticker.addEventListener("tick", this.update, this);
 };
  
  
@@ -316,7 +316,7 @@ feng.views.View3D.prototype.deactivate = function(){
  	if(!this.isActivated) return;
 	else this.isActivated = false;
 
-	goog.fx.anim.unregisterAnimation(this);
+	TweenMax.ticker.removeEventListener("tick", this.update, this);
 	
 	this._eventHandler.removeAll();
 
@@ -574,7 +574,7 @@ feng.views.View3D.prototype.initScene = function() {
 };
 
 
-feng.views.View3D.prototype.onAnimationFrame = function(now){
+feng.views.View3D.prototype.update = function(now){
 
 	var control = this.modeController.control;
 	this.arms.update( control.getPosition(), control.getRotation() );
