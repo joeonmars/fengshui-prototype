@@ -76,6 +76,8 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud, episode){
 	this.designPlane = null;
 	this.skybox = null;
 
+	this.onlyObjectToUnlock = null;
+
 	this.view3dObjects = {};
 	this.interactiveObjects = {};
 	this.tipObjects = {};

@@ -28,6 +28,8 @@ feng.views.sections.controls.ObjectSelector = function(domElement){
   this._startTime = 0;
   this._duration = 500;
 
+  this._isMouseDown = false;
+
   this._callbacks = {};
 
   // a delay to kick off the progress, to differentiate the mouse behavior between a fast click and object selecting
@@ -78,6 +80,7 @@ feng.views.sections.controls.ObjectSelector.prototype.activate = function( callb
 
 	this._eventHandler.listen(this._renderEl, 'mousedown', this.onMouseDown, false, this);
 	this._eventHandler.listen(this._renderEl, 'mousemove', this.onMouseMove, false, this);
+	this._eventHandler.listen(this._renderEl, 'mouseup', this.onMouseUp, false, this);
 };
 
 
@@ -87,7 +90,11 @@ feng.views.sections.controls.ObjectSelector.prototype.deactivate = function() {
 
   if(!shouldDeactivate) return;
 
+  this._isMouseDown = false;
+
 	this._delay.stop();
+
+	this._mouseMoveThrottle.stop();
 
 	goog.fx.anim.unregisterAnimation( this );
 
@@ -99,10 +106,12 @@ feng.views.sections.controls.ObjectSelector.prototype.animateIn = function () {
 
 	TweenMax.fromTo(this.domElement, .25, {
 		'scale': 0,
-		'opacity': 0
+		'opacity': 0,
+		'display': 'none'
 	}, {
 		'scale': 1,
 		'opacity': 1,
+		'display': 'block',
 		'ease': Expo.easeOut
 	});
 
@@ -113,8 +122,6 @@ feng.views.sections.controls.ObjectSelector.prototype.animateIn = function () {
 		'scale': 1,
 		'ease': Back.easeOut
 	});
-
-	feng.utils.Utils.setCursor('initial', this._renderEl);
 };
 
 
@@ -123,18 +130,17 @@ feng.views.sections.controls.ObjectSelector.prototype.animateOut = function () {
 	TweenMax.to(this.domElement, .25, {
 		'scale': .5,
 		'opacity': 0,
+		'display': 'none',
 		'ease': Expo.easeOut,
 		'onComplete': this.hide,
 		'onCompleteScope': this
 	});
-
-	feng.utils.Utils.setCursor(null, this._renderEl);
 };
 
 
 feng.views.sections.controls.ObjectSelector.prototype.doSelect = function () {
 
-	this._selectedObject = feng.views.sections.controls.ObjectSelector.findObjectDelegation( this._downObject );
+	this._selectedObject = this._downObject;
 
 	this.animateOut();
 
@@ -148,27 +154,30 @@ feng.views.sections.controls.ObjectSelector.prototype.cancelSelect = function ()
 
 	this.animateOut();
 
+	this._view3d.fx.selectEffect.animateOut();
+
 	this._callbacks['onCancel']();
 };
 
 
 feng.views.sections.controls.ObjectSelector.prototype.startSelect = function () {
 
-	this.show();
-	this.animateIn();
+	if(!this._view3d.onlyObjectToUnlock || (this._downObject === this._view3d.onlyObjectToUnlock)) {
 
-	this._startTime = goog.now();
-	goog.fx.anim.registerAnimation( this );
+		this._view3d.fx.selectEffect.animateIn( this._downObject );
 
-	this._callbacks['onStart']( this._downObject );
+		this.show();
+		this.animateIn();
+		
+		this._startTime = goog.now();
+		goog.fx.anim.registerAnimation( this );
+
+		this._callbacks['onStart']( this._downObject );
+	}
 };
 
 
 feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = function () {
-
-	if(this._view3d.arms.hasObject()) {
-		return false;
-	}
 	
 	var mouseX = this._mouseMovePosition.x;
 	var mouseY = this._mouseMovePosition.y;
@@ -181,11 +190,9 @@ feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = functio
 
 	if(isIntersected) {
 
-		var intersectedObject = intersects[0].object;
+		this._intersectedObject = intersects[0].object;
 
-		if(this._intersectedObject !== intersectedObject) {
-
-			this._intersectedObject = intersectedObject;
+		if(!this._view3d.onlyObjectToUnlock || (this._intersectedObject.view3dObject === this._view3d.onlyObjectToUnlock)) {
 
 			this._view3d.fx.selectEffect.animateIn( this._intersectedObject.view3dObject );
 		}
@@ -201,9 +208,7 @@ feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = functio
 
 feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e ) {
 
-	if(this._view3d.arms.hasObject()) {
-		return false;
-	}
+	this._isMouseDown = true;
 
 	this._selectedObject = null;
 
@@ -225,6 +230,12 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e
 };
 
 
+feng.views.sections.controls.ObjectSelector.prototype.onMouseUp = function ( e ) {
+
+	this._isMouseDown = false;
+};
+
+
 feng.views.sections.controls.ObjectSelector.prototype.onMouseDownCancel = function ( e ) {
 
 	this._delay.stop();
@@ -239,6 +250,12 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseDownCancel = functi
 
 
 feng.views.sections.controls.ObjectSelector.prototype.onMouseMove = function ( e ) {
+
+	if(this._isMouseDown) {
+
+		this._mouseMoveThrottle.stop();
+		return false;
+	}
 
 	this._mouseMovePosition.x = e.clientX;
 	this._mouseMovePosition.y = e.clientY;
@@ -276,16 +293,4 @@ feng.views.sections.controls.ObjectSelector.prototype.onAnimationFrame = functio
 	}
 
 	this._callbacks['onProgress']( this._downObject, progress );
-};
-
-
-feng.views.sections.controls.ObjectSelector.findObjectDelegation = function( object ) {
-
-	/*
-	if(object instanceof feng.views.view3dobject.entities.PictureFrame) {
-		return object.object3d.parent.interactiveObject;
-	}
-	*/
-	
-	return object;
 };

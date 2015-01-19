@@ -25,7 +25,7 @@ feng.templates.common.Disc = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.common.PrimaryButton = function(opt_data, opt_ignored) {
-  return (opt_data.href) ? '<a class="primary-button ' + opt_data.classname + '" href="' + opt_data.href + '">' + ((opt_data.icon) ? '<span class="icon ' + opt_data.icon + '"></span>' : '') + opt_data.text + '</a>' : '<button class="primary-button ' + opt_data.classname + '">' + ((opt_data.icon) ? '<span class="icon ' + opt_data.icon + '"></span>' : '') + opt_data.text + '</button>';
+  return (opt_data.href) ? '<a class="primary-button ' + opt_data.classname + '" href="' + opt_data.href + '" draggable="false">' + ((opt_data.icon) ? '<span class="icon ' + opt_data.icon + '"></span>' : '') + opt_data.text + '</a>' : '<button class="primary-button ' + opt_data.classname + '">' + ((opt_data.icon) ? '<span class="icon ' + opt_data.icon + '"></span>' : '') + opt_data.text + '</button>';
 };
 
 

@@ -20082,15 +20082,15 @@ feng.templates.debug.PathfindingDebugView = function(opt_data, opt_ignored) {
  */
 feng.templates.debug.AchievementsDebugView = function(opt_data, opt_ignored) {
   var output = '\t';
-  var param454 = '<div class="tipsPanel"><button class="unlock-all">Unlock All</button><ul class="tips">';
-  var tipList456 = opt_data.tips;
-  var tipListLen456 = tipList456.length;
-  for (var tipIndex456 = 0; tipIndex456 < tipListLen456; tipIndex456++) {
-    var tipData456 = tipList456[tipIndex456];
-    param454 += '<li data-tip-id="' + tipData456.id + '" data-view-id="' + tipData456.view + '" data-section-id="' + tipData456.section + '"><div class="icon icon-' + tipData456.icon + '"></div><div class="caption"><p>' + tipData456.id + '</p><p>' + tipData456.view + '</p><p>' + tipData456.section + '</p></div></li>';
+  var param459 = '<div class="tipsPanel"><button class="unlock-all">Unlock All</button><ul class="tips">';
+  var tipList461 = opt_data.tips;
+  var tipListLen461 = tipList461.length;
+  for (var tipIndex461 = 0; tipIndex461 < tipListLen461; tipIndex461++) {
+    var tipData461 = tipList461[tipIndex461];
+    param459 += '<li data-tip-id="' + tipData461.id + '" data-view-id="' + tipData461.view + '" data-section-id="' + tipData461.section + '"><div class="icon icon-' + tipData461.icon + '"></div><div class="caption"><p>' + tipData461.id + '</p><p>' + tipData461.view + '</p><p>' + tipData461.section + '</p></div></li>';
   }
-  param454 += '</ul></div>';
-  output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param454});
+  param459 += '</ul></div>';
+  output += feng.templates.debug.DebugView({id: 'debug-achievements', title: 'Achievements', body: param459});
   return output;
 };
 
@@ -32649,7 +32649,8 @@ feng.models.Preload = function(){
 			'global': {
 				'character': {
 					'ollie-data': 'json/character/ollie.json',
-					'ollie': 'images/character/ollie.png'
+					'ollie': 'images/character/ollie.png',
+					'ollie-open': 'images/character/ollie-open.png'
 				}
 			},
 			'livingroom': {
@@ -32787,7 +32788,11 @@ feng.models.Preload = function(){
 					'scott-data': 'json/character/scott.json',
 					'scott': 'images/character/scott.png',
 					'nick-data': 'json/character/nick.json',
-					'nick': 'images/character/nick.png'
+					'nick': 'images/character/nick.png',
+					'joanna-open': 'images/character/joanna-open.png',
+					'scott-open': 'images/character/scott-open.png',
+					'nick-open': 'images/character/nick-open.png',
+					'family-open': 'images/character/family-open.png'
 				}
 			},
 			'livingroom': {
@@ -34100,11 +34105,17 @@ feng.templates.controls.Book = function(opt_data, opt_ignored) {
  */
 feng.templates.controls.Reminder = function(opt_data, opt_ignored) {
   var output = '<div class="reminder"><div class="character">' + feng.templates.controls.RoundButton({content: '<canvas></canvas>'}) + '</div><div class="dialogue hint"><div class="wrapper"><button class="prev icon icon-prev"></button><ul class="hints">';
-  var tipList346 = opt_data.tips;
-  var tipListLen346 = tipList346.length;
-  for (var tipIndex346 = 0; tipIndex346 < tipListLen346; tipIndex346++) {
-    var tipData346 = tipList346[tipIndex346];
-    output += '<li data-tip-id="' + tipData346.id + '">' + tipData346.reminder + '</li>';
+  var tipList344 = opt_data.tips;
+  var tipListLen344 = tipList344.length;
+  for (var tipIndex344 = 0; tipIndex344 < tipListLen344; tipIndex344++) {
+    var tipData344 = tipList344[tipIndex344];
+    output += '<li data-tip-id="' + tipData344.id + '">' + tipData344.reminder + '</li>';
+  }
+  var keyList351 = soy.$$getMapKeys(opt_data.copy);
+  var keyListLen351 = keyList351.length;
+  for (var keyIndex351 = 0; keyIndex351 < keyListLen351; keyIndex351++) {
+    var keyData351 = keyList351[keyIndex351];
+    output += '<li data-view-id="' + keyData351 + '">' + opt_data.copy[keyData351] + '</li>';
   }
   output += '</ul><button class="next icon icon-next"></button></div></div></div>';
   return output;
@@ -34162,17 +34173,17 @@ feng.templates.controls.GatewayTooltip = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.controls.ProgressBar = function(opt_data, opt_ignored) {
-  var output = '<div class="progressBar"><div class="inner"><button class="prev icon icon-prev"></button><button class="next icon icon-next"></button><div class="tips-wrapper">';
-  var viewIdList388 = soy.$$getMapKeys(opt_data.tipsOfViews);
-  var viewIdListLen388 = viewIdList388.length;
-  for (var viewIdIndex388 = 0; viewIdIndex388 < viewIdListLen388; viewIdIndex388++) {
-    var viewIdData388 = viewIdList388[viewIdIndex388];
-    output += '<ul class="tips" data-view-id="' + viewIdData388 + '">';
-    var tipList392 = opt_data.tipsOfViews[viewIdData388];
-    var tipListLen392 = tipList392.length;
-    for (var tipIndex392 = 0; tipIndex392 < tipListLen392; tipIndex392++) {
-      var tipData392 = tipList392[tipIndex392];
-      output += '<li class="tip" data-tip-id="' + tipData392.id + '" data-view-id="' + viewIdData388 + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content"><div class="icon icon-' + tipData392.icon + '" data-tip-id="' + tipData392.id + '" data-view-id="' + tipData392.viewId + '" data-section-id="' + tipData392.sectionId + '"></div></a></div></li>';
+  var output = '<div class="progressBar"><div class="inner"><div class="tips-wrapper">';
+  var viewIdList393 = soy.$$getMapKeys(opt_data.tipsOfViews);
+  var viewIdListLen393 = viewIdList393.length;
+  for (var viewIdIndex393 = 0; viewIdIndex393 < viewIdListLen393; viewIdIndex393++) {
+    var viewIdData393 = viewIdList393[viewIdIndex393];
+    output += '<ul class="tips" data-view-id="' + viewIdData393 + '">';
+    var tipList397 = opt_data.tipsOfViews[viewIdData393];
+    var tipListLen397 = tipList397.length;
+    for (var tipIndex397 = 0; tipIndex397 < tipListLen397; tipIndex397++) {
+      var tipData397 = tipList397[tipIndex397];
+      output += '<li class="tip" data-tip-id="' + tipData397.id + '" data-view-id="' + viewIdData393 + '"><div class="dot"><div class="outer"></div><div class="inner"></div></div><div class="dialog"><a class="content"><div class="icon icon-' + tipData397.icon + '" data-tip-id="' + tipData397.id + '" data-view-id="' + tipData397.viewId + '" data-section-id="' + tipData397.sectionId + '"></div></a></div></li>';
     }
     output += '</ul>';
   }
@@ -34198,7 +34209,7 @@ goog.require('feng.templates.debug');
  * @notypecheck
  */
 feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
-  return '<div class="section episode" id="' + opt_data.id + '"><div class="hud"><div class="overlays"><div class="tutorial-overlay"></div><div class="credits-overlay"></div><div class="opening-overlay">' + feng.templates.common.Popup({classname: 'opening from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'icon-yes', text: 'I’d be glad to help!'}) + '<div class="character"></div>'}) + '</div><div class="ending-overlay">' + feng.templates.common.Popup({classname: 'ending from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'stay', icon: 'icon-yes', text: 'Stay'}) + feng.templates.common.PrimaryButton({classname: 'next', icon: 'icon-yes', text: 'Next Location', href: opt_data.token.HOME}) + '<div class="character"></div>'}) + '</div><div class="finale-overlay">' + feng.templates.common.Popup({classname: 'finale from-bottom', content: '<h1></h1><p></p><h2>Share With Friends</h2><ul><li><a class="icon icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/" target="_blank"></a></li><li><a class="icon icon-twitter" href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/" target="_blank"></a></li><li><a class="icon icon-google" href="https://plus.google.com/share?url=http://fengshuirealtime.com/" target="_blank"></a></li></ul>'}) + '</div><div class="loader-overlay"><div class="loader"><canvas class="spinner"></canvas><p class="progress"></p></div></div></div><div class="controls">' + feng.templates.controls.HomeButton(opt_data) + feng.templates.controls.Compass(null) + feng.templates.controls.Book(opt_data) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.DropButton(null) + feng.templates.controls.ProgressBar(opt_data) + feng.templates.controls.Reminder(opt_data) + '</div><div class="tooltips"></div><div class="captions"></div></div><div class="scene-container"></div></div>';
+  return '<div class="section episode" id="' + opt_data.id + '"><div class="hud"><div class="overlays"><div class="tutorial-overlay"></div><div class="credits-overlay"></div><div class="opening-overlay">' + feng.templates.common.Popup({classname: 'opening from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'icon-yes', text: 'I’d be glad to help!'}) + '<div class="character"></div>'}) + '</div><div class="ending-overlay">' + feng.templates.common.Popup({classname: 'ending from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'stay', icon: 'icon-yes', text: 'Stay'}) + feng.templates.common.PrimaryButton({classname: 'next', icon: 'icon-yes', text: 'Next Location', href: opt_data.token.HOME}) + '<div class="character"></div>'}) + '</div><div class="finale-overlay">' + feng.templates.common.Popup({classname: 'finale from-bottom', content: '<h1></h1><p></p><h2>Share With Friends</h2><ul><li><a class="icon icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/" target="_blank"></a></li><li><a class="icon icon-twitter" href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/" target="_blank"></a></li><li><a class="icon icon-google" href="https://plus.google.com/share?url=http://fengshuirealtime.com/" target="_blank"></a></li></ul>'}) + '</div><div class="loader-overlay"><div class="loader"><canvas class="spinner"></canvas><p class="progress"></p></div></div></div><div class="controls">' + feng.templates.controls.HomeButton(opt_data) + feng.templates.controls.Compass(null) + feng.templates.controls.Book(opt_data) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.DropButton(null) + feng.templates.controls.ProgressBar(opt_data) + feng.templates.controls.Reminder({tips: opt_data.tips, copy: opt_data.copy['dialog']['resolved'][opt_data.id]}) + '</div><div class="tooltips"></div><div class="captions"></div></div><div class="scene-container"></div></div>';
 };
 
 
@@ -34789,6 +34800,37 @@ feng.utils.ThreeUtils.getObjectsBy2DPosition = function( clientX, clientY, objec
 };
 
 
+feng.utils.ThreeUtils.isFirstIntersectedObject = function( allObjects, object, proxyBox, raycaster ) {
+
+	var _allObjects = allObjects.concat();
+
+	goog.array.remove( _allObjects, object );
+
+	if(proxyBox) {
+
+		_allObjects.push( proxyBox );
+	}
+
+	var intersects = raycaster.intersectObjects( _allObjects );
+
+	if(intersects.length > 0) {
+
+		if(proxyBox) {
+
+			return (intersects[0].object === proxyBox && proxyBox.view3dObject.object3d === object);
+
+		}else {
+
+			return (intersects[0].object === object);
+		}
+
+	}else {
+
+		return false;
+	}
+};
+
+
 feng.utils.ThreeUtils.getQuaternionByLookAt = function( vecFrom, vecTo, vecUp ) {
 
 	var vecUp = vecUp || new THREE.Vector3(0, 1, 0);
@@ -34937,93 +34979,6 @@ feng.utils.ThreeUtils.getLocalRotationOfWorld = function( object, rotation, opt_
   var localRotation = (opt_rot || new THREE.Euler()).setFromQuaternion( localQuaternion );
 
   return localRotation;
-};
-
-
-feng.utils.ThreeUtils.getRectangleFromBox3 = function( box3, camera, rendererSize, opt_box ) {
-
-	var vertices3D = [];
-	var vertices2D = [];
-
-	for(var i = 0; i < 8; i ++) {
-
-	  vertices3D.push( new THREE.Vector3() );
-
-	  vertices2D.push({
-	  	x: 0,
-	  	y: 0
-	  });
-	}
-
-	return( function( box3, camera, rendererSize, opt_box ) {
-
-		var box2 = opt_box || new goog.math.Box(0 ,0 ,0, 0);
-
-		// extract all vertices of box3
-		var max = box3.max;
-		var min = box3.min;
-
-		vertices3D[ 0 ].set( max.x, max.y, max.z );
-		vertices3D[ 1 ].set( min.x, max.y, max.z );
-		vertices3D[ 2 ].set( min.x, min.y, max.z );
-		vertices3D[ 3 ].set( max.x, min.y, max.z );
-		vertices3D[ 4 ].set( max.x, max.y, min.z );
-		vertices3D[ 5 ].set( min.x, max.y, min.z );
-		vertices3D[ 6 ].set( min.x, min.y, min.z );
-		vertices3D[ 7 ].set( max.x, min.y, min.z );
-
-		// convert vertices to 2d coordinates
-		goog.array.forEach(vertices2D, function(vertex2D, index) {
-
-			var vertex3D = vertices3D[ index ];
-			var coord = feng.utils.ThreeUtils.get2DCoordinates( vertex3D, camera, rendererSize );
-			vertex2D.x = coord.x;
-			vertex2D.y = coord.y;
-		});
-
-		box2.top = Math.min(
-			vertices2D[0].y,
-			vertices2D[1].y,
-			vertices2D[2].y,
-			vertices2D[3].y,
-			vertices2D[4].y,
-			vertices2D[5].y,
-			vertices2D[6].y,
-			vertices2D[7].y);
-
-		box2.bottom = Math.max(
-			vertices2D[0].y,
-			vertices2D[1].y,
-			vertices2D[2].y,
-			vertices2D[3].y,
-			vertices2D[4].y,
-			vertices2D[5].y,
-			vertices2D[6].y,
-			vertices2D[7].y);
-
-		box2.left = Math.min(
-			vertices2D[0].x,
-			vertices2D[1].x,
-			vertices2D[2].x,
-			vertices2D[3].x,
-			vertices2D[4].x,
-			vertices2D[5].x,
-			vertices2D[6].x,
-			vertices2D[7].x);
-
-		box2.right = Math.max(
-			vertices2D[0].x,
-			vertices2D[1].x,
-			vertices2D[2].x,
-			vertices2D[3].x,
-			vertices2D[4].x,
-			vertices2D[5].x,
-			vertices2D[6].x,
-			vertices2D[7].x);
-
-		return box2;
-		
-	})( box3, camera, rendererSize, opt_box );
 };
 
 
@@ -35317,22 +35272,18 @@ feng.models.View3D.Data = {
 			},
 			'apple': {
 				Class: 'fruit',
-				castShadow: true,
 				texture: "studio.livingroom.apple-in-refrigerator-texture"
 			},
 			'pineapple': {
 				Class: 'fruit',
-				castShadow: true,
 				texture: "studio.livingroom.pineapple-in-refrigerator-texture"
 			},
 			'orange': {
 				Class: 'fruit',
-				castShadow: true,
 				texture: "studio.livingroom.orange-in-refrigerator-texture"
 			},
 			'peach': {
 				Class: 'fruit',
-				castShadow: true,
 				texture: "studio.livingroom.peach-in-refrigerator-texture"
 			}
 		},
@@ -38067,13 +38018,13 @@ feng.templates.book.Book = function(opt_data, opt_ignored) {
   var tipListLen6 = tipList6.length;
   for (var tipIndex6 = 0; tipIndex6 < tipListLen6; tipIndex6++) {
     var tipData6 = tipList6[tipIndex6];
-    output += '<li class="tip-module" data-tip-id="' + tipData6.id + '"><div class="card"><div class="curtain"><div class="wrapper unlocked"><div class="icon icon-' + tipData6.icon + '"></div><h1>' + tipData6.name + '</h1><h2><span>Located at</span> ' + tipData6.character + '\'s ' + tipData6.sectionId + '</h2></div><div class="wrapper locked"><div class="icon icon-lock"></div><h1>Unknown Tip</h1><h2><span>Unlock in</span>' + tipData6.sectionId + '</h2></div></div><div class="detail"><div class="screen" data-src="' + tipData6.shareImageUrl + '"><div class="loader"></div></div><div class="advice"><h3>' + tipData6.name + '</h3><div class="scroller"><div class="content"><p>' + ((tipData6.problem) ? tipData6.problem + '<br>' : '') + ((tipData6.advice) ? tipData6.advice + '<br>' : '');
+    output += '<li class="tip-module" data-tip-id="' + tipData6.id + '"><div class="card"><div class="curtain"><div class="wrapper unlocked"><div class="icon icon-' + tipData6.icon + '"></div><h1>' + tipData6.name + '</h1><h2><span>Located at</span>' + tipData6.sectionId + '</h2></div><div class="wrapper locked"><div class="icon icon-lock"></div><h1>Unknown Tip</h1><h2><span>Unlock in</span>' + tipData6.sectionId + '</h2></div></div><div class="detail"><div class="screen" data-src="' + tipData6.shareImageUrl + '"><div class="loader"></div></div><div class="advice"><h3>' + tipData6.name + '</h3><div class="scroller"><div class="content"><p>' + ((tipData6.problem) ? tipData6.problem + '<br>' : '') + ((tipData6.advice) ? tipData6.advice + '<br>' : '');
     if (tipData6.details['descriptions']) {
-      var keyList34 = soy.$$getMapKeys(tipData6.details['descriptions']);
-      var keyListLen34 = keyList34.length;
-      for (var keyIndex34 = 0; keyIndex34 < keyListLen34; keyIndex34++) {
-        var keyData34 = keyList34[keyIndex34];
-        output += tipData6.details['descriptions'][keyData34] + '</br>';
+      var keyList32 = soy.$$getMapKeys(tipData6.details['descriptions']);
+      var keyListLen32 = keyList32.length;
+      for (var keyIndex32 = 0; keyIndex32 < keyListLen32; keyIndex32++) {
+        var keyData32 = keyList32[keyIndex32];
+        output += tipData6.details['descriptions'][keyData32] + '</br>';
       }
     }
     output += '</p></div>' + feng.templates.common.ScrollBar(null) + '</div><ul class="share"><li><a href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/assets/html/share/' + tipData6.id + '.html" target="_blank" class="icon icon-facebook"></a></li><li><a href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/assets/html/share/' + tipData6.id + '.html" target="_blank" class="icon icon-twitter"></a></li><li><a href="https://plus.google.com/share?url=http://fengshuirealtime.com/assets/html/share/' + tipData6.id + '.html" target="_blank" class="icon icon-google"></a></li></ul></div></div></div></li>';
@@ -38987,7 +38938,7 @@ feng.views.book.Book.prototype.getTipModuleIndexByX = function( x ) {
 
 feng.views.book.Book.prototype.scrollToTipModule = function( index, instant ) {
 
-	goog.fx.anim.unregisterAnimation( this );
+	TweenMax.ticker.removeEventListener("tick", this.update, this);
 
 	if(this._activeTipModule) {
 		this._activeTipModule.setActive(false);
@@ -39089,7 +39040,7 @@ feng.views.book.Book.prototype.onDrag = function( e ) {
 
 feng.views.book.Book.prototype.onDragStart = function( e ) {
 
-	goog.fx.anim.registerAnimation( this );
+	TweenMax.ticker.addEventListener("tick", this.update, this);
 
 	if(this._scrollTweener && this._scrollTweener.isActive()) {
 		this._scrollTweener.kill();
@@ -39140,7 +39091,7 @@ feng.views.book.Book.prototype.onMouseWheel = function( e ) {
 
 	this._targetScrollX = Math.max( Math.min( rightX, this._targetScrollX ), leftX );
 
-	goog.fx.anim.registerAnimation( this );
+	TweenMax.ticker.addEventListener("tick", this.update, this);
 
 	if(this._scrollTweener && this._scrollTweener.isActive()) {
 		this._scrollTweener.kill();
@@ -39148,7 +39099,7 @@ feng.views.book.Book.prototype.onMouseWheel = function( e ) {
 };
 
 
-feng.views.book.Book.prototype.onAnimationFrame = function( now ) {
+feng.views.book.Book.prototype.update = function() {
 
 	this._scrollX += (this._targetScrollX - this._scrollX) * .1;
 	this.applyScrollX();
@@ -39156,7 +39107,7 @@ feng.views.book.Book.prototype.onAnimationFrame = function( now ) {
 	// if reached the target scroll x, stop animating and lock to the nearest tip module
 	if( goog.math.nearlyEquals(this._scrollX, this._targetScrollX, 1) && !this._dragger.isDragging()) {
 
-		goog.fx.anim.unregisterAnimation( this );
+		TweenMax.ticker.removeEventListener("tick", this.update, this);
 
 		this._scrollX = this._targetScrollX;
 
@@ -40397,7 +40348,7 @@ feng.controllers.controls.Controls.prototype.activate = function() {
 	this._eventHandler.listen(this._domElement, 'click', this.onClick, false, this);
 	this._eventHandler.listen(this._domElement, feng.events.EventType.INPUT_DOWN, this.onInputDown, false, this);
 
-	goog.fx.anim.registerAnimation(this);
+	TweenMax.ticker.addEventListener("tick", this.update, this);
 
 	goog.dom.classlist.add(this._view3d.domElement, 'grab');
 };
@@ -40407,7 +40358,7 @@ feng.controllers.controls.Controls.prototype.deactivate = function() {
 
 	this._eventHandler.removeAll();
 
-	goog.fx.anim.unregisterAnimation(this);
+	TweenMax.ticker.removeEventListener("tick", this.update, this);
 
 	goog.dom.classlist.remove(this._view3d.domElement, 'grab');
 	goog.dom.classlist.remove(this._mainEl, 'grabbing');
@@ -40512,12 +40463,6 @@ feng.controllers.controls.Controls.prototype.onPauseAnimate = function() {
 feng.controllers.controls.Controls.prototype.onPauseResumed = function() {
 
 	this.activate();
-};
-
-
-feng.controllers.controls.Controls.prototype.onAnimationFrame = function ( now ) {
-
-	this.update();
 };
 
 
@@ -41693,7 +41638,7 @@ feng.controllers.controls.BrowseControls.prototype.enable = function( enable, mo
 
 			var withinRange = this._detectorSphere.intersectsSphere( tipObject.getBoundingSphere() );
 
-			var inArms = this._view3d.arms.hasObject( tipObject );
+			var inArms = this._view3d.arms.containsObject( tipObject );
 
 			//console.log(tipObject.name + ' withinRange: ' + withinRange + ', locked: ' + locked);
 
@@ -41868,13 +41813,13 @@ feng.controllers.controls.BrowseControls.prototype.onMouseWheel = function ( e )
 
 feng.controllers.controls.BrowseControls.prototype.onObjectSelectCancel = function () {
 
-	this._view3d.fx.selectEffect.animateOut();
+
 };
 
 
 feng.controllers.controls.BrowseControls.prototype.onObjectSelectStart = function ( object ) {
 
-	this._view3d.fx.selectEffect.animateIn( object );
+	
 };
 
 
@@ -44326,21 +44271,18 @@ feng.controllers.view3d.RenderController.prototype.onBeforeRenderMask = function
 
 	this._view3d.fx.onBeforeRenderMask();
 
-	if(maskedObject) {
+	maskedObject.enableRender();
 
-		maskedObject.enableRender();
+	// force arms to render
+	this._view3d.arms.enableRender();
+	
+	// force skybox to render with wall when enabled
+	if(this._view3d.getView3dObject('wall').isRenderEnabled) {
+		this._view3d.skybox.enableRender();
+	}
 
-		// force arms to render
-		this._view3d.arms.enableRender();
-		
-		// force skybox to render with wall when enabled
-		if(this._view3d.getView3dObject('wall').isRenderEnabled) {
-			this._view3d.skybox.enableRender();
-		}
-
-		if(maskedObject.hasPicked && maskedObject.dropParent && maskedObject.dropParent.view3dObject) {
-			maskedObject.dropParent.view3dObject.enableRender();
-		}
+	if(maskedObject.hasPicked && maskedObject.dropParent && maskedObject.dropParent.view3dObject) {
+		maskedObject.dropParent.view3dObject.enableRender();
 	}
 };goog.provide('feng.views.view3dobject.entities.GlassBowl');
 
@@ -44774,7 +44716,7 @@ feng.views.view3dobject.entities.Closet.prototype.startInteraction = function(){
     _positionProgress: 1
   });
 
-  goog.fx.anim.registerAnimation( this );
+  TweenMax.ticker.addEventListener("tick", this.update, this);
 };
 
 
@@ -44797,7 +44739,7 @@ feng.views.view3dobject.entities.Closet.prototype.stopInteraction = function(){
     _positionProgress: 0
   });
 
-  goog.fx.anim.unregisterAnimation( this );
+  TweenMax.ticker.removeEventListener("tick", this.update, this);
 };
 
 
@@ -44806,6 +44748,44 @@ feng.views.view3dobject.entities.Closet.prototype.updateDragOffsetOfJar = functi
   var raycastPosition = this.getRaycastPositionOnPlane( this._dragPlane );
 
   this._dummyJar.userData.dragOffset.subVectors( raycastPosition, this._dragStartPosition );
+};
+
+
+feng.views.view3dobject.entities.Closet.prototype.update = function(){
+
+  var now = goog.now();
+
+  var i, l = this._dummyJars.length;
+
+  for(i = 0; i < l; i++) {
+
+    var dummyJar = this._dummyJars[i];
+
+    var userData = dummyJar.userData;
+
+    var swing = userData.swing;
+    var swingMultiplier = userData.swingMultiplier;
+    var rotationMultiplier = userData.rotationMultiplier;
+    var dragOffset = userData.dragOffset;
+    var orientation = userData.orientation;
+
+    dummyJar.position.x = orientation.positionX;
+    dummyJar.position.y = orientation.positionY + Math.sin( now * 0.001 * swing ) * this._swingProgress * swingMultiplier * this._positionProgress + dragOffset.y;
+    dummyJar.position.z = orientation.positionZ + Math.cos( now * 0.001 * swing ) * this._swingProgress * swingMultiplier * this._positionProgress + dragOffset.z;
+  
+    dummyJar.rotation.x = orientation.rotationX * rotationMultiplier;
+    dummyJar.rotation.y = orientation.rotationY * rotationMultiplier;
+    dummyJar.rotation.z = orientation.rotationZ * rotationMultiplier;
+
+    var jarTargetPosition = userData.isAnchored ? userData.anchor : dummyJar.position;
+
+    var jar = dummyJar.userData.jar;
+    jar.object3d.position.x += ( jarTargetPosition.x - jar.object3d.position.x ) * .2;
+    jar.object3d.position.y += ( jarTargetPosition.y - jar.object3d.position.y ) * .2;
+    jar.object3d.position.z += ( jarTargetPosition.z - jar.object3d.position.z ) * .2;
+
+    jar.object3d.rotation.copy( dummyJar.rotation );
+  }
 };
 
 
@@ -44994,39 +44974,6 @@ feng.views.view3dobject.entities.Closet.prototype.onCameraZoomOutComplete = func
 
   this.unlock();
   this.stopInteraction();
-};
-
-
-feng.views.view3dobject.entities.Closet.prototype.onAnimationFrame = function(now){
-
-  goog.array.forEach(this._dummyJars, function(dummyJar, index) {
-
-    var userData = dummyJar.userData;
-
-    var swing = userData.swing;
-    var swingMultiplier = userData.swingMultiplier;
-    var rotationMultiplier = userData.rotationMultiplier;
-    var dragOffset = userData.dragOffset;
-    var orientation = userData.orientation;
-
-    dummyJar.position.x = orientation.positionX;
-    dummyJar.position.y = orientation.positionY + Math.sin( now * 0.001 * swing ) * this._swingProgress * swingMultiplier * this._positionProgress + dragOffset.y;
-    dummyJar.position.z = orientation.positionZ + Math.cos( now * 0.001 * swing ) * this._swingProgress * swingMultiplier * this._positionProgress + dragOffset.z;
-  
-    dummyJar.rotation.x = orientation.rotationX * rotationMultiplier;
-    dummyJar.rotation.y = orientation.rotationY * rotationMultiplier;
-    dummyJar.rotation.z = orientation.rotationZ * rotationMultiplier;
-
-    var jarTargetPosition = userData.isAnchored ? userData.anchor : dummyJar.position;
-
-    var jar = dummyJar.userData.jar;
-    jar.object3d.position.x += ( jarTargetPosition.x - jar.object3d.position.x ) * .2;
-    jar.object3d.position.y += ( jarTargetPosition.y - jar.object3d.position.y ) * .2;
-    jar.object3d.position.z += ( jarTargetPosition.z - jar.object3d.position.z ) * .2;
-
-    jar.object3d.rotation.copy( dummyJar.rotation );
-
-  }, this);
 };goog.provide('feng.views.view3dobject.entities.Wallpaper');
 
 goog.require('feng.views.view3dobject.TipObject');
@@ -45113,7 +45060,7 @@ feng.views.view3dobject.entities.Wallpaper.prototype.onCameraIn = function(){
 
   this._video.play();
 
-  goog.fx.anim.registerAnimation(this);
+  TweenMax.ticker.addEventListener("tick", this.onVideoUpdate, this);
 };
 
 
@@ -45123,13 +45070,7 @@ feng.views.view3dobject.entities.Wallpaper.prototype.onCameraOut = function(){
 
   this._video.pause();
 
-  goog.fx.anim.unregisterAnimation(this);
-};
-
-
-feng.views.view3dobject.entities.Wallpaper.prototype.onAnimationFrame = function(now){
-
-  this.onVideoUpdate();
+  TweenMax.ticker.removeEventListener("tick", this.onVideoUpdate, this);
 };goog.provide('feng.views.view3dobject.GatewayObject');
 
 goog.require('feng.views.view3dobject.InteractiveObject');
@@ -45386,18 +45327,6 @@ feng.views.view3dobject.Arms = function( view3d ){
   this._orientationTester = new THREE.Object3D();
   object3d.add( this._orientationTester );
 
-  // -- test
-  /*
-  var geometry = new THREE.BoxGeometry( 10, 10, 10 );
-  var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
-
-  mesh = new THREE.Mesh( geometry, material );
-  mesh.translateY( 5 );
-
-  object3d.add( mesh );
-  */
-  // -- end
-
   var data = {};
 
   goog.base(this, object3d, data, view3d);
@@ -45422,7 +45351,13 @@ feng.views.view3dobject.Arms.prototype.getWorldOrientation = function( id, opt_p
 };
 
 
-feng.views.view3dobject.Arms.prototype.hasObject = function( view3dObject ){
+feng.views.view3dobject.Arms.prototype.hasObject = function(){
+
+  return (this.object3d.children.length > 1);
+};
+
+
+feng.views.view3dobject.Arms.prototype.containsObject = function( view3dObject ){
 
   return goog.array.contains( this.object3d.children, view3dObject.object3d );
 };
@@ -45432,11 +45367,16 @@ feng.views.view3dobject.Arms.prototype.addItem = function( view3dObject ){
 
   goog.array.insert( this._items, view3dObject );
 
-  this.object3d.add( view3dObject.object3d );
+  var object3d = view3dObject.object3d;
+  //object3d.material.depthTest = false;
+  //object3d.material.depthWrite = false;
+  //object3d.material.transparent = true;
+
+  this.object3d.add( object3d );
 
   var objectOrientation = feng.views.view3dobject.Arms.Orientations[ view3dObject.name ];
-  view3dObject.object3d.position.copy( objectOrientation.position );
-  view3dObject.object3d.rotation.copy( objectOrientation.rotation );
+  object3d.position.copy( objectOrientation.position );
+  object3d.rotation.copy( objectOrientation.rotation );
 
   // activate drop button if a movable object is added
   if(view3dObject instanceof feng.views.view3dobject.MovableObject) {
@@ -45452,7 +45392,12 @@ feng.views.view3dobject.Arms.prototype.removeItem = function( view3dObject ){
 
   goog.array.remove( this._items, view3dObject );
 
-  this.object3d.remove( view3dObject.object3d );
+  var object3d = view3dObject.object3d;
+  //object3d.material.depthTest = true;
+  //object3d.material.depthWrite = true;
+  //object3d.material.transparent = false;
+
+  this.object3d.remove( object3d );
 
   // deactivate drop button if a movable object is removed
   if(view3dObject instanceof feng.views.view3dobject.MovableObject) {
@@ -45885,7 +45830,7 @@ feng.fx.Leaves = function( eventTarget, color ){
 
 		case feng.fx.Leaves.Color.YELLOW:
 		textureIds.push('YELLOW_1', 'YELLOW_2');
-		numLeaves = 8;
+		numLeaves = 10;
 		break;
 	}
 
@@ -45918,7 +45863,7 @@ feng.fx.Leaves = function( eventTarget, color ){
 
 	this._startTime = 0;
 
-	this._speedFactor = (this._color === feng.fx.Leaves.Color.GREEN) ? 0.001 : 0.004;
+	this._speedFactor = (this._color === feng.fx.Leaves.Color.GREEN) ? 0.001 : 0.002;
 
 	this._animated = new goog.fx.anim.Animated();
 	this._animated.onAnimationFrame = goog.bind( this.onAnimationFrame, this );
@@ -46943,7 +46888,7 @@ feng.views.View3D.prototype.activate = function(){
 
  	this.fx.activate();
 
- 	goog.fx.anim.registerAnimation(this);
+ 	TweenMax.ticker.addEventListener("tick", this.update, this);
 };
  
  
@@ -46952,7 +46897,7 @@ feng.views.View3D.prototype.deactivate = function(){
  	if(!this.isActivated) return;
 	else this.isActivated = false;
 
-	goog.fx.anim.unregisterAnimation(this);
+	TweenMax.ticker.removeEventListener("tick", this.update, this);
 	
 	this._eventHandler.removeAll();
 
@@ -47210,7 +47155,7 @@ feng.views.View3D.prototype.initScene = function() {
 };
 
 
-feng.views.View3D.prototype.onAnimationFrame = function(now){
+feng.views.View3D.prototype.update = function(now){
 
 	var control = this.modeController.control;
 	this.arms.update( control.getPosition(), control.getRotation() );
@@ -58599,22 +58544,22 @@ feng.templates.captions.Caption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
-  var param104 = '<div class="change-picture"><h2>Click on a picture to change</h2><ul class="pictures">';
-  var pictureKeyList106 = soy.$$getMapKeys(opt_data.tip.details['pictures']);
-  var pictureKeyListLen106 = pictureKeyList106.length;
-  for (var pictureKeyIndex106 = 0; pictureKeyIndex106 < pictureKeyListLen106; pictureKeyIndex106++) {
-    var pictureKeyData106 = pictureKeyList106[pictureKeyIndex106];
-    param104 += '<li><button class="item-button" data-picture="' + pictureKeyData106 + '"></button></li>';
+  var param102 = '<div class="change-picture"><h2>Click on a picture to change</h2><ul class="pictures">';
+  var pictureKeyList104 = soy.$$getMapKeys(opt_data.tip.details['pictures']);
+  var pictureKeyListLen104 = pictureKeyList104.length;
+  for (var pictureKeyIndex104 = 0; pictureKeyIndex104 < pictureKeyListLen104; pictureKeyIndex104++) {
+    var pictureKeyData104 = pictureKeyList104[pictureKeyIndex104];
+    param102 += '<li><button class="item-button" data-picture="' + pictureKeyData104 + '"></button></li>';
   }
-  param104 += '</ul><ul class="info">';
-  var pictureKeyList112 = soy.$$getMapKeys(opt_data.tip.details['pictures']);
-  var pictureKeyListLen112 = pictureKeyList112.length;
-  for (var pictureKeyIndex112 = 0; pictureKeyIndex112 < pictureKeyListLen112; pictureKeyIndex112++) {
-    var pictureKeyData112 = pictureKeyList112[pictureKeyIndex112];
-    param104 += '<li data-picture="' + pictureKeyData112 + '"><h3>' + opt_data.tip.details['pictures'][pictureKeyData112]['name'] + '</h3><p>' + opt_data.tip.details['pictures'][pictureKeyData112]['description'] + '</p></li>';
+  param102 += '</ul><ul class="info">';
+  var pictureKeyList110 = soy.$$getMapKeys(opt_data.tip.details['pictures']);
+  var pictureKeyListLen110 = pictureKeyList110.length;
+  for (var pictureKeyIndex110 = 0; pictureKeyIndex110 < pictureKeyListLen110; pictureKeyIndex110++) {
+    var pictureKeyData110 = pictureKeyList110[pictureKeyIndex110];
+    param102 += '<li data-picture="' + pictureKeyData110 + '"><h3>' + opt_data.tip.details['pictures'][pictureKeyData110]['name'] + '</h3><p>' + opt_data.tip.details['pictures'][pictureKeyData110]['description'] + '</p></li>';
   }
-  param104 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param104}));
+  param102 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param102}));
   return output;
 };
 
@@ -58626,22 +58571,22 @@ feng.templates.captions.ChangePictureCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
-  var param124 = '<div class="change-color"><h2>Choose a better color.</h2><ul class="colors">';
-  var colorKeyList126 = soy.$$getMapKeys(opt_data.tip.details['colors']);
-  var colorKeyListLen126 = colorKeyList126.length;
-  for (var colorKeyIndex126 = 0; colorKeyIndex126 < colorKeyListLen126; colorKeyIndex126++) {
-    var colorKeyData126 = colorKeyList126[colorKeyIndex126];
-    param124 += '<li><button class="item-button" style="background-color: ' + opt_data.tip.details['colors'][colorKeyData126]['hex'] + '" data-color="' + colorKeyData126 + '"></button></li>';
+  var param122 = '<div class="change-color"><h2>Choose a better color.</h2><ul class="colors">';
+  var colorKeyList124 = soy.$$getMapKeys(opt_data.tip.details['colors']);
+  var colorKeyListLen124 = colorKeyList124.length;
+  for (var colorKeyIndex124 = 0; colorKeyIndex124 < colorKeyListLen124; colorKeyIndex124++) {
+    var colorKeyData124 = colorKeyList124[colorKeyIndex124];
+    param122 += '<li><button class="item-button" style="background-color: ' + opt_data.tip.details['colors'][colorKeyData124]['hex'] + '" data-color="' + colorKeyData124 + '"></button></li>';
   }
-  param124 += '</ul><ul class="info">';
-  var colorKeyList134 = soy.$$getMapKeys(opt_data.tip.details['colors']);
-  var colorKeyListLen134 = colorKeyList134.length;
-  for (var colorKeyIndex134 = 0; colorKeyIndex134 < colorKeyListLen134; colorKeyIndex134++) {
-    var colorKeyData134 = colorKeyList134[colorKeyIndex134];
-    param124 += '<li data-color="' + colorKeyData134 + '"><h3>' + opt_data.tip.details['colors'][colorKeyData134]['name'] + '</h3><p>' + opt_data.tip.details['colors'][colorKeyData134]['description'] + '</p></li>';
+  param122 += '</ul><ul class="info">';
+  var colorKeyList132 = soy.$$getMapKeys(opt_data.tip.details['colors']);
+  var colorKeyListLen132 = colorKeyList132.length;
+  for (var colorKeyIndex132 = 0; colorKeyIndex132 < colorKeyListLen132; colorKeyIndex132++) {
+    var colorKeyData132 = colorKeyList132[colorKeyIndex132];
+    param122 += '<li data-color="' + colorKeyData132 + '"><h3>' + opt_data.tip.details['colors'][colorKeyData132]['name'] + '</h3><p>' + opt_data.tip.details['colors'][colorKeyData132]['description'] + '</p></li>';
   }
-  param124 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param124}));
+  param122 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param122}));
   return output;
 };
 
@@ -58653,22 +58598,22 @@ feng.templates.captions.ChangeColorCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
-  var param146 = '<div class="change-object"><h2>Replace with a new element.</h2><ul class="objects">';
-  var objectKeyList148 = soy.$$getMapKeys(opt_data.tip.details['names']);
-  var objectKeyListLen148 = objectKeyList148.length;
-  for (var objectKeyIndex148 = 0; objectKeyIndex148 < objectKeyListLen148; objectKeyIndex148++) {
-    var objectKeyData148 = objectKeyList148[objectKeyIndex148];
-    param146 += '<li><button class="item-button" data-object="' + objectKeyData148 + '"></button></li>';
+  var param144 = '<div class="change-object"><h2>Replace with a new element.</h2><ul class="objects">';
+  var objectKeyList146 = soy.$$getMapKeys(opt_data.tip.details['names']);
+  var objectKeyListLen146 = objectKeyList146.length;
+  for (var objectKeyIndex146 = 0; objectKeyIndex146 < objectKeyListLen146; objectKeyIndex146++) {
+    var objectKeyData146 = objectKeyList146[objectKeyIndex146];
+    param144 += '<li><button class="item-button" data-object="' + objectKeyData146 + '"></button></li>';
   }
-  param146 += '</ul><ul class="info">';
-  var objectKeyList154 = soy.$$getMapKeys(opt_data.tip.details['descriptions']);
-  var objectKeyListLen154 = objectKeyList154.length;
-  for (var objectKeyIndex154 = 0; objectKeyIndex154 < objectKeyListLen154; objectKeyIndex154++) {
-    var objectKeyData154 = objectKeyList154[objectKeyIndex154];
-    param146 += '<li data-object="' + objectKeyData154 + '"><h3>' + opt_data.tip.details['names'][objectKeyData154] + '</h3><p>' + opt_data.tip.details['descriptions'][objectKeyData154] + '</p></li>';
+  param144 += '</ul><ul class="info">';
+  var objectKeyList152 = soy.$$getMapKeys(opt_data.tip.details['descriptions']);
+  var objectKeyListLen152 = objectKeyList152.length;
+  for (var objectKeyIndex152 = 0; objectKeyIndex152 < objectKeyListLen152; objectKeyIndex152++) {
+    var objectKeyData152 = objectKeyList152[objectKeyIndex152];
+    param144 += '<li data-object="' + objectKeyData152 + '"><h3>' + opt_data.tip.details['names'][objectKeyData152] + '</h3><p>' + opt_data.tip.details['descriptions'][objectKeyData152] + '</p></li>';
   }
-  param146 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param146}));
+  param144 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param144}));
   return output;
 };
 
@@ -58680,22 +58625,22 @@ feng.templates.captions.ChangeObjectCaption = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
-  var param166 = '<div class="drop-fruits"><h2>Fill the plate with fruits.</h2><ul class="fruits">';
-  var fruitKeyList168 = soy.$$getMapKeys(opt_data.tip.details['fruits']);
-  var fruitKeyListLen168 = fruitKeyList168.length;
-  for (var fruitKeyIndex168 = 0; fruitKeyIndex168 < fruitKeyListLen168; fruitKeyIndex168++) {
-    var fruitKeyData168 = fruitKeyList168[fruitKeyIndex168];
-    param166 += '<li><button class="item-button" data-fruit="' + fruitKeyData168 + '"></button></li>';
+  var param164 = '<div class="drop-fruits"><h2>Fill the plate with fruits.</h2><ul class="fruits">';
+  var fruitKeyList166 = soy.$$getMapKeys(opt_data.tip.details['fruits']);
+  var fruitKeyListLen166 = fruitKeyList166.length;
+  for (var fruitKeyIndex166 = 0; fruitKeyIndex166 < fruitKeyListLen166; fruitKeyIndex166++) {
+    var fruitKeyData166 = fruitKeyList166[fruitKeyIndex166];
+    param164 += '<li><button class="item-button" data-fruit="' + fruitKeyData166 + '"></button></li>';
   }
-  param166 += '</ul><ul class="info">';
-  var fruitKeyList174 = soy.$$getMapKeys(opt_data.tip.details['fruits']);
-  var fruitKeyListLen174 = fruitKeyList174.length;
-  for (var fruitKeyIndex174 = 0; fruitKeyIndex174 < fruitKeyListLen174; fruitKeyIndex174++) {
-    var fruitKeyData174 = fruitKeyList174[fruitKeyIndex174];
-    param166 += '<li data-fruit="' + fruitKeyData174 + '"><h3>' + opt_data.tip.details['fruits'][fruitKeyData174]['name'] + '</h3><p>' + opt_data.tip.details['fruits'][fruitKeyData174]['description'] + '</p></li>';
+  param164 += '</ul><ul class="info">';
+  var fruitKeyList172 = soy.$$getMapKeys(opt_data.tip.details['fruits']);
+  var fruitKeyListLen172 = fruitKeyList172.length;
+  for (var fruitKeyIndex172 = 0; fruitKeyIndex172 < fruitKeyListLen172; fruitKeyIndex172++) {
+    var fruitKeyData172 = fruitKeyList172[fruitKeyIndex172];
+    param164 += '<li data-fruit="' + fruitKeyData172 + '"><h3>' + opt_data.tip.details['fruits'][fruitKeyData172]['name'] + '</h3><p>' + opt_data.tip.details['fruits'][fruitKeyData172]['description'] + '</p></li>';
   }
-  param166 += '</ul></div>';
-  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param166}));
+  param164 += '</ul></div>';
+  var output = feng.templates.captions.Caption(soy.$$augmentMap(opt_data, {interactionContent: param164}));
   return output;
 };
 
@@ -58708,11 +58653,11 @@ feng.templates.captions.DropFruitsCaption = function(opt_data, opt_ignored) {
  */
 feng.templates.captions.FloatText = function(opt_data, opt_ignored) {
   var output = '<p class="floatText">';
-  var lineList187 = opt_data.lines;
-  var lineListLen187 = lineList187.length;
-  for (var lineIndex187 = 0; lineIndex187 < lineListLen187; lineIndex187++) {
-    var lineData187 = lineList187[lineIndex187];
-    output += '<span>' + lineData187 + '</span>';
+  var lineList185 = opt_data.lines;
+  var lineListLen185 = lineList185.length;
+  for (var lineIndex185 = 0; lineIndex185 < lineListLen185; lineIndex185++) {
+    var lineData185 = lineList185[lineIndex185];
+    output += '<span>' + lineData185 + '</span>';
   }
   output += '</p>';
   return output;
@@ -59555,8 +59500,8 @@ feng.views.sections.controls.ProgressBar = function(domElement, tips){
   this._tipsEls = goog.dom.query('.tips', this.domElement);
   this._allTipEls = goog.dom.query('.tips > li', this.domElement);
   this._dotEls = goog.dom.query('.tips .dot', this.domElement);
-  this._prevButtonEl = goog.dom.getElementByClass('prev', this.domElement);
-  this._nextButtonEl = goog.dom.getElementByClass('next', this.domElement);
+  //this._prevButtonEl = goog.dom.getElementByClass('prev', this.domElement);
+  //this._nextButtonEl = goog.dom.getElementByClass('next', this.domElement);
 
   this._tipsEl = this._tipsEls[0];
   this._tipEls = goog.dom.query( 'li', this._tipsEl );
@@ -59628,8 +59573,8 @@ feng.views.sections.controls.ProgressBar.prototype.activate = function() {
 
   if(!shouldActivate) return;
 
-  this._eventHandler.listen(this._prevButtonEl, 'click', this.goPrevTips, false, this);
-  this._eventHandler.listen(this._nextButtonEl, 'click', this.goNextTips, false, this);
+  //this._eventHandler.listen(this._prevButtonEl, 'click', this.goPrevTips, false, this);
+  //this._eventHandler.listen(this._nextButtonEl, 'click', this.goNextTips, false, this);
 
   goog.array.forEach(this._allTipEls, function(tipEl) {
     this._eventHandler.listen(tipEl, goog.events.EventType.MOUSEOVER, this.onTipMouseOver, false, this);
@@ -59718,7 +59663,7 @@ feng.views.sections.controls.ProgressBar.prototype.goTipsOfView = function( view
   this._tweener.add([tweener, tweener2, tweener3, tweener4]);
 };
 
-
+/*
 feng.views.sections.controls.ProgressBar.prototype.goPrevTips = function() {
 
   var currentTipsIndex = goog.array.indexOf(this._viewIds, this._tipsEl.getAttribute('data-view-id'));
@@ -59741,7 +59686,7 @@ feng.views.sections.controls.ProgressBar.prototype.goNextTips = function() {
 
   this.goTipsOfView( this._viewIds[currentTipsIndex] );
 };
-
+*/
 
 feng.views.sections.controls.ProgressBar.prototype.setNearbyObjects = function( objects ){
 
@@ -60029,7 +59974,8 @@ feng.views.helpers.Helper.prototype.resolveHorizontalPosition = function( box ) 
 		// snap to right
 		this._x = box.right;
 
-		goog.dom.classlist.addRemove( this.domElement, this._arrowClasses, 'arrow-left' );
+		goog.dom.classlist.removeAll( this.domElement, this._arrowClasses );
+		goog.dom.classlist.add( this.domElement, 'arrow-left' );
 
 		isFit = true;
 
@@ -60038,7 +59984,8 @@ feng.views.helpers.Helper.prototype.resolveHorizontalPosition = function( box ) 
 		// snap to left
 		this._x = box.left - size.width;
 
-		goog.dom.classlist.addRemove( this.domElement, this._arrowClasses, 'arrow-right' );
+		goog.dom.classlist.removeAll( this.domElement, this._arrowClasses );
+		goog.dom.classlist.add( this.domElement, 'arrow-right' );
 
 		isFit = true;
 	}
@@ -60065,7 +60012,8 @@ feng.views.helpers.Helper.prototype.resolveVerticalPosition = function( box ) {
 
 		this._y = box.top - size.height;
 
-		goog.dom.classlist.addRemove( this.domElement, this._arrowClasses, 'arrow-bottom' );
+		goog.dom.classlist.removeAll( this.domElement, this._arrowClasses );
+		goog.dom.classlist.add( this.domElement, 'arrow-bottom' );
 
 		isFit = true;
 
@@ -60073,7 +60021,8 @@ feng.views.helpers.Helper.prototype.resolveVerticalPosition = function( box ) {
 
 		this._y = box.bottom;
 
-		goog.dom.classlist.addRemove( this.domElement, this._arrowClasses, 'arrow-top' );
+		goog.dom.classlist.removeAll( this.domElement, this._arrowClasses );
+		goog.dom.classlist.add( this.domElement, 'arrow-top' );
 
 		isFit = true;
 	}
@@ -60977,7 +60926,7 @@ feng.views.sections.controls.ObjectSelector = function(domElement){
   this._downObject = null;
   this._isEnabled = false;
   this._startTime = 0;
-  this._duration = 600;
+  this._duration = 500;
 
   this._callbacks = {};
 
@@ -61117,6 +61066,10 @@ feng.views.sections.controls.ObjectSelector.prototype.startSelect = function () 
 
 feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = function () {
 
+	if(this._view3d.arms.hasObject()) {
+		return false;
+	}
+	
 	var mouseX = this._mouseMovePosition.x;
 	var mouseY = this._mouseMovePosition.y;
 
@@ -61126,13 +61079,31 @@ feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = functio
 	
 	var isIntersected = (intersects.length > 0);
 
-	this._intersectedObject = isIntersected ? intersects[0].object : null;
+	if(isIntersected) {
 
-	goog.dom.classlist.enable(this._renderEl, 'help', isIntersected);
+		var intersectedObject = intersects[0].object;
+
+		if(this._intersectedObject !== intersectedObject) {
+
+			this._intersectedObject = intersectedObject;
+
+			this._view3d.fx.selectEffect.animateIn( this._intersectedObject.view3dObject );
+		}
+
+	}else {
+
+		this._intersectedObject = null;
+
+		this._view3d.fx.selectEffect.animateOut();
+	}
 };
 
 
 feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e ) {
+
+	if(this._view3d.arms.hasObject()) {
+		return false;
+	}
 
 	this._selectedObject = null;
 
@@ -61728,7 +61699,7 @@ feng.views.sections.controls.DropButton.prototype.activate = function( movableOb
 
 	this._eventHandler.listen(this.domElement, 'click', this.onClick, false, this);
 
-	goog.fx.anim.registerAnimation( this );
+	TweenMax.ticker.addEventListener("tick", this.update, this);
 };
 
 
@@ -61742,7 +61713,7 @@ feng.views.sections.controls.DropButton.prototype.deactivate = function(){
 
   goog.dom.classlist.enable( this.domElement, 'hidden', true );
 
-  goog.fx.anim.unregisterAnimation( this );
+  TweenMax.ticker.removeEventListener("tick", this.update, this);
 };
 
 
@@ -61780,7 +61751,7 @@ feng.views.sections.controls.DropButton.prototype.onClick = function(e){
 };
 
 
-feng.views.sections.controls.DropButton.prototype.onAnimationFrame = function(now) {
+feng.views.sections.controls.DropButton.prototype.update = function() {
 
   var camera = this._cameraController.activeCamera;
   var viewSize = this._viewSize;
@@ -62031,7 +62002,7 @@ feng.views.sections.controls.Tooltips.prototype.activate = function(){
 
   this.updateDetectObjects();
 
-  goog.fx.anim.registerAnimation( this );
+  TweenMax.ticker.addEventListener("tick", this.update, this);
 };
 
 
@@ -62045,7 +62016,7 @@ feng.views.sections.controls.Tooltips.prototype.deactivate = function(){
     goog.dom.classlist.addRemove( tooltip, 'fadeIn', 'fadeOut' );
   });
 
-  goog.fx.anim.unregisterAnimation( this );
+  TweenMax.ticker.removeEventListener("tick", this.update, this);
 };
 
 
@@ -62079,22 +62050,28 @@ feng.views.sections.controls.Tooltips.prototype.updateDetectObjects = function()
 
 feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
 
+  if(this._view3d.arms.hasObject()) {
+    return false;
+  }
+  
   var control = this._view3d.modeController.control;
   var controlPosition = control.getPosition();
   var controlDirection = control.getForwardVector( true );
   var thresholdDot = Math.cos( THREE.Math.degToRad(45) );
 
-  goog.array.forEach( this._tooltipObjects, function(object) {
+  var i, l = this._tooltipObjects.length;
 
-    var id = object.id;
+  for(i = 0; i < l; i++) {
 
-    var tooltip = this._currentTooltips[ id ];
+    var object = this._tooltipObjects[i];
+
+    var tooltip = this._currentTooltips[ object.id ];
 
     var objectCenter = object.getCenter();
     var direction = this._rayDirection.subVectors( objectCenter, controlPosition ).normalize();
     this._raycaster.set( controlPosition, direction );
 
-    var objectDirection = objectCenter.clone().sub( controlPosition ).normalize();
+    var objectDirection = objectCenter.sub( controlPosition ).normalize();
     var dot = objectDirection.dot( controlDirection );
 
     if(dot >= thresholdDot) {
@@ -62104,18 +62081,13 @@ feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
     }else {
 
       goog.dom.classlist.enable( tooltip, 'hidden', true );
-      return;
+      continue;
     }
-    
-    var intersects = this._raycaster.intersectObjects( this._detectObjects );
 
-    var shouldShow = (intersects.length > 0 && 
-      (intersects[0].object.view3dObject === object || intersects[0].object.parent.view3dObject === object || goog.array.contains(intersects[0].object.children, object.object3d))
-      );
+    var shouldShow = feng.utils.ThreeUtils.isFirstIntersectedObject( this._detectObjects, object.object3d, object.getProxyBox(), this._raycaster );
 
     goog.dom.classlist.enable( tooltip, 'hidden', !shouldShow );
-
-  }, this);
+  }
 };
 
 
@@ -62172,7 +62144,7 @@ feng.views.sections.controls.Tooltips.prototype.onModeChange = function(e){
 };
 
 
-feng.views.sections.controls.Tooltips.prototype.onAnimationFrame = function(now) {
+feng.views.sections.controls.Tooltips.prototype.update = function() {
 
   var camera = this._cameraController.activeCamera;
   var viewSize = this._viewSize;
@@ -62531,21 +62503,35 @@ feng.views.sections.controls.Reminder.prototype.nextHint = function(){
 };
 
 
-feng.views.sections.controls.Reminder.prototype.gotoHintByTip = function( tipId ){
-
-	var domIndex = goog.array.findIndex(this._hintEls, function(el, index) {
-		if(el.getAttribute('data-tip-id') === tipId) {
-			return true;
-		}
-	});
+feng.views.sections.controls.Reminder.prototype.gotoResolvedHint = function(){
 
 	if(this._hintEl) {
 		goog.dom.classlist.remove( this._hintEl, 'shown' );
 	}
 
-	this._hintEl = this._hintEls[ domIndex ];
+	this._hintEl = goog.array.find(this._hintEls, function(el) {
+		return (el.getAttribute('data-view-id') === this._view3d.id);
+	}, this);
 
 	goog.dom.classlist.add( this._hintEl, 'shown' );
+
+	this._prevEl.disabled = this._nextEl.disabled = true;
+};
+
+
+feng.views.sections.controls.Reminder.prototype.gotoHintByTip = function( tipId ){
+
+	if(this._hintEl) {
+		goog.dom.classlist.remove( this._hintEl, 'shown' );
+	}
+
+	this._hintEl = goog.array.find(this._hintEls, function(el) {
+		return (el.getAttribute('data-tip-id') === tipId);
+	});
+
+	goog.dom.classlist.add( this._hintEl, 'shown' );
+
+	this._prevEl.disabled = this._nextEl.disabled = false;
 };
 
 
@@ -62560,7 +62546,14 @@ feng.views.sections.controls.Reminder.prototype.showHint = function( tipId ){
 		this._isHintShown = true;
 	}
 
-	this.gotoHintByTip( tipId );
+	if(tipId) {
+
+		this.gotoHintByTip( tipId );
+
+	}else {
+
+		this.gotoResolvedHint();
+	}
 
 	this._hideHintDelay.start();
 
@@ -62619,10 +62612,7 @@ feng.views.sections.controls.Reminder.prototype.onMouseDown = function(e){
 	}else {
 
 		var tip = this.getCurrentTip();
-		
-		if(tip) {
-			this.showHint( tip.id );
-		}
+		this.showHint( tip ? tip.id : null );
 	}
 };
 
@@ -62649,11 +62639,10 @@ feng.views.sections.controls.Reminder.prototype.onMouseOut = function(e){
 
 feng.views.sections.controls.Reminder.prototype.onHintTick = function(e){
 
-	var tip = this.getCurrentTip();
+	if(!this._hasOtherWidgetShown) {
 
-	if(tip && !this._hasOtherWidgetShown) {
-
-		this.showHint( tip.id );
+		var tip = this.getCurrentTip();
+		this.showHint( tip ? tip.id : null );
 	}
 };
 
@@ -63543,7 +63532,8 @@ feng.views.sections.House = function(){
 		id: sectionId,
 		tips: tips,
 		tipsOfViews: tipsOfViews,
-		token: feng.controllers.NavigationController.Token
+		token: feng.controllers.NavigationController.Token,
+		copy: feng.models.Preload.getInstance().getAsset('global.fengshui-data')
 	};
 
   goog.base(this, template, templateData);
@@ -63580,7 +63570,8 @@ feng.views.sections.Studio = function(){
 		id: sectionId,
 		tips: tips,
 		tipsOfViews: tipsOfViews,
-		token: feng.controllers.NavigationController.Token
+		token: feng.controllers.NavigationController.Token,
+		copy: feng.models.Preload.getInstance().getAsset('global.fengshui-data')
 	};
 
   goog.base(this, template, templateData);
@@ -64730,7 +64721,7 @@ goog.require('feng.apps.PathEdit');
 /**
  * @expose
  */
-feng.version = '12.10.14';
+feng.version = '1.18.15';
 
 
 feng.Config = {};

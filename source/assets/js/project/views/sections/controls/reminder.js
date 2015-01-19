@@ -190,7 +190,7 @@ feng.views.sections.controls.Reminder.prototype.getCharacterAnimations = functio
 
 		var numRaiseFrames = raiseKeys.length;
 
-		var raiseTweener = TweenMax.to(raiseProp, numRaiseFrames/30, {
+		var raiseTweener = TweenMax.to(raiseProp, numRaiseFrames/30 * .5, {
 			frame: numRaiseFrames - 1,
 			'ease': Linear.easeNone,
 			'paused': true,

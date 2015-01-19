@@ -151,7 +151,7 @@
  * @param goTipToken the href to go tip
  */
 {template .TipTooltip}
-<a class="tooltip fadeOut tip locked" data-id="{ $object.id }" data-tip-id="{ $object.tip.id }" href="{ $goTipToken }">
+<a class="tooltip fadeOut tip locked" data-id="{ $object.id }" data-tip-id="{ $object.tip.id }" href="{ $goTipToken }" draggable="false">
 	<div class="bar">
 		<div class="symbol">
 			<div class="inner">
@@ -170,7 +170,7 @@
  * @param gateway the gateway object
  */
 {template .GatewayTooltip}
-<a class="tooltip fadeOut gateway" data-id="{ $gateway.gatewayId }">
+<a class="tooltip fadeOut gateway" data-id="{ $gateway.gatewayId }" draggable="false">
 	<div class="bar">
 		<div class="symbol">
 			<div class="inner">

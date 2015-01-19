@@ -137,9 +137,21 @@ feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
 
 	this._activeObject.onCameraOut();
 
-	feng.navigationController.replaceToken("");
+	// set the only object to unlock next
+	var providedTip = this._activeObject.tip.getProvidedTip();
+
+	if(providedTip) {
+
+		this._view3d.onlyObjectToUnlock = providedTip.unlocked ? null : this._view3d.getObjectByTip( providedTip );
+
+	}else {
+
+		this._view3d.onlyObjectToUnlock = (this._activeObject.hasPicked && !this._activeObject.hasDropped) ? this._activeObject : null;
+	}
 
 	//
+	feng.navigationController.replaceToken("");
+
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,

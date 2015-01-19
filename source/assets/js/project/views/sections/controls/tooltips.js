@@ -184,7 +184,12 @@ feng.views.sections.controls.Tooltips.prototype.updateDetectObjects = function()
 feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
 
   if(this._view3d.arms.hasObject()) {
-    return false;
+
+    goog.object.forEach(this._currentTooltips, function(tooltip) {
+      goog.dom.classlist.enable( tooltip, 'hidden', true );
+    });
+
+    return;
   }
   
   var control = this._view3d.modeController.control;

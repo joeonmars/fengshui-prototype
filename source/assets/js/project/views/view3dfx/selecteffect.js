@@ -97,6 +97,9 @@ feng.views.view3dfx.SelectEffect = function(){
 
     this._animTarget = new goog.fx.anim.Animated();
     this._animTarget.onAnimationFrame = goog.bind(this.onAnimationFrame, this);
+
+    //
+    this._object = null;
 };
 goog.inherits(feng.views.view3dfx.SelectEffect, THREE.Object3D);
 
@@ -117,7 +120,16 @@ feng.views.view3dfx.SelectEffect.prototype.deactivate = function() {
 
 feng.views.view3dfx.SelectEffect.prototype.animateIn = function( object ) {
 
-	var boundingSphere = object.getBoundingSphere();
+	if(this._object === object) {
+		
+		return;
+
+	}else {
+
+		this._object = object;
+	}
+
+	var boundingSphere = this._object.getBoundingSphere();
 
 	var position = boundingSphere.center;
 	var scale = boundingSphere.radius;
@@ -153,6 +165,8 @@ feng.views.view3dfx.SelectEffect.prototype.animateOut = function( delay ) {
 	if(this._animateOutTweener && this._animateOutTweener.isActive()) {
 		return;
 	}
+
+	this._object = null;
 
 	var scale = this.scale.x * .5;
 
