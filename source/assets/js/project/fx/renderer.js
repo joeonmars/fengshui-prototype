@@ -22,9 +22,6 @@ feng.fx.Renderer = function(canvas, scene, camera){
 	this._renderer.autoClear = false;
 	this._renderer.setClearColor( 0xffffff, 0 );
 
-	this._renderer.shadowMapEnabled = true; // WIP: comment this off to resolve WEBGL warnings
-	this._renderer.shadowMapType = THREE.PCFSoftShadowMap;
-
 	// callbacks
 	this.onBeforeRender = null;
 	this.onBeforeRenderBlur = null;

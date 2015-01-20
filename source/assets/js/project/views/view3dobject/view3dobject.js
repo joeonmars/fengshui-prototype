@@ -52,9 +52,6 @@ feng.views.view3dobject.View3DObject.prototype.registerToView3D = function(){
 
 feng.views.view3dobject.View3DObject.prototype.init = function(){
 
-  this.object3d.castShadow = this.data.castShadow || false;
-  this.object3d.receiveShadow = this.data.receiveShadow || false;
-
   if(this._isGlass) {
 
     var shader = THREE.FresnelShader;

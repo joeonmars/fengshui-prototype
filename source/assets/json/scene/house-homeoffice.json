@@ -592,6 +592,33 @@
 					"radius": 53.86286834728867
 				}
 			}
+		},
+		{
+			"uuid": "FC2B7D0C-3F24-4CEC-B6C8-0E46EE71E891",
+			"type": "BufferGeometry",
+			"data": {
+				"attributes": {
+					"position": {
+						"itemSize": 3,
+						"type": "Float32Array",
+						"array": [750,0,-750,-750,0,-750,-750,0,750,750,0,750,750,0,-750,-750,0,750]
+					},
+					"uv": {
+						"itemSize": 2,
+						"type": "Float32Array",
+						"array": [1,0,1,1,0,1,0,0,1,0,0,1]
+					},
+					"normal": {
+						"itemSize": 3,
+						"type": "Float32Array",
+						"array": [0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0]
+					}
+				},
+				"boundingSphere": {
+					"center": [0,0,0],
+					"radius": 1060.6601717798212
+				}
+			}
 		}],
 	"materials": [
 		{
@@ -973,6 +1000,13 @@
 			"color": 16777215,
 			"ambient": 16777215,
 			"emissive": 0
+		},
+		{
+			"uuid": "EC09F5C5-FF31-45AF-A197-A8974FFFA925",
+			"type": "MeshBasicMaterial",
+			"color": 16777215,
+			"blending": 4,
+			"transparent": true
 		}],
 	"object": {
 		"uuid": "A7FBC669-F0D3-4273-A778-B164EA13E2CE",
@@ -1427,6 +1461,14 @@
 				"geometry": "5ABD0746-D22B-4884-8D19-D2BCFBECA529",
 				"material": "C1A04612-8E29-4274-BB16-ED73D7372F3A",
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,107.51000213623047,0.6380000114440918,-75.44000244140625,1]
+			},
+			{
+				"uuid": "AC4864D5-C0B6-4EB5-B7F4-6DEB7CEAB4F7",
+				"type": "Mesh",
+				"name": "ground",
+				"geometry": "FC2B7D0C-3F24-4CEC-B6C8-0E46EE71E891",
+				"material": "EC09F5C5-FF31-45AF-A197-A8974FFFA925",
+				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,-0.5,0,1]
 			}]
 	}
 }

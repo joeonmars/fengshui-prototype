@@ -32655,6 +32655,7 @@ feng.models.Preload = function(){
 			},
 			'livingroom': {
 				'scene-data': 'json/scene/studio-livingroom.json',
+				'ground-shadow-texture': 'images/texture/studio/livingroom/ground-shadow.jpg',
 				'floor-texture': 'images/texture/studio/livingroom/floor.jpg',
 				'wall-texture': 'images/texture/studio/livingroom/wall.jpg',
 				'wall-outer-texture': 'images/texture/studio/livingroom/wall-outer.jpg',
@@ -32731,6 +32732,7 @@ feng.models.Preload = function(){
 			},
 			'bathroom': {
 				'scene-data': 'json/scene/studio-bathroom.json',
+				'ground-shadow-texture': 'images/texture/studio/bathroom/ground-shadow.jpg',
 				'floor-texture': 'images/texture/studio/bathroom/floor.jpg',
 				'ceiling-texture': 'images/texture/studio/bathroom/ceiling.jpg',
 				'wall-texture': 'images/texture/studio/bathroom/wall.jpg',
@@ -32797,6 +32799,7 @@ feng.models.Preload = function(){
 			},
 			'livingroom': {
 				'scene-data': 'json/scene/house-livingroom.json',
+				'ground-shadow-texture': 'images/texture/house/livingroom/ground-shadow.jpg',
 				'wall-texture': 'images/texture/house/livingroom/wall.jpg',
 				'wall-outer-texture': 'images/texture/house/livingroom/wall-outer.jpg',
 				'stairways-texture': 'images/texture/house/livingroom/stairways.jpg',
@@ -32857,6 +32860,7 @@ feng.models.Preload = function(){
 			},
 			'corridor': {
 				'scene-data': 'json/scene/house-corridor.json',
+				'ground-shadow-texture': 'images/texture/house/corridor/ground-shadow.jpg',
 				'ceiling-texture': 'images/texture/house/corridor/ceiling.jpg',
 				'ceiling-lamp-texture': 'images/texture/house/corridor/ceiling-lamp.jpg',
 				'ceiling-lamps-texture': 'images/texture/house/corridor/ceiling-lamps.jpg',
@@ -32887,6 +32891,7 @@ feng.models.Preload = function(){
 			},
 			'boysroom': {
 				'scene-data': 'json/scene/house-boysroom.json',
+				'ground-shadow-texture': 'images/texture/house/boysroom/ground-shadow.jpg',
 				'floor-texture': 'images/texture/house/boysroom/floor.jpg',
 				'ceiling-texture': 'images/texture/house/boysroom/ceiling.jpg',
 				'wall-texture': 'images/texture/house/boysroom/wall.jpg',
@@ -32949,6 +32954,7 @@ feng.models.Preload = function(){
 			},
 			'homeoffice': {
 				'scene-data': 'json/scene/house-homeoffice.json',
+				'ground-shadow-texture': 'images/texture/house/homeoffice/ground-shadow.jpg',
 				'floor-texture': 'images/texture/house/homeoffice/floor.jpg',
 				'ceiling-texture': 'images/texture/house/homeoffice/ceiling.jpg',
 				'wall-texture':	'images/texture/house/homeoffice/wall.jpg',
@@ -33951,7 +33957,7 @@ feng.templates.common.Disc = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.common.PrimaryButton = function(opt_data, opt_ignored) {
-  return (opt_data.href) ? '<a class="primary-button ' + opt_data.classname + '" href="' + opt_data.href + '">' + ((opt_data.icon) ? '<span class="icon ' + opt_data.icon + '"></span>' : '') + opt_data.text + '</a>' : '<button class="primary-button ' + opt_data.classname + '">' + ((opt_data.icon) ? '<span class="icon ' + opt_data.icon + '"></span>' : '') + opt_data.text + '</button>';
+  return (opt_data.href) ? '<a class="primary-button ' + opt_data.classname + '" href="' + opt_data.href + '" draggable="false">' + ((opt_data.icon) ? '<span class="icon ' + opt_data.icon + '"></span>' : '') + opt_data.text + '</a>' : '<button class="primary-button ' + opt_data.classname + '">' + ((opt_data.icon) ? '<span class="icon ' + opt_data.icon + '"></span>' : '') + opt_data.text + '</button>';
 };
 
 
@@ -34115,7 +34121,7 @@ feng.templates.controls.Reminder = function(opt_data, opt_ignored) {
   var keyListLen351 = keyList351.length;
   for (var keyIndex351 = 0; keyIndex351 < keyListLen351; keyIndex351++) {
     var keyData351 = keyList351[keyIndex351];
-    output += '<li data-view-id="' + keyData351 + '">' + opt_data.copy[keyData351] + '</li>';
+    output += '<li data-view-id="' + keyData351 + '" class="resolved">' + opt_data.copy[keyData351] + '</li>';
   }
   output += '</ul><button class="next icon icon-next"></button></div></div></div>';
   return output;
@@ -34151,7 +34157,7 @@ feng.templates.controls.DropButton = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.controls.TipTooltip = function(opt_data, opt_ignored) {
-  return '<a class="tooltip fadeOut tip locked" data-id="' + opt_data.object.id + '" data-tip-id="' + opt_data.object.tip.id + '" href="' + opt_data.goTipToken + '"><div class="bar"><div class="symbol"><div class="inner"><div class="icon icon-magnifier"></div><div class="icon icon-' + opt_data.object.tip.icon + '"></div></div></div><h6>' + opt_data.object.tip.name + '</h6></div></a>';
+  return '<a class="tooltip fadeOut tip locked" data-id="' + opt_data.object.id + '" data-tip-id="' + opt_data.object.tip.id + '" href="' + opt_data.goTipToken + '" draggable="false"><div class="bar"><div class="symbol"><div class="inner"><div class="icon icon-magnifier"></div><div class="icon icon-' + opt_data.object.tip.icon + '"></div></div></div><h6>' + opt_data.object.tip.name + '</h6></div></a>';
 };
 
 
@@ -34162,7 +34168,7 @@ feng.templates.controls.TipTooltip = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.controls.GatewayTooltip = function(opt_data, opt_ignored) {
-  return '<a class="tooltip fadeOut gateway" data-id="' + opt_data.gateway.gatewayId + '"><div class="bar"><div class="symbol"><div class="inner"><div class="icon icon-magnifier"></div><div class="icon ' + ((opt_data.gateway.isStairs == true) ? 'icon-stairs' : 'icon-door') + '"></div></div></div><h6>To ' + opt_data.gateway.viewId + '</h6></div></a>';
+  return '<a class="tooltip fadeOut gateway" data-id="' + opt_data.gateway.gatewayId + '" draggable="false"><div class="bar"><div class="symbol"><div class="inner"><div class="icon icon-magnifier"></div><div class="icon ' + ((opt_data.gateway.isStairs == true) ? 'icon-stairs' : 'icon-door') + '"></div></div></div><h6>To ' + opt_data.gateway.viewId + '</h6></div></a>';
 };
 
 
@@ -34996,7 +35002,6 @@ feng.models.View3D.Data = {
 				Class: "gateway",
 				viewid: "livingroom",
 				gatewayid: "studio-door",
-				castShadow: true,
 				toHome: true,
 				isEntry: true,
 				inversed: true,
@@ -35007,6 +35012,9 @@ feng.models.View3D.Data = {
 					rotation: new THREE.Euler(0, -Math.PI/2, 0)
 				},
 				texture: "studio.livingroom.studio-door-texture"
+			},
+			'ground': {
+				texture: 'studio.livingroom.ground-shadow-texture'
 			},
 			'glamour-photo': {
 				Class: 'pictures',
@@ -35023,14 +35031,12 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.studio-door-handle-texture"
 			},
 			'studio-door-frame': {
-				castShadow: true,
 				texture: "studio.livingroom.studio-door-frame-texture"
 			},
 			'bathroom-door': {
 				Class: "gateway",
 				viewid: "bathroom",
 				gatewayid: "bathroom-door",
-				castShadow: true,
 				openSound: 'door-open',
 				closeSound: 'door-close',
 				origin: {
@@ -35044,11 +35050,9 @@ feng.models.View3D.Data = {
 				texture: "studio.livingroom.wall-texture"
 			},
 			'wall-outer':	{
-				castShadow: true,
 				texture: "studio.livingroom.wall-outer-texture"
 			},
 			'ceiling':	{
-				castShadow: true,
 				texture: "studio.livingroom.ceiling-texture"
 			},
 			'ceiling-lamp-1':	{
@@ -35127,7 +35131,6 @@ feng.models.View3D.Data = {
 			},
 			'fruitplate':	{
 				Class: 'fruitplate',
-				receiveShadow: true,
 				camera: {
 					position: new THREE.Vector3(-84, 80, -87),
 					rotation: new THREE.Euler(-0.59, 2.02, 0.00, 'YXZ'),
@@ -35143,7 +35146,6 @@ feng.models.View3D.Data = {
 			},
 			'dining-chair':	{
 				Class: "movable",
-				castShadow: true,
 				texture: "studio.livingroom.dining-chair-texture",
 				position: new THREE.Vector3(-47.69, 0, -54.87),
 				rotation: new THREE.Euler(0, 0, 0),
@@ -35177,7 +35179,6 @@ feng.models.View3D.Data = {
 			},
 			'book-shelf':	{
 				collidable: true,
-				castShadow: true,
 				texture: "studio.livingroom.book-shelf-texture"
 			},
 			'kitchen-shelf':	{
@@ -35253,7 +35254,6 @@ feng.models.View3D.Data = {
 			},
 			'refrigerator':	{
 				collidable: true,
-				receiveShadow: true,
 				texture: "studio.livingroom.refrigerator-texture"
 			},
 			'refrigerator-stuff': {
@@ -35261,7 +35261,6 @@ feng.models.View3D.Data = {
 			},
 			'refrigerator-door': {
 				Class: "refrigerator",
-				receiveShadow: true,
 				texture: "studio.livingroom.refrigerator-door-texture",
 				camera: {
 					position: new THREE.Vector3(-110, 80, -120),
@@ -35289,19 +35288,18 @@ feng.models.View3D.Data = {
 		},
 		'bathroom': {
 			'floor': {
-				texture: "studio.bathroom.floor-texture",
-				receiveShadow: true
+				texture: "studio.bathroom.floor-texture"
+			},
+			'ground': {
+				texture: 'studio.bathroom.ground-shadow-texture'
 			},
 			'wall':	{
-				castShadow: true,
 				texture: "studio.bathroom.wall-texture"
 			},
 			'wall-outer':	{
-				castShadow: true,
 				texture: "studio.bathroom.wall-outer-texture"
 			},
 			'door-frame':	{
-				castShadow: true,
 				texture: "studio.bathroom.door-frame-texture"
 			},
 			'ceiling':	{
@@ -35379,7 +35377,6 @@ feng.models.View3D.Data = {
 			},
 			'closet': {
 				Class: "closet",
-				receiveShadow: true,
 				camera: {
 					position: new THREE.Vector3(27, 73, -52),
 					rotation: new THREE.Euler(0.07, 1.57, 0.00, 'YXZ'),
@@ -35436,7 +35433,6 @@ feng.models.View3D.Data = {
 				Class: "gateway",
 				viewid: "livingroom",
 				gatewayid: "bathroom-door",
-				castShadow: true,
 				isEntry: true,
 				openSound: 'door-open',
 				closeSound: 'door-close',
@@ -35454,7 +35450,6 @@ feng.models.View3D.Data = {
 				Class: "gateway",
 				viewid: "livingroom",
 				gatewayid: "livingroom-door",
-				castShadow: true,
 				toHome: true,
 				isEntry: true,
 				openSound: 'entry-open',
@@ -35464,6 +35459,9 @@ feng.models.View3D.Data = {
 					rotation: new THREE.Euler(0, Math.PI/2, 0)
 				},
 				texture: "house.livingroom.livingroom-door-texture"
+			},
+			'ground': {
+				texture: "house.livingroom.ground-shadow-texture"
 			},
 			'stairways-door': {
 				Class: "gateway",
@@ -35488,19 +35486,15 @@ feng.models.View3D.Data = {
 				texture: "house.livingroom.door-frame-texture"
 			},
 			'floor': {
-				receiveShadow: true,
 				texture: "house.livingroom.floor-texture"
 			},
 			'wall':	{
-				castShadow: true,
 				texture: "house.livingroom.wall-texture"
 			},
 			'wall-outer':	{
-				castShadow: true,
 				texture: "house.livingroom.wall-outer-texture"
 			},
 			'ceiling':	{
-				castShadow: true,
 				texture: "house.livingroom.ceiling-texture"
 			},
 			'ceiling-lamp-1':	{
@@ -35533,7 +35527,6 @@ feng.models.View3D.Data = {
 			},
 			'knife': {
 				Class: "knife",
-				castShadow: true,
 				texture: "house.livingroom.knife-on-cabinet-texture",
 				position: new THREE.Vector3(-6.87, -2.21, 10.82),
 				rotation: new THREE.Euler(0, 0, 0),
@@ -35552,7 +35545,6 @@ feng.models.View3D.Data = {
 				texture: "house.livingroom.kitchen-stuff-texture"
 			},
 			'windows': {
-				castShadow: true,
 				texture: "house.livingroom.windows-texture"
 			},
 			'windowsill-stuff': {
@@ -35665,7 +35657,6 @@ feng.models.View3D.Data = {
 				glass: true
 			},
 			'window-blinds': {
-				castShadow: true,
 				texture: "house.livingroom.window-blinds-texture"
 			},
 			'cupboard': {
@@ -35687,8 +35678,10 @@ feng.models.View3D.Data = {
 			}
 		},
 		'corridor': {
+			'ground': {
+				texture: "house.corridor.ground-shadow-texture"
+			},
 			'floor': {
-				receiveShadow: true,
 				texture: "house.corridor.floor-texture"
 			},
 			'floor-2': {
@@ -35745,7 +35738,6 @@ feng.models.View3D.Data = {
 				Class: "gateway",
 				viewid: "boysroom",
 				gatewayid: "boysroom-door",
-				castShadow: true,
 				openSound: 'door-open',
 				closeSound: 'door-close',
 				origin: {
@@ -35758,7 +35750,6 @@ feng.models.View3D.Data = {
 				Class: "gateway",
 				viewid: "homeoffice",
 				gatewayid: "homeoffice-door",
-				castShadow: true,
 				openSound: 'door-open',
 				closeSound: 'door-close',
 				origin: {
@@ -35790,22 +35781,18 @@ feng.models.View3D.Data = {
 				tipKey: 'house.corridor.cat'
 			},
 			'wall':	{
-				castShadow: true,
 				texture: "house.corridor.wall-texture"
 			},
 			'wall-outer':	{
-				castShadow: true,
 				texture: "house.corridor.wall-outer-texture"
 			},
 			'door-frames':	{
 				texture: "house.corridor.door-frames-texture"
 			},
 			'ceiling':	{
-				castShadow: true,
 				texture: "house.corridor.ceiling-texture"
 			},
 			'corridor-window':	{
-				castShadow: true,
 				texture: "house.corridor.corridor-window-texture"
 			},
 			'corridor-stuff':	{
@@ -35816,19 +35803,19 @@ feng.models.View3D.Data = {
 			}
 		},
 		'boysroom': {
+			'ground': {
+				texture: 'house.boysroom.ground-shadow-texture'
+			},
 			'floor': {
 				texture: "house.boysroom.floor-texture"
 			},
 			'wall':	{
-				castShadow: true,
 				texture: "house.boysroom.wall-texture"
 			},
 			'wall-outer':	{
-				castShadow: true,
 				texture: "house.boysroom.wall-outer-texture"
 			},
 			'ceiling':	{
-				castShadow: true,
 				texture: "house.boysroom.ceiling-texture"
 			},
 			'cabinet':	{
@@ -35837,7 +35824,6 @@ feng.models.View3D.Data = {
 			},
 			'bed': {
 				collidable: true,
-				receiveShadow: true,
 				texture: "house.boysroom.bed-texture"
 			},
 			'big-frame': {
@@ -35929,7 +35915,6 @@ feng.models.View3D.Data = {
 				Class: "gateway",
 				viewid: "corridor",
 				gatewayid: "boysroom-door",
-				castShadow: true,
 				isEntry: true,
 				openSound: 'door-open',
 				closeSound: 'door-close',
@@ -35955,7 +35940,6 @@ feng.models.View3D.Data = {
 				texture: "house.boysroom.blue-reading-lamp-texture"
 			},
 			'bedding': {
-				receiveShadow: true,
 				texture: "house.boysroom.bedding-texture"
 			},
 			'chalkboard': {
@@ -35980,7 +35964,6 @@ feng.models.View3D.Data = {
 			},
 			'bear': {
 				Class: "bear",
-				castShadow: true,
 				texture: "house.boysroom.bear-in-drawer-texture",
 				position: new THREE.Vector3(-50.04, 33.70, -27.77),
 				rotation: new THREE.Euler(0, -1.57, 0),
@@ -36008,26 +35991,25 @@ feng.models.View3D.Data = {
 			}
 		},
 		'homeoffice': {
+			'ground': {
+				texture: "house.homeoffice.ground-shadow-texture"
+			},
 			'floor': {
-				texture: "house.homeoffice.floor-texture",
-				receiveShadow: true
+				texture: "house.homeoffice.floor-texture"
 			},
 			'ceiling': {
 				texture: "house.homeoffice.ceiling-texture"
 			},
 			'wall':	{
-				castShadow: true,
 				texture: "house.homeoffice.wall-texture"
 			},
 			'wall-outer':	{
-				castShadow: true,
 				texture: "house.homeoffice.wall-outer-texture"
 			},
 			'homeoffice-door': {
 				Class: "gateway",
 				viewid: "corridor",
 				gatewayid: "homeoffice-door",
-				castShadow: true,
 				isEntry: true,
 				openSound: 'door-open',
 				closeSound: 'door-close',
@@ -36040,7 +36022,6 @@ feng.models.View3D.Data = {
 			'swivel-chair': {
 				Class: "movable",
 				collidable: true,
-				castShadow: true,
 				texture: "house.homeoffice.swivel-chair-texture",
 				position: new THREE.Vector3(-40, 0, 9),
 				rotation: new THREE.Euler(0, 0, 0),
@@ -36054,7 +36035,6 @@ feng.models.View3D.Data = {
 			'setsquare': {
 				Class: "movable",
 				collidable: true,
-				castShadow: true,
 				texture: "house.homeoffice.setsquare-texture",
 				tipKey: 'house.homeoffice.setsquare',
 				position: new THREE.Vector3(-36.95, 107.05, 137.10),
@@ -36286,9 +36266,6 @@ feng.views.view3dobject.View3DObject.prototype.registerToView3D = function(){
 
 
 feng.views.view3dobject.View3DObject.prototype.init = function(){
-
-  this.object3d.castShadow = this.data.castShadow || false;
-  this.object3d.receiveShadow = this.data.receiveShadow || false;
 
   if(this._isGlass) {
 
@@ -41537,9 +41514,21 @@ feng.controllers.controls.CloseUpControls.prototype.close = function ( e ) {
 
 	this._activeObject.onCameraOut();
 
-	feng.navigationController.replaceToken("");
+	// set the only object to unlock next
+	var providedTip = this._activeObject.tip.getProvidedTip();
+
+	if(providedTip) {
+
+		this._view3d.onlyObjectToUnlock = providedTip.unlocked ? null : this._view3d.getObjectByTip( providedTip );
+
+	}else {
+
+		this._view3d.onlyObjectToUnlock = (this._activeObject.hasPicked && !this._activeObject.hasDropped) ? this._activeObject : null;
+	}
 
 	//
+	feng.navigationController.replaceToken("");
+
 	this.dispatchEvent({
 		type: feng.events.EventType.CHANGE,
 		mode: feng.controllers.view3d.ModeController.Mode.TRANSITION,
@@ -42396,8 +42385,6 @@ feng.controllers.controls.WalkControls.prototype.start = function ( ev ) {
 	if(!coordinates) {
 		
 		var matrixData = feng.pathfinder.getMatrixData( this._view3d.getMatrixId() );
-		console.log(coordinates, matrixId, start, end, feng.pathfinder.getTileByPosition(start, matrixData), feng.pathfinder.getTileByPosition(end, matrixData));
-		
 		this.bounceBack( nextMode );
 		return;
 	}
@@ -43187,26 +43174,39 @@ goog.require('feng.views.view3dobject.View3DObject');
 feng.views.view3dobject.DesignPlane = function( view3d ){
 
   var planeGeometry = new THREE.PlaneBufferGeometry( 100000, 100000, 1, 1 );
-  var planeMaterial = new THREE.MeshLambertMaterial( {
+  var planeMaterial = new THREE.MeshBasicMaterial({
     transparent: true
-  } );
-  planeMaterial.shading = THREE.FlatShading;
+  });
 
-  var plane = new THREE.Mesh( planeGeometry, planeMaterial );
-  plane.name = 'design-plane';
-  plane.rotation.x = -Math.PI/2;
-  plane.position.y = -.5;
+  this._plane = new THREE.Mesh( planeGeometry, planeMaterial );
+  this._plane.name = 'design-plane';
+  this._plane.rotation.x = -Math.PI/2;
+  this._plane.position.y = -10;
 
   var data = {
-    receiveShadow: true,
     fog: true
   };
 
-  goog.base( this, plane, data, view3d );
+  var object3d = new THREE.Object3D();
+  object3d.add( this._plane );
+
+  goog.base( this, object3d, data, view3d );
 
   this.opacity = 1;
 };
 goog.inherits(feng.views.view3dobject.DesignPlane, feng.views.view3dobject.View3DObject);
+
+
+feng.views.view3dobject.DesignPlane.prototype.init = function(){
+
+  goog.base(this, 'init');
+
+  var ground = this._view3d.getView3dObject( 'ground' );
+
+  if(ground) {
+    this.object3d.add( ground.object3d );
+  }
+};
 
 
 feng.views.view3dobject.DesignPlane.prototype.createTextures = function(){
@@ -43230,8 +43230,8 @@ feng.views.view3dobject.DesignPlane.prototype.createTextures = function(){
   texture.repeat.set(8000, 8000);
   texture.needsUpdate = true;
 
-  this.object3d.material.map = texture;
-  this.object3d.material.needsUpdate = true;
+  this._plane.material.map = texture;
+  this._plane.material.needsUpdate = true;
 };
 
 
@@ -43239,7 +43239,7 @@ feng.views.view3dobject.DesignPlane.prototype.updateOpacity = function( opt_opac
 
   this.opacity = goog.isNumber(opt_opacity) ? opt_opacity : this.opacity;
 
-  this.object3d.material.opacity = this.opacity;
+  this._plane.material.opacity = this.opacity;
 };goog.provide('feng.views.view3dobject.entities.Computer');
 
 goog.require('feng.views.view3dobject.TipObject');
@@ -43313,9 +43313,6 @@ feng.fx.Renderer = function(canvas, scene, camera){
 	this._renderer.gammaOutput = true;
 	this._renderer.autoClear = false;
 	this._renderer.setClearColor( 0xffffff, 0 );
-
-	this._renderer.shadowMapEnabled = true; // WIP: comment this off to resolve WEBGL warnings
-	this._renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
 	// callbacks
 	this.onBeforeRender = null;
@@ -45368,9 +45365,6 @@ feng.views.view3dobject.Arms.prototype.addItem = function( view3dObject ){
   goog.array.insert( this._items, view3dObject );
 
   var object3d = view3dObject.object3d;
-  //object3d.material.depthTest = false;
-  //object3d.material.depthWrite = false;
-  //object3d.material.transparent = true;
 
   this.object3d.add( object3d );
 
@@ -45384,6 +45378,8 @@ feng.views.view3dobject.Arms.prototype.addItem = function( view3dObject ){
     this._view3d.hud.dropButton.activate( view3dObject );
   }
 
+  this._item = view3dObject;
+
   console.log( 'collected by arms: ' + view3dObject.name );
 };
 
@@ -45393,9 +45389,6 @@ feng.views.view3dobject.Arms.prototype.removeItem = function( view3dObject ){
   goog.array.remove( this._items, view3dObject );
 
   var object3d = view3dObject.object3d;
-  //object3d.material.depthTest = true;
-  //object3d.material.depthWrite = true;
-  //object3d.material.transparent = false;
 
   this.object3d.remove( object3d );
 
@@ -45404,6 +45397,8 @@ feng.views.view3dobject.Arms.prototype.removeItem = function( view3dObject ){
 
     this._view3d.hud.dropButton.deactivate();
   }
+
+  this._item = null;
 
   console.log( 'removed from arms: ' + view3dObject.name );
 };
@@ -45561,6 +45556,9 @@ feng.views.view3dfx.SelectEffect = function(){
 
     this._animTarget = new goog.fx.anim.Animated();
     this._animTarget.onAnimationFrame = goog.bind(this.onAnimationFrame, this);
+
+    //
+    this._object = null;
 };
 goog.inherits(feng.views.view3dfx.SelectEffect, THREE.Object3D);
 
@@ -45581,7 +45579,16 @@ feng.views.view3dfx.SelectEffect.prototype.deactivate = function() {
 
 feng.views.view3dfx.SelectEffect.prototype.animateIn = function( object ) {
 
-	var boundingSphere = object.getBoundingSphere();
+	if(this._object === object) {
+		
+		return;
+
+	}else {
+
+		this._object = object;
+	}
+
+	var boundingSphere = this._object.getBoundingSphere();
 
 	var position = boundingSphere.center;
 	var scale = boundingSphere.radius;
@@ -45617,6 +45624,8 @@ feng.views.view3dfx.SelectEffect.prototype.animateOut = function( delay ) {
 	if(this._animateOutTweener && this._animateOutTweener.isActive()) {
 		return;
 	}
+
+	this._object = null;
 
 	var scale = this.scale.x * .5;
 
@@ -46657,6 +46666,8 @@ feng.views.View3D = function(sectionId, viewId, containerElement, hud, episode){
 	this.designPlane = null;
 	this.skybox = null;
 
+	this.onlyObjectToUnlock = null;
+
 	this.view3dObjects = {};
 	this.interactiveObjects = {};
 	this.tipObjects = {};
@@ -47027,33 +47038,6 @@ feng.views.View3D.prototype.initScene = function() {
 
 	// add fog to scene for fading 45 deg ground plane
 	this.scene.fog = new THREE.FogExp2( 0xd9d9d9, 0.0008 );
-
-	// add directional light for shadow
-	var hemiLight = this.scene.getObjectByName('HemisphereLight');
-	
-	var directionalLightPosition = hemiLight ? hemiLight.position : new THREE.Vector3(200, 200, 200);
-
-	var light = new THREE.DirectionalLight( 0x000000, 1 );
-	light.position.copy( directionalLightPosition );
-	light.target.position.set(0, 0, 0);
-	light.castShadow = true;
-
-	var shadowMapSize = feng.renderSettings.shadowMapSize;
-	light.shadowMapWidth = shadowMapSize;
-	light.shadowMapHeight = shadowMapSize;
-
-	var d = 400;
-	light.shadowCameraLeft = -d;
-	light.shadowCameraRight = d;
-	light.shadowCameraTop = d;
-	light.shadowCameraBottom = -d;
-	light.shadowCameraNear = 2;
-	light.shadowCameraFar = 800;
-
-	light.shadowDarkness = 0.1;
-	//light.shadowCameraVisible = true;
-
-	this.scene.add( light );
 
 	/*
 	 * Classes to be created by external json data
@@ -60928,6 +60912,8 @@ feng.views.sections.controls.ObjectSelector = function(domElement){
   this._startTime = 0;
   this._duration = 500;
 
+  this._isMouseDown = false;
+
   this._callbacks = {};
 
   // a delay to kick off the progress, to differentiate the mouse behavior between a fast click and object selecting
@@ -60978,6 +60964,7 @@ feng.views.sections.controls.ObjectSelector.prototype.activate = function( callb
 
 	this._eventHandler.listen(this._renderEl, 'mousedown', this.onMouseDown, false, this);
 	this._eventHandler.listen(this._renderEl, 'mousemove', this.onMouseMove, false, this);
+	this._eventHandler.listen(this._renderEl, 'mouseup', this.onMouseUp, false, this);
 };
 
 
@@ -60987,7 +60974,11 @@ feng.views.sections.controls.ObjectSelector.prototype.deactivate = function() {
 
   if(!shouldDeactivate) return;
 
+  this._isMouseDown = false;
+
 	this._delay.stop();
+
+	this._mouseMoveThrottle.stop();
 
 	goog.fx.anim.unregisterAnimation( this );
 
@@ -60999,10 +60990,12 @@ feng.views.sections.controls.ObjectSelector.prototype.animateIn = function () {
 
 	TweenMax.fromTo(this.domElement, .25, {
 		'scale': 0,
-		'opacity': 0
+		'opacity': 0,
+		'display': 'none'
 	}, {
 		'scale': 1,
 		'opacity': 1,
+		'display': 'block',
 		'ease': Expo.easeOut
 	});
 
@@ -61013,8 +61006,6 @@ feng.views.sections.controls.ObjectSelector.prototype.animateIn = function () {
 		'scale': 1,
 		'ease': Back.easeOut
 	});
-
-	feng.utils.Utils.setCursor('initial', this._renderEl);
 };
 
 
@@ -61023,18 +61014,17 @@ feng.views.sections.controls.ObjectSelector.prototype.animateOut = function () {
 	TweenMax.to(this.domElement, .25, {
 		'scale': .5,
 		'opacity': 0,
+		'display': 'none',
 		'ease': Expo.easeOut,
 		'onComplete': this.hide,
 		'onCompleteScope': this
 	});
-
-	feng.utils.Utils.setCursor(null, this._renderEl);
 };
 
 
 feng.views.sections.controls.ObjectSelector.prototype.doSelect = function () {
 
-	this._selectedObject = feng.views.sections.controls.ObjectSelector.findObjectDelegation( this._downObject );
+	this._selectedObject = this._downObject;
 
 	this.animateOut();
 
@@ -61048,27 +61038,30 @@ feng.views.sections.controls.ObjectSelector.prototype.cancelSelect = function ()
 
 	this.animateOut();
 
+	this._view3d.fx.selectEffect.animateOut();
+
 	this._callbacks['onCancel']();
 };
 
 
 feng.views.sections.controls.ObjectSelector.prototype.startSelect = function () {
 
-	this.show();
-	this.animateIn();
+	if(!this._view3d.onlyObjectToUnlock || (this._downObject === this._view3d.onlyObjectToUnlock)) {
 
-	this._startTime = goog.now();
-	goog.fx.anim.registerAnimation( this );
+		this._view3d.fx.selectEffect.animateIn( this._downObject );
 
-	this._callbacks['onStart']( this._downObject );
+		this.show();
+		this.animateIn();
+		
+		this._startTime = goog.now();
+		goog.fx.anim.registerAnimation( this );
+
+		this._callbacks['onStart']( this._downObject );
+	}
 };
 
 
 feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = function () {
-
-	if(this._view3d.arms.hasObject()) {
-		return false;
-	}
 	
 	var mouseX = this._mouseMovePosition.x;
 	var mouseY = this._mouseMovePosition.y;
@@ -61081,11 +61074,9 @@ feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = functio
 
 	if(isIntersected) {
 
-		var intersectedObject = intersects[0].object;
+		this._intersectedObject = intersects[0].object;
 
-		if(this._intersectedObject !== intersectedObject) {
-
-			this._intersectedObject = intersectedObject;
+		if(!this._view3d.onlyObjectToUnlock || (this._intersectedObject.view3dObject === this._view3d.onlyObjectToUnlock)) {
 
 			this._view3d.fx.selectEffect.animateIn( this._intersectedObject.view3dObject );
 		}
@@ -61101,9 +61092,7 @@ feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = functio
 
 feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e ) {
 
-	if(this._view3d.arms.hasObject()) {
-		return false;
-	}
+	this._isMouseDown = true;
 
 	this._selectedObject = null;
 
@@ -61125,6 +61114,12 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e
 };
 
 
+feng.views.sections.controls.ObjectSelector.prototype.onMouseUp = function ( e ) {
+
+	this._isMouseDown = false;
+};
+
+
 feng.views.sections.controls.ObjectSelector.prototype.onMouseDownCancel = function ( e ) {
 
 	this._delay.stop();
@@ -61139,6 +61134,12 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseDownCancel = functi
 
 
 feng.views.sections.controls.ObjectSelector.prototype.onMouseMove = function ( e ) {
+
+	if(this._isMouseDown) {
+
+		this._mouseMoveThrottle.stop();
+		return false;
+	}
 
 	this._mouseMovePosition.x = e.clientX;
 	this._mouseMovePosition.y = e.clientY;
@@ -61176,18 +61177,6 @@ feng.views.sections.controls.ObjectSelector.prototype.onAnimationFrame = functio
 	}
 
 	this._callbacks['onProgress']( this._downObject, progress );
-};
-
-
-feng.views.sections.controls.ObjectSelector.findObjectDelegation = function( object ) {
-
-	/*
-	if(object instanceof feng.views.view3dobject.entities.PictureFrame) {
-		return object.object3d.parent.interactiveObject;
-	}
-	*/
-	
-	return object;
 };goog.provide('feng.views.sections.captions.ChangeObjectCaption');
 
 goog.require('goog.soy');
@@ -62051,7 +62040,12 @@ feng.views.sections.controls.Tooltips.prototype.updateDetectObjects = function()
 feng.views.sections.controls.Tooltips.prototype.detectBlocking = function(){
 
   if(this._view3d.arms.hasObject()) {
-    return false;
+
+    goog.object.forEach(this._currentTooltips, function(tooltip) {
+      goog.dom.classlist.enable( tooltip, 'hidden', true );
+    });
+
+    return;
   }
   
   var control = this._view3d.modeController.control;
@@ -62426,7 +62420,7 @@ feng.views.sections.controls.Reminder.prototype.getCharacterAnimations = functio
 
 		var numRaiseFrames = raiseKeys.length;
 
-		var raiseTweener = TweenMax.to(raiseProp, numRaiseFrames/30, {
+		var raiseTweener = TweenMax.to(raiseProp, numRaiseFrames/30 * .5, {
 			frame: numRaiseFrames - 1,
 			'ease': Linear.easeNone,
 			'paused': true,

@@ -449,33 +449,6 @@ feng.views.View3D.prototype.initScene = function() {
 	// add fog to scene for fading 45 deg ground plane
 	this.scene.fog = new THREE.FogExp2( 0xd9d9d9, 0.0008 );
 
-	// add directional light for shadow
-	var hemiLight = this.scene.getObjectByName('HemisphereLight');
-	
-	var directionalLightPosition = hemiLight ? hemiLight.position : new THREE.Vector3(200, 200, 200);
-
-	var light = new THREE.DirectionalLight( 0x000000, 1 );
-	light.position.copy( directionalLightPosition );
-	light.target.position.set(0, 0, 0);
-	light.castShadow = true;
-
-	var shadowMapSize = feng.renderSettings.shadowMapSize;
-	light.shadowMapWidth = shadowMapSize;
-	light.shadowMapHeight = shadowMapSize;
-
-	var d = 400;
-	light.shadowCameraLeft = -d;
-	light.shadowCameraRight = d;
-	light.shadowCameraTop = d;
-	light.shadowCameraBottom = -d;
-	light.shadowCameraNear = 2;
-	light.shadowCameraFar = 800;
-
-	light.shadowDarkness = 0.1;
-	//light.shadowCameraVisible = true;
-
-	this.scene.add( light );
-
 	/*
 	 * Classes to be created by external json data
 	 */

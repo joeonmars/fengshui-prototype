@@ -39,6 +39,7 @@ feng.models.Preload = function(){
 			},
 			'livingroom': {
 				'scene-data': 'json/scene/studio-livingroom.json',
+				'ground-shadow-texture': 'images/texture/studio/livingroom/ground-shadow.jpg',
 				'floor-texture': 'images/texture/studio/livingroom/floor.jpg',
 				'wall-texture': 'images/texture/studio/livingroom/wall.jpg',
 				'wall-outer-texture': 'images/texture/studio/livingroom/wall-outer.jpg',
@@ -115,6 +116,7 @@ feng.models.Preload = function(){
 			},
 			'bathroom': {
 				'scene-data': 'json/scene/studio-bathroom.json',
+				'ground-shadow-texture': 'images/texture/studio/bathroom/ground-shadow.jpg',
 				'floor-texture': 'images/texture/studio/bathroom/floor.jpg',
 				'ceiling-texture': 'images/texture/studio/bathroom/ceiling.jpg',
 				'wall-texture': 'images/texture/studio/bathroom/wall.jpg',
@@ -181,6 +183,7 @@ feng.models.Preload = function(){
 			},
 			'livingroom': {
 				'scene-data': 'json/scene/house-livingroom.json',
+				'ground-shadow-texture': 'images/texture/house/livingroom/ground-shadow.jpg',
 				'wall-texture': 'images/texture/house/livingroom/wall.jpg',
 				'wall-outer-texture': 'images/texture/house/livingroom/wall-outer.jpg',
 				'stairways-texture': 'images/texture/house/livingroom/stairways.jpg',
@@ -241,6 +244,7 @@ feng.models.Preload = function(){
 			},
 			'corridor': {
 				'scene-data': 'json/scene/house-corridor.json',
+				'ground-shadow-texture': 'images/texture/house/corridor/ground-shadow.jpg',
 				'ceiling-texture': 'images/texture/house/corridor/ceiling.jpg',
 				'ceiling-lamp-texture': 'images/texture/house/corridor/ceiling-lamp.jpg',
 				'ceiling-lamps-texture': 'images/texture/house/corridor/ceiling-lamps.jpg',
@@ -271,6 +275,7 @@ feng.models.Preload = function(){
 			},
 			'boysroom': {
 				'scene-data': 'json/scene/house-boysroom.json',
+				'ground-shadow-texture': 'images/texture/house/boysroom/ground-shadow.jpg',
 				'floor-texture': 'images/texture/house/boysroom/floor.jpg',
 				'ceiling-texture': 'images/texture/house/boysroom/ceiling.jpg',
 				'wall-texture': 'images/texture/house/boysroom/wall.jpg',
@@ -333,6 +338,7 @@ feng.models.Preload = function(){
 			},
 			'homeoffice': {
 				'scene-data': 'json/scene/house-homeoffice.json',
+				'ground-shadow-texture': 'images/texture/house/homeoffice/ground-shadow.jpg',
 				'floor-texture': 'images/texture/house/homeoffice/floor.jpg',
 				'ceiling-texture': 'images/texture/house/homeoffice/ceiling.jpg',
 				'wall-texture':	'images/texture/house/homeoffice/wall.jpg',

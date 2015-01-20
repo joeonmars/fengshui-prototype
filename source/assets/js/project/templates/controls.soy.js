@@ -71,7 +71,7 @@ feng.templates.controls.Reminder = function(opt_data, opt_ignored) {
   var keyListLen351 = keyList351.length;
   for (var keyIndex351 = 0; keyIndex351 < keyListLen351; keyIndex351++) {
     var keyData351 = keyList351[keyIndex351];
-    output += '<li data-view-id="' + keyData351 + '">' + opt_data.copy[keyData351] + '</li>';
+    output += '<li data-view-id="' + keyData351 + '" class="resolved">' + opt_data.copy[keyData351] + '</li>';
   }
   output += '</ul><button class="next icon icon-next"></button></div></div></div>';
   return output;
