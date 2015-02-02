@@ -117,13 +117,16 @@
 	{param classname: 'tutorial from-bottom' /}
 	{param content}
 		<div class="subtitle">
-			<p>WHAT TO DO</p>
+			<p>INSTRUCTIONS</p>
 			<div class="line"></div>
 		</div>
 		<ul class="title">
 			<li><h1>Explore<br>the environment</h1></li>
-			<li><h1>Discover<br>Feng Shui tips</h1></li>
-			<li><h1>Inquire<br>clues from your clients</h1></li>
+			//Change the view by clicking the top face of the cube.
+			<li><h1>Discover<br>feng Shui tips</h1></li>
+			//Hover and hold the item for one second to activate a tip.
+			<li><h1>Gather<br>clues from your clients</h1></li>
+			//Click homeowner for tips.
 		</ul>
 
 		<div class="instructions">
@@ -231,7 +234,7 @@
 	{call .Helper}
 		{param classname: 'selector' /}
 		{param content}
-			<p><b>Pressing down</b> the mouse button for<br><b>one second</b> to investigate this item.</p>
+			<p><b>Hold down</b> the mouse button for<br><b>one second</b> to investigate this item.</p>
 		{/param}
 	{/call}
 
@@ -239,9 +242,11 @@
 		{param classname: 'walk' /}
 		{param content}
 			<p class="mousewheel">You can also <b>scroll</b> the mousewheel<br>to move forward or backward.</p>
-			<p class="click">You can also <b>click</b><br>to move around in the scene.</p>
+			<p class="click">You can also <b>click</b><br>to navigate the area.</p>
 		{/param}
 	{/call}
+
+	//This book stores all your tips.
 
 </div>
 

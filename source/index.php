@@ -4,7 +4,7 @@
 <html>
 
 	<head>
-		<title>FengShui RealTime</title>
+		<title>Real-Time Feng Shui</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1">
         <meta name="keywords" content="feng shui, feng shui tips, feng shui bedroom, feng shui colors, feng shui home, feng shui home decorating, feng shui house, feng shui theory, feng shui for health, feng shui for prosperity, feng shui for romance, feng shui office, feng shui decorating, feng shui guide by room, children feng shui, interior design with feng shui">
