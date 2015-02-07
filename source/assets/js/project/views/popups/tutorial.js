@@ -21,6 +21,7 @@ feng.views.popups.Tutorial = function(){
 	this._videoEls = goog.dom.query('video', this.domElement);
 	this._stepEls = goog.dom.query('.steps li', this.domElement);
 	this._titleEls = goog.dom.query('.title li', this.domElement);
+	this._descriptionEls = goog.dom.query('.descriptions li', this.domElement);
 
 	goog.array.forEach(this._videoEls, function(videoEl) {
 		goog.style.setStyle( videoEl, 'visibility', 'hidden' );
@@ -31,6 +32,7 @@ feng.views.popups.Tutorial = function(){
 
 	this._videoEl = null;
 	this._stepEl = null;
+	this._descriptionEl = null;
 
 	this._numLoaded = 0;
 	this._isLoaded = false;
@@ -89,6 +91,7 @@ feng.views.popups.Tutorial.prototype.gotoStep = function( step ){
 		
 		goog.dom.classlist.remove( this._titleEl, 'active' );
 		goog.dom.classlist.remove( this._stepEl, 'active' );
+		goog.dom.classlist.remove( this._descriptionEl, 'active' );
 	}
 
 	this._prevButton.disabled = false;
@@ -107,9 +110,11 @@ feng.views.popups.Tutorial.prototype.gotoStep = function( step ){
 
 	this._titleEl = this._titleEls[ this._step ];
 	this._stepEl = this._stepEls[ this._step ];
+	this._descriptionEl = this._descriptionEls[ this._step ];
 
 	goog.dom.classlist.add( this._titleEl, 'active' );
 	goog.dom.classlist.add( this._stepEl, 'active' );
+	goog.dom.classlist.add( this._descriptionEl, 'active' );
 
 	this._videoEl = this._videoEls[ this._step ];
 	this._videoEl.currentTime = 0;

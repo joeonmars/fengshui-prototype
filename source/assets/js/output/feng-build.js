@@ -34013,7 +34013,7 @@ feng.templates.common.Popup = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.common.TutorialPopup = function(opt_data, opt_ignored) {
-  return feng.templates.common.Popup({classname: 'tutorial from-bottom', content: '<div class="subtitle"><p>WHAT TO DO</p><div class="line"></div></div><ul class="title"><li><h1>Explore<br>the environment</h1></li><li><h1>Discover<br>Feng Shui tips</h1></li><li><h1>Inquire<br>clues from your clients</h1></li></ul><div class="instructions"><button class="prev icon icon-prev" disabled></button><button class="next icon icon-next" disabled></button><ul class="steps"><li><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-1.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-1.ogv" type="video/ogg"></video></li><li><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-2.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-2.ogv" type="video/ogg"></video></li><li><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-3.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-3.ogv" type="video/ogg"></video></li></ul></div><div class="controls hidden"><div class="loader"><div class="bar"><div class="fill"></div></div><p class="counter">00</p></div>' + feng.templates.common.PrimaryButton({classname: 'skip', icon: 'icon-yes', text: 'OK'}) + '</div>'});
+  return feng.templates.common.Popup({classname: 'tutorial from-bottom', content: '<div class="subtitle"><p>INSTRUCTIONS</p><div class="line"></div></div><ul class="title"><li><h1>Explore<br>the environment</h1></li><li><h1>Discover<br>feng Shui tips</h1></li><li><h1>Gather<br>clues from your clients</h1></li></ul><div class="instructions"><button class="prev icon icon-prev" disabled></button><button class="next icon icon-next" disabled></button><ul class="steps"><li><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-1.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-1.ogv" type="video/ogg"></video></li><li><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-2.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-2.ogv" type="video/ogg"></video></li><li><video preload="metadata"><source src="' + opt_data.assetsPath + 'video/tutorial-3.mp4" type="video/mp4"><source src="' + opt_data.assetsPath + 'video/tutorial-3.ogv" type="video/ogg"></video></li></ul></div><ul class="descriptions"><li><p>Change the view by clicking<br>the top face of the cube.</p></li><li><p>Hover and hold the item<br>for one second to activate a tip.</p></li><li><p>Click homeowner for hints<br>to find out the feng shui problem.</p></li></ul><div class="controls hidden"><div class="loader"><div class="bar"><div class="fill"></div></div><p class="counter">00</p></div>' + feng.templates.common.PrimaryButton({classname: 'skip', icon: 'icon-yes', text: 'OK'}) + '</div>'});
 };
 
 
@@ -34046,7 +34046,7 @@ feng.templates.common.Helper = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.common.Helpers = function(opt_data, opt_ignored) {
-  return '<div class="helpers">' + feng.templates.common.Helper({classname: 'compass', content: '<p class="top">View from <b>top</b>.</p><p class="normal">Back to <b>normal view</b>.</p>'}) + feng.templates.common.Helper({classname: 'selector', content: '<p><b>Pressing down</b> the mouse button for<br><b>one second</b> to investigate this item.</p>'}) + feng.templates.common.Helper({classname: 'walk', content: '<p class="mousewheel">You can also <b>scroll</b> the mousewheel<br>to move forward or backward.</p><p class="click">You can also <b>click</b><br>to move around in the scene.</p>'}) + '</div>';
+  return '<div class="helpers">' + feng.templates.common.Helper({classname: 'compass', content: '<p class="top">View from <b>top</b>.</p><p class="normal">Back to <b>normal view</b>.</p>'}) + feng.templates.common.Helper({classname: 'selector', content: '<p><b>Hold down</b> the mouse button for<br><b>one second</b> to investigate this item.</p>'}) + feng.templates.common.Helper({classname: 'walk', content: '<p class="mousewheel">You can also <b>scroll</b> the mousewheel<br>to move forward or backward.</p><p class="click">You can also <b>click</b><br>to navigate the area.</p>'}) + '</div>';
 };
 // This file was automatically generated from controls.soy.
 // Please don't edit this file by hand.
@@ -34077,7 +34077,7 @@ feng.templates.controls.RoundButton = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.controls.HomeButton = function(opt_data, opt_ignored) {
-  return feng.templates.controls.RoundButton({classname: 'home-button', content: '<div class="icon"></div>'}) + '<div class="home-button-prompt"><h3>Are you sure you want to leave?</h3><div class="button-group">' + feng.templates.common.PrimaryButton({classname: 'small no', icon: 'icon-no', text: 'No'}) + feng.templates.common.PrimaryButton({classname: 'small yes', icon: 'icon-yes', text: 'Yes', href: opt_data.token.HOME}) + '</div></div>';
+  return feng.templates.controls.RoundButton({classname: 'home-button', content: '<div class="icon"></div>'}) + '<div class="home-button-prompt"><h3>Leaving so soon?</h3><div class="button-group">' + feng.templates.common.PrimaryButton({classname: 'small no', icon: 'icon-no', text: 'No'}) + feng.templates.common.PrimaryButton({classname: 'small yes', icon: 'icon-yes', text: 'Yes', href: opt_data.token.HOME}) + '</div></div>';
 };
 
 
@@ -34215,7 +34215,7 @@ goog.require('feng.templates.debug');
  * @notypecheck
  */
 feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
-  return '<div class="section episode" id="' + opt_data.id + '"><div class="hud"><div class="overlays"><div class="tutorial-overlay"></div><div class="credits-overlay"></div><div class="opening-overlay">' + feng.templates.common.Popup({classname: 'opening from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'icon-yes', text: 'I’d be glad to help!'}) + '<div class="character"></div>'}) + '</div><div class="ending-overlay">' + feng.templates.common.Popup({classname: 'ending from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'stay', icon: 'icon-yes', text: 'Stay'}) + feng.templates.common.PrimaryButton({classname: 'next', icon: 'icon-yes', text: 'Next Location', href: opt_data.token.HOME}) + '<div class="character"></div>'}) + '</div><div class="finale-overlay">' + feng.templates.common.Popup({classname: 'finale from-bottom', content: '<h1></h1><p></p><h2>Share With Friends</h2><ul><li><a class="icon icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/" target="_blank"></a></li><li><a class="icon icon-twitter" href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/" target="_blank"></a></li><li><a class="icon icon-google" href="https://plus.google.com/share?url=http://fengshuirealtime.com/" target="_blank"></a></li></ul>'}) + '</div><div class="loader-overlay"><div class="loader"><canvas class="spinner"></canvas><p class="progress"></p></div></div></div><div class="controls">' + feng.templates.controls.HomeButton(opt_data) + feng.templates.controls.Compass(null) + feng.templates.controls.Book(opt_data) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.DropButton(null) + feng.templates.controls.ProgressBar(opt_data) + feng.templates.controls.Reminder({tips: opt_data.tips, copy: opt_data.copy['dialog']['resolved'][opt_data.id]}) + '</div><div class="tooltips"></div><div class="captions"></div></div><div class="scene-container"></div></div>';
+  return '<div class="section episode" id="' + opt_data.id + '"><div class="hud"><div class="overlays"><div class="tutorial-overlay"></div><div class="credits-overlay"></div><div class="opening-overlay">' + feng.templates.common.Popup({classname: 'opening from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'ok', icon: 'icon-yes', text: 'I’d be glad to help.'}) + '<div class="character"></div>'}) + '</div><div class="ending-overlay">' + feng.templates.common.Popup({classname: 'ending from-bottom', content: '<h1></h1><p></p>' + feng.templates.common.PrimaryButton({classname: 'stay', icon: 'icon-yes', text: 'Stay'}) + feng.templates.common.PrimaryButton({classname: 'next', icon: 'icon-yes', text: 'Next Location', href: opt_data.token.HOME}) + '<div class="character"></div>'}) + '</div><div class="finale-overlay">' + feng.templates.common.Popup({classname: 'finale from-bottom', content: '<h1></h1><p></p><h2>Share With Friends</h2><ul><li><a class="icon icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/" target="_blank"></a></li><li><a class="icon icon-twitter" href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/" target="_blank"></a></li><li><a class="icon icon-google" href="https://plus.google.com/share?url=http://fengshuirealtime.com/" target="_blank"></a></li></ul>'}) + '</div><div class="loader-overlay"><div class="loader"><canvas class="spinner"></canvas><p class="progress"></p></div></div></div><div class="controls">' + feng.templates.controls.HomeButton(opt_data) + feng.templates.controls.Compass(null) + feng.templates.controls.Book(opt_data) + feng.templates.controls.ObjectSelector(null) + feng.templates.controls.DropButton(null) + feng.templates.controls.ProgressBar(opt_data) + feng.templates.controls.Reminder({tips: opt_data.tips, copy: opt_data.copy['dialog']['resolved'][opt_data.id]}) + '</div><div class="tooltips"></div><div class="captions"></div></div><div class="scene-container"></div></div>';
 };
 
 
@@ -34226,7 +34226,7 @@ feng.templates.main.EpisodeSection = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.main.EpisodeSelection = function(opt_data, opt_ignored) {
-  return '<div class="episode-selection"><div class="scene studio"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Ollie\'s Studio</h1><p>Ollie lives in a small, delicate studio in the crowded downtown. How could we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'studio', href: opt_data.token.STUDIO, icon: 'icon-yes', text: 'Start'})}) + '</div></div><div class="scene house"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Scott\'s House</h1><p>Scott lives in a two story house, with his wife Joanna and son Nick. How could we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'house', href: opt_data.token.HOUSE, icon: 'icon-yes', text: 'Start'})}) + '</div></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="question">' + feng.templates.common.FengshuiLogo({noText: true}) + '<div><h1>Help your<br>feng shui<br>clients</h1><p>Please make some<br>improvements to their<br>home environments.</p><h2><div class="arrow left"></div><span>CHOOSE ONE</span><div class="arrow right"></div></h2></div></div>'}) + '</div></div>';
+  return '<div class="episode-selection"><div class="scene studio"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Ollie\'s Studio</h1><p>Ollie lives in a small and trendy studio apartment in a crowded city. How can we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'studio', href: opt_data.token.STUDIO, icon: 'icon-yes', text: 'Start'})}) + '</div></div><div class="scene house"><div class="shade"></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="location"><p>LOCATION</p><div class="line"></div></div><h1>Scott\'s House</h1><p>Scott lives in a two-story house with his wife, Joanna, and son, Nick. How can we improve its feng shui?</p>' + feng.templates.common.PrimaryButton({classname: 'house', href: opt_data.token.HOUSE, icon: 'icon-yes', text: 'Start'})}) + '</div></div><div class="prompt">' + feng.templates.common.Disc({content: '<div class="question">' + feng.templates.common.FengshuiLogo({noText: true}) + '<div><h1>Transform<br>these homes<br>with feng shui</h1><p>Help these families<br>improve the energy<br>in their homes.</p><h2><div class="arrow left"></div><span>SELECT ONE</span><div class="arrow right"></div></h2></div></div>'}) + '</div></div>';
 };
 
 
@@ -34237,7 +34237,7 @@ feng.templates.main.EpisodeSelection = function(opt_data, opt_ignored) {
  * @notypecheck
  */
 feng.templates.main.Main = function(opt_data, opt_ignored) {
-  return '<div id="main"><div class="section" id="home"><div class="inner"><section id="main-preloader"><div class="content"><h1>FengShui RealTime</h1><canvas class="house-logo"></canvas><p><span>A real-time experience to practice Feng shui.</span><span>Discovering tips for creating an optimal,</span><span>balanced home environment.</span></p></div></section><section id="main-episode-selection"></section></div></div><ul id="main-options"><li class="info"><div class="icon"></div><div class="slider"><div class="buttons"><button class="instructions">Instructions</button><button class="credits">Credits</button></div></div></li><li class="sound"><div class="icon"></div><div class="slider"><div class="buttons"><button class="on">On</button><button class="off">Off</button></div></div></li><li class="share"><div class="icon"></div><div class="slider"><div class="buttons"><a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/" target="_blank"></a><a class="twitter" href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/" target="_blank"></a><a class="google" href="https://plus.google.com/share?url=http://fengshuirealtime.com/" target="_blank"></a></div></div></li></ul></div>' + ((opt_data.debug != false) ? feng.templates.debug.Debugger(null) : '');
+  return '<div id="main"><div class="section" id="home"><div class="inner"><section id="main-preloader"><div class="content"><h1>Real-Time Feng Shui</h1><canvas class="house-logo"></canvas><p><span>An interactive experience</span><span>on the art of feng shui,</span><span>with tips for creating a balanced home.</span></p></div></section><section id="main-episode-selection"></section></div></div><ul id="main-options"><li class="info"><div class="icon"></div><div class="slider"><div class="buttons"><button class="instructions">Instructions</button><button class="credits">Credits</button></div></div></li><li class="sound"><div class="icon"></div><div class="slider"><div class="buttons"><button class="on">On</button><button class="off">Off</button></div></div></li><li class="share"><div class="icon"></div><div class="slider"><div class="buttons"><a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://fengshuirealtime.com/" target="_blank"></a><a class="twitter" href="https://twitter.com/intent/tweet?original_referer=http://fengshuirealtime.com/" target="_blank"></a><a class="google" href="https://plus.google.com/share?url=http://fengshuirealtime.com/" target="_blank"></a></div></div></li></ul></div>' + ((opt_data.debug != false) ? feng.templates.debug.Debugger(null) : '');
 };
 
 
@@ -49372,6 +49372,7 @@ feng.views.popups.Tutorial = function(){
 	this._videoEls = goog.dom.query('video', this.domElement);
 	this._stepEls = goog.dom.query('.steps li', this.domElement);
 	this._titleEls = goog.dom.query('.title li', this.domElement);
+	this._descriptionEls = goog.dom.query('.descriptions li', this.domElement);
 
 	goog.array.forEach(this._videoEls, function(videoEl) {
 		goog.style.setStyle( videoEl, 'visibility', 'hidden' );
@@ -49382,6 +49383,7 @@ feng.views.popups.Tutorial = function(){
 
 	this._videoEl = null;
 	this._stepEl = null;
+	this._descriptionEl = null;
 
 	this._numLoaded = 0;
 	this._isLoaded = false;
@@ -49440,6 +49442,7 @@ feng.views.popups.Tutorial.prototype.gotoStep = function( step ){
 		
 		goog.dom.classlist.remove( this._titleEl, 'active' );
 		goog.dom.classlist.remove( this._stepEl, 'active' );
+		goog.dom.classlist.remove( this._descriptionEl, 'active' );
 	}
 
 	this._prevButton.disabled = false;
@@ -49458,9 +49461,11 @@ feng.views.popups.Tutorial.prototype.gotoStep = function( step ){
 
 	this._titleEl = this._titleEls[ this._step ];
 	this._stepEl = this._stepEls[ this._step ];
+	this._descriptionEl = this._descriptionEls[ this._step ];
 
 	goog.dom.classlist.add( this._titleEl, 'active' );
 	goog.dom.classlist.add( this._stepEl, 'active' );
+	goog.dom.classlist.add( this._descriptionEl, 'active' );
 
 	this._videoEl = this._videoEls[ this._step ];
 	this._videoEl.currentTime = 0;
@@ -64715,7 +64720,7 @@ goog.require('feng.apps.PathEdit');
 /**
  * @expose
  */
-feng.version = '1.18.15';
+feng.version = '2.7.15';
 
 
 feng.Config = {};
