@@ -1,15 +1,15 @@
 'use strict';
 
-module.exports = function(grunt) {
+module.exports = function( grunt ) {
 
   // Project configuration.
-  grunt.initConfig({
+  grunt.initConfig( {
     projectJsDir: 'source/assets/js/project',
     thirdPartyJsDir: 'source/assets/js/thirdparty',
     outputJsDir: 'source/assets/js/output',
     closureDir: 'source/assets/js/thirdparty/closure-library',
     releaseDir: 'release',
-    
+
     bower: {
       install: {
         options: {
@@ -23,20 +23,20 @@ module.exports = function(grunt) {
       }
     },
 
-    open : {
-      dev : {
+    open: {
+      dev: {
         path: 'http://dev.fengshui.com',
         app: 'Google Chrome'
       },
-      release : {
-        path : 'http://release.fengshui.com',
+      release: {
+        path: 'http://release.fengshui.com',
         app: 'Google Chrome'
       },
     },
 
     watch: {
       html: {
-        files: ['source/*.{html,php}'],
+        files: [ 'source/*.{html,php}' ],
         options: {
           livereload: true,
           interrupt: true,
@@ -44,12 +44,12 @@ module.exports = function(grunt) {
         },
       },
       soy: {
-        files: ['source/assets/soy/*.soy'],
-        tasks: ['closureSoys'],
+        files: [ 'source/assets/soy/*.soy' ],
+        tasks: [ 'closureSoys' ],
       },
       js: {
-        files: ['<%= projectJsDir %>/**/*.js'],
-        tasks: ['closureDepsWriter'],
+        files: [ '<%= projectJsDir %>/**/*.js' ],
+        tasks: [ 'closureDepsWriter' ],
         options: {
           livereload: true,
           interrupt: true,
@@ -57,11 +57,11 @@ module.exports = function(grunt) {
         },
       },
       scss: {
-        files: ['source/assets/styles/scss/**/*.scss'],
-        tasks: ['compass']
+        files: [ 'source/assets/styles/scss/**/*.scss' ],
+        tasks: [ 'compass' ]
       },
       css: {
-        files: ['source/assets/styles/css/*.css'],
+        files: [ 'source/assets/styles/css/*.css' ],
         options: {
           livereload: true,
           interrupt: true,
@@ -69,8 +69,8 @@ module.exports = function(grunt) {
         },
       },
       svg: {
-        files: ['source/assets/styles/fonts/fontcustom/icons/*.svg'],
-        tasks: ['webfont']
+        files: [ 'source/assets/styles/fonts/fontcustom/icons/*.svg' ],
+        tasks: [ 'webfont' ]
       }
     },
 
@@ -102,7 +102,7 @@ module.exports = function(grunt) {
           '<%= thirdPartyJsDir %>/threejs-utils/FresnelShader.js',
           '<%= thirdPartyJsDir %>/threejs-utils/OrbitControls.js',
           '<%= thirdPartyJsDir %>/pathfinding-browser.min.js'
-          ],
+        ],
         dest: '<%= outputJsDir %>/thirdparty.js'
       }
     },
@@ -113,7 +113,7 @@ module.exports = function(grunt) {
           assets: 'source/assets/',
           layout: 'source/assets/html/share/template/layout.hbs',
           flatten: true,
-          pages: grunt.file.readJSON('source/assets/html/share/template/data.json')
+          pages: grunt.file.readJSON( 'source/assets/html/share/template/data.json' )
         },
         files: {
           'source/assets/html/share/': []
@@ -122,28 +122,34 @@ module.exports = function(grunt) {
     },
 
     clean: {
-      share: ["source/assets/html/share/*.html"],
-      release: ["<%= releaseDir %>/**/*", "!<%= releaseDir %>/deleteme"]
+      share: [ "source/assets/html/share/*.html" ],
+      release: [ "<%= releaseDir %>/**/*", "!<%= releaseDir %>/deleteme" ]
     },
 
     copy: {
       release: {
         files: [
           // includes files within path
-          {expand: true, cwd: 'source/', src: [
-            '**',
-            '!assets/html/share/template/**',
-            '!assets/js/project/**',
-            '!assets/js/output/feng-build.js',
-            '!assets/js/output/feng-deps.js',
-            '!assets/js/thirdparty/**',
-            '!assets/styles/scss/**',
-            '!assets/soy/**',
-            '!assets/images/icons/*',
-            '!assets/images/icons-2x/*',
-            '!assets/images/ui/*',
-            '!assets/images/ui-2x/*'
-            ], dest: '<%= releaseDir %>', filter: 'isFile'},
+          {
+            expand: true,
+            cwd: 'source/',
+            src: [
+              '**',
+              '!assets/html/share/template/**',
+              '!assets/js/project/**',
+              '!assets/js/output/feng-build.js',
+              '!assets/js/output/feng-deps.js',
+              '!assets/js/thirdparty/**',
+              '!assets/styles/scss/**',
+              '!assets/soy/**',
+              '!assets/images/icons/*',
+              '!assets/images/icons-2x/*',
+              '!assets/images/ui/*',
+              '!assets/images/ui-2x/*'
+            ],
+            dest: '<%= releaseDir %>',
+            filter: 'isFile'
+          },
         ]
       }
     },
@@ -208,14 +214,14 @@ module.exports = function(grunt) {
       }
     },
 
-    closureBuilder:  {
+    closureBuilder: {
       options: {
         builder: '<%= closureDir %>/closure/bin/build/closurebuilder.py',
         inputs: '<%= projectJsDir %>/feng.js',
       },
 
       main: {
-        src: ['<%= closureDir %>', '<%= projectJsDir %>'],
+        src: [ '<%= closureDir %>', '<%= projectJsDir %>' ],
         dest: '<%= outputJsDir %>/feng-build.js'
       }
     },
@@ -225,9 +231,9 @@ module.exports = function(grunt) {
         compilerFile: 'utils/compiler.jar',
         checkModified: true,
         compilerOpts: {
-           compilation_level: 'ADVANCED_OPTIMIZATIONS',//WHITESPACE_ONLY, SIMPLE_OPTIMIZATIONS, ADVANCED_OPTIMIZATIONS
-           language_in: 'ECMASCRIPT5_STRICT',
-           externs: [
+          compilation_level: 'ADVANCED_OPTIMIZATIONS', //WHITESPACE_ONLY, SIMPLE_OPTIMIZATIONS, ADVANCED_OPTIMIZATIONS
+          language_in: 'ECMASCRIPT5_STRICT',
+          externs: [
             '<%= projectJsDir %>/externs.js',
             '<%= thirdPartyJsDir %>/threejs/build/three69.min.js',
             '<%= thirdPartyJsDir %>/threejs-utils/Projector.js',
@@ -248,14 +254,14 @@ module.exports = function(grunt) {
             '<%= thirdPartyJsDir %>/threejs-utils/ConvolutionShader.js',
             '<%= thirdPartyJsDir %>/threejs-utils/FresnelShader.js',
             '<%= thirdPartyJsDir %>/threejs-utils/OrbitControls.js'
-            ],
-           define: ["'goog.DEBUG=false'"],
-           warning_level: 'verbose',
-           jscomp_off: ['checkTypes', 'fileoverviewTags'],
-           summary_detail_level: 3
+          ],
+          define: [ "'goog.DEBUG=false'" ],
+          warning_level: 'verbose',
+          jscomp_off: [ 'checkTypes', 'fileoverviewTags' ],
+          summary_detail_level: 3
         },
         execOpts: {
-           maxBuffer: 999999 * 1024
+          maxBuffer: 999999 * 1024
         },
       },
 
@@ -276,7 +282,7 @@ module.exports = function(grunt) {
         expand: true,
         cwd: 'source/assets/html/share/',
         ext: '.html',
-        src: ['*.html'],
+        src: [ '*.html' ],
         dest: 'source/assets/html/share/'
       }
     },
@@ -284,55 +290,78 @@ module.exports = function(grunt) {
     uglify: {
       release: {
         files: {
-          '<%= outputJsDir %>/thirdparty.js': ['<%= outputJsDir %>/thirdparty.js']
+          '<%= outputJsDir %>/thirdparty.js': [ '<%= outputJsDir %>/thirdparty.js' ]
         }
       }
-    }
+    },
 
-  });
+    image_resize: {
+      texture: {
+        options: {
+          width: '50%',
+          overwrite: false
+        },
+        files: [ {
+          expand: true,
+          cwd: 'source/assets/images/texture',
+          src: '{,**/}*.{gif,jpeg,jpg,png}',
+          dest: 'source/assets/images/texture-lowres/'
+        } ]
+      }
+    },
+
+  } );
 
   // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-closure-tools');
-  grunt.loadNpmTasks('grunt-closure-soy');
-  grunt.loadNpmTasks('grunt-contrib-compass');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-open');
-  grunt.loadNpmTasks('grunt-bower-task');
-  grunt.loadNpmTasks('grunt-webfont');
-  grunt.loadNpmTasks('grunt-prettify');
-  grunt.loadNpmTasks('assemble');
+  grunt.loadNpmTasks( 'grunt-contrib-watch' );
+  grunt.loadNpmTasks( 'grunt-closure-tools' );
+  grunt.loadNpmTasks( 'grunt-closure-soy' );
+  grunt.loadNpmTasks( 'grunt-contrib-compass' );
+  grunt.loadNpmTasks( 'grunt-contrib-concat' );
+  grunt.loadNpmTasks( 'grunt-contrib-copy' );
+  grunt.loadNpmTasks( 'grunt-contrib-clean' );
+  grunt.loadNpmTasks( 'grunt-contrib-uglify' );
+  grunt.loadNpmTasks( 'grunt-open' );
+  grunt.loadNpmTasks( 'grunt-bower-task' );
+  grunt.loadNpmTasks( 'grunt-webfont' );
+  grunt.loadNpmTasks( 'grunt-prettify' );
+  grunt.loadNpmTasks( 'grunt-image-resize' );
+  grunt.loadNpmTasks( 'assemble' );
 
   // Default task.
-  grunt.registerTask('default', [
+  grunt.registerTask( 'default', [
     'bower',
     'compass',
     'webfont',
     'closureSoys',
     'closureDepsWriter',
     'open:dev',
-    'watch']);
+    'watch'
+  ] );
 
-  grunt.registerTask('dev', [
+  grunt.registerTask( 'dev', [
     'compass',
     'webfont',
     'closureSoys',
     'closureDepsWriter',
     'open:dev',
-    'watch']);
+    'watch'
+  ] );
 
-  grunt.registerTask('build', [
+  grunt.registerTask( 'build', [
     'compass',
     'webfont',
     'closureSoys',
     'closureBuilder',
     'closureCompiler',
-    'concat']);
+    'concat'
+  ] );
 
-  grunt.registerTask('release', [
+  grunt.registerTask( 'lowres', [
+    'image_resize:texture'
+  ] );
+
+  grunt.registerTask( 'release', [
     'compass',
     'webfont',
     'clean:share',
@@ -345,5 +374,6 @@ module.exports = function(grunt) {
     'uglify:release',
     'clean:release',
     'copy',
-    'open:release']);
+    'open:release'
+  ] );
 };

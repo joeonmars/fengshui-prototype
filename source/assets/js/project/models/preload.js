@@ -1,13 +1,14 @@
-goog.provide('feng.models.Preload');
+goog.provide( 'feng.models.Preload' );
 
-goog.require('goog.object');
-goog.require('feng.utils.Utils');
+goog.require( 'goog.object' );
+goog.require( 'goog.userAgent' );
+goog.require( 'feng.utils.Utils' );
 
 
 /**
  * @constructor
  */
-feng.models.Preload = function(){
+feng.models.Preload = function() {
 
 	this._assets = {
 		'global': {
@@ -341,7 +342,7 @@ feng.models.Preload = function(){
 				'ground-shadow-texture': 'images/texture/house/homeoffice/ground-shadow.jpg',
 				'floor-texture': 'images/texture/house/homeoffice/floor.jpg',
 				'ceiling-texture': 'images/texture/house/homeoffice/ceiling.jpg',
-				'wall-texture':	'images/texture/house/homeoffice/wall.jpg',
+				'wall-texture': 'images/texture/house/homeoffice/wall.jpg',
 				'wall-outer-texture': 'images/texture/house/homeoffice/wall-outer.jpg',
 				'swivel-chair-texture': 'images/texture/house/homeoffice/swivel-chair.jpg',
 				'storage-texture': 'images/texture/house/homeoffice/storage.jpg',
@@ -410,7 +411,7 @@ feng.models.Preload = function(){
 		}
 	};
 };
-goog.addSingletonGetter(feng.models.Preload);
+goog.addSingletonGetter( feng.models.Preload );
 
 
 feng.models.Preload.prototype.getDataByKeys = function( keys ) {
@@ -419,12 +420,12 @@ feng.models.Preload.prototype.getDataByKeys = function( keys ) {
 
 	var asset = this._assets;
 
-	var keys = keys.split('.');
-	var lastKey = keys[keys.length - 1];
+	var keys = keys.split( '.' );
+	var lastKey = keys[ keys.length - 1 ];
 
-	goog.array.forEach(keys, function(key) {
-		asset = asset[key];
-	});
+	goog.array.forEach( keys, function( key ) {
+		asset = asset[ key ];
+	} );
 
 	return asset;
 };
@@ -436,43 +437,55 @@ feng.models.Preload.prototype.getManifest = function( keys ) {
 
 	var manifest = [];
 
-	var parseLoadItem = function(obj) {
+	var parseLoadItem = function( obj ) {
 
-		if( goog.string.endsWith(obj.src, '.dds') ) {
+		if ( goog.string.endsWith( obj.src, '.dds' ) ) {
 			obj.type = createjs.LoadQueue.BINARY;
 		}
 
 		return obj;
 	};
 
-	var parseObject = function(key, asset) {
+	var parseObject = function( key, asset ) {
 
-		goog.object.forEach(asset, function(obj, id) {
+		goog.object.forEach( asset, function( obj, id ) {
 
-			if(goog.isString(obj)) {
+			if ( goog.isString( obj ) ) {
 
 				// if obj is an Url rather than result
-				var loadItem = parseLoadItem( {id: key+'.'+id, src: obj} );
+				var url = obj;
+
+				if ( goog.userAgent.MOBILE ) {
+					url = url.replace( 'images/texture/', 'images/texture-lowres/' );
+				}
+
+				var loadItem = parseLoadItem( {
+					id: key + '.' + id,
+					src: url
+				} );
 				manifest.push( loadItem );
 
-			}else {
-				
+			} else {
+
 				// if obj is an Object contains keys, parse it again
-				parseObject(key+'.'+id, obj);
+				parseObject( key + '.' + id, obj );
 			}
-		});
+		} );
 	};
 
-	if(goog.isString(asset)) {
+	if ( goog.isString( asset ) ) {
 
-		var loadItem = parseLoadItem( {id: keys, src: asset} );
+		var loadItem = parseLoadItem( {
+			id: keys,
+			src: asset
+		} );
 		manifest.push( loadItem );
 
-	}else {
+	} else {
 
 		var key = keys;
 		var object = asset;
-		parseObject(key, object);
+		parseObject( key, object );
 	}
 
 	return manifest;
@@ -483,11 +496,11 @@ feng.models.Preload.prototype.getAsset = function( keys ) {
 
 	var asset = this.getDataByKeys( keys );
 
-	return goog.isString(asset) ? null : asset;
+	return goog.isString( asset ) ? null : asset;
 };
 
 
 feng.models.Preload.prototype.setAsset = function( keys, result ) {
 
-	feng.utils.Utils.setValueByKeys(keys, result, this._assets);
+	feng.utils.Utils.setValueByKeys( keys, result, this._assets );
 };

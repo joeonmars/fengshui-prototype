@@ -7,5 +7,6 @@
 /bower_components
 /source/assets/js/thirdparty/closure-library
 /source/assets/js/thirdparty/threejs/*
+/source/assets/images/texture-lowres/
 !/source/assets/js/thirdparty/threejs/build/
 /release
