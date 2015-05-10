@@ -40138,41 +40138,41 @@ feng.views.view3dobject.entities.Cat.prototype.onCameraOut = function(){
     //feng.soundController.playSfx('refrigerator-close');
   }, [], this);
 	*/
-};goog.provide('feng.controllers.controls.Controls');
+};goog.provide( 'feng.controllers.controls.Controls' );
 
-goog.require('goog.events.EventTarget');
-goog.require('goog.events.EventHandler');
-goog.require('goog.events');
+goog.require( 'goog.events.EventTarget' );
+goog.require( 'goog.events.EventHandler' );
+goog.require( 'goog.events' );
 
 
 /**
  * @constructor
  * A custom camera control, wrapped the camera with pitch and yaw object
  */
-feng.controllers.controls.Controls = function(camera, view3d, domElement){
-	
-  goog.base(this);
+feng.controllers.controls.Controls = function( camera, view3d, domElement ) {
 
-  this._camera = camera;
-  this._view3d = view3d;
-  this._scene = this._view3d.scene;
+	goog.base( this );
 
-  this._eventHandler = new goog.events.EventHandler(this);
+	this._camera = camera;
+	this._view3d = view3d;
+	this._scene = this._view3d.scene;
 
-  this.isEnabled = false;
-  this.isPaused = false;
+	this._eventHandler = new goog.events.EventHandler( this );
 
-  this._pauseProps = {
-  	fov: 0,
-  	oFov: 0,
-  	z: 0,
-  	oZ: 0
-  };
+	this.isEnabled = false;
+	this.isPaused = false;
 
-  this._rotation = new THREE.Euler(0, 0, 0, 'YXZ'); //YXZ is to overcome gimbal lock
+	this._pauseProps = {
+		fov: 0,
+		oFov: 0,
+		z: 0,
+		oZ: 0
+	};
 
-  this._originalPosition = this._camera.position.clone();
-  this._originalRotation = this._camera.rotation.clone();
+	this._rotation = new THREE.Euler( 0, 0, 0, 'YXZ' ); //YXZ is to overcome gimbal lock
+
+	this._originalPosition = this._camera.position.clone();
+	this._originalRotation = this._camera.rotation.clone();
 
 	this._pitchObject = new THREE.Object3D();
 	this._pitchObject.add( this._camera );
@@ -40180,35 +40180,35 @@ feng.controllers.controls.Controls = function(camera, view3d, domElement){
 	this._yawObject = new THREE.Object3D();
 	this._yawObject.add( this._pitchObject );
 
-	this._mainEl = goog.dom.getElement('main');
+	this._mainEl = goog.dom.getElement( 'main' );
 	this._domElement = domElement;
 
 	this._scene.add( this.getObject() );
 
 	this.reset();
 };
-goog.inherits(feng.controllers.controls.Controls, goog.events.EventTarget);
+goog.inherits( feng.controllers.controls.Controls, goog.events.EventTarget );
 
 
-feng.controllers.controls.Controls.prototype.getObject = function () {
+feng.controllers.controls.Controls.prototype.getObject = function() {
 
 	return this._yawObject;
 };
 
 
-feng.controllers.controls.Controls.prototype.getCamera = function () {
+feng.controllers.controls.Controls.prototype.getCamera = function() {
 
 	return this._camera;
 };
 
 
-feng.controllers.controls.Controls.prototype.getPosition = function () {
+feng.controllers.controls.Controls.prototype.getPosition = function() {
 
 	return this.getObject().position;
 };
 
 
-feng.controllers.controls.Controls.prototype.getRotation = function () {
+feng.controllers.controls.Controls.prototype.getRotation = function() {
 
 	this._rotation.x = this.getPitch();
 	this._rotation.y = this.getYaw();
@@ -40216,67 +40216,67 @@ feng.controllers.controls.Controls.prototype.getRotation = function () {
 };
 
 
-feng.controllers.controls.Controls.prototype.getPitch = function () {
+feng.controllers.controls.Controls.prototype.getPitch = function() {
 
 	return this._pitchObject.rotation.x;
 };
 
 
-feng.controllers.controls.Controls.prototype.getYaw = function () {
+feng.controllers.controls.Controls.prototype.getYaw = function() {
 
 	return this._yawObject.rotation.y;
 };
 
 
-feng.controllers.controls.Controls.prototype.getFov = function () {
+feng.controllers.controls.Controls.prototype.getFov = function() {
 
 	return this._camera.fov;
 };
 
 
-feng.controllers.controls.Controls.prototype.getForwardVector = function (dontForceZeroY) {
+feng.controllers.controls.Controls.prototype.getForwardVector = function( dontForceZeroY ) {
 
-	var forward = new THREE.Vector3(0, 0, -1);
-	forward.applyEuler(this._pitchObject.rotation, this._pitchObject.rotation.order);
-	forward.applyEuler(this._yawObject.rotation, this._yawObject.rotation.order);
+	var forward = new THREE.Vector3( 0, 0, -1 );
+	forward.applyEuler( this._pitchObject.rotation, this._pitchObject.rotation.order );
+	forward.applyEuler( this._yawObject.rotation, this._yawObject.rotation.order );
 	forward.normalize();
 
-	if(!dontForceZeroY) {
-		forward.setY(0);
+	if ( !dontForceZeroY ) {
+		forward.setY( 0 );
 	}
 
 	return forward;
 };
 
 
-feng.controllers.controls.Controls.prototype.getTarget = function () {
+feng.controllers.controls.Controls.prototype.getTarget = function() {
 
-	var raycaster = new THREE.Raycaster(this.getPosition(), this.getForwardVector(true));
+	var raycaster = new THREE.Raycaster( this.getPosition(), this.getForwardVector( true ) );
 	var intersects = raycaster.intersectObject( this._view3d.skybox.object3d );
-	var intersectPosition = intersects.length > 0 ? intersects[0].point : this._view3d.scene.position;
+	var intersectPosition = intersects.length > 0 ? intersects[ 0 ].point : this._view3d.scene.position;
 
 	return intersectPosition;
 };
 
 
-feng.controllers.controls.Controls.prototype.setPosition = function (x, y, z) {
+feng.controllers.controls.Controls.prototype.setPosition = function( x, y, z ) {
 
-	if(x instanceof THREE.Vector3) {
+	if ( x instanceof THREE.Vector3 ) {
 		var position = x;
 		this._yawObject.position.copy( position );
-	}else {
-		this._yawObject.position.set(x, y, z);
+	} else {
+		this._yawObject.position.set( x, y, z );
 	}
 };
 
 
-feng.controllers.controls.Controls.prototype.setRotation = function (x, y) {
+feng.controllers.controls.Controls.prototype.setRotation = function( x, y ) {
 
-	if(x instanceof THREE.Euler) {
+	if ( x instanceof THREE.Euler ) {
 		var rotation = x;
 		this._rotation.x = rotation.x;
 		this._rotation.y = rotation.y;
-	}else {
+	} else {
 		this._rotation.x = x;
 		this._rotation.y = y;
 	}
@@ -40286,33 +40286,33 @@ feng.controllers.controls.Controls.prototype.setRotation = function (x, y) {
 };
 
 
-feng.controllers.controls.Controls.prototype.setPitch = function (pitch) {
+feng.controllers.controls.Controls.prototype.setPitch = function( pitch ) {
 
 	this._pitchObject.rotation.x = pitch;
 };
 
 
-feng.controllers.controls.Controls.prototype.setYaw = function (yaw) {
+feng.controllers.controls.Controls.prototype.setYaw = function( yaw ) {
 
 	this._yawObject.rotation.y = yaw;
 };
 
 
-feng.controllers.controls.Controls.prototype.setFov = function (fov) {
+feng.controllers.controls.Controls.prototype.setFov = function( fov ) {
 
 	this._camera.fov = fov;
 	this._camera.updateProjectionMatrix();
 };
 
 
-feng.controllers.controls.Controls.prototype.reset = function () {
+feng.controllers.controls.Controls.prototype.reset = function() {
 
 	this._camera.position.set( 0, 0, 0 );
 	this._camera.rotation.set( 0, 0, 0 );
 
-	this._pitchObject.position.set(0, 0, 0);
-	this._pitchObject.rotation.set(0, 0, 0);
-	
+	this._pitchObject.position.set( 0, 0, 0 );
+	this._pitchObject.rotation.set( 0, 0, 0 );
+
 	this._yawObject.position.copy( this._originalPosition );
 	this._yawObject.rotation.copy( this._originalRotation );
 };
@@ -40335,12 +40335,12 @@ feng.controllers.controls.Controls.prototype.lerp = function( startPosition, end
 
 feng.controllers.controls.Controls.prototype.activate = function() {
 
-	this._eventHandler.listen(this._domElement, 'click', this.onClick, false, this);
-	this._eventHandler.listen(this._domElement, feng.events.EventType.INPUT_DOWN, this.onInputDown, false, this);
+	this._eventHandler.listen( this._domElement, 'click', this.onClick, false, this );
+	this._eventHandler.listen( this._domElement, feng.events.EventType.INPUT_DOWN, this.onInputDown, false, this );
 
-	TweenMax.ticker.addEventListener("tick", this.update, this);
+	TweenMax.ticker.addEventListener( "tick", this.update, this );
 
-	goog.dom.classlist.add(this._view3d.domElement, 'grab');
+	goog.dom.classlist.add( this._view3d.domElement, 'grab' );
 };
 
 
@@ -40348,27 +40348,27 @@ feng.controllers.controls.Controls.prototype.deactivate = function() {
 
 	this._eventHandler.removeAll();
 
-	TweenMax.ticker.removeEventListener("tick", this.update, this);
+	TweenMax.ticker.removeEventListener( "tick", this.update, this );
 
-	goog.dom.classlist.remove(this._view3d.domElement, 'grab');
-	goog.dom.classlist.remove(this._mainEl, 'grabbing');
+	goog.dom.classlist.remove( this._view3d.domElement, 'grab' );
+	goog.dom.classlist.remove( this._mainEl, 'grabbing' );
 };
 
 
 feng.controllers.controls.Controls.prototype.enable = function( enable ) {
 
-	if(this.isEnabled === enable) {
+	if ( this.isEnabled === enable ) {
 
 		return false;
 	}
-	
+
 	this.isEnabled = enable;
 
-	if(this.isEnabled) {
+	if ( this.isEnabled ) {
 
 		this.activate();
 
-	}else {
+	} else {
 
 		this.deactivate();
 	}
@@ -40379,11 +40379,11 @@ feng.controllers.controls.Controls.prototype.enable = function( enable ) {
 
 feng.controllers.controls.Controls.prototype.pause = function( pause ) {
 
-	if(this.isPaused === pause || !this.isEnabled) return;
-	
+	if ( this.isPaused === pause || !this.isEnabled ) return;
+
 	this.isPaused = pause;
 
-	if(this.isPaused) {
+	if ( this.isPaused ) {
 
 		this._pauseProps.oFov = this._pauseProps.fov = this.getFov();
 		this._pauseProps.oZ = this._pauseProps.z = 0;
@@ -40396,9 +40396,9 @@ feng.controllers.controls.Controls.prototype.pause = function( pause ) {
 			'onUpdateScope': this,
 			'onStart': this.onPauseStart,
 			'onStartScope': this
-		});
+		} );
 
-	}else {
+	} else {
 
 		TweenMax.to( this._pauseProps, .8, {
 			fov: this._pauseProps.oFov,
@@ -40408,7 +40408,7 @@ feng.controllers.controls.Controls.prototype.pause = function( pause ) {
 			'onUpdateScope': this,
 			'onComplete': this.onPauseResumed,
 			'onCompleteScope': this
-		});
+		} );
 	}
 
 	return this.isPaused;
@@ -40456,42 +40456,36 @@ feng.controllers.controls.Controls.prototype.onPauseResumed = function() {
 };
 
 
-feng.controllers.controls.Controls.prototype.onClick = function ( e ) {
+feng.controllers.controls.Controls.prototype.onClick = function( e ) {
 
 };
 
 
-feng.controllers.controls.Controls.prototype.onInputDown = function ( e ) {
+feng.controllers.controls.Controls.prototype.onInputDown = function( e ) {
 
-	e.preventDefault();
-	
-	this._eventHandler.listen(this._domElement, feng.events.EventType.INPUT_MOVE, this.onInputMove, false, this);
-	this._eventHandler.listen(document, feng.events.EventType.INPUT_UP, this.onInputUp, false, this);
+	this._eventHandler.listen( this._domElement, feng.events.EventType.INPUT_MOVE, this.onInputMove, false, this );
+	this._eventHandler.listen( document, feng.events.EventType.INPUT_UP, this.onInputUp, false, this );
 };
 
 
-feng.controllers.controls.Controls.prototype.onInputUp = function ( e ) {
+feng.controllers.controls.Controls.prototype.onInputUp = function( e ) {
 
-	e.preventDefault();
+	this._eventHandler.unlisten( this._domElement, feng.events.EventType.INPUT_MOVE, this.onInputMove, false, this );
+	this._eventHandler.unlisten( document, feng.events.EventType.INPUT_UP, this.onInputUp, false, this );
 
-	this._eventHandler.unlisten(this._domElement, feng.events.EventType.INPUT_MOVE, this.onInputMove, false, this);
-	this._eventHandler.unlisten(document, feng.events.EventType.INPUT_UP, this.onInputUp, false, this);
-
-	goog.dom.classlist.remove(this._mainEl, 'grabbing');
+	goog.dom.classlist.remove( this._mainEl, 'grabbing' );
 };
 
 
-feng.controllers.controls.Controls.prototype.onInputMove = function ( e ) {
+feng.controllers.controls.Controls.prototype.onInputMove = function( e ) {
 
-	e.preventDefault();
-
-	goog.dom.classlist.add(this._mainEl, 'grabbing');
+	goog.dom.classlist.add( this._mainEl, 'grabbing' );
 };
 
 
 feng.controllers.controls.Controls.Default = {
-	STANCE_HEIGHT: (170 - 10) / 2, // eyes height (10cm) of 170cm..
-	ARM_HEIGHT: (170 - 10 - 30) / 2,
+	STANCE_HEIGHT: ( 170 - 10 ) / 2, // eyes height (10cm) of 170cm..
+	ARM_HEIGHT: ( 170 - 10 - 30 ) / 2,
 	FOV: 40
 };goog.provide('feng.controllers.controls.ExitControls');
 
@@ -60900,99 +60894,102 @@ feng.views.sections.captions.ChangePictureCaption.prototype.onClickItem = functi
   this._object.nextPicture();
 
   feng.soundController.playSfx('click');
-};goog.provide('feng.views.sections.controls.ObjectSelector');
+};goog.provide( 'feng.views.sections.controls.ObjectSelector' );
 
-goog.require('goog.events');
-goog.require('goog.async.Delay');
-goog.require('goog.async.Throttle');
-goog.require('feng.fx.AnimatedSprite');
-goog.require('feng.views.sections.controls.Controls');
+goog.require( 'goog.events' );
+goog.require( 'goog.async.Delay' );
+goog.require( 'goog.async.Throttle' );
+goog.require( 'feng.fx.AnimatedSprite' );
+goog.require( 'feng.views.sections.controls.Controls' );
 
 
 /**
  * @constructor
  */
-feng.views.sections.controls.ObjectSelector = function(domElement){
+feng.views.sections.controls.ObjectSelector = function( domElement ) {
 
-  goog.base(this, domElement);
+	goog.base( this, domElement );
 
-  this._selectableObjects = [];
+	this._selectableObjects = [];
 
-  this._domElement = domElement;
-  this._fillEl = goog.dom.getElementByClass('fill', this._domElement);
+	this._domElement = domElement;
+	this._fillEl = goog.dom.getElementByClass( 'fill', this._domElement );
 
-  var img = feng.models.Preload.getInstance().getAsset('global.circular-fill');
-  this._fillSprite = new feng.fx.AnimatedSprite(this._fillEl, img, 16, 2, 31);
+	var img = feng.models.Preload.getInstance().getAsset( 'global.circular-fill' );
+	this._fillSprite = new feng.fx.AnimatedSprite( this._fillEl, img, 16, 2, 31 );
 
-  this._selectedObject = null;
-  this._downObject = null;
-  this._isEnabled = false;
-  this._startTime = 0;
-  this._duration = 500;
+	this._selectedObject = null;
+	this._downObject = null;
+	this._isEnabled = false;
+	this._startTime = 0;
+	this._duration = 500;
 
-  this._isMouseDown = false;
+	this._isMouseDown = false;
 
-  this._callbacks = {};
+	this._callbacks = {};
 
-  // a delay to kick off the progress, to differentiate the mouse behavior between a fast click and object selecting
-  this._delay = new goog.async.Delay(this.startSelect, 200, this);
+	// a delay to kick off the progress, to differentiate the mouse behavior between a fast click and object selecting
+	this._delay = new goog.async.Delay( this.startSelect, 200, this );
 
-  // a throttle to not let the object hover detection fire too often
-  this._mouseMoveThrottle = new goog.async.Throttle(this.doHoverDetection, 250, this);
-  this._mouseMovePosition = {x: 0, y: 0};
+	// a throttle to not let the object hover detection fire too often
+	this._mouseMoveThrottle = new goog.async.Throttle( this.doHoverDetection, 250, this );
+	this._mouseMovePosition = {
+		x: 0,
+		y: 0
+	};
 
-  this._intersectedObject = null;
+	this._intersectedObject = null;
 
-  this._hitTestMeshes = [];
+	this._hitTestMeshes = [];
 
 	this.show( false );
 };
-goog.inherits(feng.views.sections.controls.ObjectSelector, feng.views.sections.controls.Controls);
+goog.inherits( feng.views.sections.controls.ObjectSelector, feng.views.sections.controls.Controls );
 
 
-feng.views.sections.controls.ObjectSelector.prototype.setPosition = function ( x, y ) {
+feng.views.sections.controls.ObjectSelector.prototype.setPosition = function( x, y ) {
 
-	goog.style.setPosition(this.domElement, x, y);
+	goog.style.setPosition( this.domElement, x, y );
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.setSelectableObjects = function ( objects ) {
+feng.views.sections.controls.ObjectSelector.prototype.setSelectableObjects = function( objects ) {
 
 	this._selectableObjects = objects;
 
-	this._hitTestMeshes = goog.array.map(this._selectableObjects, function(object) {
+	this._hitTestMeshes = goog.array.map( this._selectableObjects, function( object ) {
 
 		return object.getProxyBox();
-	}, this);
+	}, this );
 };
 
 
 feng.views.sections.controls.ObjectSelector.prototype.activate = function( callbacks ) {
 
-  var shouldActivate = goog.base(this, 'activate');
+	var shouldActivate = goog.base( this, 'activate' );
 
-  if(!shouldActivate) return;
-  
+	if ( !shouldActivate ) return;
+
 	this._callbacks = {
-	  	'onProgress': callbacks['onProgress'] || goog.nullFunction,
-	  	'onStart': callbacks['onStart'] || goog.nullFunction,
-	  	'onCancel': callbacks['onCancel'] || goog.nullFunction,
-	  	'onComplete': callbacks['onComplete'] || goog.nullFunction
-	  };
+		'onProgress': callbacks[ 'onProgress' ] || goog.nullFunction,
+		'onStart': callbacks[ 'onStart' ] || goog.nullFunction,
+		'onCancel': callbacks[ 'onCancel' ] || goog.nullFunction,
+		'onComplete': callbacks[ 'onComplete' ] || goog.nullFunction
+	};
 
-	this._eventHandler.listen(this._renderEl, 'mousedown', this.onMouseDown, false, this);
-	this._eventHandler.listen(this._renderEl, 'mousemove', this.onMouseMove, false, this);
-	this._eventHandler.listen(this._renderEl, 'mouseup', this.onMouseUp, false, this);
+	this._eventHandler.listen( this._renderEl, feng.events.EventType.INPUT_DOWN, this.onMouseDown, false, this );
+	this._eventHandler.listen( this._renderEl, feng.events.EventType.INPUT_MOVE, this.onMouseMove, false, this );
+	this._eventHandler.listen( this._renderEl, feng.events.EventType.INPUT_UP, this.onMouseUp, false, this );
 };
 
 
 feng.views.sections.controls.ObjectSelector.prototype.deactivate = function() {
 
-  var shouldDeactivate = goog.base(this, 'deactivate');
+	var shouldDeactivate = goog.base( this, 'deactivate' );
 
-  if(!shouldDeactivate) return;
+	if ( !shouldDeactivate ) return;
 
-  this._isMouseDown = false;
+	this._isMouseDown = false;
 
 	this._delay.stop();
 
@@ -61004,9 +61001,9 @@ feng.views.sections.controls.ObjectSelector.prototype.deactivate = function() {
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.animateIn = function () {
+feng.views.sections.controls.ObjectSelector.prototype.animateIn = function() {
 
-	TweenMax.fromTo(this.domElement, .25, {
+	TweenMax.fromTo( this.domElement, .25, {
 		'scale': 0,
 		'opacity': 0,
 		'display': 'none'
@@ -61015,91 +61012,91 @@ feng.views.sections.controls.ObjectSelector.prototype.animateIn = function () {
 		'opacity': 1,
 		'display': 'block',
 		'ease': Expo.easeOut
-	});
+	} );
 
-	TweenMax.fromTo(this._fillEl, .4, {
+	TweenMax.fromTo( this._fillEl, .4, {
 		'scale': 0
 	}, {
 		'delay': .1,
 		'scale': 1,
 		'ease': Back.easeOut
-	});
+	} );
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.animateOut = function () {
+feng.views.sections.controls.ObjectSelector.prototype.animateOut = function() {
 
-	TweenMax.to(this.domElement, .25, {
+	TweenMax.to( this.domElement, .25, {
 		'scale': .5,
 		'opacity': 0,
 		'display': 'none',
 		'ease': Expo.easeOut,
 		'onComplete': this.hide,
 		'onCompleteScope': this
-	});
+	} );
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.doSelect = function () {
+feng.views.sections.controls.ObjectSelector.prototype.doSelect = function() {
 
 	this._selectedObject = this._downObject;
 
 	this.animateOut();
 
-	this._callbacks['onComplete']( this._selectedObject );
+	this._callbacks[ 'onComplete' ]( this._selectedObject );
 
 	feng.pubsub.publish( feng.PubSub.Topic.COMPLETE_SELECTOR );
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.cancelSelect = function () {
+feng.views.sections.controls.ObjectSelector.prototype.cancelSelect = function() {
 
 	this.animateOut();
 
 	this._view3d.fx.selectEffect.animateOut();
 
-	this._callbacks['onCancel']();
+	this._callbacks[ 'onCancel' ]();
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.startSelect = function () {
+feng.views.sections.controls.ObjectSelector.prototype.startSelect = function() {
 
-	if(!this._view3d.onlyObjectToUnlock || (this._downObject === this._view3d.onlyObjectToUnlock)) {
+	if ( !this._view3d.onlyObjectToUnlock || ( this._downObject === this._view3d.onlyObjectToUnlock ) ) {
 
 		this._view3d.fx.selectEffect.animateIn( this._downObject );
 
 		this.show();
 		this.animateIn();
-		
+
 		this._startTime = goog.now();
 		goog.fx.anim.registerAnimation( this );
 
-		this._callbacks['onStart']( this._downObject );
+		this._callbacks[ 'onStart' ]( this._downObject );
 	}
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = function () {
-	
+feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = function() {
+
 	var mouseX = this._mouseMovePosition.x;
 	var mouseY = this._mouseMovePosition.y;
 
 	var camera = this._cameraController.activeCamera;
 
 	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( mouseX, mouseY, this._hitTestMeshes, camera, this._viewSize );
-	
-	var isIntersected = (intersects.length > 0);
 
-	if(isIntersected) {
+	var isIntersected = ( intersects.length > 0 );
 
-		this._intersectedObject = intersects[0].object;
+	if ( isIntersected ) {
 
-		if(!this._view3d.onlyObjectToUnlock || (this._intersectedObject.view3dObject === this._view3d.onlyObjectToUnlock)) {
+		this._intersectedObject = intersects[ 0 ].object;
+
+		if ( !this._view3d.onlyObjectToUnlock || ( this._intersectedObject.view3dObject === this._view3d.onlyObjectToUnlock ) ) {
 
 			this._view3d.fx.selectEffect.animateIn( this._intersectedObject.view3dObject );
 		}
 
-	}else {
+	} else {
 
 		this._intersectedObject = null;
 
@@ -61108,7 +61105,7 @@ feng.views.sections.controls.ObjectSelector.prototype.doHoverDetection = functio
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e ) {
+feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function( e ) {
 
 	this._isMouseDown = true;
 
@@ -61118,32 +61115,32 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseDown = function ( e
 
 	var intersects = feng.utils.ThreeUtils.getObjectsBy2DPosition( e.clientX, e.clientY, this._hitTestMeshes, camera, this._viewSize );
 
-	if(intersects.length === 0) {
+	if ( intersects.length === 0 ) {
 		return false;
 	}
 
-	this._downObject = intersects[0].object.view3dObject;
+	this._downObject = intersects[ 0 ].object.view3dObject;
 	this.setPosition( e.clientX, e.clientY );
 
-	this._eventHandler.listen(document, 'mousemove', this.onMouseDownCancel, false, this);
-	this._eventHandler.listen(document, 'mouseup', this.onMouseDownCancel, false, this);
+	this._eventHandler.listen( document, feng.events.EventType.INPUT_MOVE, this.onMouseDownCancel, false, this );
+	this._eventHandler.listen( document, feng.events.EventType.INPUT_UP, this.onMouseDownCancel, false, this );
 
 	this._delay.start();
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.onMouseUp = function ( e ) {
+feng.views.sections.controls.ObjectSelector.prototype.onMouseUp = function( e ) {
 
 	this._isMouseDown = false;
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.onMouseDownCancel = function ( e ) {
+feng.views.sections.controls.ObjectSelector.prototype.onMouseDownCancel = function( e ) {
 
 	this._delay.stop();
 
-	this._eventHandler.unlisten(document, 'mousemove', this.onMouseDownCancel, false, this);
-	this._eventHandler.unlisten(document, 'mouseup', this.onMouseDownCancel, false, this);
+	this._eventHandler.unlisten( document, feng.events.EventType.INPUT_MOVE, this.onMouseDownCancel, false, this );
+	this._eventHandler.unlisten( document, feng.events.EventType.INPUT_UP, this.onMouseDownCancel, false, this );
 
 	goog.fx.anim.unregisterAnimation( this );
 
@@ -61151,9 +61148,9 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseDownCancel = functi
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.onMouseMove = function ( e ) {
+feng.views.sections.controls.ObjectSelector.prototype.onMouseMove = function( e ) {
 
-	if(this._isMouseDown) {
+	if ( this._isMouseDown ) {
 
 		this._mouseMoveThrottle.stop();
 		return false;
@@ -61164,37 +61161,37 @@ feng.views.sections.controls.ObjectSelector.prototype.onMouseMove = function ( e
 
 	this._mouseMoveThrottle.fire();
 
-	if(this._intersectedObject) {
+	if ( this._intersectedObject ) {
 
 		var camera = this._cameraController.activeCamera;
 
 		feng.pubsub.publish( feng.PubSub.Topic.TRIGGER_SELECTOR, this._intersectedObject, camera, this._viewSize );
 
-	}else {
+	} else {
 
 		feng.pubsub.publish( feng.PubSub.Topic.UNTRIGGER_SELECTOR );
 	}
 };
 
 
-feng.views.sections.controls.ObjectSelector.prototype.onAnimationFrame = function ( now ) {
+feng.views.sections.controls.ObjectSelector.prototype.onAnimationFrame = function( now ) {
 
-	var progress = Math.min(1, (now - this._startTime) / this._duration);
+	var progress = Math.min( 1, ( now - this._startTime ) / this._duration );
 	//console.log('object select progress: ' + progress);
 
 	this._fillSprite.setProgress( progress );
 
-	if(progress === 1) {
+	if ( progress === 1 ) {
 
-		this._eventHandler.unlisten(document, 'mousemove', this.onMouseDownCancel, false, this);
-		this._eventHandler.unlisten(document, 'mouseup', this.onMouseDownCancel, false, this);
+		this._eventHandler.unlisten( document, feng.events.EventType.INPUT_MOVE, this.onMouseDownCancel, false, this );
+		this._eventHandler.unlisten( document, feng.events.EventType.INPUT_UP, this.onMouseDownCancel, false, this );
 
 		goog.fx.anim.unregisterAnimation( this );
 
 		this.doSelect();
 	}
 
-	this._callbacks['onProgress']( this._downObject, progress );
+	this._callbacks[ 'onProgress' ]( this._downObject, progress );
 };goog.provide('feng.views.sections.captions.ChangeObjectCaption');
 
 goog.require('goog.soy');
@@ -63679,74 +63676,82 @@ feng.controllers.SectionController.prototype.onSectionAnimatedOut = function(e){
 	if(this._section === e.target) {
 		this._section = null;
 	}
-};goog.provide('feng.apps.Main');
+};goog.provide( 'feng.apps.Main' );
 
-goog.require('goog.dom');
-goog.require('goog.events');
-goog.require('goog.fx.anim');
-goog.require('goog.style');
-goog.require('feng.templates.main');
-goog.require('feng.controllers.NavigationController');
-goog.require('feng.controllers.SectionController');
-goog.require('feng.controllers.StorageController');
-goog.require('feng.controllers.SoundController');
-goog.require('feng.controllers.KeyboardController');
-goog.require('feng.controllers.view3d.PathfindingController');
-goog.require('feng.views.debug.Debugger');
-goog.require('feng.views.MainOptions');
-goog.require('feng.views.EpisodeSelection');
-goog.require('feng.views.popups.Tutorial');
-goog.require('feng.views.popups.Credits');
-goog.require('feng.fx.Shaders');
-goog.require('feng.PubSub');
-goog.require('feng.utils.Utils');
+goog.require( 'goog.dom' );
+goog.require( 'goog.events' );
+goog.require( 'goog.fx.anim' );
+goog.require( 'goog.style' );
+goog.require( 'goog.userAgent' );
+goog.require( 'feng.events' );
+goog.require( 'feng.templates.main' );
+goog.require( 'feng.controllers.NavigationController' );
+goog.require( 'feng.controllers.SectionController' );
+goog.require( 'feng.controllers.StorageController' );
+goog.require( 'feng.controllers.SoundController' );
+goog.require( 'feng.controllers.KeyboardController' );
+goog.require( 'feng.controllers.view3d.PathfindingController' );
+goog.require( 'feng.views.debug.Debugger' );
+goog.require( 'feng.views.MainOptions' );
+goog.require( 'feng.views.EpisodeSelection' );
+goog.require( 'feng.views.popups.Tutorial' );
+goog.require( 'feng.views.popups.Credits' );
+goog.require( 'feng.fx.Shaders' );
+goog.require( 'feng.PubSub' );
+goog.require( 'feng.utils.Utils' );
 
 
 feng.apps.Main = function() {
 
-	goog.base(this);
-	
+	goog.base( this );
+
 	// redirect to fallback page if WebGL is not supported
-	if(!feng.utils.Utils.supportWebGL) {
+	if ( !feng.utils.Utils.supportWebGL ) {
 		window.location.href = '/unsupported.html';
 		return;
 	}
 
-	goog.fx.anim.setAnimationWindow(window);
+	goog.fx.anim.setAnimationWindow( window );
 
-	feng.debug = (feng.utils.Utils.getQuery('debug') === 'true') || feng.Config['debug'];
-	feng.office = (feng.utils.Utils.getQuery('office') === 'true') || feng.Config['office'];
-	feng.quality = feng.utils.Utils.getQuery('quality') || feng.Config['quality'];
-	
-	if(feng.Config['escapeConsole'] === true) {
+	if ( goog.userAgent.MOBILE ) TweenMax.ticker.fps( 30 );
+
+	feng.debug = ( feng.utils.Utils.getQuery( 'debug' ) === 'true' ) || feng.Config[ 'debug' ];
+	feng.office = ( feng.utils.Utils.getQuery( 'office' ) === 'true' ) || feng.Config[ 'office' ];
+	feng.quality = feng.utils.Utils.getQuery( 'quality' ) || feng.Config[ 'quality' ];
+
+	if ( feng.Config[ 'escapeConsole' ] === true ) {
 		feng.utils.Utils.escapeConsole();
 	}
 
 	feng.viewportSize = feng.apps.Main.getViewportSize();
 
-	goog.events.listen(window, goog.events.EventType.RESIZE, function() {
+	goog.events.listen( window, goog.events.EventType.RESIZE, function() {
 		feng.viewportSize = feng.apps.Main.getViewportSize();
-	});
+	} );
 
 	feng.renderSettings = {
-		renderSize: (feng.quality === 'high') ? ((screen.width > 1920) ? 2048 : 1024) : 1024,
-		shadowMapSize: (feng.quality === 'high') ? 1024 : 512
+		renderSize: ( feng.quality === 'high' ) ? ( ( screen.width > 1920 ) ? 2048 : 1024 ) : 1024,
+		shadowMapSize: ( feng.quality === 'high' ) ? 1024 : 512
 	};
 
-	var mainFrag = soy.renderAsFragment(feng.templates.main.Main, {
+	var mainFrag = soy.renderAsFragment( feng.templates.main.Main, {
 		debug: feng.debug
-	});
-	goog.dom.appendChild(document.body, mainFrag);
+	} );
+	goog.dom.appendChild( document.body, mainFrag );
+
+	goog.events.listen( document, feng.events.EventType.INPUT_MOVE, function( e ) {
+		e.preventDefault();
+	} );
 
 	feng.pubsub = feng.PubSub.getInstance();
 
-	if(feng.debug) feng.views.debug.Debugger.getInstance();
-	if(feng.office) goog.style.setOpacity(document.body, .1);
+	if ( feng.debug ) feng.views.debug.Debugger.getInstance();
+	if ( feng.office ) goog.style.setOpacity( document.body, .1 );
 
 	feng.storageController = feng.controllers.StorageController.getInstance();
 
 	feng.soundController = feng.controllers.SoundController.getInstance();
-	
+
 	feng.mainOptions = new feng.views.MainOptions;
 
 	feng.episodeSelection = feng.views.EpisodeSelection.getInstance();
@@ -63766,12 +63771,12 @@ feng.apps.Main = function() {
 	feng.keyboardController = feng.controllers.KeyboardController.getInstance();
 
 	feng.initialToken = feng.navigationController.getTokenArray();
-	
+
 	feng.navigationController.init();
 	feng.navigationController.replaceToken( feng.controllers.NavigationController.Token.HOME );
 };
-goog.inherits(feng.apps.Main, goog.events.EventTarget);
-goog.addSingletonGetter(feng.apps.Main);
+goog.inherits( feng.apps.Main, goog.events.EventTarget );
+goog.addSingletonGetter( feng.apps.Main );
 
 
 feng.apps.Main.getViewportSize = function() {

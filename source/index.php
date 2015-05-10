@@ -10,6 +10,8 @@
         <meta name="keywords" content="feng shui, feng shui tips, feng shui bedroom, feng shui colors, feng shui home, feng shui home decorating, feng shui house, feng shui theory, feng shui for health, feng shui for prosperity, feng shui for romance, feng shui office, feng shui decorating, feng shui guide by room, children feng shui, interior design with feng shui">
 		<meta name="description" content="Now discover tips and advices to give your home good Feng Shui.">
 
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+
 		<meta content="http://fengshuirealtime.com/" property="og:url">
 		<meta content="FengShui RealTime" property="og:title">
 		<meta content="Now discover tips and advices to give your home good Feng Shui." property="og:description">
@@ -45,12 +47,12 @@
 			}else {
 				echo('
 					<script src="assets/js/thirdparty/howler.min.js"></script>
-					<script src="assets/js/thirdparty/createjs/preloadjs-0.4.1.min.js"></script>
+					<script src="assets/js/thirdparty/createjs/preloadjs-0.6.0.min.js"></script>
 					<script src="assets/js/thirdparty/greensock/TweenMax.min.js"></script>
 					<script src="assets/js/thirdparty/greensock/utils/Draggable.min.js"></script>
 					<script src="assets/js/thirdparty/greensock/plugins/ThrowPropsPlugin.min.js"></script>
 
-					<script src="assets/js/thirdparty/threejs/build/three69.min.js"></script>
+					<script src="assets/js/thirdparty/threejs/build/three71.min.js"></script>
 
 					<script src="assets/js/thirdparty/threejs-utils/Projector.js"></script>
 					<script src="assets/js/thirdparty/threejs-utils/CanvasRenderer.js"></script>

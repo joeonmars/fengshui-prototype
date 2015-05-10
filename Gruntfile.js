@@ -78,11 +78,11 @@ module.exports = function( grunt ) {
       thirdparty: {
         src: [
           '<%= thirdPartyJsDir %>/howler.min.js',
-          '<%= thirdPartyJsDir %>/createjs/preloadjs-0.4.1.min.js',
+          '<%= thirdPartyJsDir %>/createjs/preloadjs-0.6.0.min.js',
           '<%= thirdPartyJsDir %>/greensock/TweenMax.min.js',
           '<%= thirdPartyJsDir %>/greensock/utils/Draggable.min.js',
           '<%= thirdPartyJsDir %>/greensock/plugins/ThrowPropsPlugin.min.js',
-          '<%= thirdPartyJsDir %>/threejs/build/three69.min.js',
+          '<%= thirdPartyJsDir %>/threejs/build/three71.min.js',
           '<%= thirdPartyJsDir %>/threejs-utils/Projector.js',
           '<%= thirdPartyJsDir %>/threejs-utils/CanvasRenderer.js',
           '<%= thirdPartyJsDir %>/threejs-utils/CombinedCamera.js',
@@ -235,7 +235,7 @@ module.exports = function( grunt ) {
           language_in: 'ECMASCRIPT5_STRICT',
           externs: [
             '<%= projectJsDir %>/externs.js',
-            '<%= thirdPartyJsDir %>/threejs/build/three69.min.js',
+            '<%= thirdPartyJsDir %>/threejs/build/three71.min.js',
             '<%= thirdPartyJsDir %>/threejs-utils/Projector.js',
             '<%= thirdPartyJsDir %>/threejs-utils/CanvasRenderer.js',
             '<%= thirdPartyJsDir %>/threejs-utils/CombinedCamera.js',

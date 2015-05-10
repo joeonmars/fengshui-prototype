@@ -1,38 +1,38 @@
-goog.provide('feng.controllers.controls.Controls');
+goog.provide( 'feng.controllers.controls.Controls' );
 
-goog.require('goog.events.EventTarget');
-goog.require('goog.events.EventHandler');
-goog.require('goog.events');
+goog.require( 'goog.events.EventTarget' );
+goog.require( 'goog.events.EventHandler' );
+goog.require( 'goog.events' );
 
 
 /**
  * @constructor
  * A custom camera control, wrapped the camera with pitch and yaw object
  */
-feng.controllers.controls.Controls = function(camera, view3d, domElement){
-	
-  goog.base(this);
+feng.controllers.controls.Controls = function( camera, view3d, domElement ) {
 
-  this._camera = camera;
-  this._view3d = view3d;
-  this._scene = this._view3d.scene;
+	goog.base( this );
 
-  this._eventHandler = new goog.events.EventHandler(this);
+	this._camera = camera;
+	this._view3d = view3d;
+	this._scene = this._view3d.scene;
 
-  this.isEnabled = false;
-  this.isPaused = false;
+	this._eventHandler = new goog.events.EventHandler( this );
 
-  this._pauseProps = {
-  	fov: 0,
-  	oFov: 0,
-  	z: 0,
-  	oZ: 0
-  };
+	this.isEnabled = false;
+	this.isPaused = false;
 
-  this._rotation = new THREE.Euler(0, 0, 0, 'YXZ'); //YXZ is to overcome gimbal lock
+	this._pauseProps = {
+		fov: 0,
+		oFov: 0,
+		z: 0,
+		oZ: 0
+	};
 
-  this._originalPosition = this._camera.position.clone();
-  this._originalRotation = this._camera.rotation.clone();
+	this._rotation = new THREE.Euler( 0, 0, 0, 'YXZ' ); //YXZ is to overcome gimbal lock
+
+	this._originalPosition = this._camera.position.clone();
+	this._originalRotation = this._camera.rotation.clone();
 
 	this._pitchObject = new THREE.Object3D();
 	this._pitchObject.add( this._camera );
@@ -40,35 +40,35 @@ feng.controllers.controls.Controls = function(camera, view3d, domElement){
 	this._yawObject = new THREE.Object3D();
 	this._yawObject.add( this._pitchObject );
 
-	this._mainEl = goog.dom.getElement('main');
+	this._mainEl = goog.dom.getElement( 'main' );
 	this._domElement = domElement;
 
 	this._scene.add( this.getObject() );
 
 	this.reset();
 };
-goog.inherits(feng.controllers.controls.Controls, goog.events.EventTarget);
+goog.inherits( feng.controllers.controls.Controls, goog.events.EventTarget );
 
 
-feng.controllers.controls.Controls.prototype.getObject = function () {
+feng.controllers.controls.Controls.prototype.getObject = function() {
 
 	return this._yawObject;
 };
 
 
-feng.controllers.controls.Controls.prototype.getCamera = function () {
+feng.controllers.controls.Controls.prototype.getCamera = function() {
 
 	return this._camera;
 };
 
 
-feng.controllers.controls.Controls.prototype.getPosition = function () {
+feng.controllers.controls.Controls.prototype.getPosition = function() {
 
 	return this.getObject().position;
 };
 
 
-feng.controllers.controls.Controls.prototype.getRotation = function () {
+feng.controllers.controls.Controls.prototype.getRotation = function() {
 
 	this._rotation.x = this.getPitch();
 	this._rotation.y = this.getYaw();
@@ -76,67 +76,67 @@ feng.controllers.controls.Controls.prototype.getRotation = function () {
 };
 
 
-feng.controllers.controls.Controls.prototype.getPitch = function () {
+feng.controllers.controls.Controls.prototype.getPitch = function() {
 
 	return this._pitchObject.rotation.x;
 };
 
 
-feng.controllers.controls.Controls.prototype.getYaw = function () {
+feng.controllers.controls.Controls.prototype.getYaw = function() {
 
 	return this._yawObject.rotation.y;
 };
 
 
-feng.controllers.controls.Controls.prototype.getFov = function () {
+feng.controllers.controls.Controls.prototype.getFov = function() {
 
 	return this._camera.fov;
 };
 
 
-feng.controllers.controls.Controls.prototype.getForwardVector = function (dontForceZeroY) {
+feng.controllers.controls.Controls.prototype.getForwardVector = function( dontForceZeroY ) {
 
-	var forward = new THREE.Vector3(0, 0, -1);
-	forward.applyEuler(this._pitchObject.rotation, this._pitchObject.rotation.order);
-	forward.applyEuler(this._yawObject.rotation, this._yawObject.rotation.order);
+	var forward = new THREE.Vector3( 0, 0, -1 );
+	forward.applyEuler( this._pitchObject.rotation, this._pitchObject.rotation.order );
+	forward.applyEuler( this._yawObject.rotation, this._yawObject.rotation.order );
 	forward.normalize();
 
-	if(!dontForceZeroY) {
-		forward.setY(0);
+	if ( !dontForceZeroY ) {
+		forward.setY( 0 );
 	}
 
 	return forward;
 };
 
 
-feng.controllers.controls.Controls.prototype.getTarget = function () {
+feng.controllers.controls.Controls.prototype.getTarget = function() {
 
-	var raycaster = new THREE.Raycaster(this.getPosition(), this.getForwardVector(true));
+	var raycaster = new THREE.Raycaster( this.getPosition(), this.getForwardVector( true ) );
 	var intersects = raycaster.intersectObject( this._view3d.skybox.object3d );
-	var intersectPosition = intersects.length > 0 ? intersects[0].point : this._view3d.scene.position;
+	var intersectPosition = intersects.length > 0 ? intersects[ 0 ].point : this._view3d.scene.position;
 
 	return intersectPosition;
 };
 
 
-feng.controllers.controls.Controls.prototype.setPosition = function (x, y, z) {
+feng.controllers.controls.Controls.prototype.setPosition = function( x, y, z ) {
 
-	if(x instanceof THREE.Vector3) {
+	if ( x instanceof THREE.Vector3 ) {
 		var position = x;
 		this._yawObject.position.copy( position );
-	}else {
-		this._yawObject.position.set(x, y, z);
+	} else {
+		this._yawObject.position.set( x, y, z );
 	}
 };
 
 
-feng.controllers.controls.Controls.prototype.setRotation = function (x, y) {
+feng.controllers.controls.Controls.prototype.setRotation = function( x, y ) {
 
-	if(x instanceof THREE.Euler) {
+	if ( x instanceof THREE.Euler ) {
 		var rotation = x;
 		this._rotation.x = rotation.x;
 		this._rotation.y = rotation.y;
-	}else {
+	} else {
 		this._rotation.x = x;
 		this._rotation.y = y;
 	}
@@ -146,33 +146,33 @@ feng.controllers.controls.Controls.prototype.setRotation = function (x, y) {
 };
 
 
-feng.controllers.controls.Controls.prototype.setPitch = function (pitch) {
+feng.controllers.controls.Controls.prototype.setPitch = function( pitch ) {
 
 	this._pitchObject.rotation.x = pitch;
 };
 
 
-feng.controllers.controls.Controls.prototype.setYaw = function (yaw) {
+feng.controllers.controls.Controls.prototype.setYaw = function( yaw ) {
 
 	this._yawObject.rotation.y = yaw;
 };
 
 
-feng.controllers.controls.Controls.prototype.setFov = function (fov) {
+feng.controllers.controls.Controls.prototype.setFov = function( fov ) {
 
 	this._camera.fov = fov;
 	this._camera.updateProjectionMatrix();
 };
 
 
-feng.controllers.controls.Controls.prototype.reset = function () {
+feng.controllers.controls.Controls.prototype.reset = function() {
 
 	this._camera.position.set( 0, 0, 0 );
 	this._camera.rotation.set( 0, 0, 0 );
 
-	this._pitchObject.position.set(0, 0, 0);
-	this._pitchObject.rotation.set(0, 0, 0);
-	
+	this._pitchObject.position.set( 0, 0, 0 );
+	this._pitchObject.rotation.set( 0, 0, 0 );
+
 	this._yawObject.position.copy( this._originalPosition );
 	this._yawObject.rotation.copy( this._originalRotation );
 };
@@ -195,12 +195,12 @@ feng.controllers.controls.Controls.prototype.lerp = function( startPosition, end
 
 feng.controllers.controls.Controls.prototype.activate = function() {
 
-	this._eventHandler.listen(this._domElement, 'click', this.onClick, false, this);
-	this._eventHandler.listen(this._domElement, feng.events.EventType.INPUT_DOWN, this.onInputDown, false, this);
+	this._eventHandler.listen( this._domElement, 'click', this.onClick, false, this );
+	this._eventHandler.listen( this._domElement, feng.events.EventType.INPUT_DOWN, this.onInputDown, false, this );
 
-	TweenMax.ticker.addEventListener("tick", this.update, this);
+	TweenMax.ticker.addEventListener( "tick", this.update, this );
 
-	goog.dom.classlist.add(this._view3d.domElement, 'grab');
+	goog.dom.classlist.add( this._view3d.domElement, 'grab' );
 };
 
 
@@ -208,27 +208,27 @@ feng.controllers.controls.Controls.prototype.deactivate = function() {
 
 	this._eventHandler.removeAll();
 
-	TweenMax.ticker.removeEventListener("tick", this.update, this);
+	TweenMax.ticker.removeEventListener( "tick", this.update, this );
 
-	goog.dom.classlist.remove(this._view3d.domElement, 'grab');
-	goog.dom.classlist.remove(this._mainEl, 'grabbing');
+	goog.dom.classlist.remove( this._view3d.domElement, 'grab' );
+	goog.dom.classlist.remove( this._mainEl, 'grabbing' );
 };
 
 
 feng.controllers.controls.Controls.prototype.enable = function( enable ) {
 
-	if(this.isEnabled === enable) {
+	if ( this.isEnabled === enable ) {
 
 		return false;
 	}
-	
+
 	this.isEnabled = enable;
 
-	if(this.isEnabled) {
+	if ( this.isEnabled ) {
 
 		this.activate();
 
-	}else {
+	} else {
 
 		this.deactivate();
 	}
@@ -239,11 +239,11 @@ feng.controllers.controls.Controls.prototype.enable = function( enable ) {
 
 feng.controllers.controls.Controls.prototype.pause = function( pause ) {
 
-	if(this.isPaused === pause || !this.isEnabled) return;
-	
+	if ( this.isPaused === pause || !this.isEnabled ) return;
+
 	this.isPaused = pause;
 
-	if(this.isPaused) {
+	if ( this.isPaused ) {
 
 		this._pauseProps.oFov = this._pauseProps.fov = this.getFov();
 		this._pauseProps.oZ = this._pauseProps.z = 0;
@@ -256,9 +256,9 @@ feng.controllers.controls.Controls.prototype.pause = function( pause ) {
 			'onUpdateScope': this,
 			'onStart': this.onPauseStart,
 			'onStartScope': this
-		});
+		} );
 
-	}else {
+	} else {
 
 		TweenMax.to( this._pauseProps, .8, {
 			fov: this._pauseProps.oFov,
@@ -268,7 +268,7 @@ feng.controllers.controls.Controls.prototype.pause = function( pause ) {
 			'onUpdateScope': this,
 			'onComplete': this.onPauseResumed,
 			'onCompleteScope': this
-		});
+		} );
 	}
 
 	return this.isPaused;
@@ -316,41 +316,35 @@ feng.controllers.controls.Controls.prototype.onPauseResumed = function() {
 };
 
 
-feng.controllers.controls.Controls.prototype.onClick = function ( e ) {
+feng.controllers.controls.Controls.prototype.onClick = function( e ) {
 
 };
 
 
-feng.controllers.controls.Controls.prototype.onInputDown = function ( e ) {
+feng.controllers.controls.Controls.prototype.onInputDown = function( e ) {
 
-	e.preventDefault();
-	
-	this._eventHandler.listen(this._domElement, feng.events.EventType.INPUT_MOVE, this.onInputMove, false, this);
-	this._eventHandler.listen(document, feng.events.EventType.INPUT_UP, this.onInputUp, false, this);
+	this._eventHandler.listen( this._domElement, feng.events.EventType.INPUT_MOVE, this.onInputMove, false, this );
+	this._eventHandler.listen( document, feng.events.EventType.INPUT_UP, this.onInputUp, false, this );
 };
 
 
-feng.controllers.controls.Controls.prototype.onInputUp = function ( e ) {
+feng.controllers.controls.Controls.prototype.onInputUp = function( e ) {
 
-	e.preventDefault();
+	this._eventHandler.unlisten( this._domElement, feng.events.EventType.INPUT_MOVE, this.onInputMove, false, this );
+	this._eventHandler.unlisten( document, feng.events.EventType.INPUT_UP, this.onInputUp, false, this );
 
-	this._eventHandler.unlisten(this._domElement, feng.events.EventType.INPUT_MOVE, this.onInputMove, false, this);
-	this._eventHandler.unlisten(document, feng.events.EventType.INPUT_UP, this.onInputUp, false, this);
-
-	goog.dom.classlist.remove(this._mainEl, 'grabbing');
+	goog.dom.classlist.remove( this._mainEl, 'grabbing' );
 };
 
 
-feng.controllers.controls.Controls.prototype.onInputMove = function ( e ) {
+feng.controllers.controls.Controls.prototype.onInputMove = function( e ) {
 
-	e.preventDefault();
-
-	goog.dom.classlist.add(this._mainEl, 'grabbing');
+	goog.dom.classlist.add( this._mainEl, 'grabbing' );
 };
 
 
 feng.controllers.controls.Controls.Default = {
-	STANCE_HEIGHT: (170 - 10) / 2, // eyes height (10cm) of 170cm..
-	ARM_HEIGHT: (170 - 10 - 30) / 2,
+	STANCE_HEIGHT: ( 170 - 10 ) / 2, // eyes height (10cm) of 170cm..
+	ARM_HEIGHT: ( 170 - 10 - 30 ) / 2,
 	FOV: 40
 };
